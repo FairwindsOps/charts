@@ -1,0 +1,6 @@
+remote: ro
+target-branch: master
+chart-dirs:
+  - stable
+  - incubator
+helm-extra-args: --timeout 600
