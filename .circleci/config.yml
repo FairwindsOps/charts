@@ -1,0 +1,51 @@
+version: 2
+jobs:
+  lint-scripts:
+    docker:
+      - image: koalaman/shellcheck-alpine
+    steps:
+      - checkout
+      - run:
+          name: lint
+          command: |
+            for script in $(ls scripts/*.sh); do
+                shellcheck -x $script
+            done
+  lint-charts:
+    docker:
+      - image: quay.io/helmpack/chart-testing:v2.0.1
+    steps:
+      - checkout
+      - run:
+          name: lint
+          command: |
+            git remote add ro https://github.com/reactiveops/charts
+            git fetch ro master
+            ct lint --config scripts/ct.yaml
+  sync:
+    docker:
+      - image: quay.io/helmpack/chart-testing:v2.0.1
+    steps:
+      - checkout
+      - run:
+          name: install aws cli
+          command: pip install awscli
+      - run:
+          name: sync
+          command: scripts/repo-sync.sh
+workflows:
+  version: 2
+  lint:
+    jobs:
+      - lint-scripts
+      - lint-charts
+  sync:
+    triggers:
+      - schedule:
+          cron: "23,53 * * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - sync
