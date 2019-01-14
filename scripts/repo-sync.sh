@@ -85,7 +85,7 @@ sync_repo() {
         # Move updated index.yaml to sync folder so we don't push the old one again
         mv -f "$sync_dir/index.yaml" "$index_dir/index.yaml"
 
-        aws s3 sync "$sync_dir" "$bucket"
+        aws s3 sync --exclude index.yaml "$sync_dir" "$bucket"
 
         # Make sure index.yaml is synced last
         aws s3 cp "$index_dir/index.yaml" "$bucket"
