@@ -35,17 +35,12 @@ jobs:
           command: scripts/repo-sync.sh
 workflows:
   version: 2
-  lint:
+  sync:
     jobs:
       - lint-scripts
       - lint-charts
-  sync:
-    triggers:
-      - schedule:
-          cron: "23,53 * * * *"
+      - sync:
           filters:
             branches:
               only:
                 - master
-    jobs:
-      - sync
