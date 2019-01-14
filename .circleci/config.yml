@@ -1,8 +1,37 @@
 version: 2
+
+references:
+  setup_environment: &setup_environment
+    run:
+      name: Setup Environment
+      command: |
+        echo 'export CI_SHA1=$CIRCLE_SHA1' >> ${BASH_ENV}
+        echo 'Install AWS CLI'
+        pip install awscli
+        echo 'Install needed packages'
+        apk --update add bash jq
+
 jobs:
+  # Because kind doesn't publish a proper binary, and we
+  # can't really install golang in alpine without pain,
+  # we build the kind binary from source and cache it.
+  build-kind:
+    docker:
+      - image: golang:1.11-stretch
+    steps:
+      - run:
+          name: Get and Build Kind
+          command: |
+            mkdir /binaries
+            go get sigs.k8s.io/kind
+            cp /go/bin/kind /binaries/kind
+      - save_cache:
+          key: v1-binaries
+          paths:
+            - /binaries
   lint-scripts:
     docker:
-      - image: koalaman/shellcheck-alpine
+      - image: koalaman/shellcheck-alpine:v0.6.0
     steps:
       - checkout
       - run:
@@ -16,30 +45,63 @@ jobs:
       - image: quay.io/helmpack/chart-testing:v2.0.1
     steps:
       - checkout
+      - *setup_environment
       - run:
           name: lint
           command: |
             git remote add ro https://github.com/reactiveops/charts
             git fetch ro master
-            ct lint --config scripts/ct.yaml
+            ct lint --config scripts/ct.yaml  --chart-yaml-schema scripts/schema.yaml
+  e2e-tests:
+    docker:
+      - image: quay.io/helmpack/chart-testing:v2.0.1
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v1-binaries
+      - setup_remote_docker
+      - *setup_environment
+      - run:
+          name: Install Docker
+          command: apk --update add docker
+      - run:
+          name: Setup e2e Environment
+          command: |
+            cp /binaries/kind /usr/local/bin/kind
+            scripts/e2e-test.sh setup
+      - run:
+          name: Run e2e tests
+          command: scripts/e2e-test.sh test
+      - run:
+          name: Teardown e2e Environment
+          command: scripts/e2e-test.sh teardown
   sync:
     docker:
       - image: quay.io/helmpack/chart-testing:v2.0.1
     steps:
       - checkout
-      - run:
-          name: install aws cli
-          command: pip install awscli
+      - *setup_environment
       - run:
           name: sync
           command: scripts/repo-sync.sh
 workflows:
   version: 2
-  sync:
+  test-and-sync:
     jobs:
       - lint-scripts
       - lint-charts
+      - build-kind
+      - e2e-tests:
+          requires:
+            - build-kind
+            - lint-scripts
+            - lint-charts
       - sync:
+          requires:
+            - lint-scripts
+            - lint-charts
+            - e2e-tests
           filters:
             branches:
               only:
