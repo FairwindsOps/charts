@@ -1,0 +1,51 @@
+# Copyright 2017 by the contributors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+{{- $root := . -}}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "aws-iam-authenticator.fullname" . }}
+  labels:
+    k8s-app: {{ template "aws-iam-authenticator.name" . }}
+data:
+  config.yaml: |
+{{- if .Values.configMap }}
+{{ .Values.configMap | toYaml | indent 4 }}
+{{- else }}
+    clusterID: {{ .Values.cluster_id }}
+    server:
+      mapUsers:
+      {{- range $index, $user := .Values.users }}
+      - userARN: arn:aws:iam::{{ $root.Values.account_id }}:user/{{ .name }}
+        username: {{ $user.name }}
+        {{- if $user.groups }}
+        groups:
+        {{- range $index, $group := $user.groups }}
+          - {{ $group }}
+        {{- end }}
+        {{- end }}
+      {{- end }}
+      mapRoles:
+      {{- range $index, $role := .Values.roles }}
+      - roleARN: arn:aws:iam::{{ $root.Values.account_id }}:role/{{ .name }}
+        username: {{ $role.name }}
+        {{- if $role.groups }}
+        groups:
+        {{- range $index, $group := $role.groups }}
+          - {{ $group }}
+        {{- end }}
+        {{- end }}
+      {{- end }}
+{{- end }}
