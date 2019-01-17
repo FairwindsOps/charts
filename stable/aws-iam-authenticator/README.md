@@ -1,6 +1,6 @@
 # aws-iam-authenticator
 
-Runs the AWS Iam Authenticator as a daemonset on master nodes in order to authenticator you uses with AWS IAM.  This requires additional setup on your cluster to work.  See the [docs](https://github.com/kubernetes-sigs/aws-iam-authenticator) for more information.
+Runs the AWS Iam Authenticator as a daemonset on master nodes in order to authenticate your users with AWS IAM.  This requires additional setup on your cluster to work.  See the [docs](https://github.com/kubernetes-sigs/aws-iam-authenticator) for more information.
 
 ## Configuration
 
