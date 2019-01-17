@@ -1,0 +1,69 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "capsize.fullname" . }}
+  labels:
+    chart: {{ template "capsize.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.schedule | quote }}
+  concurrencyPolicy: Forbid
+  restartPolicy: Never
+  suspend: {{ .Values.suspend }}
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        spec:
+          metadata:
+            labels:
+            chart: {{ template "capsize.chart" . }}
+            release: {{ .Release.Name }}
+            heritage: {{ .Release.Service }}
+          restartPolicy: Never
+          serviceAccountName: {{ template "capsize.serviceAccountName" . }}
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command:
+              - "sh"
+              - "-c"
+              - |
+                pip install kubernetes
+                pip install pytz
+                python /scripts/capsize.py
+              env:
+                - name: KUBE_NAMESPACE
+                  value: {{ .Values.targetDeployment.namespace | quote }}
+                - name: KUBE_DEPLOY_NAME
+                  value: {{ .Values.targetDeployment.name | quote }}
+                - name: KUBE_CONTAINER_NAME
+                  value: {{ .Values.targetDeployment.container | quote }}
+                - name: MAX_POD_AGE
+                  value: {{ .Values.targetDeployment.maxAge | quote }}
+                - name: LOG_LEVEL
+                  value: {{ .Values.logLevel | quote }}
+                - name: CONFIG_TYPE
+                  value: {{ .Values.configType | quote }}
+              volumeMounts:
+              - name: scripts
+                mountPath: /scripts
+          volumes:
+          - name: scripts
+            configMap:
+              defaultMode: 0744
+              name: {{ template "capsize.fullname" . }}
+        {{- with .Values.nodeSelector }}
+          nodeSelector:
+    {{ toYaml . | indent 8 }}
+        {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+    {{ toYaml . | indent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+    {{ toYaml . | indent 8 }}
+        {{- end }}
