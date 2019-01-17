@@ -72,7 +72,7 @@ jobs:
             scripts/e2e-test.sh setup
       - run:
           name: Run e2e tests
-          command: scripts/e2e-test.sh test
+          command: scripts/e2e-test.sh test "$CIRCLE_BRANCH"
       - run:
           name: Teardown e2e Environment
           command: scripts/e2e-test.sh teardown
