@@ -1,0 +1,24 @@
+image:
+  repository: quay.io/reactiveops/rbac-manager
+  tag: 0.4.3
+  pullPolicy: Always
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi
+nodeSelector: {}
+tolerations: []
+affinity: {}
+rbacDefinitions:
+  - name: rbac-manager-definition
+    rbacBindings:
+      - name: admins
+        clusterRoleBindings:
+          - clusterRole: cluster-admin
+        subjects:
+        - kind: ServiceAccount
+          name: test-admin
+          namespace: kube-system
