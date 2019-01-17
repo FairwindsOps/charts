@@ -1,0 +1,12 @@
+{{- if .Values.configMap -}}
+{{- if (and .Values.cluster_id .Values.configMap.clusterID) -}}
+Both `cluster_id` and `configMap.clusterID` chart values have been set - `configMap.clusterID` takes precedence.
+{{- else if not .Values.configMap.clusterID -}}
+AWS IAM Authenticator pods will crash, because a cluster ID must be included in your config map. Please set `configMap.clusterID`.
+{{- end -}}{{- /* configMap.clusterID */ -}}
+{{- else -}}{{- /* now no configMap is set */ -}}
+{{- if not .Values.cluster_id -}}
+AWS IAM Authenticator pods will crash, because a cluster ID must be specified. Either set the `cluster_id` chart value, or set `configMap.clusterID` if you are providing a config map.
+{{- end -}}{{- /* no config_id */ -}}
+{{- end -}}{{- /* no configMap */ -}}
+
