@@ -2,6 +2,18 @@
 
 A repository of Helm charts. Modelled after https://github.com/helm/charts
 
+## Testing
+
+All charts are linted and tested using [Helm Chart Testing](https://github.com/helm/chart-testing)
+
+### Linting
+
+Charts are linted using both thelm `helm lint` command and against the [schema](scripts/schema.yaml).  This ensures that maintainers, versions, etc. are included.
+
+### e2e Testing
+
+Charts are installed into a [kind](https://github.com/kubernetes-sigs/kind) cluster.  You can provide a folder called `ci` with a set of `*-values.yaml` files to test more scendarios.
+
 ## Usage
 
 To install a chart from this repo, you can add it as a [helm repository](https://github.com/helm/helm/blob/master/docs/chart_repository.md)
