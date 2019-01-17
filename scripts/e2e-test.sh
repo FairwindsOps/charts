@@ -20,9 +20,10 @@ set -o pipefail
 set -x
 
 OPERATION="${1:-create}"
-TEST_CLUSTER_NAME="${2:-helm-e2e}"
+CI_REF="${2:-master}"
+TEST_CLUSTER_NAME="${3:-helm-e2e}"
 TILLER_NAMESPACE="${TILLER_NAMESPACE:-helm-system}"
-EXEC_CONTAINER_NAME="${3:-executor}"
+EXEC_CONTAINER_NAME="${4:-executor}"
 
 setup_cluster () {
     printf "Creating cluster %s.  This could take a minute...\n" "$TEST_CLUSTER_NAME"
@@ -87,7 +88,7 @@ run_tests () {
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
-    docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && ct install --all --config scripts/ct.yaml'
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF && ct install --all --config scripts/ct.yaml"
 }
 
 if [ "$OPERATION" = "setup" ]; then
