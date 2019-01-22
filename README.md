@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/reactiveops/charts/tree/master.svg?style=svg)](https://circleci.com/gh/reactiveops/charts/tree/master)
+
 # ReactiveOps Charts
 
 A repository of Helm charts. Modelled after https://github.com/helm/charts
