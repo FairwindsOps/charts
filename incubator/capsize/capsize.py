@@ -6,27 +6,15 @@ Checks to see if a deployment is older than a configured age
 and triggers a rolling restart if they are too old.
 """
 import os
+import sys
 import json
 from datetime import datetime
 import logging
 import pytz
 from kubernetes import client, config
 
-# Config from environment variables
-namespace = os.environ.get("KUBE_NAMESPACE", "istio-system")
-deploymentName = os.environ.get("KUBE_DEPLOY_NAME", "istio-ingressgateway")
-containerName = os.environ.get("KUBE_CONTAINER_NAME", "istio-proxy")
-maxAge = int(os.environ.get("MAX_POD_AGE", 30 * 3600 * 24))
-logLevel = os.environ.get("LOG_LEVEL", "INFO").upper()
-configType = os.environ.get("CONFIG_TYPE", "cluster")
-
-# Get the time and initialize some things
-now = datetime.utcnow().replace(tzinfo=pytz.utc)
-nowUnix = int(now.strftime("%s"))
-podAges = []
-triggerRestart = False
-
 # Configure Logging
+logLevel = os.environ.get("LOG_LEVEL", "INFO").upper()
 formatter = logging.Formatter('%(asctime)s  %(levelname)8s  %(message)s')
 logger = logging.getLogger(__name__)
 sh = logging.StreamHandler()
@@ -34,12 +22,32 @@ sh.setFormatter(formatter)
 logger.setLevel(logLevel)
 logger.addHandler(sh)
 
+# Config from environment variables
+reqEnv = ("KUBE_NAMESPACE", "KUBE_DEPLOY_NAME", "KUBE_CONTAINER_NAME")
+for var in reqEnv:
+    if var in os.environ:
+        namespace = os.environ.get(var)
+    else:
+        logger.error("Missing environment variable %s", var)
+        sys.exit(1)
+
+deploymentName = os.environ.get("KUBE_DEPLOY_NAME")
+containerName = os.environ.get("KUBE_CONTAINER_NAME")
+maxAge = int(os.environ.get("MAX_POD_AGE", 30 * 3600 * 24))
+configType = os.environ.get("CONFIG_TYPE", "cluster")
+
 logger.info("CONFIG  %15s: %s", 'namespace', namespace)
 logger.info("CONFIG  %15s: %s", 'deploymentName', deploymentName)
 logger.info("CONFIG  %15s: %s", 'containerName', containerName)
 logger.info("CONFIG  %15s: %s", 'maxAge', maxAge)
 logger.info("CONFIG  %15s: %s", 'logLevel', logLevel)
 logger.info("CONFIG  %15s: %s", 'configType', configType)
+
+# Get the time and initialize some things
+now = datetime.utcnow().replace(tzinfo=pytz.utc)
+nowUnix = int(now.strftime("%s"))
+podAges = []
+triggerRestart = False
 
 
 def rollDeployment():
@@ -55,7 +63,7 @@ def rollDeployment():
     patch['spec']['template']['spec']['containers'][0]['env'][0]['value'] \
         = str(nowUnix)
     logger.debug("Patch created: %s", json.dumps(patch, indent=2))
-    logger.info("Applying patch to restart ingressgateway")
+    logger.info("Applying patch to restart pods")
     ret = extApi.patch_namespaced_deployment(deploymentName,
                                              namespace, patch, pretty=True)
     logger.debug(ret)
