@@ -1,0 +1,32 @@
+# Default values for deployrestart.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: python
+  tag: 3-slim
+  pullPolicy: IfNotPresent
+
+rbac:
+  create: true
+
+serviceAccount:
+  create: true
+  name:
+
+targetDeployment:
+  namespace: kube-system
+  name: some-deployment
+  container: some-container
+  maxAge: '2592000'
+
+schedule: '0 3 */1 * *'
+suspend: 'false'
+logLevel: 'INFO'
+configType: 'cluster'
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "capsize.fullname" . }}
+data:
+  {{- $files := .Files }}
+  {{- range tuple "capsize.py" }}
+  {{ . }}: |-
+{{ $files.Get . | indent 4 }}
+  {{- end }}
