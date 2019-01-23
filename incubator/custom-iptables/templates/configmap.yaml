@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "custom-iptables.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "custom-iptables.name" . }}
+    helm.sh/chart: {{ include "custom-iptables.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+data:
+  nat.rules: {{ .Values.targets }}
