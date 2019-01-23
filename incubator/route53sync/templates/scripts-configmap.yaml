@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "route53sync.fullname" . }}
+data:
+  {{- $files := .Files }}
+  {{- range tuple "sync.py" }}
+  {{ . }}: |-
+{{ $files.Get . | indent 4 }}
+  {{- end }}
