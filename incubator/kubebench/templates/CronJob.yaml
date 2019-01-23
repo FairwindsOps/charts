@@ -1,0 +1,47 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "kubebench.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "kubebench.name" . }}
+    helm.sh/chart: {{ include "kubebench.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.cron.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          hostPID: true
+          initContainers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ["sh", "-c", "/opt/kube-bench/entrypoint.sh node --version {{ .Values.kubernetes.version }} > /data/output"]
+            volumeMounts:
+            - mountPath: /data
+              name: data
+          containers:
+          - name: "{{ .Chart.Name }}-exporter"
+            image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag }}"
+            imagePullPolicy: {{ .Values.exporter.image.pullPolicy }}
+            args: ["/data/output", "kubebench", "kubebench"]
+            volumeMounts:
+            - mountPath: /data
+              name: data
+            env:
+            - name: DATADOG_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}
+                  key: DD_API_KEY
+            - name: DATADOG_APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Chart.Name }}
+                  key: DD_APP_KEY
+          volumes:
+          - name: data
+            emptyDir: {}
+          restartPolicy: OnFailure
