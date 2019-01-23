@@ -1,0 +1,20 @@
+image:
+  repository: aquasec/kube-bench
+  tag: latest
+  pullPolicy: Always
+
+cron:
+  schedule: "30 8 * * 1"
+
+exporter:
+  image:
+    repository: quay.io/reactiveops/kubebench-exporter
+    tag: "v1.0"
+    pullPolicy: "IfNotPresent"
+
+kubernetes:
+  version: "1.11"
+
+datadog:
+  api_key: ""
+  app_key: ""
