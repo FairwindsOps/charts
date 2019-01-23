@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Daemonset
+metadata:
+  name: {{ include "custom-iptables.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "custom-iptables.name" . }}
+    helm.sh/chart: {{ include "custom-iptables.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "custom-iptables.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "custom-iptables.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command: [ "sh", "-c", "/run.sh" ]
+          volumeMounts:
+          - mountPath: /cfg
+            name: cfg
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+      volumes:
+      - name: cfg
+        configMap:
+          name: {{ include "custom-iptables.fullname" . }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
