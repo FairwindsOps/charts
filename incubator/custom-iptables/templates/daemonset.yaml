@@ -17,8 +17,11 @@ spec:
         app.kubernetes.io/name: {{ include "custom-iptables.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      hostNetwork: true
       containers:
         - name: {{ .Chart.Name }}
+          securityContext:
+            privileged: true
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: [ "sh", "-c", "/run.sh" ]
