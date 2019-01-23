@@ -88,7 +88,7 @@ sync_repo() {
         aws s3 sync --exclude index.yaml "$sync_dir" "$bucket"
 
         # Make sure index.yaml is synced last
-        aws s3 cp "$index_dir/index.yaml" "$bucket"
+        aws s3 cp "$index_dir/index.yaml" "$bucket/index.yaml"
     else
         log_error "Exiting because unable to update index. Not safe to push update."
         exit 1
