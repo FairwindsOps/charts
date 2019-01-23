@@ -1,0 +1,25 @@
+# Default values for custom-iptables.
+
+targets: "203.0.113.0/24 198.51.100.0/24"
+
+image:
+  repository: gcr.io/google_containers/k8s-custom-iptables
+  tag: 1.0
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  limits:
+    cpu: 10m
+    memory: 20Mi
+  requests:
+    cpu: 5m
+    memory: 10Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
