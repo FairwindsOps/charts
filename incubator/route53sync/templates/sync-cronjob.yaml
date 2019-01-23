@@ -1,0 +1,64 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "route53sync.fullname" . }}
+  labels:
+    chart: {{ template "route53sync.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.sync.schedule | quote }}
+  concurrencyPolicy: Forbid
+  restartPolicy: Never
+  suspend: {{ .Values.sync.suspend }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          metadata:
+            labels:
+            chart: {{ template "route53sync.chart" . }}
+            release: {{ .Release.Name }}
+            heritage: {{ .Release.Service }}
+          restartPolicy: Never
+          containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              command:
+              - "sh"
+              - "-c"
+              - |
+                pip install boto3
+                python /scripts/sync.py
+              env:
+              - name: ROUTE53_SOURCE_ZONE_ID
+                value: {{ .Values.sync.source_zone_id }}
+              - name: ROUTE53_DEST_ZONE_ID
+                value: {{ .Values.sync.dest_zone_id }}
+              - name: LOG_LEVEL
+                value: {{ .Values.sync.logLevel }}
+              - name: ROUTE53_CHECK_DEST_TAG
+                value: {{ .Values.sync.check_dest_tag | quote }}
+              - name: ROUTE53_DEST_TAG
+                value: {{ .Values.sync.dest_tag | quote }}
+              volumeMounts:
+              - name: scripts
+                mountPath: /scripts
+          volumes:
+          - name: scripts
+            configMap:
+              defaultMode: 0744
+              name: {{ template "route53sync.fullname" . }}
+        {{- with .Values.nodeSelector }}
+          nodeSelector:
+    {{ toYaml . | indent 8 }}
+        {{- end }}
+        {{- with .Values.affinity }}
+          affinity:
+    {{ toYaml . | indent 8 }}
+        {{- end }}
+        {{- with .Values.tolerations }}
+          tolerations:
+    {{ toYaml . | indent 8 }}
+        {{- end }}

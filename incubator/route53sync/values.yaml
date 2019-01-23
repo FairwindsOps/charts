@@ -1,0 +1,21 @@
+# Default values for route53sync.
+
+image:
+  repository: python
+  tag: 3.7-alpine
+  pullPolicy: Always
+
+sync:
+  schedule: "*/30 * * * *"
+  suspend: False
+  logLevel: "INFO"
+  source_zone_id: ''
+  dest_zone_id: ''
+  check_dest_tag: "False"
+  dest_tag: "Author:ReactiveOps"
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
