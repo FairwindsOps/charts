@@ -1,0 +1,40 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "helm-release-pruner.fullname" . }}
+  labels:
+    app: {{ template "helm-release-pruner.name" . }}
+    chart: {{ template "helm-release-pruner.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.job.schedule }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.job.backoffLimit }}
+      template:
+        metadata:
+          name: {{ template "helm-release-pruner.fullname" . }}
+          labels:
+            app: {{ template "helm-release-pruner.name" . }}
+            release: {{ .Release.Name }}
+        spec:
+          serviceAccountName: {{ .Values.job.serviceAccountName }}
+          restartPolicy: {{ .Values.job.restartPolicy }}
+          containers:
+          - name: {{ .Chart.Name }}
+            image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            command: ["/usr/local/bin/start-up.sh"]
+            volumeMounts:
+            - mountPath: /usr/local/bin/start-up.sh
+              name: config
+              subPath: start-up.sh
+            - mountPath: /usr/local/bin/prune-releases.sh
+              name: config
+              subPath: prune-releases.sh
+          volumes:
+          - name: config
+            configMap:
+              name: {{ template "helm-release-pruner.fullname" . }}
+              defaultMode: 0744
