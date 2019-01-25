@@ -4,4 +4,4 @@ description: This charts launches a cronjob to purge stale Helm releases and ass
 name: helm-release-pruner
 version: 0.1.0
 maintainers:
-  - davekonopka
+  - name: davekonopka
