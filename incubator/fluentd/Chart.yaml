@@ -1,0 +1,7 @@
+apiVersion: v1
+appVersion: "1.19"
+description: Fluentd for multiple endpoints
+name: fluentd
+version: 0.2.0
+maintainers:
+  - name: dosullivan
