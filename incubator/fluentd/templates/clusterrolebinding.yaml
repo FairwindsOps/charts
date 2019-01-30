@@ -1,0 +1,22 @@
+{{- if .Values.rbac.create -}}
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ template "fluentd.fullname" . }}
+  labels:
+    app: {{ template "fluentd.name" . }}
+    kubernetes.io/cluster-service: "true"
+    addonmanager.kubernetes.io/mode: Reconcile
+    chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    heritage: {{ .Release.Service }}
+    release: {{ .Release.Name }}
+subjects:
+- kind: ServiceAccount
+  name: {{ template "fluentd.fullname" . }}
+  apiGroup: ""
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ template "fluentd.fullname" . }}
+  apiGroup: ""
+{{- end -}}
