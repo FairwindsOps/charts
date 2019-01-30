@@ -1,0 +1,5 @@
+
+image:
+  repository: k8s.gcr.io/node-problem-detector
+  tag: v0.5.0
+  pullPolicy: IfNotPresent
