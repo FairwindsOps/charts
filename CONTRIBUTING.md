@@ -2,6 +2,8 @@
 
 ## Guidelines on Contributing
 
+* Test your changes:
+  * `docker run --rm -it -v ${PWD}:/charts -w /charts quay.io/helmpack/chart-testing:v2.0.1 ct lint --chart-yaml-schema scripts/schema.yaml --chart-dirs incubator --chart-dirs stable`
 * Submit a PR
 * Follow the [Chart Guidelines](#Chart Guidelines)
 * Make sure your chart passes a `helm lint`
