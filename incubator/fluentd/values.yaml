@@ -12,29 +12,29 @@ es:
 ######################
 ##    Papertrail    ##
 ######################
-#image:
-#  repository: fluent/fluentd-kubernetes-daemonset
-#  tag: v0.12.33-papertrail
-#  pullPolicy: IfNotPresent
+# image:
+#   repository: fluent/fluentd-kubernetes-daemonset
+#   tag: v0.12.33-papertrail
+#   pullPolicy: IfNotPresent
 #
 papertrail:
   enabled: false
   host: logs3.papertrailapp.com
   port: 12785
   cluster_name:
-  verify_ssl: true #set to false if you're running in a cluster on alibaba or other places with api cert issues
+  verify_ssl: true  # set to false if you're running in a cluster on alibaba or other places with api cert issues
 
 ##################
 ##    Loggly    ##
 ##################
-#image:
-#  repository: garland/kubernetes-fluentd-loggly
-#  tag: "1.0"
-#  pullPolicy: IfNotPresent
+# image:
+#   repository: garland/kubernetes-fluentd-loggly
+#   tag: "1.0"
+#   pullPolicy: IfNotPresent
 #
 loggly:
   enabled: false
-  logglyUrl: U29tZSBsb2dnbHkgdXJsIGJhc2U2NCBlbmNvZGVkIGhlcmU= # Some loggly URL base64 encoded
+  logglyUrl: U29tZSBsb2dnbHkgdXJsIGJhc2U2NCBlbmNvZGVkIGhlcmU=  # Some loggly URL base64 encoded
 
 #####################
 ## Shared Settings ##
