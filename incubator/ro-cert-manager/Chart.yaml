@@ -1,0 +1,8 @@
+name: ro-cert-manager
+apiVersion: v1
+version: v2.0.0
+appVersion: v0.5.0
+description: Install cert-manager and setup CA cluster-issuers
+maintainers:
+  - name: sudermanjr
+  - name: endzyme
