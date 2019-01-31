@@ -4,3 +4,6 @@ appVersion: "0.1"
 description: A Helm chart to deploy imagePullSecret into a namespace.
 name: imagepullsecret-deploy
 version: 0.1.0
+maintainers:
+  - name: crmejia
+home: https://https://www.reactiveops.com/
