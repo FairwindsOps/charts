@@ -1,5 +1,5 @@
 ---
 secret:
     namespace: kube-system
-    name: imagePullSecret
-    b64_data: Null
+    name: imagepullsecret
+    b64_data: e30= #{}
