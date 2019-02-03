@@ -1,0 +1,5 @@
+---
+secret:
+    namespace: kube-system
+    name: imagepullsecret
+    b64_data: e30=
