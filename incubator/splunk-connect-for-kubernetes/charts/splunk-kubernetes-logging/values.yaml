@@ -1,0 +1,242 @@
+# Configurable parameters and default values for splunk-kubernetes-logging.
+# This is a YAML-formatted file.
+# Declared variables will be passed into templates.
+
+
+# Global configurations
+# These configurations will be used if the corresponding local configurations are not set.
+# For example, if `global.logLevel` is set and `logLevel` is not set, `global.logLevel` will be used; if `logLevel` is set, it will be used regardless `global.logLevel` is set or not.
+global:
+  logLevel: info
+  # If local splunk configurations are not present, the global ones will be used (if available)
+  splunk:
+    # It has exactly the same configs as splunk.hec does
+    hec:
+      protocol: https
+      insecureSSL: false
+
+
+# logLevel is to set log level of the Splunk log collector. Avaiable values are:
+# * trace
+# * debug
+# * info (default)
+# * warn
+# * error
+logLevel:
+
+
+# Local splunk configurations
+splunk:
+  # Configurations for HEC (HTTP Event Collector)
+  hec:
+    # host is required and should be provided by user
+    host:
+    # port to HEC, optional, default 8088
+    port:
+    # token is required and should be provided by user
+    token:
+    # protocol has two options: "http" and "https", default is "https"
+    protocol:
+    # indexName tells which index to use, this is optional. If it's not present, will use the default one configured in HEC.
+    indexName:
+    # insecureSSL is a boolean, it indecates should it allow inscure SSL connection (when protocol is "https"). Default is false.
+    insecureSSL:
+    # The PEM-format CA certificate for this client.
+    # NOTE: The content of the certificate itself should be used here, not the file path.
+    #       The certificate will be stored as a secret in kubernetes.
+    clientCert:
+    # The private key for this client.
+    # NOTE: The content of the key itself should be used here, not the file path.
+    #       The key will be stored as a secret in kubernetes.
+    clientKey:
+    # The PEM-format CA certificate file.
+    # NOTE: The content of the file itself should be used here, not the file path.
+    #       The file will be stored as a secret in kubernetes.
+    caFile:
+
+
+# Directory where to read journald logs.
+journalLogPath: /run/log/journal
+
+
+# `logs` defines the source of logs, multiline support, and their sourcetypes.
+#
+# The scheme to define a log is:
+#
+# ```
+# <name>:
+#   from:
+#     <source>
+#   timestampExtraction:
+#     regexp: "<regexp_to_extract_timestamp_from_log>"
+#     format: "<format_of_the_timestamp>"
+#   multiline:
+#     firstline: "<regexp_to_detect_firstline_of_multiline>"
+#     flushInterval 5s
+#   sourcetype: "<sourcetype_of_logs>"
+# ```
+#
+# = <source> =
+# It supports 3 kinds of sources: journald, file, and container.
+# For `journald` logs, `unit` is required for filtering using _SYSTEMD_UNIT, example:
+# ```
+# docker:
+#   from:
+#     journald:
+#       unit: docker.service
+# ```
+#
+# For `file` logs, `path` is required for specifying where is the log files. Log files are expected in `/var/log`, example:
+# ```
+# docker:
+#   from:
+#     file:
+#       path: /var/log/docker.log
+# ```
+#
+# For `container` logs, pod name is required. You can also provide the container name, if it's not provided, the name of this source will be used as the container name:
+# ```
+# kube-apiserver:
+#   from:
+#     pod: kube-apiserver
+#
+# etcd:
+#   from:
+#     pod: etcd-server
+#     container: etcd-container
+# ```
+#
+# = timestamp =
+# `timestampExtraction` defines how to extract timestamp from logs. This *only* works for `file` source.
+# To use `timestampExtraction` you need to define both:
+# - `regexp`: the Regular Expression used to find the timestamp from a log entry.
+#             The timestamp part must be in a `time` named group. E.g.
+#             (?<time>\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})
+# - `format`: a format string defintes how to parse the timestamp, e.g. "%Y-%m-%d %H:%M:%S".
+#             More details can be find: http://ruby-doc.org/stdlib-2.5.0/libdoc/time/rdoc/Time.html#method-c-strptime
+#
+# = multiline =
+# `multiline` options provide basic multiline support. Two options:
+# - `firstline`: a Regular Expression used to detect the first line of a multiline log.
+# - `flushInterval`: The interval between data flushes, default value: 5s.
+#
+# = sourcetype =
+# sourcetype of each kind of log can be defined using the `sourcetype` field.
+# If `sourcetype` is not defined, `name` will be used.
+#
+# ---
+# Here we have some default timestampExtraction and multiline settings for kubernetes components.
+# So, usually you just need to redefine the source of those components if necessary.
+logs:
+  docker:
+    from:
+      journald:
+        unit: docker.service
+    timestampExtraction:
+      regexp: time="(?<time>\d{4}-\d{2}-\d{2}T[0-2]\d:[0-5]\d:[0-5]\d.\d{9}Z)"
+      format: "%Y-%m-%dT%H:%M:%S.%NZ"
+    sourcetype: kube:docker
+  kubelet: &glog
+    from:
+      journald:
+        unit: kubelet.service
+    timestampExtraction:
+      regexp: \w(?<time>[0-1]\d[0-3]\d [^\s]*)
+      format: "%m%d %H:%M:%S.%N"
+    multiline:
+      firstline: /^\w[0-1]\d[0-3]\d/
+    sourcetype: kube:kubelet
+  etcd:
+    from:
+      pod: etcd-server
+      container: etcd-container
+    timestampExtraction:
+      regexp: (?<time>\d{4}-\d{2}-\d{2} [0-2]\d:[0-5]\d:[0-5]\d\.\d{6})
+      format: "%Y-%m-%d %H:%M:%S.%N"
+    sourcetype: kube:etcd
+  etcd-events:
+    from:
+      pod: etcd-server-events
+      container: etcd-container
+    timestampExtraction:
+      regexp: (?<time>\d{4}-[0-1]\d-[0-3]\d [0-2]\d:[0-5]\d:[0-5]\d\.\d{6})
+      format: "%Y-%m-%d %H:%M:%S.%N"
+    sourcetype: kube:etcd-events
+  kube-apiserver:
+    <<: *glog
+    from:
+      pod: kube-apiserver
+    sourcetype: kube:kube-apiserver
+  kube-scheduler:
+    <<: *glog
+    from:
+      pod: kube-scheduler
+    sourcetype: kube:kube-scheduler
+  kube-controller-manager:
+    <<: *glog
+    from:
+      pod: kube-controller-manager
+    sourcetype: kube:kube-controller-manager
+  kube-proxy:
+    <<: *glog
+    from:
+      pod: kube-proxy
+    sourcetype: kube:kube-proxy
+  kubedns:
+    <<: *glog
+    from:
+      pod: kube-dns
+    sourcetype: kube:kubedns
+  dnsmasq:
+    <<: *glog
+    from:
+      pod: kube-dns
+    sourcetype: kube:dnsmasq
+  dns-sidecar:
+    <<: *glog
+    from:
+      pod: kube-dns
+      container: sidecar
+    sourcetype: kube:kubedns-sidecar
+  dns-controller:
+    <<: *glog
+    from:
+      pod: dns-controller
+    sourcetype: kube:dns-controller
+  kube-dns-autoscaler:
+    <<: *glog
+    from:
+      pod: kube-dns-autoscaler
+      container: autoscaler
+    sourcetype: kube:kube-dns-autoscaler
+
+
+# Defines which version of image to use, and how it should be pulled.
+image:
+  tag: 1.0.1
+  pullPolicy: IfNotPresent
+
+
+# Controls the resources used by the fluentd daemonset
+resources:
+  # limits:
+  #  cpu: 100m
+  #  memory: 200Mi
+  requests:
+   cpu: 100m
+   memory: 200Mi
+
+
+# This default tolerations allow the daemonset to be deployed on master nodes,
+# so that we can also collect logs from those nodes.
+tolerations:
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+
+
+# Defines which nodes should be selected to deploy the fluentd daemonset.
+nodeSelector: {}
+
+
+# Defines node affinity to restrict pod deployment.
+affinity: {}

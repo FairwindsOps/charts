@@ -1,0 +1,43 @@
+logLevel: error
+
+rbac:
+  create: false
+
+splunk:
+  hec:
+    token: 11111111-2222-3333-4444-555555555555
+    host: 12.34.56.78
+    ndexName: myIndex
+    insecureSSL: false
+
+
+resources:
+  limit:
+    memory: 300m
+
+
+kubernetes:
+  url: https://this.is.my/url
+  insecureSSL: true
+  bearerTokenFile: /path/to/bearer/token/in/pod
+  secretDir: /secret/dir/in/pod
+
+
+objects:
+  core:
+    v1:
+      - name: pods
+        namespace: default
+        labelSelector: environment=production,app=nginx
+        fieldSelector: metadata.name=redis-master
+        interval: 1h
+      - name: namespaces
+      - name: events
+        mode: watch
+        namespace: default
+        labelSelector: environment=production,app=nginx
+        fieldSelector: involvedObject.name=redis-master
+  apps:
+    v1:
+      - name: daemon_sets
+      - name: deployments

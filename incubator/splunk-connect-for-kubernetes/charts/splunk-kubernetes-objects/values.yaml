@@ -1,0 +1,187 @@
+# Default values for splunk-kubernetes-logging.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# = Global Configs =
+# Global configs allow parent chart to set values with `global.*`.
+# The purpose for using global configs is to share the same configs with sibling/sub charts.
+#
+# Values defined here are the default values.
+global:
+  logLevel: info
+  splunk:
+    hec:
+      protocol: https
+      port: 8088
+      insecureSSL: false
+
+
+# = Log Level =
+# logLevel is to set log level of the object collector. Avaiable values are:
+# * trace
+# * debug
+# * info
+# * warn
+# * error
+#
+# Default value: "info"
+logLevel:
+
+
+rbac:
+  # Specifies whether RBAC resources should be created.
+  # This should be set to `false` if either:
+  # a) RBAC is not enabled in the cluster, or
+  # b) you want to create RBAC resources by yourself.
+  create: true
+
+
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: true
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+
+# = Kubernetes Connection Configs =
+kubernetes:
+  # the URL for calling kubernetes API, by default it will be read from the environment variables
+  url:
+  # if insecureSSL is set to true, insecure HTTPS API call is allowed, default false
+  insecureSSL: false
+  # Path to the certificate file for this client.
+  clientCert:
+  # Path to the private key file for this client.
+  clientKey:
+  # Path to the CA file.
+  caFile:
+  # Path to the file contains the API token. By default it reads from the file "token" in the `secret_dir`.
+  bearerTokenFile:
+  # Path of the location where pod's service account's credentials are stored. Usually you don't need to care about this config, the default value should work in most cases.
+  secretDir:
+  # a list of kubernetes objects to pull periodically
+
+
+# = Object Lists =
+# NOTE: at least one object must be provided.
+#
+# == Schema ==
+# ```
+# objects:
+#   <apiGroup>:
+#     <apiVersion>:
+#       - <objectDefinition>
+# ```
+#
+# Each `objectDefinition` has the following fields:
+# * mode:
+#     define in which way it collects this type of object, either "poll" or "watch".
+#     - "poll" mode will read all objects of this type use the list API at an interval.
+#     - "watch" mode will setup a long connection using the watch API to just get updates.
+# * name: [REQUIRED]
+#     name of the object, e.g. `pods`, `namespaces`.
+#     Note that for resource names that contains multiple words, like `daemonsets`,
+#     words need to be separated with `_`, so `daemonsets` becomes `daemon_sets`.
+# * namespace:
+#     only collects objects from the specified namespace, by default it's all namespaces
+# * labelSelector:
+#     select objects by label(s)
+# * fieldSelector:
+#     select objects by field(s)
+# * interval:
+#     the interval at which object is pulled, default 15 minutes.
+#     Only useful for "poll" mode.
+#
+# == Example ==
+# ```
+# objects:
+#   core:
+#     v1:
+#       - name: pods
+#         namespace: default
+#         mode: pull
+#         interval: 60m
+#       - name: events
+#         mode: watch
+#   apps:
+#     v1:
+#       - name: daemon_sets
+#         labelSelector: environment=production
+# ```
+objects:
+  core:
+    v1:
+      - name: pods
+      - name: namespaces
+      - name: nodes
+      - name: events
+        mode: watch
+
+
+# = Checkpoint Configs =
+# defines the checkpoint file used for saving the resourceVersion of watched objects,
+# so that when the fluentd pod restarts, it will continue from where it stopped.
+# NOTE: since kubernetes has its own cache limit, if the fluentd pod has stopped for a long time,
+# it might not be able to start watch from the checkpoint.
+checkpointFile:
+  # the name of the checkpoint file.
+  name: kubernetes-objects.pos
+  # volume is a kubernetes volume configuration object. The volume has to be a directory, not a file.
+  # If volume is not defined, no checkpoint file will be used.
+  # For example, if you want to use hostpath, the it should look like this:
+  #
+  #     checkpointFile:
+  #       volume:
+  #         hostPath:
+  #           path: /var/data
+  #           type: Directory
+  volume:
+
+
+# = Configure Splunk HEC connection =
+splunk:
+  hec:
+    # host to the HEC endpoint [REQUIRED]
+    host:
+    # token for the HEC [REQUIRED]
+    token:
+    # protocol has two options: "http" and "https". Default value: "https"
+    protocol:
+    # indexName tells which index to use, this is optional. If it's not present, the default index configured in HEC will be used.
+    indexName:
+    # insecureSSL is a boolean, it indecates should it allow inscure SSL connection (when protocol is "https"). Default value: false.
+    insecureSSL:
+    # The *content* of a PEM-format CA certificate for this client.
+    clientCert:
+    # The *content* of the private key for this client.
+    clientKey:
+    # The *content* of a PEM-format CA certificate.
+    caFile:
+    # The path to a directory containing CA certificates which are in PEM format.
+    caPath:
+
+
+image:
+  tag: 1.0.1
+  pullPolicy: IfNotPresent
+
+
+# = Resoruce Limitation Configs =
+resources:
+  # limits:
+  #  cpu: 100m
+  #  memory: 200Mi
+  requests:
+   cpu: 100m
+   memory: 200Mi
+
+
+nodeSelector: {}
+
+
+tolerations: []
+
+
+affinity: {}

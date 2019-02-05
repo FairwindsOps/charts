@@ -1,0 +1,16 @@
+apiVersion: v1
+description: Collect logs with Splunk.
+home: https://github.com/splunk/splunk-connect-for-kubernetes/tree/master/helm-chart/charts/splunk-kubernetes-logging
+keywords:
+- splunk
+- monitoring
+- logging
+maintainers:
+- email: zliang@splunk.com
+  name: Gimi Liang
+name: splunk-kubernetes-logging
+sources:
+- https://github.com/splunk/splunk-connect-for-kubernetes/tree/master/helm-chart/charts/splunk-kubernetes-logging
+- https://github.com/splunk/fluent-plugin-splunk-hec
+- https://github.com/splunk/docker-fluentd-hec
+version: 1.0.1

@@ -1,0 +1,20 @@
+# Splunk Connect for Kubernetes is a umbraller chart which itself does not contain any template,
+# so there is no configurable parameters for itself.
+
+# Use global configurations for shared configurations between sub-charts.
+# Supported global configurations:
+#
+# global:
+#   logLevel:
+#   splunk:
+#     # HEC related configurations
+#     hec:
+#
+# For other configurations for sub-charts, please check their values.yaml for details.
+#
+metrics:
+  enabled: true
+logging:
+  enabled: true
+objects:
+  enabled: true

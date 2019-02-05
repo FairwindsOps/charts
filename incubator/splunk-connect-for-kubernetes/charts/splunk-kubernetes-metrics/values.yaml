@@ -1,0 +1,109 @@
+# Default values for splunk-kubernetes-logging.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+# = Global Configs =
+# Allow to pass config values from parent chart using `global.*`.
+# Global values have lower priority.
+# Values defined here are the default values.
+global:
+  logLevel: info
+  splunk:
+    hec:
+      port: 8088
+      protocol: https
+      insecureSSL: false
+
+
+# = Log Level =
+# logLevel is to set log level of the Splunk kubernetes metrics collector. Avaiable values are:
+# * debug
+# * info
+# * warn
+# * error
+#
+# Default value: "info"
+logLevel:
+
+
+rbac:
+  # Specifies whether RBAC resources should be created.
+  # This should be set to `false` if either:
+  # a) RBAC is not enabled in the cluster, or
+  # b) you want to create RBAC resources by yourself.
+  create: true
+
+
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: true
+  # The name of the ServiceAccount to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
+
+# = Splunk HEC Connection =
+splunk:
+  # Configurations for HEC (HTTP Event Collector)
+  hec:
+    # hostname/ip of HEC, REQUIRED.
+    host:
+    # port to HEC, OPTIONAL. Default value: 8088
+    port:
+    # the HEC token, REQUIRED.
+    token:
+    # protocol has two options: "http" and "https". Default value: "https"
+    protocol:
+    # indexName tells which index to use, OPTIONAL. If it's not present, the default index configured in HEC will be used.
+    indexName:
+    # insecureSSL is a boolean, it indecates should it allow inscure SSL connection (when protocol is "https"). Default value: false
+    insecureSSL:
+    # The PEM-format CA certificate for this client.
+    # NOTE: The content of the certificate itself should be used here, not the file path.
+    #       The certificate will be stored as a secret in kubernetes.
+    clientCert:
+    # The private key for this client.
+    # NOTE: The content of the key itself should be used here, not the file path.
+    #       The key will be stored as a secret in kubernetes.
+    clientKey:
+    # The PEM-format CA certificate file.
+    # NOTE: The content of the file itself should be used here, not the file path.
+    #       The file will be stored as a secret in kubernetes.
+    caFile:
+
+
+image:
+  heapsterTag: v1.5.1
+  sidecarTag: 1.0.1
+  pullPolicy: IfNotPresent
+
+
+resources:
+  heapster:
+    limits:
+      cpu: 100m
+      memory: 300Mi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+  sidecar:
+    limits:
+      cpu: 100m
+      memory: 300Mi
+    requests:
+      cpu: 100m
+      memory: 300Mi
+
+
+nodeSelector: {}
+  # kubernetes.io/role: master
+
+
+tolerations: []
+  # - key: "node-role.kubernetes.io/master"
+  #   operator: "Exists"
+  #   effect: "NoSchedule"
+
+
+affinity: {}
