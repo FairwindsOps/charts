@@ -1,0 +1,35 @@
+logentries:
+  token: ""
+
+image:
+  repository: logentries/docker-logentries
+  tag: "0.2.1"
+  pullPolicy: IfNotPresent
+  args:
+    - "-j"
+  # - "--no-stats"
+  # - "--no-logs"
+  # - "--no-dockerEvents"
+  # - "-a <a special string>"
+  # - "--stats-interval <STATSINTERVAL>
+  # - "--matchByName REGEXP"
+  # - "--matchByImage REGEXP"
+  # - "--skipByName REGEXP"
+  # - "--skipByImage REGEXP"
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
