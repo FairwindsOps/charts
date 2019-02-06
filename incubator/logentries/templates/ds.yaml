@@ -1,0 +1,59 @@
+---
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+    name: {{ include "logentries.fullname" . }}
+    labels:
+      app: {{ include "logentries.name" . }}
+      chart: {{ include "logentries.chart" . }}
+      release: {{ .Release.Name }}
+      heritage: {{ .Release.Service }}
+spec:
+    selector:
+        matchLabels:
+            app: {{ include "logentries.name" . }}
+    template:
+        metadata:
+            name: {{ include "logentries.name" . }}
+            labels:
+                app: {{ include "logentries.name" . }}
+        spec:
+            serviceAccount: logentries
+            containers:
+            - name: {{ .Chart.Name }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              securityContext:
+              privileged: true
+              args:
+                - "-t $LOGENTRIES_TOKEN"
+              {{- range .Values.image.args }}
+                - {{ . | quote }}
+              {{- end }}
+              resources:
+{{ toYaml .Values.resources | indent 16 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 12 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 12 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{- toYaml . | indent 12 }}
+    {{- end }}
+              volumeMounts:
+              - name: socket
+                mountPath: /var/run/docker.sock
+              env:
+              - name: LOGENTRIES_TOKEN
+                valueFrom:
+                    secretKeyRef:
+                        name: {{ include "logentries.fullname" . }}
+                        key: logentries_token
+            volumes:
+                - name: socket
+                  hostPath:
+                      path: /var/run/docker.sock
