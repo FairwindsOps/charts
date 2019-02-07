@@ -20,7 +20,6 @@ Switching backends requires using a matching image.
 | `papertrail.host` | `logs3.papertrailapp.com` |
 | `papertrail.port` | `12785` |
 | `papertrail.cluster_name` | `something` |
-| `papertrail.verify_ssl` | `true` |
 
 ### Loggly
 
@@ -33,6 +32,7 @@ Switching backends requires using a matching image.
 
 | Parameter | Description | Default |
 | --------- | ----------- | ------- |
+| `verify_ssl` | Enable/disable TLS validation of Kubernetes API | `true` |
 | `image.pullPolicy` | Pull policy | `Always` |
 | `resources` | Resource requests/limits | `{limits: {cpu: 100m, memory: 500Mi}, requests: {cpu: 100m, memory: 200Mi}` |
 | `rbac.create` | Create RBAC resources | `true` |
