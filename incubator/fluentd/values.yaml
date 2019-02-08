@@ -22,7 +22,9 @@ papertrail:
   host: logs3.papertrailapp.com
   port: 12785
   cluster_name:
-  verify_ssl: true  # set to false if you're running in a cluster on alibaba or other places with api cert issues
+# Set extra command line args
+# extraArgs: ""
+
 
 ##################
 ##    Loggly    ##
@@ -39,6 +41,10 @@ loggly:
 #####################
 ## Shared Settings ##
 #####################
+
+# Verify Kubernetes API TLS certs
+# set to false if you're running in a cluster on alibaba or other places with api cert issues
+verify_ssl: true
 
 resources:
   limits:
@@ -68,3 +74,8 @@ tolerations:
   effect: NoSchedule
 
 log_level: error
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxUnavailable: 10
