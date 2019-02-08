@@ -4,25 +4,32 @@ Deploys fluentd daemonset with defaults for various backends.
 
 ## Backend images
 
-Switching backends requires using a matching image.
+Switching backends requires using a matching image as well as some backend-specific options.
 
 ### Elasticsearch
 
+| Parameter | Default |
+| --------- | ------- |
 | `es.enabled` |  `true` |
 | `image.repository` | `quay.io/reactiveops/fluentd-kubernetes-aws-es` |
 | `image.tag` | `latest` |
 
 ### Papertrail
 
+| Parameter | Default |
+| --------- | ------- |
 | `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
 | `image.tag` | `v0.12.33-papertrail` |
 | `papertrail.enabled` | `true` |
 | `papertrail.host` | `logs3.papertrailapp.com` |
 | `papertrail.port` | `12785` |
 | `papertrail.cluster_name` | `something` |
+| `papertrail.extraArgs` | Empty string |
 
 ### Loggly
 
+| Parameter | Default |
+| --------- | ------- |
 | `image.repository` | `garland/kubernetes-fluentd-loggly` |
 | `image.tag` | `1.0` |
 | `loggly.enabled` | `true` |
@@ -41,3 +48,4 @@ Switching backends requires using a matching image.
 | `annotations` | Misc annotations | `{}` |
 | `tolerations` | Misc tolerations | `[{key: node-role.kubernetes.io/master, operator: Exists, effect: NoSchedule}]` |
 | `log_level` | Log level | `error` |
+| `updateStrategy` | DaemonSet updateStrategy | `{type: RollingUpdate, rollingUpdate: {maxUnavailable: 10}}` |

@@ -10,9 +10,12 @@ metadata:
 apiVersion: v1
 data:
   fluent.conf: |
-{{ tpl (.Files.Get "files/kubernetes.conf") . | indent 4 }}
-{{- if .Values.papertrail.enabled }}
-{{ tpl (.Files.Get "files/papertrail.conf") . | indent 4 }}
-{{- else if .Values.es.enabled }}
-{{ tpl (.Files.Get "files/elasticsearch.conf") . | indent 4 }}
-{{- end }}
+    {{ tpl (.Files.Get "files/kubernetes.conf") . | nindent 4 }}
+    {{- if .Values.papertrail.enabled }}
+    {{ tpl (.Files.Get "files/papertrail.conf") . | nindent 4 }}
+    {{- else if .Values.es.enabled }}
+    {{ tpl (.Files.Get "files/elasticsearch.conf") . | nindent 4 }}
+    {{- end }}
+    <system>
+      log_level {{ .Values.log_level }}
+    </system>
