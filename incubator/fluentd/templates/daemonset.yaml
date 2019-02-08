@@ -12,7 +12,7 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   updateStrategy:
-    type: RollingUpdate
+    {{ toYaml .Values.updateStrategy | nindent 4 }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "fluentd.name" . }}
@@ -22,31 +22,55 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "fluentd.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
     spec:
-{{- if .Values.rbac.create }}
+      {{- if .Values.rbac.create }}
       serviceAccountName: {{ template "fluentd.fullname" . }}
-{{- end }}
+      {{- end }}
       containers:
       - name: {{ template "fluentd.fullname" . }}
         image:  "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy | quote }}
+        {{- if .Values.papertrail.enabled }}
+        # See https://github.com/solarwinds/fluent-plugin-papertrail/issues/27
+        livenessProbe:
+          initialDelaySeconds: 600
+          periodSeconds: 60
+          exec:
+            command:
+            - '/bin/sh'
+            - '-c'
+            - >
+              LIVENESS_THRESHOLD_SECONDS=${LIVENESS_THRESHOLD_SECONDS:-300}; if [ ! -d /var/log/fluentd-buffers-papertrail ]; then
+                echo "/var/log/fluentd-buffers-papertrail does not exist. Make sure buffer_path is set correctly";
+                exit 1;
+              fi; if [ -z "$(ls -A /var/log/fluentd-buffers-papertrail)" ]; then
+                echo "/var/log/fluentd-buffers-papertrail is empty. There are no buffers...I think that is good?";
+                exit 0;
+              fi; touch -d $(date -d@"$(( `date +%s`-300))" +%m%d%H%M) /tmp/marker-liveness; if [[ -z "$(find /var/log/fluentd-buffers-papertrail -type f -newer /tmp/marker-liveness -print)" ]]; then
+                echo "Buffer files have not been modified in the last ${LIVENESS_THRESHOLD_SECONDS} seconds";
+                rm -f /var/log/fluentd-buffers-papertrail/*
+                exit 1;
+              fi
+        {{- end }}
         resources:
-{{ toYaml .Values.resources | indent 10 }}
-# Loggly container requires different command.  Dumb
-{{- if .Values.loggly.enabled }}
+          {{ toYaml .Values.resources | nindent 10 }}
+        # Loggly container requires different command.  Dumb
+        {{- if .Values.loggly.enabled }}
         command:
           - '/bin/sh'
           - '-c'
           - '/usr/sbin/td-agent 2>&1 >> /var/log/fluentd.log'
-{{- end }}
+        {{- end }}
         env:
-{{- if .Values.loggly.enabled }}
+        {{- if .Values.loggly.enabled }}
           - name: LOGGLY_URL
             valueFrom:
               secretKeyRef:
                 name: {{ template "fluentd.fullname" . }}
                 key: url
-{{- else if .Values.papertrail.enabled }}
+        {{- else if .Values.papertrail.enabled }}
           - name: FLUENT_PAPERTRAIL_HOST
             value: {{ .Values.papertrail.host | quote }}
           - name: FLUENT_PAPERTRAIL_PORT
@@ -55,25 +79,31 @@ spec:
             value: {{ .Values.papertrail.cluster_name | quote }}
           - name: FLUENT_UID
             value: "0"
-{{- else if .Values.es.enabled }}
+          - name: FLUENTD_SYSTEMD_CONF
+            value: disable
+        {{- else if .Values.es.enabled }}
           - name: KUBERNETES_URL
             value: "https://kubernetes"
           - name: KUBERNETES_VERIFY_SSL
             value: "false"
-{{- end }}
+        {{- end }}
+        {{- if .Values.papertrail.extraArgs }}
+          - name: FLUENTD_OPT
+            value: {{ .Values.papertrail.extraArgs }}
+        {{- end }}
         volumeMounts:
         - name: varlog
           mountPath: /var/log
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
-{{- if .Values.papertrail.enabled }}
+        {{- if .Values.papertrail.enabled }}
         - name: fluent-conf
           mountPath: /fluentd/etc/
-{{- else }}
+        {{- else }}
         - name: fluent-conf
           mountPath: /etc/fluent
-{{- end }}
+        {{- end }}
       terminationGracePeriodSeconds: 30
       volumes:
       - name: varlog
@@ -85,11 +115,11 @@ spec:
       - name: fluent-conf
         configMap:
           name: {{ template "fluentd.fullname" . }}
-{{- if .Values.tolerations }}
+      {{- if .Values.tolerations }}
       tolerations:
-{{ toYaml .Values.tolerations | indent 6 }}
-{{- end }}
-{{- if .Values.nodeSelector }}
+        {{ toYaml .Values.tolerations | nindent 6 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.nodeSelector | indent 8 }}
-{{- end }}
+        {{ toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
