@@ -29,3 +29,11 @@ rules:
       - serviceaccounts
     verbs:
       - '*'
+  - apiGroups:
+      - "" # core
+    resources:
+      - namespaces
+    verbs:
+      - get
+      - list
+      - watch
