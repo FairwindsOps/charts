@@ -93,10 +93,10 @@ data:
         if [[ "$counter" -eq 1 ]]; then continue; fi
 
         # parse each release line
-        release_date=$(echo "$release_line" | awk '{ print $3 " " $4 " " $5 " " $6 " " $7 " " }')
+        release_date=$(echo "$release_line" | awk -F'\t' '{ print $3 }')
         release_date_s=$($date_cmd --date="$release_date" +%s)
-        release_name=$(echo "$release_line" | awk '{ print $1 }')
-        release_namespace=$(echo "$release_line" | awk '{ print $10 }')
+        release_name=$(echo "$release_line" | awk -F'\t' '{ print $1 }' | tr -d " ")
+        release_namespace=$(echo "$release_line" | awk -F'\t' '{ print $6 }' | tr -d " ")
 
         if [[ "$release_date_s" -le "$older_than_filter_s" ]]; then
             # Confirm release and namespace values
