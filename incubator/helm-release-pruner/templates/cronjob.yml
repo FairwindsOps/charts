@@ -35,7 +35,7 @@ spec:
               subPath: prune-releases.sh
             env:
             - name: TILLER_NAMESPACE
-              value: {{ .Values.tiller.namespace }}
+              value: {{ .Values.tiller.namespace | default "kube-system" }}
           volumes:
           - name: config
             configMap:
