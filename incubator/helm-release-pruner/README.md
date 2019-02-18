@@ -35,3 +35,10 @@ The following table lists the configurable parameters of the helm-release-pruner
 | `job.serviceAccountName` | Service account for the job to run as. | `helm-release-pruner` | no |
 | `pruneProfiles` | Filters to use to find purge candidates. See example usage above for details. | `[]` | yes |
 | `tiller.namespace` | Namespace where tiller resides. Used by job for helm commands. | `kube-system` | no |
+| `rbac_manager.enabled` | If true, creates an RbacDefinition to manage access. | `false` | no |
+| `rbac_manager.namespaceLabel` | label to match namespaces to grant access to. | `""` | no |
+
+
+
+## Upgrading
+Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage access.  This is disabled by default.  If enabled with the `rbac_manager.enabled`, the release should be purged and re-installed to ensure helm manages the resources.

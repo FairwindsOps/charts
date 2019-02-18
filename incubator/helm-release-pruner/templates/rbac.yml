@@ -30,3 +30,31 @@ subjects:
 - kind: ServiceAccount
   name: {{ template "helm-release-pruner.fullname" . }}
   namespace: {{ .Release.Namespace }}
+---
+{{- if .Values.rbac_manager.enabled }}
+apiVersion: rbacmanager.reactiveops.io/v1beta1
+kind: RBACDefinition
+metadata:
+  name: {{ template "helm-release-pruner.fullname" . }}
+  labels:
+    app: {{ template "helm-release-pruner.name" . }}
+    chart: {{ template "helm-release-pruner.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+rbacBindings:
+  - name: {{ template "helm-release-pruner.fullname" . }}-namespaces
+    subjects:
+      - kind: ServiceAccount
+        name: {{ template "helm-release-pruner.fullname" . }}
+        namespace: {{ .Release.Namespace }}
+    roleBindings:
+      - clusterRole: cluster-admin
+        namespaceSelector:
+          matchLabels:
+            environment: {{ .Values.rbac_manager.namespaceLabel }}
+{{- else }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ template "helm-release-pruner.fullname" . }}
+{{ end }}
