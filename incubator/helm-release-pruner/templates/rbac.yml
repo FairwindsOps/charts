@@ -30,8 +30,8 @@ subjects:
 - kind: ServiceAccount
   name: {{ template "helm-release-pruner.fullname" . }}
   namespace: {{ .Release.Namespace }}
-{{- if .Values.rbac_manager.enabled }}
 ---
+{{- if .Values.rbac_manager.enabled }}
 apiVersion: rbacmanager.reactiveops.io/v1beta1
 kind: RBACDefinition
 metadata:

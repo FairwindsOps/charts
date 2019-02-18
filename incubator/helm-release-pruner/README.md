@@ -35,3 +35,5 @@ The following table lists the configurable parameters of the helm-release-pruner
 | `job.serviceAccountName` | Service account for the job to run as. | `helm-release-pruner` | no |
 | `pruneProfiles` | Filters to use to find purge candidates. See example usage above for details. | `[]` | yes |
 | `tiller.namespace` | Namespace where tiller resides. Used by job for helm commands. | `kube-system` | no |
+| `rbac_manager.enabled` | If true, creates an RbacDefinition to manage access. | `false` | no |
+| `rbac_manager.namespaceLabel` | label to match namespaces to grant access to. | `""` | no |
