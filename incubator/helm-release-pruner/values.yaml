@@ -19,3 +19,7 @@ pruneProfiles: []
 #   - olderThan: "8 hours ago"
 #     helmReleaseFilter: "^feature-.+-web$"
 #     namespaceFilter: "^feature-.+"
+
+rbac_manager:
+  enabled: false
+  namespaceLabel: ""
