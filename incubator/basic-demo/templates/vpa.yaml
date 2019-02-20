@@ -9,5 +9,5 @@ spec:
       app.kubernetes.io/name: {{ include "basic-demo.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   updatePolicy:
-    updateMode: {{ .Values.vpa.updateMode }}
+    updateMode: {{ .Values.vpa.updateMode | quote }}
 {{- end }}
