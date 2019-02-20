@@ -4,10 +4,15 @@ demo:
   metadata: "Installed with Reckoner"
 
 hpa:
+  enabled: true
   min: 3
   max: 20
   metric: cpu
   target: 30
+
+vpa:
+  enabled: true
+  updateMode: "Off"
 
 image:
   repository: ehazlett/docker-demo
@@ -36,11 +41,11 @@ ingress:
 
 resources:
   limits:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 70m
+    memory: 131072k
   requests:
-    cpu: 100m
-    memory: 128Mi
+    cpu: 10m
+    memory: 131072k
 
 nodeSelector: {}
 
