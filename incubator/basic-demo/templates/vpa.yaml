@@ -1,0 +1,13 @@
+{{- if .Values.vpa.enabled }}
+apiVersion: autoscaling.k8s.io/v1beta1
+kind: VerticalPodAutoscaler
+metadata:
+  name: {{ include "basic-demo.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "basic-demo.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  updatePolicy:
+    updateMode: {{ .Values.vpa.updateMode }}
+{{- end }}
