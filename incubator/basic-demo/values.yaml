@@ -11,7 +11,7 @@ hpa:
   target: 30
 
 vpa:
-  enabled: true
+  enabled: false
   updateMode: "Off"
 
 image:
