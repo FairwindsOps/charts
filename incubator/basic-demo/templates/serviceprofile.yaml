@@ -1,0 +1,14 @@
+{{- if .Values.linkerd.serviceProfile }}
+## A Linkerd2 ServiceProfile for getting individual route-based metrics
+apiVersion: linkerd.io/v1alpha1
+kind: ServiceProfile
+metadata:
+  name: {{ include "basic-demo.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+spec:
+  routes:
+  - name: 'GET /ping'
+    condition:
+      pathRegex: '/ping'
+      method: GET
+    isRetryable: {{ .Values.linkerd.enableRetry }}
+{{- end }}

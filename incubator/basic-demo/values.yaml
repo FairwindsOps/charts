@@ -1,0 +1,58 @@
+demo:
+  refreshInterval: 500
+  title: "Kubernetes Demo"
+  metadata: "Installed with Reckoner"
+
+hpa:
+  enabled: true
+  min: 3
+  max: 20
+  metric: cpu
+  target: 30
+
+vpa:
+  enabled: false
+  updateMode: "Off"
+
+image:
+  repository: ehazlett/docker-demo
+  tag: latest
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 80
+
+ingress:
+  enabled: false
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  paths: []
+  hosts:
+    - chart-example.local
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
+resources:
+  limits:
+    cpu: 70m
+    memory: 131072k
+  requests:
+    cpu: 10m
+    memory: 131072k
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+linkerd:
+  serviceProfile: false
+  enableRetry: true
