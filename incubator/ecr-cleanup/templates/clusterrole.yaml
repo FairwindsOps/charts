@@ -1,0 +1,20 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ include "ecr-cleanup.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ecr-cleanup.name" . }}
+    helm.sh/chart: {{ include "ecr-cleanup.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+rules:
+  - apiGroups:
+      - "" # core
+    resources:
+      - namespaces
+      - pods
+    verbs:
+      - get
+      - list
+{{- end }}

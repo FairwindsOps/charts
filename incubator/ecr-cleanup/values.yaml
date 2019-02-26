@@ -1,0 +1,39 @@
+# Default values for ecr-cleanup.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+controller:
+  interval: "60"             # Minutes between runs
+  dryRun: "true"            # Set to true for test
+  maxImages: 900             # Max number of images in repo
+  repos: "test-repo"   # Comma-separated list of repos
+  namespaces: "default"      # Comma-separated list of namespaces
+  region: "us-east-1"        # AWS Region
+  verbosity: "1"             # Logging verbosity
+
+replicaCount: 1
+
+image:
+  repository: danielfm/kube-ecr-cleanup-controller
+  tag: 0.1.4
+  pullPolicy: Always
+
+rbac:
+  create: true
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
