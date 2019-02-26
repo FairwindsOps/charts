@@ -24,6 +24,7 @@ CI_REF="${2:-master}"
 TEST_CLUSTER_NAME="${3:-helm-e2e}"
 TILLER_NAMESPACE="${TILLER_NAMESPACE:-helm-system}"
 EXEC_CONTAINER_NAME="${4:-executor}"
+CHART_TEST_VERSION="v3.2.0"
 
 setup_cluster () {
     printf "Creating cluster %s.  This could take a minute...\n" "$TEST_CLUSTER_NAME"
@@ -32,13 +33,14 @@ setup_cluster () {
 
 setup_executor () {
     kubeconfig="$(kind get kubeconfig-path --name="$TEST_CLUSTER_NAME")"
-    containerName="kind-$TEST_CLUSTER_NAME-control-plane"
+    containerName="$TEST_CLUSTER_NAME-control-plane"
+    docker rm -f executor || true
     docker run -itd \
         --env TILLER_NAMESPACE="${TILLER_NAMESPACE}" \
         --name "$EXEC_CONTAINER_NAME" \
         --network container:"$containerName" \
         --env KUBECONFIG=/.kube/config \
-        gcr.io/kubernetes-charts-ci/test-image:v3.0.1 > /dev/null 2>&1
+        gcr.io/kubernetes-charts-ci/test-image:"${CHART_TEST_VERSION}"
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'mkdir -p /.kube'
     docker cp "$kubeconfig" "$EXEC_CONTAINER_NAME":/.kube/config
     port="$(docker inspect "$containerName" | jq -r '.[].NetworkSettings.Ports | keys[]' | sed 's/\/tcp//g')"

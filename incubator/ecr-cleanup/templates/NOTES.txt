@@ -1,0 +1,1 @@
+You have installed docker-ecr-cleanup-controller
