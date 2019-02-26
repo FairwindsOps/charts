@@ -12,6 +12,7 @@ Cleans up unused ECR images using [this](https://github.com/danielfm/kube-ecr-cl
 | `controller.namespaces` |  | `default` | yes |
 | `controller.region` |  | `us-east-1` | yes |
 | `controller.repos` |  | `sudermanjr-test` | yes |
+| `controller.registryID` |  | `""` | no |
 | `controller.verbosity` |  | `1` | yes |
 | `fullnameOverride` |  | ` ` | no |
 | `image.pullPolicy` |  | `Always` | no |
