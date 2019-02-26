@@ -1,0 +1,19 @@
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "ecr-cleanup.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "ecr-cleanup.name" . }}
+    helm.sh/chart: {{ include "ecr-cleanup.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "ecr-cleanup.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "ecr-cleanup.fullname" . }}
+    namespace: {{ .Release.Namespace | quote }}
+{{- end }}
