@@ -33,6 +33,7 @@ spec:
             - --repos={{ .Values.controller.repos }}
             - --v={{ .Values.controller.verbosity }}
             - --interval={{ .Values.controller.interval }}
+            - --registry-id={{ .Values.controller.registryID }}
           ports:
             - name: http
               containerPort: 80

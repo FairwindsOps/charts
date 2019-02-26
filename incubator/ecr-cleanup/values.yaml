@@ -4,9 +4,10 @@
 
 controller:
   interval: "60"             # Minutes between runs
-  dryRun: "true"            # Set to true for test
+  dryRun: "true"             # Set to true for test
   maxImages: 900             # Max number of images in repo
-  repos: "test-repo"   # Comma-separated list of repos
+  registryID: ""             # The account-id to use if is different than the credentials
+  repos: "test-repo"         # Comma-separated list of repos
   namespaces: "default"      # Comma-separated list of namespaces
   region: "us-east-1"        # AWS Region
   verbosity: "1"             # Logging verbosity
@@ -15,7 +16,7 @@ replicaCount: 1
 
 image:
   repository: danielfm/kube-ecr-cleanup-controller
-  tag: 0.1.4
+  tag: 0.1.5
   pullPolicy: Always
 
 rbac:
