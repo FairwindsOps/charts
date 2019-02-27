@@ -32,4 +32,25 @@ Parameter | Description | Default
 `nodeSelector` | Deployment nodeSelector | `{}`
 `tolerations` | Deployment tolerations | `[]`
 `affinity` | Deployment affinity | `{}`
-`rbacDefinitions` | List of [RBAC Definitions](https://reactiveops.github.io/rbac-manager/rbacdefinitions.html) to apply | `[]`
+
+## Upgrading to Chart Version 1.0.0
+The upgrade to version 1.0.0 of this chart removes support for installing RBAC Definitions as part of the chart values. This change was made to simplify CRD installation with Helm. We recommend installing RBAC Definitions separately from the chart.
+
+For backwards compatibility with the chart originally included in the rbac-manager repository, we've removed the Helm `install-crd` hook from this chart. Unfortunately as part of improving backwards compatibility with the chart in the rbac-manager repository, we have made it more difficult to upgrade from the inital versions of the charts here.
+
+Some quirks in Helm make the upgrade process from 0.x of this chart to 1.x challenging due to the potential of the RBAC Definition CRD getting deleted. In most cases, reinstalling the chart will be the best path forward.
+
+If either of the following apply and you are upgrading from an earlier version of the chart found in this repository, keep on reading:
+
+1. A momentary lapse in access granted by RBAC Definitions is unacceptable
+2. You're using auth tokens from Service Accounts created by RBAC Manager
+
+The following process has worked repeatedly for us to upgrade from an older version of this chart to 1.0.0. These steps worked with Helm and Tiller 2.12.3 for us, but due to the absurdity of this process, we can't guarantee it will work for you.
+
+1. Install rbac-manager with chart that uses install-crd hook (reactiveops-stable/rbac-manager@0.2.1)
+2. Upgrade to rbac-manager chart that doesn't use install-crd hook (reactiveops-stable/rbac-manager@1.0.0) - this upgrade fails but is important later
+3. Upgrade to original rbac-manager chart that uses install-crd hook (reactiveops-stable/rbac-manager@0.2.1) - this works
+4. Rollback to revision 2 - this fails
+5. Rollback to revision 2 - this works
+
+In the above workflow, an RBAC Definition installed between revision 1 and 2 should persist through to revision 5. This process is admittedly quite strange, and in our testing the second rollback (step 5) is indeed required for this process to work.
