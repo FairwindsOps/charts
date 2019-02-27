@@ -36,9 +36,11 @@ Parameter | Description | Default
 ## Upgrading to Chart Version 1.0.0
 The upgrade to version 1.0.0 of this chart removes support for installing RBAC Definitions as part of the chart values. This change was made to simplify CRD installation with Helm. We recommend installing RBAC Definitions separately from the chart.
 
-For backwards compatibility with the chart originally included in the rbac-manager repository, we've removed the Helm `install-crd` hook. Some quirks in Helm make the upgrade process from 0.x of this chart to 1.x challenging due to the potential of the RBAC Definition CRD getting deleted. In most cases, reinstalling the chart will be the best path forward.
+For backwards compatibility with the chart originally included in the rbac-manager repository, we've removed the Helm `install-crd` hook from this chart. Unfortunately as part of improving backwards compatibility with the chart in the rbac-manager repository, we have made it more difficult to upgrade from the inital versions of the charts here.
 
-If either of the following apply, keep on reading:
+Some quirks in Helm make the upgrade process from 0.x of this chart to 1.x challenging due to the potential of the RBAC Definition CRD getting deleted. In most cases, reinstalling the chart will be the best path forward.
+
+If either of the following apply and you are upgrading from an earlier version of the chart found in this repository, keep on reading:
 
 1. A momentary lapse in access granted by RBAC Definitions is unacceptable
 2. You're using auth tokens from Service Accounts created by RBAC Manager
@@ -51,4 +53,4 @@ The following process has worked repeatedly for us to upgrade from an older vers
 4. Rollback to revision 2 - this fails
 5. Rollback to revision 2 - this works
 
-In the above workflow, an RBAC Definition installed between revision 1 and 2 should persist through to revision 5. Of course this whole workflow assumes you're at a state
+In the above workflow, an RBAC Definition installed between revision 1 and 2 should persist through to revision 5. This process is admittedly quite strange, and in our testing the second rollback (step 5) is indeed required for this process to work.
