@@ -37,6 +37,7 @@ spec:
         livenessProbe:
           initialDelaySeconds: 600
           periodSeconds: 60
+          failureThreshold: 1
           exec:
             command:
             - '/bin/sh'
