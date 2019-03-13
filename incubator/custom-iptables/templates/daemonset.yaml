@@ -25,6 +25,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: [ "sh", "-c", "/run.sh" ]
+          env:
+          - name: SLEEP_INTERVAL
+            value: "{{ .Values.sleepInterval }}"
           volumeMounts:
           - mountPath: /cfg
             name: cfg

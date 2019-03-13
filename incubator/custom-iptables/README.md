@@ -13,4 +13,5 @@ Referenced in [GKE docuementation](https://cloud.google.com/memorystore/docs/red
 | --------- | ----------- | ------- |
 | `image.repository` | Image repository | `gcr.io/google_containers/k8s-custom-iptables` |
 | `image.tag` | Image Tag | `1.0` |
+| `sleepInterval` | Number of seconds for script loop to sleep between runs | `60` |
 | `targets` | IP Range(s) of MemoryStore Instance | `"203.0.113.0/24 198.51.100.0/24"` |
