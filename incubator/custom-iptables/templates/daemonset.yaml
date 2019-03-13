@@ -27,7 +27,7 @@ spec:
           command: [ "sh", "-c", "/run.sh" ]
           env:
           - name: SLEEP_INTERVAL
-            value: "{{ .Values.sleepInterval }}"
+            value: {{ .Values.sleepInterval | quote }}
           volumeMounts:
           - mountPath: /cfg
             name: cfg
