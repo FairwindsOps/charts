@@ -1,0 +1,8 @@
+{{- if .Values.policy.custom.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "opa.fullname" . }}-custom-policies
+data:
+    {{- toYaml .Values.policy.custom.policies | nindent 4 }}
+{{- end }}

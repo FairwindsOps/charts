@@ -1,0 +1,16 @@
+kind: ValidatingWebhookConfiguration
+apiVersion: admissionregistration.k8s.io/v1beta1
+metadata:
+  name: {{ include "opa.fullname" . }}
+webhooks:
+  - name: validating-webhook.openpolicyagent.org
+    failurePolicy: {{ .Values.validatingWebhook.failurePolicy }}
+    rules:
+      - operations: ["CREATE", "UPDATE"]
+        apiGroups: ["*"]
+        apiVersions: ["*"]
+        resources: ["*"]
+    clientConfig:
+      service:
+        namespace: {{ .Release.Namespace }}
+        name: {{ include "opa.fullname" . }}

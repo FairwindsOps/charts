@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "opa.name" . }}-ca-updater
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ include "opa.name" . }}-ca-updater
+  labels:
+    app.kubernetes.io/name: {{ include "opa.name" . }}
+    helm.sh/chart: {{ include "opa.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get"]
+  - apiGroups: ["admissionregistration.k8s.io"]
+    resources: ["validatingwebhookconfigurations"]
+    verbs: ["get", "update", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "opa.name" . }}-ca-updater
+  labels:
+    app.kubernetes.io/name: {{ include "opa.name" . }}
+    helm.sh/chart: {{ include "opa.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "opa.name" . }}-ca-updater
+subjects:
+  - name: {{ include "opa.name" . }}-ca-updater
+    namespace: {{ .Release.Namespace }}
+    kind: ServiceAccount
