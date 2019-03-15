@@ -1,0 +1,8 @@
+{{- if .Values.certManager.enabled }}
+apiVersion: certmanager.k8s.io/v1alpha1
+kind: Issuer
+metadata:
+  name: {{ include "opa.fullname" . }}-selfsigning-issuer
+spec:
+  selfSigned: {}
+{{- end }}

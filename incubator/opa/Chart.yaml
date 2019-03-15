@@ -1,0 +1,7 @@
+apiVersion: v1
+appVersion: "0.0.1"
+description: A Helm chart to manage opa
+name: opa
+version: 0.1.0
+maintainers:
+  - name: sudermanjr

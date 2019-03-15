@@ -1,0 +1,57 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "opa.fullname" . }}-ca-updater
+  labels:
+    app.kubernetes.io/name: {{ include "opa.name" . }}-ca-updater
+    helm.sh/chart: {{ include "opa.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  schedule: {{ .Values.caUpdater.schedule | quote }}
+  jobTemplate:
+    metadata:
+      name: {{ include "opa.fullname" . }}
+      labels:
+        app.kubernetes.io/name: {{ include "opa.name" . }}-ca-updater
+        helm.sh/chart: {{ include "opa.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          serviceAccountName: {{ include "opa.name" . }}-ca-updater
+          containers:
+          - name: fix-validating-cabundle
+            image: quay.io/reactiveops/ci-images:v8-alpine
+            command: ["bash"]
+            args:
+              - -c
+              - |
+                echo "Constructing patch."
+                {{- if .Values.certManager.enabled }}
+                caBundle=$(kubectl -n {{ .Release.Namespace }} get secret {{ include "opa.fullname" . }}-server-certificate -ojsonpath='{.data.ca\.crt}' | tr -d '\n')
+                {{- else if .Values.selfSigned }}
+                caBundle=$(kubectl -n {{ .Release.Namespace }} get secret {{ include "opa.fullname" . }} -ojsonpath='{.data.ca\.crt}' | tr -d '\n')
+                {{- else }}
+                caBundle=$(kubectl -n {{ .Release.Namespace }} get secret  {{ .Values.certSecret }} -ojsonpath='{.data.ca\.crt}' | tr -d '\n')
+                {{- end }}
+
+                if [[ -z "$caBundle" ]]; then
+                  echo "Error getting caBundle. Exiting"
+                  exit 1
+                fi
+
+                cat > patch <<EOF
+                webhooks:
+                  - name: validating-webhook.openpolicyagent.org
+                    clientConfig:
+                      caBundle: "$caBundle"
+                EOF
+
+                echo "Patching with $(cat patch)"
+                kubectl patch validatingwebhookconfiguration {{ include "opa.fullname" . }} --patch "$(cat patch)"
+                echo "Final configuration:"
+                kubectl get validatingwebhookconfiguration {{ include "opa.fullname" . }} -oyaml
+                rm patch
