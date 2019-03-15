@@ -1,0 +1,17 @@
+certManager:
+  enabled: false
+
+selfSigned: true
+
+# This value is used only during e2e tests in order to test
+# what happens when a bad policy is applied.
+e2etesting: true
+
+policy:
+  custom:
+    enabled: true
+    policies:
+      test1: |
+        this is a test policy that is broken
+      test2: |
+        a second test policy that's also broken

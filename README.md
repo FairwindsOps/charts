@@ -14,7 +14,7 @@ Charts are linted using both thelm `helm lint` command and against the [schema](
 
 ### e2e Testing
 
-Charts are installed into a [kind](https://github.com/kubernetes-sigs/kind) cluster.  You can provide a folder called `ci` with a set of `*-values.yaml` files to test more scendarios.
+Charts are installed into a [kind](https://github.com/kubernetes-sigs/kind) cluster.  You can provide a folder called `ci` with a set of `*-values.yaml` files to provide overrides for the e2e test.
 
 ## Usage
 

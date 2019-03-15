@@ -1,0 +1,26 @@
+{{- if .Values.policy.defaults }}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ .Release.Name }}-default-policies-test"
+  annotations:
+    "helm.sh/hook": test-success
+spec:
+  serviceAccountName: {{ include "opa.fullname" . }}
+  containers:
+  - name: {{ .Release.Name }}-policies-test
+    image: quay.io/reactiveops/ci-images:v8-alpine
+    env:
+    command:
+      - bash
+      - -c
+      - |
+        sleep 30
+        echo "Starting Test..."
+        status=$(kubectl get cm {{ include "opa.fullname" . }}-default-policies -ojsonpath='{.metadata.annotations.openpolicyagent\.org/policy-status}')
+        echo "STATUS: $status"
+        ok=$(echo $status | jq '.status|contains("ok")')
+        if [[ "$ok" == "true" ]]; then echo "Test Passed" && exit 0; else echo "Test Failed" &&  exit 1; fi
+        echo "You should never see this message."
+  restartPolicy: Never
+{{- end }}

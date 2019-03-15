@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "opa.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "opa.name" . }}
+    helm.sh/chart: {{ include "opa.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "opa.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "opa.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      serviceAccountName: {{ include "opa.fullname" . }}
+      containers:
+        - name: opa
+          image: "{{ .Values.opa.image.repository }}:{{ .Values.opa.image.tag }}"
+          imagePullPolicy: Always
+          args:
+            {{- if not .Values.opa.args }}
+            - "run"
+            - "--server"
+            - "--tls-cert-file=/certs/tls.crt"
+            - "--tls-private-key-file=/certs/tls.key"
+            - "--addr=0.0.0.0:443"
+            - "--addr=http://127.0.0.1:8181"
+            {{- else }}
+            {{- toYaml .Values.opa.args | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          volumeMounts:
+            - readOnly: true
+              mountPath: /certs
+              name: opa-server
+          resources:
+            {{- toYaml .Values.opa.resources | nindent 12 }}
+        - name: kube-mgmt
+          image: "{{ .Values.kubeMgmt.image.repository }}:{{ .Values.kubeMgmt.image.tag }}"
+          args:
+            {{- toYaml .Values.kubeMgmt.args | nindent 12 }}
+          resources:
+            {{- toYaml .Values.kubeMgmt.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      volumes:
+        - name: opa-server
+          secret:
+            {{- if .Values.certManager.enabled }}
+            secretName: {{ include "opa.fullname" . }}-server-certificate
+            {{- else if .Values.selfSigned }}
+            secretName: {{ include "opa.fullname" . }}
+            {{- else }}
+            secretName: {{ .Values.certSecret }}
+            {{- end }}

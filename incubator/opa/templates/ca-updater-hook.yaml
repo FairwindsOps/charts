@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "opa.fullname" . }}-ca-updater-hook
+  labels:
+    app.kubernetes.io/name: {{ include "opa.name" . }}-ca-updater
+    helm.sh/chart: {{ include "opa.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  template:
+    metadata:
+      name: {{ include "opa.fullname" . }}
+      labels:
+        app.kubernetes.io/name: {{ include "opa.name" . }}-ca-updater
+        helm.sh/chart: {{ include "opa.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "opa.fullname" . }}
+      containers:
+      - name: start-job-from-cronjob
+        image: quay.io/reactiveops/ci-images:v8-alpine
+        command: ["bash"]
+        args:
+          - -c
+          - |
+            kubectl -n {{ .Release.Namespace }} delete job {{ include "opa.fullname" . }}-ca-updater-init || true
+            kubectl -n {{ .Release.Namespace }} create job --from=cronjob/{{ include "opa.fullname" . }}-ca-updater {{ include "opa.fullname" . }}-ca-updater-init

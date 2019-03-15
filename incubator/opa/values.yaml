@@ -1,0 +1,76 @@
+# Default values for opa.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+policy:
+  # Use this to enable or disable the included default policy
+  default:
+    enabled: true
+  custom:
+    enabled: false
+    # Use this to insert your own policy.
+    # Set enabled to true and specify policy like so:
+    # policies:
+    #   yourpolicyname: |
+    #     some policy inline here
+opa:
+  image:
+    repository: openpolicyagent/opa
+    tag: 0.10.5
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  args: []
+
+kubeMgmt:
+  image:
+    repository: openpolicyagent/kube-mgmt
+    tag: 0.6
+  resources: {}
+    # limits:
+    #  cpu: 100m
+    #  memory: 128Mi
+    # requests:
+    #  cpu: 100m
+    #  memory: 128Mi
+  args:
+    - "--replicate-cluster=v1/namespaces"
+    - "--replicate=extensions/v1beta1/ingresses"
+
+validatingWebhook:
+  failurePolicy: "Ignore"
+
+# Use cert-manager to create a selfsigned CA and
+# generate the server certificate from that.
+# If false, you MUST specify certSecret or selfSigned.
+certManager:
+  enabled: true
+
+# Whether or not to generate a testing selfsigned cert
+# This cert will not be managed and will expire in 1 day
+selfSigned: false
+
+# Allows you to provision your own secret instead of using cert manager
+# or a testing cert.
+# Use with cert-manager.enabled=false and selfSigned=false
+# certSecret: secret
+
+caUpdater:
+  schedule: "42 */1 * * *"
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  port: 443
