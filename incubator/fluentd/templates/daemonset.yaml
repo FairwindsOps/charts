@@ -49,7 +49,7 @@ spec:
               fi; if [ -z "$(ls -A /var/log/fluentd-buffers-papertrail)" ]; then
                 echo "/var/log/fluentd-buffers-papertrail is empty. There are no buffers...I think that is good?";
                 exit 0;
-              fi; touch -d $(date -d@"$(( `date +%s`-300))" +%m%d%H%M) /tmp/marker-liveness; if [[ -z "$(find /var/log/fluentd-buffers-papertrail -type f -newer /tmp/marker-liveness -print)" ]]; then
+              fi; touch -d $(date -d@"$(( `date +%s`-300))" +%m%d%H%M) /tmp/marker-liveness; if [[ -n "$(find /var/log/fluentd-buffers-papertrail -type f ! -newer /tmp/marker-liveness -print)" ]]; then
                 echo "Buffer files have not been modified in the last ${LIVENESS_THRESHOLD_SECONDS} seconds";
                 rm -f /var/log/fluentd-buffers-papertrail/*
                 exit 1;
