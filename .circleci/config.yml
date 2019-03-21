@@ -17,7 +17,7 @@ jobs:
   # we build the kind binary from source and cache it.
   build-kind:
     docker:
-      - image: golang:1.11-stretch
+      - image: golang:1.12-stretch
     steps:
       - run:
           name: Get and Build Kind
@@ -26,7 +26,7 @@ jobs:
             go get sigs.k8s.io/kind
             cp /go/bin/kind /binaries/kind
       - save_cache:
-          key: v2-binaries
+          key: v3-binaries
           paths:
             - /binaries
   lint-scripts:
@@ -42,7 +42,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v2.0.1
+      - image: quay.io/helmpack/chart-testing:v2.2.0
     steps:
       - checkout
       - *setup_environment
@@ -54,7 +54,7 @@ jobs:
             ct lint --config scripts/ct.yaml  --chart-yaml-schema scripts/schema.yaml
   e2e-tests:
     docker:
-      - image: quay.io/helmpack/chart-testing:v2.0.1
+      - image: quay.io/helmpack/chart-testing:v2.2.0
     steps:
       - checkout
       - restore_cache:
@@ -78,7 +78,7 @@ jobs:
           command: scripts/e2e-test.sh teardown
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v2.0.1
+      - image: quay.io/helmpack/chart-testing:v2.2.0
     steps:
       - checkout
       - *setup_environment
