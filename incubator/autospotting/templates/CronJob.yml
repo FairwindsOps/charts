@@ -1,0 +1,29 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "autospotting.fullname" . }}
+spec:
+  schedule: {{ quote .Values.schedule }}
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 300
+  jobTemplate:
+    spec:
+      backoffLimit: 0
+      template:
+        metadata:
+          {{- if .Values.podAnnotations }}
+          annotations:
+{{ toYaml .Values.podAnnotations | indent 12 }}
+          {{- end }}
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: autospotting-ci
+            image: {{ .Values.image }}
+            resources:
+              requests:
+                cpu: {{ .Values.resources.cpu }}
+                memory: {{ .Values.resources.mem }}
+            envFrom:
+            - configMapRef:
+                name: {{ template "autospotting.fullname" . }}
