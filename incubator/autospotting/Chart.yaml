@@ -4,5 +4,5 @@ description: A chart to install autospotting.
 name: autospotting
 version: 0.1.0
 maintainers:
-  - name: @sudermanjr
-  - name: @coreypobrien
+  - name: sudermanjr
+  - name: coreypobrien
