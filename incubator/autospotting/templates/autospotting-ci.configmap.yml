@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "autospotting.fullname" . }}
+data:
+  {{- range $key, $val := .Values.environment }}
+  {{ $key }}: {{ $val | quote }}
+  {{- end}}
