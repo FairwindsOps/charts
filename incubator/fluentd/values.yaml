@@ -2,8 +2,8 @@
 ##    ES    ##
 ##############
 image:
-  repository: k8s.gcr.io/fluentd-elasticsearch
-  tag: v2.4.0
+  repository: fluent/fluentd-kubernetes-daemonset
+  tag: v1.3.3-debian-elasticsearch-1.5
   pullPolicy: Always
 
 elasticsearch:
