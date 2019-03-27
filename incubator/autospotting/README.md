@@ -1,18 +1,21 @@
 # Autospotting Helm Chart
 
-
 ## Chart Details
 This chart will do the following:
 * Implement autospotting, a tool to automatically convert your existing autoscaling groups to cheaper spot instances with minimal config chanages.  The source code for autospotting is available at [AutoSpotting](https://github.com/AutoSpotting/AutoSpotting).
 
+## Container
+
+This version of the autospotting container is built and maintained by ReactiveOps in [reactiveops/autospotting-ci](https://github.com/reactiveops/autospotting-ci).  The appVersion and the container tag correspond to tags on that repository.
+
 ## Configuration
 | Parameter               | Description                           | Default                                                    |
 | ----------------------- | ----------------------------------    | ---------------------------------------------------------- |
-| `image`                 | uri to pull the image from            | `quay.io/reactiveops/autospotting` |
+| `image`                 | uri to pull the image from            | `quay.io/reactiveops/autospotting:1.0.0`                   |
 | `schedule`              | cron schedule the job will run with   | `*/5 * * * *`                                              |
-| `resources.cpu`         | cpu millicores to request             | `30m`                                                    |
-| `resources.mem`         | amount of physical mem to request     | `30Mi`|
-| `environment`           | Map of environment settings. | See the table of default values below. |
+| `resources.cpu`         | cpu millicores to request             | `30m`                                                      |
+| `resources.mem`         | amount of physical mem to request     | `30Mi`                                                     |
+| `environment`           | Map of environment settings.          | See the table of default values below.                     |
 
 `environment` map default values:
 
