@@ -10,9 +10,13 @@ Switching backends requires using a matching image as well as some backend-speci
 
 | Parameter | Default |
 | --------- | ------- |
-| `es.enabled` |  `true` |
-| `image.repository` | `quay.io/reactiveops/fluentd-kubernetes-aws-es` |
-| `image.tag` | `latest` |
+| `image.repository` | `k8s.gcr.io/fluentd-elasticsearch` |
+| `image.tag` | `v2.4.0` |
+| `elasticsearch.enabled` |  `true` |
+| `host` | `instance-name.region.es.amazonaws.com` |
+| `port` | `443` |
+| `scheme` | `https` |
+
 
 ### Papertrail
 

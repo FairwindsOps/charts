@@ -2,12 +2,15 @@
 ##    ES    ##
 ##############
 image:
-  repository: quay.io/reactiveops/fluentd-kubernetes-aws-es
-  tag: latest
+  repository: k8s.gcr.io/fluentd-elasticsearch
+  tag: v2.4.0
   pullPolicy: Always
 
-es:
+elasticsearch:
   enabled: true
+  host: instance-name.region.es.amazonaws.com
+  port: 443
+  scheme: https
 
 ######################
 ##    Papertrail    ##

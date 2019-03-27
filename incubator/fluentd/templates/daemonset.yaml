@@ -12,7 +12,7 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   updateStrategy:
-    {{ toYaml .Values.updateStrategy | nindent 4 }}
+    {{ toYaml .Values.updateStrategy | indent 4 }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "fluentd.name" . }}
@@ -82,7 +82,7 @@ spec:
             value: "0"
           - name: FLUENTD_SYSTEMD_CONF
             value: disable
-        {{- else if .Values.es.enabled }}
+        {{- else if .Values.elasticsearch.enabled }}
           - name: KUBERNETES_URL
             value: "https://kubernetes"
           - name: KUBERNETES_VERIFY_SSL
