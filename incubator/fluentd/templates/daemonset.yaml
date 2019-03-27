@@ -12,7 +12,7 @@ metadata:
     addonmanager.kubernetes.io/mode: Reconcile
 spec:
   updateStrategy:
-    {{ toYaml .Values.updateStrategy | indent 4 }}
+    {{ toYaml .Values.updateStrategy | nindent 4 }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "fluentd.name" . }}
@@ -83,10 +83,16 @@ spec:
           - name: FLUENTD_SYSTEMD_CONF
             value: disable
         {{- else if .Values.elasticsearch.enabled }}
-          - name: KUBERNETES_URL
-            value: "https://kubernetes"
-          - name: KUBERNETES_VERIFY_SSL
-            value: "false"
+          - name:  FLUENT_ELASTICSEARCH_HOST
+            value: {{ .Values.elasticsearch.host | quote }}
+          - name:  FLUENT_ELASTICSEARCH_PORT
+            value: {{ .Values.elasticsearch.port | quote }}
+          - name: FLUENT_ELASTICSEARCH_SCHEME
+            value: {{ .Values.elasticsearch.scheme | quote }}
+          - name: FLUENT_UID
+            value: "0"
+          - name: FLUENTD_SYSTEMD_CONF
+            value: disable
         {{- end }}
         {{- if .Values.papertrail.extraArgs }}
           - name: FLUENTD_OPT
@@ -98,9 +104,9 @@ spec:
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
-        {{- if .Values.papertrail.enabled }}
-        - name: fluent-conf
-          mountPath: /fluentd/etc/
+        {{- if or .Values.papertrail.enabled .Values.elasticsearch.enabled }}
+        # - name: fluent-conf
+        #   mountPath: /fluentd/etc/
         {{- else }}
         - name: fluent-conf
           mountPath: /etc/fluent
