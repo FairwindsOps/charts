@@ -13,9 +13,10 @@ Switching backends requires using a matching image as well as some backend-speci
 | `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
 | `image.tag` | `v1.3.3-debian-elasticsearch-1.5` |
 | `elasticsearch.enabled` |  `true` |
-| `host` | `instance-name.region.es.amazonaws.com` |
-| `port` | `443` |
-| `scheme` | `https` |
+| `elasticsearch.host` | `instance-name.region.es.amazonaws.com` |
+| `elasticsearch.port` | `443` |
+| `elasticsearch.scheme` | `https` |
+| `elasticsearch.customConf` | `""` |
 
 
 ### Papertrail
