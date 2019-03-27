@@ -93,6 +93,8 @@ spec:
             value: "0"
           - name: FLUENTD_SYSTEMD_CONF
             value: disable
+          - name: FLUENT_ELASTICSEARCH_SED_DISABLE
+            value: "true"
         {{- end }}
         {{- if .Values.papertrail.extraArgs }}
           - name: FLUENTD_OPT
@@ -105,8 +107,8 @@ spec:
           mountPath: /var/lib/docker/containers
           readOnly: true
         {{- if or .Values.papertrail.enabled .Values.elasticsearch.enabled }}
-        # - name: fluent-conf
-        #   mountPath: /fluentd/etc/
+        - name: fluent-conf
+          mountPath: /fluentd/etc/
         {{- else }}
         - name: fluent-conf
           mountPath: /etc/fluent
