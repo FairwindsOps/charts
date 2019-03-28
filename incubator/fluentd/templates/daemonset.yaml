@@ -82,11 +82,17 @@ spec:
             value: "0"
           - name: FLUENTD_SYSTEMD_CONF
             value: disable
-        {{- else if .Values.es.enabled }}
-          - name: KUBERNETES_URL
-            value: "https://kubernetes"
-          - name: KUBERNETES_VERIFY_SSL
-            value: "false"
+        {{- else if .Values.elasticsearch.enabled }}
+          - name:  FLUENT_ELASTICSEARCH_HOST
+            value: {{ .Values.elasticsearch.host | quote }}
+          - name:  FLUENT_ELASTICSEARCH_PORT
+            value: {{ .Values.elasticsearch.port | quote }}
+          - name: FLUENT_ELASTICSEARCH_SCHEME
+            value: {{ .Values.elasticsearch.scheme | quote }}
+          - name: FLUENT_UID
+            value: "0"
+          - name: FLUENTD_SYSTEMD_CONF
+            value: disable
         {{- end }}
         {{- if .Values.papertrail.extraArgs }}
           - name: FLUENTD_OPT
@@ -101,6 +107,9 @@ spec:
         {{- if .Values.papertrail.enabled }}
         - name: fluent-conf
           mountPath: /fluentd/etc/
+        {{- else if .Values.elasticsearch.enabled }}
+        - name: fluent-conf
+          mountPath: /fluentd/etc/conf.d/
         {{- else }}
         - name: fluent-conf
           mountPath: /etc/fluent

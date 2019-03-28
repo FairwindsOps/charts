@@ -10,9 +10,14 @@ Switching backends requires using a matching image as well as some backend-speci
 
 | Parameter | Default |
 | --------- | ------- |
-| `es.enabled` |  `true` |
-| `image.repository` | `quay.io/reactiveops/fluentd-kubernetes-aws-es` |
-| `image.tag` | `latest` |
+| `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
+| `image.tag` | `v1.3.3-debian-elasticsearch-1.5` |
+| `elasticsearch.enabled` |  `true` |
+| `elasticsearch.host` | `instance-name.region.es.amazonaws.com` |
+| `elasticsearch.port` | `443` |
+| `elasticsearch.scheme` | `https` |
+| `elasticsearch.customConf` | `""` |
+
 
 ### Papertrail
 
