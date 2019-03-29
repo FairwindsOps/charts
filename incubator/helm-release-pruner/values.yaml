@@ -1,8 +1,8 @@
 # Default values for helm-release-pruner
 
 image:
-  repository: lachlanevenson/k8s-helm
-  tag: v2.9.1
+  repository: quay.io/reactiveops/ci-images
+  tag: v8-alpine
   pullPolicy: IfNotPresent
 
 job:
