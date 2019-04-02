@@ -59,7 +59,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-            - v2-binaries
+            - v3-binaries
       - setup_remote_docker
       - *setup_environment
       - run:
