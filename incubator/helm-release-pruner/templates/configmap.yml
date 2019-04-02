@@ -7,8 +7,6 @@ data:
     #!/bin/sh
 
     apk add --update bash coreutils
-    wget https://storage.googleapis.com/kubernetes-release/release/v1.9.10/bin/linux/amd64/kubectl -O /usr/local/bin/kubectl
-    chmod u+x /usr/local/bin/kubectl
 
 {{- range .Values.pruneProfiles }}
     /usr/local/bin/prune-releases.sh --older-than="{{ .olderThan }}" --helm-release-filter="{{ .helmReleaseFilter }}" --namespace-filter="{{ .namespaceFilter }}"{{ if $.Values.job.dryRun }} --dry-run{{ end }}
@@ -96,7 +94,7 @@ data:
         release_date=$(echo "$release_line" | awk -F'\t' '{ print $3 }')
         release_date_s=$($date_cmd --date="$release_date" +%s)
         release_name=$(echo "$release_line" | awk -F'\t' '{ print $1 }' | tr -d " ")
-        release_namespace=$(echo "$release_line" | awk -F'\t' '{ print $6 }' | tr -d " ")
+        release_namespace=$(echo "$release_line" | awk -F'\t' '{ print $7 }' | tr -d " ")
 
         if [[ "$release_date_s" -le "$older_than_filter_s" ]]; then
             # Confirm release and namespace values
