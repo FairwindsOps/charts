@@ -16,7 +16,11 @@ Switching backends requires using a matching image as well as some backend-speci
 | `elasticsearch.host` | `instance-name.region.es.amazonaws.com` |
 | `elasticsearch.port` | `443` |
 | `elasticsearch.scheme` | `https` |
-| `papertrail.extraArgs` | [] |
+| `elasticsearch.extraArgs` | [] |
+| `elasticsearch.buffer_chunk_limit` | `5m` |
+| `elasticsearch.buffer_queue_limit` | `100` |
+| `elasticsearch.flush_interval` | `5s` |
+| `elasticsearch.num_threads` | `4` |
 
 
 ### Papertrail
@@ -37,7 +41,7 @@ Switching backends requires using a matching image as well as some backend-speci
 | --------- | ----------- | ------- |
 | `verify_ssl` | Enable/disable TLS validation of Kubernetes API | `true` |
 | `image.pullPolicy` | Pull policy | `Always` |
-| `resources` | Resource requests/limits | `{limits: {cpu: 100m, memory: 500Mi}, requests: {cpu: 100m, memory: 200Mi}` |
+| `resources` | Resource requests/limits | `{limits: {cpu: 100m, memory: 500Mi}, requests: {cpu: 100m, memory: 500Mi}` |
 | `rbac.create` | Create RBAC resources | `true` |
 | `serviceAccount.create` | Create a service account | `true` |
 | `serviceAccount.name` | Create a service account | `${fluentd.fullname}` |
