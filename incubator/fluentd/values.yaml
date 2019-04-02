@@ -12,6 +12,12 @@ elasticsearch:
   port: 443
   scheme: https
   extraArgs: []
+  # This is set low to accomodate m4.large ES clusters that have a 10m client body limit
+  buffer_chunk_limit: 5m
+  # buffer_queue_limit * buffer_chunk_limit ~= total memory usage for the buffer
+  buffer_queue_limit: 100
+  flush_interval: 5s
+  num_threads: 4
 
 ######################
 ##    Papertrail    ##
@@ -45,7 +51,7 @@ resources:
     memory: 500Mi
   requests:
     cpu: 100m
-    memory: 200Mi
+    memory: 500Mi
 
 rbac:
   create: true
