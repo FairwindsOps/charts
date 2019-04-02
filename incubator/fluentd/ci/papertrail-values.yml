@@ -5,4 +5,4 @@ papertrail.enabled: "true"
 image:
   repository: fluent/fluentd-kubernetes-daemonset
   pullPolicy: IfNotPresent
-  tag: "v0.12.43-papertrail"
+  tag: v0.12.43-debian-papertrail

@@ -1,6 +1,2 @@
-image:
-  repository: quay.io/reactiveops/fluentd-kubernetes-aws-es
-  tag: latest
-  pullPolicy: Always
 es:
   enabled: true

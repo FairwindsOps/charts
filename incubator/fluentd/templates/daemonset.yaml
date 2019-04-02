@@ -57,63 +57,32 @@ spec:
         {{- end }}
         resources:
           {{ toYaml .Values.resources | nindent 10 }}
-        # Loggly container requires different command.  Dumb
-        {{- if .Values.loggly.enabled }}
         command:
-          - '/bin/sh'
-          - '-c'
-          - '/usr/sbin/td-agent 2>&1 >> /var/log/fluentd.log'
-        {{- end }}
+          - fluentd
+          - -c
+          - /fluentd/etc/fluent.conf
+          - -p
+          - /fluentd/plugins
+          - --gemfile
+          - /fluentd/Gemfile
+          - --no-supervisor
+          {{- range .Values.elasticsearch.extraArgs }}
+          - {{ . | quote }}
+          {{- end }}
         env:
-        {{- if .Values.loggly.enabled }}
-          - name: LOGGLY_URL
-            valueFrom:
-              secretKeyRef:
-                name: {{ template "fluentd.fullname" . }}
-                key: url
-        {{- else if .Values.papertrail.enabled }}
-          - name: FLUENT_PAPERTRAIL_HOST
-            value: {{ .Values.papertrail.host | quote }}
-          - name: FLUENT_PAPERTRAIL_PORT
-            value: {{ .Values.papertrail.port | quote }}
-          - name: FLUENT_HOSTNAME
-            value: {{ .Values.papertrail.cluster_name | quote }}
+          - name: FLUENTD_CONF
+            value: fluent.conf
           - name: FLUENT_UID
             value: "0"
-          - name: FLUENTD_SYSTEMD_CONF
-            value: disable
-        {{- else if .Values.elasticsearch.enabled }}
-          - name:  FLUENT_ELASTICSEARCH_HOST
-            value: {{ .Values.elasticsearch.host | quote }}
-          - name:  FLUENT_ELASTICSEARCH_PORT
-            value: {{ .Values.elasticsearch.port | quote }}
-          - name: FLUENT_ELASTICSEARCH_SCHEME
-            value: {{ .Values.elasticsearch.scheme | quote }}
-          - name: FLUENT_UID
-            value: "0"
-          - name: FLUENTD_SYSTEMD_CONF
-            value: disable
-        {{- end }}
-        {{- if .Values.papertrail.extraArgs }}
-          - name: FLUENTD_OPT
-            value: {{ .Values.papertrail.extraArgs }}
-        {{- end }}
         volumeMounts:
         - name: varlog
           mountPath: /var/log
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
-        {{- if .Values.papertrail.enabled }}
         - name: fluent-conf
-          mountPath: /fluentd/etc/
-        {{- else if .Values.elasticsearch.enabled }}
-        - name: fluent-conf
-          mountPath: /fluentd/etc/conf.d/
-        {{- else }}
-        - name: fluent-conf
-          mountPath: /etc/fluent
-        {{- end }}
+          mountPath: /fluentd/etc/fluent.conf
+          subPath: fluent.conf
       terminationGracePeriodSeconds: 30
       volumes:
       - name: varlog
