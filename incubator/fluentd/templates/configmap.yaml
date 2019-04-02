@@ -9,16 +9,15 @@ metadata:
     helm.sh/chart: {{ include "fluentd.chart" . }}
 apiVersion: v1
 data:
-  {{- if .Values.elasticsearch.enabled }}
-  custom.conf: |
-    {{ .Values.elasticsearch.customConf | nindent 4 }}
-  {{- else }}
   fluent.conf: |
     {{ tpl (.Files.Get "files/kubernetes.conf") . | nindent 4 }}
+    {{ .Values.additional_filters_and_sources | nindent 4 }}
     {{- if .Values.papertrail.enabled }}
     {{ tpl (.Files.Get "files/papertrail.conf") . | nindent 4 }}
     {{- end }}
-  {{- end }}
+    {{- if .Values.elasticsearch.enabled }}
+    {{ tpl (.Files.Get "files/elasticsearch.conf") . | nindent 4 }}
+    {{- end }}
     <system>
       log_level {{ .Values.log_level }}
     </system>
