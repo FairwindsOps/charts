@@ -44,6 +44,10 @@ papertrail:
 # set to false if you're running in a cluster on alibaba or other places with api cert issues
 verify_ssl: true
 
+# REQUIRED
+# Set to the name of the cluster
+# cluster_name: my.cluster.name
+
 additional_filters_and_sources: ""
 
 resources:
