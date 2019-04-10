@@ -18,6 +18,8 @@ elasticsearch:
   buffer_queue_limit: 100
   flush_interval: 5s
   num_threads: 4
+  request_timeout: 20s
+  buffer_queue_full_action: exception
 
 ######################
 ##    Papertrail    ##
@@ -31,7 +33,6 @@ papertrail:
   enabled: false
   host: logs3.papertrailapp.com
   port: 12785
-  cluster_name:
   extraArgs: []
 
 
@@ -42,6 +43,10 @@ papertrail:
 # Verify Kubernetes API TLS certs
 # set to false if you're running in a cluster on alibaba or other places with api cert issues
 verify_ssl: true
+
+# REQUIRED
+# Set to the name of the cluster
+# cluster_name: my.cluster.name
 
 additional_filters_and_sources: ""
 
