@@ -1,3 +1,3 @@
-es:
+elasticsearch:
   enabled: true
 cluster_name: my.cluster.local
