@@ -2,8 +2,13 @@
 
 ## Guidelines on Contributing
 
-* Test your changes:
+* Lint your changes:
   * `docker run --rm -it -v ${PWD}:/charts -w /charts quay.io/helmpack/chart-testing:v2.0.1 ct lint --chart-yaml-schema scripts/schema.yaml --chart-dirs incubator --chart-dirs stable`
+* End-to-end test your changes:
+  * Install [kind 0.2.1+](https://github.com/kubernetes-sigs/kind/releases)
+  * `scripts/e2e-test.sh setup` to set up Kubernetes in Docker
+  * `scripts/e2e-test.sh test-local` to test your local changes until they pass
+  * `scripts/e2e-test.sh teardown` when you are done testing to delete your cluster
 * Submit a PR
 * Follow the [Chart Guidelines](#Chart Guidelines)
 * Make sure your chart passes a `helm lint`

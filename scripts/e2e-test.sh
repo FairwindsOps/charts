@@ -80,8 +80,8 @@ install_hostpath-provisioner() {
     echo
 }
 
-run_tests () {
-    printf "Running e2e tests...\n"
+prep_tests () {
+    printf "Preparing e2e tests...\n"
     if [[ ! "$(docker inspect -f '{{.State.Running}}' "$EXEC_CONTAINER_NAME")" ]]; then
         printf "The exec container is not running.  Something is wrong.\n"
         exit 1
@@ -90,8 +90,32 @@ run_tests () {
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF && ct install --config scripts/ct.yaml"
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF"
 }
+
+prep_tests_local () {
+    printf "Preparing e2e tests from local repo...\n"
+    if [[ ! "$(docker inspect -f '{{.State.Running}}' "$EXEC_CONTAINER_NAME")" ]]; then
+        printf "The exec container is not running.  Something is wrong.\n"
+        exit 1
+    fi
+
+    docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
+    docker cp . "$EXEC_CONTAINER_NAME":/workdir/charts/
+    docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git remote | xargs -n 1 git remote remove && git remote add ro https://github.com/reactiveops/charts && git fetch ro master'
+}
+
+
+run_tests () {
+    printf "Running e2e tests...\n"
+    if [[ ! "$(docker inspect -f '{{.State.Running}}' "$EXEC_CONTAINER_NAME")" ]]; then
+        printf "The exec container is not running.  Something is wrong.\n"
+        exit 1
+    fi
+
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && ct install --config scripts/ct.yaml"
+}
+
 
 if [ "$OPERATION" = "setup" ]; then
     printf "Running setup.\n"
@@ -106,6 +130,11 @@ elif [ "$OPERATION" = "teardown" ] ; then
     printf "e2e testing environment torn down.\n"
 elif [ "$OPERATION" = "test" ]; then
     printf "Running tests.\n"
+    prep_tests
+    run_tests
+elif [ "$OPERATION" = "test-local" ]; then
+    printf "Running tests.\n"
+    prep_tests_local
     run_tests
 else
     printf "You need to specify teardown, setup, or test"
