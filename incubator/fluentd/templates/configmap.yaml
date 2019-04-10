@@ -12,6 +12,12 @@ data:
   fluent.conf: |
     {{ tpl (.Files.Get "files/kubernetes.conf") . | nindent 4 }}
     {{ .Values.additional_filters_and_sources | nindent 4 }}
+    <filter **>
+      @type record_transformer
+      <record>
+        kubernetes_cluster {{ required "You must specify cluster_name" .Values.cluster_name }}
+      </record>
+    </filter>
     {{- if .Values.papertrail.enabled }}
     {{ tpl (.Files.Get "files/papertrail.conf") . | nindent 4 }}
     {{- end }}

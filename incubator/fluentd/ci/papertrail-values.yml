@@ -1,7 +1,7 @@
 papertrail.host: logs1.papertrailtestdummy.local
 papertrail.port: "12345"
-papertrail.cluster_name: my.cluster.local
 papertrail.enabled: "true"
+cluster_name: my.cluster.local
 image:
   repository: fluent/fluentd-kubernetes-daemonset
   pullPolicy: IfNotPresent
