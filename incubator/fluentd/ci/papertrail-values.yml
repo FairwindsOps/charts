@@ -1,8 +1,0 @@
-papertrail.host: logs1.papertrailtestdummy.local
-papertrail.port: "12345"
-papertrail.cluster_name: my.cluster.local
-papertrail.enabled: "true"
-image:
-  repository: fluent/fluentd-kubernetes-daemonset
-  pullPolicy: IfNotPresent
-  tag: v0.12.43-debian-papertrail
