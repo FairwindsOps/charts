@@ -50,6 +50,8 @@ verify_ssl: true
 
 additional_filters_and_sources: ""
 
+kubernetes_audit_log_path: /var/log/kube-apiserver-audit.log
+
 resources:
   limits:
     cpu: 100m
