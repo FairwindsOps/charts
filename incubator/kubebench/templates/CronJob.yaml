@@ -22,6 +22,8 @@ spec:
             volumeMounts:
             - mountPath: /data
               name: data
+            - mountPath: /opt/kube-bench/cfg/{{ .Values.kubernetes.version }}
+              name: config
           containers:
           - name: "{{ .Chart.Name }}-exporter"
             image: "{{ .Values.exporter.image.repository }}:{{ .Values.exporter.image.tag }}"
@@ -30,8 +32,6 @@ spec:
             volumeMounts:
             - mountPath: /data
               name: data
-            - mountPath: /opt/kube-bench/cfg
-              name: config
             env:
             - name: DATADOG_API_KEY
               valueFrom:
@@ -48,5 +48,5 @@ spec:
             emptyDir: {}
           - name: config
             configMap:
-              name: {{ include "kubebench.fullname" }}
+              name: {{ include "kubebench.fullname" . }}
           restartPolicy: OnFailure

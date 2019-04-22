@@ -6,7 +6,7 @@ metadata:
   app.kubernetes.io/instance: {{ .Release.Name }}
   app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  config.yaml: |
+  node.yaml: |-
     ---
     controls:
     version: 1.11
@@ -373,7 +373,7 @@ data:
       checks:
         - id: 2.2.1
 {{- if has "2.2.1" .Values.skipped_checks }}
-        type: "skip"
+          type: "skip"
 {{- end }}
           text: "Ensure that the kubelet.conf file permissions are set to 644 or
           more restrictive (Scored)"
