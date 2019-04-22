@@ -30,6 +30,8 @@ spec:
             volumeMounts:
             - mountPath: /data
               name: data
+            - mountPath: /opt/kube-bench/cfg
+              name: config
             env:
             - name: DATADOG_API_KEY
               valueFrom:
@@ -44,4 +46,7 @@ spec:
           volumes:
           - name: data
             emptyDir: {}
+          - name: config
+            configMap:
+              name: {{ include "kubebench.fullname" }}
           restartPolicy: OnFailure
