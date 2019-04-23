@@ -24,7 +24,6 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command: ["k6", "run", "/k6/load.js"]
-          args: ["--out", "influxdb"]
           env:
             - name: K6_DURATION
               value: {{ .Values.k6.duration | quote }}
@@ -43,6 +42,7 @@ spec:
               value: {{ .Values.influx.url | quote }}
             - name: INFLUXDB_RETENTION
               value: {{ .Values.influx.retention | quote }}
+          args: ["--out", "influxdb"]
             {{- end }}
           ports:
             - name: http
