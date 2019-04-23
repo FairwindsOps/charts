@@ -10,9 +10,13 @@ spec:
     name: {{ include "basic-demo.fullname" . }}
   minReplicas: {{ .Values.hpa.min }}
   maxReplicas: {{ .Values.hpa.max }}
+{{- if .Values.hpa.customMetric.enabled }}
   metrics:
   - type: Pods
     pods:
-      metricName: {{ .Values.hpa.metric }}
-      targetAverageValue: {{ .Values.hpa.target }}
+      metricName: {{ .Values.hpa.customMetric.metric }}
+      targetAverageValue: {{ .Values.hpa.customMetric.target }}
+{{- else }}
+  targetCPUUtilizationPercentage: {{ .Values.hpa.cpuTarget }}
+{{- end }}
 {{- end }}
