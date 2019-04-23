@@ -13,9 +13,11 @@ Credit for the app goes to [ehazlett](https://github.com/ehazlett/docker-demo)
 | `demo.refreshInterval` | How often the demo frontend should refresh (ms)  | `500` | yes |
 | `demo.title` | Title on the demo app page | `Kuberneteseckoner Demo` | no |
 | `hpa.max` | Maximum replicas  | `20` | yes |
-| `hpa.metric` | Metric to scale on | `cpu` | yes |
 | `hpa.min` | Minimum replicas  | `3` | yes |
-| `hpa.target` | HPA Target  | `30m` | yes |
+| `hpa.cpuTarget` | CPU scaling target if not using custom metrics | `60` | no |
+| `hpa.customMetric.enabled` | Enable scaling on custom metrics | `false` | no |
+| `hpa.customMetric.metric` | Custom metric to scale on | `cpu` | yes |
+| `hpa.customMetric.target` | HPA custom metric target  | `30m` | yes |
 | `image.pullPolicy` | Pull Policy  | `Always` | yes |
 | `image.repository` | Image Repository  | `ehazlett/docker-demo` | yes |
 | `image.tag` | Image Tag  | `latest` | yes |
