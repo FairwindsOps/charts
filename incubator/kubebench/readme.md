@@ -16,6 +16,7 @@ This chart installs a CronJob that will run kube-bench on a regular basis and up
 | datadog.api_key | datadog api key for your account | `foo` |
 | datadog.app_key | datadog app key for your account | `foo` |
 | kubernetes.version | Kubernetes version of your cluster.  Note that only a few versions are supported by kube-bench.  You can see the supported versions to use [here](https://github.com/aquasecurity/kube-bench/tree/master/cfg).  If your version isn't defined set it to the closest version available.  | 1.11 |
+| skipped_checks | list of check ids that shoudl be ignored in scoring. | see `values.yml` |
 
 ## Datadog
 The following is an example monitor definition that can be used to monitor the audit events emitted from this chart.
