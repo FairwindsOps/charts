@@ -17,6 +17,10 @@ vpa:
   enabled: false
   updateMode: "Off"
 
+pdb:
+  enabled: true
+  maxUnavailable: 1
+
 image:
   repository: ehazlett/docker-demo
   tag: latest
