@@ -2,6 +2,15 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+# The 0.4.0 image repository was determined from https://github.com/kubernetes-sigs/aws-iam-authenticator/blob/master/example.yaml
+image:
+  repository: 602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-iam-authenticator
+  tag: v0.4.0
+# To instead use the previous 0.3.0 image:
+# image:
+#  repository: gcr.io/heptio-images/authenticator
+#  tag: v0.3.0
+
 volumes:
   output:
     mountPath: /etc/kubernetes/aws-iam-authenticator/
