@@ -1,0 +1,5 @@
+# The 0.4.0 image is hosted on ECR and can not be pulled from a non-EC2 CI instance.
+# For now, we use the 0.3.0 image for testing, which is more accessible.
+image:
+  repository: gcr.io/heptio-images/authenticator
+  tag: v0.3.0
