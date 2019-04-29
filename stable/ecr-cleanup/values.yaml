@@ -11,7 +11,7 @@ controller:
   namespaces: "default"      # Comma-separated list of namespaces
   region: "us-east-1"        # AWS Region
   verbosity: "1"             # Logging verbosity
-# image_whitelist: ""        # Comma-separated list of image filters to whitelist
+# keep_filters: ""           # Comma-separated list of image filters to whitelist
 replicaCount: 1
 
 image:
