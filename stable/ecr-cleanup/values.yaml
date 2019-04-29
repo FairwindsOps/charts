@@ -11,12 +11,12 @@ controller:
   namespaces: "default"      # Comma-separated list of namespaces
   region: "us-east-1"        # AWS Region
   verbosity: "1"             # Logging verbosity
-
+# image_whitelist: ""        # Comma-separated list of image filters to whitelist
 replicaCount: 1
 
 image:
   repository: danielfm/kube-ecr-cleanup-controller
-  tag: 0.1.5
+  tag: 0.1.6
   pullPolicy: Always
 
 rbac:
