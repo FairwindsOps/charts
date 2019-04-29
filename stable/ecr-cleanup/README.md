@@ -14,7 +14,7 @@ Cleans up unused ECR images using [this](https://github.com/danielfm/kube-ecr-cl
 | `controller.repos` | ECR repo names to delete from.  | `sudermanjr-test` | yes |
 | `controller.registryID` | Account ID (registry ID) to use if it is not the default.  | `""` | no |
 | `controller.verbosity` | Log verbosity.  | `1` | yes |
-| `controller.image_whitelist` | comma-separated list of filters or regexes that when matched will preserve the matching images. | | no |
+| `controller.keep_filters` | comma-separated list of filters or regexes that when matched will preserve the matching images. | | no |
 | `fullnameOverride` |  | ` ` | no |
 | `image.pullPolicy` | Leave this like this.  | `Always` | no |
 | `image.repository` | Docker repo to use.  | `danielfm/kube-ecr-cleanup-controller` | no |
