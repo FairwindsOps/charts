@@ -34,6 +34,9 @@ spec:
             - --v={{ .Values.controller.verbosity }}
             - --interval={{ .Values.controller.interval }}
             - --registry-id={{ .Values.controller.registryID }}
+{{- if .Values.controller.keep_filters }}
+            - --keep-filters={{ .Values.controller.keep_filters | quote }}
+{{- end }}
           ports:
             - name: http
               containerPort: 80
