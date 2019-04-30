@@ -16,7 +16,7 @@ replicaCount: 1
 
 image:
   repository: danielfm/kube-ecr-cleanup-controller
-  tag: 0.1.6
+  tag: 0.1.7
   pullPolicy: Always
 
 rbac:
