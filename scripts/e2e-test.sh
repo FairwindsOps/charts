@@ -89,7 +89,7 @@ prep_tests () {
 
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
 
-    if [ -z "$CIRCLE_PR_NUMBER" ]; then
+    if [ -z "${CIRCLE_PR_NUMBER:-}" ]; then
         docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
         docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
         docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout ro/$CI_REF"
