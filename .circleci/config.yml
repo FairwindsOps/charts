@@ -51,7 +51,6 @@ jobs:
       - run:
           name: Setup e2e Environment
           command: |
-            cp /binaries/kind /usr/local/bin/kind
             curl -LO https://github.com/kubernetes-sigs/kind/releases/download/0.2.1/kind-darwin-amd64
             chmod +x kind-darwin-amd64
             mv kind-darwin-amd64 /usr/local/bin
