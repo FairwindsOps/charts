@@ -24,7 +24,7 @@ CI_REF="${2:-master}"
 TEST_CLUSTER_NAME="${3:-helm-e2e}"
 TILLER_NAMESPACE="${TILLER_NAMESPACE:-helm-system}"
 EXEC_CONTAINER_NAME="${4:-executor}"
-CHART_TEST_VERSION="v3.2.0"
+CHART_TEST_VERSION="v3.3.2"
 
 setup_cluster () {
     printf "Creating cluster %s.  This could take a minute...\n" "$TEST_CLUSTER_NAME"
@@ -88,9 +88,14 @@ prep_tests () {
     fi
 
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
+
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF"
+    if [ -z "${CIRCLE_PR_NUMBER:-}" ]; then
+        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF"
+    else
+        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git fetch origin pull/$CIRCLE_PR_NUMBER/head:pr/$CIRCLE_PR_NUMBER && git checkout pr/$CIRCLE_PR_NUMBER"
+    fi
 }
 
 prep_tests_local () {
