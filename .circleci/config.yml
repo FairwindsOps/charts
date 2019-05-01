@@ -12,23 +12,6 @@ references:
         apk --update add bash jq
 
 jobs:
-  # Because kind doesn't publish a proper binary, and we
-  # can't really install golang in alpine without pain,
-  # we build the kind binary from source and cache it.
-  build-kind:
-    docker:
-      - image: golang:1.12-stretch
-    steps:
-      - run:
-          name: Get and Build Kind
-          command: |
-            mkdir /binaries
-            go get sigs.k8s.io/kind
-            cp /go/bin/kind /binaries/kind
-      - save_cache:
-          key: v3-binaries
-          paths:
-            - /binaries
   lint-scripts:
     docker:
       - image: koalaman/shellcheck-alpine:v0.6.0
@@ -69,10 +52,14 @@ jobs:
           name: Setup e2e Environment
           command: |
             cp /binaries/kind /usr/local/bin/kind
+            curl -LO https://github.com/kubernetes-sigs/kind/releases/download/0.2.1/kind-darwin-amd64
+            chmod +x kind-darwin-amd64
+            mv kind-darwin-amd64 /usr/local/bin
             scripts/e2e-test.sh setup
       - run:
           name: Run e2e tests
-          command: scripts/e2e-test.sh test "$CIRCLE_BRANCH"
+          command: |
+            scripts/e2e-test.sh test "$CIRCLE_BRANCH"
       - run:
           name: Teardown e2e Environment
           command: scripts/e2e-test.sh teardown
@@ -91,14 +78,12 @@ workflows:
     jobs:
       - lint-scripts
       - lint-charts
-      - build-kind
       - e2e-tests:
           filters:
             branches:
               ignore:
                 - master
           requires:
-            - build-kind
             - lint-scripts
             - lint-charts
       - sync:
