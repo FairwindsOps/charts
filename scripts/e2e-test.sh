@@ -24,7 +24,7 @@ CI_REF="${2:-master}"
 TEST_CLUSTER_NAME="${3:-helm-e2e}"
 TILLER_NAMESPACE="${TILLER_NAMESPACE:-helm-system}"
 EXEC_CONTAINER_NAME="${4:-executor}"
-CHART_TEST_VERSION="v3.2.0"
+CHART_TEST_VERSION="v3.3.2"
 
 setup_cluster () {
     printf "Creating cluster %s.  This could take a minute...\n" "$TEST_CLUSTER_NAME"
@@ -47,6 +47,9 @@ setup_executor () {
     echo "$port"
     docker inspect "$containerName" | jq .
     docker exec "$EXEC_CONTAINER_NAME" sh -c "sed -i 's/https:\/\/localhost:[0-9]\+/https:\/\/localhost:6443/g' /.kube/config"
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "curl -LO curl -LO https://github.com/github/hub/releases/download/v2.11.2/hub-linux-amd64-2.11.2.tgz"
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "tar -zxvf hub-linux-amd64-2.11.2.tgz"
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "mv hub-linux-amd64-2.11.2/bin/hub /usr/local/bin/"
 }
 
 teardown () {
