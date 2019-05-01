@@ -40,9 +40,6 @@ jobs:
       - image: quay.io/helmpack/chart-testing:v2.2.0
     steps:
       - checkout
-      - restore_cache:
-          keys:
-            - v3-binaries
       - setup_remote_docker
       - *setup_environment
       - run:
