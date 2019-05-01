@@ -89,13 +89,12 @@ prep_tests () {
 
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
 
+    docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
+    docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
     if [ -z "${CIRCLE_PR_NUMBER:-}" ]; then
-        docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
-        docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
-        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout ro/$CI_REF"
+        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF"
     else
-        docker exec "$EXEC_CONTAINER_NAME" sh -c "git clone https://github.com/reactiveops/charts && cd charts && git remote add fork https://github.com/$CIRCLE_PR_USERNAME/$CIRCLE_PR_REPONAME"
-        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout fork/$CI_REF"
+        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git fetch origin pull/$CIRCLE_PR_NUMBER/head:pr/$CIRCLE_PR_NUMBER && git checkout pr/$CIRCLE_PR_NUMBER"
     fi
 }
 
