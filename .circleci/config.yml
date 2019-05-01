@@ -59,11 +59,7 @@ jobs:
       - run:
           name: Run e2e tests
           command: |
-            if [ -z $CIRCLE_PR_REPONAME ]; then
-              scripts/e2e-test.sh test "$CIRCLE_BRANCH"
-            else
-              scripts/e2e-test.sh test "$CIRCLE_PR_REPONAME"
-            fi
+            scripts/e2e-test.sh test "$CIRCLE_BRANCH"
       - run:
           name: Teardown e2e Environment
           command: scripts/e2e-test.sh teardown

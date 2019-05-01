@@ -25,7 +25,6 @@ TEST_CLUSTER_NAME="${3:-helm-e2e}"
 TILLER_NAMESPACE="${TILLER_NAMESPACE:-helm-system}"
 EXEC_CONTAINER_NAME="${4:-executor}"
 CHART_TEST_VERSION="v3.3.2"
-HUB_CLI_VERSION="2.11.2"
 
 setup_cluster () {
     printf "Creating cluster %s.  This could take a minute...\n" "$TEST_CLUSTER_NAME"
@@ -48,9 +47,6 @@ setup_executor () {
     echo "$port"
     docker inspect "$containerName" | jq .
     docker exec "$EXEC_CONTAINER_NAME" sh -c "sed -i 's/https:\/\/localhost:[0-9]\+/https:\/\/localhost:6443/g' /.kube/config"
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "curl -LO curl -LO https://github.com/github/hub/releases/download/v${HUB_CLI_VERSION}/hub-linux-amd64-${HUB_CLI_VERSION}.tgz"
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "tar -zxvf hub-linux-amd64-${HUB_CLI_VERSION}.tgz"
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "mv hub-linux-amd64-${HUB_CLI_VERSION}/bin/hub /usr/local/bin/"
 }
 
 teardown () {
@@ -92,10 +88,15 @@ prep_tests () {
     fi
 
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
-    docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
-    docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && hub pr list"
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF"
+
+    if [ -z "$CIRCLE_PR_NUMBER" ]; then
+        docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
+        docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
+        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout ro/$CI_REF"
+    else
+        docker exec "$EXEC_CONTAINER_NAME" sh -c "git clone https://github.com/reactiveops/charts && cd charts && git remote add fork https://github.com/$CIRCLE_PR_USERNAME/$CIRCLE_PR_REPONAME"
+        docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout fork/$CI_REF"
+    fi
 }
 
 prep_tests_local () {
