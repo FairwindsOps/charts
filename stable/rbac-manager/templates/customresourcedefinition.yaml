@@ -43,6 +43,13 @@ spec:
                       type: string
                     namespace:
                       type: string
+                    namespaceSelector:
+                      type: object
+                      properties:
+                        matchLabels:
+                          type: object
+                        matchExpressions:
+                          type: array
                     role:
                       type: string
                   type: object
