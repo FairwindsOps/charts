@@ -1,6 +1,6 @@
 name: rbac-manager
-version: 1.0.0
-appVersion: 0.5.0
+version: 1.1.0
+appVersion: 0.6.1
 description: A Kubernetes operator that simplifies the management of Role Bindings and Service Accounts.
 keywords:
   - rbac
