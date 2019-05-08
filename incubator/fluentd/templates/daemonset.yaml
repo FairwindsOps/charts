@@ -35,7 +35,7 @@ spec:
         {{- if .Values.papertrail.enabled }}
         # See https://github.com/solarwinds/fluent-plugin-papertrail/issues/27
         livenessProbe:
-          initialDelaySeconds: 600
+          initialDelaySeconds: 120
           periodSeconds: 60
           failureThreshold: 1
           exec:
@@ -43,14 +43,14 @@ spec:
             - '/bin/sh'
             - '-c'
             - >
-              LIVENESS_THRESHOLD_SECONDS=${LIVENESS_THRESHOLD_SECONDS:-300}; if [ ! -d /var/log/fluentd-buffers-papertrail ]; then
+              LIVENESS_THRESHOLD_MINUTES=${LIVENESS_THRESHOLD_MINUTES:-15}; if [ ! -d /var/log/fluentd-buffers-papertrail ]; then
                 echo "/var/log/fluentd-buffers-papertrail does not exist. Make sure buffer_path is set correctly";
                 exit 1;
               fi; if [ -z "$(ls -A /var/log/fluentd-buffers-papertrail)" ]; then
                 echo "/var/log/fluentd-buffers-papertrail is empty. There are no buffers...I think that is good?";
                 exit 0;
-              fi; touch -d $(date -d@"$(( `date +%s`-300))" +%m%d%H%M) /tmp/marker-liveness; if [[ -n "$(find /var/log/fluentd-buffers-papertrail -type f ! -newer /tmp/marker-liveness -print)" ]]; then
-                echo "Buffer files have not been modified in the last ${LIVENESS_THRESHOLD_SECONDS} seconds";
+              fi; if [[ -z $(find /var/log/fluentd-buffers-papertrail -mmin -${LIVENESS_THRESHOLD_MINUTES}) ]]; then
+                echo "Buffer files have not been modified in the last ${LIVENESS_THRESHOLD_MINUTES} minutes";
                 rm -f /var/log/fluentd-buffers-papertrail/*
                 exit 1;
               fi
