@@ -1,1 +1,9 @@
+stable/rbac-manager @sudermanjr @robscott
+stable/aws-iam-authenticator @sudermanjr @davekonopka
+incubator/autospotting @sudermanjr @coreypobrien
+incubator/fluentd @dosullivan @coreypobrien
+incubator/helm-release-pruner @davekonopka
+incubator/imagepullsecret-deploy @crmejia
+incubator/kubebench @mjhuber
+incubator/ro-cert-manager @sudermanjr @endzyme
 *       @davekonopka @sudermanjr
