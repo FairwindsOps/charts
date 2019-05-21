@@ -49,7 +49,7 @@ spec:
               fi; if [ -z "$(ls -A /var/log/fluentd-buffers-papertrail)" ]; then
                 echo "/var/log/fluentd-buffers-papertrail is empty. There are no buffers...I think that is good?";
                 exit 0;
-              fi; if [[ -z $(find /var/log/fluentd-buffers-papertrail -mmin -${LIVENESS_THRESHOLD_MINUTES}) ]]; then
+              fi; if [ -n "$(find /var/log/fluentd-buffers-papertrail -mmin ${LIVENESS_THRESHOLD_MINUTES} -name *.log)" ]; then
                 echo "Buffer files have not been modified in the last ${LIVENESS_THRESHOLD_MINUTES} minutes";
                 rm -f /var/log/fluentd-buffers-papertrail/*
                 exit 1;
@@ -74,6 +74,10 @@ spec:
             value: fluent.conf
           - name: FLUENT_UID
             value: "0"
+          - name: FLUENT_HOSTNAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
         volumeMounts:
         - name: varlog
           mountPath: /var/log
