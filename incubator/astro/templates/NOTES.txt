@@ -1,0 +1,3 @@
+Thanks for installing astro! To see what it's doing, use `kubectl logs` for your new astro pod.
+
+If you run into any problems or find something missing in the documentation, don't hesitate to open an issue here: https://github.com/FairwindsOps/astro/issues.
