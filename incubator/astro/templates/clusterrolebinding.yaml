@@ -1,0 +1,17 @@
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "astro.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "astro.name" . }}
+    helm.sh/chart: {{ include "astro.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "astro.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "astro.fullname" . }}
+    namespace: {{ .Release.Namespace | quote }}

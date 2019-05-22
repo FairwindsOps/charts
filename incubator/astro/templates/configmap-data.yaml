@@ -1,0 +1,13 @@
+{{- if .Values.custom_config.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "astro.fullname" . }}-data
+  labels:
+    app.kubernetes.io/name: {{ include "astro.name" . }}
+    helm.sh/chart: {{ include "astro.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  config.yml: {{ toYaml .Values.custom_config.data | indent 4 }}
+{{- end }}
