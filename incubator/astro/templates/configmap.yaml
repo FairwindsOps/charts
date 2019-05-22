@@ -1,0 +1,19 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "astro.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "astro.name" . }}
+    helm.sh/chart: {{ include "astro.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+data:
+  DD_API_KEY: {{ .Values.datadog.apiKey }}
+  DD_APP_KEY: {{ .Values.datadog.appKey }}
+  OWNER: {{ .Values.owner }}
+  DRY_RUN: {{ .Values.DryRun | quote }}
+{{- if .Values.custom_config.enabled }}
+  DEFINITIONS_PATH: /etc/config/config.yml
+{{- else }}
+  DEFINITIONS_PATH: {{ .Values.definitionsPath }}
+{{- end }}
