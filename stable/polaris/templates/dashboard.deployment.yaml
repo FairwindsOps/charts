@@ -5,9 +5,9 @@ metadata:
   annotations:
     checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
   name: {{ include "polaris.fullname" . }}-dashboard
-  {{- if .Values.templateOnly -}}
+  {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
-  {{- end -}}
+  {{- end }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
     component: dashboard
