@@ -13,7 +13,8 @@ More information about RBAC Manager is available on [GitHub](https://github.com/
 We recommend installing rbac-manager in its own namespace and a simple release name:
 
 ```
-helm install stable/rbac-manager --name rbac-manager --namespace rbac-manager
+helm repo add reactiveops-stable https://charts.reactiveops.com/stable
+helm install reactiveops-stable/rbac-manager --name rbac-manager --namespace rbac-manager
 ```
 
 ## Prerequisites
