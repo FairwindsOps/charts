@@ -5,10 +5,19 @@ is a tool for auditing and enforcing best practices in Kubernetes.
 
 ## Installation
 We recommend installing polaris in its own namespace.
+
+### Dashboard
 ```
 helm repo add reactiveops-stable https://charts.reactiveops.com/stable
 helm install reactiveops-stable/polaris --name polaris --namespace polaris
 ```
+
+### Webhook
+```
+helm repo add reactiveops-stable https://charts.reactiveops.com/stable
+helm install reactiveops-stable/polaris --name polaris --namespace polaris --set webhook.enable=true --set dashboard.enable=false
+```
+
 
 ## Configuration
 Parameter | Description | Default

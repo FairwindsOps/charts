@@ -3,9 +3,9 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ include "polaris.fullname" . }}-webhook
-  {{- if .Values.templateOnly -}}
+  {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
-  {{- end -}}
+  {{- end }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
 ---
@@ -61,9 +61,9 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
   name: {{ include "polaris.fullname" . }}-webhook
-  {{- if .Values.templateOnly -}}
+  {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
-  {{- end -}}
+  {{- end }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
 rules:
@@ -80,9 +80,9 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
   name: {{ include "polaris.fullname" . }}-webhook
-  {{- if .Values.templateOnly -}}
+  {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
-  {{- end -}}
+  {{- end }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
 roleRef:
