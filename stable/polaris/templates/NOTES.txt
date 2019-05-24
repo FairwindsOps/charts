@@ -4,10 +4,16 @@ Enjoy Polaris and smooth sailing!
 
 {{- if contains "ClusterIP" .Values.dashboard.service.type }}
 
+{{- if .Values.webhook.enable }}
+The webhook is now running. Any resources that violate Polaris policy will be rejected.
+{{- end }}
+
+{{- if .Values.dashboard.enable }}
 To view the dashboard execute this command:
 
 kubectl port-forward --namespace {{ .Release.Namespace }} svc/{{ include "polaris.fullname" . }}-dashboard 8080:80
 
-Then open http://localhost:8080 in your browser
+Then open http://localhost:8080 in your browser.
+{{- end }}
 
 {{- end }}
