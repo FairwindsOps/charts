@@ -4,6 +4,8 @@
 
 A repository of Helm charts. Modelled after https://github.com/helm/charts
 
+**Want to learn more?** ReactiveOps holds [office hours on Zoom](https://zoom.us/j/951540265) the first Friday of every month, at 12pm Eastern. You can also reach out via email at `opensource@reactiveops.com`
+
 ## Testing
 
 All charts are linted and tested using [Helm Chart Testing](https://github.com/helm/chart-testing)
