@@ -27,13 +27,13 @@ Parameter | Description | Default
 `dashboard.replicas` | Number of replicas | 1
 `dashboard.service.type` | Service type | ClusterIP
 `dashboard.image.repository` | Image repo | quay.io/reactiveops/polaris
-`dashboard.image.tag` | Image tag | 0.1.5
+`dashboard.image.tag` | Image tag | 0.2
 `dashboard.image.pullPolicy` | Image pull policy | Always
 `webhook.enable` | Whether to run the dashboard | true
 `webhook.replicas` | Number of replicas | 1
 `webhook.service.type` | Service type | ClusterIP
 `webhook.image.repository` | Image repo | quay.io/reactiveops/polaris
-`webhook.image.tag` | Image tag | 0.1.5
+`webhook.image.tag` | Image tag | 0.2
 `webhook.image.pullPolicy` | Image pull policy | Always
 `rbac.create` | Whether to create RBAC | true
 `templateOnly` | | false
