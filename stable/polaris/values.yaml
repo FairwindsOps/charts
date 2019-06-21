@@ -53,6 +53,12 @@ dashboard:
     tag: 0.2
     pullPolicy: Always
 
+ingress:
+  enabled: false
+  hostname: ""
+  class: ""
+
+
 webhook:
   enable: false
   replicas: 1
