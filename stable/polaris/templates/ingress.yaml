@@ -1,0 +1,21 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+  labels:
+    app.kubernetes.io/name: {{ include "polaris.name" . }}
+    helm.sh/chart: {{ include "polaris.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  name: polaris
+spec:
+  rules:
+  - host: {{ .Values.ingress.hostname }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ include "polaris.fullname" . }}-dashboard
+          servicePort: 80
+        path: /
+{{- end -}}
