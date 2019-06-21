@@ -55,8 +55,9 @@ dashboard:
 
 ingress:
   enabled: false
-  hostname: ""
-  class: ""
+  hosts: []
+  annotations: {}
+  tls:
 
 
 webhook:

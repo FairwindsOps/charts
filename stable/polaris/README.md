@@ -40,3 +40,6 @@ Parameter | Description | Default
 `ingress.enabled` | Whether to enable ingress to the dashboard | false
 `ingress.hostname` | The hostname to reach the ingress with | 
 `ingress.class` | The ingress class of the ingress controller |
+`ingress.tls` | ingress tls configuration |
+`ingress.hosts` | Web ingress hostnames | []
+`ingress.annotations` | Web ingress annotations | {}
