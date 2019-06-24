@@ -1,0 +1,29 @@
+{{- if .Values.ingress.enabled -}}
+{{ $serviceName := printf "%s-dashboard" (include "polaris.fullname" .) -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    {{- range $key, $value := .Values.ingress.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
+  labels:
+    app.kubernetes.io/name: {{ include "polaris.name" . }}
+    helm.sh/chart: {{ include "polaris.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+  name: polaris
+spec:
+  rules:
+  {{- range .Values.ingress.hosts }}
+  - host: {{ . }}
+    http:
+      paths:
+      - backend:
+          serviceName: {{ $serviceName }}
+          servicePort: 80
+  {{- end -}}
+{{- if .Values.ingress.tls }}
+  tls:
+{{ toYaml .Values.ingress.tls | indent 4 }}
+{{- end -}}
+{{- end -}}

@@ -37,3 +37,7 @@ Parameter | Description | Default
 `webhook.image.pullPolicy` | Image pull policy | Always
 `rbac.create` | Whether to create RBAC | true
 `templateOnly` | | false
+`ingress.enabled` | Whether to enable ingress to the dashboard | false
+`ingress.hosts` | Web ingress hostnames | []
+`ingress.tls` | ingress tls configuration |
+`ingress.annotations` | Web ingress annotations | {}
