@@ -68,6 +68,15 @@ webhook:
     tag: 0.2
     pullPolicy: Always
 
+audit:
+  enable: false
+  cleanup: false
+  outputURL: ""
+  image:
+    repository: quay.io/reactiveops/polaris
+    tag: 0.2
+    pullPolicy: Always
+
 rbac:
   create: true
 
