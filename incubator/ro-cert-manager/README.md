@@ -8,7 +8,7 @@ Installs the necessary additional items that the cert-manager chart lacks.
 
 When this chart is installed too quickly after versions 0.6+ of the cert-manager chart, the cert-manager validating webhook may not yet be initialized, making cert-manager incapable of creating Clusterissuer objects.
 
-Until this chart is updated to address this issue, we recommendseting `cert-manager.enabled` to `false` for this chart, and installing the cert-manager chart separately. Allow one minute for the cert-manager webhook to initialize before installing this chart.
+Until this chart is updated to address this issue, we recommend setting `cert-manager.enabled` to `false` for this chart, and installing the cert-manager chart separately. Allow one minute for the cert-manager webhook to initialize before installing this chart.
 
 For discussion and updates, see [this issue](https://github.com/reactiveops/charts/issues/97).
 
