@@ -29,12 +29,18 @@ Parameter | Description | Default
 `dashboard.image.repository` | Image repo | quay.io/reactiveops/polaris
 `dashboard.image.tag` | Image tag | 0.2
 `dashboard.image.pullPolicy` | Image pull policy | Always
-`webhook.enable` | Whether to run the dashboard | true
+`webhook.enable` | Whether to run the dashboard | false
 `webhook.replicas` | Number of replicas | 1
 `webhook.service.type` | Service type | ClusterIP
 `webhook.image.repository` | Image repo | quay.io/reactiveops/polaris
 `webhook.image.tag` | Image tag | 0.2
 `webhook.image.pullPolicy` | Image pull policy | Always
+`audit.enable` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others | false
+`audit.outputURL` | A URL which will receive a POST request with audit results | ""
+`audit.cleanup` | Whether to delete the namespace once the audit is finished | false
+`audit.image.repository` | Image repo | quay.io/reactiveops/polaris
+`audit.image.tag` | Image tag | 0.2
+`audit.image.pullPolicy` | Image pull policy | Always
 `rbac.create` | Whether to create RBAC | true
 `templateOnly` | | false
 `ingress.enabled` | Whether to enable ingress to the dashboard | false
