@@ -27,7 +27,7 @@ Parameter | Description | Default
 `dashboard.replicas` | Number of replicas | 1
 `dashboard.service.type` | Service type | ClusterIP
 `dashboard.image.repository` | Image repo | quay.io/reactiveops/polaris
-`dashboard.image.tag` | Image tag | 0.2
+`dashboard.image.tag` | Image tag | 0.3
 `dashboard.image.pullPolicy` | Image pull policy | Always
 `dashboard.nodeSelector` | Dashboard pod nodeSelector | {}
 `dashboard.tolerations` | Dashboard pod tolerations | []
@@ -35,7 +35,7 @@ Parameter | Description | Default
 `webhook.replicas` | Number of replicas | 1
 `webhook.service.type` | Service type | ClusterIP
 `webhook.image.repository` | Image repo | quay.io/reactiveops/polaris
-`webhook.image.tag` | Image tag | 0.2
+`webhook.image.tag` | Image tag | 0.3
 `webhook.image.pullPolicy` | Image pull policy | Always
 `webhook.nodeSelector` | Webhook pod nodeSelector | {}
 `webhook.tolerations` | Webhook pod tolerations | []
@@ -43,7 +43,7 @@ Parameter | Description | Default
 `audit.outputURL` | A URL which will receive a POST request with audit results | ""
 `audit.cleanup` | Whether to delete the namespace once the audit is finished | false
 `audit.image.repository` | Image repo | quay.io/reactiveops/polaris
-`audit.image.tag` | Image tag | 0.2
+`audit.image.tag` | Image tag | 0.3
 `audit.image.pullPolicy` | Image pull policy | Always
 `rbac.create` | Whether to create RBAC | true
 `templateOnly` | | false

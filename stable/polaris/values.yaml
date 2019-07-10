@@ -50,7 +50,7 @@ dashboard:
     type: ClusterIP
   image:
     repository: quay.io/reactiveops/polaris
-    tag: 0.2
+    tag: 0.3
     pullPolicy: Always
   nodeSelector: {}
   tolerations: []
@@ -67,7 +67,7 @@ webhook:
   replicas: 1
   image:
     repository: quay.io/reactiveops/polaris
-    tag: 0.2
+    tag: 0.3
     pullPolicy: Always
   nodeSelector: {}
   tolerations: []
@@ -78,7 +78,7 @@ audit:
   outputURL: ""
   image:
     repository: quay.io/reactiveops/polaris
-    tag: 0.2
+    tag: 0.3
     pullPolicy: Always
 
 rbac:
