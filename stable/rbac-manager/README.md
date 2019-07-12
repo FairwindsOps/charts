@@ -1,4 +1,5 @@
 # RBAC Manager
+
 [RBAC Manager](https://reactiveops.github.io/rbac-manager/) was designed to simplify authorization in Kubernetes. This is an operator that supports declarative configuration for RBAC with new custom resources. Instead of managing role bindings or service accounts directly, you can specify a desired state and RBAC Manager will make the necessary changes to achieve that state.
 
 This project has three main goals:
@@ -10,6 +11,7 @@ This project has three main goals:
 More information about RBAC Manager is available on [GitHub](https://github.com/reactiveops/rbac-manager) as well as from the [official documentation](https://reactiveops.github.io/rbac-manager/).
 
 ## Installation
+
 We recommend installing rbac-manager in its own namespace and a simple release name:
 
 ```
@@ -18,23 +20,26 @@ helm install reactiveops-stable/rbac-manager --name rbac-manager --namespace rba
 ```
 
 ## Prerequisites
+
 Kubernetes 1.8+, Helm 2.10+
 
 ## Configuration
-Parameter | Description | Default
---- | --- | ---
-`image.repository` | Docker image repo  | `quay.io/reactiveops/rbac-manager`
-`image.tag` | Docker image tag  | `0.4.3`
-`image.pullPolicy` | Docker image pull policy  | `Always`
-`resources.requests.cpu` | CPU resource request | `100m`
-`resources.requests.memory` | Memory resource request | `128Mi`
-`resources.limits.cpu` | CPU resource limit | `100m`
-`resources.limits.memory` | Memory resource limit | `128Mi`
-`nodeSelector` | Deployment nodeSelector | `{}`
-`tolerations` | Deployment tolerations | `[]`
-`affinity` | Deployment affinity | `{}`
+
+| Parameter                   | Description              | Default                            |
+| --------------------------- | ------------------------ | ---------------------------------- |
+| `image.repository`          | Docker image repo        | `quay.io/reactiveops/rbac-manager` |
+| `image.tag`                 | Docker image tag         | `0.7.0`                            |
+| `image.pullPolicy`          | Docker image pull policy | `Always`                           |
+| `resources.requests.cpu`    | CPU resource request     | `100m`                             |
+| `resources.requests.memory` | Memory resource request  | `128Mi`                            |
+| `resources.limits.cpu`      | CPU resource limit       | `100m`                             |
+| `resources.limits.memory`   | Memory resource limit    | `128Mi`                            |
+| `nodeSelector`              | Deployment nodeSelector  | `{}`                               |
+| `tolerations`               | Deployment tolerations   | `[]`                               |
+| `affinity`                  | Deployment affinity      | `{}`                               |
 
 ## Upgrading to Chart Version 1.0.0
+
 The upgrade to version 1.0.0 of this chart removes support for installing RBAC Definitions as part of the chart values. This change was made to simplify CRD installation with Helm. We recommend installing RBAC Definitions separately from the chart.
 
 For backwards compatibility with the chart originally included in the rbac-manager repository, we've removed the Helm `install-crd` hook from this chart. Unfortunately as part of improving backwards compatibility with the chart in the rbac-manager repository, we have made it more difficult to upgrade from the inital versions of the charts here.
