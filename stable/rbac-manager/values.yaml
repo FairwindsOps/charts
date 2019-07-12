@@ -1,7 +1,8 @@
 image:
   repository: quay.io/reactiveops/rbac-manager
-  tag: 0.6.1
+  tag: 0.7.0
   pullPolicy: Always
+
 resources:
   requests:
     cpu: 100m
@@ -9,6 +10,9 @@ resources:
   limits:
     cpu: 100m
     memory: 128Mi
+
 nodeSelector: {}
+
 tolerations: []
+
 affinity: {}
