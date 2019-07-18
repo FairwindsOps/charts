@@ -16,7 +16,6 @@ Switching backends requires using a matching image as well as some backend-speci
 | `elasticsearch.host` | `instance-name.region.es.amazonaws.com` |
 | `elasticsearch.port` | `443` |
 | `elasticsearch.scheme` | `https` |
-| `elasticsearch.extraArgs` | [] |
 | `elasticsearch.chunk_limit_size` | `5m` |
 | `elasticsearch.chunk_limit_records` | `100` |
 | `elasticsearch.overflow_action` | `throw_exception` |
@@ -52,3 +51,4 @@ Switching backends requires using a matching image as well as some backend-speci
 | `log_level` | Log level | `error` |
 | `additional_filters_and_sources` | Custom additional fluentd configuration | `""` |
 | `updateStrategy` | DaemonSet updateStrategy | `{type: RollingUpdate, rollingUpdate: {maxUnavailable: 10}}` |
+| `pluginExtraArgs` | [] | Extra arguments to be added to the container|
