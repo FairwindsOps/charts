@@ -3,7 +3,7 @@
 #########################
 image:
   repository: fluent/fluentd-kubernetes-daemonset
-  tag: v0.12.43-debian-elasticsearch
+  tag: v1.4.2-debian-elasticsearch-1.1
   pullPolicy: Always
 
 elasticsearch:
@@ -11,15 +11,14 @@ elasticsearch:
   host: instance-name.region.es.amazonaws.com
   port: 443
   scheme: https
-  extraArgs: []
   # This is set low to accomodate m4.large ES clusters that have a 10m client body limit
-  buffer_chunk_limit: 5m
+  chunk_limit_size: 5m
   # buffer_queue_limit * buffer_chunk_limit ~= total memory usage for the buffer
-  buffer_queue_limit: 100
+  chunk_limit_records: 100
   flush_interval: 5s
-  num_threads: 4
-  request_timeout: 20s
-  buffer_queue_full_action: exception
+  flush_thread_count: 4
+  retry_timeout: 20s
+  overflow_action: throw_exception
 
 ######################
 ##    Papertrail    ##
@@ -33,12 +32,15 @@ papertrail:
   enabled: false
   host: logs3.papertrailapp.com
   port: 12785
-  extraArgs: []
 
 
 #####################
 ## Shared Settings ##
 #####################
+
+
+#plugin command extra args
+pluginExtraArgs: []
 
 # Verify Kubernetes API TLS certs
 # set to false if you're running in a cluster on alibaba or other places with api cert issues
