@@ -11,7 +11,7 @@ Switching backends requires using a matching image as well as some backend-speci
 | Parameter | Default |
 | --------- | ------- |
 | `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
-| `image.tag` | `v0.12.43-debian-elasticsearch` |
+| `image.tag` | `v1.4.2-debian-elasticsearch-1.1` |
 | `elasticsearch.enabled` |  `true` |
 | `elasticsearch.host` | `instance-name.region.es.amazonaws.com` |
 | `elasticsearch.port` | `443` |
@@ -33,7 +33,7 @@ Switching backends requires using a matching image as well as some backend-speci
 | `papertrail.enabled` | `true` |
 | `papertrail.host` | `logs3.papertrailapp.com` |
 | `papertrail.port` | `12785` |
-| `papertrail.extraArgs` | [] |
+| `papertrail.flush_thread_count` | `4` |
 
 ## Other Values
 

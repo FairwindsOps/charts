@@ -25,13 +25,14 @@ elasticsearch:
 ######################
 # image:
 #   repository: fluent/fluentd-kubernetes-daemonset
-#   tag: v0.12.43-debian-papertrail
+#   tag: v1.4.2-debian-papertrail-1.1
 #   pullPolicy: IfNotPresent
 #
 papertrail:
   enabled: false
   host: logs3.papertrailapp.com
   port: 12785
+  flush_thread_count: 4
 
 
 #####################
