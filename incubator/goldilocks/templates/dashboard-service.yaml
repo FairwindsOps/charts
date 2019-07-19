@@ -1,0 +1,23 @@
+{{- if .Values.dashboard.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "goldilocks.fullname" . }}-dashboard
+  labels:
+    app.kubernetes.io/name: {{ include "goldilocks.name" . }}
+    helm.sh/chart: {{ include "goldilocks.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: dashboard
+spec:
+  type: {{ .Values.dashboard.service.type }}
+  ports:
+    - port: {{ .Values.dashboard.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: {{ include "goldilocks.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/component: dashboard
+{{- end }}

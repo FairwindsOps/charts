@@ -1,0 +1,40 @@
+{{- if .Values.controller.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ include "goldilocks.fullname" . }}-controller
+  labels:
+    app.kubernetes.io/name: {{ include "goldilocks.name" . }}
+    helm.sh/chart: {{ include "goldilocks.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: controller
+rules:
+  - apiGroups:
+      - 'apps'
+      - 'extensions'
+    resources:
+      - 'deployments'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  - apiGroups:
+      - ''
+    resources:
+      - 'namespaces'
+      - 'pods'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  - apiGroups:
+      - 'autoscaling.k8s.io'
+    resources:
+      - 'verticalpodautoscalers'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'create'
+      - 'delete'
+{{- end }}
