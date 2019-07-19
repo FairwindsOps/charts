@@ -1,0 +1,9 @@
+apiVersion: v1
+appVersion: "1.2.2"
+description: A Helm chart for running Fairwinds Goldilocks
+name: goldilocks
+version: 0.1.0
+maintainers:
+  - name: sudermanjr
+  - name: dosullivan
+  - name: mgoodhart5
