@@ -1,0 +1,3 @@
+# For testing, make sure to install the vpa controller
+
+installVPA: true
