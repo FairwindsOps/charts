@@ -10,8 +10,8 @@ sources:
   - https://github.com/reactiveops/rbac-manager
 maintainers:
   - name: ejether
-    email: ej@reactiveops.com
+    email: ej@fairwinds.com
   - name: robscott
   - name: sudermanjr
-    email: andy@reactiveops.com
+    email: andy@fairwinds.com
 engine: gotpl
