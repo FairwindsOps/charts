@@ -1,10 +1,8 @@
-[![CircleCI](https://circleci.com/gh/reactiveops/charts/tree/master.svg?style=svg)](https://circleci.com/gh/reactiveops/charts/tree/master)
-
-# ReactiveOps Charts
+# Fairwinds Charts [![CircleCI](https://circleci.com/gh/FairwindsOps/charts/tree/master.svg?style=svg)](https://circleci.com/gh/FairwindsOps/charts/tree/master)
 
 A repository of Helm charts. Modelled after https://github.com/helm/charts
 
-**Want to learn more?** ReactiveOps holds [office hours on Zoom](https://zoom.us/j/242508205) the first Friday of every month, at 12pm Eastern. You can also reach out via email at `opensource@fairwinds.com`
+**Want to learn more?** Fairwinds holds [office hours on Zoom](https://zoom.us/j/242508205) the first Friday of every month, at 12pm Eastern. You can also reach out via email at `opensource@fairwinds.com`
 
 ## Testing
 
@@ -23,8 +21,8 @@ Charts are installed into a [kind](https://github.com/kubernetes-sigs/kind) clus
 To install a chart from this repo, you can add it as a [helm repository](https://github.com/helm/helm/blob/master/docs/chart_repository.md)
 
 ```
-helm repo add reactiveops-stable https://charts.reactiveops.com/stable
-helm search reactiveops-stable
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm search fairwinds-stable
 ```
 
 ## Organization
@@ -35,7 +33,7 @@ These charts are considered stable for public consumption and use.
 
 ## Incubator
 
-These charts are considered `alpha` or `beta` and are not intended for public consumption outside of ReactiveOps.  They are frequently for very specific use-cases and can be broken at any time without warning.  There are absolutely no guarantees in this folder.
+These charts are considered `alpha` or `beta` and are not intended for public consumption outside of Fairwinds.  They are frequently for very specific use-cases and can be broken at any time without warning.  There are absolutely no guarantees in this folder.
 
 ## Scripts
 
