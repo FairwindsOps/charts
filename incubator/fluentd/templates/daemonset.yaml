@@ -66,7 +66,7 @@ spec:
           - --gemfile
           - /fluentd/Gemfile
           - --no-supervisor
-          {{- range .Values.elasticsearch.extraArgs }}
+          {{- range .Values.pluginExtraArgs }}
           - {{ . | quote }}
           {{- end }}
         env:

@@ -11,18 +11,17 @@ Switching backends requires using a matching image as well as some backend-speci
 | Parameter | Default |
 | --------- | ------- |
 | `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
-| `image.tag` | `v0.12.43-debian-elasticsearch` |
+| `image.tag` | `v1.4.2-debian-elasticsearch-1.1` |
 | `elasticsearch.enabled` |  `true` |
 | `elasticsearch.host` | `instance-name.region.es.amazonaws.com` |
 | `elasticsearch.port` | `443` |
 | `elasticsearch.scheme` | `https` |
-| `elasticsearch.extraArgs` | [] |
-| `elasticsearch.buffer_chunk_limit` | `5m` |
-| `elasticsearch.buffer_queue_limit` | `100` |
-| `elasticsearch.buffer_queue_full_action` | `exception` |
-| `elasticsearch.request_timeout` | `20s` |
+| `elasticsearch.chunk_limit_size` | `5m` |
+| `elasticsearch.chunk_limit_records` | `100` |
+| `elasticsearch.overflow_action` | `throw_exception` |
+| `elasticsearch.retry_timeout` | `20s` |
 | `elasticsearch.flush_interval` | `5s` |
-| `elasticsearch.num_threads` | `4` |
+| `elasticsearch.flush_thread_count` | `4` |
 
 
 ### Papertrail
@@ -30,11 +29,11 @@ Switching backends requires using a matching image as well as some backend-speci
 | Parameter | Default |
 | --------- | ------- |
 | `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
-| `image.tag` | `v0.12.43-debian-papertrail` |
+| `image.tag` | `v1.4.2-debian-papertrail-1.1` |
 | `papertrail.enabled` | `true` |
 | `papertrail.host` | `logs3.papertrailapp.com` |
 | `papertrail.port` | `12785` |
-| `papertrail.extraArgs` | [] |
+| `papertrail.flush_thread_count` | `4` |
 
 ## Other Values
 
@@ -52,3 +51,4 @@ Switching backends requires using a matching image as well as some backend-speci
 | `log_level` | Log level | `error` |
 | `additional_filters_and_sources` | Custom additional fluentd configuration | `""` |
 | `updateStrategy` | DaemonSet updateStrategy | `{type: RollingUpdate, rollingUpdate: {maxUnavailable: 10}}` |
+| `pluginExtraArgs` | [] | Extra arguments to be added to the container|
