@@ -42,7 +42,13 @@ config: |
           - SYS_CHROOT
           - KILL
           - AUDIT_WRITE
-
+  controllers_to_scan:
+    - Deployments
+    - StatefulSets
+    - DaemonSets
+    - Jobs
+    - CronJobs
+    - ReplicationControllers
 dashboard:
   enable: true
   replicas: 1
@@ -50,7 +56,7 @@ dashboard:
     type: ClusterIP
   image:
     repository: quay.io/reactiveops/polaris
-    tag: 0.2
+    tag: 0.4
     pullPolicy: Always
   nodeSelector: {}
   tolerations: []
@@ -67,7 +73,7 @@ webhook:
   replicas: 1
   image:
     repository: quay.io/reactiveops/polaris
-    tag: 0.2
+    tag: 0.4
     pullPolicy: Always
   nodeSelector: {}
   tolerations: []
@@ -78,7 +84,7 @@ audit:
   outputURL: ""
   image:
     repository: quay.io/reactiveops/polaris
-    tag: 0.2
+    tag: 0.4
     pullPolicy: Always
 
 rbac:

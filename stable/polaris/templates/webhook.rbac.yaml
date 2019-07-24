@@ -16,12 +16,32 @@ metadata:
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
 rules:
+  # auditor rules rbac
   - apiGroups:
       - 'apps'
       - 'extensions'
     resources:
       - 'deployments'
       - 'statefulsets'
+      - 'daemonsets'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'batch'
+    resources:
+      - 'jobs'
+      - 'cronjobs'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - ''
+    resources:
+      - 'nodes'
+      - 'namespaces'
+      - 'pods'
+      - 'replicationcontrollers'
     verbs:
       - 'get'
       - 'list'
