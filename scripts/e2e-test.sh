@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Copyright 2018 ReactiveOps. All rights reserved.
+# Copyright 2018 FairwindsOps Inc. All rights reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -89,7 +89,7 @@ prep_tests () {
 
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
 
-    docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/reactiveops/charts && cd charts && git remote add ro https://github.com/reactiveops/charts  &> /dev/null || true'
+    docker exec "$EXEC_CONTAINER_NAME" sh -c 'git clone https://github.com/FairwindsOps/charts && cd charts && git remote add ro https://github.com/FairwindsOps/charts  &> /dev/null || true'
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git fetch ro master'
     if [ -z "${CIRCLE_PR_NUMBER:-}" ]; then
         docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && git checkout $CI_REF"
@@ -107,7 +107,7 @@ prep_tests_local () {
 
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'helm version'
     docker cp . "$EXEC_CONTAINER_NAME":/workdir/charts/
-    docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git remote | xargs -n 1 git remote remove && git remote add ro https://github.com/reactiveops/charts && git fetch ro master'
+    docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git remote | xargs -n 1 git remote remove && git remote add ro https://github.com/FairwindsOps/charts && git fetch ro master'
 }
 
 

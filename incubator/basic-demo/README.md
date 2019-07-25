@@ -9,7 +9,7 @@ Credit for the app goes to [ehazlett](https://github.com/ehazlett/docker-demo)
 | Parameter | Description | Default | Required |
 | --------- | ----------- | ------- | -------- |
 | `affinity` | Pod Affinity  | `{}` | no |
-| `demo.metadata` | Flavor text on demo app page  | `ehazlett/docker-demo - Chart by ReactiveOps` | |
+| `demo.metadata` | Flavor text on demo app page  | `ehazlett/docker-demo - Chart by Fairwinds` | |
 | `demo.refreshInterval` | How often the demo frontend should refresh (ms)  | `500` | yes |
 | `demo.title` | Title on the demo app page | `Kuberneteseckoner Demo` | no |
 | `hpa.max` | Maximum replicas  | `20` | yes |

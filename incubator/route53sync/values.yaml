@@ -12,7 +12,7 @@ sync:
   source_zone_id: ''
   dest_zone_id: ''
   check_dest_tag: "False"
-  dest_tag: "Author:ReactiveOps"
+  dest_tag: "Author:Fairwinds"
 
 nodeSelector: {}
 

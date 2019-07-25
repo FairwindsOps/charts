@@ -20,10 +20,10 @@ set -o pipefail
 
 readonly HELM_URL=https://storage.googleapis.com/kubernetes-helm
 readonly HELM_TARBALL=helm-v2.12.3-linux-amd64.tar.gz
-readonly STABLE_REPO_URL=https://charts.reactiveops.com/stable/
-readonly INCUBATOR_REPO_URL=https://charts.reactiveops.com/incubator/
-readonly S3_BUCKET_STABLE=s3://charts.reactiveops.com/stable
-readonly S3_BUCKET_INCUBATOR=s3://charts.reactiveops.com/incubator
+readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
+readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
+readonly S3_BUCKET_STABLE=s3://charts.fairwinds.com/stable
+readonly S3_BUCKET_INCUBATOR=s3://charts.fairwinds.com/incubator
 
 main() {
     setup_helm_client
@@ -46,8 +46,8 @@ setup_helm_client() {
     PATH="$(pwd)/linux-amd64/:$PATH"
 
     helm init --client-only
-    helm repo add reactiveops-stable "$STABLE_REPO_URL"
-    helm repo add reactiveops-incubator "$INCUBATOR_REPO_URL"
+    helm repo add fairwinds-stable "$STABLE_REPO_URL"
+    helm repo add fairwinds-incubator "$INCUBATOR_REPO_URL"
 }
 
 authenticate() {

@@ -6,7 +6,7 @@ This chart will do the following:
 
 ## Container
 
-This version of the autospotting container is built and maintained by ReactiveOps in [reactiveops/autospotting-ci](https://github.com/reactiveops/autospotting-ci).  The appVersion and the container tag correspond to tags on that repository.
+This version of the autospotting container is built and maintained by Fairwinds in [fairwinds/autospotting-ci](https://github.com/FairwindsOps/autospotting-ci).  The appVersion and the container tag correspond to tags on that repository.
 
 ## Configuration
 | Parameter               | Description                           | Default                                                    |
@@ -41,7 +41,7 @@ This version of the autospotting container is built and maintained by ReactiveOp
 charts:
   autospotting:
     repository:
-      git: https://github.com/reactiveops/autospotting-ci.git
+      git: https://github.com/FairwindsOps/autospotting-ci.git
     chart: chart
     namespace: default
     values:

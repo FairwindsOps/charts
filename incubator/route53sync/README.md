@@ -17,4 +17,4 @@ The following table lists the configurable parameters of the route53sync chart a
 | `sync.source_zone_id` | The Route53 Zone ID of the source | `''` | yes |
 | `sync.dest_zone_id` | The Route53 Zone ID of the destination | `''` | yes |
 | `sync.check_dest_tag` | Whether or not the script should verify a tag on the destination zone. | `"False"` | no |
-| `sync.dest_tag` | If sync.check_dest_tag is True, this tag will be required on the destination zone in order to run the sync. | `"Author:ReactiveOps"` | no |
+| `sync.dest_tag` | If sync.check_dest_tag is True, this tag will be required on the destination zone in order to run the sync. | `"Author:Fairwinds"` | no |

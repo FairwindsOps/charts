@@ -32,7 +32,7 @@ jobs:
       - run:
           name: lint
           command: |
-            git remote add ro https://github.com/reactiveops/charts
+            git remote add ro https://github.com/FairwindsOps/charts
             git fetch ro master
             ct lint --config scripts/ct.yaml  --chart-yaml-schema scripts/schema.yaml
   e2e-tests:

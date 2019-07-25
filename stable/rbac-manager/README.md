@@ -1,6 +1,6 @@
 # RBAC Manager
 
-[RBAC Manager](https://reactiveops.github.io/rbac-manager/) was designed to simplify authorization in Kubernetes. This is an operator that supports declarative configuration for RBAC with new custom resources. Instead of managing role bindings or service accounts directly, you can specify a desired state and RBAC Manager will make the necessary changes to achieve that state.
+[RBAC Manager](https://fairwinds.github.io/rbac-manager/) was designed to simplify authorization in Kubernetes. This is an operator that supports declarative configuration for RBAC with new custom resources. Instead of managing role bindings or service accounts directly, you can specify a desired state and RBAC Manager will make the necessary changes to achieve that state.
 
 This project has three main goals:
 
@@ -8,15 +8,15 @@ This project has three main goals:
 2. Reduce the amount of configuration required for great auth.
 3. Enable automation of RBAC configuration updates with CI/CD.
 
-More information about RBAC Manager is available on [GitHub](https://github.com/reactiveops/rbac-manager) as well as from the [official documentation](https://reactiveops.github.io/rbac-manager/).
+More information about RBAC Manager is available on [GitHub](https://github.com/FairwindsOps/rbac-manager) as well as from the [official documentation](https://fairwinds.github.io/rbac-manager/).
 
 ## Installation
 
 We recommend installing rbac-manager in its own namespace and a simple release name:
 
 ```
-helm repo add reactiveops-stable https://charts.reactiveops.com/stable
-helm install reactiveops-stable/rbac-manager --name rbac-manager --namespace rbac-manager
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install fairwinds-stable/rbac-manager --name rbac-manager --namespace rbac-manager
 ```
 
 ## Prerequisites
@@ -53,9 +53,9 @@ If either of the following apply and you are upgrading from an earlier version o
 
 The following process has worked repeatedly for us to upgrade from an older version of this chart to 1.0.0. These steps worked with Helm and Tiller 2.12.3 for us, but due to the absurdity of this process, we can't guarantee it will work for you.
 
-1. Install rbac-manager with chart that uses install-crd hook (reactiveops-stable/rbac-manager@0.2.1)
-2. Upgrade to rbac-manager chart that doesn't use install-crd hook (reactiveops-stable/rbac-manager@1.0.0) - this upgrade fails but is important later
-3. Upgrade to original rbac-manager chart that uses install-crd hook (reactiveops-stable/rbac-manager@0.2.1) - this works
+1. Install rbac-manager with chart that uses install-crd hook (fairwinds-stable/rbac-manager@0.2.1)
+2. Upgrade to rbac-manager chart that doesn't use install-crd hook (fairwinds-stable/rbac-manager@1.0.0) - this upgrade fails but is important later
+3. Upgrade to original rbac-manager chart that uses install-crd hook (fairwinds-stable/rbac-manager@0.2.1) - this works
 4. Rollback to revision 2 - this fails
 5. Rollback to revision 2 - this works
 
