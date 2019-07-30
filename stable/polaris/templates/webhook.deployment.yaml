@@ -80,13 +80,21 @@ spec:
               mountPath: /tmp/
               readOnly: false
       serviceAccountName:  {{ include "polaris.fullname" . }}-webhook
+      nodeSelector:
+      {{- with .Values.webhook.nodeSelector }}
+{{ toYaml . | indent 8 }}
+        {{- end }}
+      tolerations:
+      {{- with .Values.webhook.tolerations }}
+{{ toYaml . | indent 6 }}
+      {{- end }}
       volumes:
         - name: config
           configMap:
             name: {{ include "polaris.fullname" . }}
         - name: secret
           secret:
-            secretName: polaris-webhook
+            secretName: {{ include "polaris.fullname" . }}-webhook
         - name: cr-logs
           emptyDir: {}
 {{- end -}}

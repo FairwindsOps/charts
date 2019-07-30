@@ -52,6 +52,8 @@ dashboard:
     repository: quay.io/reactiveops/polaris
     tag: 0.2
     pullPolicy: Always
+  nodeSelector: {}
+  tolerations: []
 
 ingress:
   enabled: false
@@ -67,6 +69,8 @@ webhook:
     repository: quay.io/reactiveops/polaris
     tag: 0.2
     pullPolicy: Always
+  nodeSelector: {}
+  tolerations: []
 
 audit:
   enable: false
