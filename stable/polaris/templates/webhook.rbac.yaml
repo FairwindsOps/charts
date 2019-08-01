@@ -17,13 +17,11 @@ metadata:
     {{- include "polaris.labels" . | nindent 4 }}
 rules:
   - apiGroups:
-      - ''
       - 'apps'
       - 'extensions'
     resources:
       - 'deployments'
       - 'statefulsets'
-      - 'limitranges'
     verbs:
       - 'get'
       - 'list'
