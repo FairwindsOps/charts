@@ -25,6 +25,15 @@ rules:
     resources:
       - 'deployments'
       - 'statefulsets'
+      - 'daemonsets'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'batch'
+    resources:
+      - 'jobs'
+      - 'cronjobs'
     verbs:
       - 'get'
       - 'list'
@@ -34,6 +43,7 @@ rules:
       - 'nodes'
       - 'namespaces'
       - 'pods'
+      - 'replicationcontrollers'
     verbs:
       - 'get'
       - 'list'
