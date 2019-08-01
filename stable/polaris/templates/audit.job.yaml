@@ -21,7 +21,7 @@ spec:
         - polaris
         - --audit
         - --output-url
-        - "{{ required "Must set audit.outputURL in values if you enable the audit job." .Values.audit.outputURL }}"
+        - {{ required "Must set audit.outputURL in values if you enable the audit job." .Values.audit.outputURL }}
         - --output-file
         - /tmp/results/done
         - --config
