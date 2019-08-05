@@ -5,9 +5,10 @@ description: A Kubernetes operator that simplifies the management of Role Bindin
 keywords:
   - rbac
   - authorization
-home: https://reactiveops.github.io/rbac-manager/
+home: https://fairwindsops.github.io/rbac-manager/
 sources:
-  - https://github.com/reactiveops/rbac-manager
+  - https://github.com/FairwindsOps/charts/tree/master/stable/rbac-manager
+  - https://github.com/FairwindsOps/rbac-manager
 maintainers:
   - name: ejether
     email: ej@fairwinds.com
