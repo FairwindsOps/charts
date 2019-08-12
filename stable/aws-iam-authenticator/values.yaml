@@ -56,3 +56,12 @@ volumes:
 #     mapAccounts:
 #     - "012345678901"
 #     - "456789012345"
+
+
+resources:
+  requests:
+    memory: 20Mi
+    cpu: 10m
+  limits:
+    memory: 20Mi
+    cpu: 100m
