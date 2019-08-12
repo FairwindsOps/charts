@@ -45,13 +45,7 @@ spec:
         - --kubeconfig-pregenerated=true
 
         resources:
-          requests:
-            memory: 20Mi
-            cpu: 10m
-          limits:
-            memory: 20Mi
-            cpu: 100m
-
+{{ toYaml .Values.resources | indent 10 }}
         volumeMounts:
         - name: config
           mountPath: {{ .Values.volumes.config.mountPath }}
