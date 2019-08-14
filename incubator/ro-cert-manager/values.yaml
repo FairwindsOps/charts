@@ -11,6 +11,7 @@ clusterIssuers:
     enabled: true
     email: someone@example.com
     # issuerUrl: "" # Predefined for LetsEncrypt staging
+    basicAcme: true
     http:
       enabled: false
     dns:
@@ -48,12 +49,14 @@ clusterIssuers:
       #   someprovider:
       #     someparamOne: abc
       #     someparamTwo: xyz
+    solvers: []
 
   production:
     # clusterIssuerName: "" #optional
     enabled: true
     email: someone@example.com
     # issuerUrl: "" # Predefined for LetsEncrypt production
+    basicAcme: true
     http:
       enabled: false
     dns:
@@ -88,3 +91,4 @@ clusterIssuers:
       #   someprovider:
       #     someparamOne: abc
       #     someparamTwo: xyz
+    solvers: []
