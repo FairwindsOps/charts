@@ -6,7 +6,7 @@ installVPA: false
 
 image:
   repository: quay.io/fairwinds/goldilocks
-  tag: v1.2.3
+  tag: v1.2.4
   pullPolicy: Always
 
 nameOverride: ""
