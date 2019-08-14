@@ -17,4 +17,12 @@ rules:
     verbs:
       - 'get'
       - 'list'
+  - apiGroups:
+      - 'apps'
+      - 'extensions'
+    resources:
+      - 'deployments'
+    verbs:
+      - 'get'
+      - 'list'
 {{- end }}
