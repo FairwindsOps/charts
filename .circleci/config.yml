@@ -34,7 +34,7 @@ jobs:
           command: |
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
-            helm repo add https://charts.jetstack.io
+            helm repo add jetstack https://charts.jetstack.io
             ct lint --config scripts/ct.yaml  --chart-yaml-schema scripts/schema.yaml
   e2e-tests:
     docker:
