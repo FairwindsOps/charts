@@ -16,7 +16,6 @@ spec:
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: {{ $globalScope.Release.Name }}-staging-private-key
-    {{- if .basicAcme }}
     {{- if .http.enabled }}
     http01: {}
     {{- end }}
@@ -50,7 +49,6 @@ spec:
       {{- if .dns.inlineProviderConfigs }}
 {{ toYaml .dns.inlineProviderConfigs | indent 6 }}
       {{- end }}
-    {{- end }}
     {{- end }}
     {{- with .solvers }}
     solvers: {{ range . }}
