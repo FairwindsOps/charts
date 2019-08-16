@@ -55,7 +55,6 @@ clusterIssuers:
     enabled: true
     email: someone@example.com
     # issuerUrl: "" # Predefined for LetsEncrypt production
-    basicAcme: true
     http:
       enabled: false
     dns:
