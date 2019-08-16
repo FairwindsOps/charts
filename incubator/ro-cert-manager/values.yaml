@@ -48,7 +48,12 @@ clusterIssuers:
       #   someprovider:
       #     someparamOne: abc
       #     someparamTwo: xyz
-    solvers: []
+    solvers:
+      http:
+        enabled: false
+      dns:
+        # flag to enable/disable all dns configs
+        enabled: false
 
   production:
     # clusterIssuerName: "" #optional
@@ -89,4 +94,9 @@ clusterIssuers:
       #   someprovider:
       #     someparamOne: abc
       #     someparamTwo: xyz
-    solvers: []
+    solvers:
+      http:
+        enabled: false
+      dns:
+        # flag to enable/disable all dns configs
+        enabled: false

@@ -50,16 +50,52 @@ spec:
 {{ toYaml .dns.inlineProviderConfigs | indent 6 }}
       {{- end }}
     {{- end }}
+    {{- if or .solvers.dns.enabled .solvers.http.enabled }}
     {{- with .solvers }}
-    solvers: {{ range . }}
-    {{- if .selector }}
+    solvers:
+    {{- if .http.enabled }}
+    {{- if .http.selector }}
     - selector:
-{{ toYaml .selector | trim | indent 8 }}
+{{ toYaml .http.selector | trim | indent 8 }}
     {{- else }}
     - selector: {}
     {{- end}}
-      {{ .type }}:
-{{ toYaml .provider | trim | indent 8 }}
+      http01: {}
+    {{- end }}
+    {{- if .dns.enabled }}
+    {{- if .dns.selector }}
+    - selector:
+{{ toYaml .dns.selector | trim | indent 8 }}
+    {{- else }}
+    - selector: {}
+    {{- end}}
+      dns01:
+      {{- with .dns.googleCloudDNS }}
+        clouddns:
+        {{- if .secretName }}
+          serviceAccountSecretRef:
+            name: {{ .secretName }}
+            key: {{ .secretKey }}
+        {{- end }}
+          project: {{ .gcpProject }}
+      {{- end }}
+      {{- with .dns.amazonRoute53 }}
+        route53:
+          region: {{ .region }}
+          {{- if .hostedZoneID }}
+          hostedZoneID: {{ .hostedZoneID }}
+          {{- end }}
+          {{- if .secretName }}
+          accessKeyID: {{ .accessKeyID }}
+          secretAccessKeySecretRef:
+            name: {{ .secretName }}
+            key: {{ .secretKey }}
+          {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- if .dns.inlineProviderConfigs }}
+{{ toYaml .dns.inlineProviderConfigs | indent 8 }}
+      {{- end }}
     {{- end }}
     {{- end }}
 {{- end }}
