@@ -65,6 +65,13 @@ setup_tiller () {
     docker exec "$EXEC_CONTAINER_NAME" helm init --wait --upgrade --service-account tiller --tiller-namespace "${TILLER_NAMESPACE}"
 }
 
+setup_repos () {
+    # Sometimes external helm repositories will be needed. Set them up here.
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "helm repo add jetstack https://charts.jetstack.io"
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "helm repo add rimusz https://charts.rimusz.net"
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "helm repo update"
+}
+
 install_hostpath-provisioner() {
     # https://github.com/helm/chart-testing/blob/master/examples/kind/test/e2e-kind.sh
     # kind doesn't support Dynamic PVC provisioning yet, this one of ways to get it working
@@ -74,8 +81,6 @@ install_hostpath-provisioner() {
     docker exec "$EXEC_CONTAINER_NAME" sh -c "kubectl delete storageclass standard"
 
     echo "Install Hostpath Provisioner..."
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "helm repo add rimusz https://charts.rimusz.net"
-    docker exec "$EXEC_CONTAINER_NAME" sh -c "helm repo update"
     docker exec "$EXEC_CONTAINER_NAME" sh -c "helm upgrade --install hostpath-provisioner --namespace kube-system rimusz/hostpath-provisioner"
     echo
 }
@@ -127,6 +132,7 @@ if [ "$OPERATION" = "setup" ]; then
     setup_cluster
     setup_executor
     setup_tiller
+    setup_repos
     install_hostpath-provisioner
     printf "e2e testing environment is ready.\n"
 elif [ "$OPERATION" = "teardown" ] ; then
