@@ -3,7 +3,7 @@
 
 # Install the cert-manager for me.
 cert-manager:
-  enabled: false
+  enabled: true
 
 clusterIssuers:
   staging:
@@ -12,10 +12,10 @@ clusterIssuers:
     email: someone@example.com
     # issuerUrl: "" # Predefined for LetsEncrypt staging
     http:
-      enabled: false
+      enabled: true
     dns:
       # flag to enable/disable all dns configs
-      enabled: false
+      enabled: true
 
       # Google ClouDNS configurations (optional)
       #
@@ -50,7 +50,7 @@ clusterIssuers:
       #     someparamTwo: xyz
     solvers:
       http:
-        enabled: false
+        enabled: true
         # You can use a selector to determine what ingresses will utilize this solver: https://docs.cert-manager.io/en/latest/tasks/issuers/setup-acme/index.html#adding-multiple-solver-types
         # By default it will be set to selector: {} to match all ingresses. You can set up multiple solver types and use the selectors to determine which ingresses use which solver
         #
@@ -60,7 +60,7 @@ clusterIssuers:
         #
       dns:
         # flag to enable/disable all dns configs
-        enabled: false
+        enabled: true
         # You can use a selector to determine what ingresses will utilize this solver: https://docs.cert-manager.io/en/latest/tasks/issuers/setup-acme/index.html#adding-multiple-solver-types
         # By default it will be set to selector: {} to match all ingresses. You can set up multiple solver types and use the selectors to determine which ingresses use which solver
         #
