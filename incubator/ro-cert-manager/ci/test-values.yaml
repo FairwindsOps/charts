@@ -1,9 +1,11 @@
 cert-manager:
   enabled: false
 
+testCRD: true
+
 clusterIssuers:
   staging:
-    enabled: false
+    enabled: true
     email: someone@example.com
     http:
       enabled: false
@@ -15,7 +17,7 @@ clusterIssuers:
       dns:
         enabled: false
   production:
-    enabled: false
+    enabled: true
     email: someone@example.com
     http:
       enabled: false
