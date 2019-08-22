@@ -73,14 +73,14 @@ clusterIssuers:
         #   secretName: my-dns-service-account-kube-secret # kubernetes secret name in same namespace
         #   secretKey: credentials.json                    # key in the kubernetes secret with the service account creds
         #   gcpProject: myprojectname
-  
+
         # Amazon Route53 configurations (optional)
         #
         # amazonRoute53:
         #   name: route53                                   # name of provider for kind: Certificate resource
         #   region: us-east-2
         #   hostedZoneID: somethingsomethingplaceholder
-  
+
         # Inline provider configs provide the ability to define the provider block directly
         # instead of abstacting it
         #
@@ -157,14 +157,14 @@ clusterIssuers:
         #   secretName: my-dns-service-account-kube-secret # kubernetes secret name in same namespace
         #   secretKey: credentials.json                    # key in the kubernetes secret with the service account creds
         #   gcpProject: myprojectname
-  
+
         # Amazon Route53 configurations (optional)
         #
         # amazonRoute53:
         #   name: route53                                   # name of provider for kind: Certificate resource
         #   region: us-east-2
         #   hostedZoneID: somethingsomethingplaceholder
-  
+
         # Inline provider configs provide the ability to define the provider block directly
         # instead of abstacting it
         #
