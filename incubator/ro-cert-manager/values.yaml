@@ -5,6 +5,9 @@
 cert-manager:
   enabled: false
 
+# For testing only, do not use in a normal cluster
+testCRD: false
+
 clusterIssuers:
   staging:
     # clusterIssuerName: "" #optional
