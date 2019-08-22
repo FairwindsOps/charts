@@ -12,6 +12,12 @@ Until this chart is updated to address this issue, we recommend keeping the defa
 
 For discussion and updates, see [this issue](https://github.com/reactiveops/charts/issues/97).
 
+### Note on configuration with 0.8.0 and newer versions of cert-manager
+
+After upgrading to cert-manager 0.8.0 or higher, the `clusterIssuers.staging.http`, `clusterIssuers.staging.dns`, `clusterIssuers.production.http`, and `clusterIssuers.production.dns` can be removed, as the corresponding `solvers` sections will take their place. Until v1.0 of cert-manager, both configurations can be present to allow time for deprecating those old fields.
+
+The new `selector` fields within `solvers.http` and `solvers.dns` let you set up multiple solvers with different ingress selectors
+
 ## Configuration
 
 The following table lists the configurable parameters of the chart and their default values.
@@ -37,9 +43,3 @@ The following table lists the configurable parameters of the chart and their def
 | `clusterIssuers.production.solvers.http.selector` | Match ingresses with given selector | `{}` | no |
 | `clusterIssuers.production.solvers.dns.enabled` | Enables dns01 validation on production issuer. See [values.yaml](values.yaml) for configuration. | `false` | yes |
 | `clusterIssuers.production.solvers.dns.selector` | Match ingresses with given selector | `{}` | no |
-
-### Note on configuration with 0.8.0 and newer versions of cert-manager
-
-After upgrading to cert-manager 0.8.0 or higher, the `clusterIssuers.staging.http`, `clusterIssuers.staging.dns`, `clusterIssuers.production.http`, and `clusterIssuers.production.dns` can be removed, as the corresponding `solvers` sections will take their place. Until v1.0 of cert-manager, both configurations can be present to allow time for deprecating those old fields.
-
-The new `selector` fields within `solvers.http` and `solvers.dns` let you set up multiple solvers with different ingress selectors
