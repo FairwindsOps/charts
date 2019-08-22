@@ -1,0 +1,28 @@
+cert-manager:
+  enabled: false
+
+clusterIssuers:
+  staging:
+    enabled: false
+    email: someone@example.com
+    http:
+      enabled: false
+    dns:
+      enabled: false
+    solvers:
+      http:
+        enabled: false
+      dns:
+        enabled: false
+  production:
+    enabled: false
+    email: someone@example.com
+    http:
+      enabled: false
+    dns:
+      enabled: false
+    solvers:
+      http:
+        enabled: false
+      dns:
+        enabled: false
