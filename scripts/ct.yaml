@@ -4,5 +4,5 @@ chart-dirs:
   - stable
   - incubator
 chart-repos:
-  - https://charts.jetstack.io
+  - "https://charts.jetstack.io"
 helm-extra-args: --timeout 600
