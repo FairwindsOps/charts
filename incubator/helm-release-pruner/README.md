@@ -26,8 +26,8 @@ The following table lists the configurable parameters of the helm-release-pruner
 | Parameter | Description | Default | Required |
 | --------- | ----------- | ------- | -------- |
 | `image.pullPolicy` | Image pull policy | `IfNotPresent` | no |
-| `image.repository` | Repo for image that the job runs on. | `lachlanevenson/k8s-helm` | no |
-| `image.tag` | Image tag. | `v2.9.1` | no |
+| `image.repository` | Repo for image that the job runs on. | `quay.io/reactiveops/ci-images` | no |
+| `image.tag` | Image tag. | `v8-alpine` | no |
 | `job.backoffLimit` | Job backoff limit. | `3` | no |
 | `job.dryRun` | Output purge candidates without taking any action. | `True` | no |
 | `job.restartPolicy` | Job restart policy. | `Never` | no |
