@@ -22,6 +22,7 @@ readonly HELM_URL=https://storage.googleapis.com/kubernetes-helm
 readonly HELM_TARBALL=helm-v2.12.3-linux-amd64.tar.gz
 readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
+readonly JETSTACK_REPO_URL=https://charts.jetstack.io
 readonly S3_BUCKET_STABLE=s3://charts.fairwinds.com/stable
 readonly S3_BUCKET_INCUBATOR=s3://charts.fairwinds.com/incubator
 
@@ -48,6 +49,7 @@ setup_helm_client() {
     helm init --client-only
     helm repo add fairwinds-stable "$STABLE_REPO_URL"
     helm repo add fairwinds-incubator "$INCUBATOR_REPO_URL"
+    helm repo add jetstack "$JETSTACK_REPO_URL"
 }
 
 authenticate() {
