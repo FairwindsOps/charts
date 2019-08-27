@@ -6,7 +6,7 @@
 /incubator/custom-iptables/ @sudermanjr
 /incubator/fluentd/ @dosullivan @coreypobrien
 /incubator/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
-/incubator/helm-release-prunder/ @coreypobrien
+/incubator/helm-release-pruner/ @coreypobrien
 /incubator/imagepullsecret-deploy/ @crmejia
 /incubator/kubebench/ @mjhuber
 /incubator/load-generator/ @sudermanjr
