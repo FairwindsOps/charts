@@ -6,7 +6,7 @@
 /incubator/custom-iptables/ @sudermanjr
 /incubator/fluentd/ @dosullivan @coreypobrien
 /incubator/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
-/incubator/helm-release-prunder/ @davekonopka
+/incubator/helm-release-pruner/ @coreypobrien
 /incubator/imagepullsecret-deploy/ @crmejia
 /incubator/kubebench/ @mjhuber
 /incubator/load-generator/ @sudermanjr
@@ -16,7 +16,7 @@
 /incubator/ro-cert-manager/ @sudermanjr @endzyme
 /incubator/route53sync/ @sudermanjr
 
-/stable/aws-iam-authenticator/ @sudermanjr @davekonopka
+/stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr
 /stable/polaris/ @bobby-brennan @endzyme @kimschles
