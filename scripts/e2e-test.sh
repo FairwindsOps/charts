@@ -47,6 +47,7 @@ setup_executor () {
     echo "$port"
     docker inspect "$containerName" | jq .
     docker exec "$EXEC_CONTAINER_NAME" sh -c "sed -i 's/https:\/\/localhost:[0-9]\+/https:\/\/localhost:6443/g' /.kube/config"
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "sed -i 's/https:\/\/127.0.0.1:[0-9]\+/https:\/\/127.0.0.1:6443/g' /.kube/config"
 }
 
 teardown () {
@@ -110,6 +111,11 @@ prep_tests_local () {
     docker exec "$EXEC_CONTAINER_NAME" sh -c 'cd charts && git remote | xargs -n 1 git remote remove && git remote add ro https://github.com/reactiveops/charts && git fetch ro master'
 }
 
+pre_test_script () {
+    printf "Running pre-test scripts if they exist...\n"
+
+    docker exec "$EXEC_CONTAINER_NAME" sh -c "cd charts && scripts/pre-test-script-runner.sh"
+}
 
 run_tests () {
     printf "Running e2e tests...\n"
@@ -136,10 +142,12 @@ elif [ "$OPERATION" = "teardown" ] ; then
 elif [ "$OPERATION" = "test" ]; then
     printf "Running tests.\n"
     prep_tests
+    pre_test_script
     run_tests
 elif [ "$OPERATION" = "test-local" ]; then
     printf "Running tests.\n"
     prep_tests_local
+    pre_test_script
     run_tests
 else
     printf "You need to specify teardown, setup, or test"

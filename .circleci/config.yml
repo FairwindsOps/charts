@@ -23,6 +23,12 @@ jobs:
             for script in $(ls scripts/*.sh); do
                 shellcheck -x $script
             done
+      - run:
+          name: lint-pre-scripts
+          command: |
+            for script in $(find incubator stable -type f -name "*.sh"); do
+                shellcheck -x $script
+            done
   lint-charts:
     docker:
       - image: quay.io/helmpack/chart-testing:v2.2.0

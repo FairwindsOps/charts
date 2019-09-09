@@ -1,0 +1,8 @@
+name: cert-manager-setup
+apiVersion: v1
+version: v1.0.0
+appVersion: v0.8.1
+description: Install required CRDs and setup CA cluster-issuers
+maintainers:
+  - name: sudermanjr
+  - name: endzyme
