@@ -1,0 +1,32 @@
+clusterIssuers:
+  primary:
+    enabled: true
+    email: someone@example.com
+    solvers:
+      http:
+        enabled: false
+        # ingressClass: nginx
+        # ingressName: ""
+      # dns:
+      # - type: route53
+        # accessKeyID: "" optionally specify IAM access key
+        # secretName: "" required if accesKeyID is set
+        # secretKey: "" required if accesKeyID is set
+        # role: roleARN
+      #   hostedZoneID: MYHOSTEDZONE
+      #   region: us-east-1
+      #   selector:
+      #     dnsZones:
+      #     - example.com
+      # - type: cloudflare
+      #   secretName: cloudflare-auth
+      #   secretKey: api-key
+      #   email: user@example.com
+      #   selector: {}
+      # - type: clouddns
+      #   project: test-project
+      #   selector:
+      #     dnsNames:
+      #       - api.example.com
+  selfsigned:
+    enabled: false
