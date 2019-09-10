@@ -9,6 +9,8 @@ metadata:
     heritage: {{ .Release.Service }}
 spec:
   schedule: {{ .Values.job.schedule }}
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 300
   jobTemplate:
     spec:
       backoffLimit: {{ .Values.job.backoffLimit }}
@@ -30,14 +32,25 @@ spec:
             - mountPath: /usr/local/bin/start-up.sh
               name: config
               subPath: start-up.sh
-            - mountPath: /usr/local/bin/prune-releases.sh
-              name: config
-              subPath: prune-releases.sh
             env:
             - name: TILLER_NAMESPACE
               value: {{ .Values.tiller.namespace | default "kube-system" }}
+            {{- if .Values.job.debug }}
+            - name: DEBUG
+              value: "1"
+            {{- end }}
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
+            resources:
+              {{- toYaml .Values.job.resources | nindent 14 }}
           volumes:
           - name: config
             configMap:
               name: {{ template "helm-release-pruner.fullname" . }}
-              defaultMode: 0744
+              defaultMode: 0555
