@@ -4,7 +4,7 @@
 
 image:
   repository: quay.io/fairwinds/custom-metrics
-  tag: master
+  tag: v0.0.1
   pullPolicy: Always
 
 nameOverride: ""
