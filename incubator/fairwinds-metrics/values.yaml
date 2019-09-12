@@ -1,0 +1,38 @@
+# Default values file
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  repository: quay.io/fairwinds/custom-metrics
+  tag: master
+  pullPolicy: Always
+
+nameOverride: ""
+fullnameOverride: ""
+
+controller:
+  enabled: true
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+    # name: ExistingServiceAccountName
+
+  datadogAnnotations:
+    enabled: true
+  logVerbosity: "2"
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  resources:
+    limits:
+      cpu: 25m
+      memory: 32Mi
+    requests:
+      cpu: 25m
+      memory: 32Mi
+
+  service:
+    enabled: true
+    type: ClusterIP
+    port: 10042
