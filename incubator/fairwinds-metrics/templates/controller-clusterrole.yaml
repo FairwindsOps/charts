@@ -1,0 +1,21 @@
+{{- if .Values.controller.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ include "fairwinds-metrics.fullname" . }}-controller
+  labels:
+    app.kubernetes.io/name: {{ include "fairwinds-metrics.name" . }}
+    helm.sh/chart: {{ include "fairwinds-metrics.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: controller
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - 'namespaces'
+      - 'secrets'
+    verbs:
+      - 'get'
+      - 'list'
+{{- end }}
