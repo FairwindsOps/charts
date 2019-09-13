@@ -8,8 +8,6 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  DD_API_KEY: {{ .Values.datadog.apiKey }}
-  DD_APP_KEY: {{ .Values.datadog.appKey }}
   OWNER: {{ .Values.owner }}
   DRY_RUN: {{ .Values.DryRun | quote }}
 {{- if .Values.custom_config.enabled }}
