@@ -9,7 +9,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
   OWNER: {{ .Values.owner }}
-  DRY_RUN: {{ .Values.DryRun | quote }}
+  DRY_RUN: {{ .Values.dryRun | quote }}
 {{- if .Values.custom_config.enabled }}
   DEFINITIONS_PATH: /etc/config/config.yml
 {{- else }}
