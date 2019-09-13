@@ -2,6 +2,13 @@
 
 A chart for installing [goldilocks](https://github.com/FairwindsOps/goldilocks)
 
+## How to install
+
+```
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install --name goldilocks --namespace goldilocks fairwinds-stable/goldilocks
+```
+
 ## Requirements
 
 This has a hard requirement on VPA being installed. Please see the [Goldilocks README](https://github.com/fairwindsops/goldilocks)
