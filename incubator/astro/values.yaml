@@ -15,9 +15,19 @@ affinity: {}
 datadog:
   apiKey: ""
   appKey: ""
+controller:
+  enabled: true
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
+    # name: ExistingServiceAccountName
+secret:
+  create: true
+  # name: ExistingSecretName
 definitionsPath: conf.yml
 owner: astro
-DryRun: false
+dryRun: false
 custom_config:
   enabled: false
   data: |

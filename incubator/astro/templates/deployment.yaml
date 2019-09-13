@@ -19,7 +19,11 @@ spec:
         app.kubernetes.io/name: {{ include "astro.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
+      {{- if .Values.controller.serviceAccount.create }}
       serviceAccountName: {{ include "astro.name" . }}
+      {{- else }}
+      serviceAccountName: {{ .Values.controller.serviceAccount.name }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -30,7 +34,11 @@ spec:
           - configMapRef:
               name: {{ include "astro.fullname" . }}
           - secretRef:
+          {{- if .Values.secret.create }}
               name: {{ include "astro.fullname" . }}
+          {{- else }}
+              name: {{ .Values.secret.name }}
+          {{- end }}
           {{- if .Values.custom_config.enabled }}
           volumeMounts:
           - name: config-data
