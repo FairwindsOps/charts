@@ -5,6 +5,9 @@ clusterIssuers:
     solvers:
       http:
         enabled: true
+      dns:
+        - type: route53
+          hostedZoneID: TESTING
   selfsigned:
     enabled: true
     email: someone@example.com

@@ -18,18 +18,12 @@ set -o errexit
 set -o nounset
 set -x
 
-SCRIPT_PATH="$(cd "$(dirname "$0")" || return ; pwd -P)"
 CI_DIR="ci"
 SCRIPT_NAME="pre-test-script.sh"
 SCRIPT="$CI_DIR/$SCRIPT_NAME"
+CHANGED="$(git diff master --name-only incubator/*/ stable/*/ | awk -F"/" '{print $1"/"$2}' | sort -u)"
 
-for chart in "$SCRIPT_PATH"/../incubator/* ; do
-  if test -f "$chart/$SCRIPT"; then
-    "$chart/$SCRIPT"
-  fi
-done
-
-for chart in "$SCRIPT_PATH"/../stable/* ; do
+for chart in $CHANGED; do
   if test -f "$chart/$SCRIPT"; then
     "$chart/$SCRIPT"
   fi
