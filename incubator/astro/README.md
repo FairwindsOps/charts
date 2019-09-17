@@ -31,7 +31,8 @@ Parameter | Description | Default
 `controller.rbac.create` | if true, rbac resources will be created. | `true`
 `controller.serviceAccount.create` | if true, a service account will be created.  If false, you must set `controller.serviceAccount.name`. | `true`
 `controller.serviceAccount.name` | The name of an existing service account to use. | `''`
-`secret.create` | if true, a secret with api credentials will be created.  If false, you must set `secret.name` | `true` 
+`secret.create` | if true, a secret with api credentials will be created.  If false, you must set `secret.name` | `true`
+`secret.name` | The name of an existing secret to mount to the container. | `""` 
 `definitionsPath` | The path to the monitor definitions configuration. This can be a local path or a URL. | `""`
 `owner` | A unique name to designate as the owner. This will be applied as a tag to identified managed monitors. | `astro`
 `dryRun` | when set to true monitors will not be managed in datadog. | `false`
