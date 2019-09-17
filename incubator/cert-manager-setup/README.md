@@ -15,7 +15,7 @@ The following table lists the configurable parameters of the chart and their def
 | `clusterIssuers.selfsigned.solvers.http.enabled` | Enables http01 validation on selfsigned issuer | `false` | yes |
 | `clusterIssuers.selfsigned.solvers.http.ingressClass` | Use http01 solver with a specific ingress class | `""` | no |
 | `clusterIssuers.selfsigned.solvers.http.ingressName` | Use this solver with a specific ingress name | `""` | no |
-| `clusterIssuers.selfsigned.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | yes |
+| `clusterIssuers.selfsigned.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | no |
 | `clusterIssuers.primary.clusterIssuerName` | Name of the selfsigned clusterIssuer | `Release.Name-primary-valid` | no |
 | `clusterIssuers.primary.enabled` | Whether or not the selfsigned ClusterIssuer is installed | `false` | yes |
 | `clusterIssuers.primary.issuerUrl` | The URL to use for ACME | `https://acme-v02.api.letsencrypt.org/directory` | yes |
@@ -23,7 +23,7 @@ The following table lists the configurable parameters of the chart and their def
 | `clusterIssuers.primary.solvers.http.enabled` | Enables http01 validation on primary issuer | `false` | yes |
 | `clusterIssuers.primary.solvers.http.ingressClass` | Use http01 solver with a specific ingress class | `""` | no |
 | `clusterIssuers.primary.solvers.http.ingressName` | Use this solver with a specific ingress name | `""` | no |
-| `clusterIssuers.primary.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | yes |
+| `clusterIssuers.primary.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | no |
 
 ## DNS Solvers Configuration
 
