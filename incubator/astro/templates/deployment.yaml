@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       {{- if .Values.controller.serviceAccount.create }}
-      serviceAccountName: {{ include "astro.name" . }}
+      serviceAccountName: {{ include "astro.fullname" . }}
       {{- else }}
       serviceAccountName: {{ .Values.controller.serviceAccount.name }}
       {{- end }}

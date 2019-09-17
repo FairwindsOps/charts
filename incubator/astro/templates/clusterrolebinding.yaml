@@ -14,6 +14,10 @@ roleRef:
   name: {{ include "astro.fullname" . }}
 subjects:
   - kind: ServiceAccount
+{{- if .Values.controller.serviceAccount.create }}
     name: {{ template "astro.fullname" . }}
+{{- else }}
+    name: {{ .Values.controller.serviceAccount.name }}
+{{- end }}
     namespace: {{ .Release.Namespace | quote }}
 {{- end }}
