@@ -1,4 +1,4 @@
-# Chart - cert-manager-setup
+# Chart - letsencrypt-setup
 
 Installs the necessary additional items that the cert-manager chart lacks.
 
