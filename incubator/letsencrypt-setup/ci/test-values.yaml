@@ -1,0 +1,13 @@
+clusterIssuers:
+  primary:
+    enabled: true
+    email: someone@example.com
+    solvers:
+      http:
+        enabled: true
+      dns:
+        - type: route53
+          hostedZoneID: TESTING
+  selfsigned:
+    enabled: true
+    email: someone@example.com
