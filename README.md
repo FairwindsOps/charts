@@ -10,11 +10,13 @@ All charts are linted and tested using [Helm Chart Testing](https://github.com/h
 
 ### Linting
 
-Charts are linted using both thelm `helm lint` command and against the [schema](scripts/schema.yaml).  This ensures that maintainers, versions, etc. are included.
+Charts are linted using both the `helm lint` command and against the [schema](scripts/schema.yaml).  This ensures that maintainers, versions, etc. are included.
 
 ### e2e Testing
 
 Charts are installed into a [kind](https://github.com/kubernetes-sigs/kind) cluster.  You can provide a folder called `ci` with a set of `*-values.yaml` files to provide overrides for the e2e test.
+
+If you have any prerequisites to a chart install that cannot be performed by helm itself (e.g. manually installing CRDs from a remote location) you can place a shell (not bash) script in the `ci` folder of your chart. The script should be exactly named: `pre-test-script.sh`
 
 ## Usage
 
