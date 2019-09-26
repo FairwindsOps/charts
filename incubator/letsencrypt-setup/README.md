@@ -45,6 +45,7 @@ The following table lists the configurable parameters of the chart and their def
 | `project` | Name of the project in Google Cloud where Cloud DNS is used |
 | `secretName` | optional kubernetes secret name in same namespace |
 | `secretKey` | key in the kubernetes secret with the service account creds |
+| `type` | Defines the type of DNS solver, should be set to `clouddns` |
 
 ### Cloudflare
 
@@ -53,6 +54,7 @@ The following table lists the configurable parameters of the chart and their def
 | `email` | Email associated with the Cloudflare account |
 | `secretName` | Name of kubernetes secret that contains the secret access key |
 | `secretKey` | Key within a kubernetes secret data block that holds the secret access key |
+| `type` | Defines the type of DNS solver, should be set to `cloudflare` |
 
 ## Selector Settings
 
