@@ -33,21 +33,6 @@ spec:
           capabilities:
             drop:
               - ALL
-        # these liveness probes are not very helpful yet
-        livenessProbe:
-          exec:
-            command:
-              - sh
-              - -c
-              - ps -ef | grep rbac-manager
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        readinessProbe:
-          exec:
-            command:
-              - sh
-              - -c
-              - ps -ef | grep rbac-manager
         resources:
 {{ toYaml .Values.resources | indent 10 }}
     {{- with .Values.nodeSelector }}
