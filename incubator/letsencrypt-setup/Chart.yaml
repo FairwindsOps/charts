@@ -1,8 +1,9 @@
 name: letsencrypt-setup
 apiVersion: v1
-version: v1.0.1
-appVersion: v0.8.1
+version: v1.1.0
+appVersion: v0.9.1
 description: Setup clusterIssuers for cert-manager
 maintainers:
   - name: sudermanjr
   - name: endzyme
+  - name: lucasreed
