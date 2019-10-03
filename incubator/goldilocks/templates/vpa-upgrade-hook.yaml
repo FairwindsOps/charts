@@ -1,0 +1,73 @@
+{{- if .Values.upgradeVPA }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    "helm.sh/hook-weight": "-100"
+  name: {{ include "goldilocks.fullname" . }}-vpa-upgrade
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "goldilocks.fullname" . }}-vpa-upgrade
+  labels:
+    app.kubernetes.io/name: {{ include "goldilocks.name" . }}
+    helm.sh/chart: {{ include "goldilocks.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: vpa-upgrade
+  annotations:
+    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    "helm.sh/hook-weight": "-90"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "goldilocks.fullname" . }}-vpa-upgrade
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "goldilocks.fullname" . }}-vpa-upgrade
+  labels:
+    app.kubernetes.io/name: {{ include "goldilocks.name" . }}
+    helm.sh/chart: {{ include "goldilocks.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: vpa-upgrade
+  annotations:
+    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-weight": "-70"
+spec:
+  template:
+    metadata:
+      name: {{ include "goldilocks.fullname" . }}-vpa-upgrade
+      labels:
+        app.kubernetes.io/name: {{ include "goldilocks.name" . }}
+        helm.sh/chart: {{ include "goldilocks.chart" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/managed-by: {{ .Release.Service }}
+        app.kubernetes.io/component: vpa-upgrade
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "goldilocks.fullname" . }}-vpa-upgrade
+      containers:
+      - name: vpa-upgrade
+        image: quay.io/reactiveops/ci-images:v9-alpine
+        command: ["bash"]
+        args:
+          - -c
+          - |
+            apk --update add git openssl
+            git clone "https://github.com/kubernetes/autoscaler.git"
+            cd autoscaler/vertical-pod-autoscaler
+            git checkout "vertical-pod-autoscaler-0.6.3"
+            ./hack/vpa-apply-upgrade.sh
+{{- end }}
