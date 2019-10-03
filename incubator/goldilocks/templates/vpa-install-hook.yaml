@@ -68,6 +68,6 @@ spec:
             apk --update add git openssl
             git clone "https://github.com/kubernetes/autoscaler.git"
             cd autoscaler/vertical-pod-autoscaler
-            git checkout "vertical-pod-autoscaler-0.5.1"
+            git checkout "vertical-pod-autoscaler-0.6.3"
             ./hack/vpa-up.sh
 {{- end }}
