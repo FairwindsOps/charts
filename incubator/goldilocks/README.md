@@ -15,7 +15,7 @@ VPA Can be installed using a post-install hook if `installVPA` is set to true in
 | `installVPA`                           | Whether or not to install the VPA controller from the vpa repository                                                             | false                          |
 | `image.pullPolicy`                     | imagePullPolicy - Highly recommended to leave this as `Always`                                                                   | `Always`                       |
 | `image.repository`                     | Repository for the goldilocks image                                                                                              | `quay.io/fairwinds/goldilocks` |
-| `image.tag`                            | The goldilocks image tag to use                                                                                                  | `v1.2.2`                       |
+| `image.tag`                            | The goldilocks image tag to use                                                                                                  | `v1.3.0`                       |
 | `controller.enabled`                   | Whether or not to install the controller deployment                                                                              | `True`                         |
 | `controller.affinity`                  | Affinity for the controller pod                                                                                                  | `{}`                           |
 | `controller.nodeSelector`              | Node selector for the controller pod                                                                                             | `{}`                           |
