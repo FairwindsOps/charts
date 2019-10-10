@@ -21,7 +21,7 @@ The following table lists the configurable parameters of the chart and their def
 | `clusterIssuers.primary.issuerUrl` | The URL to use for ACME | `https://acme-v02.api.letsencrypt.org/directory` | yes |
 | `clusterIssuers.primary.email` | The email used for ACME registration | `someone@example.com` | yes |
 | `clusterIssuers.primary.solvers.http.enabled` | Enables http01 validation on primary issuer | `false` | yes |
-| `clusterIssuers.primary.solvers.http.ingressClass` | Use http01 solver with a specific ingress class | `""` | no |
+| `clusterIssuers.primary.solvers.http.ingressClass` | Use http01 solver with a specific ingress class | `nginx` | no |
 | `clusterIssuers.primary.solvers.http.ingressName` | Use this solver with a specific ingress name | `""` | no |
 | `clusterIssuers.primary.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | no |
 
