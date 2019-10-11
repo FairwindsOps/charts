@@ -5,4 +5,5 @@ chart-dirs:
   - incubator
 chart-repos:
   - "jetstack=https://charts.jetstack.io"
+  - "fairwinds-incubator=https://charts.fairwinds.com/incubator"
 helm-extra-args: --timeout 600
