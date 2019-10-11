@@ -1,0 +1,52 @@
+{{- if .Values.polaris.enabled -}} 
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: fwa-polaris
+  labels:
+    app: fairwinds-agent
+rules:
+  - apiGroups:
+      - 'apps'
+      - 'extensions'
+    resources:
+      - 'deployments'
+      - 'statefulsets'
+      - 'daemonsets'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'batch'
+    resources:
+      - 'jobs'
+      - 'cronjobs'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - ''
+    resources:
+      - 'nodes'
+      - 'namespaces'
+      - 'pods'
+      - 'replicationcontrollers'
+    verbs:
+      - 'get'
+      - 'list'
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: fwa-polaris
+  labels:
+    app: fairwinds-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: fwa-polaris
+subjects:
+  - kind: ServiceAccount
+    name: fairwinds-agent
+    namespace: {{ .Release.Namespace }}
+{{- end -}}

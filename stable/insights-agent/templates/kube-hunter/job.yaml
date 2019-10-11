@@ -1,0 +1,5 @@
+{{- if .Values.kubehunter.enabled -}} 
+{{- $_ := set . "Label" "kube-hunter" }}
+{{- $_ := set . "Template" "kubehunter.job.spec" }}
+{{- include "job" . }}
+{{- end -}}

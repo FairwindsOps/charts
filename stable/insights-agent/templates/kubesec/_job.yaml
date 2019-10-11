@@ -1,0 +1,17 @@
+{{- define "kubesec.job.spec" -}}
+restartPolicy: Never
+serviceAccountName: fairwinds-agent
+volumes:
+- name: output
+  emptyDir: {}
+containers:
+- name: kubesec
+  image: "{{ .Values.kubesec.image.repository }}:{{ .Values.kubesec.image.tag }}"
+  imagePullPolicy: Always
+  command:
+  - ./main.sh
+  volumeMounts:
+  - name: output
+    mountPath: /output
+{{- include "fairwindsAgentContainer" (dict "Label" "kubesec" "Config" .Values.kubesec "Values" .Values) }}
+{{- end }}

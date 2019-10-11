@@ -1,0 +1,6 @@
+dependencies:
+- name: goldilocks
+  repository: https://charts.fairwinds.com/incubator
+  version: 0.2.0
+digest: sha256:170c8691835e5a62f206abc06b8ef42f459aed5b498562d1c9874f9547a90f86
+generated: "2019-10-04T16:50:18.503019+02:00"
