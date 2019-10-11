@@ -2,8 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
   name: {{ include "polaris.fullname" . }}-dashboard
   {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
@@ -19,6 +17,8 @@ spec:
       component: dashboard
   template:
     metadata:
+      annotations:
+        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: dashboard
