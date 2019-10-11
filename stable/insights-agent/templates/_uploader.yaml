@@ -11,9 +11,9 @@
   - "{{ . }}"
   {{- end }}
   - --organization
-  - {{ .Values.insights.organization | quote }}
+  - {{ required "You must set an organization" .Values.insights.organization | quote }}
   - --cluster
-  - {{ .Values.insights.cluster | quote }}
+  - {{ required "You must set a cluster" .Values.insights.cluster | quote }}
   {{- with .Values.insights.host }}
   - --host
   - {{ . }}
