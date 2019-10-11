@@ -6,8 +6,8 @@ insights:
 
 uploader:
   image:
-    repository: quay.io/reactiveops/fairwinds-agent
-    tag: 58b1aa554d4faacf7a48fda80627f3fe7f069818
+    repository: quay.io/fairwinds/insights-uploader
+    tag: 0.1.1
 
 cronjobs:
   backoffLimit: 1
@@ -25,7 +25,7 @@ kubehunter:
   enabled: false
   schedule: "0 * * * *"
   image:
-    repository: quay.io/reactiveops/kube-hunter
+    repository: quay.io/fairwinds/kube-hunter
     tag: "1.0.0"
 
 kubesec:
@@ -33,7 +33,7 @@ kubesec:
   schedule: "0 * * * *"
   timeout: 120
   image:
-    repository: quay.io/reactiveops/fw-kubesec
+    repository: quay.io/fairwinds/fw-kubesec
     tag: "1.1.0"
 
 goldilocks:
