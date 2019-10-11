@@ -29,5 +29,5 @@ containers:
         - ALL
 {{ $_ := set . "Label" "goldilocks" -}}
 {{ $_ := set . "Config" .Values.goldilocks -}}
-{{- include "fairwindsAgentContainer" . }}
+{{- include "uploaderContainer" . }}
 {{- end }}

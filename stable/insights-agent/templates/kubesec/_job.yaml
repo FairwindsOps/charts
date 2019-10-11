@@ -13,5 +13,5 @@ containers:
   volumeMounts:
   - name: output
     mountPath: /output
-{{- include "fairwindsAgentContainer" (dict "Label" "kubesec" "Config" .Values.kubesec "Values" .Values) }}
+{{- include "uploaderContainer" (dict "Label" "kubesec" "Config" .Values.kubesec "Values" .Values) }}
 {{- end }}

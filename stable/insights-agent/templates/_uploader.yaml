@@ -1,6 +1,6 @@
-{{- define "fairwindsAgentContainer" }}
+{{- define "uploaderContainer" }}
 - name: fairwinds-agent
-  image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+  image: "{{ .Values.uploader.image.repository }}:{{ .Values.uploader.image.tag }}"
   imagePullPolicy: Always
   command:
   - ./agent.sh
@@ -11,10 +11,10 @@
   - "{{ . }}"
   {{- end }}
   - --organization
-  - {{ .Values.fairwindsAgent.organization | quote }}
+  - {{ .Values.insights.organization | quote }}
   - --cluster
-  - {{ .Values.fairwindsAgent.cluster | quote }}
-  {{- with .Values.fairwindsAgent.host }}
+  - {{ .Values.insights.cluster | quote }}
+  {{- with .Values.insights.host }}
   - --host
   - {{ . }}
   {{- end }}

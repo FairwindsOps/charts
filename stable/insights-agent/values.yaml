@@ -1,12 +1,13 @@
-image:
-  repository: quay.io/reactiveops/fairwinds-agent
-  tag: 58b1aa554d4faacf7a48fda80627f3fe7f069818
-
-fairwindsAgent:
+insights:
   host: https://data.insights.fairwinds.com
   organization: acme-co
   cluster: us-east-1
   base64token: ""
+
+uploader:
+  image:
+    repository: quay.io/reactiveops/fairwinds-agent
+    tag: 58b1aa554d4faacf7a48fda80627f3fe7f069818
 
 cronjobs:
   backoffLimit: 1
