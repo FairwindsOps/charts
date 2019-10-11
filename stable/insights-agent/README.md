@@ -11,8 +11,8 @@ We recommend installing `insights-agent` in its own namespace.
 helm repo add fairwinds https://charts.fairwinds.com/stable
 helm upgrade --install insights-agent fairwinds/insights-agent \
   --namespace insights-agent \
-  --set insights.organization=acme-co
-  --set insights.cluster=staging
+  --set insights.organization=acme-co \
+  --set insights.cluster=staging \
   --set insights.base64token="abcde=="
 ```
 
