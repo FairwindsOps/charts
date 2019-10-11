@@ -1,0 +1,60 @@
+{{- if .Values.polaris.enabled -}} 
+# Source: polaris/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: polaris
+  labels:
+    app: fairwinds-agent
+data:
+  config.yaml:  |
+    resources:
+      cpuRequestsMissing: warning
+      cpuLimitsMissing: warning
+      memoryRequestsMissing: warning
+      memoryLimitsMissing: warning
+    images:
+      tagNotSpecified: error
+    healthChecks:
+      readinessProbeMissing: warning
+      livenessProbeMissing: warning
+    networking:
+      hostNetworkSet: warning
+      hostPortSet: warning
+    security:
+      hostIPCSet: error
+      hostPIDSet: error
+      notReadOnlyRootFileSystem: warning
+      privilegeEscalationAllowed: error
+      runAsRootAllowed: warning
+      runAsPrivileged: error
+      capabilities:
+        error:
+          ifAnyAdded:
+            - SYS_ADMIN
+            - NET_ADMIN
+            - ALL
+        warning:
+          ifAnyAddedBeyond:
+            - CHOWN
+            - DAC_OVERRIDE
+            - FSETID
+            - FOWNER
+            - MKNOD
+            - NET_RAW
+            - SETGID
+            - SETUID
+            - SETFCAP
+            - SETPCAP
+            - NET_BIND_SERVICE
+            - SYS_CHROOT
+            - KILL
+            - AUDIT_WRITE
+    controllers_to_scan:
+      - Deployments
+      - StatefulSets
+      - DaemonSets
+      - Jobs
+      - CronJobs
+      - ReplicationControllers
+{{- end -}}

@@ -1,0 +1,44 @@
+image:
+  repository: quay.io/reactiveops/fairwinds-agent
+  tag: 58b1aa554d4faacf7a48fda80627f3fe7f069818
+
+fairwindsAgent:
+  host: https://data.insights.fairwinds.com
+  organization: acme-co
+  cluster: us-east-1
+  base64token: ""
+
+cronjobs:
+  backoffLimit: 1
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+
+polaris:
+  enabled: true
+  schedule: "0 * * * *"
+  image:
+    repository: quay.io/reactiveops/polaris
+    tag: "0.5.0-beta2"
+
+kubehunter:
+  enabled: false
+  schedule: "0 * * * *"
+  image:
+    repository: quay.io/reactiveops/kube-hunter
+    tag: "1.0.0"
+
+kubesec:
+  enabled: false
+  schedule: "0 * * * *"
+  timeout: 120
+  image:
+    repository: quay.io/reactiveops/fw-kubesec
+    tag: "1.1.0"
+
+goldilocks:
+  enabled: true
+  schedule: "0 * * * *"
+  timeout: 120
+  image:
+    repository: quay.io/fairwinds/goldilocks
+    tag: "v1.3.0"

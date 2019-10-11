@@ -1,0 +1,5 @@
+{{- if .Values.kubesec.enabled -}} 
+{{- $_ := set . "Label" "kubesec" }}
+{{- $_ := set . "Template" "kubesec.job.spec" }}
+{{- include "job" . }}
+{{- end -}}

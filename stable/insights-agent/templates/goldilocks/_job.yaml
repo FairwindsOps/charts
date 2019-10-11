@@ -1,0 +1,33 @@
+{{- define "goldilocks.job.spec" -}}
+restartPolicy: Never
+serviceAccountName: fairwinds-agent
+volumes:
+- name: output
+  emptyDir: {}
+containers:
+- name: goldilocks-audit
+  image: "{{ .Values.goldilocks.image.repository }}:{{ .Values.goldilocks.image.tag }}"
+  imagePullPolicy: Always
+  command: ["/goldilocks", "summary", "--output-file", "/output/goldilocks.json"]
+  volumeMounts:
+  - name: output
+    mountPath: /output
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
+{{ $_ := set . "Label" "goldilocks" -}}
+{{ $_ := set . "Config" .Values.goldilocks -}}
+{{- include "fairwindsAgentContainer" . }}
+{{- end }}

@@ -1,0 +1,8 @@
+dependencies:
+  - name: goldilocks
+    repository: https://charts.fairwinds.com/incubator
+    version: 0.2.0
+    condition: goldilocks.enabled
+    values:
+      dashboard:
+        enabled: false
