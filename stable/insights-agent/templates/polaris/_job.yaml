@@ -16,7 +16,7 @@ containers:
     "--config", "/opt/app/config.yaml",
     "--output-file", "/output/polaris.json",
     "--output-format", "json",
-    "--display-name", "{{ .Values.fairwindsAgent.cluster }}",
+    "--display-name", "{{ .Values.insights.cluster }}",
   ]
   volumeMounts:
   - name: config
@@ -41,5 +41,5 @@ containers:
         - ALL
 {{ $_ := set . "Label" "polaris" -}}
 {{ $_ := set . "Config" .Values.polaris -}}
-{{- include "fairwindsAgentContainer" . }}
+{{- include "uploaderContainer" . }}
 {{- end }}
