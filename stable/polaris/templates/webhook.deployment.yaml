@@ -2,8 +2,6 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  annotations:
-    checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
   name: {{ include "polaris.fullname" . }}-webhook
   {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
@@ -19,6 +17,8 @@ spec:
       component: webhook
   template:
     metadata:
+      annotations:
+        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: webhook
@@ -94,7 +94,7 @@ spec:
             name: {{ include "polaris.fullname" . }}
         - name: secret
           secret:
-            secretName: {{ include "polaris.fullname" . }}-webhook
+            secretName: polaris-webhook
         - name: cr-logs
           emptyDir: {}
 {{- end -}}
