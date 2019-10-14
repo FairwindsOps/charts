@@ -1,0 +1,15 @@
+apiVersion: v1
+appVersion: "v2.0.0"
+description: A Helm chart for running Fairwinds Goldilocks
+name: goldilocks
+version: 1.0.0
+icon: https://github.com/FairwindsOps/charts/raw/master/stable/goldilocks/icon.svg
+maintainers:
+  - name: sudermanjr
+  - name: dosullivan
+  - name: mgoodhart5
+sources:
+  - https://github.com/FairwindsOps/goldilocks
+keywords:
+  - goldilocks
+  - resources
