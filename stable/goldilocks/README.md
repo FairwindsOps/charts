@@ -1,12 +1,17 @@
-# goldilocks
+<div align="center">
+<a href="https://github.com/FairwindsOps/goldilocks"><img src="logo.svg" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
+<br>
+</div>
 
-A chart for installing [goldilocks](https://github.com/FairwindsOps/goldilocks)
+## Intro
+
+This is a Helm chart for the Fairwinds [Goldilocks project](https://github.com/FairwindsOps/goldilocks). It provides an easy way to install the controller and the dashboard for viewing resource recommendations in your Kubernetes cluster. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks) for more information.
 
 ## Requirements
 
-This has a hard requirement on VPA being installed. Please see the [Goldilocks README](https://github.com/fairwindsops/goldilocks)
+This has a hard requirement on VPA being installed. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks)
 
-VPA Can be installed using a post-install hook if `installVPA` is set to true in the values.
+VPA Can be installed using a post-install hook if `installVPA` is set to true in the values. If you later wish to upgrade the vpa controller to the latest supported by this chart, you can enable the `upgradeVPA` option to run the upgrade.
 
 ## Usage
 
