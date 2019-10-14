@@ -5,7 +5,6 @@
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
 /incubator/fluentd/ @dosullivan @coreypobrien
-/incubator/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
 /incubator/helm-release-pruner/ @coreypobrien
 /incubator/imagepullsecret-deploy/ @crmejia
 /incubator/kubebench/ @mjhuber
@@ -20,3 +19,4 @@
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @mjhuber
 /stable/polaris/ @bobby-brennan @endzyme @kimschles
+/stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
