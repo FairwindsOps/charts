@@ -18,5 +18,5 @@
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @mjhuber
-/stable/polaris/ @bobby-brennan @endzyme @kimschles
+/stable/polaris/ @rbren @endzyme @kimschles
 /stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
