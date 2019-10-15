@@ -5,7 +5,7 @@ kind: ConfigMap
 metadata:
   name: polaris
   labels:
-    app: fairwinds-agent
+    app: insights-agent
 data:
   config.yaml:  |
     resources:
