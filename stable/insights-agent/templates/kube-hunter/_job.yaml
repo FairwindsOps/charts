@@ -7,7 +7,7 @@ tolerations:
   effect: NoSchedule
 hostPID: true
 restartPolicy: Never
-serviceAccountName: insights-agent
+serviceAccountName: {{ include "insights-agent.fullname" . }}
 volumes:
 - name: output
   emptyDir: {}
