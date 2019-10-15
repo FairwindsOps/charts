@@ -22,7 +22,7 @@ containers:
     capabilities:
       drop:
         - ALL
-{{ $_ := set . "Label" "goldilocks" -}}
-{{ $_ := set . "Config" .Values.goldilocks -}}
+{{- $_ := set . "Label" "goldilocks" }}
+{{- $_ := set . "Config" .Values.goldilocks }}
 {{- include "uploaderContainer" . }}
 {{- end }}
