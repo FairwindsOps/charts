@@ -23,5 +23,7 @@ containers:
     capabilities:
       drop:
         - ALL
-{{- include "uploaderContainer" (dict "Label" "kubesec" "Config" .Values.kubesec "Values" .Values) }}
+{{- $_ := set . "Label" "kubesec" }}
+{{- $_ := set . "Config" .Values.kubesec }}
+{{- include "uploaderContainer" . }}
 {{- end }}
