@@ -1,6 +1,6 @@
 {{- define "kubesec.job.spec" -}}
 restartPolicy: Never
-serviceAccountName: insights-agent
+serviceAccountName: {{ include "insights-agent.fullname" . }}
 volumes:
 - name: output
   emptyDir: {}
