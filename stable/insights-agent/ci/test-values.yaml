@@ -2,7 +2,7 @@ insights:
   host: https://data.insights.fairwinds.com
   organization: acme-co
   cluster: us-east-1
-  base64token: abcde
+  base64token: Zm9vCg==
 
 uploader:
   image:
