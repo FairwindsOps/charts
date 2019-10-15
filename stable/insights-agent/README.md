@@ -8,8 +8,8 @@ to Fairwinds Insights, contact `opensource@reactiveops.com`
 We recommend installing `insights-agent` in its own namespace.
 
 ```
-helm repo add fairwinds https://charts.fairwinds.com/stable
-helm upgrade --install insights-agent fairwinds/insights-agent \
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm upgrade --install insights-agent fairwinds-stable/insights-agent \
   --namespace insights-agent \
   --set insights.organization=acme-co \
   --set insights.cluster=staging \
