@@ -1,5 +1,5 @@
 {{- define "uploaderContainer" }}
-- name: fairwinds-agent
+- name: insights-agent
   image: "{{ .Values.uploader.image.repository }}:{{ .Values.uploader.image.tag }}"
   imagePullPolicy: Always
   command:
@@ -26,7 +26,7 @@
   - name: FAIRWINDS_TOKEN
     valueFrom:
       secretKeyRef:
-        name: fairwinds-agent-token
+        name: insights-agent-token
         key: token
   - name: FAIRWINDS_AGENT_CHART_VERSION
     value: {{ .Chart.Version }}
