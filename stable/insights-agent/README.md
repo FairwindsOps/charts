@@ -22,6 +22,7 @@ Parameter | Description | Default
 `insights.organization` | The name of the organization to upload data to | ""
 `insights.cluster` | The name of the cluster the data is coming from | ""
 `insights.base64token` | Your cluster's base64-encoded auth token provided by Insights | ""
+`insights.tokenSecretName` | If you don't provide a `base64token`, you can specify the name of a secret to pull the token from | ""
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `uploader.image.repository`  | The repository to pull the uploader script from | 0.0.12
 `uploader.image.tag` | The tag to use for the uploader script | 0.0.12
