@@ -34,12 +34,7 @@
   - name: output
     mountPath: /output
   resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
+    {{- toYaml .Values.uploader.resources | nindent 4 }}
   securityContext:
     allowPrivilegeEscalation: false
     privileged: false

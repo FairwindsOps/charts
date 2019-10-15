@@ -13,5 +13,15 @@ containers:
   volumeMounts:
   - name: output
     mountPath: /output
+  resources:
+    {{- toYaml .Values.kubesec.resources | nindent 4 }}
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
 {{- include "uploaderContainer" (dict "Label" "kubesec" "Config" .Values.kubesec "Values" .Values) }}
 {{- end }}
