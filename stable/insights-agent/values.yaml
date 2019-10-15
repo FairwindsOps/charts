@@ -71,6 +71,8 @@ goldilocks:
   image:
     repository: quay.io/fairwinds/goldilocks
     tag: "v1.3.0"
+  dashboard:
+    enabled: false
   resources:
     limits:
       cpu: 100m
