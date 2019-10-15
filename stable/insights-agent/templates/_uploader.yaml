@@ -26,7 +26,7 @@
   - name: FAIRWINDS_TOKEN
     valueFrom:
       secretKeyRef:
-        name: insights-agent-token
+        name: {{ include "insights-agent.fullname" . }}-token
         key: token
   - name: FAIRWINDS_AGENT_CHART_VERSION
     value: {{ .Chart.Version }}
