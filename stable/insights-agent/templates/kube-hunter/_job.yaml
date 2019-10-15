@@ -26,8 +26,18 @@ containers:
         --statistics \
       > /output/kube-hunter-tmp.json \
       && mv /output/kube-hunter-tmp.json /output/kube-hunter.json
+  resources:
+    {{- toYaml .Values.kubehunter.resources | nindent 4 }}
   volumeMounts:
   - name: output
     mountPath: /output
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
 {{- include "uploaderContainer" (dict "Label" "kube-hunter" "Config" .Values.kubehunter "Values" .Values) }}
 {{- end -}}

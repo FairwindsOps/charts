@@ -13,12 +13,7 @@ containers:
   - name: output
     mountPath: /output
   resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
+    {{- toYaml .Values.goldilocks.resources | nindent 4 }}
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false

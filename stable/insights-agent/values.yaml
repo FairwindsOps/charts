@@ -8,6 +8,13 @@ uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: 0.1.1
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 cronjobs:
   backoffLimit: 1
@@ -20,6 +27,13 @@ polaris:
   image:
     repository: quay.io/reactiveops/polaris
     tag: "0.5.0-beta2"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 kubehunter:
   enabled: false
@@ -27,6 +41,13 @@ kubehunter:
   image:
     repository: quay.io/fairwinds/kube-hunter
     tag: "1.0.0"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 kubesec:
   enabled: false
@@ -35,6 +56,13 @@ kubesec:
   image:
     repository: quay.io/fairwinds/fw-kubesec
     tag: "1.1.0"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 goldilocks:
   enabled: false
@@ -43,3 +71,10 @@ goldilocks:
   image:
     repository: quay.io/fairwinds/goldilocks
     tag: "v1.3.0"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
