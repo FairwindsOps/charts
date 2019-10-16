@@ -1,0 +1,48 @@
+{{- define "uploaderContainer" }}
+- name: insights-agent
+  image: "{{ .Values.uploader.image.repository }}:{{ .Values.uploader.image.tag }}"
+  imagePullPolicy: Always
+  command:
+  - ./uploader.sh
+  - --datatype
+  - {{ .Label }}
+  {{- with .Config.timeout }}
+  - --timeout
+  - "{{ . }}"
+  {{- end }}
+  - --organization
+  - {{ required "You must set an organization" .Values.insights.organization | quote }}
+  - --cluster
+  - {{ required "You must set a cluster" .Values.insights.cluster | quote }}
+  {{- with .Values.insights.host }}
+  - --host
+  - {{ . }}
+  {{- end }}
+  - --version
+  - {{ .Config.image.tag | quote }}
+  - --file
+  - /output/{{ .Label }}.json
+  env:
+  - name: FAIRWINDS_TOKEN
+    valueFrom:
+      secretKeyRef:
+        {{ if .Values.insights.tokenSecretName -}}
+        name: {{ .Values.insights.tokenSecretName }}
+        {{ else -}}
+        name: {{ include "insights-agent.fullname" . }}-token
+        {{ end -}}
+        key: token
+  - name: FAIRWINDS_AGENT_CHART_VERSION
+    value: {{ .Chart.Version }}
+  volumeMounts:
+  - name: output
+    mountPath: /output
+  resources:
+    {{- toYaml .Values.uploader.resources | nindent 4 }}
+  securityContext:
+    allowPrivilegeEscalation: false
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+{{- end }}

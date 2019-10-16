@@ -1,0 +1,17 @@
+{{ define "cronjob" -}}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  schedule: "{{ .Config.schedule }}"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: {{ .Values.cronjobs.failedJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      backoffLimit: {{ .Values.cronjobs.backoffLimit }}
+      template:
+        spec:
+          {{- include .Template . | nindent 10 }}
+{{ end }}

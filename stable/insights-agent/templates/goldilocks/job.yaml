@@ -1,0 +1,5 @@
+{{- if .Values.goldilocks.enabled -}} 
+{{- $_ := set . "Label" "goldilocks" }}
+{{- $_ := set . "Template" "goldilocks.job.spec" }}
+{{- include "job" . }}
+{{- end -}}
