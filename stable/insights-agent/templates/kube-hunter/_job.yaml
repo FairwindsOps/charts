@@ -1,0 +1,45 @@
+{{- define "kubehunter.job.spec" -}}
+nodeSelector:
+  node-role.kubernetes.io/master: ""
+tolerations:
+- key: node-role.kubernetes.io/master
+  operator: Exists
+  effect: NoSchedule
+hostPID: true
+restartPolicy: Never
+serviceAccountName: {{ include "insights-agent.fullname" . }}
+volumes:
+- name: output
+  emptyDir: {}
+containers:
+- name: kube-hunter
+  image: "{{ .Values.kubehunter.image.repository }}:{{ .Values.kubehunter.image.tag }}"
+  imagePullPolicy: Always
+  command:
+    - /bin/sh
+    - -c
+    - |
+      python ./kube-hunter.py \
+        --pod \
+        --log none \
+        --report json \
+        --statistics \
+      > /output/kube-hunter-tmp.json \
+      && mv /output/kube-hunter-tmp.json /output/kube-hunter.json
+  resources:
+    {{- toYaml .Values.kubehunter.resources | nindent 4 }}
+  volumeMounts:
+  - name: output
+    mountPath: /output
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
+{{- $_ := set . "Label" "kube-hunter" }}
+{{- $_ := set . "Config" .Values.kubehunter }}
+{{- include "uploaderContainer" . }}
+{{- end -}}
