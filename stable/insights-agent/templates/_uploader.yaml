@@ -3,7 +3,7 @@
   image: "{{ .Values.uploader.image.repository }}:{{ .Values.uploader.image.tag }}"
   imagePullPolicy: Always
   command:
-  - ./agent.sh
+  - ./uploader.sh
   - --datatype
   - {{ .Label }}
   {{- with .Config.timeout }}
