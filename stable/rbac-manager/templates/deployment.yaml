@@ -20,6 +20,9 @@ spec:
         release: {{ .Release.Name }}
     spec:
       serviceAccountName: {{ template "rbac-manager.fullname" . }}
+{{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+{{- end }}
       containers:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"

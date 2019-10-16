@@ -37,6 +37,7 @@ Kubernetes 1.8+, Helm 2.10+
 | `nodeSelector`              | Deployment nodeSelector  | `{}`                               |
 | `tolerations`               | Deployment tolerations   | `[]`                               |
 | `affinity`                  | Deployment affinity      | `{}`                               |
+| `priorityClassName`         | Priority Class of the pod| `""`                               |
 
 ## Upgrading to Chart Version 1.0.0
 
