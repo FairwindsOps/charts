@@ -8,6 +8,10 @@ metadata:
   {{- end }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
+  annotations:
+    {{- range $key, $value := .Values.dashboard.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 spec:
   ports:
   - name: dashboard

@@ -54,6 +54,7 @@ dashboard:
   replicas: 1
   service:
     type: ClusterIP
+    annotations: {}
   image:
     repository: quay.io/reactiveops/polaris
     tag: 0.4
