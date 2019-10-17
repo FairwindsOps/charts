@@ -1,4 +1,4 @@
-# Polaris
+# Fairwinds Insights Agent
 
 The Fairwinds Insights Agent is a collection of reporting tools, which send data back
 to [Fairwinds Insights](https://insights.fairwinds.com). If you'd like access
