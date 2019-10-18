@@ -26,6 +26,7 @@ Parameter | Description | Default
 `dashboard.enable` | Whether to run the dashboard | true
 `dashboard.replicas` | Number of replicas | 1
 `dashboard.service.type` | Service type | ClusterIP
+`dashboard.service.annotatotions` | Service annotations | {}
 `dashboard.image.repository` | Image repo | quay.io/reactiveops/polaris
 `dashboard.image.tag` | Image tag | 0.4
 `dashboard.image.pullPolicy` | Image pull policy | Always
