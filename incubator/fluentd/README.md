@@ -12,7 +12,7 @@ Switching backends requires using a matching image as well as some backend-speci
 | --------- | ------- |
 | `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
 | `image.tag` | `v1.4.2-debian-elasticsearch-1.1` |
-| `elasticsearch.enabled` |  `true` |
+| `elasticsearch.enabled` |  `false` |
 | `elasticsearch.host` | `instance-name.region.es.amazonaws.com` |
 | `elasticsearch.port` | `443` |
 | `elasticsearch.scheme` | `https` |
@@ -30,7 +30,7 @@ Switching backends requires using a matching image as well as some backend-speci
 | --------- | ------- |
 | `image.repository` | `fluent/fluentd-kubernetes-daemonset` |
 | `image.tag` | `v1.4.2-debian-papertrail-1.1` |
-| `papertrail.enabled` | `true` |
+| `papertrail.enabled` | `false` |
 | `papertrail.host` | `logs3.papertrailapp.com` |
 | `papertrail.port` | `12785` |
 | `papertrail.flush_thread_count` | `4` |
