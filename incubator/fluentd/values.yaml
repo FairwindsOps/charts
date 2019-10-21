@@ -40,7 +40,7 @@ papertrail:
 #####################
 
 
-#plugin command extra args
+# plugin command extra args
 pluginExtraArgs: []
 
 # Verify Kubernetes API TLS certs
