@@ -47,6 +47,6 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-polaris
 subjects:
   - kind: ServiceAccount
-    name: insights-agent
+    name: {{ include "insights-agent.fullname" . }}
     namespace: {{ .Release.Namespace }}
 {{- end -}}

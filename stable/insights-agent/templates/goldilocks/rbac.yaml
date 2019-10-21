@@ -26,6 +26,6 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-goldilocks
 subjects:
   - kind: ServiceAccount
-    name: insights-agent
+    name: {{ include "insights-agent.fullname" . }}
     namespace: {{ .Release.Namespace }}
 {{- end -}}
