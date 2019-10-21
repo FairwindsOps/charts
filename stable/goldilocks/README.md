@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://github.com/FairwindsOps/goldilocks"><img src="logo.svg" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
+<a href="https://github.com/FairwindsOps/goldilocks"><img src="https://raw.githubusercontent.com/FairwindsOps/goldilocks/master/pkg/dashboard/assets/images/goldilocks.svg" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
 <br>
 </div>
 
