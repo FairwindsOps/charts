@@ -1,6 +1,6 @@
 # Fluentd
 
-Deploys fluentd daemonset with defaults for various backends.
+Deploys fluentd daemonset with defaults for various backends. Note that you need to specifically choose to enable Elasticsearch or Papertrail plugins via `elasticsearch.enabled` or `papertrail.enabled`. See options below for details.
 
 ## Backend images
 
