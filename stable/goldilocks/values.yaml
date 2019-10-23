@@ -47,6 +47,8 @@ dashboard:
     create: true
     # name: ExistingServiceAccountName
 
+  # Sets the web app's basePath/base href
+  # basePath: goldilocks
   ingress:
     enabled: false
     annotations: {}
