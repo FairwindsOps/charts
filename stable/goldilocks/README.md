@@ -36,6 +36,7 @@ VPA Can be installed using a post-install hook if `installVPA` is set to true in
 | `dashboard.enabled`                    | If true, the dashboard component will be installed.                                                                              | `True`                         |
 | `dashboard.affinity`                   | Affinity for the dashbaord pods.                                                                                                 | `{}`                           |
 | `dashboard.excludeContainer`           | A comma-separated list of container names to ignore in the dashboard globally.                                                   | `linkderd-proxy,istio-proxy`   |
+| `dashboard.basePath`                   | Customize the basePath passed as `--base-path` to the dashboard container (useful for instance if using an ingress path)
 | `dashboard.ingress.enabled`            | If true, an ingress object will be created. Further configuration is necessary. See [values.yaml](values.yaml) for an example.   | `False`                        |
 | `dashboard.ingress.annotations`        | Annotations on the ingress object.                                                                                               | `{}`                           |
 | `dashboard.ingress.hosts.0.host`       | Ingress host. See [values.yaml](values.yaml) for an example.                                                                     | `chart-example.local`          |
