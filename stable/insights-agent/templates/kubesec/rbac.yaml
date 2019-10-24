@@ -37,6 +37,6 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-kubesec
 subjects:
   - kind: ServiceAccount
-    name: insights-agent
+    name: {{ include "insights-agent.fullname" . }}
     namespace: {{ .Release.Namespace }}
 {{- end -}}
