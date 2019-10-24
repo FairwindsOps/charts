@@ -36,7 +36,7 @@ polaris:
       memory: 128Mi
 
 kubehunter:
-  enabled: false
+  enabled: true
   schedule: "0 * * * *"
   image:
     repository: quay.io/fairwinds/kube-hunter
