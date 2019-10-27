@@ -25,19 +25,21 @@ Kubernetes 1.8+, Helm 2.10+
 
 ## Configuration
 
-| Parameter                   | Description              | Default                            |
-| --------------------------- | ------------------------ | ---------------------------------- |
-| `image.repository`          | Docker image repo        | `quay.io/reactiveops/rbac-manager` |
-| `image.tag`                 | Docker image tag         | `0.7.0`                            |
-| `image.pullPolicy`          | Docker image pull policy | `Always`                           |
-| `resources.requests.cpu`    | CPU resource request     | `100m`                             |
-| `resources.requests.memory` | Memory resource request  | `128Mi`                            |
-| `resources.limits.cpu`      | CPU resource limit       | `100m`                             |
-| `resources.limits.memory`   | Memory resource limit    | `128Mi`                            |
-| `nodeSelector`              | Deployment nodeSelector  | `{}`                               |
-| `tolerations`               | Deployment tolerations   | `[]`                               |
-| `affinity`                  | Deployment affinity      | `{}`                               |
-| `priorityClassName`         | Priority Class of the pod| `""`                               |
+| Parameter                   | Description                                 | Default                            |
+| --------------------------- | --------------------------------------------| ---------------------------------- |
+| `image.repository`          | Docker image repo                           | `quay.io/reactiveops/rbac-manager` |
+| `image.tag`                 | Docker image tag                            | `0.7.0`                            |
+| `image.pullPolicy`          | Docker image pull policy                    | `Always`                           |
+| `resources.requests.cpu`    | CPU resource request                        | `100m`                             |
+| `resources.requests.memory` | Memory resource request                     | `128Mi`                            |
+| `resources.limits.cpu`      | CPU resource limit                          | `100m`                             |
+| `resources.limits.memory`   | Memory resource limit                       | `128Mi`                            |
+| `nodeSelector`              | Deployment nodeSelector                     | `{}`                               |
+| `tolerations`               | Deployment tolerations                      | `[]`                               |
+| `affinity`                  | Deployment affinity                         | `{}`                               |
+| `priorityClassName`         | Priority Class of the pod                   | `""`                               |
+| `podAnnotations`            | Annotations to add to the Deployment's pods | `{}`            |
+| `podLabels`                 | Labels to add to the Deployment's pods      | `{}`                 |
 
 ## Upgrading to Chart Version 1.0.0
 
