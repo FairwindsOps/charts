@@ -18,6 +18,13 @@ spec:
       labels:
         app: {{ template "rbac-manager.name" . }}
         release: {{ .Release.Name }}
+    {{- if .Values.podLabels }}
+{{ toYaml .Values.podLabels | indent 8 }}
+    {{- end }}
+    {{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+    {{- end }} 
     spec:
       serviceAccountName: {{ template "rbac-manager.fullname" . }}
 {{- if .Values.priorityClassName }}
