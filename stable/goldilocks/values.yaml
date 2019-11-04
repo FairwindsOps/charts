@@ -7,7 +7,7 @@ upgradeVPA: false
 
 image:
   repository: quay.io/fairwinds/goldilocks
-  tag: v2.0.0
+  tag: v2.1.0
   pullPolicy: Always
 
 nameOverride: ""
@@ -21,6 +21,7 @@ controller:
     create: true
     # name: ExistingServiceAccountName
 
+  flags: {}
   logVerbosity: "2"
   nodeSelector: {}
   tolerations: []
