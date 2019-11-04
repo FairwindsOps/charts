@@ -37,7 +37,7 @@ spec:
             - controller
             - -v{{ .Values.controller.logVerbosity }}
             {{- range $name, $value := .Values.controller.flags }}
-            - --{{ $name }}={{ $value | quote }}
+            - --{{ $name }}={{ $value }}
             {{- end }}
 
           securityContext:
