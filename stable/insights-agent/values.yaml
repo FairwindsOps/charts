@@ -73,7 +73,7 @@ goldilocks:
     tag: "v2.1.0"
   controller:
     flags:
-      on-by-default: "true"
+      on-by-default: true
       exclude-namespaces: "kube-system"
   dashboard:
     enabled: false
