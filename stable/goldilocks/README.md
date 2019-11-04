@@ -17,7 +17,7 @@ VPA Can be installed using a post-install hook if `installVPA` is set to true in
 
 | Parameter                              | Description                                                                                                                      | Default                        |
 |----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------|
-| `installVPA`                           | Whether or not to install the VPA controller from the vpa repository                                                             | 'False`                        |
+| `installVPA`                           | Whether or not to install the VPA controller from the vpa repository                                                             | `False`                        |
 | `upgradeVPA`                           | If enabled, runs a pre-upgrade hook that uses the vpa repo to run vpa-apply-update.sh                                            | `False`                        |
 | `image.pullPolicy`                     | imagePullPolicy - Highly recommended to leave this as `Always`                                                                   | `Always`                       |
 | `image.repository`                     | Repository for the goldilocks image                                                                                              | `quay.io/fairwinds/goldilocks` |
@@ -31,12 +31,13 @@ VPA Can be installed using a post-install hook if `installVPA` is set to true in
 | `controller.resources.requests.cpu`    | Controller CPU request                                                                                                           | `25m`                          |
 | `controller.resources.requests.memory` | Controller memory request                                                                                                        | `32Mi`                         |
 | `controller.serviceAccount.create`     | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`    | `True`                         |
-| `controller.serviceAccount.name`       | The name of an existing service account to use for the controller                                                                | ``                             |
+| `controller.serviceAccount.name`       | The name of an existing service account to use for the controller                                                                |                                |
 | `controller.tolerations`               | Tolerations for the controller pod                                                                                               | `[]`                           |
+| `controller.flags`                     | A map of additional flags to pass to the controller                                                                              | `{}`                           |
 | `dashboard.enabled`                    | If true, the dashboard component will be installed.                                                                              | `True`                         |
 | `dashboard.affinity`                   | Affinity for the dashbaord pods.                                                                                                 | `{}`                           |
 | `dashboard.excludeContainer`           | A comma-separated list of container names to ignore in the dashboard globally.                                                   | `linkderd-proxy,istio-proxy`   |
-| `dashboard.basePath`                   | Customize the basePath passed as `--base-path` to the dashboard container (useful for instance if using an ingress path)                                          |
+| `dashboard.basePath`                   | Customize the basePath passed as `--base-path` to the dashboard container (useful for instance if using an ingress path)         |                                |
 | `dashboard.ingress.enabled`            | If true, an ingress object will be created. Further configuration is necessary. See [values.yaml](values.yaml) for an example.   | `False`                        |
 | `dashboard.ingress.annotations`        | Annotations on the ingress object.                                                                                               | `{}`                           |
 | `dashboard.ingress.hosts.0.host`       | Ingress host. See [values.yaml](values.yaml) for an example.                                                                     | `chart-example.local`          |
@@ -53,7 +54,7 @@ VPA Can be installed using a post-install hook if `installVPA` is set to true in
 | `dashboard.service.port`               | Dashboard service port.                                                                                                          | `80`                           |
 | `dashboard.service.type`               | Servvice type for the dashboard service.                                                                                         | `ClusterIP`                    |
 | `dashboard.serviceAccount.create`      | If true, a service account will be created for the dashboard. If set to false, then you must set `dashboard.serviceAccount.name` | `True`                         |
-| `dashboard.serviceAccount.name`        | The name of an existing service account to use for the dashboard.                                                                | ``                             |
+| `dashboard.serviceAccount.name`        | The name of an existing service account to use for the dashboard.                                                                |                                |
 | `dashboard.tolerations`                | Tolerations for the dashboard pod                                                                                                | `[]`                           |
-| `fullnameOverride`                     | Override the fullName in the chart                                                                                               | ``                             |
-| `nameOverride`                         | Override the name field in the chart                                                                                             | ``                             |
+| `fullnameOverride`                     | Override the fullName in the chart                                                                                               |                                |
+| `nameOverride`                         | Override the name field in the chart                                                                                             |                                |
