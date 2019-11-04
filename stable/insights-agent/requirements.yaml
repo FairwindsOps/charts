@@ -1,5 +1,5 @@
 dependencies:
   - name: goldilocks
     repository: https://charts.fairwinds.com/stable
-    version: 1.0.0
+    version: 1.1.0
     condition: goldilocks.enabled

@@ -65,12 +65,16 @@ kubesec:
       memory: 128Mi
 
 goldilocks:
-  enabled: false
+  enabled: true
   schedule: "0 * * * *"
   timeout: 120
   image:
     repository: quay.io/fairwinds/goldilocks
-    tag: "v1.3.0"
+    tag: "v2.1.0"
+  controller:
+    flags:
+      on-by-default: "true"
+      exclude-namespaces: "kube-system"
   dashboard:
     enabled: false
   resources:
