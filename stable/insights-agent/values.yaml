@@ -65,7 +65,7 @@ kubesec:
       memory: 128Mi
 
 goldilocks:
-  enabled: false
+  enabled: true
   schedule: "0 * * * *"
   timeout: 120
   image:
