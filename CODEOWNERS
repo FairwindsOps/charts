@@ -12,12 +12,12 @@
 /incubator/logentries/ @mjhuber
 /incubator/node-problem-detector/ @crmejia
 /incubator/opa/ @sudermanjr
-/incubator/ro-cert-manager/ @sudermanjr @endzyme
+/incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
 
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @mjhuber
-/stable/polaris/ @rbren @endzyme
+/stable/polaris/ @rbren
 /stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
 /stable/insights-agent/ @bobby-brennan @makoscafee
