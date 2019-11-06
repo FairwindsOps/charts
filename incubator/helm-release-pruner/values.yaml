@@ -2,7 +2,7 @@
 
 image:
   repository: quay.io/reactiveops/helm-release-pruner
-  tag: v1.0.0
+  tag: v1.1.0
   pullPolicy: Always
 
 job:
