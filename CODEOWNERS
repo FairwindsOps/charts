@@ -12,7 +12,7 @@
 /incubator/logentries/ @mjhuber
 /incubator/node-problem-detector/ @crmejia
 /incubator/opa/ @sudermanjr
-/incubator/ro-cert-manager/ @sudermanjr @endzyme
+/incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
 
 /stable/aws-iam-authenticator/ @sudermanjr
