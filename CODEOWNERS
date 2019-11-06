@@ -18,6 +18,6 @@
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @mjhuber
-/stable/polaris/ @rbren
+/stable/polaris/ @rbren @makoscafee @jordandoig
 /stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
 /stable/insights-agent/ @bobby-brennan @makoscafee
