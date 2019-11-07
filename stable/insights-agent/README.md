@@ -16,6 +16,13 @@ helm upgrade --install insights-agent fairwinds-stable/insights-agent \
   --set insights.base64token="abcde=="
 ```
 
+## CronJob schedules
+Most Insights reports run as CronJobs, typically every hour.
+
+In order to avoid every report consuming resources at once, you can stagger the reports
+by setting the minute of the cron schedule to a random number. For example,
+to run at a random minute every hour, your cron expression can be `rand * * * *`.
+
 ## Configuration
 Parameter | Description | Default
 --------- | ----------- | -------
@@ -32,21 +39,21 @@ Parameter | Description | Default
 `polaris.enabled` | Enable Polaris reports | true
 `polaris.schedule` | Cron expression for running Polaris | `rand * * * *`
 `polaris.timeout` | Maximum time in seconds to wait for the report | 60
-`polaris.repository` | Repository to use for the Polaris image | quay.io/reactiveops/polaris
-`polaris.image` | Image tag to use for the Polaris image | 0.5.0-beta2
+`polaris.image.repository` | Repository to use for the Polaris image | quay.io/reactiveops/polaris
+`polaris.image.tag` | Image tag to use for the Polaris image | 0.5.0
 `kubehunter.enabled` | Enable Kube Hunter reports | true
 `kubehunter.schedule` | Cron expression for running Kube Hunter | `rand * * * *`
 `kubehunter.timeout` | Maximum time in seconds to wait for the report | 60
-`kubehunter.repository` | Repository to use for the Kube Hunter image | quay.io/reactiveops/kube-hunter
-`kubehunter.image` | Image tag to use for the Kube Hunter image | 1.0.0
+`kubehunter.image.repository` | Repository to use for the Kube Hunter image | quay.io/reactiveops/kube-hunter
+`kubehunter.image.tag` | Image tag to use for the Kube Hunter image | 1.0.0
 `kubesec.enabled` | Enable Kubesec reports | true
 `kubesec.schedule` | Cron expression for running Kubesec | `rand * * * *`
 `kubesec.timeout` | Maximum time in seconds to wait for the report | 120
-`kubesec.repository` | Repository to use for the Kubesec image | quay.io/reactiveops/fw-kubesec
-`kubesec.image` | Image tag to use for the Kubesec image | 1.1.0
+`kubesec.image.repository` | Repository to use for the Kubesec image | quay.io/reactiveops/fw-kubesec
+`kubesec.image.tag` | Image tag to use for the Kubesec image | 1.1.0
 `goldilocks.enabled` | Enable Goldilocks reports | true
 `goldilocks.schedule` | Cron expression for running Goldilocks | `rand * * * *`
 `goldilocks.timeout` | Maximum time in seconds to wait for the report | 60
-`goldilocks.repository` | Repository to use for the Goldilocks image | quay.io/fairwinds/goldilocks
-`goldilocks.image` | Image tag to use for the Goldilocks image | v1.3.0
+`goldilocks.image.repository` | Repository to use for the Goldilocks image | quay.io/fairwinds/goldilocks
+`goldilocks.image.tag` | Image tag to use for the Goldilocks image | v1.3.0
 
