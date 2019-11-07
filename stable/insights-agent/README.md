@@ -30,22 +30,22 @@ Parameter | Description | Default
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
 `polaris.enabled` | Enable Polaris reports | true
-`polaris.schedule` | Cron expression for running Polaris | `0 * * * *`
+`polaris.schedule` | Cron expression for running Polaris | `rand * * * *`
 `polaris.timeout` | Maximum time in seconds to wait for the report | 60
 `polaris.repository` | Repository to use for the Polaris image | quay.io/reactiveops/polaris
 `polaris.image` | Image tag to use for the Polaris image | 0.5.0-beta2
 `kubehunter.enabled` | Enable Kube Hunter reports | true
-`kubehunter.schedule` | Cron expression for running Kube Hunter | `0 * * * *`
+`kubehunter.schedule` | Cron expression for running Kube Hunter | `rand * * * *`
 `kubehunter.timeout` | Maximum time in seconds to wait for the report | 60
 `kubehunter.repository` | Repository to use for the Kube Hunter image | quay.io/reactiveops/kube-hunter
 `kubehunter.image` | Image tag to use for the Kube Hunter image | 1.0.0
 `kubesec.enabled` | Enable Kubesec reports | true
-`kubesec.schedule` | Cron expression for running Kubesec | `0 * * * *`
+`kubesec.schedule` | Cron expression for running Kubesec | `rand * * * *`
 `kubesec.timeout` | Maximum time in seconds to wait for the report | 120
 `kubesec.repository` | Repository to use for the Kubesec image | quay.io/reactiveops/fw-kubesec
 `kubesec.image` | Image tag to use for the Kubesec image | 1.1.0
 `goldilocks.enabled` | Enable Goldilocks reports | true
-`goldilocks.schedule` | Cron expression for running Goldilocks | `0 * * * *`
+`goldilocks.schedule` | Cron expression for running Goldilocks | `rand * * * *`
 `goldilocks.timeout` | Maximum time in seconds to wait for the report | 60
 `goldilocks.repository` | Repository to use for the Goldilocks image | quay.io/fairwinds/goldilocks
 `goldilocks.image` | Image tag to use for the Goldilocks image | v1.3.0
