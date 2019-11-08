@@ -4,7 +4,7 @@ kind: CronJob
 metadata:
   {{- include "metadata" .Label }}
 spec:
-  schedule: "{{ .Config.schedule }}"
+  schedule: {{ regexReplaceAll "^rand" .Config.schedule (regexReplaceAll "^[0,6-9]" (randNumeric 2) "") | }}
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: {{ .Values.cronjobs.failedJobsHistoryLimit }}
   successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
