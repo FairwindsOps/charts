@@ -41,6 +41,7 @@
     {{- toYaml .Values.uploader.resources | nindent 4 }}
   securityContext:
     runAsNonRoot: true
+    runAsUser: 1000
     allowPrivilegeEscalation: false
     privileged: false
     capabilities:
