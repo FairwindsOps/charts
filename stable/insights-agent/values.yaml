@@ -77,11 +77,11 @@ goldilocks:
       exclude-namespaces: "kube-system"
     resources:
       limits:
-        cpu: 100m
-        memory: 128Mi
+        cpu: 2273m
+        memory: 2400Mi
       requests:
-        cpu: 100m
-        memory: 128Mi
+        cpu: 25m
+        memory: 262Mi
   dashboard:
     enabled: false
   resources:
