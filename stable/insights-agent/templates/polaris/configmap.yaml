@@ -15,6 +15,7 @@ data:
       memoryLimitsMissing: warning
     images:
       tagNotSpecified: error
+      pullPolicyNotAlways: ignore
     healthChecks:
       readinessProbeMissing: warning
       livenessProbeMissing: warning
@@ -54,7 +55,99 @@ data:
       - Deployments
       - StatefulSets
       - DaemonSets
-      - Jobs
       - CronJobs
+      - Jobs
       - ReplicationControllers
+    exemptions:
+      - controllerNames:
+          - dns-controller
+          - datadog-datadog
+          - kube-flannel-ds
+          - kube2iam
+          - aws-iam-authenticator
+          - datadog
+          - kube2iam
+        rules:
+          - hostNetworkSet
+      - controllerNames:
+          - aws-iam-authenticator
+          - aws-cluster-autoscaler
+          - kube-state-metrics
+          - dns-controller
+          - external-dns
+          - dnsmasq
+          - autoscaler
+          - kubernetes-dashboard
+          - install-cni
+          - kube2iam
+        rules:
+          - readinessProbeMissing
+          - livenessProbeMissing
+      - controllerNames:
+          - aws-iam-authenticator
+          - nginx-ingress-controller
+          - nginx-ingress-default-backend
+          - aws-cluster-autoscaler
+          - kube-state-metrics
+          - dns-controller
+          - external-dns
+          - kubedns
+          - dnsmasq
+          - autoscaler
+          - tiller
+          - kube2iam
+        rules:
+          - runAsRootAllowed
+      - controllerNames:
+          - aws-iam-authenticator
+          - nginx-ingress-controller
+          - nginx-ingress-default-backend
+          - aws-cluster-autoscaler
+          - kube-state-metrics
+          - dns-controller
+          - external-dns
+          - kubedns
+          - dnsmasq
+          - autoscaler
+          - tiller
+          - kube2iam
+        rules:
+          - notReadOnlyRootFileSystem
+      - controllerNames:
+          - cert-manager
+          - dns-controller
+          - kubedns
+          - dnsmasq
+          - autoscaler
+          - insights-agent-goldilocks-vpa-install
+        rules:
+          - cpuRequestsMissing
+          - cpuLimitsMissing
+          - memoryRequestsMissing
+          - memoryLimitsMissing
+      - controllerNames:
+          - kube2iam
+        rules:
+          - runAsPrivileged
+      - controllerNames:
+          - kube-hunter
+        rules:
+          - hostPIDSet
+      - controllerNames:
+          - polaris
+          - kube-hunter
+          - goldilocks
+          - insights-agent-goldilocks-vpa-install
+        rules:
+          - notReadOnlyRootFileSystem
+      - controllerNames:
+          - insights-agent-goldilocks-controller
+        rules:
+          - livenessProbeMissing
+          - readinessProbeMissing
+      - controllerNames:
+          - insights-agent-goldilocks-vpa-install
+          - kube-hunter
+        rules:
+          - runAsRootAllowed
 {{- end -}}
