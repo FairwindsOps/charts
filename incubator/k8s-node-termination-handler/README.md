@@ -1,7 +1,7 @@
-# Polaris
+# k8s-termination-handler
 
 [k8s-termination-handler](https://github.com/GoogleCloudPlatform/k8s-node-termination-handler)
-is a tool for gracefully draining preemptible nodes before Google automatically shuts them down.
+is a tool for gracefully draining preemptible GCP nodes before Google automatically shuts them down.
 
 ## Installation
 We recommend installing k8s-termination-handler in its own namespace.
