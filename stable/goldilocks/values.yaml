@@ -3,7 +3,7 @@
 # Declare variables to be passed into your templates.
 
 installVPA: false
-upgradeVPA: false
+uninstallVPA: false
 
 image:
   repository: quay.io/fairwinds/goldilocks
