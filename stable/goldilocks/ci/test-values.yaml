@@ -1,6 +1,5 @@
 # For testing, make sure to install the vpa controller
-installVPA: true
-v2Upgrade: true
+reinstallVPA: true
 controller:
   flags:
     on-by-default: true
