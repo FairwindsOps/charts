@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "gke-node-termination-handler.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
+    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{ include "gke-node-termination-handler.labels" . | indent 4 }}
+spec:
+  selector:
+    matchLabels:
+      name: {{ include "gke-node-termination-handler.fullname" . }}
+  updateStrategy:
+    type: {{ .Values.daemonset.updateStrategy.type }}
+  template:
+    metadata:
+      labels:
+        name: {{ include "gke-node-termination-handler.fullname" . }}
+    spec:
+      # Necessary to reboot node
+      hostPID: true
+      serviceAccountName: {{ include "gke-node-termination-handler.fullname" . }}
+      affinity:
+        nodeAffinity:
+         # Restrict to preemptible nodes
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: cloud.google.com/gke-preemptible
+                operator: Exists
+      containers:
+      - image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: {{ .Chart.Name }}
+        command: ["./node-termination-handler"]
+        args: ["--logtostderr", "--exclude-pods=$(POD_NAME):$(POD_NAMESPACE)", "-v=10", "--taint=cloud.google.com/impending-node-termination::NoSchedule"]
+        securityContext:
+          capabilities:
+            # Necessary to reboot node
+            add: ["SYS_BOOT"]
+        env:
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          - name: POD_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+      tolerations:
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists

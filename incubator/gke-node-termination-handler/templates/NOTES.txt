@@ -1,0 +1,1 @@
+Thanks for installing gke-node-termination-handler. Have a nice day.
