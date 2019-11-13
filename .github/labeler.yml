@@ -1,0 +1,4 @@
+incubator:
+  - incubator/**/*
+stable:
+  - stable/**/*
