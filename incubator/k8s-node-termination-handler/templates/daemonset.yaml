@@ -35,15 +35,12 @@ spec:
     spec:
       # Necessary to reboot node
       hostPID: true
-      serviceAccountName: node-termination-handler
+      serviceAccountName: {{ include "k8s-node-termination-handler.fullname" . }}
       affinity:
         nodeAffinity:
-         # Restrict to GPU nodes or preemptible nodes
+         # Restrict to preemptible nodes
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
-            - matchExpressions:
-              - key: cloud.google.com/gke-accelerator
-                operator: Exists
             - matchExpressions:
               - key: cloud.google.com/gke-preemptible
                 operator: Exists
@@ -66,11 +63,10 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: metadata.namespace
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
       tolerations:
-      # Run regardless of any existing taints.
-      - effect: NoSchedule
-        operator: Exists
-      - effect: NoExecute
-        operator: Exists
+        - effect: NoSchedule
+          operator: Exists
+        - effect: NoExecute
+          operator: Exists
