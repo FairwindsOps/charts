@@ -2,21 +2,21 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "k8s-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "k8s-node-termination-handler.chart" . }}
+    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
+    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-  name: {{ include "k8s-node-termination-handler.fullname" . }}
+  name: {{ include "gke-node-termination-handler.fullname" . }}
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "k8s-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "k8s-node-termination-handler.chart" . }}
+    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
+    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-  name: {{ include "k8s-node-termination-handler.fullname" . }}
+  name: {{ include "gke-node-termination-handler.fullname" . }}
 rules:
   # Allow Node Termination Handler to get and update nodes (for posting taints).
 - apiGroups: [""]
@@ -35,16 +35,16 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   labels:
-    app.kubernetes.io/name: {{ include "k8s-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "k8s-node-termination-handler.chart" . }}
+    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
+    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-  name: {{ include "k8s-node-termination-handler.fullname" . }}
+  name: {{ include "gke-node-termination-handler.fullname" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "k8s-node-termination-handler.fullname" . }}
+  name: {{ include "gke-node-termination-handler.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ include "k8s-node-termination-handler.fullname" . }}
+  name: {{ include "gke-node-termination-handler.fullname" . }}
   namespace: {{ .Release.Namespace }}

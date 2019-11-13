@@ -1,27 +1,27 @@
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
-  name: {{ include "k8s-node-termination-handler.fullname" . }}
+  name: {{ include "gke-node-termination-handler.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "k8s-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "k8s-node-termination-handler.chart" . }}
+    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
+    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{ include "k8s-node-termination-handler.labels" . | indent 4 }}
+{{ include "gke-node-termination-handler.labels" . | indent 4 }}
 spec:
   selector:
     matchLabels:
-      name: {{ include "k8s-node-termination-handler.fullname" . }}
+      name: {{ include "gke-node-termination-handler.fullname" . }}
   updateStrategy:
     type: {{ .Values.daemonset.updateStrategy.type }}
   template:
     metadata:
       labels:
-        name: {{ include "k8s-node-termination-handler.fullname" . }}
+        name: {{ include "gke-node-termination-handler.fullname" . }}
     spec:
       # Necessary to reboot node
       hostPID: true
-      serviceAccountName: {{ include "k8s-node-termination-handler.fullname" . }}
+      serviceAccountName: {{ include "gke-node-termination-handler.fullname" . }}
       affinity:
         nodeAffinity:
          # Restrict to preemptible nodes
