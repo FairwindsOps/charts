@@ -24,7 +24,7 @@ If using `installVPA=true` when updating from v1.x.x to v2.x.x of this chart, th
 If upgrading from v1.x.x to v2.x.x we recommend upgrading like so:
 
 ```
-helm upgrade goldilocks fairwinds-stable/goldilocks --set installVPA=true --set uninstallVPA=true
+helm upgrade goldilocks fairwinds-stable/goldilocks --set reinstallVPA=true
 ```
 
 This will completely remove the VPA and then re-install it using the new method.
@@ -34,6 +34,8 @@ This will completely remove the VPA and then re-install it using the new method.
 | Parameter                              | Description                                                                                                                      | Default                        |
 |----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------|
 | `installVPA`                           | Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified. | `False` |
+| `uninstallVPA`                         | Used to uninstall the vpa controller.                                                                                            | `false`                        |
+| `reinstallVPA`                         | Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks.                                              | `false`                        |
 | `image.pullPolicy`                     | imagePullPolicy - Highly recommended to leave this as `Always`                                                                   | `Always`                       |
 | `image.repository`                     | Repository for the goldilocks image                                                                                              | `quay.io/fairwinds/goldilocks` |
 | `image.tag`                            | The goldilocks image tag to use                                                                                                  | `v1.3.0`                       |
@@ -73,4 +75,3 @@ This will completely remove the VPA and then re-install it using the new method.
 | `dashboard.tolerations`                | Tolerations for the dashboard pod                                                                                                | `[]`                           |
 | `fullnameOverride`                     | Override the fullName in the chart                                                                                               |                                |
 | `nameOverride`                         | Override the name field in the chart                                                                                             |                                |
-| `uninstallVPA`                         | Used to upgrade to v2.x.x of the chart. See the upgrade section above.                                                           | `false`                        |

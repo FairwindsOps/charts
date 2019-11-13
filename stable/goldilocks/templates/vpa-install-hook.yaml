@@ -1,10 +1,9 @@
-{{- if .Values.installVPA }}
+{{- if or (eq .Values.installVPA true) (eq .Values.reinstallVPA true) }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    "helm.sh/hook": "pre-install"
-    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation,hook-failed"
     "helm.sh/hook-weight": "-100"
   name: {{ include "goldilocks.fullname" . }}-vpa-install
@@ -20,7 +19,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: vpa-install
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook": "pre-upgrade"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation,hook-failed"
     "helm.sh/hook-weight": "-90"
@@ -44,8 +43,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: vpa-install
   annotations:
-    "helm.sh/hook": "pre-install"
-    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook-weight": "-70"
 spec:

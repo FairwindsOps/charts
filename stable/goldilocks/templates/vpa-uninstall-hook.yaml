@@ -1,9 +1,9 @@
-{{- if .Values.uninstallVPA }}
+{{- if or (eq .Values.uninstallVPA true) (eq .Values.reinstallVPA true) }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   annotations:
-    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook": "pre-upgrade,post-delete"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation,hook-failed"
     "helm.sh/hook-weight": "-250"
   name: {{ include "goldilocks.fullname" . }}-vpa-uninstall
@@ -19,7 +19,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: vpa-uninstall
   annotations:
-    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook": "pre-upgrade,post-delete"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation,hook-failed"
     "helm.sh/hook-weight": "-240"
 roleRef:
@@ -42,7 +42,7 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: vpa-uninstall
   annotations:
-    "helm.sh/hook": "pre-upgrade"
+    "helm.sh/hook": "pre-upgrade,post-delete"
     "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook-weight": "-230"
 spec:
