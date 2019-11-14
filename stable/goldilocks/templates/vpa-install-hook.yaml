@@ -20,7 +20,6 @@ metadata:
     app.kubernetes.io/component: vpa-install
   annotations:
     "helm.sh/hook": "pre-install,pre-upgrade"
-    "helm.sh/hook": "pre-upgrade"
     "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation,hook-failed"
     "helm.sh/hook-weight": "-90"
 roleRef:
