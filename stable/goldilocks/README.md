@@ -11,14 +11,31 @@ This is a Helm chart for the Fairwinds [Goldilocks project](https://github.com/F
 
 This has a hard requirement on VPA being installed. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks)
 
-VPA Can be installed using a post-install hook if `installVPA` is set to true in the values. If you later wish to upgrade the vpa controller to the latest supported by this chart, you can enable the `upgradeVPA` option to run the upgrade.
+## installVPA Flag
+
+VPA CRDs and the recommender can be installed using a pre-install hook if `installVPA` is set to true in the values. This also acts as a pre-upgrade hook that will update to the latest version of the VPA that is currently supported.
+
+NOTE: This *only* installs the necessary CRDs, RBAC, and the recommender. It does not include the other parts of VPA. If you are intending to install VPA for other reasons, we recommend you maintain the installation of the controller separate from this chart.
+
+## *WARNING* Upgrading to chart v2.0.0
+
+If using `installVPA=true` when updating from v1.x.x to v2.x.x of this chart, there are some considerations. v2.x.x of the chart started only installing the recommender and the necessary CRDs and RBAC from the VPA installation. This is due to the volatile and risky nature of running a beta mutatingadmissionwebhook in your cluster. If you have previously used the `installVPA=true` flag to install the VPA, we recommend that you completely uninstall and re-install the VPA as part of the upgrade. We have provided a new hook to do this that will run before the install hook.
+
+If upgrading from v1.x.x to v2.x.x we recommend upgrading like so:
+
+```
+helm upgrade goldilocks fairwinds-stable/goldilocks --set reinstallVPA=true
+```
+
+This will completely remove the VPA and then re-install it using the new method.
 
 ## Usage
 
 | Parameter                              | Description                                                                                                                      | Default                        |
 |----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------|
-| `installVPA`                           | Whether or not to install the VPA controller from the vpa repository                                                             | `False`                        |
-| `upgradeVPA`                           | If enabled, runs a pre-upgrade hook that uses the vpa repo to run vpa-apply-update.sh                                            | `False`                        |
+| `installVPA`                           | Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified. | `False` |
+| `uninstallVPA`                         | Used to uninstall the vpa controller.                                                                                            | `false`                        |
+| `reinstallVPA`                         | Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks.                                              | `false`                        |
 | `image.pullPolicy`                     | imagePullPolicy - Highly recommended to leave this as `Always`                                                                   | `Always`                       |
 | `image.repository`                     | Repository for the goldilocks image                                                                                              | `quay.io/fairwinds/goldilocks` |
 | `image.tag`                            | The goldilocks image tag to use                                                                                                  | `v1.3.0`                       |
