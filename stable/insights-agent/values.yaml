@@ -91,3 +91,17 @@ goldilocks:
     requests:
       cpu: 100m
       memory: 128Mi
+
+workloads:
+  enabled: false
+  schedule: "rand * * * *"
+  image:
+    repository: quay.io/fairwinds/workloads
+    tag: "1.0.0"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
