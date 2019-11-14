@@ -1,4 +1,4 @@
-{{- if or (eq .Values.uninstallVPA true) (eq .Values.reinstallVPA true) }}
+{{- if .Values.uninstallVPA .Values.reinstallVPA }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
