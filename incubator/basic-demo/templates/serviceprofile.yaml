@@ -11,4 +11,9 @@ spec:
       pathRegex: '/ping'
       method: GET
     isRetryable: {{ .Values.linkerd.enableRetry }}
+  - name: 'GET /'
+    condition:
+      pathRegex: '/'
+      method: GET
+    isRetryable: {{ .Values.linkerd.enableRetry }}
 {{- end }}
