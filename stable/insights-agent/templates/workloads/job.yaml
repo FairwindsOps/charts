@@ -1,0 +1,5 @@
+{{- if .Values.workloads.enabled -}} 
+{{- $_ := set . "Label" "workloads" }}
+{{- $_ := set . "Template" "workloads.job.spec" }}
+{{- include "job" . }}
+{{- end -}}
