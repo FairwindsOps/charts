@@ -5,6 +5,7 @@
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
 /incubator/fluentd/ @dosullivan @coreypobrien
+/incubator/gke-node-termination-handler/ @mjhuber @bbensky @hopson
 /incubator/helm-release-pruner/ @coreypobrien
 /incubator/imagepullsecret-deploy/ @crmejia
 /incubator/kubebench/ @mjhuber

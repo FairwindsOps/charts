@@ -55,5 +55,10 @@ Parameter | Description | Default
 `goldilocks.schedule` | Cron expression for running Goldilocks | `rand * * * *`
 `goldilocks.timeout` | Maximum time in seconds to wait for the report | 60
 `goldilocks.image.repository` | Repository to use for the Goldilocks image | quay.io/fairwinds/goldilocks
-`goldilocks.image.tag` | Image tag to use for the Goldilocks image | v1.3.0
+`goldilocks.image.tag` | Image tag to use for the Workloads image | v1.3.0
+`workloads.enabled` | Enable Workloads reports | true
+`workloads.image.repository` | Repository to use for the workload image | quay.io/fairwinds/workloads
+`workloads.image.tag` | Image tag to use for the Workloads image | 1.0.1
+`workloads.schedule` | Cron expression for running Workloads | `rand * * * *`
+
 

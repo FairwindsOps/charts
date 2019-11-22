@@ -1,0 +1,6 @@
+{{- if .Values.workloads.enabled -}} 
+{{- $_ := set . "Label" "workloads" }}
+{{- $_ := set . "Config" .Values.workloads }}
+{{- $_ := set . "Template" "workloads.job.spec" }}
+{{- include "cronjob" . }}
+{{- end -}}
