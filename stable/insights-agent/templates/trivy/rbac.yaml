@@ -1,0 +1,46 @@
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-trivy
+  labels:
+    app: insights-agent
+rules:
+  - apiGroups:
+      - 'apps'
+    resources:
+      - 'daemonsets'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'create'
+      - 'delete'
+  - apiGroups:
+      - ''
+    resources:
+      - pods
+      - pods/log
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - ''
+    resources:
+      - pods/exec
+    verbs:
+      - 'create'
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-trivy
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-trivy
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" . }}
+    namespace: {{ .Release.Namespace }}

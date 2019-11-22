@@ -1,0 +1,5 @@
+{{- if .Values.trivy.enabled -}} 
+{{- $_ := set . "Label" "trivy" }}
+{{- $_ := set . "Template" "trivy.job.spec" }}
+{{- include "job" . }}
+{{- end -}}

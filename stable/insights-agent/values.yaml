@@ -106,3 +106,19 @@ workloads:
     requests:
       cpu: 100m
       memory: 128Mi
+
+trivy:
+  enabled: true
+  schedule: "rand * * * *"
+  timeout: 3600
+  image:
+    repository: quay.io/fairwinds/fw-trivy
+    tag: "latest"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+

@@ -1,0 +1,21 @@
+{{- define "trivy.job.spec" -}}
+restartPolicy: Never
+serviceAccountName: {{ include "insights-agent.fullname" . }}
+securityContext:
+  fsGroup: 412
+volumes:
+- name: output
+  emptyDir: {}
+containers:
+- name: trivy-manager
+  image: quay.io/fairwinds/fw-trivy
+  image: "{{ .Values.trivy.image.repository }}:{{ .Values.trivy.image.tag }}"
+  command:
+    - "./daemonset-manager.sh"
+  volumeMounts:
+  - name: output
+    mountPath: /output
+{{- $_ := set . "Label" "trivy" }}
+{{- $_ := set . "Config" .Values.trivy }}
+{{- include "uploaderContainer" . }}
+{{- end }}
