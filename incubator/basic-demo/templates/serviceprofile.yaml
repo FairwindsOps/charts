@@ -11,9 +11,24 @@ spec:
       pathRegex: '/ping'
       method: GET
     isRetryable: {{ .Values.linkerd.enableRetry }}
-  - name: 'GET /'
-    condition:
-      pathRegex: '/'
+  - condition:
       method: GET
-    isRetryable: {{ .Values.linkerd.enableRetry }}
+      pathRegex: /favicon\.ico
+    name: GET /favicon.ico
+  - condition:
+      method: GET
+      pathRegex: /static/css/default\.css
+    name: GET /static/css/default.css
+  - condition:
+      method: GET
+      pathRegex: /static/dist/semantic\.min\.css
+    name: GET /static/dist/semantic.min.css
+  - condition:
+      method: GET
+      pathRegex: /static/dist/semantic\.min\.js
+    name: GET /static/dist/semantic.min.js
+  - condition:
+      method: GET
+      pathRegex: /static/img/moby\.svg
+    name: GET /static/img/moby.svg
 {{- end }}
