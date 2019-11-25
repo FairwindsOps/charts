@@ -7,28 +7,12 @@ metadata:
     app: insights-agent
 rules:
   - apiGroups:
-      - 'apps'
-    resources:
-      - 'daemonsets'
-    verbs:
-      - 'get'
-      - 'list'
-      - 'create'
-      - 'delete'
-  - apiGroups:
       - ''
     resources:
       - pods
-      - pods/log
     verbs:
       - 'get'
       - 'list'
-  - apiGroups:
-      - ''
-    resources:
-      - pods/exec
-    verbs:
-      - 'create'
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding

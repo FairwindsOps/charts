@@ -7,14 +7,16 @@ volumes:
 - name: output
   emptyDir: {}
 containers:
-- name: trivy-manager
+- name: trivy
   image: quay.io/fairwinds/fw-trivy
   image: "{{ .Values.trivy.image.repository }}:{{ .Values.trivy.image.tag }}"
   command:
-    - "./daemonset-manager.sh"
+    - "./report.sh"
   volumeMounts:
   - name: output
     mountPath: /output
+  securityContext:
+    privileged: true
 {{- $_ := set . "Label" "trivy" }}
 {{- $_ := set . "Config" .Values.trivy }}
 {{- include "uploaderContainer" . }}

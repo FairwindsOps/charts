@@ -127,6 +127,7 @@ data:
           - memoryLimitsMissing
       - controllerNames:
           - kube2iam
+          - trivy
         rules:
           - runAsPrivileged
       - controllerNames:
@@ -137,6 +138,7 @@ data:
           - polaris
           - kube-hunter
           - goldilocks
+          - trivy
           - insights-agent-goldilocks-vpa-install
         rules:
           - notReadOnlyRootFileSystem
