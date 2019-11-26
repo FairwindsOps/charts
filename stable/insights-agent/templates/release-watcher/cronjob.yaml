@@ -1,6 +1,6 @@
-{{- if .Values.release-watcher.enabled -}} 
+{{- if .Values.releasewatcher.enabled -}} 
 {{- $_ := set . "Label" "release-watcher" }}
-{{- $_ := set . "Config" .Values.release-watcher }}
-{{- $_ := set . "Template" "release-watcher.job.spec" }}
+{{- $_ := set . "Config" .Values.releasewatcher }}
+{{- $_ := set . "Template" "releasewatcher.job.spec" }}
 {{- include "cronjob" . }}
 {{- end -}}
