@@ -86,5 +86,3 @@ clusterIssuers:
           dnsZones:
           - bar.com
 ```
-
-

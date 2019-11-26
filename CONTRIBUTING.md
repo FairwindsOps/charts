@@ -13,6 +13,10 @@
 * Follow the [Chart Guidelines](#Chart Guidelines)
 * Make sure your chart passes a `helm lint`
 
+## Pre-commit
+
+There is a `.pre-commit-config.yaml` in this repo. If you use [pre-commit](https://pre-commit.com/), then you can just run `pre-commit install` to automatically run the linter on modified charts.
+
 ## Chart Guidelines
 
 ### Immutability
