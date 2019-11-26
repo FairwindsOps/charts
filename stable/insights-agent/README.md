@@ -60,5 +60,9 @@ Parameter | Description | Default
 `workloads.image.repository` | Repository to use for the workload image | quay.io/fairwinds/workloads
 `workloads.image.tag` | Image tag to use for the Workloads image | 1.0.1
 `workloads.schedule` | Cron expression for running Workloads | `rand * * * *`
+`release-watcher.enabled` | Enable Release Watcher reports | true
+`release-watcher.image.repository` | Repository to use for the Release Watcher image | quay.io/fairwinds/release-watcher
+`release-watcher.image.tag` | Image tag to use for the Release Watcher image | 1.2.0
+`release-watcher.schedule` | Cron expression for running Workloads | `rand * * * *`
 
 
