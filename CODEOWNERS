@@ -4,6 +4,7 @@
 /incubator/basic-demo/ @sudermanjr
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
+/incubator/fairwinds-metrics/ @sudermanjr @mjhuber
 /incubator/fluentd/ @dosullivan @coreypobrien
 /incubator/gke-node-termination-handler/ @mjhuber @bbensky @hopson
 /incubator/helm-release-pruner/ @coreypobrien
