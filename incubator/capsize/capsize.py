@@ -80,7 +80,7 @@ elif configType == "local":
 coreApi = client.CoreV1Api()
 podRet = coreApi.list_namespaced_pod(namespace)
 
-if len(podRet.items) is not 0:
+if len(podRet.items) != 0:
     for pod in podRet.items:
         podName = pod.metadata.name
         status = pod.status.phase

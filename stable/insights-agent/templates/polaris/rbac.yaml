@@ -1,4 +1,4 @@
-{{- if .Values.polaris.enabled -}} 
+{{- if .Values.polaris.enabled -}}
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:

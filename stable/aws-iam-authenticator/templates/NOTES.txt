@@ -9,4 +9,3 @@ AWS IAM Authenticator pods will crash, because a cluster ID must be included in 
 AWS IAM Authenticator pods will crash, because a cluster ID must be specified. Either set the `cluster_id` chart value, or set `configMap.clusterID` if you are providing a config map.
 {{- end -}}{{- /* no config_id */ -}}
 {{- end -}}{{- /* no configMap */ -}}
-

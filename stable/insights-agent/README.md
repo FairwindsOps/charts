@@ -60,5 +60,3 @@ Parameter | Description | Default
 `workloads.image.repository` | Repository to use for the workload image | quay.io/fairwinds/workloads
 `workloads.image.tag` | Image tag to use for the Workloads image | 1.0.1
 `workloads.schedule` | Cron expression for running Workloads | `rand * * * *`
-
-

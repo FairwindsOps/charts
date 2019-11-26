@@ -1,4 +1,4 @@
-{{- if .Values.polaris.enabled -}} 
+{{- if .Values.polaris.enabled -}}
 # Source: polaris/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap

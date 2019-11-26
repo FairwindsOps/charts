@@ -1,4 +1,4 @@
-{{- if .Values.kubehunter.enabled -}} 
+{{- if .Values.kubehunter.enabled -}}
 {{- $_ := set . "Label" "kube-hunter" }}
 {{- $_ := set . "Config" .Values.kubehunter }}
 {{- $_ := set . "Template" "kubehunter.job.spec" }}
