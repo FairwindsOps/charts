@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-
+  name: {{ include "insights-agent.fullname" . }}-release-watcher
   labels:
     app: insights-agent
 rules:
@@ -38,13 +38,13 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-
+  name: {{ include "insights-agent.fullname" . }}-release-watcher
   labels:
     app: insights-agent
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "insights-agent.fullname" . }}-
+  name: {{ include "insights-agent.fullname" . }}-release-watcher
 subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}
