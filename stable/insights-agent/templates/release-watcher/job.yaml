@@ -1,0 +1,5 @@
+{{- if .Values.release-watcher.enabled -}} 
+{{- $_ := set . "Label" "release-watcher" }}
+{{- $_ := set . "Template" "release-watcher.job.spec" }}
+{{- include "job" . }}
+{{- end -}}
