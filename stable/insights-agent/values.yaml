@@ -106,7 +106,7 @@ workloads:
       cpu: 100m
       memory: 128Mi
 
-release-watcher:
+releasewatcher:
   enabled: false
   schedule: "rand * * * *"
   image:

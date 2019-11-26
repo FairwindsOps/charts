@@ -1,8 +1,8 @@
-{{- if .Values.release-watcher.enabled -}} 
+{{- if .Values.releasewatcher.enabled -}} 
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-release-watcher
+  name: {{ include "insights-agent.fullname" . }}-
   labels:
     app: insights-agent
 rules:
@@ -38,13 +38,13 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-release-watcher
+  name: {{ include "insights-agent.fullname" . }}-
   labels:
     app: insights-agent
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "insights-agent.fullname" . }}-release-watcher
+  name: {{ include "insights-agent.fullname" . }}-
 subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}
