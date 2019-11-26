@@ -66,3 +66,8 @@ Parameter | Description | Default
 `trivy.timeout` | Maximum time in seconds to wait for the report | 3600
 `trivy.image.repository` | Repository to use for the Trivy image | quay.io/fairwinds/fw-trivy
 `trivy.image.tag` | Image tag to use for the Trivy image | 0.0
+`release-watcher.enabled` | Enable Release Watcher reports | true
+`release-watcher.schedule` | Cron expression for running Workloads | `rand * * * *`
+`release-watcher.timeout` | Maximum time in seconds to wait for the report | 60
+`release-watcher.image.repository` | Repository to use for the Release Watcher image | quay.io/fairwinds/release-watcher
+`release-watcher.image.tag` | Image tag to use for the Release Watcher image | 1.2.0
