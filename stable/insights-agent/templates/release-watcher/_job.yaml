@@ -19,6 +19,8 @@ containers:
     - -u
     - https://kubernetes-charts-incubator.storage.googleapis.com
     - -o
+    - file
+    - --file-path
     - /output/release-watcher.json
   volumeMounts:
   - name: output
