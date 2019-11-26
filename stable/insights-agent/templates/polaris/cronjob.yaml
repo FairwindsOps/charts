@@ -1,4 +1,4 @@
-{{- if .Values.polaris.enabled -}} 
+{{- if .Values.polaris.enabled -}}
 {{- $_ := set . "Label" "polaris" }}
 {{- $_ := set . "Config" .Values.polaris }}
 {{- $_ := set . "Template" "polaris.job.spec" }}

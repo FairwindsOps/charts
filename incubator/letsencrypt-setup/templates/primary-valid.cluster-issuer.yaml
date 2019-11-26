@@ -28,7 +28,7 @@ spec:
           {{- if .http.ingressName }}
           name: {{ .http.ingressName }}
           {{- end }} {{- /* endif .http.ingressName */ -}}
-    {{- else }} 
+    {{- else }}
     - http01: {}
     {{- end }} {{- /* endif or .http.ingressClass .http.ingressName */ -}}
     {{- end }} {{- /* endif .http.enabled */ -}}

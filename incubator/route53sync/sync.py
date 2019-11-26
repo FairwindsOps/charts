@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import boto3
-import json
 import sys
 import os
 import logging
@@ -19,6 +18,7 @@ sh.setFormatter(formatter)
 logger.setLevel(os.environ.get("LOG_LEVEL", "INFO").upper())
 logger.addHandler(sh)
 
+
 # Helper functions
 def is_zone_tagged(zoneId):
     """
@@ -27,8 +27,8 @@ def is_zone_tagged(zoneId):
     Requires ENV ROUTE53_DEST_TAG
     """
     tags = route53.list_tags_for_resource(
-        ResourceType = 'hostedzone',
-        ResourceId = zoneId
+        ResourceType='hostedzone',
+        ResourceId=zoneId
     )
 
     requiredTag = os.environ.get("ROUTE53_DEST_TAG").split(":")
@@ -51,7 +51,8 @@ def get_records(zoneId):
         records = route53.list_resource_record_sets(HostedZoneId=zoneId)
     except ClientError as e:
         if e.response['Error']['Code'] == "NoSuchHostedZone":
-            logger.error("The hosted zone(s) you specified do not exist. Exiting...")
+            logger.error(
+                "The hosted zone(s) you specified do not exist. Exiting...")
         else:
             logger.error(e)
         sys.exit(1)
@@ -63,7 +64,9 @@ def get_records(zoneId):
 
     return records_list
 
+
 logger.debug("Getting ZONES from ENV")
+
 
 # Configure ZONE Ids from ENV
 try:
@@ -73,7 +76,7 @@ except KeyError as e:
     logger.error("You need to configure the environment variables:")
     logger.error(e)
     sys.exit(1)
-except:
+except:  # noqa: E722
     logger.error("Unexpected error:", sys.exc_info()[0])
     sys.exit(1)
 
@@ -89,7 +92,7 @@ if os.environ.get("ROUTE53_CHECK_DEST_TAG") in ['True', 'true']:
         logger.error("The required tags are not present. Exiting")
         sys.exit(1)
 
-#Make sure the zones are not the same zone
+# Make sure the zones are not the same zone
 if SOURCE_ZONE_ID == DEST_ZONE_ID:
     logger.error("The two zone IDs are the same. Exiting.")
     sys.exit(1)
@@ -110,8 +113,8 @@ changeBatch['Changes'] = changes
 logger.debug("Changeset: {}".format(changes))
 
 response = route53.change_resource_record_sets(
-    HostedZoneId = DEST_ZONE_ID,
-    ChangeBatch = changeBatch
+    HostedZoneId=DEST_ZONE_ID,
+    ChangeBatch=changeBatch
 )
 
 logger.debug("Response: {}".format(response))
