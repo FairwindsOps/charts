@@ -108,12 +108,12 @@ workloads:
       memory: 128Mi
 
 trivy:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   timeout: 3600
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "latest"
+    tag: "0.0.1"
   resources:
     limits:
       cpu: 100m
