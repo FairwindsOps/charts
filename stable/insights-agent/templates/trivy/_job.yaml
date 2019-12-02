@@ -1,8 +1,6 @@
 {{- define "trivy.job.spec" -}}
 restartPolicy: Never
 serviceAccountName: {{ include "insights-agent.fullname" . }}
-securityContext:
-  fsGroup: 412
 volumes:
 - name: output
   emptyDir: {}
