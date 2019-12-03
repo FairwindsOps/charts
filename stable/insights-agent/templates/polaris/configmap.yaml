@@ -139,6 +139,7 @@ data:
           - kube-hunter
           - goldilocks
           - trivy
+          - workloads
           - insights-agent-goldilocks-vpa-install
         rules:
           - notReadOnlyRootFileSystem
