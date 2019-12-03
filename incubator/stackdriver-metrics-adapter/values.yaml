@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: gcr.io/google-containers/custom-metrics-stackdriver-adapter
+  tag: v0.10.0
+  pullPolicy: IfNotPresent
+
+nameOverride: ""
+fullnameOverride: ""
+
+service:
+  type: ClusterIP
+  protocol: TCP
+  port: 443
+  targetPort: 443
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 200Mi
+  requests:
+    cpu: 250m
+    memory: 200Mi

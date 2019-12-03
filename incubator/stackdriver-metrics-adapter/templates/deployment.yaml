@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+    helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        kubernetes.io/cluster-service: "true"
+    spec:
+      serviceAccountName: custom-metrics-stackdriver-adapter
+      containers:
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: stackdriver-adapter
+        command:
+        - /adapter
+        - --use-new-resource-model=false
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}
