@@ -128,8 +128,11 @@ data:
       - controllerNames:
           - kube2iam
           - trivy
+          - kube-proxy
+          - nginx-ingress-controller
         rules:
           - runAsPrivileged
+          - privilegeEscalationAllowed
       - controllerNames:
           - kube-hunter
         rules:
@@ -151,6 +154,7 @@ data:
       - controllerNames:
           - insights-agent-goldilocks-vpa-install
           - kube-hunter
+          - trivy
         rules:
           - runAsRootAllowed
 {{- end -}}
