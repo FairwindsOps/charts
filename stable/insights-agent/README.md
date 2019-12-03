@@ -57,6 +57,12 @@ Parameter | Description | Default
 `goldilocks.image.repository` | Repository to use for the Goldilocks image | quay.io/fairwinds/goldilocks
 `goldilocks.image.tag` | Image tag to use for the Workloads image | v1.3.0
 `workloads.enabled` | Enable Workloads reports | true
+`workloads.schedule` | Cron expression for running the workloads report | `rand * * * *`
+`workloads.timeout` | Maximum time in seconds to wait for the report | 60
 `workloads.image.repository` | Repository to use for the workload image | quay.io/fairwinds/workloads
 `workloads.image.tag` | Image tag to use for the Workloads image | 1.0.1
-`workloads.schedule` | Cron expression for running Workloads | `rand * * * *`
+`trivy.enabled` | Enable Trivy container scanning reports | true
+`trivy.schedule` | Cron expression for running the trivy report | `rand * * * *`
+`trivy.timeout` | Maximum time in seconds to wait for the report | 3600
+`trivy.image.repository` | Repository to use for the workload image | quay.io/fairwinds/fw-trivy
+`trivy.image.tag` | Image tag to use for the Workloads image | 0.0.1
