@@ -94,7 +94,7 @@ goldilocks:
       memory: 128Mi
 
 workloads:
-  enabled: false
+  enabled: true
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/workloads
@@ -108,7 +108,7 @@ workloads:
       memory: 128Mi
 
 trivy:
-  enabled: false
+  enabled: true
   schedule: "rand * * * *"
   timeout: 3600
   image:
