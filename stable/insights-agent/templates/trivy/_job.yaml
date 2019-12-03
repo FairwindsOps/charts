@@ -13,8 +13,15 @@ containers:
   volumeMounts:
   - name: output
     mountPath: /output
+  resources:
+    {{- toYaml .Values.trivy.resources | nindent 4 }}
   securityContext:
     privileged: true
+    allowPrivilegeEscalation: true
+    readOnlyRootFilesystem: false
+    capabilities:
+      drop:
+        - ALL
 {{- $_ := set . "Label" "trivy" }}
 {{- $_ := set . "Config" .Values.trivy }}
 {{- include "uploaderContainer" . }}

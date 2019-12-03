@@ -78,8 +78,8 @@ goldilocks:
       exclude-namespaces: "kube-system"
     resources:
       limits:
-        cpu: 2273m
-        memory: 2400Mi
+        cpu: 250m
+        memory: 545Mi
       requests:
         cpu: 25m
         memory: 262Mi
@@ -116,8 +116,8 @@ trivy:
     tag: "0.0.1"
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
