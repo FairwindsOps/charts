@@ -8,7 +8,7 @@ containers:
 - name: workloads-audit
   image: "{{ .Values.workloads.image.repository }}:{{ .Values.workloads.image.tag }}"
   imagePullPolicy: Always
-  command: ["/workloads", "--output-file", "/output/workloads.json"]
+  command: ["workload", "--output-file", "/output/workloads.json"]
   volumeMounts:
   - name: output
     mountPath: /output
