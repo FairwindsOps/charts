@@ -6,8 +6,8 @@ volumes:
   emptyDir: {}
 containers:
 - name: trivy
-  image: quay.io/fairwinds/fw-trivy
   image: "{{ .Values.trivy.image.repository }}:{{ .Values.trivy.image.tag }}"
+  imagePullPolicy: Always
   command:
     - "./report.sh"
   volumeMounts:
