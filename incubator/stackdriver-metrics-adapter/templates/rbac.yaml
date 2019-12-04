@@ -23,8 +23,8 @@ roleRef:
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: custom-metrics-stackdriver-adapter
-  namespace: custom-metrics
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
