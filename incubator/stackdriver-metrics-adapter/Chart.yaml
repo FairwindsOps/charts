@@ -3,3 +3,6 @@ appVersion: "1.0"
 description: The stackdriver metrics adapter
 name: stackdriver-metrics-adapter
 version: 0.1.0
+maintainers:
+  - name: mjhuber
+    email: micah@fairwinds.com
