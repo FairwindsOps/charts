@@ -55,7 +55,7 @@ kubesec:
   timeout: 120
   image:
     repository: quay.io/fairwinds/fw-kubesec
-    tag: "1.1.0"
+    tag: "1.2"
   resources:
     limits:
       cpu: 100m
