@@ -2,11 +2,6 @@ stackdriver-metrics-adapter
 ===========================
 This chart installs a stackdriver metrics adapter which exposes stackdriver external metrics in your cluster for HPAs to use for scaling.  More information is available in the [GCP Documentation](https://cloud.google.com/kubernetes-engine/docs/tutorials/external-metrics-autoscaling).
 
-Current chart version is `0.1.0`
-
-
-
-
 
 ## Chart Values
 
