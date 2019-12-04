@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  name: {{ include "stackdriver-metrics-adapter.name" . }}
   labels:
     app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
     helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
@@ -20,7 +20,7 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         kubernetes.io/cluster-service: "true"
     spec:
-      serviceAccountName: custom-metrics-stackdriver-adapter
+      serviceAccountName: {{ include "stackdriver-metrics-adapter.fullname" . }}
       containers:
       - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
