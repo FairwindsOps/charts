@@ -60,7 +60,7 @@ Parameter | Description | Default
 `workloads.schedule` | Cron expression for running the workloads report | `rand * * * *`
 `workloads.timeout` | Maximum time in seconds to wait for the report | 60
 `workloads.image.repository` | Repository to use for the workload image | quay.io/fairwinds/workloads
-`workloads.image.tag` | Image tag to use for the Workloads image | 1.0
+`workloads.image.tag` | Image tag to use for the workloads image | 1.0
 `trivy.enabled` | Enable Trivy container scanning reports | true
 `trivy.schedule` | Cron expression for running the trivy report | `rand * * * *`
 `trivy.timeout` | Maximum time in seconds to wait for the report | 3600
