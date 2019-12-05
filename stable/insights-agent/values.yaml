@@ -7,7 +7,7 @@ insights:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: 0.1.1
+    tag: "0.1"
   resources:
     limits:
       cpu: 100m
@@ -98,7 +98,7 @@ workloads:
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "1.0.3"
+    tag: "1.0"
   resources:
     limits:
       cpu: 100m
@@ -113,7 +113,7 @@ trivy:
   timeout: 3600
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.0.1"
+    tag: "0.0"
   resources:
     limits:
       cpu: 250m
