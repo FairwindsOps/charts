@@ -49,8 +49,8 @@ Parameter | Description | Default
 `kubesec.enabled` | Enable Kubesec reports | true
 `kubesec.schedule` | Cron expression for running Kubesec | `rand * * * *`
 `kubesec.timeout` | Maximum time in seconds to wait for the report | 120
-`kubesec.image.repository` | Repository to use for the Kubesec image | quay.io/reactiveops/fw-kubesec
-`kubesec.image.tag` | Image tag to use for the Kubesec image | 1.2
+`kubesec.image.repository` | Repository to use for the Kubesec image | aquasec/kube-hunter
+`kubesec.image.tag` | Image tag to use for the Kubesec image | 501
 `goldilocks.enabled` | Enable Goldilocks reports | true
 `goldilocks.schedule` | Cron expression for running Goldilocks | `rand * * * *`
 `goldilocks.timeout` | Maximum time in seconds to wait for the report | 60
