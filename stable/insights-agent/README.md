@@ -31,8 +31,8 @@ Parameter | Description | Default
 `insights.base64token` | Your cluster's base64-encoded auth token provided by Insights | ""
 `insights.tokenSecretName` | If you don't provide a `base64token`, you can specify the name of a secret to pull the token from | ""
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
-`uploader.image.repository`  | The repository to pull the uploader script from | 0.0.12
-`uploader.image.tag` | The tag to use for the uploader script | 0.0.12
+`uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
+`uploader.image.tag` | The tag to use for the uploader script | 0.1
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
@@ -50,7 +50,7 @@ Parameter | Description | Default
 `kubesec.schedule` | Cron expression for running Kubesec | `rand * * * *`
 `kubesec.timeout` | Maximum time in seconds to wait for the report | 120
 `kubesec.image.repository` | Repository to use for the Kubesec image | quay.io/reactiveops/fw-kubesec
-`kubesec.image.tag` | Image tag to use for the Kubesec image | 1.1.0
+`kubesec.image.tag` | Image tag to use for the Kubesec image | 1.2
 `goldilocks.enabled` | Enable Goldilocks reports | true
 `goldilocks.schedule` | Cron expression for running Goldilocks | `rand * * * *`
 `goldilocks.timeout` | Maximum time in seconds to wait for the report | 60
@@ -60,9 +60,9 @@ Parameter | Description | Default
 `workloads.schedule` | Cron expression for running the workloads report | `rand * * * *`
 `workloads.timeout` | Maximum time in seconds to wait for the report | 60
 `workloads.image.repository` | Repository to use for the workload image | quay.io/fairwinds/workloads
-`workloads.image.tag` | Image tag to use for the Workloads image | 1.0.1
+`workloads.image.tag` | Image tag to use for the Workloads image | 1.0
 `trivy.enabled` | Enable Trivy container scanning reports | true
 `trivy.schedule` | Cron expression for running the trivy report | `rand * * * *`
 `trivy.timeout` | Maximum time in seconds to wait for the report | 3600
 `trivy.image.repository` | Repository to use for the workload image | quay.io/fairwinds/fw-trivy
-`trivy.image.tag` | Image tag to use for the Workloads image | 0.0.1
+`trivy.image.tag` | Image tag to use for the Workloads image | 0.0
