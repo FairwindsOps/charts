@@ -65,4 +65,4 @@ Parameter | Description | Default
 `trivy.schedule` | Cron expression for running the trivy report | `rand * * * *`
 `trivy.timeout` | Maximum time in seconds to wait for the report | 3600
 `trivy.image.repository` | Repository to use for the workload image | quay.io/fairwinds/fw-trivy
-`trivy.image.tag` | Image tag to use for the Workloads image | 0.0
+`trivy.image.tag` | Image tag to use for the Trivy image | 0.0
