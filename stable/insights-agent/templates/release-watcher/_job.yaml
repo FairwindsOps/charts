@@ -5,7 +5,7 @@ volumes:
 - name: output
   emptyDir: {}
 containers:
-- name: relase-watcher-audit
+- name: release-watcher
   image: "{{ .Values.releasewatcher.image.repository }}:{{ .Values.releasewatcher.image.tag }}"
   imagePullPolicy: Always
   args:
@@ -35,7 +35,7 @@ containers:
     capabilities:
       drop:
         - ALL
-{{- $_ := set . "Label" "relase-watcher" }}
+{{- $_ := set . "Label" "release-watcher" }}
 {{- $_ := set . "Config" .Values.releasewatcher }}
 {{- include "uploaderContainer" . }}
 {{- end }}
