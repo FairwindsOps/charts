@@ -56,7 +56,7 @@ dashboard:
     type: ClusterIP
     annotations: {}
   image:
-    repository: quay.io/reactiveops/polaris
+    repository: quay.io/fairwinds/polaris
     tag: 0.5
     pullPolicy: Always
   nodeSelector: {}
@@ -73,7 +73,7 @@ webhook:
   enable: false
   replicas: 1
   image:
-    repository: quay.io/reactiveops/polaris
+    repository: quay.io/fairwinds/polaris
     tag: 0.5
     pullPolicy: Always
   nodeSelector: {}
@@ -84,7 +84,7 @@ audit:
   cleanup: false
   outputURL: ""
   image:
-    repository: quay.io/reactiveops/polaris
+    repository: quay.io/fairwinds/polaris
     tag: 0.5
     pullPolicy: Always
 
