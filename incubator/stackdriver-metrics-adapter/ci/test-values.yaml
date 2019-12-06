@@ -1,0 +1,2 @@
+# For testing, pods won't work unless in a GKE cluster so we set replicas to 0.
+replicaCount: 0
