@@ -2,6 +2,12 @@
 
 Installs the necessary additional items that the cert-manager chart lacks.
 
+## Upgrading to 2.0.0 Chart Version
+
+There are breaking changes with 2.0.0 chart version in that it absolutely requires a version of cert-manager v0.11.0 or higher to be running in the cluster.
+
+Please follow upgrade instructions [located here](https://docs.cert-manager.io/en/release-0.11/tasks/upgrading/upgrading-0.10-0.11.html)
+
 ## Configuration
 
 The following table lists the configurable parameters of the chart and their default values.
