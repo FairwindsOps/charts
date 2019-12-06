@@ -7,7 +7,7 @@ insights:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: 0.1.1
+    tag: "0.1"
   resources:
     limits:
       cpu: 100m
@@ -39,8 +39,8 @@ kubehunter:
   enabled: true
   schedule: "rand * * * *"
   image:
-    repository: quay.io/fairwinds/kube-hunter
-    tag: "1.0.0"
+    repository: aquasec/kube-hunter
+    tag: "501"
   resources:
     limits:
       cpu: 100m
@@ -55,7 +55,7 @@ kubesec:
   timeout: 120
   image:
     repository: quay.io/fairwinds/fw-kubesec
-    tag: "1.1.0"
+    tag: "1.2"
   resources:
     limits:
       cpu: 100m
@@ -66,6 +66,7 @@ kubesec:
 
 goldilocks:
   enabled: true
+  installVPA: true
   schedule: "rand * * * *"
   timeout: 120
   image:
@@ -77,8 +78,8 @@ goldilocks:
       exclude-namespaces: "kube-system"
     resources:
       limits:
-        cpu: 2273m
-        memory: 2400Mi
+        cpu: 250m
+        memory: 545Mi
       requests:
         cpu: 25m
         memory: 262Mi
@@ -93,11 +94,11 @@ goldilocks:
       memory: 128Mi
 
 workloads:
-  enabled: false
+  enabled: true
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "1.0.1"
+    tag: "1.0"
   resources:
     limits:
       cpu: 100m
@@ -105,17 +106,30 @@ workloads:
     requests:
       cpu: 100m
       memory: 128Mi
-
 releasewatcher:
-  enabled: false
+  enabled: true
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/release-watcher
-    tag: "1.2.0"
+    tag: "1.4.1"
   resources:
     limits:
       cpu: 100m
       memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+trivy:
+  enabled: true
+  schedule: "rand * * * *"
+  timeout: 3600
+  image:
+    repository: quay.io/fairwinds/fw-trivy
+    tag: "0.0"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi

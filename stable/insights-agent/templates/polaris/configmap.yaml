@@ -1,4 +1,4 @@
-{{- if .Values.polaris.enabled -}} 
+{{- if .Values.polaris.enabled -}}
 # Source: polaris/templates/configmap.yaml
 apiVersion: v1
 kind: ConfigMap
@@ -127,8 +127,12 @@ data:
           - memoryLimitsMissing
       - controllerNames:
           - kube2iam
+          - trivy
+          - kube-proxy
+          - nginx-ingress-controller
         rules:
           - runAsPrivileged
+          - privilegeEscalationAllowed
       - controllerNames:
           - kube-hunter
         rules:
@@ -137,6 +141,8 @@ data:
           - polaris
           - kube-hunter
           - goldilocks
+          - trivy
+          - workloads
           - insights-agent-goldilocks-vpa-install
         rules:
           - notReadOnlyRootFileSystem
@@ -148,6 +154,7 @@ data:
       - controllerNames:
           - insights-agent-goldilocks-vpa-install
           - kube-hunter
+          - trivy
         rules:
           - runAsRootAllowed
 {{- end -}}

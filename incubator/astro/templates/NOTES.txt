@@ -1,4 +1,4 @@
-Thanks for installing astro! 
+Thanks for installing astro!
 
 Get your running pods by running these commands:
 

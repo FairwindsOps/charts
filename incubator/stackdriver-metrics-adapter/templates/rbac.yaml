@@ -1,0 +1,101 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+    helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}:system:auth-delegator
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+    helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}-auth-reader
+  namespace: kube-system
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+    helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: extension-apiserver-authentication-reader
+subjects:
+- kind: ServiceAccount
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}-resource-reader
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+    helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- kind: ServiceAccount
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}-external-metrics-reader
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+    helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+rules:
+- apiGroups:
+  - "external.metrics.k8s.io"
+  resources:
+  - "*"
+  verbs:
+  - list
+  - get
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}-external-metrics-reader
+  labels:
+    app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
+    helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "stackdriver-metrics-adapter.fullname" . }}-external-metrics-reader
+subjects:
+- kind: ServiceAccount
+  name: horizontal-pod-autoscaler
+  namespace: kube-system

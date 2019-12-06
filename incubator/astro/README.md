@@ -32,10 +32,9 @@ Parameter | Description | Default
 `controller.serviceAccount.create` | if true, a service account will be created.  If false, you must set `controller.serviceAccount.name`. | `true`
 `controller.serviceAccount.name` | The name of an existing service account to use. | `''`
 `secret.create` | if true, a secret with api credentials will be created.  If false, you must set `secret.name` | `true`
-`secret.name` | The name of an existing secret to mount to the container. | `""` 
+`secret.name` | The name of an existing secret to mount to the container. | `""`
 `definitionsPath` | The path to the monitor definitions configuration. This can be a local path or a URL. | `""`
 `owner` | A unique name to designate as the owner. This will be applied as a tag to identified managed monitors. | `astro`
 `dryRun` | when set to true monitors will not be managed in datadog. | `false`
 `custom_config.enabled` | if true a custom configuration must be specified in `custom_config.data`. | `false`
 `custom_config.data` | An astro configuration file.  See the [Astro repo readme](https://github.com/fairwindsops/astro) for more details. |
-
