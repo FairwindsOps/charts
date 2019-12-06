@@ -7,6 +7,7 @@ clusterIssuers:
         enabled: true
       dns:
         - type: route53
+          region: us-east-1
           hostedZoneID: TESTING
   selfsigned:
     enabled: true
