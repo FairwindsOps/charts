@@ -106,6 +106,7 @@ workloads:
     requests:
       cpu: 100m
       memory: 128Mi
+
 releasewatcher:
   enabled: true
   schedule: "rand * * * *"
@@ -119,6 +120,7 @@ releasewatcher:
     requests:
       cpu: 100m
       memory: 128Mi
+      
 trivy:
   enabled: true
   schedule: "rand * * * *"
