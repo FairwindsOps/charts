@@ -107,7 +107,7 @@ workloads:
       cpu: 100m
       memory: 128Mi
 
-trivy:
+releasewatcher:
   enabled: true
   schedule: "rand * * * *"
   timeout: 3600
@@ -116,22 +116,22 @@ trivy:
     tag: "0.0"
   resources:
     limits:
-      cpu: 250m
-      memory: 512Mi
+      cpu: 100m
+      memory: 128Mi
     requests:
       cpu: 100m
       memory: 128Mi
 
-releasewatcher:
-  enabled: false
+trivy:
+  enabled: true
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/release-watcher
     tag: "1.2.0"
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi

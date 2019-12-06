@@ -1,4 +1,4 @@
-{{- define "relasewatcher.job.spec" -}}
+{{- define "releasewatcher.job.spec" -}}
 restartPolicy: Never
 serviceAccountName: {{ include "insights-agent.fullname" . }}
 volumes:
@@ -6,7 +6,7 @@ volumes:
   emptyDir: {}
 containers:
 - name: relase-watcher-audit
-  image: "{{ .Values.relasewatcher.image.repository }}:{{ .Values.relasewatcher.image.tag }}"
+  image: "{{ .Values.releasewatcher.image.repository }}:{{ .Values.releasewatcher.image.tag }}"
   imagePullPolicy: Always
   args:
     - cluster
@@ -26,7 +26,7 @@ containers:
   - name: output
     mountPath: /output
   resources:
-    {{- toYaml .Values.relasewatcher.resources | nindent 4 }}
+    {{- toYaml .Values.releasewatcher.resources | nindent 4 }}
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
@@ -36,6 +36,6 @@ containers:
       drop:
         - ALL
 {{- $_ := set . "Label" "relase-watcher" }}
-{{- $_ := set . "Config" .Values.relasewatcher }}
+{{- $_ := set . "Config" .Values.releasewatcher }}
 {{- include "uploaderContainer" . }}
 {{- end }}
