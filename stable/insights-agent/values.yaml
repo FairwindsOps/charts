@@ -110,10 +110,9 @@ workloads:
 releasewatcher:
   enabled: true
   schedule: "rand * * * *"
-  timeout: 3600
   image:
-    repository: quay.io/fairwinds/fw-trivy
-    tag: "0.0"
+    repository: quay.io/fairwinds/release-watcher
+    tag: "1.4.1"
   resources:
     limits:
       cpu: 100m
@@ -125,9 +124,10 @@ releasewatcher:
 trivy:
   enabled: true
   schedule: "rand * * * *"
+  timeout: 3600
   image:
-    repository: quay.io/fairwinds/release-watcher
-    tag: "1.2.0"
+    repository: quay.io/fairwinds/fw-trivy
+    tag: "0.0"
   resources:
     limits:
       cpu: 250m
