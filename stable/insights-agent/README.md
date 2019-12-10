@@ -1,8 +1,7 @@
 # Fairwinds Insights Agent
 
 The Fairwinds Insights Agent is a collection of reporting tools, which send data back
-to [Fairwinds Insights](https://insights.fairwinds.com). If you'd like access
-to Fairwinds Insights, contact `opensource@reactiveops.com`
+to [Fairwinds Insights](https://insights.fairwinds.com).
 
 ## Installation
 We recommend installing `insights-agent` in its own namespace.
@@ -39,17 +38,17 @@ Parameter | Description | Default
 `polaris.enabled` | Enable Polaris reports | true
 `polaris.schedule` | Cron expression for running Polaris | `rand * * * *`
 `polaris.timeout` | Maximum time in seconds to wait for the report | 60
-`polaris.image.repository` | Repository to use for the Polaris image | quay.io/reactiveops/polaris
+`polaris.image.repository` | Repository to use for the Polaris image | quay.io/fairwinds/polaris
 `polaris.image.tag` | Image tag to use for the Polaris image | 0.5.0
 `kubehunter.enabled` | Enable Kube Hunter reports | true
 `kubehunter.schedule` | Cron expression for running Kube Hunter | `rand * * * *`
 `kubehunter.timeout` | Maximum time in seconds to wait for the report | 60
-`kubehunter.image.repository` | Repository to use for the Kube Hunter image | quay.io/reactiveops/kube-hunter
+`kubehunter.image.repository` | Repository to use for the Kube Hunter image | aquasec/kube-hunter
 `kubehunter.image.tag` | Image tag to use for the Kube Hunter image | 1.0.0
 `kubesec.enabled` | Enable Kubesec reports | true
 `kubesec.schedule` | Cron expression for running Kubesec | `rand * * * *`
 `kubesec.timeout` | Maximum time in seconds to wait for the report | 120
-`kubesec.image.repository` | Repository to use for the Kubesec image | aquasec/kube-hunter
+`kubesec.image.repository` | Repository to use for the Kubesec image | quay.io/fairwinds/fw-kubesec
 `kubesec.image.tag` | Image tag to use for the Kubesec image | 501
 `goldilocks.enabled` | Enable Goldilocks reports | true
 `goldilocks.schedule` | Cron expression for running Goldilocks | `rand * * * *`
