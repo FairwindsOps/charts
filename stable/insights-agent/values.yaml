@@ -25,7 +25,7 @@ polaris:
   enabled: true
   schedule: "rand * * * *"
   image:
-    repository: quay.io/reactiveops/polaris
+    repository: quay.io/fairwinds/polaris
     tag: "0.6"
   resources:
     limits:
