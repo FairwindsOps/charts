@@ -4,7 +4,7 @@
 
 image:
   repository: quay.io/fairwinds/custom-metrics
-  tag: v0.3.0
+  tag: v0.4.0
   pullPolicy: Always
 
 nameOverride: ""
@@ -36,3 +36,10 @@ controller:
     enabled: true
     type: ClusterIP
     port: 10042
+
+eventListener:
+  enabled: false
+  port: 2113
+  username: ""
+  password: ""
+  maxJobAge: 10

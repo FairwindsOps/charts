@@ -53,6 +53,14 @@ spec:
             - controller
           args:
             - -v{{ .Values.controller.logVerbosity }}
+          {{- if .Values.listener.enabled }}
+            - --event-listener=true
+            - --events-port {{ .Values.listener.port }}
+            - --events-username={{ .Values.listener.username | quote }}
+            - --events-password={{ .Values.listener.password | quote }}
+            - --max-age={{.Values.listener.maxJobAge }}
+            - --namespace={{ .Release.Namespace }}
+          {{- end }}
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
