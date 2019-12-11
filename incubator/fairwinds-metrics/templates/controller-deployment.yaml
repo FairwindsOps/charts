@@ -55,8 +55,8 @@ spec:
             - -v{{ .Values.controller.logVerbosity }}
           {{- if .Values.listener.enabled }}
             - --event-listener=true
-            - --events-port {{ .Values.listener.port }}
-            - --events-username={{ .Values.listener.username | quote }}
+            - --events-port={{ .Values.listener.port }}
+            - --events-username={{ .Values.listener.username }}
             - --events-password={{ .Values.listener.password | quote }}
             - --max-age={{.Values.listener.maxJobAge }}
             - --namespace={{ .Release.Namespace }}

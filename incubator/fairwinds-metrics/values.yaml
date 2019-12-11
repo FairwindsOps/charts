@@ -37,7 +37,7 @@ controller:
     type: ClusterIP
     port: 10042
 
-eventListener:
+listener:
   enabled: false
   port: 2113
   username: ""
