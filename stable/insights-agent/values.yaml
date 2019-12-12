@@ -109,8 +109,8 @@ workloads:
 
 trivy:
   enabled: true
-  schedule: "rand * * * *"
-  timeout: 3600
+  schedule: "rand */3 * * *"
+  timeout: 10800
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.0"
