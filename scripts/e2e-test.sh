@@ -24,7 +24,7 @@ CI_REF="${2:-master}"
 TEST_CLUSTER_NAME="${3:-helm-e2e}"
 TILLER_NAMESPACE="${TILLER_NAMESPACE:-helm-system}"
 EXEC_CONTAINER_NAME="${4:-executor}"
-CHART_TEST_VERSION="v3.3.2"
+CHART_TEST_VERSION="v3.4.0"
 
 setup_cluster () {
     printf "Creating cluster %s.  This could take a minute...\n" "$TEST_CLUSTER_NAME"
