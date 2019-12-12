@@ -1,6 +1,6 @@
 image:
   repository: quay.io/fairwinds/astro
-  tag: "v1.2.0"
+  tag: "v1.5.2"
   pullPolicy: IfNotPresent
 resources:
   limits:
@@ -15,10 +15,10 @@ affinity: {}
 datadog:
   apiKey: ""
   appKey: ""
-controller:
-  enabled: true
-  rbac:
-    create: true
+rbac:
+  create: true
+deployment:
+  replicas: 2
   serviceAccount:
     create: true
     # name: ExistingServiceAccountName
