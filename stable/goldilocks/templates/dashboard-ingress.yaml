@@ -1,7 +1,7 @@
 {{- if .Values.dashboard.enabled }}
 {{- if .Values.dashboard.ingress.enabled -}}
 {{- $fullName := include "goldilocks.fullname" . -}}
-apiVersion: extensions/v1beta1
+apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}-dashboard
