@@ -73,6 +73,11 @@ spec:
             - name: http
               containerPort: 2112
               protocol: TCP
+          {{- if .Values.listener.enabled }}
+            - name: listener
+              containerPort: {{ .Values.listener.port }}
+              protocol: TCP
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /metrics

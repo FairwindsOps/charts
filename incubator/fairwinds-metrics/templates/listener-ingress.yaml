@@ -1,0 +1,40 @@
+{{- if and .Values.listener.enabled  .Values.listener.ingress.enabled }}
+{{- $fullName := include "fairwinds-metrics.fullname" . -}}
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "fairwinds-metrics.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "fairwinds-metrics.name" . }}
+    helm.sh/chart: {{ include "fairwinds-metrics.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: listener
+  {{- with .Values.listener.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+{{- if .Values.listener.ingress.tls }}
+  tls:
+  {{- range .Values.listener.ingress.tls }}
+    - hosts:
+      {{- range .hosts }}
+        - {{ . | quote }}
+      {{- end }}
+      secretName: {{ .secretName }}
+  {{- end }}
+{{- end }}
+  rules:
+  {{- range .Values.listener.ingress.hosts }}
+    - host: {{ .host | quote }}
+      http:
+        paths:
+        {{- range .paths }}
+          - path: {{ . }}
+            backend:
+              serviceName: {{ $fullName }}-listener
+              servicePort: listener
+        {{- end }}
+  {{- end }}
+{{- end }}

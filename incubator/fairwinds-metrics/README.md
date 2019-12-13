@@ -26,3 +26,14 @@ A controller for a collection of non-standard metrics.
 | `image.repository` |  | `quay.io/fairwinds/custom-metrics` | |
 | `image.tag` |  | `master` | |
 | `nameOverride` |  | `` | |
+| `listener.enabled` | When set to true, enables a listener you can post datadog webhooks to. | `false` | |
+| `listener.port` | port for the webhook listener to run on. | `2113` | |
+| `listener.username` | listener username | `` | |
+| `listener.password` | listener password | `` | |
+| `listener.maxJobAge` | max age in minutes before an old job gets removed | `` | |
+| `listener.ingress.enabled ` | when enabled, creates an ingress object for the listener | `false` | |
+| `listener.ingress.annotations` | | `{}` | |
+| `listener.ingress.hosts` | listener ingress hosts | | |
+| `listener.ingress.tls` | listener ingress tls config | | |
+| `listener.service.type` | | `ClusterIP` | | |
+| `listener.service.port` | | | | |
