@@ -15,6 +15,9 @@ containers:
   imagePullPolicy: Always
   command:
     - "./report.sh"
+  env:
+    - name: MAX_CONCURRENT_SCANS
+      value: {{ .Values.trivy.maxConcurrentScans | quote }}
   volumeMounts:
   - name: output
     mountPath: /output

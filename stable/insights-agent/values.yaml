@@ -112,6 +112,7 @@ trivy:
   schedule: "rand */3 * * *"
   privateImages:
     dockerConfigSecret: ""
+  maxConcurrentScans: 5
   timeout: 10800
   image:
     repository: quay.io/fairwinds/fw-trivy
