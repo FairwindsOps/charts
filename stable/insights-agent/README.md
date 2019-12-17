@@ -22,6 +22,17 @@ In order to avoid every report consuming resources at once, you can stagger the 
 by setting the minute of the cron schedule to a random number. For example,
 to run at a random minute every hour, your cron expression can be `rand * * * *`.
 
+## Reports
+There are several different report types which can be enabled and configured:
+* `polaris`
+* `goldilocks`
+* `workloads`
+* `kubehunter`
+* `trivy`
+* `kubesec`
+
+See below for configuration details.
+
 ## Configuration
 Parameter | Description | Default
 --------- | ----------- | -------
@@ -35,33 +46,13 @@ Parameter | Description | Default
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
-`polaris.enabled` | Enable Polaris reports | true
-`polaris.schedule` | Cron expression for running Polaris | `rand * * * *`
-`polaris.timeout` | Maximum time in seconds to wait for the report | 60
-`polaris.image.repository` | Repository to use for the Polaris image | quay.io/fairwinds/polaris
-`polaris.image.tag` | Image tag to use for the Polaris image | 0.5.0
-`kubehunter.enabled` | Enable Kube Hunter reports | true
-`kubehunter.schedule` | Cron expression for running Kube Hunter | `rand * * * *`
-`kubehunter.timeout` | Maximum time in seconds to wait for the report | 60
-`kubehunter.image.repository` | Repository to use for the Kube Hunter image | aquasec/kube-hunter
-`kubehunter.image.tag` | Image tag to use for the Kube Hunter image | 1.0.0
-`kubesec.enabled` | Enable Kubesec reports | true
-`kubesec.schedule` | Cron expression for running Kubesec | `rand * * * *`
-`kubesec.timeout` | Maximum time in seconds to wait for the report | 120
-`kubesec.image.repository` | Repository to use for the Kubesec image | quay.io/fairwinds/fw-kubesec
-`kubesec.image.tag` | Image tag to use for the Kubesec image | 501
-`goldilocks.enabled` | Enable Goldilocks reports | true
-`goldilocks.schedule` | Cron expression for running Goldilocks | `rand * * * *`
-`goldilocks.timeout` | Maximum time in seconds to wait for the report | 60
-`goldilocks.image.repository` | Repository to use for the Goldilocks image | quay.io/fairwinds/goldilocks
-`goldilocks.image.tag` | Image tag to use for the Workloads image | v1.3.0
-`workloads.enabled` | Enable Workloads reports | true
-`workloads.schedule` | Cron expression for running the workloads report | `rand * * * *`
-`workloads.timeout` | Maximum time in seconds to wait for the report | 60
-`workloads.image.repository` | Repository to use for the workload image | quay.io/fairwinds/workloads
-`workloads.image.tag` | Image tag to use for the workloads image | 1.0
-`trivy.enabled` | Enable Trivy container scanning reports | true
-`trivy.schedule` | Cron expression for running the Trivy report | `rand * * * *`
-`trivy.timeout` | Maximum time in seconds to wait for the report | 3600
-`trivy.image.repository` | Repository to use for the Trivy image | quay.io/fairwinds/fw-trivy
-`trivy.image.tag` | Image tag to use for the Trivy image | 0.0
+`{report}.enabled` | Enable the report type |
+`{report}.schedule` | Cron expression for running the report |
+`{report}.timeout` | Maximum time in seconds to wait for the report |
+`{report}.resources` | CPU/memory requests and limits for the report |
+`{report}.image.repository` | Repository to use for the report image |
+`{report}.image.tag` | Image tag to use for the report |
+`trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
+`goldilocks.controller.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
+
+

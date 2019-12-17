@@ -110,10 +110,12 @@ workloads:
 trivy:
   enabled: true
   schedule: "rand */3 * * *"
+  privateImages:
+    dockerConfigSecret: ""
   timeout: 10800
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.0"
+    tag: "0.1"
   resources:
     limits:
       cpu: 250m

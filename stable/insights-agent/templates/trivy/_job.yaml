@@ -4,6 +4,11 @@ serviceAccountName: {{ include "insights-agent.fullname" . }}
 volumes:
 - name: output
   emptyDir: {}
+{{ with .Values.trivy.privateImages.dockerConfigSecret }}
+- name: dockerconfig
+  secret:
+    secretName: {{ . }}
+{{ end }}
 containers:
 - name: trivy
   image: "{{ .Values.trivy.image.repository }}:{{ .Values.trivy.image.tag }}"
@@ -13,6 +18,10 @@ containers:
   volumeMounts:
   - name: output
     mountPath: /output
+  {{ with .Values.trivy.privateImages.dockerConfigSecret }}
+  - name: dockerconfig
+    mountPath: /root/.docker/
+  {{ end }}
   resources:
     {{- toYaml .Values.trivy.resources | nindent 4 }}
   securityContext:
