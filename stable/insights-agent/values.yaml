@@ -25,8 +25,8 @@ polaris:
   enabled: true
   schedule: "rand * * * *"
   image:
-    repository: quay.io/reactiveops/polaris
-    tag: "0.5"
+    repository: quay.io/fairwinds/polaris
+    tag: "0.6"
   resources:
     limits:
       cpu: 100m
@@ -123,11 +123,14 @@ releasewatcher:
 
 trivy:
   enabled: true
-  schedule: "rand * * * *"
-  timeout: 3600
+  schedule: "rand */3 * * *"
+  privateImages:
+    dockerConfigSecret: ""
+  maxConcurrentScans: 5
+  timeout: 10800
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.0"
+    tag: "0.1"
   resources:
     limits:
       cpu: 250m
