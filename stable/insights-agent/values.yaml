@@ -112,7 +112,7 @@ releasewatcher:
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/release-watcher
-    tag: "1.4.1"
+    tag: "1.5.0"
   resources:
     limits:
       cpu: 100m
