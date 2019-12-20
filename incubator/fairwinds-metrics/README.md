@@ -36,4 +36,4 @@ A controller for a collection of non-standard metrics.
 | `listener.ingress.hosts` | listener ingress hosts | | |
 | `listener.ingress.tls` | listener ingress tls config | | |
 | `listener.service.type` | | `ClusterIP` | | |
-| `listener.service.port` | | | | |
+| `listener.service.port` | | | `8080` | |
