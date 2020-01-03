@@ -35,5 +35,7 @@ A controller for a collection of non-standard metrics.
 | `listener.ingress.annotations` | | `{}` | |
 | `listener.ingress.hosts` | listener ingress hosts | | |
 | `listener.ingress.tls` | listener ingress tls config | | |
+| `listener.secret.create` | When set to true, creates the listener secret. | `true` | |
+| `listener.secret.name` | When `listener.secret.create` is set to `false`, indicates the secret to mount as environment variables to the container. | `` | |
 | `listener.service.type` | | `ClusterIP` | | |
 | `listener.service.port` | | | `8080` | |

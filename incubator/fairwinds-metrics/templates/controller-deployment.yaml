@@ -58,10 +58,14 @@ spec:
             - --events-port={{ .Values.listener.port }}
             - --max-age={{.Values.listener.maxJobAge }}
             - --namespace={{ .Release.Namespace }}
-          {{- end }}
           envFrom:
           - secretRef:
+          {{- if .Values.listener.secret.create }}
               name: {{ include "fairwinds-metrics.fullname" . }}
+          {{- else }}
+              name: {{ .Values.listener.secret.name }}
+          {{- end }}
+          {{- end }}
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false

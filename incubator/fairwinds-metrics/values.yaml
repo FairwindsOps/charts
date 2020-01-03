@@ -43,6 +43,9 @@ listener:
   username: ""
   password: ""
   maxJobAge: 10
+  secret:
+    create: true
+    # name: 
   ingress:
     enabled: false
     annotations: {}
