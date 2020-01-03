@@ -45,7 +45,7 @@ listener:
   maxJobAge: 10
   secret:
     create: true
-    # name: 
+    # name: ExistingSecretName
   ingress:
     enabled: false
     annotations: {}
@@ -63,4 +63,3 @@ listener:
   service:
     type: ClusterIP
     port: 8080
-
