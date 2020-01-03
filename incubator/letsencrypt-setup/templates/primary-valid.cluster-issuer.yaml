@@ -77,7 +77,7 @@ spec:
         {{- if .selector.dnsNames }}
         dnsNames:
           {{- range .selector.dnsNames }}
-        - {{ . }}
+        - {{ . | quote }}
           {{- end }} {{- /* endrange .selector.dnsNames */ -}}
         {{- end }} {{- /* endif .selector.dnsNames */ -}}
         {{- if .selector.dnsZones }}
