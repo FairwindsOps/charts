@@ -52,7 +52,7 @@ kubehunter:
 kubesec:
   enabled: false
   schedule: "rand * * * *"
-  timeout: 120
+  timeout: 1200
   image:
     repository: quay.io/fairwinds/fw-kubesec
     tag: "1.2"
