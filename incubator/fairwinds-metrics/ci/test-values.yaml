@@ -1,0 +1,5 @@
+listener:
+  enabled: true
+  port: 2113
+  username: "test-ci"
+  password: "test-ci"
