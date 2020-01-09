@@ -21,7 +21,7 @@ spec:
             app: {{ template "helm-release-pruner.name" . }}
             release: {{ .Release.Name }}
         spec:
-          serviceAccountName: {{ .Values.job.serviceAccountName }}
+          serviceAccountName: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
           restartPolicy: {{ .Values.job.restartPolicy }}
           containers:
           - name: {{ .Chart.Name }}
