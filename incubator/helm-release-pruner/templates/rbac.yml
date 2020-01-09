@@ -56,7 +56,7 @@ rbacBindings:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ template "helm-release-pruner.fullname" . }}
+  name: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
