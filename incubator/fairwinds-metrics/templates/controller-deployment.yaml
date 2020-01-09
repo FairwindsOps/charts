@@ -53,6 +53,19 @@ spec:
             - controller
           args:
             - -v{{ .Values.controller.logVerbosity }}
+          {{- if .Values.listener.enabled }}
+            - --event-listener=true
+            - --events-port={{ .Values.listener.port }}
+            - --max-age={{.Values.listener.maxJobAge }}
+            - --namespace={{ .Release.Namespace }}
+          envFrom:
+          - secretRef:
+          {{- if .Values.listener.secret.create }}
+              name: {{ include "fairwinds-metrics.fullname" . }}
+          {{- else }}
+              name: {{ .Values.listener.secret.name }}
+          {{- end }}
+          {{- end }}
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -65,6 +78,11 @@ spec:
             - name: http
               containerPort: 2112
               protocol: TCP
+          {{- if .Values.listener.enabled }}
+            - name: listener
+              containerPort: {{ .Values.listener.port }}
+              protocol: TCP
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /metrics
