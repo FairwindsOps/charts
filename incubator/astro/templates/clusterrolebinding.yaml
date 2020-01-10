@@ -1,4 +1,4 @@
-{{- if .Values.controller.rbac.create }}
+{{- if .Values.rbac.create }}
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
@@ -14,10 +14,10 @@ roleRef:
   name: {{ include "astro.fullname" . }}
 subjects:
   - kind: ServiceAccount
-{{- if .Values.controller.serviceAccount.create }}
+{{- if .Values.deployment.serviceAccount.create }}
     name: {{ template "astro.fullname" . }}
 {{- else }}
-    name: {{ .Values.controller.serviceAccount.name }}
+    name: {{ .Values.deployment.serviceAccount.name }}
 {{- end }}
     namespace: {{ .Release.Namespace | quote }}
 {{- end }}
