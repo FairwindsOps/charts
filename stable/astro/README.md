@@ -28,7 +28,7 @@ Kubernetes 1.11+, Helm 2.13+
 Parameter | Description | Default
 --- | --- | ---
 `image.repository` | Docker image repo  | `quay.io/fairwinds/astro`
-`image.tag` | Docker image tag  | `v1.5.2`
+`image.tag` | Docker image tag  | `v1.5.3`
 `image.pullPolicy` | Docker image pull policy  | `IfNotPresent`
 `resources.requests.cpu` | CPU resource request | `100m`
 `resources.requests.memory` | Memory resource request | `128Mi`
