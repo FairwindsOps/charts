@@ -28,7 +28,7 @@ roleRef:
   name: {{ template "helm-release-pruner.fullname" . }}-tiller
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.job.serviceAccountName }}
+  name: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
   namespace: {{ .Release.Namespace }}
 ---
 {{- if .Values.rbac_manager.enabled }}
@@ -45,7 +45,7 @@ rbacBindings:
   - name: {{ template "helm-release-pruner.fullname" . }}-namespaces
     subjects:
       - kind: ServiceAccount
-        name: {{ template "helm-release-pruner.fullname" . }}
+        name: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
         namespace: {{ .Release.Namespace }}
     roleBindings:
       - clusterRole: cluster-admin
@@ -53,11 +53,13 @@ rbacBindings:
           matchLabels:
             environment: {{ .Values.rbac_manager.namespaceLabel }}
 {{- else }}
+{{- if not .Values.job.serviceAccountName }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ .Values.job.serviceAccountName }}
+  name: {{ template "helm-release-pruner.fullname" . }}
 ---
+{{- end }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -80,6 +82,6 @@ roleRef:
   name: {{ template "helm-release-pruner.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.job.serviceAccountName }}
+  name: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
   namespace: {{ .Release.Namespace }}
 {{ end }}

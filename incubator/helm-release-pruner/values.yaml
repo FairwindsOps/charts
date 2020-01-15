@@ -9,7 +9,6 @@ job:
   backoffLimit: 3
   restartPolicy: Never
   schedule: "0 */4 * * *"
-  serviceAccountName: helm-release-pruner
   dryRun: true
   debug: false
   resources:
