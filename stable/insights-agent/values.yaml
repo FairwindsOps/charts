@@ -107,6 +107,20 @@ workloads:
       cpu: 100m
       memory: 128Mi
 
+releasewatcher:
+  enabled: true
+  schedule: "rand * * * *"
+  image:
+    repository: quay.io/fairwinds/release-watcher
+    tag: "v1.5.0"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
 trivy:
   enabled: true
   schedule: "rand */3 * * *"
