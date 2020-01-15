@@ -28,7 +28,7 @@ roleRef:
   name: {{ template "helm-release-pruner.fullname" . }}-tiller
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
+  name: {{ template "helm-release-pruner.serviceaccount" . }}
   namespace: {{ .Release.Namespace }}
 ---
 {{- if .Values.rbac_manager.enabled }}
@@ -45,7 +45,7 @@ rbacBindings:
   - name: {{ template "helm-release-pruner.fullname" . }}-namespaces
     subjects:
       - kind: ServiceAccount
-        name: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
+        name: {{ template "helm-release-pruner.serviceaccount" . }}
         namespace: {{ .Release.Namespace }}
     roleBindings:
       - clusterRole: cluster-admin
@@ -82,6 +82,6 @@ roleRef:
   name: {{ template "helm-release-pruner.fullname" . }}
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.job.serviceAccountName | default (template "helm-release-pruner.fullname" .) }}
+  name: {{ template "helm-release-pruner.serviceaccount" . }}
   namespace: {{ .Release.Namespace }}
 {{ end }}
