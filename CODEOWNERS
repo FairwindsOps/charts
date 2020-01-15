@@ -18,6 +18,7 @@
 /incubator/route53sync/ @sudermanjr
 /incubator/stackdriver-metrics-adapter/ @mjhuber
 
+/stable/astro/ @mjhuber @lucasreed
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @mjhuber

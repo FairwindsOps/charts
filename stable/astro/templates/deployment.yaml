@@ -8,7 +8,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 spec:
-  replicas: 1
+  replicas: {{ .Values.deployment.replicas }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "astro.name" . }}
@@ -19,15 +19,18 @@ spec:
         app.kubernetes.io/name: {{ include "astro.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
-      {{- if .Values.controller.serviceAccount.create }}
+      {{- if .Values.deployment.serviceAccount.create }}
       serviceAccountName: {{ include "astro.fullname" . }}
       {{- else }}
-      serviceAccountName: {{ .Values.controller.serviceAccount.name }}
+      serviceAccountName: {{ .Values.deployment.serviceAccount.name }}
       {{- end }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - ./astro
+            - --namespace={{ .Release.Namespace }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
           envFrom:
