@@ -30,6 +30,7 @@ There are several different report types which can be enabled and configured:
 * `kubehunter`
 * `trivy`
 * `kubesec`
+* `releasewatcher`
 
 See below for configuration details.
 
@@ -55,5 +56,3 @@ Parameter | Description | Default
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 5
 `goldilocks.controller.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
-
-
