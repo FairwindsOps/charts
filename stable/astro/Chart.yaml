@@ -6,7 +6,7 @@ description: Emit datadog monitors based on kubernetes state.
 keywords:
   - datadog
   - monitoring
-icon: https://github.com/FairwindsOps/charts/raw/master/stable/astro/icon.svg
+icon: https://raw.githubusercontent.com/FairwindsOps/astro/master/img/icon.png
 sources:
   - https://github.com/FairwindsOps/astro
 maintainers:
