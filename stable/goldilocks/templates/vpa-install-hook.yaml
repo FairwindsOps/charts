@@ -68,7 +68,7 @@ spec:
             apk --update add git
             git clone "https://github.com/kubernetes/autoscaler.git"
             cd autoscaler/vertical-pod-autoscaler
-            git checkout "vertical-pod-autoscaler-0.6.3"
+            git checkout {{ .Values.vpaVersion }}
             kubectl apply -f deploy/recommender-deployment.yaml
             kubectl apply -f deploy/vpa-beta2-crd.yaml
             kubectl apply -f deploy/vpa-rbac.yaml
