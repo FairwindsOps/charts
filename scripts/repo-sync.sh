@@ -19,7 +19,7 @@ set -o nounset
 set -o pipefail
 
 readonly HELM_URL=https://storage.googleapis.com/kubernetes-helm
-readonly HELM_TARBALL=helm-v2.12.3-linux-amd64.tar.gz
+readonly HELM_TARBALL=helm-v2.14.3-linux-amd64.tar.gz
 readonly STABLE_REPO_URL=https://charts.reactiveops.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.reactiveops.com/incubator/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io

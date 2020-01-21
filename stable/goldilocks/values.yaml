@@ -5,6 +5,7 @@
 installVPA: false
 uninstallVPA: false
 reinstallVPA: false
+vpaVersion: e16a0adef6c7d79a23d57f9bbbef26fc9da59378
 
 image:
   repository: quay.io/fairwinds/goldilocks
