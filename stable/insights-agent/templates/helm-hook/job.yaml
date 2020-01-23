@@ -1,0 +1,22 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  {{- include "metadata" "cronjob-executor" }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+spec:
+  ttlSecondsAfterFinished: 30
+  backoffLimit: {{ .Values.cronjobs.backoffLimit }}
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
+      containers:
+      - name: start-job-from-cronjob
+        image: quay.io/reactiveops/ci-images:v10-alpine
+        command: ["bash"]
+        args:
+          - -c
+          - |
+            kubectl get cj --selector=app=insights-agent -o wide | grep insights | cut -d' ' -f1 | xargs -I~job~ kubectl delete job ~job~ | echo "Does not exist"
+            kubectl get cj --selector=app=insights-agent -o wide | grep insights | cut -d' ' -f1 | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
