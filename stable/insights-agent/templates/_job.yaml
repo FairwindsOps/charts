@@ -2,7 +2,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  {{- $_ := set . "Label" (printf "%s-%s" .Label (now | unixEpoch)) }}
+  {{- if not .Release.Time }}
+    {{- $_ := set .Release "Time" (now | unixEpoch) }}
+  {{- end }}
+  {{- $_ := set . "Label" (printf "%s-%s" .Label .Release.Time) }}
   {{- include "metadata" .Label }}
 spec:
   ttlSecondsAfterFinished: 100
