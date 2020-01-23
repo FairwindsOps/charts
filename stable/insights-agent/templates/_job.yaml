@@ -2,6 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
+  {{- $_ := set . "Label" (printf "%s-%s" .Label (now | unixEpoch)) }}
   {{- include "metadata" .Label }}
 spec:
   ttlSecondsAfterFinished: 100
