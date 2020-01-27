@@ -55,4 +55,5 @@ Parameter | Description | Default
 `{report}.image.tag` | Image tag to use for the report |
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 5
+`trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
 `goldilocks.controller.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
