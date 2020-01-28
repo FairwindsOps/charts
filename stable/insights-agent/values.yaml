@@ -124,6 +124,7 @@ releasewatcher:
 
 trivy:
   enabled: true
+  namespaceBlacklist: nil
   schedule: "rand */3 * * *"
   privateImages:
     dockerConfigSecret: ""
