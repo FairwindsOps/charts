@@ -1,7 +1,7 @@
 apiVersion: v1
 description: Validation of best practices in your Kubernetes clusters
 name: polaris
-version: "0.7.1"
+version: "0.8.0"
 appVersion: "0.6"
 maintainers:
   - name: bobby-brennan
