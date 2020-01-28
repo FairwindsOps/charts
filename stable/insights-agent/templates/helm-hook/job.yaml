@@ -1,3 +1,4 @@
+{{- if .Values.cronjobs.runJobsImmediately -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -20,3 +21,4 @@ spec:
           - |
             kubectl get cj --selector=app=insights-agent -o wide | grep insights | cut -d' ' -f1 | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo 'Does Not Exist'"
             kubectl get cj --selector=app=insights-agent -o wide | grep insights | cut -d' ' -f1 | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
+{{- end -}}

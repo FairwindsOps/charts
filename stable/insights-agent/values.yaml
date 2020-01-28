@@ -20,6 +20,7 @@ cronjobs:
   backoffLimit: 1
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 2
+  runJobsImmediately: true
 
 polaris:
   enabled: true
