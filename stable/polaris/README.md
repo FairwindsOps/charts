@@ -30,6 +30,7 @@ Parameter | Description | Default
 `dashboard.image.repository` | Image repo | quay.io/fairwinds/polaris
 `dashboard.image.tag` | Image tag | 0.6
 `dashboard.image.pullPolicy` | Image pull policy | Always
+`dashboard.image.imagePullSecrets` | Image pull secrets | []
 `dashboard.nodeSelector` | Dashboard pod nodeSelector | {}
 `dashboard.tolerations` | Dashboard pod tolerations | []
 `webhook.enable` | Whether to run the dashboard | false
@@ -38,6 +39,7 @@ Parameter | Description | Default
 `webhook.image.repository` | Image repo | quay.io/fairwinds/polaris
 `webhook.image.tag` | Image tag | 0.6
 `webhook.image.pullPolicy` | Image pull policy | Always
+`webhook.image.imagePullSecrets` | Image pull secrets | []
 `webhook.nodeSelector` | Webhook pod nodeSelector | {}
 `webhook.tolerations` | Webhook pod tolerations | []
 `audit.enable` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others | false
@@ -46,6 +48,7 @@ Parameter | Description | Default
 `audit.image.repository` | Image repo | quay.io/fairwinds/polaris
 `audit.image.tag` | Image tag | 0.6
 `audit.image.pullPolicy` | Image pull policy | Always
+`audit.image.imagePullSecrets` | Image pull secrets | []
 `rbac.create` | Whether to create RBAC | true
 `templateOnly` | | false
 `ingress.enabled` | Whether to enable ingress to the dashboard | false
