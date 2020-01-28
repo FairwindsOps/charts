@@ -8,6 +8,12 @@ metadata:
   {{- end }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
+{{- if .Values.dashboard.image.imagePullSecrets }}
+imagePullSecrets:
+{{- range .Values.dashboard.image.imagePullSecrets }}
+  - name: {{ . }}
+{{- end }}
+{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole

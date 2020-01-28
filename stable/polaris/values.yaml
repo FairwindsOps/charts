@@ -59,6 +59,7 @@ dashboard:
     repository: quay.io/fairwinds/polaris
     tag: 0.6
     pullPolicy: Always
+    imagePullSecrets: []
   nodeSelector: {}
   tolerations: []
 
@@ -76,6 +77,7 @@ webhook:
     repository: quay.io/fairwinds/polaris
     tag: 0.6
     pullPolicy: Always
+    imagePullSecrets: []
   nodeSelector: {}
   tolerations: []
 
@@ -87,6 +89,7 @@ audit:
     repository: quay.io/fairwinds/polaris
     tag: 0.6
     pullPolicy: Always
+    imagePullSecrets: []
 
 rbac:
   create: true
