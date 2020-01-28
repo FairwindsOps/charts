@@ -19,6 +19,7 @@ spec:
         args:
           - -c
           - |
-            kubectl get cj --selector=app=insights-agent -o name | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo 'Does Not Exist'"
-            kubectl get cj --selector=app=insights-agent -o name | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
+            # Can't use -o name because it appends cronjob.batch to the beginning
+            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo 'Does Not Exist'"
+            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
 {{- end -}}
