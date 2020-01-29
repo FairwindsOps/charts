@@ -1,0 +1,25 @@
+{{- if .Values.cronjobs.runJobsImmediately -}}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  {{- include "metadata" "cronjob-executor" }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+spec:
+  ttlSecondsAfterFinished: 30
+  backoffLimit: {{ .Values.cronjobs.backoffLimit }}
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
+      containers:
+      - name: start-job-from-cronjob
+        image: bitnami/kubectl:{{ .Capabilities.KubeVersion.Major }}.{{ .Capabilities.KubeVersion.Minor }}
+        command: ["bash"]
+        args:
+          - -c
+          - |
+            # Can't use -o name because it appends cronjob.batch to the beginning
+            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo 'Does Not Exist'"
+            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
+{{- end -}}
