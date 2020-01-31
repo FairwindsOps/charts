@@ -1,22 +1,30 @@
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ template "aws-iam-authenticator.fullname" . }}
   labels:
-    k8s-app: {{ template "aws-iam-authenticator.name" . }}
+    app.kubernetes.io/name: {{ include "aws-iam-authenticator.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    helm.sh/chart: {{ include "aws-iam-authenticator.chart" . }}
   annotations:
     checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
   updateStrategy:
     type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "aws-iam-authenticator.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
   template:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
         scheduler.alpha.kubernetes.io/critical-pod: ""
       labels:
-        k8s-app: {{ template "aws-iam-authenticator.name" . }}
+        app.kubernetes.io/name: {{ include "aws-iam-authenticator.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       # run on the host network (don't depend on CNI)
       hostNetwork: true
