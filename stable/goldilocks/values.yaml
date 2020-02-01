@@ -9,7 +9,7 @@ vpaVersion: e16a0adef6c7d79a23d57f9bbbef26fc9da59378
 
 image:
   repository: quay.io/fairwinds/goldilocks
-  tag: v2.1.0
+  tag: v2.2.0
   pullPolicy: Always
 
 nameOverride: ""
