@@ -9,17 +9,11 @@ metadata:
 spec:
   schedule: {{ .Values.sync.schedule | quote }}
   concurrencyPolicy: Forbid
-  restartPolicy: Never
   suspend: {{ .Values.sync.suspend }}
   jobTemplate:
     spec:
       template:
         spec:
-          metadata:
-            labels:
-            chart: {{ template "route53sync.chart" . }}
-            release: {{ .Release.Name }}
-            heritage: {{ .Release.Service }}
           restartPolicy: Never
           containers:
             - name: {{ .Chart.Name }}
