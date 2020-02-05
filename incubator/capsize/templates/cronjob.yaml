@@ -15,11 +15,6 @@ spec:
       backoffLimit: 0
       template:
         spec:
-          metadata:
-            labels:
-            chart: {{ template "capsize.chart" . }}
-            release: {{ .Release.Name }}
-            heritage: {{ .Release.Service }}
           restartPolicy: Never
           serviceAccountName: {{ template "capsize.serviceAccountName" . }}
           containers:
