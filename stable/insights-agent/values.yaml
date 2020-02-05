@@ -72,7 +72,7 @@ goldilocks:
   timeout: 120
   image:
     repository: quay.io/fairwinds/goldilocks
-    tag: "v2.1.0"
+    tag: "v2.2.0"
   controller:
     flags:
       on-by-default: true
@@ -99,7 +99,7 @@ workloads:
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "1.1"
+    tag: "1.2"
   resources:
     limits:
       cpu: 100m
@@ -132,7 +132,7 @@ trivy:
   timeout: 10800
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.1"
+    tag: "0.2"
   resources:
     limits:
       cpu: 250m

@@ -32,8 +32,8 @@ containers:
   resources:
     {{- toYaml .Values.trivy.resources | nindent 4 }}
   securityContext:
-    privileged: true
-    allowPrivilegeEscalation: true
+    privileged: false
+    allowPrivilegeEscalation: false
     readOnlyRootFilesystem: false
     capabilities:
       drop:
