@@ -9,18 +9,12 @@ metadata:
 spec:
   schedule: {{ .Values.schedule | quote }}
   concurrencyPolicy: Forbid
-  restartPolicy: Never
   suspend: {{ .Values.suspend }}
   jobTemplate:
     spec:
       backoffLimit: 0
       template:
         spec:
-          metadata:
-            labels:
-            chart: {{ template "capsize.chart" . }}
-            release: {{ .Release.Name }}
-            heritage: {{ .Release.Service }}
           restartPolicy: Never
           serviceAccountName: {{ template "capsize.serviceAccountName" . }}
           containers:
