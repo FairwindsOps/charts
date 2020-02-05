@@ -2,6 +2,10 @@
 
 A controller for a collection of non-standard metrics.
 
+## A Note on Chart Version 0.4.0+
+
+Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/) of various `extensions/v1beta1` API's, the 0.4.0 version of this chart will only work on kubernetes 1.14.0+
+
 ## Usage
 
 | Parameter | Description | Default | Required |
