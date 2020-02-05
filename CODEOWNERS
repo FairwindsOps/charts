@@ -1,13 +1,13 @@
 *       @bambash @sudermanjr
 
-/incubator/autospotting/ @sudermanjr @coreypobrien
+/incubator/autospotting/ @sudermanjr @bbensky
 /incubator/basic-demo/ @sudermanjr
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
 /incubator/fairwinds-metrics/ @sudermanjr @mjhuber
-/incubator/fluentd/ @dosullivan @coreypobrien
+/incubator/fluentd/ @dosullivan @bbensky
 /incubator/gke-node-termination-handler/ @mjhuber @bbensky @hopson
-/incubator/helm-release-pruner/ @coreypobrien
+/incubator/helm-release-pruner/ @bbensky @rbren
 /incubator/imagepullsecret-deploy/ @crmejia
 /incubator/kubebench/ @mjhuber
 /incubator/load-generator/ @sudermanjr
