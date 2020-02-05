@@ -24,7 +24,7 @@ spec:
               image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
               imagePullPolicy: {{ .Values.image.pullPolicy }}
               securityContext:
-              privileged: true
+                privileged: true
               args:
                 - "-t $LOGENTRIES_TOKEN"
               {{- range .Values.image.args }}
