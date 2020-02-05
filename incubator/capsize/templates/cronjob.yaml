@@ -9,7 +9,6 @@ metadata:
 spec:
   schedule: {{ .Values.schedule | quote }}
   concurrencyPolicy: Forbid
-  restartPolicy: Never
   suspend: {{ .Values.suspend }}
   jobTemplate:
     spec:
