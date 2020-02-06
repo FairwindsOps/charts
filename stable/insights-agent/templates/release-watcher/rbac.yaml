@@ -1,14 +1,43 @@
 {{- if .Values.releasewatcher.enabled -}} 
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-release-watcher
+  name: {{ include "insights-agent.fullname" . }}-release-watcher-view
   labels:
     app: insights-agent
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: edit
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-view-secrets
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-secrets-viewer
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-view-secrets
 subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}

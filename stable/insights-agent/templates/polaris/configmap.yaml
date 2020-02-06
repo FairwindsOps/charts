@@ -127,7 +127,6 @@ data:
           - memoryLimitsMissing
       - controllerNames:
           - kube2iam
-          - trivy
           - kube-proxy
           - nginx-ingress-controller
         rules:
