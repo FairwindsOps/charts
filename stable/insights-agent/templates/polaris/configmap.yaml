@@ -61,12 +61,15 @@ data:
     exemptions:
       - controllerNames:
           - dns-controller
+          - nginx-ingress-controller
+          - nginx-ingress-external-controller
           - datadog-datadog
           - kube-flannel-ds
           - kube2iam
           - aws-iam-authenticator
           - datadog
           - kube2iam
+          - kube-proxy
         rules:
           - hostNetworkSet
       - controllerNames:
@@ -80,12 +83,17 @@ data:
           - kubernetes-dashboard
           - install-cni
           - kube2iam
+          - cert-manager-cainjector
+          - cert-manager-webhook
+          - cert-manager
+          - vpa-recommender
         rules:
           - readinessProbeMissing
           - livenessProbeMissing
       - controllerNames:
           - aws-iam-authenticator
           - nginx-ingress-controller
+          - nginx-ingress-external-controller
           - nginx-ingress-default-backend
           - aws-cluster-autoscaler
           - kube-state-metrics
@@ -96,11 +104,17 @@ data:
           - autoscaler
           - tiller
           - kube2iam
+          - cert-manager-webhook
+          - cert-manager-cainjector
+          - cert-manager
+          - coredns
+          - vpa-recommender
         rules:
           - runAsRootAllowed
       - controllerNames:
           - aws-iam-authenticator
           - nginx-ingress-controller
+          - nginx-ingress-external-controller
           - nginx-ingress-default-backend
           - aws-cluster-autoscaler
           - kube-state-metrics
@@ -111,6 +125,10 @@ data:
           - autoscaler
           - tiller
           - kube2iam
+          - cert-manager-cainjector
+          - cert-manager-webhook
+          - kube-proxy
+          - vpa-recommender
         rules:
           - notReadOnlyRootFileSystem
       - controllerNames:
@@ -120,6 +138,13 @@ data:
           - dnsmasq
           - autoscaler
           - insights-agent-goldilocks-vpa-install
+          - insights-agent-goldilocks-vpa-uninstall
+          - kube-proxy
+          - coredns
+          - metrics-server
+          - nginx-ingress-controller
+          - nginx-ingress-external-controller
+          - nginx-ingress-default-backend
         rules:
           - cpuRequestsMissing
           - cpuLimitsMissing
@@ -130,6 +155,8 @@ data:
           - trivy
           - kube-proxy
           - nginx-ingress-controller
+          - nginx-ingress-external-controller
+          - kube-flannel
         rules:
           - runAsPrivileged
           - privilegeEscalationAllowed
@@ -144,6 +171,7 @@ data:
           - trivy
           - workloads
           - insights-agent-goldilocks-vpa-install
+          - insights-agent-goldilocks-vpa-uninstall
         rules:
           - notReadOnlyRootFileSystem
       - controllerNames:
@@ -153,6 +181,7 @@ data:
           - readinessProbeMissing
       - controllerNames:
           - insights-agent-goldilocks-vpa-install
+          - insights-agent-goldilocks-vpa-uninstall
           - kube-hunter
           - trivy
         rules:
