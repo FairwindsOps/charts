@@ -22,6 +22,15 @@ cronjobs:
   successfulJobsHistoryLimit: 2
   runJobsImmediately: true
 
+cronjobExecutor:
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 1m
+      memory: 3Mi
+
 polaris:
   enabled: true
   schedule: "rand * * * *"
