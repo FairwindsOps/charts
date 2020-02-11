@@ -1,4 +1,8 @@
-version: 2
+version: 2.1
+
+orbs:
+  rok8s11: fairwinds/rok8s-scripts@11
+  rok8s10: fairwinds/rok8s-scripts@10
 
 references:
   setup_environment: &setup_environment
@@ -10,11 +14,36 @@ references:
         pip install awscli
         echo 'Install needed packages'
         apk --update add bash jq
+# TODO: Once a newer verions of chart-testing with helm 3.1.0 comes out, revisit this
+#  kind_configuration_helm3: &kind_configuration_helm3
+#    pre_script: scripts/circle-pre-e2e.sh
+#    script: scripts/circle-e2e.sh
+#    command_runner_image: quay.io/helmpack/chart-testing:v3.0.0-beta.1
+#    requires:
+#      - lint-scripts
+#      - lint-charts
+#    filters:
+#      branches:
+#        only: /.*/
+#      tags:
+#        ignore: /.*/
+  kind_configuration_helm2: &kind_configuration_helm2
+    pre_script: scripts/circle-pre-e2e.sh
+    script: scripts/circle-e2e.sh
+    command_runner_image: quay.io/helmpack/chart-testing:v2.4.0
+    requires:
+      - lint-scripts
+      - lint-charts
+    filters:
+      branches:
+        only: /.*/
+      tags:
+        ignore: /.*/
 
 jobs:
   lint-scripts:
     docker:
-      - image: koalaman/shellcheck-alpine:v0.6.0
+      - image: koalaman/shellcheck-alpine:v0.7.0
     steps:
       - checkout
       - run:
@@ -31,7 +60,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v2.2.0
+      - image: quay.io/helmpack/chart-testing:v2.4.0
     steps:
       - checkout
       - *setup_environment
@@ -41,33 +70,9 @@ jobs:
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
             ct lint --config scripts/ct.yaml  --chart-yaml-schema scripts/schema.yaml
-  e2e-tests:
-    docker:
-      - image: quay.io/helmpack/chart-testing:v2.2.0
-    steps:
-      - checkout
-      - setup_remote_docker
-      - *setup_environment
-      - run:
-          name: Install Docker
-          command: apk --update add docker
-      - run:
-          name: Setup e2e Environment
-          command: |
-            curl -LO https://github.com/kubernetes-sigs/kind/releases/download/0.2.1/kind-linux-amd64
-            chmod +x kind-linux-amd64
-            mv kind-linux-amd64 /usr/local/bin/kind
-            scripts/e2e-test.sh setup
-      - run:
-          name: Run e2e tests
-          command: |
-            scripts/e2e-test.sh test "$CIRCLE_BRANCH"
-      - run:
-          name: Teardown e2e Environment
-          command: scripts/e2e-test.sh teardown
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v2.2.0
+      - image: quay.io/helmpack/chart-testing:v2.4.0
     steps:
       - checkout
       - *setup_environment
@@ -83,14 +88,39 @@ workflows:
     jobs:
       - lint-scripts
       - lint-charts
-      - e2e-tests:
-          filters:
-            branches:
-              ignore:
-                - master
-          requires:
-            - lint-scripts
-            - lint-charts
+# TODO: Once a newer verions of chart-testing with helm 3.1.0 comes out, revisit this
+#      - rok8s11/kubernetes_e2e_tests:
+#          name: "End-To-End Kubernetes 1.14.10 - Helm 3"
+#          kind_node_image: "kindest/node:v1.14.10@sha256:81ae5a3237c779efc4dda43cc81c696f88a194abcc4f8fa34f86cf674aa14977"
+#          <<: *kind_configuration_helm3
+#      - rok8s11/kubernetes_e2e_tests:
+#          name: "End-To-End Kubernetes 1.15.7 - Helm 3"
+#          kind_node_image: "kindest/node:v1.15.7@sha256:e2df133f80ef633c53c0200114fce2ed5e1f6947477dbc83261a6a921169488d"
+#          <<: *kind_configuration_helm3
+#      - rok8s11/kubernetes_e2e_tests:
+#          name: "End-To-End Kubernetes 1.16.4 - Helm 3"
+#          kind_node_image: "kindest/node:v1.16.4@sha256:b91a2c2317a000f3a783489dfb755064177dbc3a0b2f4147d50f04825d016f55"
+#          <<: *kind_configuration_helm3
+#      - rok8s11/kubernetes_e2e_tests:
+#          name: "End-To-End Kubernetes 1.17.0 - Helm 3"
+#          kind_node_image: "kindest/node:v1.17.0@sha256:9512edae126da271b66b990b6fff768fbb7cd786c7d39e86bdf55906352fdf62"
+#          <<: *kind_configuration_helm3
+      - rok8s10/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.14.10 - Helm 2"
+          kind_node_image: "kindest/node:v1.14.10@sha256:81ae5a3237c779efc4dda43cc81c696f88a194abcc4f8fa34f86cf674aa14977"
+          <<: *kind_configuration_helm2
+      - rok8s10/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.15.7 - Helm 2"
+          kind_node_image: "kindest/node:v1.15.7@sha256:e2df133f80ef633c53c0200114fce2ed5e1f6947477dbc83261a6a921169488d"
+          <<: *kind_configuration_helm2
+      - rok8s10/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.16.4 - Helm 2"
+          kind_node_image: "kindest/node:v1.16.4@sha256:b91a2c2317a000f3a783489dfb755064177dbc3a0b2f4147d50f04825d016f55"
+          <<: *kind_configuration_helm2
+      - rok8s10/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.17.0 - Helm 2"
+          kind_node_image: "kindest/node:v1.17.0@sha256:9512edae126da271b66b990b6fff768fbb7cd786c7d39e86bdf55906352fdf62"
+          <<: *kind_configuration_helm2
       - sync:
           requires:
             - lint-scripts
