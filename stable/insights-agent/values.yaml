@@ -131,6 +131,20 @@ releasewatcher:
       cpu: 10m
       memory: 64Mi
 
+rbacreporter:
+  enabled: true
+  schedule: "rand * * * *"
+  image:
+    repository: quay.io/fairwinds/rbac-reporter
+    tag: "v1.0.0"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
 trivy:
   enabled: true
   namespaceBlacklist: nil
