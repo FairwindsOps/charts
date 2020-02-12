@@ -23,14 +23,14 @@ containers:
     - name: FAIRWINDS_CLUSTER
       value: {{ .Values.insights.cluster | quote }}
     - name: FAIRWINDS_TOKEN
-    valueFrom:
-      secretKeyRef:
-        {{ if .Values.insights.tokenSecretName -}}
-        name: {{ .Values.insights.tokenSecretName }}
-        {{ else -}}
-        name: {{ include "insights-agent.fullname" . }}-token
-        {{ end -}}
-        key: token
+      valueFrom:
+        secretKeyRef:
+          {{ if .Values.insights.tokenSecretName -}}
+          name: {{ .Values.insights.tokenSecretName }}
+          {{ else -}}
+          name: {{ include "insights-agent.fullname" . }}-token
+          {{ end -}}
+          key: token
     - name: MAX_SCANS
       value: {{ .Values.trivy.maxScansPerRun | quote }}
     - name: MAX_CONCURRENT_SCANS
