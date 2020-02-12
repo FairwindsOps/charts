@@ -75,8 +75,8 @@ spec:
           tenantID: {{ .tenantId }}
           resourceGroupName: {{ .resourceId }}
           hostedZoneName: {{ .hostedZoneName }}
-          environment: {{ .environment | default "AzurePublicCloud"}}
-      {{- end } {{- /* endif eq .type "azuredns" */ -}}
+          environment: {{ .environment | default "AzurePublicCloud" }}
+      {{- end }} {{- /* endif eq .type "azuredns" */ -}}
       {{- if .selector }}
       {{- if or .selector.matchLabels .selector.dnsNames .selector.dnsZones }}
       selector:
