@@ -133,15 +133,16 @@ releasewatcher:
 
 trivy:
   enabled: true
-  namespaceBlacklist: nil
+  namespaceBlacklist: []
   schedule: "rand */3 * * *"
   privateImages:
     dockerConfigSecret: ""
   maxConcurrentScans: 5
+  maxScansPerRun: 30
   timeout: 10800
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.2"
+    tag: "0.3"
   resources:
     limits:
       cpu: 250m
