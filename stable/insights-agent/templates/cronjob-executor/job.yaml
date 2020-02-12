@@ -14,7 +14,7 @@ spec:
       serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
       containers:
       - name: start-job-from-cronjob
-        image: bitnami/kubectl:{{ .Capabilities.KubeVersion.Major }}.{{ .Capabilities.KubeVersion.Minor }}
+        image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
         command: ["bash"]
         args:
           - -c
