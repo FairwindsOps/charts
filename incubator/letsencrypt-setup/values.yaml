@@ -39,5 +39,6 @@ clusterIssuers:
       #   hostedZoneName: example.com
       #   # Azure Cloud Environment, default to AzurePublicCloud
       #   environment: AzurePublicCloud
+      #   selector: {}
   selfsigned:
     enabled: false
