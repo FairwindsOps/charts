@@ -16,6 +16,23 @@ containers:
   command:
     - "./report.sh"
   env:
+    - name: FAIRWINDS_INSIGHTS_HOST
+      value: {{ .Values.insights.host | quote }}
+    - name: FAIRWINDS_ORG
+      value: {{ .Values.insights.organization | quote }}
+    - name: FAIRWINDS_CLUSTER
+      value: {{ .Values.insights.cluster | quote }}
+    - name: FAIRWINDS_TOKEN
+      valueFrom:
+        secretKeyRef:
+          {{ if .Values.insights.tokenSecretName -}}
+          name: {{ .Values.insights.tokenSecretName }}
+          {{ else -}}
+          name: {{ include "insights-agent.fullname" . }}-token
+          {{ end -}}
+          key: token
+    - name: MAX_SCANS
+      value: {{ .Values.trivy.maxScansPerRun | quote }}
     - name: MAX_CONCURRENT_SCANS
       value: {{ .Values.trivy.maxConcurrentScans | quote }}
     {{ if .Values.trivy.namespaceBlacklist }}
@@ -27,14 +44,14 @@ containers:
     mountPath: /output
   {{ with .Values.trivy.privateImages.dockerConfigSecret }}
   - name: dockerconfig
-    mountPath: /root/.docker/
+    mountPath: /.docker/
   {{ end }}
   resources:
     {{- toYaml .Values.trivy.resources | nindent 4 }}
   securityContext:
     privileged: false
     allowPrivilegeEscalation: false
-    readOnlyRootFilesystem: false
+    readOnlyRootFilesystem: true
     capabilities:
       drop:
         - ALL
