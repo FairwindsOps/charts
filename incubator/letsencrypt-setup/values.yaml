@@ -28,5 +28,16 @@ clusterIssuers:
       #   selector:
       #     dnsNames:
       #       - api.example.com
+      # - type: azuredns
+      #   clientID: 00000000-0000-0000-0000-000000000000
+      #   clientSecretSecretRef:
+      #     name: example-kube-secret
+      #     key: client-secret
+      #   subscriptionID: 00000000-0000-0000-0000-000000000000
+      #   tenantID: 00000000-0000-0000-0000-000000000000
+      #   resourceGroupName: example-resource-group
+      #   hostedZoneName: example.com
+      #   # Azure Cloud Environment, default to AzurePublicCloud
+      #   environment: AzurePublicCloud
   selfsigned:
     enabled: false
