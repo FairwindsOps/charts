@@ -141,7 +141,7 @@ trivy:
   privateImages:
     dockerConfigSecret: ""
   maxConcurrentScans: 5
-  maxScansPerRun: 30
+  maxScansPerRun: 10
   timeout: 10800
   image:
     repository: quay.io/fairwinds/fw-trivy
