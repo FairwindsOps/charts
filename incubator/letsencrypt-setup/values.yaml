@@ -31,7 +31,7 @@ clusterIssuers:
       # - type: azuredns
       #   clientID: 00000000-0000-0000-0000-000000000000
       #   clientSecret: example-kube-secret
-      #   clientSecretName: client-secret
+      #   clientSecretKey: client-secret
       #   subscriptionID: 00000000-0000-0000-0000-000000000000
       #   tenantID: 00000000-0000-0000-0000-000000000000
       #   resourceGroupName: example-resource-group
