@@ -142,7 +142,7 @@ trivy:
     dockerConfigSecret: ""
   maxConcurrentScans: 5
   maxScansPerRun: 10
-  timeout: 10800
+  timeout: 1200
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.3"
