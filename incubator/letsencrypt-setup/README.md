@@ -62,6 +62,20 @@ The following table lists the configurable parameters of the chart and their def
 | `secretKey` | Key within a kubernetes secret data block that holds the secret access key |
 | `type` | Defines the type of DNS solver, should be set to `cloudflare` |
 
+### AzureDNS
+
+| Parameter | Description |
+| --------- | ----------- |
+| `clientId` | The AAD Service Principal Application ID |
+| `clientSecret` | Name of kubernetes secret that contains the secret Service Principal password |
+| `clientSecretKey` | Key within a kubernetes secret data block that holds the Service Principal password |
+| `subscriptionId` | Azure subscription where the DNS zone lives |
+| `tenantId` | Azure tenant where the subscription lives |
+| `resourceGroupName` | Resource group where the DNS zone lives |
+| `hostedZoneName` | DNS Zone name (ex: example.com) |
+| `environment` | Public or Private zone (default `AzurePublicCloud`) |
+| `type` | Defines the type of solver, should be set to `azuredns` |
+
 ## Selector Settings
 
 Selectors allow you to specify multiple DNS challenge solvers and force certain constraints on when specific solvers should be used. The most common will probably be `dnsZones`, but you can also use `dnsNames` to force a set of specific DNS entries to be solved a certain way. Finally, the third way to specify an ingress to use a specific solver is through labels using the `matchLabels` setting which accepts key/value objects to match labels against. An empty selector will attempt to be used for any and all ingress challenges.
