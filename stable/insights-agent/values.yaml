@@ -179,12 +179,12 @@ kubebench:
 trivy:
   enabled: true
   namespaceBlacklist: []
-  schedule: "rand */3 * * *"
+  schedule: "rand * * * *"
   privateImages:
     dockerConfigSecret: ""
-  maxConcurrentScans: 5
-  maxScansPerRun: 10
-  timeout: 1200
+  maxConcurrentScans: 1
+  maxScansPerRun: 20
+  timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.3"
