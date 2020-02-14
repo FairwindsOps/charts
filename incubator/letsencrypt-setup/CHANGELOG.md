@@ -1,3 +1,6 @@
+# v2.1.0 February 12, 2020
+- Added support for AzureDNS
+
 # v2.0.1 January 3, 2020
 - bugfix for dnsNames selector failing if matching a wildcard with an asterisk (Helm YAML -> JSON error)
 

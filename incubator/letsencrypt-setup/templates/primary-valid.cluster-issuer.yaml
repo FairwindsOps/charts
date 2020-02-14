@@ -65,6 +65,18 @@ spec:
             key: {{ .secretKey }}
           {{- end }} {{- /* endif .secretName */ -}}
       {{- end }} {{- /* endif eq .type "clouddns" */ -}}
+      {{- if eq .type "azuredns" }}
+        azuredns:
+          clientID: {{ .clientID }}
+          clientSecretSecretRef:
+            name: {{ .clientSecret }}
+            key: {{ .clientSecretKey }}
+          subscriptionID: {{ .subscriptionID }}
+          tenantID: {{ .tenantID }}
+          resourceGroupName: {{ .resourceGroupName }}
+          hostedZoneName: {{ .hostedZoneName }}
+          environment: {{ .environment | default "AzurePublicCloud" }}
+      {{- end }} {{- /* endif eq .type "azuredns" */ -}}
       {{- if .selector }}
       {{- if or .selector.matchLabels .selector.dnsNames .selector.dnsZones }}
       selector:
