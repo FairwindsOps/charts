@@ -11,6 +11,6 @@ roleRef:
   name: view
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-rbac-reporter
+    name: {{ include "insights-agent.fullname" . }}
     namespace: {{ .Release.Namespace }}
 {{- end -}}
