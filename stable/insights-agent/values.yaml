@@ -23,6 +23,9 @@ cronjobs:
   runJobsImmediately: true
 
 cronjobExecutor:
+  image:
+    repository: bitnami/kubectl
+    tag: "1.16"
   resources:
     limits:
       cpu: 100m
@@ -147,15 +150,16 @@ rbacreporter:
 
 trivy:
   enabled: true
-  namespaceBlacklist: nil
+  namespaceBlacklist: []
   schedule: "rand */3 * * *"
   privateImages:
     dockerConfigSecret: ""
   maxConcurrentScans: 5
-  timeout: 10800
+  maxScansPerRun: 10
+  timeout: 1200
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.2"
+    tag: "0.3"
   resources:
     limits:
       cpu: 250m
