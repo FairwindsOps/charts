@@ -26,6 +26,18 @@ setup_cluster () {
     kind create cluster --name="$TEST_CLUSTER_NAME" --wait=120s > /dev/null
 }
 
+init_helm() {
+    if helm version --short --client; then
+        echo "Helm 2 Detected"
+        kubectl create ns tiller-system
+        kubectl -n tiller-system create sa tiller
+        kubectl create clusterrolebinding tiller \
+          --clusterrole cluster-admin \
+          --serviceaccount=tiller-system:tiller
+        helm init --wait --upgrade --service-account tiller --tiller-namespace tiller-system
+    fi
+}
+
 install_hostpath_provisioner() {
     # https://github.com/helm/chart-testing/blob/master/examples/kind/test/e2e-kind.sh
     # kind doesn't support Dynamic PVC provisioning yet, this one of ways to get it working
@@ -61,6 +73,7 @@ run_tests () {
 if [ "$OPERATION" = "setup" ]; then
     printf "Running setup.\n"
     setup_cluster
+    init_helm
     install_hostpath_provisioner
     printf "e2e testing environment is ready.\n"
 elif [ "$OPERATION" = "teardown" ] ; then
