@@ -1,4 +1,4 @@
-remote: ro
+remote: origin
 target-branch: master
 chart-dirs:
   - stable
@@ -6,4 +6,4 @@ chart-dirs:
 chart-repos:
   - "jetstack=https://charts.jetstack.io"
   - "fairwinds-stable=https://charts.fairwinds.com/stable"
-helm-extra-args: --timeout 600
+  - "fairwinds-incubator=https://charts.fairwinds.com/incubator"

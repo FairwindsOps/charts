@@ -21,9 +21,9 @@ set -x
 CI_DIR="ci"
 SCRIPT_NAME="pre-test-script.sh"
 SCRIPT="$CI_DIR/$SCRIPT_NAME"
-CHANGED="$(git diff master --name-only incubator/*/ stable/*/ | awk -F"/" '{print $1"/"$2}' | sort -u)"
+CHANGED="$(ct list-changed --config scripts/ct.yaml)"
 
-for chart in $CHANGED; do
+for chart in ${CHANGED}; do
   if test -f "$chart/$SCRIPT"; then
     "$chart/$SCRIPT"
   fi
