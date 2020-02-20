@@ -24,8 +24,8 @@ cronjobs:
 
 cronjobExecutor:
   image:
-    repository: bitnami/kubectl
-    tag: "1.16"
+    repository: boxboat/kubectl
+    tag: "1.16.6"
   resources:
     limits:
       cpu: 100m
