@@ -31,6 +31,7 @@ There are several different report types which can be enabled and configured:
 * `trivy`
 * `kubesec`
 * `releasewatcher`
+* `rbacreporter`
 
 See below for configuration details.
 

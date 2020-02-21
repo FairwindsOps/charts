@@ -1,0 +1,6 @@
+{{- if .Values.rbacreporter.enabled -}} 
+{{- $_ := set . "Label" "rbac-reporter" }}
+{{- $_ := set . "Config" .Values.rbacreporter }}
+{{- $_ := set . "Template" "rbacreporter.job.spec" }}
+{{- include "cronjob" . }}
+{{- end -}}
