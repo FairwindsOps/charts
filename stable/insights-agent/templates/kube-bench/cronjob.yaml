@@ -1,0 +1,36 @@
+{{- define "kubebench.job.spec" -}}
+{{- $_ := set . "Label" "kubebench" }}
+{{- $_ := set . "Config" .Values.kubebench }}
+restartPolicy: Never
+serviceAccountName: {{ include "insights-agent.fullname" . }}
+volumes:
+- name: output
+  emptyDir: {}
+containers:
+- name: kube-bench-aggregator
+  image: "{{ .Values.kubebench.aggregator.image.repository }}:{{ .Values.kubebench.aggregator.image.tag }}"
+  imagePullPolicy: Always
+  env:
+  - name: DAEMONSET_SERVICE
+    value: {{ include "insights-agent.fullname" . }}-kube-bench-svc
+  resources:
+    {{- toYaml .Values.kubebench.aggregator.resources | nindent 4 }}
+  volumeMounts:
+  - name: output
+    mountPath: /output
+  securityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+{{- include "uploaderContainer" . }}
+{{- end -}}
+{{- if .Values.kubebench.enabled -}}
+{{- $_ := set . "Label" "kubebench" }}
+{{- $_ := set . "Config" .Values.kubebench }}
+{{- $_ := set . "Template" "kubebench.job.spec" }}
+{{- include "cronjob" . }}
+{{- end -}}

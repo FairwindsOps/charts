@@ -1,0 +1,14 @@
+{{- if .Values.kubebench.enabled -}}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-kube-bench-svc
+spec:
+  clusterIP: None
+  selector:
+    app.kubernetes.io/name: {{ include "insights-agent.fullname" . }}
+    helm.sh/chart: {{ include "insights-agent.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: daemonset
+{{- end -}}
