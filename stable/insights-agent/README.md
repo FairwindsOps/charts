@@ -54,6 +54,9 @@ Parameter | Description | Default
 `{report}.resources` | CPU/memory requests and limits for the report |
 `{report}.image.repository` | Repository to use for the report image |
 `{report}.image.tag` | Image tag to use for the report |
+`kubebench.deploymentMode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `daemonsetMaster`
+`kubebench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
+`kubebench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 5
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
