@@ -1,4 +1,4 @@
-{{- if .Values.kubebench.enabled -}}
+{{- if and (.Values.kubebench.enabled) (or (eq .Values.kubebench.deploymentMode "daemonsetMaster") (eq .Values.kubebench.deploymentMode "daemonset")) -}}
 apiVersion: v1
 kind: Service
 metadata:

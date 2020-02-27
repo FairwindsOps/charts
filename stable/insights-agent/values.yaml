@@ -153,6 +153,7 @@ kubebench:
   schedule: "rand * * * *"
   deploymentMode: "daemonsetMaster"
   hourInterval: 2
+  timeout: 240
   image:
     repository: quay.io/fairwinds/fw-kube-bench
     tag: 0.1

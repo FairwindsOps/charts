@@ -43,8 +43,6 @@ spec:
                 fieldPath: spec.nodeName
           - name: INTERVAL_HOURS
             value: {{ .Values.kubebench.hourInterval | quote }}
-          - name: RUN_ONCE
-            value: "Not used"
         resources:
           {{- toYaml .Values.kubebench.aggregator.resources | nindent 10 }}
         volumeMounts:
