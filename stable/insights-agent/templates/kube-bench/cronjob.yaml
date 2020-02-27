@@ -1,5 +1,5 @@
 {{- define "kubebench.job.spec" -}}
-{{- $_ := set . "Label" "kubebench" }}
+{{- $_ := set . "Label" "kube-bench" }}
 {{- $_ := set . "Config" .Values.kubebench }}
 restartPolicy: Never
 serviceAccountName: {{ include "insights-agent.fullname" . }}
@@ -29,7 +29,7 @@ containers:
 {{- include "uploaderContainer" . }}
 {{- end -}}
 {{- if .Values.kubebench.enabled -}}
-{{- $_ := set . "Label" "kubebench" }}
+{{- $_ := set . "Label" "kube-bench" }}
 {{- $_ := set . "Config" .Values.kubebench }}
 {{- $_ := set . "Template" "kubebench.job.spec" }}
 {{- include "cronjob" . }}

@@ -42,7 +42,7 @@ spec:
               fieldRef:
                 fieldPath: spec.nodeName
           - name: INTERVAL_HOURS
-            value: {{ .Values.kubebench.hourInterval }}
+            value: {{ .Values.kubebench.hourInterval | quote }}
           - name: RUN_ONCE
             value: "Not used"
         resources:
@@ -62,15 +62,14 @@ spec:
         - name: usr-bin
           mountPath: /usr/local/mount-from-host/bin
           readOnly: true
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          privileged: false
+          readOnlyRootFilesystem: true
       restartPolicy: Always
-      securityContext:
-        allowPrivilegeEscalation: false
-        capabilities:
-          drop:
-          - ALL
-        privileged: false
-        readOnlyRootFilesystem: true
-        runAsNonRoot: true
       volumes:
         - name: var-lib
           hostPath:
