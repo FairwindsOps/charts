@@ -21,7 +21,7 @@
 /stable/astro/ @mjhuber @lucasreed
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
-/stable/rbac-manager/ @robscott @sudermanjr @mjhuber
+/stable/rbac-manager/ @robscott @sudermanjr @mjhuber @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
 /stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
