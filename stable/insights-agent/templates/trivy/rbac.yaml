@@ -1,3 +1,4 @@
+{{- if .Values.trivy.enabled -}} 
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
@@ -28,3 +29,4 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}
     namespace: {{ .Release.Namespace }}
+{{- end }}
