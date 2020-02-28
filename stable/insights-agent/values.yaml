@@ -151,7 +151,7 @@ rbacreporter:
 kubebench:
   enabled: true
   schedule: "rand * * * *"
-  deploymentMode: "daemonsetMaster"
+  mode: "cronjob"
   hourInterval: 2
   timeout: 240
   image:

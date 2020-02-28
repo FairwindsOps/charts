@@ -1,4 +1,4 @@
-{{- if and (.Values.kubebench.enabled) (or (eq .Values.kubebench.deploymentMode "daemonsetMaster") (eq .Values.kubebench.deploymentMode "daemonset")) -}}
+{{- if and (.Values.kubebench.enabled) (or (eq .Values.kubebench.mode "daemonsetMaster") (eq .Values.kubebench.mode "daemonset")) -}}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:
@@ -26,63 +26,5 @@ spec:
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/component: daemonset
     spec:
-      hostPID: true
-      {{- if eq .Values.kubebench.deploymentMode "daemonsetMaster" }}
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        effect: NoSchedule
-      {{- end }}
-      containers:
-      - image: "{{ .Values.kubebench.image.repository }}:{{ .Values.kubebench.image.tag }}"
-        imagePullPolicy: Always
-        name: kube-bench
-        env:
-          - name: NODE_NAME
-            valueFrom:
-              fieldRef:
-                fieldPath: spec.nodeName
-          - name: INTERVAL_HOURS
-            value: {{ .Values.kubebench.hourInterval | quote }}
-        resources:
-          {{- toYaml .Values.kubebench.aggregator.resources | nindent 10 }}
-        volumeMounts:
-        - name: var-lib # for /var/lib/kubelet and /var/lib/etcd
-          mountPath: /var/lib
-          readOnly: true
-        - name: etc-systemd
-          mountPath: /etc/systemd
-          readOnly: true
-        - name: etc-kubernetes
-          mountPath: /etc/kubernetes
-          readOnly: true
-          # /usr/local/mount-from-host/bin is mounted to access kubectl / kubelet, for auto-detecting the Kubernetes version.
-          # You can omit this mount if you specify --version as part of the command.
-        - name: usr-bin
-          mountPath: /usr/local/mount-from-host/bin
-          readOnly: true
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-            - ALL
-          privileged: false
-          readOnlyRootFilesystem: true
-      restartPolicy: Always
-      volumes:
-        - name: var-lib
-          hostPath:
-            path: "/var/lib"
-            type: Directory
-        - name: etc-systemd
-          hostPath:
-            path: "/etc/systemd"
-            type: Directory
-        - name: etc-kubernetes
-          hostPath:
-            path: "/etc/kubernetes"
-            type: Directory
-        - name: usr-bin
-          hostPath:
-            path: "/usr/bin"
-            type: Directory
+      {{- include "kubebench.container.spec" . | nindent 6}}
 {{- end -}}
