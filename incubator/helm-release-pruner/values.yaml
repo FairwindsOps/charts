@@ -11,6 +11,9 @@ job:
   schedule: "0 */4 * * *"
   dryRun: true
   debug: false
+  serviceAccount:
+    create: true
+    # name: ExistingServiceAccountName 
   resources:
     limits:
       cpu: 25m
@@ -30,3 +33,4 @@ pruneProfiles: []
 rbac_manager:
   enabled: false
   namespaceLabel: ""
+
