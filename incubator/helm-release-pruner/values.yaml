@@ -13,7 +13,7 @@ job:
   debug: false
   serviceAccount:
     create: true
-    # name: ExistingServiceAccountName 
+    # name: ExistingServiceAccountName
   resources:
     limits:
       cpu: 25m
@@ -33,4 +33,3 @@ pruneProfiles: []
 rbac_manager:
   enabled: false
   namespaceLabel: ""
-
