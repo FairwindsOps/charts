@@ -24,7 +24,7 @@ To install a chart from this repo, you can add it as a [helm repository](https:/
 
 ```
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm search fairwinds-stable
+helm search repo fairwinds-stable
 ```
 
 ## Organization

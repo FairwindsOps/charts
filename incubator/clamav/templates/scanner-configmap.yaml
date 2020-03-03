@@ -1,0 +1,22 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "clamav.fullname" . }}-scanner
+  labels:
+    {{- include "clamav.server.labels" . | nindent 4 }}
+data:
+  clamd.conf: |
+    TemporaryDirectory /tmp
+    LogTime yes
+    LogFile /var/log/clamav.log
+    LogVerbose yes
+    LogClean yes
+    PidFile /run/clamd.pid
+    TCPSocket 3310
+    TCPAddr {{ include "clamav.fullname" . }}
+    Foreground yes
+    ExcludePath /host-fs/proc/*
+    ExcludePath /host-fs/sys/*
+    ExcludePath /host-fs/dev/*
+    ExcludePath *init-stderr
+    ExcludePath *init-stdout

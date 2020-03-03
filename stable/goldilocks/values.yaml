@@ -1,33 +1,46 @@
-# Default values for goldilocks.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
+# installVPA -- Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified.
 installVPA: false
+# uninstallVPA -- Used to uninstall the vpa controller.
 uninstallVPA: false
+# reinstallVPA -- Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks.
 reinstallVPA: false
+# vpaVersion -- The git ref to install VPA from.
 vpaVersion: e16a0adef6c7d79a23d57f9bbbef26fc9da59378
 
 image:
+  # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks
+  # image.tag -- The goldilocks image tag to use
   tag: v2.2.0
+  # pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
 nameOverride: ""
 fullnameOverride: ""
 
 controller:
+  # controller.enabled -- Whether or not to install the controller deployment
   enabled: true
   rbac:
+    # controller.rbac.create -- If set to true, rbac resources will be created for the controller
     create: true
   serviceAccount:
+    # controller.serviceAccount.create -- If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`
     create: true
-    # name: ExistingServiceAccountName
+    # controller.serviceAccount.name -- The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create`
+    name:
 
+  # controller.flags -- A map of additional flags to pass to the controller
   flags: {}
+  # controller.logVerbosity -- Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
+  # controller.nodeSelector -- Node selector for the controller pod
   nodeSelector: {}
+  # controller.tolerations -- Tolerations for the controller pod
   tolerations: []
+  # controller.affinity -- Affinity for the controller pods
   affinity: {}
+  # controller.resources -- The resources block for the controller pods
   resources:
     limits:
       cpu: 25m
@@ -37,22 +50,32 @@ controller:
       memory: 32Mi
 
 dashboard:
+  # dashboard.enabled -- If true, the dashboard component will be installed
   enabled: true
+  # dashboard.replicaCount -- Number of dashboard pods to run
   replicaCount: 2
   service:
+    # dashboard.service.type -- The type of the dashboard service
     type: ClusterIP
+    # dashboard.service.port -- The port to run the dashboard service on
     port: 80
+  # dashboard.logVerbosity -- Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
+  # dashboard.excludeContainers -- Container names to exclude from displaying in the Goldilocks dashboard
   excludeContainers: "linkerd-proxy,istio-proxy"
   rbac:
+    # dashboard.rbac.create -- If set to true, rbac resources will be created for the dashboard
     create: true
   serviceAccount:
+    # dashboard.serviceAccount.create -- If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name`
     create: true
-    # name: ExistingServiceAccountName
+    # dashboard.serviceAccount.name -- The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create`
+    name:
 
-  # Sets the web app's basePath/base href
-  # basePath: goldilocks
+  # dashboard.basePath -- Sets the web app's basePath/base href
+  basePath:
   ingress:
+    # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
     enabled: false
     annotations: {}
       # kubernetes.io/ingress.class: nginx
@@ -66,6 +89,7 @@ dashboard:
     #    hosts:
     #      - chart-example.local
 
+  # dashboard.resources -- A resources block for the dashboard.
   resources:
     limits:
       cpu: 25m

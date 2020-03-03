@@ -29,50 +29,45 @@ helm upgrade goldilocks fairwinds-stable/goldilocks --set reinstallVPA=true
 
 This will completely remove the VPA and then re-install it using the new method.
 
-## Usage
+## Chart Values
 
-| Parameter                              | Description                                                                                                                      | Default                        |
-|----------------------------------------|----------------------------------------------------------------------------------------------------------------------------------|--------------------------------|
-| `installVPA`                           | Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified. | `False` |
-| `uninstallVPA`                         | Used to uninstall the vpa controller.                                                                                            | `false`                        |
-| `reinstallVPA`                         | Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks.                                              | `false`                        |
-| `vpaVersion`                           | The git ref to install VPA from.                                                                                                 | `e16a0adef6c7d79a23d57f9bbbef26fc9da59378` |
-| `image.pullPolicy`                     | imagePullPolicy - Highly recommended to leave this as `Always`                                                                   | `Always`                       |
-| `image.repository`                     | Repository for the goldilocks image                                                                                              | `quay.io/fairwinds/goldilocks` |
-| `image.tag`                            | The goldilocks image tag to use                                                                                                  | `v1.3.0`                       |
-| `controller.enabled`                   | Whether or not to install the controller deployment                                                                              | `True`                         |
-| `controller.affinity`                  | Affinity for the controller pod                                                                                                  | `{}`                           |
-| `controller.nodeSelector`              | Node selector for the controller pod                                                                                             | `{}`                           |
-| `controller.rbac.create`               | If set to true, rbac resources will be created for the controller                                                                | `True`                         |
-| `controller.resources.limits.cpu`      | Controller cpu limit                                                                                                             | `25m`                          |
-| `controller.resources.limits.memory`   | Controller memory limit                                                                                                          | `32Mi`                         |
-| `controller.resources.requests.cpu`    | Controller CPU request                                                                                                           | `25m`                          |
-| `controller.resources.requests.memory` | Controller memory request                                                                                                        | `32Mi`                         |
-| `controller.serviceAccount.create`     | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`    | `True`                         |
-| `controller.serviceAccount.name`       | The name of an existing service account to use for the controller                                                                |                                |
-| `controller.tolerations`               | Tolerations for the controller pod                                                                                               | `[]`                           |
-| `controller.flags`                     | A map of additional flags to pass to the controller                                                                              | `{}`                           |
-| `dashboard.enabled`                    | If true, the dashboard component will be installed.                                                                              | `True`                         |
-| `dashboard.affinity`                   | Affinity for the dashbaord pods.                                                                                                 | `{}`                           |
-| `dashboard.excludeContainer`           | A comma-separated list of container names to ignore in the dashboard globally.                                                   | `linkderd-proxy,istio-proxy`   |
-| `dashboard.basePath`                   | Customize the basePath passed as `--base-path` to the dashboard container (useful for instance if using an ingress path)         |                                |
-| `dashboard.ingress.enabled`            | If true, an ingress object will be created. Further configuration is necessary. See [values.yaml](values.yaml) for an example.   | `False`                        |
-| `dashboard.ingress.annotations`        | Annotations on the ingress object.                                                                                               | `{}`                           |
-| `dashboard.ingress.hosts.0.host`       | Ingress host. See [values.yaml](values.yaml) for an example.                                                                     | `chart-example.local`          |
-| `dashboard.ingress.hosts.0.paths`      | Ingress path. See [values.yaml](values.yaml) for an example.                                                                     | `[]`                           |
-| `dashboard.ingress.tls`                | Ingress TLS block. See [values.yaml](values.yaml) for an example.                                                                | `[]`                           |
-| `dashboard.logVerbosity`               | Dashboard log verbosity. Can be set from 1-10 with 10 being the most verbose                                                     | `2`                            |
-| `dashboard.nodeSelector`               | Node selector for dashboard pods                                                                                                 | `{}`                           |
-| `dashboard.rbac.create`                | If true, rbac resources will be created for the dashboard service account                                                        | `True`                         |
-| `dashboard.replicaCount`               | Number of dashboard pods to run                                                                                                  | `2`                            |
-| `dashboard.resources.limits.cpu`       | Dashboard CPU limit                                                                                                              | `25m`                          |
-| `dashboard.resources.limits.memory`    | Dashboard memory limits                                                                                                          | `32Mi`                         |
-| `dashboard.resources.requests.cpu`     | Dashboard CPU request                                                                                                            | `25m`                          |
-| `dashboard.resources.requests.memory`  | Dashboard memory request                                                                                                         | `32Mi`                         |
-| `dashboard.service.port`               | Dashboard service port.                                                                                                          | `80`                           |
-| `dashboard.service.type`               | Servvice type for the dashboard service.                                                                                         | `ClusterIP`                    |
-| `dashboard.serviceAccount.create`      | If true, a service account will be created for the dashboard. If set to false, then you must set `dashboard.serviceAccount.name` | `True`                         |
-| `dashboard.serviceAccount.name`        | The name of an existing service account to use for the dashboard.                                                                |                                |
-| `dashboard.tolerations`                | Tolerations for the dashboard pod                                                                                                | `[]`                           |
-| `fullnameOverride`                     | Override the fullName in the chart                                                                                               |                                |
-| `nameOverride`                         | Override the name field in the chart                                                                                             |                                |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| controller.affinity | object | `{}` | Affinity for the controller pods |
+| controller.enabled | bool | `true` | Whether or not to install the controller deployment |
+| controller.flags | object | `{}` | A map of additional flags to pass to the controller |
+| controller.logVerbosity | string | `"2"` | Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose |
+| controller.nodeSelector | object | `{}` | Node selector for the controller pod |
+| controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
+| controller.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | The resources block for the controller pods |
+| controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
+| controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
+| controller.tolerations | list | `[]` | Tolerations for the controller pod |
+| dashboard.affinity | object | `{}` |  |
+| dashboard.basePath | string | `nil` | Sets the web app's basePath/base href |
+| dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
+| dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
+| dashboard.ingress.annotations | object | `{}` |  |
+| dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
+| dashboard.ingress.hosts[0].host | string | `"chart-example.local"` |  |
+| dashboard.ingress.hosts[0].paths | list | `[]` |  |
+| dashboard.ingress.tls | list | `[]` |  |
+| dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
+| dashboard.nodeSelector | object | `{}` |  |
+| dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
+| dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
+| dashboard.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | A resources block for the dashboard. |
+| dashboard.service.port | int | `80` | The port to run the dashboard service on |
+| dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
+| dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
+| dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
+| dashboard.tolerations | list | `[]` |  |
+| fullnameOverride | string | `""` |  |
+| image.pullPolicy | string | `"Always"` |  |
+| image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
+| image.tag | string | `"v2.2.0"` | The goldilocks image tag to use |
+| installVPA | bool | `false` | Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified. |
+| nameOverride | string | `""` |  |
+| reinstallVPA | bool | `false` | Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks. |
+| uninstallVPA | bool | `false` | Used to uninstall the vpa controller. |
+| vpaVersion | string | `"e16a0adef6c7d79a23d57f9bbbef26fc9da59378"` | The git ref to install VPA from. |
