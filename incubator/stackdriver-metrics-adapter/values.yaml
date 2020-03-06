@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: gcr.io/google-containers/custom-metrics-stackdriver-adapter
-  tag: v0.10.0
+  tag: v0.10.2
   pullPolicy: IfNotPresent
 
 nameOverride: ""
