@@ -1,8 +1,8 @@
 apiVersion: v1
-appVersion: "0.10.0"
+appVersion: "0.10.2"
 description: The stackdriver metrics adapter
 name: stackdriver-metrics-adapter
-version: 0.1.1
+version: 0.1.2
 maintainers:
   - name: mjhuber
     email: micah@fairwinds.com
