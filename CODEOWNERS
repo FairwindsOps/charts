@@ -4,24 +4,21 @@
 /incubator/basic-demo/ @sudermanjr
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
-/incubator/fairwinds-metrics/ @sudermanjr @mjhuber
+/incubator/fairwinds-metrics/ @sudermanjr
 /incubator/fluentd/ @dosullivan @bbensky
-/incubator/gke-node-termination-handler/ @mjhuber @bbensky @hopson
+/incubator/gke-node-termination-handler/ @bbensky @hopson
 /incubator/helm-release-pruner/ @bbensky @rbren
 /incubator/imagepullsecret-deploy/ @crmejia
-/incubator/kubebench/ @mjhuber
 /incubator/load-generator/ @sudermanjr
-/incubator/logentries/ @mjhuber
 /incubator/node-problem-detector/ @crmejia
 /incubator/opa/ @sudermanjr
 /incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
-/incubator/stackdriver-metrics-adapter/ @mjhuber
 
-/stable/astro/ @mjhuber @lucasreed
+/stable/astro/ @lucasreed
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
-/stable/rbac-manager/ @robscott @sudermanjr @mjhuber @lucasreed
+/stable/rbac-manager/ @robscott @sudermanjr @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
 /stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
