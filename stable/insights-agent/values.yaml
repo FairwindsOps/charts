@@ -53,7 +53,7 @@ kubehunter:
   schedule: "rand * * * *"
   image:
     repository: aquasec/kube-hunter
-    tag: "501"
+    tag: "0.3.0"
   resources:
     limits:
       cpu: 100m
