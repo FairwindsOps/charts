@@ -1,6 +1,6 @@
 {{- define "rbacreporter.job.spec" -}}
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}-rbac-reporter
+serviceAccountName: {{ include "insights-agent.fullname" . }}
 volumes:
 - name: output
   emptyDir: {}
