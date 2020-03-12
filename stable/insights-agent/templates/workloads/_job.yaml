@@ -1,6 +1,6 @@
 {{- define "workloads.job.spec" -}}
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}
+serviceAccountName: {{ include "insights-agent.fullname" . }}-workloads
 volumes:
 - name: output
   emptyDir: {}
