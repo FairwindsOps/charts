@@ -33,6 +33,15 @@ spec:
             - name: http
               containerPort: 8080
               protocol: TCP
+          securityContext:
+            runAsUser: 1200
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - ALL
           livenessProbe:
             httpGet:
               path: /
