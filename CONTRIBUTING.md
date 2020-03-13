@@ -326,6 +326,8 @@ spec:
 
 `README.md` and `NOTES.txt` are mandatory. `README.md` should contain a table listing all configuration options. `NOTES.txt` should provide accurate and useful information how the chart can be used/accessed.
 
+If you would like to use [helm-docs](https://github.com/norwoodj/helm-docs), it is included in the pre-commit file. Just make sure your chart is not in the `.helmdocsignore` file.
+
 ### CODEOWNERS
 
 Please create a github-style CODEOWNERS file in your chart folder and add your name to it.  This will ensure that you are asked to review PRs that involve your chart.

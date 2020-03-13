@@ -1,0 +1,17 @@
+server:
+  replicaCount: 1
+  service:
+    type: ClusterIP
+    port: 3310
+  resources:
+    requests:
+      cpu: 10m
+      memory: 10Mi
+scanner:
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  resources:
+    requests:
+      cpu: 10m
+      memory: 10Mi
