@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "clamav.fullname" . }}-scanner
+  labels:
+    {{- include "clamav.scanner.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "clamav.scanner.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "clamav.scanner.selectorLabels" . | nindent 8 }}
+    spec:
+    {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      serviceAccountName: {{ include "clamav.scanner.serviceAccountName" . }}
+      containers:
+      - name: {{ .Chart.Name }}-scanner
+        image: "{{ .Values.scanner.image.repository }}:{{ .Chart.AppVersion }}"
+        resources:
+          {{- toYaml .Values.scanner.resources | nindent 10 }}
+        env:
+          - name: CLAMAV_ROLE
+            value: scanner
+        volumeMounts:
+        - name: data-vol
+          mountPath: /data
+        - name: host-fs
+          mountPath: /host-fs
+          readOnly: true
+        - name: logs
+          mountPath: /logs
+        - name: conf
+          mountPath: /etc/clamav
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: data-vol
+        emptyDir: {}
+      - name: host-fs
+        hostPath:
+          path: /
+      - name: logs
+        hostPath:
+          path: /var/log/clamav
+      - name: conf
+        configMap:
+          name: {{ include "clamav.fullname" . }}-scanner
+    {{- with .Values.scanner.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

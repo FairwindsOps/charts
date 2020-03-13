@@ -27,7 +27,7 @@ setup_cluster () {
 }
 
 init_helm() {
-    if helm version --short --client; then
+    if helm version --short --client | grep v2 ; then
         echo "Helm 2 Detected"
         kubectl create ns tiller-system
         kubectl -n tiller-system create sa tiller
@@ -66,7 +66,7 @@ pre_test_script () {
 
 run_tests () {
     printf "Running e2e tests...\n"
-    ct install --config scripts/ct.yaml
+    ct install --config scripts/ct.yaml --debug --upgrade --helm-extra-args "--timeout 600s"
 }
 
 
