@@ -14,7 +14,7 @@ metadata:
     {{- end }}
 spec:
   ports:
-  - name: dashboard
+  - name: http-dashboard
     port: 80
     protocol: TCP
     targetPort: 8080
