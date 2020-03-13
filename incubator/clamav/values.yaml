@@ -1,0 +1,65 @@
+# imagePullSecrets -- A list of image pull secrets to use in both the server and scanner
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+server:
+  # server.replicaCount -- The number of replicas to run in the server deployment
+  replicaCount: 2
+  image:
+    # server.image.repository -- The image repository to use for the server deployment. Version will be the application version in Chart.yaml
+    repository: quay.io/fairwinds/clamav
+    # server.image.pullPolicy -- The imagePullPolicy for the server image
+    pullPolicy: Always
+
+  serviceAccount:
+    # server.serviceAccount.create -- Specifies whether a service account should be created
+    create: true
+    # server.serviceAccount.annotations -- Annotations to add to the service account
+    annotations: {}
+    # server.serviceAccount.name -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+    name:
+
+  podSecurityContext: {}
+  securityContext: {}
+  service:
+    # server.service.type -- The type of service to run for the deployment
+    type: ClusterIP
+    # server.service.port -- The port number to expose the service on
+    port: 3310
+  # server.resources -- The resources block for the server deployment pods
+  resources:
+    limits:
+      memory: 2Gi
+      cpu: 1000m
+    requests:
+      cpu: 1000m
+      memory: 2Gi
+  # server.nodeSelector -- A nodeSelector block for the server pods.
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+scanner:
+  # scanner.tolerations -- A list of tolerations for the scanner daemonset pods.
+  tolerations:
+    - key: node-role.kubernetes.io/master
+      effect: NoSchedule
+  # scanner.resources -- The resources block for the scanner daemonset pods
+  resources:
+    limits:
+      cpu: 100m
+      memory: 50Mi
+    requests:
+      cpu: 100m
+      memory: 50Mi
+  image:
+    repository: quay.io/fairwinds/clamav
+    pullPolicy: Always
+  serviceAccount:
+    # scanner.serviceAccount.create -- Specifies whether a service account should be created
+    create: true
+    # scanner.serviceAccount.annotations -- Annotations to add to the service account if it is created
+    annotations: {}
+    # scanner.serviceAccount.name -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+    name:

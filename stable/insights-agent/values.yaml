@@ -53,7 +53,7 @@ kubehunter:
   schedule: "rand * * * *"
   image:
     repository: aquasec/kube-hunter
-    tag: "501"
+    tag: "0.3.0"
   resources:
     limits:
       cpu: 100m
@@ -129,17 +129,17 @@ releasewatcher:
   resources:
     limits:
       cpu: 100m
-      memory: 128Mi
+      memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 25m
+      memory: 128Mi
 
 rbacreporter:
   enabled: true
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/rbac-reporter
-    tag: "v1.0.0"
+    tag: "1.0.0"
   resources:
     limits:
       cpu: 100m
@@ -187,7 +187,7 @@ trivy:
   timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.3"
+    tag: "0.4"
   resources:
     limits:
       cpu: 250m

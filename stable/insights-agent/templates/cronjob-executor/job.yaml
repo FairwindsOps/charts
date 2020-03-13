@@ -5,6 +5,7 @@ metadata:
   {{- include "metadata" "cronjob-executor" }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
   ttlSecondsAfterFinished: 30
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}

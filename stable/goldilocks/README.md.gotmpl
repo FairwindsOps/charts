@@ -1,0 +1,32 @@
+<div align="center">
+<a href="https://github.com/FairwindsOps/goldilocks"><img src="logo.svg" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
+<br>
+</div>
+
+## Intro
+
+This is a Helm chart for the Fairwinds [Goldilocks project](https://github.com/FairwindsOps/goldilocks). It provides an easy way to install the controller and the dashboard for viewing resource recommendations in your Kubernetes cluster. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks) for more information.
+
+## Requirements
+
+This has a hard requirement on VPA being installed. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks)
+
+## installVPA Flag
+
+VPA CRDs and the recommender can be installed using a pre-install hook if `installVPA` is set to true in the values. This also acts as a pre-upgrade hook that will update to the latest version of the VPA that is currently supported.
+
+NOTE: This *only* installs the necessary CRDs, RBAC, and the recommender. It does not include the other parts of VPA. If you are intending to install VPA for other reasons, we recommend you maintain the installation of the controller separate from this chart.
+
+## *WARNING* Upgrading to chart v2.0.0
+
+If using `installVPA=true` when updating from v1.x.x to v2.x.x of this chart, there are some considerations. v2.x.x of the chart started only installing the recommender and the necessary CRDs and RBAC from the VPA installation. This is due to the volatile and risky nature of running a beta mutatingadmissionwebhook in your cluster. If you have previously used the `installVPA=true` flag to install the VPA, we recommend that you completely uninstall and re-install the VPA as part of the upgrade. We have provided a new hook to do this that will run before the install hook.
+
+If upgrading from v1.x.x to v2.x.x we recommend upgrading like so:
+
+```
+helm upgrade goldilocks fairwinds-stable/goldilocks --set reinstallVPA=true
+```
+
+This will completely remove the VPA and then re-install it using the new method.
+
+{{ template "chart.valuesSection" . }}

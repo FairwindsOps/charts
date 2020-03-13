@@ -1,4 +1,11 @@
 {{- if .Values.workloads.enabled -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-workloads
+  labels:
+    app: insights-agent
+---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -12,6 +19,7 @@ rules:
     resources:
       - 'deployments'
       - 'statefulsets'
+      - 'replicasets'
       - 'daemonsets'
     verbs:
       - 'get'
@@ -47,6 +55,6 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-workloads
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}
+    name: {{ include "insights-agent.fullname" . }}-workloads
     namespace: {{ .Release.Namespace }}
 {{- end -}}

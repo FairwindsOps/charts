@@ -42,7 +42,7 @@ containers:
   - name: INTERVAL_HOURS
     value: {{ .Values.kubebench.hourInterval | quote }}
   resources:
-    {{- toYaml .Values.kubebench.resources | nindent 2 }}
+    {{- toYaml .Values.kubebench.resources | nindent 4 }}
   volumeMounts:
   - name: output
     mountPath: /output

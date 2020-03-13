@@ -65,11 +65,7 @@ spec:
         args:
           - -c
           - |
-            apk --update add git
-            git clone "https://github.com/kubernetes/autoscaler.git"
-            cd autoscaler/vertical-pod-autoscaler
-            git checkout {{ .Values.vpaVersion }}
-            kubectl apply -f deploy/recommender-deployment.yaml
-            kubectl apply -f deploy/vpa-beta2-crd.yaml
-            kubectl apply -f deploy/vpa-rbac.yaml
+            kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/{{ .Values.vpaVersion }}/vertical-pod-autoscaler/deploy/recommender-deployment.yaml
+            kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/{{ .Values.vpaVersion }}/vertical-pod-autoscaler/deploy/vpa-beta2-crd.yaml
+            kubectl apply -f https://raw.githubusercontent.com/kubernetes/autoscaler/{{ .Values.vpaVersion }}/vertical-pod-autoscaler/deploy/vpa-rbac.yaml
 {{- end }}

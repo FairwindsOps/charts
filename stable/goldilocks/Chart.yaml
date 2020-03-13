@@ -1,9 +1,10 @@
 apiVersion: v1
 appVersion: "v2.2.0"
-description: A Helm chart for running Fairwinds Goldilocks
+description: |
+  A Helm chart for running Fairwinds Goldilocks. See https://github.com/FairwindsOps/goldilocks
 name: goldilocks
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/goldilocks/icon.png
-version: 2.2.1
+version: 2.2.3
 maintainers:
   - name: sudermanjr
   - name: dosullivan
@@ -13,3 +14,4 @@ sources:
 keywords:
   - goldilocks
   - resources
+  - kubernetes

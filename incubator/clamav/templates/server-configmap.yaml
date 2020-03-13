@@ -1,0 +1,40 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name: {{ include "clamav.fullname" . }}-server
+  labels:
+    {{- include "clamav.server.labels" . | nindent 4 }}
+data:
+  clamd.conf: |
+    DatabaseDirectory /data
+    TemporaryDirectory /tmp
+    LogTime yes
+    LogFile /var/log/clamav.log
+    LogVerbose yes
+    LogClean yes
+    PidFile /run/clamd.pid
+    LocalSocket /tmp/clamd.sock
+    TCPSocket 3310
+    Foreground yes
+  freshclam.conf: |
+    ###############
+    # General
+    ###############
+
+    DatabaseDirectory /data
+    LogSyslog yes
+    LogVerbose yes
+    UpdateLogFile /var/log/freshclam.log
+    LogTime yes
+    PidFile /run/clamav/freshclam.pid
+    DatabaseOwner root
+
+    ###############
+    # Updates
+    ###############
+
+    DatabaseMirror database.clamav.net
+    ScriptedUpdates yes
+    NotifyClamd /etc/clamav/clamd.conf
+    SafeBrowsing yes
+    Bytecode yes
