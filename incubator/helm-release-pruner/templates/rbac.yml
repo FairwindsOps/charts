@@ -29,9 +29,9 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   {{- if .Values.job.serviceAccount.create }}
-  serviceAccountName: {{ include "helm-release-pruner.fullname" . }}
+  name: {{ include "helm-release-pruner.fullname" . }}
   {{- else }}
-  serviceAccountName: {{ .Values.job.serviceAccount.name }}
+  name: {{ .Values.job.serviceAccount.name }}
   {{- end }}
   namespace: {{ .Release.Namespace }}
 ---
@@ -50,9 +50,9 @@ rbacBindings:
     subjects:
       - kind: ServiceAccount
         {{- if .Values.job.serviceAccount.create }}
-        serviceAccountName: {{ include "helm-release-pruner.fullname" . }}
+        name: {{ include "helm-release-pruner.fullname" . }}
         {{- else }}
-        serviceAccountName: {{ .Values.job.serviceAccount.name }}
+        name: {{ .Values.job.serviceAccount.name }}
         {{- end }}
         namespace: {{ .Release.Namespace }}
     roleBindings:
@@ -93,7 +93,7 @@ subjects:
   {{- if .Values.job.serviceAccount.create }}
   name: {{ include "helm-release-pruner.fullname" . }}
   {{- else }}
-  serviceAccountName: {{ .Values.job.serviceAccount.name }}
+  name: {{ .Values.job.serviceAccount.name }}
   {{- end }}
   namespace: {{ .Release.Namespace }}
 {{ end }}
