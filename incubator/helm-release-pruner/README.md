@@ -32,7 +32,8 @@ The following table lists the configurable parameters of the helm-release-pruner
 | `job.dryRun` | Output purge candidates without taking any action. | `True` | no |
 | `job.restartPolicy` | Job restart policy. | `Never` | no |
 | `job.schedule` | Cron format schedule for job. | `0 */4 * * *` | no |
-| `job.serviceAccountName` | Service account for the job to run as. | `helm-release-pruner` | no |
+| `job.serviceAccount.create` | Create a service account for the job. | `true` | no |
+| `job.serviceAccount.name` | Service account for the job to run as. | `""` | no |
 | `pruneProfiles` | Filters to use to find purge candidates. See example usage above for details. | `[]` | yes |
 | `tiller.namespace` | Namespace where tiller resides. Used by job for helm commands. | `kube-system` | no |
 | `rbac_manager.enabled` | If true, creates an RbacDefinition to manage access. | `false` | no |
