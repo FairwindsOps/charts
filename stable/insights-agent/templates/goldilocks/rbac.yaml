@@ -1,4 +1,11 @@
 {{- if .Values.goldilocks.enabled -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-goldilocks
+  labels:
+    app: insights-agent
+---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -26,6 +33,6 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-goldilocks
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}
+    name: {{ include "insights-agent.fullname" . }}-goldilocks
     namespace: {{ .Release.Namespace }}
 {{- end -}}

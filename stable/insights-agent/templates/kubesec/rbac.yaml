@@ -1,4 +1,11 @@
 {{- if .Values.kubesec.enabled -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-kubesec
+  labels:
+    app: insights-agent
+---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -37,6 +44,6 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-kubesec
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}
+    name: {{ include "insights-agent.fullname" . }}-kubesec
     namespace: {{ .Release.Namespace }}
 {{- end -}}

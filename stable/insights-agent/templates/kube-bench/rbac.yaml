@@ -1,15 +1,15 @@
-{{- if .Values.polaris.enabled -}}
+{{- if .Values.kubebench.enabled -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-polaris
+  name: {{ include "insights-agent.fullname" . }}-kube-bench
   labels:
     app: insights-agent
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-polaris
+  name: {{ include "insights-agent.fullname" . }}-kube-bench
   labels:
     app: insights-agent
 rules:
@@ -17,27 +17,17 @@ rules:
       - 'apps'
       - 'extensions'
     resources:
+      - 'daemonsets'
       - 'deployments'
       - 'statefulsets'
-      - 'daemonsets'
-    verbs:
-      - 'get'
-      - 'list'
-  - apiGroups:
-      - 'batch'
-    resources:
-      - 'jobs'
-      - 'cronjobs'
     verbs:
       - 'get'
       - 'list'
   - apiGroups:
       - ''
     resources:
-      - 'nodes'
       - 'namespaces'
       - 'pods'
-      - 'replicationcontrollers'
     verbs:
       - 'get'
       - 'list'
@@ -45,15 +35,15 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-polaris
+  name: {{ include "insights-agent.fullname" . }}-kube-bench
   labels:
     app: insights-agent
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "insights-agent.fullname" . }}-polaris
+  name: {{ include "insights-agent.fullname" . }}-kube-bench
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-polaris
+    name: {{ include "insights-agent.fullname" . }}-kube-bench
     namespace: {{ .Release.Namespace }}
 {{- end -}}
