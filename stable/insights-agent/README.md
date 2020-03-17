@@ -48,6 +48,7 @@ Parameter | Description | Default
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
+`cronjobs.nodeSelector` | Node selector to use for cronjobs | null
 `{report}.enabled` | Enable the report type |
 `{report}.schedule` | Cron expression for running the report |
 `{report}.timeout` | Maximum time in seconds to wait for the report |
