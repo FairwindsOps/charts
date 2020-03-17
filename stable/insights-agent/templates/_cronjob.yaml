@@ -13,5 +13,9 @@ spec:
       backoffLimit: {{ .Values.cronjobs.backoffLimit }}
       template:
         spec:
+          {{- with .Values.cronjobs.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           {{- include .Template . | nindent 10 }}
 {{ end }}
