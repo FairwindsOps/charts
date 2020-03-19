@@ -2,7 +2,7 @@
 {{- $_ := set . "Label" "kube-bench" -}}
 {{- $_ := set . "Config" .Values.kubebench -}}
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}
+serviceAccountName: {{ include "insights-agent.fullname" . }}-kube-bench
 {{- if or (eq .Values.kubebench.mode "daemonsetMaster") (eq .Values.kubebench.mode "daemonset") }}
 volumes:
 - name: output

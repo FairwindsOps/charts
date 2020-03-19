@@ -1,6 +1,6 @@
 {{- define "trivy.job.spec" -}}
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}
+serviceAccountName: {{ include "insights-agent.fullname" . }}-trivy
 volumes:
 - name: output
   emptyDir: {}
