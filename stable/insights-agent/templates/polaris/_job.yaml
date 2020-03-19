@@ -1,6 +1,6 @@
 {{- define "polaris.job.spec" -}}
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}
+serviceAccountName: {{ include "insights-agent.fullname" . }}-polaris
 volumes:
 - name: output
   emptyDir: {}

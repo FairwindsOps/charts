@@ -1,6 +1,6 @@
 {{- define "goldilocks.job.spec" -}}
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}
+serviceAccountName: {{ include "insights-agent.fullname" . }}-goldilocks
 volumes:
 - name: output
   emptyDir: {}

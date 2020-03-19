@@ -1,6 +1,6 @@
 {{- define "releasewatcher.job.spec" -}}
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}
+serviceAccountName: {{ include "insights-agent.fullname" . }}-release-watcher
 volumes:
 - name: output
   emptyDir: {}

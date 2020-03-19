@@ -1,7 +1,7 @@
 {{- define "kubehunter.job.spec" -}}
 hostPID: true
 restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}
+serviceAccountName: {{ include "insights-agent.fullname" . }}-kube-hunter
 volumes:
 - name: output
   emptyDir: {}
