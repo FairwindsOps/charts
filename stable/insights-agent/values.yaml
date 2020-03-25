@@ -37,6 +37,7 @@ cronjobExecutor:
 polaris:
   enabled: true
   schedule: "rand * * * *"
+  timeout: 300
   image:
     repository: quay.io/fairwinds/polaris
     tag: "0.6"
@@ -51,6 +52,7 @@ polaris:
 kubehunter:
   enabled: true
   schedule: "rand * * * *"
+  timeout: 300
   image:
     repository: aquasec/kube-hunter
     tag: "0.3.0"
@@ -81,7 +83,7 @@ goldilocks:
   enabled: true
   installVPA: true
   schedule: "rand * * * *"
-  timeout: 120
+  timeout: 300
   image:
     repository: quay.io/fairwinds/goldilocks
     tag: "v2.2.0"
@@ -109,6 +111,7 @@ goldilocks:
 workloads:
   enabled: true
   schedule: "rand * * * *"
+  timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
     tag: "1.2"
@@ -123,6 +126,7 @@ workloads:
 releasewatcher:
   enabled: true
   schedule: "rand * * * *"
+  timeout: 300
   image:
     repository: quay.io/fairwinds/release-watcher
     tag: "v1.6.0"
@@ -137,6 +141,7 @@ releasewatcher:
 rbacreporter:
   enabled: true
   schedule: "rand * * * *"
+  timeout: 300
   image:
     repository: quay.io/fairwinds/rbac-reporter
     tag: "1.0.0"
@@ -153,7 +158,7 @@ kubebench:
   schedule: "rand * * * *"
   mode: "cronjob"
   hourInterval: 2
-  timeout: 240
+  timeout: 600
   image:
     repository: quay.io/fairwinds/fw-kube-bench
     tag: 0.1
