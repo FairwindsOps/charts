@@ -15,3 +15,7 @@ Parameter | Description | Default | Required
 `volumes.state.mountPath` | Place to mount the host dir for state. | `/var/aws-iam-authenticator/` | yes
 `volumes.state.hostPath` | Place on the host that the state lives. | `/srv/kubernetes/aws-iam-authenticator/` | yes
 `config.mountPath` | Where to mount the config | `/etc/aws-iam-authenticator/` | yes
+
+## Upgrading to v1.3.0+
+
+In this version, due to updates for Kubernetes 1.16+, the labelSelector for the pod-deployment relationship has changed. This means that the chart will have to be deleted and re-installed in order to accomadate this upgrade.
