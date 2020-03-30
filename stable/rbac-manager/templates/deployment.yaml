@@ -49,7 +49,6 @@ spec:
             path: /metrics
             port: 8080
         securityContext:
-          runAsUser: 1200
           allowPrivilegeEscalation: false
           privileged: false
           readOnlyRootFilesystem: true
