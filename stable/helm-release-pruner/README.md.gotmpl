@@ -26,6 +26,8 @@ pruneProfiles:
 
 This version is only compatible with Helm3. Update to this once you have upgraded helm.
 
+In addition, this version moves the image to the Fairwinds repository in Quay. See the values section for the new location.
+
 ### v1.0.0
 
 Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage access.  This is disabled by default.  If enabled with the `rbac_manager.enabled`, the release should be purged and re-installed to ensure helm manages the resources.
