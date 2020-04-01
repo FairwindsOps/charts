@@ -37,6 +37,7 @@ spec:
               name: config
               subPath: start-up.sh
             {{- if .Values.job.debug }}
+            env:
             - name: DEBUG
               value: "1"
             {{- end }}
