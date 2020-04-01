@@ -41,8 +41,11 @@ rules:
   - ""
   resources:
   - namespaces
+  - secrets
   verbs:
   - delete
+  - get
+  - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
