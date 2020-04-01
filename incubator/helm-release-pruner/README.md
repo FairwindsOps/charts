@@ -19,27 +19,37 @@ pruneProfiles:
     namespaceFilter: "^feature-.+"
 ```
 
-## Configuration
-
-The following table lists the configurable parameters of the helm-release-pruner chart and their default values.
-
-| Parameter | Description | Default | Required |
-| --------- | ----------- | ------- | -------- |
-| `image.pullPolicy` | Image pull policy | `IfNotPresent` | no |
-| `image.repository` | Repo for image that the job runs on. | `quay.io/reactiveops/ci-images` | no |
-| `image.tag` | Image tag. | `v8-alpine` | no |
-| `job.backoffLimit` | Job backoff limit. | `3` | no |
-| `job.dryRun` | Output purge candidates without taking any action. | `True` | no |
-| `job.restartPolicy` | Job restart policy. | `Never` | no |
-| `job.schedule` | Cron format schedule for job. | `0 */4 * * *` | no |
-| `job.serviceAccount.create` | Create a service account for the job. | `true` | no |
-| `job.serviceAccount.name` | Service account for the job to run as. | `""` | no |
-| `pruneProfiles` | Filters to use to find purge candidates. See example usage above for details. | `[]` | yes |
-| `tiller.namespace` | Namespace where tiller resides. Used by job for helm commands. | `kube-system` | no |
-| `rbac_manager.enabled` | If true, creates an RbacDefinition to manage access. | `false` | no |
-| `rbac_manager.namespaceLabel` | label to match namespaces to grant access to. | `""` | no |
-
-
 
 ## Upgrading
+
+### v3.0.0
+
+This version is only compatible with Helm3. Update to this once you have upgraded helm.
+
+### v1.0.0
+
 Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage access.  This is disabled by default.  If enabled with the `rbac_manager.enabled`, the release should be purged and re-installed to ensure helm manages the resources.
+
+## Chart Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| fullnameOverride | string | `""` | A template override for fullname |
+| image.pullPolicy | string | `"Always"` | The image pull policy. We do not recommend changing this |
+| image.repository | string | `"quay.io/reactiveops/helm-release-pruner"` | Repo for image that the job runs on |
+| image.tag | string | `"v3.0.0"` | The image tag to use |
+| job.backoffLimit | int | `3` | The backoff limit for the job |
+| job.debug | bool | `false` | If true, will enable debug logging |
+| job.dryRun | bool | `true` | If true, will only log candidates for removal and not remove them |
+| job.resources.limits.cpu | string | `"25m"` |  |
+| job.resources.limits.memory | string | `"32Mi"` |  |
+| job.resources.requests.cpu | string | `"25m"` |  |
+| job.resources.requests.memory | string | `"32M"` |  |
+| job.restartPolicy | string | `"Never"` |  |
+| job.schedule | string | `"0 */4 * * *"` | The schedule for the cronjob to run on |
+| job.serviceAccount.create | bool | `true` | If true, a service account will be created for the job to use |
+| job.serviceAccount.name | string | `"ExistingServiceAccountName"` | The name of a pre-existing service account to use if job.serviceAccount.create is false |
+| nameOverride | string | `""` | A template override for name |
+| pruneProfiles | list | `[]` | Filters to use to find purge candidates. See example usage above for details |
+| rbac_manager.enabled | bool | `false` | If true, creates an RbacDefinition to manage access |
+| rbac_manager.namespaceLabel | string | `""` | Label to match namespaces to grant access to |

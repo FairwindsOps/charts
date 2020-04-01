@@ -36,9 +36,6 @@ spec:
             - mountPath: /usr/local/bin/start-up.sh
               name: config
               subPath: start-up.sh
-            env:
-            - name: TILLER_NAMESPACE
-              value: {{ .Values.tiller.namespace | default "kube-system" }}
             {{- if .Values.job.debug }}
             - name: DEBUG
               value: "1"
