@@ -25,13 +25,13 @@ rbacBindings:
           matchLabels:
             environment: {{ .Values.rbac_manager.namespaceLabel }}
 {{- else }}
-{{-   if not .Values.job.serviceAccount.create }}
+{{- if .Values.job.serviceAccount.create }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ template "helm-release-pruner.fullname" . }}
 ---
-{{-   end }}
+{{- end }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
