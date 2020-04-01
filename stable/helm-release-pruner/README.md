@@ -39,7 +39,7 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | fullnameOverride | string | `""` | A template override for fullname |
 | image.pullPolicy | string | `"Always"` | The image pull policy. We do not recommend changing this |
 | image.repository | string | `"quay.io/fairwinds/helm-release-pruner"` | Repo for image that the job runs on |
-| image.tag | string | `"v3.0.0"` | The image tag to use |
+| image.tag | string | `"sudermanjr_helm-3"` | The image tag to use |
 | job.backoffLimit | int | `3` | The backoff limit for the job |
 | job.debug | bool | `false` | If true, will enable debug logging |
 | job.dryRun | bool | `true` | If true, will only log candidates for removal and not remove them |
