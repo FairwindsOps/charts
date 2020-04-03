@@ -1,0 +1,35 @@
+# Helm Release Pruner Chart
+
+{{ template "chart.description" . }}
+
+One use-case for this chart is purging ephemeral release releases after a period of inactivity.
+
+## Example usage values file
+
+The following values will purge all releases matching `^feature-.+-web$` in namespace matching `^feature-.+` older than 7 days. `job.dryRun` can be toggled to output matches without deleting anything.
+
+```
+job:
+  schedule: "0 */4 * * *"
+  dryRun: False
+
+pruneProfiles:
+  - olderThan: "7 days ago"
+    helmReleaseFilter: "^feature-.+-web$"
+    namespaceFilter: "^feature-.+"
+```
+
+
+## Upgrading
+
+### v3.0.0
+
+This version is only compatible with Helm3. Update to this once you have upgraded helm.
+
+In addition, this version moves the image to the Fairwinds repository in Quay. See the values section for the new location.
+
+### v1.0.0
+
+Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage access.  This is disabled by default.  If enabled with the `rbac_manager.enabled`, the release should be purged and re-installed to ensure helm manages the resources.
+
+{{ template "chart.valuesSection" . }}

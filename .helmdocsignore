@@ -17,7 +17,6 @@ incubator/autospotting
 stable/astro
 incubator/load-generator
 incubator/fluentd
-incubator/helm-release-pruner
 stable/ecr-cleanup
 stable/aws-iam-authenticator
 stable/rbac-manager

@@ -7,7 +7,6 @@
 /incubator/fairwinds-metrics/ @sudermanjr
 /incubator/fluentd/ @dosullivan @bbensky
 /incubator/gke-node-termination-handler/ @bbensky @hopson
-/incubator/helm-release-pruner/ @bbensky @rbren
 /incubator/imagepullsecret-deploy/ @crmejia
 /incubator/load-generator/ @sudermanjr
 /incubator/node-problem-detector/ @crmejia
@@ -22,3 +21,4 @@
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
 /stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
+/stable/helm-release-pruner @bbensky @rbren

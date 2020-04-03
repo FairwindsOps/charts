@@ -1,39 +1,3 @@
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: Role
-metadata:
-  name: {{ template "helm-release-pruner.fullname" . }}-tiller
-  namespace: {{ .Values.tiller.namespace }}
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - pods/portforward
-  verbs:
-  - create
-- apiGroups:
-  - ""
-  resources:
-  - pods
-  verbs:
-  - list
----
-apiVersion: rbac.authorization.k8s.io/v1beta1
-kind: RoleBinding
-metadata:
-  name: {{ template "helm-release-pruner.fullname" . }}-tiller
-  namespace: {{ .Values.tiller.namespace }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: {{ template "helm-release-pruner.fullname" . }}-tiller
-subjects:
-- kind: ServiceAccount
-  {{- if .Values.job.serviceAccount.create }}
-  name: {{ include "helm-release-pruner.fullname" . }}
-  {{- else }}
-  name: {{ .Values.job.serviceAccount.name }}
-  {{- end }}
-  namespace: {{ .Release.Namespace }}
 ---
 {{- if .Values.rbac_manager.enabled }}
 apiVersion: rbacmanager.reactiveops.io/v1beta1
@@ -61,13 +25,13 @@ rbacBindings:
           matchLabels:
             environment: {{ .Values.rbac_manager.namespaceLabel }}
 {{- else }}
-{{-   if not .Values.job.serviceAccount.create }}
+{{- if .Values.job.serviceAccount.create }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ template "helm-release-pruner.fullname" . }}
 ---
-{{-   end }}
+{{- end }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -77,8 +41,11 @@ rules:
   - ""
   resources:
   - namespaces
+  - secrets
   verbs:
   - delete
+  - get
+  - list
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
