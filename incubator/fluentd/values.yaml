@@ -33,6 +33,7 @@ papertrail:
   host: logs3.papertrailapp.com
   port: 12785
   flush_thread_count: 4
+  chunk_limit_size: 256MB
 
 
 #####################
