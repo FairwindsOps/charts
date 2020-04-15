@@ -192,7 +192,7 @@ trivy:
   timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.4"
+    tag: "0.5"
   resources:
     limits:
       cpu: 250m
