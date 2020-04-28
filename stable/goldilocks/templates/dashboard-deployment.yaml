@@ -1,4 +1,4 @@
-{{- if .Values.dashboard.enabled }}
+{{- if (eq .Values.dashboard.enabled true) }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
