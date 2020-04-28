@@ -1,5 +1,4 @@
-{{- if .Values.dashboard.enabled }}
-{{- if .Values.dashboard.ingress.enabled -}}
+{{- if and .Values.dashboard.enabled .Values.dashboard.ingress.enabled }}
 {{- $fullName := include "goldilocks.fullname" . -}}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
@@ -38,5 +37,4 @@ spec:
               servicePort: http
         {{- end }}
   {{- end }}
-{{- end }}
 {{- end }}
