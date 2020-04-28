@@ -1,4 +1,4 @@
-{{- if and (eq .Values.controller.rbac.create true) (eq .Values.controller.enabled true) }}
+{{- if and .Values.controller.rbac.create .Values.controller.enabled }}
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:

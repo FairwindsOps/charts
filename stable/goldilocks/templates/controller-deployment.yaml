@@ -1,4 +1,4 @@
-{{- if (eq .Values.controller.enabled true) }}
+{{- if .Values.controller.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
