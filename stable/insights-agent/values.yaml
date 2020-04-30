@@ -3,6 +3,7 @@ insights:
   organization: ""
   cluster: ""
   base64token: ""
+  tokenSecretName: ""
 
 uploader:
   image:
@@ -20,6 +21,7 @@ cronjobs:
   backoffLimit: 1
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 2
+  nodeSelector: null
   runJobsImmediately: true
 
 cronjobExecutor:

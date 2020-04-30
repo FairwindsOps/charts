@@ -32,6 +32,7 @@ There are several different report types which can be enabled and configured:
 * `kubesec`
 * `releasewatcher`
 * `rbacreporter`
+* `kubebench`
 
 See below for configuration details.
 
@@ -45,12 +46,14 @@ Parameter | Description | Default
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.1
+`uploader.resources` | CPU/memory requests and limits for the uploader script |
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
 `cronjobs.nodeSelector` | Node selector to use for cronjobs | null
+`cronjobs.runJobsImmediately` | Run each of the reports immediately upon install of the Insights Agent | true
 `{report}.enabled` | Enable the report type |
-`{report}.schedule` | Cron expression for running the report |
+`{report}.schedule` | Cron expression for running the report | `rand * * * *`
 `{report}.timeout` | Maximum time in seconds to wait for the report |
 `{report}.resources` | CPU/memory requests and limits for the report |
 `{report}.image.repository` | Repository to use for the report image |
@@ -59,6 +62,11 @@ Parameter | Description | Default
 `kubebench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
 `kubebench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
-`trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 5
+`trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
+`trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
-`goldilocks.controller.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
+`goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
+`goldilocks.installVPA` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
+`goldilocks.controller.flags.on-by-default` | Goldilocks controller is enabled by default |
+`goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
+`goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
