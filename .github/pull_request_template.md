@@ -1,15 +1,15 @@
-## Why This PR?
+**Why This PR?**
 _a short description of why this PR is needed_
 
 Fixes #
 
-## Changes
+**Changes**
 Changes proposed in this pull request:
 
 *
 *
 
-## Checklist:
+**Checklist:**
 
 * [ ] I have updated the chart version in `Chart.yaml` following Semantic Versioning.
 * [ ] Any new values are backwards compatible and/or have sensible default.
