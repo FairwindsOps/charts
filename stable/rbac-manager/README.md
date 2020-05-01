@@ -30,6 +30,7 @@ Kubernetes 1.8+, Helm 2.10+
 | `image.repository`          | Docker image repo                           | `quay.io/reactiveops/rbac-manager` |
 | `image.tag`                 | Docker image tag                            | `0.7.0`                            |
 | `image.pullPolicy`          | Docker image pull policy                    | `Always`                           |
+| `image.imagePullSecrets`    | Docker registry credentials                 | `[]`                               |
 | `resources.requests.cpu`    | CPU resource request                        | `100m`                             |
 | `resources.requests.memory` | Memory resource request                     | `128Mi`                            |
 | `resources.limits.cpu`      | CPU resource limit                          | `100m`                             |
