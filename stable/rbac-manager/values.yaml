@@ -2,6 +2,7 @@ image:
   repository: quay.io/reactiveops/rbac-manager
   tag: v0.9.3
   pullPolicy: Always
+  imagePullSecrets: []
 
 resources:
   requests:
