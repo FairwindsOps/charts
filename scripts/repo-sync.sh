@@ -46,7 +46,6 @@ setup_helm_client() {
 
     PATH="$(pwd)/linux-amd64/:$PATH"
 
-    helm init --client-only
     helm repo add reactiveops-stable "$STABLE_REPO_URL"
     helm repo add reactiveops-incubator "$INCUBATOR_REPO_URL"
     helm repo add jetstack "$JETSTACK_REPO_URL"
