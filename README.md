@@ -2,7 +2,7 @@
 
 A repository of Helm charts. Modelled after https://github.com/helm/charts
 
-**Want to learn more?** Reach out on [the Slack channel](https://fairwindscommunity.slack.com) ([request invite](https://join.slack.com/t/fairwindscommunity/shared_invite/zt-cxss92z7-YjfnJwpUwlviViBFjYV2gg)), send an email to `opensource@fairwinds.com`, or join us for [office hours on Zoom](https://fairwindscommunity.slack.com/messages/office-hours)
+**Want to learn more?** Reach out on [the Slack channel](https://fairwindscommunity.slack.com) ([request invite](https://join.slack.com/t/fairwindscommunity/shared_invite/zt-e3c6vj4l-3lIH6dvKqzWII5fSSFDi1g)), send an email to `opensource@fairwinds.com`, or join us for [office hours on Zoom](https://fairwindscommunity.slack.com/messages/office-hours)
 
 ## Testing
 
