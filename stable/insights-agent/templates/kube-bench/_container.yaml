@@ -71,4 +71,4 @@ containers:
     readOnlyRootFilesystem: true
     runAsNonRoot: true
     runAsUser: 10324
-  {{- end -}}
+{{- end -}}
