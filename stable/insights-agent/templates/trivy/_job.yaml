@@ -58,6 +58,8 @@ containers:
     privileged: false
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 10324
     capabilities:
       drop:
         - ALL

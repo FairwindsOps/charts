@@ -25,6 +25,15 @@ containers:
   volumeMounts:
   - name: output
     mountPath: /output
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
 {{- $_ := set . "Label" "kube-hunter" }}
 {{- $_ := set . "Config" .Values.kubehunter }}
 {{- include "uploaderContainer" . }}

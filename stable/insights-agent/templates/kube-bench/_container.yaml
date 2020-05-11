@@ -69,4 +69,6 @@ containers:
       - ALL
     privileged: false
     readOnlyRootFilesystem: true
-{{- end -}}
+    runAsNonRoot: true
+    runAsUser: 10324
+  {{- end -}}
