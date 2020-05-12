@@ -5,6 +5,8 @@ serviceAccountName: {{ include "insights-agent.fullname" . }}-kube-hunter
 volumes:
 - name: output
   emptyDir: {}
+- name: tmp
+  emptyDir: {}
 containers:
 - name: kube-hunter
   image: "{{ .Values.kubehunter.image.repository }}:{{ .Values.kubehunter.image.tag }}"
@@ -25,12 +27,13 @@ containers:
   volumeMounts:
   - name: output
     mountPath: /output
+  - name: tmp
+    mountPath: /tmp
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
     privileged: false
     runAsNonRoot: true
-    runAsUser: 10324
     capabilities:
       drop:
         - ALL

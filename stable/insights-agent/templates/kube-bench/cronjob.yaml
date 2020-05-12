@@ -27,7 +27,6 @@ containers:
     privileged: false
     readOnlyRootFilesystem: true
     runAsNonRoot: true
-    runAsUser: 10324
 {{- else }}
 {{- include "kubebench.container.spec" . | nindent 0}}
 {{- end }}

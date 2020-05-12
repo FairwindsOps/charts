@@ -20,7 +20,6 @@ containers:
     allowPrivilegeEscalation: false
     privileged: false
     runAsNonRoot: true
-    runAsUser: 10324
     capabilities:
       drop:
         - ALL
