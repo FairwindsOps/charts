@@ -131,7 +131,7 @@ releasewatcher:
   timeout: 300
   image:
     repository: quay.io/fairwinds/release-watcher
-    tag: "v1.7.4"
+    tag: "v1.7"
   resources:
     limits:
       cpu: 100m
