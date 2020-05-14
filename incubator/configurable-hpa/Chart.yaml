@@ -1,0 +1,7 @@
+apiVersion: v1
+appVersion: "0.0.1"
+description: A chart to install configurable HPA
+name: configurable-hpa
+version: 0.1.0
+maintainers:
+    - name: crmejia

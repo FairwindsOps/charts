@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ template "configurable-hpa.name" . }}
+  labels:
+    app: {{ template "configurable-hpa.name" . }}
+    chart: {{ template "configurable-hpa.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ template "configurable-hpa.name" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ template "configurable-hpa.name" . }}
+        release: {{ .Release.Name }}
+    spec:
+      serviceAccountName: kube-system-configurable-hpa-controller
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.name }}:{{ .Values.image.tag }}"
+          imagePullPolicy: IfNotPresent
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
