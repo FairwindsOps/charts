@@ -55,6 +55,7 @@ kubehunter:
   enabled: true
   schedule: "rand * * * *"
   timeout: 300
+  logLevel: INFO
   image:
     repository: aquasec/kube-hunter
     tag: "0.3.0"
