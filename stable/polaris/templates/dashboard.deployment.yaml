@@ -23,22 +23,26 @@ spec:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: dashboard
     spec:
+      {{- with .Values.config }}
       volumes:
       - name: config
         configMap:
           name: {{ include "polaris.fullname" . }}
+      {{- end }}
       containers:
       - command:
         - polaris
         - --dashboard
+        {{- with .Values.config }}
         - --config
         - /opt/app/config.yaml
+        {{- end }}
         {{- with .Values.dashboard.basePath }}
         - --dashboard-base-path
         - {{ . }}
         {{- end }}
-        image: '{{.Values.dashboard.image.repository}}:{{.Values.dashboard.image.tag}}'
-        imagePullPolicy: '{{.Values.dashboard.image.pullPolicy}}'
+        image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+        imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
         ports:
         - containerPort: 8080
@@ -69,11 +73,13 @@ spec:
           capabilities:
             drop:
               - ALL
+        {{- with .Values.config }}
         volumeMounts:
         - name: config
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
           readOnly: true
+        {{- end }}
       serviceAccountName: {{ include "polaris.fullname" . }}-dashboard
       nodeSelector:
       {{- with .Values.dashboard.nodeSelector }}

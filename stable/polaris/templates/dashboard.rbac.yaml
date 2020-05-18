@@ -8,9 +8,9 @@ metadata:
   {{- end }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
-{{- if .Values.dashboard.image.imagePullSecrets }}
+{{- if .Values.image.pullSecrets }}
 imagePullSecrets:
-{{- range .Values.dashboard.image.imagePullSecrets }}
+{{- range .Values.image.pullSecrets }}
   - name: {{ . }}
 {{- end }}
 {{- end }}

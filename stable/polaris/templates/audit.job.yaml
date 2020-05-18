@@ -2,8 +2,10 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
+  {{- with .Values.config }}
   annotations:
     checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+  {{- end }}
   name: {{ include "polaris.fullname" . }}
   {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
@@ -24,10 +26,12 @@ spec:
         - {{ required "Must set audit.outputURL in values if you enable the audit job." .Values.audit.outputURL }}
         - --output-file
         - /tmp/results/done
+        {{- with .Values.config }}
         - --config
         - /opt/app/config.yaml
-        image: '{{.Values.audit.image.repository}}:{{.Values.audit.image.tag}}'
-        imagePullPolicy: '{{.Values.audit.image.pullPolicy}}'
+        {{- end }}
+        image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+        imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: audit
         resources:
           limits:
@@ -45,10 +49,12 @@ spec:
             drop:
               - ALL
         volumeMounts:
+        {{- with .Values.config }}
         - name: config
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
           readOnly: true
+        {{- end }}
         - name: results
           mountPath: /tmp/results
       {{- if .Values.audit.cleanup }}
@@ -65,8 +71,10 @@ spec:
           mountPath: /tmp/results
       {{- end }}
       volumes:
+      {{- with .Values.config }}
       - name: config
         configMap:
           name: {{ include "polaris.fullname" . }}
+      {{- end }}
       - name: results
 {{- end -}}

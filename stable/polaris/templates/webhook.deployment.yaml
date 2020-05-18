@@ -18,7 +18,9 @@ spec:
   template:
     metadata:
       annotations:
+        {{- with .Values.config }}
         checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+        {{- end }}
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: webhook
@@ -28,10 +30,12 @@ spec:
           command:
             - polaris
             - --webhook
+            {{- with .Values.config }}
             - --config
             - /opt/app/config.yaml
-          image: '{{.Values.webhook.image.repository}}:{{.Values.webhook.image.tag}}'
-          imagePullPolicy: '{{.Values.webhook.image.pullPolicy}}'
+            {{- end }}
+          image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+          imagePullPolicy: '{{.Values.image.pullPolicy}}'
           ports:
             - containerPort: 9876
           # These are fairly useless readiness/liveness probes for now
@@ -69,10 +73,12 @@ spec:
               drop:
                 - ALL
           volumeMounts:
+            {{- with .Values.config }}
             - name: config
               mountPath: /opt/app/config.yaml
               subPath: config.yaml
               readOnly: true
+            {{- end }}
             - name: secret
               mountPath: /opt/cert/
               readOnly: true
@@ -89,9 +95,11 @@ spec:
 {{ toYaml . | indent 6 }}
       {{- end }}
       volumes:
+        {{- with .Values.config }}
         - name: config
           configMap:
             name: {{ include "polaris.fullname" . }}
+        {{- end }}
         - name: secret
           secret:
             secretName: polaris-webhook
