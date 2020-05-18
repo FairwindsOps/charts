@@ -2,7 +2,10 @@ image:
   tag: latest
   name: quay.io/reactiveops/configurable-hpa
 
-resources: 
-  cpu: "100m"
-  mem: "128Mi"
-
+resources:
+  requests:
+    memory: 100Mi
+    cpu: 10m
+  limits:
+    memory: 100Mi
+    cpu: 10m
