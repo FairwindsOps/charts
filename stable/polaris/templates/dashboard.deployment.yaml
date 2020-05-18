@@ -32,13 +32,13 @@ spec:
       containers:
       - command:
         - polaris
-        - --dashboard
+        - dashboard
         {{- with .Values.config }}
         - --config
         - /opt/app/config.yaml
         {{- end }}
         {{- with .Values.dashboard.basePath }}
-        - --dashboard-base-path
+        - --base-path
         - {{ . }}
         {{- end }}
         image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
