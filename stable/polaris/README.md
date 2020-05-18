@@ -30,7 +30,6 @@ Parameter | Description | Default
 `image.tag` | Image tag | 1.0
 `image.pullPolicy` | Image pull policy | Always
 `image.pullSecrets` | Image pull secrets | []
-`rbac.create` | Whether to create RBAC | true
 `templateOnly` | | false
 `dashboard.enable` | Whether to run the dashboard | true
 `dashboard.replicas` | Number of replicas | 1
