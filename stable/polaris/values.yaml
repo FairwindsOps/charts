@@ -33,4 +33,3 @@ audit:
   enable: false
   cleanup: false
   outputURL: ""
-
