@@ -1,13 +1,14 @@
-{{- if .Values.config }}
+{{- with .Values.config }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "polaris.fullname" . }}
-  {{- if .Values.templateOnly }}
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "polaris.fullname" $ }}
+  {{- if $.Values.templateOnly }}
+  namespace: {{ $.Release.Namespace }}
   {{- end }}
   labels:
-    {{- include "polaris.labels" . | nindent 4 }}
+    {{- include "polaris.labels" $ | nindent 4 }}
 data:
-  config.yaml: {{- toYaml .Values.config | indent 2 -}}
+  config.yaml: |
+    {{- toYaml . | nindent 4 }}
 {{- end }}

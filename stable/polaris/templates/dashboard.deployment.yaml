@@ -17,8 +17,10 @@ spec:
       component: dashboard
   template:
     metadata:
+      {{- with .Values.config }}
       annotations:
-        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}'
+      {{- end }}
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: dashboard
@@ -27,7 +29,7 @@ spec:
       volumes:
       - name: config
         configMap:
-          name: {{ include "polaris.fullname" . }}
+          name: {{ include "polaris.fullname" $ }}
       {{- end }}
       containers:
       - command:

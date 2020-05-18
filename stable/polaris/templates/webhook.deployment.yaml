@@ -17,10 +17,11 @@ spec:
       component: webhook
   template:
     metadata:
+      {{- with .Values.config }}
       annotations:
-        {{- with .Values.config }}
-        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
-        {{- end }}
+        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}'
+      {{- end }}
+      labels:
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: webhook
@@ -98,7 +99,7 @@ spec:
         {{- with .Values.config }}
         - name: config
           configMap:
-            name: {{ include "polaris.fullname" . }}
+            name: {{ include "polaris.fullname" $ }}
         {{- end }}
         - name: secret
           secret:
