@@ -85,7 +85,7 @@ spec:
             - name: cr-logs
               mountPath: /tmp/
               readOnly: false
-      serviceAccountName:  {{ include "polaris.fullname" . }}-webhook
+      serviceAccountName:  {{ include "polaris.fullname" . }}
       nodeSelector:
       {{- with .Values.webhook.nodeSelector }}
 {{ toYaml . | indent 8 }}

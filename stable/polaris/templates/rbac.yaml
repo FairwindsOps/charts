@@ -1,8 +1,7 @@
-{{- if and .Values.dashboard.enable .Values.rbac.create -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "polaris.fullname" . }}-dashboard
+  name: {{ include "polaris.fullname" . }}
   {{- if .Values.templateOnly }}
   namespace: {{ .Release.Namespace }}
   {{- end }}
@@ -16,37 +15,33 @@ imagePullSecrets:
 {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "polaris.fullname" . }}-view
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "polaris.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
-  name: {{ include "polaris.fullname" . }}-dashboard
+  name: {{ include "polaris.fullname" . }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
 rules:
-  - apiGroups:
-      - 'apps'
-      - 'extensions'
-    resources:
-      - 'deployments'
-      - 'statefulsets'
-      - 'daemonsets'
-    verbs:
-      - 'get'
-      - 'list'
-  - apiGroups:
-      - 'batch'
-    resources:
-      - 'jobs'
-      - 'cronjobs'
-    verbs:
-      - 'get'
-      - 'list'
+  # required by controller-runtime code doing a cluster wide lookup
+  # when it seems namespace would suffice
   - apiGroups:
       - ''
     resources:
       - 'nodes'
-      - 'namespaces'
-      - 'pods'
-      - 'replicationcontrollers'
     verbs:
       - 'get'
       - 'list'
@@ -54,15 +49,14 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "polaris.fullname" . }}-dashboard
+  name: {{ include "polaris.fullname" . }}
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "polaris.fullname" . }}-dashboard
+  name: {{ include "polaris.fullname" . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ include "polaris.fullname" . }}-dashboard
+    name: {{ include "polaris.fullname" . }}
     namespace: {{ .Release.Namespace }}
-{{- end -}}

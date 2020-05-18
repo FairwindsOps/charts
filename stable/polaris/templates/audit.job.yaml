@@ -16,7 +16,7 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: {{ include "polaris.fullname" . }}-audit
+      serviceAccountName: {{ include "polaris.fullname" . }}
       restartPolicy: Never
       containers:
       - command:

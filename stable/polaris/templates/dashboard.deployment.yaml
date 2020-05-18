@@ -80,7 +80,7 @@ spec:
           subPath: config.yaml
           readOnly: true
         {{- end }}
-      serviceAccountName: {{ include "polaris.fullname" . }}-dashboard
+      serviceAccountName: {{ include "polaris.fullname" . }}
       nodeSelector:
       {{- with .Values.dashboard.nodeSelector }}
 {{ toYaml . | indent 8 }}

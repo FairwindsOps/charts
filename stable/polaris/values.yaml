@@ -4,9 +4,6 @@ image:
   pullPolicy: Always
   pullSecrets: []
 
-rbac:
-  create: true
-
 templateOnly: false
 
 dashboard:
