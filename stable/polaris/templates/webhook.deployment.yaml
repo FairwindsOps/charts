@@ -22,7 +22,6 @@ spec:
         checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}'
       {{- end }}
       labels:
-      labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: webhook
     spec:
