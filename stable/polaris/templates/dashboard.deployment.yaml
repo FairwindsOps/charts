@@ -17,28 +17,34 @@ spec:
       component: dashboard
   template:
     metadata:
+      {{- with .Values.config }}
       annotations:
-        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}'
+      {{- end }}
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: dashboard
     spec:
+      {{- with .Values.config }}
       volumes:
       - name: config
         configMap:
-          name: {{ include "polaris.fullname" . }}
+          name: {{ include "polaris.fullname" $ }}
+      {{- end }}
       containers:
       - command:
         - polaris
-        - --dashboard
+        - dashboard
+        {{- with .Values.config }}
         - --config
         - /opt/app/config.yaml
+        {{- end }}
         {{- with .Values.dashboard.basePath }}
-        - --dashboard-base-path
+        - --base-path
         - {{ . }}
         {{- end }}
-        image: '{{.Values.dashboard.image.repository}}:{{.Values.dashboard.image.tag}}'
-        imagePullPolicy: '{{.Values.dashboard.image.pullPolicy}}'
+        image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+        imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
         ports:
         - containerPort: 8080
@@ -69,12 +75,14 @@ spec:
           capabilities:
             drop:
               - ALL
+        {{- with .Values.config }}
         volumeMounts:
         - name: config
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
           readOnly: true
-      serviceAccountName: {{ include "polaris.fullname" . }}-dashboard
+        {{- end }}
+      serviceAccountName: {{ include "polaris.fullname" . }}
       nodeSelector:
       {{- with .Values.dashboard.nodeSelector }}
 {{ toYaml . | indent 8 }}
