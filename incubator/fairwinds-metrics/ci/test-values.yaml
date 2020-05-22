@@ -1,5 +1,4 @@
-listener:
-  enabled: true
-  port: 2113
-  username: "test-ci"
-  password: "test-ci"
+controller:
+  enabledMetrics: "epoch_time,terminating_pods"
+  logVerbosity: 10
+  interval: 2
