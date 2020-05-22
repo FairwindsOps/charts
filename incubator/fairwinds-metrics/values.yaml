@@ -6,7 +6,7 @@ image:
   # image.repository -- The repository to pull the image from
   repository: quay.io/fairwinds/custom-metrics
   # image.tag -- The image tag to use
-  tag: v0.6.0
+  tag: 2afe3bde6404002dca156aa97de4fe5bbc09c088
   # image.pullPolicy -- The pullPolicy for the container. Recommend not changing this
   pullPolicy: Always
 

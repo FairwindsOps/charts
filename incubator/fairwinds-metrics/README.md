@@ -27,5 +27,5 @@ Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprec
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` | The pullPolicy for the container. Recommend not changing this |
 | image.repository | string | `"quay.io/fairwinds/custom-metrics"` | The repository to pull the image from |
-| image.tag | string | `"v0.6.0"` | The image tag to use |
+| image.tag | string | `"2afe3bde6404002dca156aa97de4fe5bbc09c088"` | The image tag to use |
 | nameOverride | string | `""` | A template override for name |
