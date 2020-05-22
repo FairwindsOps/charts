@@ -28,8 +28,16 @@ controller:
   datadogAnnotations:
     # controller.datadogAnnotations.enabled -- If true, annotations will be added to the pod which will enable datadog scraping of the endpoint
     enabled: true
+
   # controller.logVerbosity -- The klog verbosity to use for the controller pod
   logVerbosity: "2"
+
+  # controller.enabledMetrics -- The list of metrics to run. If blank, defaults to all available.
+  enabledMetrics: ""
+
+  # controller.interval -- The interval to run the controller loop on.
+  interval: 60
+
   nodeSelector: {}
   tolerations: []
   affinity: {}

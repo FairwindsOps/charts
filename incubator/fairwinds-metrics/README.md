@@ -12,6 +12,8 @@ Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprec
 |-----|------|---------|-------------|
 | controller.affinity | object | `{}` |  |
 | controller.datadogAnnotations.enabled | bool | `true` | If true, annotations will be added to the pod which will enable datadog scraping of the endpoint |
+| controller.enabledMetrics | string | `""` | The list of metrics to run. If blank, defaults to all available. |
+| controller.interval | int | `60` | The interval to run the controller loop on. |
 | controller.logVerbosity | string | `"2"` | The klog verbosity to use for the controller pod |
 | controller.nodeSelector | object | `{}` |  |
 | controller.rbac.create | bool | `true` | If true, rbac resources will be created |

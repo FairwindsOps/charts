@@ -52,8 +52,12 @@ spec:
             - controller
           args:
             - -v{{ .Values.controller.logVerbosity }}
-            - metrics
+            {{- if .Values.controller.enabledMetrics }}
+            - --metrics
             - {{ .Values.controller.enabledMetrics }}
+            {{- end }}
+            - --interval
+            - {{ .Values.controller.interval }}
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
