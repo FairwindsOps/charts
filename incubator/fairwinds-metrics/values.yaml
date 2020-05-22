@@ -3,27 +3,37 @@
 # Declare variables to be passed into your templates.
 
 image:
+  # image.repository -- The repository to pull the image from
   repository: quay.io/fairwinds/custom-metrics
-  tag: v0.5.0
+  # image.tag -- The image tag to use
+  tag: v0.6.0
+  # image.pullPolicy -- The pullPolicy for the container. Recommend not changing this
   pullPolicy: Always
 
+# nameOverride -- A template override for name
 nameOverride: ""
+# fullNameOverride -- A template override for fullname
 fullnameOverride: ""
 
 controller:
-  enabled: true
   rbac:
+    # controller.rbac.create -- If true, rbac resources will be created
     create: true
   serviceAccount:
+    # controller.serviceAccount.create -- If true, a service acount will be created
     create: true
-    # name: ExistingServiceAccountName
+    # controller.serviceAccount.name -- If controller.serviceAccount.create is false, you must set this to an existing serviceAccountName
+    name: ""
 
   datadogAnnotations:
+    # controller.datadogAnnotations.enabled -- If true, annotations will be added to the pod which will enable datadog scraping of the endpoint
     enabled: true
+  # controller.logVerbosity -- The klog verbosity to use for the controller pod
   logVerbosity: "2"
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # controller.resources -- A resources block for the controller pod
   resources:
     limits:
       cpu: 25m
@@ -33,33 +43,9 @@ controller:
       memory: 32Mi
 
   service:
+    # controller.service.enabled -- If true, a service will be created connected to the metrics port
     enabled: true
+    # controller.service.type -- The type of service to create
     type: ClusterIP
-    port: 10042
-
-listener:
-  enabled: false
-  port: 2113
-  username: ""
-  password: ""
-  maxJobAge: 10
-  secret:
-    create: true
-    # name: ExistingSecretName
-  ingress:
-    enabled: false
-    annotations: {}
-      # kubernetes.io/ingress.class: nginx
-      # kubernetes.io/tls-acme: "true"
-    hosts:
-      - host: chart-example.local
-        paths:
-          - /
-
-    tls: []
-    #  - secretName: chart-example-tls
-    #    hosts:
-    #      - chart-example.local
-  service:
-    type: ClusterIP
-    port: 8080
+    # controller.service.port -- The port that the service will expose
+    port: 2112
