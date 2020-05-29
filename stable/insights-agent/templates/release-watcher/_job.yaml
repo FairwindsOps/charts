@@ -22,6 +22,8 @@ containers:
     - file
     - --file-path
     - /output/release-watcher.json
+    - --helm-version
+    - auto
   volumeMounts:
   - name: output
     mountPath: /output
