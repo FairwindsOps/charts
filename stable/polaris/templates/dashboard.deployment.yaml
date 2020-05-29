@@ -50,13 +50,13 @@ spec:
         - containerPort: 8080
         livenessProbe:
           httpGet:
-            path: /health
+            path: {{.Values.dashboard.basePath | default "/" }}health
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 20
         readinessProbe:
           httpGet:
-            path: /health
+            path: {{.Values.dashboard.basePath | default "/" }}health
             port: 8080
           initialDelaySeconds: 5
           periodSeconds: 20
