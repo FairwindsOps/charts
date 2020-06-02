@@ -16,7 +16,7 @@
   - {{ required "You must set a cluster" .Values.insights.cluster | quote }}
   {{- with .Values.insights.host }}
   - --host
-  - {{ . }}
+  - {{ . | quote }}
   {{- end }}
   - --version
   - {{ .Config.image.tag | quote }}
