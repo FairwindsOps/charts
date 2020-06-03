@@ -1,6 +1,6 @@
 image:
   repository: quay.io/fairwinds/polaris
-  tag: 1.0
+  tag: "1.0"
   pullPolicy: Always
   pullSecrets: []
 
