@@ -19,12 +19,26 @@ dashboard:
     hosts: []
     annotations: {}
     tls: {}
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 150m
+      memory: 512Mi
 
 webhook:
   enable: false
   replicas: 1
   nodeSelector: {}
   tolerations: []
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 100m
+      memory: 128Mi
 
 audit:
   enable: false

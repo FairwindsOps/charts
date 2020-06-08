@@ -61,12 +61,7 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 20
         resources:
-          limits:
-            cpu: 100m
-            memory: 128Mi
-          requests:
-            cpu: 100m
-            memory: 128Mi
+          {{- toYaml .Values.dashboard.resources | nindent 10 }}
         securityContext:
           allowPrivilegeEscalation: false
           privileged: false
