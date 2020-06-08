@@ -32,6 +32,7 @@ Parameter | Description | Default
 `image.pullSecrets` | Image pull secrets | []
 `templateOnly` | | false
 `dashboard.enable` | Whether to run the dashboard | true
+`dashboard.resources` | Requests and limits for the dashboard | (see values.yaml)
 `dashboard.replicas` | Number of replicas | 1
 `dashboard.service.type` | Service type | ClusterIP
 `dashboard.service.annotatotions` | Service annotations | {}
@@ -42,6 +43,7 @@ Parameter | Description | Default
 `dashboard.ingress.tls` | ingress tls configuration |
 `dashboard.ingress.annotations` | Web ingress annotations | {}
 `webhook.enable` | Whether to run the dashboard | false
+`webhook.resources` | Requests and limits for the webhook | (see values.yaml)
 `webhook.replicas` | Number of replicas | 1
 `webhook.service.type` | Service type | ClusterIP
 `webhook.nodeSelector` | Webhook pod nodeSelector | {}
