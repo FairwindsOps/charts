@@ -203,3 +203,18 @@ trivy:
     requests:
       cpu: 10m
       memory: 64Mi
+
+pluto:
+  enabled: true
+  schedule: "rand * * * *"
+  image:
+    repository: quay.io/fairwinds/pluto
+    tag: "0.6"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
