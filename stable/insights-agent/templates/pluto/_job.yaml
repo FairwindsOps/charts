@@ -8,7 +8,9 @@ containers:
 - name: pluto-audit
   image: "{{ .Values.pluto.image.repository }}:{{ .Values.pluto.image.tag }}"
   imagePullPolicy: Always
-  command: ["/pluto", "summary", "--output-file", "/output/pluto.json"]
+  args: 
+    - detect-helm 
+    - -ojson
   volumeMounts:
   - name: output
     mountPath: /output
