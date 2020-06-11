@@ -8,6 +8,9 @@ spec:
   concurrencyPolicy: Forbid
   failedJobsHistoryLimit: {{ .Values.cronjobs.failedJobsHistoryLimit }}
   successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
+  {{- with .Values.cronjobs.dnsPolicy -}}
+  dnsPolicy: {{ . }}
+  {{- end -}}
   jobTemplate:
     spec:
       backoffLimit: {{ .Values.cronjobs.backoffLimit }}
