@@ -207,9 +207,10 @@ trivy:
 pluto:
   enabled: true
   schedule: "rand * * * *"
+  timeout: 300
   image:
     repository: quay.io/fairwinds/pluto
-    tag: "0.6"
+    tag: "sha256:b148a84af180907cae080b6c89008e8fdf89d027808e4a69861e275b07c850c4"
   resources:
     limits:
       cpu: 250m
