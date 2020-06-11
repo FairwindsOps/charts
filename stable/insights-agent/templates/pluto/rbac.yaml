@@ -26,6 +26,8 @@ rules:
     resources:
       - 'namespaces'
       - 'pods'
+      - 'secrets'
+      - 'configmaps'
     verbs:
       - 'get'
       - 'list'
