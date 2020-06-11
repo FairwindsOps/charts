@@ -52,6 +52,7 @@ Parameter | Description | Default
 `cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
 `cronjobs.nodeSelector` | Node selector to use for cronjobs | null
 `cronjobs.runJobsImmediately` | Run each of the reports immediately upon install of the Insights Agent | true
+`cronjobs.dnsPolicy` | Add pod DNS policy. If dnsPolicy is not explicitly specified, then “ClusterFirst” is used |
 `{report}.enabled` | Enable the report type |
 `{report}.schedule` | Cron expression for running the report | `rand * * * *`
 `{report}.timeout` | Maximum time in seconds to wait for the report |
