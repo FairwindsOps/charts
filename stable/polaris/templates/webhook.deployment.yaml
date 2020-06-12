@@ -17,8 +17,10 @@ spec:
       component: webhook
   template:
     metadata:
+      {{- with .Values.config }}
       annotations:
-        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}'
+        checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}'
+      {{- end }}
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: webhook
@@ -27,11 +29,13 @@ spec:
         - name: webhook
           command:
             - polaris
-            - --webhook
+            - webhook
+            {{- with .Values.config }}
             - --config
             - /opt/app/config.yaml
-          image: '{{.Values.webhook.image.repository}}:{{.Values.webhook.image.tag}}'
-          imagePullPolicy: '{{.Values.webhook.image.pullPolicy}}'
+            {{- end }}
+          image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+          imagePullPolicy: '{{.Values.image.pullPolicy}}'
           ports:
             - containerPort: 9876
           # These are fairly useless readiness/liveness probes for now
@@ -54,12 +58,7 @@ spec:
             initialDelaySeconds: 5
             periodSeconds: 5
           resources:
-            limits:
-              cpu: 100m
-              memory: 128Mi
-            requests:
-              cpu: 100m
-              memory: 128Mi
+            {{- toYaml .Values.webhook.resources | nindent 12 }}
           securityContext:
             allowPrivilegeEscalation: false
             privileged: false
@@ -69,17 +68,19 @@ spec:
               drop:
                 - ALL
           volumeMounts:
+            {{- with .Values.config }}
             - name: config
               mountPath: /opt/app/config.yaml
               subPath: config.yaml
               readOnly: true
+            {{- end }}
             - name: secret
               mountPath: /opt/cert/
               readOnly: true
             - name: cr-logs
               mountPath: /tmp/
               readOnly: false
-      serviceAccountName:  {{ include "polaris.fullname" . }}-webhook
+      serviceAccountName:  {{ include "polaris.fullname" . }}
       nodeSelector:
       {{- with .Values.webhook.nodeSelector }}
 {{ toYaml . | indent 8 }}
@@ -89,9 +90,11 @@ spec:
 {{ toYaml . | indent 6 }}
       {{- end }}
       volumes:
+        {{- with .Values.config }}
         - name: config
           configMap:
-            name: {{ include "polaris.fullname" . }}
+            name: {{ include "polaris.fullname" $ }}
+        {{- end }}
         - name: secret
           secret:
             secretName: polaris-webhook

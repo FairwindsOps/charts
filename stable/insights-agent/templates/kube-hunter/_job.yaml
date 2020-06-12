@@ -17,7 +17,7 @@ containers:
     - |
       python ./kube-hunter.py \
         --pod \
-        --log WARNING \
+        --log {{ .Values.kubehunter.logLevel }} \
         --report json \
         --statistics \
       > /output/kube-hunter-tmp.json \

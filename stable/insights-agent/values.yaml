@@ -55,9 +55,10 @@ kubehunter:
   enabled: true
   schedule: "rand * * * *"
   timeout: 300
+  logLevel: INFO
   image:
     repository: aquasec/kube-hunter
-    tag: "0.3.0"
+    tag: "0.3.1"
   resources:
     limits:
       cpu: 100m
@@ -131,7 +132,7 @@ releasewatcher:
   timeout: 300
   image:
     repository: quay.io/fairwinds/release-watcher
-    tag: "v1.7.4"
+    tag: "v1.8"
   resources:
     limits:
       cpu: 100m

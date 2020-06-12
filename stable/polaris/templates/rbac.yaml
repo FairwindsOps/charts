@@ -1,0 +1,62 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "polaris.fullname" . }}
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+{{- if .Values.image.pullSecrets }}
+imagePullSecrets:
+{{- range .Values.image.pullSecrets }}
+  - name: {{ . }}
+{{- end }}
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "polaris.fullname" . }}-view
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "polaris.fullname" . }}
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: {{ include "polaris.fullname" . }}
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+rules:
+  # required by controller-runtime code doing a cluster wide lookup
+  # when it seems namespace would suffice
+  - apiGroups:
+      - ''
+    resources:
+      - 'nodes'
+    verbs:
+      - 'get'
+      - 'list'
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "polaris.fullname" . }}
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "polaris.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "polaris.fullname" . }}
+    namespace: {{ .Release.Namespace }}
