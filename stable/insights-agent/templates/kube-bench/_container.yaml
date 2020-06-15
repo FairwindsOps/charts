@@ -69,5 +69,4 @@ containers:
       - ALL
     privileged: false
     readOnlyRootFilesystem: true
-    runAsNonRoot: true
 {{- end -}}
