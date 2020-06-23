@@ -8,7 +8,7 @@ insights:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.1"
+    tag: "0.2"
   resources:
     limits:
       cpu: 100m

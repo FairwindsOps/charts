@@ -34,6 +34,10 @@
         key: token
   - name: FAIRWINDS_AGENT_CHART_VERSION
     value: {{ .Chart.Version }}
+  - name: POD_NAME
+    valueFrom:
+      fieldRef:
+        fieldPath: metadata.name
   volumeMounts:
   - name: output
     mountPath: /output
