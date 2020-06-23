@@ -50,7 +50,7 @@ Parameter | Description | Default
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
-`cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
+`cronjobs.successfulJobsHistoryLimit` | Number of successful jobs to keep in history for each report | 2
 `cronjobs.nodeSelector` | Node selector to use for cronjobs | null
 `cronjobs.runJobsImmediately` | Run each of the reports immediately upon install of the Insights Agent | true
 `cronjobs.dnsPolicy` | Adds pod DNS policy |
