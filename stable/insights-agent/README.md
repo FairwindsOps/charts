@@ -33,6 +33,7 @@ There are several different report types which can be enabled and configured:
 * `releasewatcher`
 * `rbacreporter`
 * `kubebench`
+* `pluto`
 
 See below for configuration details.
 
