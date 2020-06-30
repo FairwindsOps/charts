@@ -6,7 +6,22 @@ metadata:
   labels:
     app: insights-agent
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-pluto-view
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" . }}-pluto
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "insights-agent.fullname" . }}-pluto
@@ -14,35 +29,17 @@ metadata:
     app: insights-agent
 rules:
   - apiGroups:
-      - 'apps'
+      - ""
     resources:
-      - 'deployments'
+      - namespaces
+      - secrets
+      - configmaps
     verbs:
-      - 'get'
-      - 'list'
-      - 'watch'
-  - apiGroups:
-      - ''
-    resources:
-      - 'namespaces'
-      - 'pods'
-      - 'secrets'
-      - 'configmaps'
-    verbs:
-      - 'get'
-      - 'list'
-      - 'watch'
-  - apiGroups:
-      - 'autoscaling.k8s.io'
-    resources:
-      - 'verticalpodautoscalers'
-    verbs:
-      - 'get'
-      - 'list'
-      - 'create'
-      - 'delete'
+      - get
+      - list
+      - watch
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "insights-agent.fullname" . }}-pluto
