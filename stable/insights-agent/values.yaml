@@ -23,6 +23,7 @@ cronjobs:
   successfulJobsHistoryLimit: 2
   nodeSelector: null
   runJobsImmediately: true
+  # dnsPolicy:
 
 cronjobExecutor:
   image:
