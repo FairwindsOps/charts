@@ -48,6 +48,7 @@ Parameter | Description | Default
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.1
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
+`uploader.sendFailures` | Send logs of failure to Insights when a job fails. | true
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobsHistoryLimit` | Number of successful jobs to keep in history for each report | 2

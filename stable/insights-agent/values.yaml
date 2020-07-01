@@ -9,6 +9,7 @@ uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.2"
+  sendFailures: true
   resources:
     limits:
       cpu: 100m
