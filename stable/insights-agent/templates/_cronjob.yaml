@@ -10,6 +10,9 @@ spec:
   successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
   jobTemplate:
     spec:
+      {{- with .Values.cronjobs.dnsPolicy }}
+      dnsPolicy: {{ . }}
+      {{- end }}
       backoffLimit: {{ .Values.cronjobs.backoffLimit }}
       template:
         spec:
