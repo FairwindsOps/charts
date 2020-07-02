@@ -4,11 +4,10 @@ description: |
   A Helm chart for running Fairwinds Goldilocks. See https://github.com/FairwindsOps/goldilocks
 name: goldilocks
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/goldilocks/icon.png
-version: 2.3.1
+version: 2.3.2
 maintainers:
   - name: sudermanjr
   - name: dosullivan
-  - name: mgoodhart5
 sources:
   - https://github.com/FairwindsOps/goldilocks
 keywords:
