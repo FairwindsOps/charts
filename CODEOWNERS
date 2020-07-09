@@ -19,6 +19,6 @@
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
-/stable/goldilocks/ @sudermanjr @dosullivan @mgoodhart5
+/stable/goldilocks/ @sudermanjr @dosullivan
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
 /stable/helm-release-pruner @bbensky @rbren

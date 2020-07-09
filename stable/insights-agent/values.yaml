@@ -23,6 +23,7 @@ cronjobs:
   successfulJobsHistoryLimit: 2
   nodeSelector: null
   runJobsImmediately: true
+  # dnsPolicy:
 
 cronjobExecutor:
   image:
@@ -196,6 +197,21 @@ trivy:
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.6"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+pluto:
+  enabled: true
+  schedule: "rand * * * *"
+  timeout: 300
+  image:
+    repository: quay.io/fairwinds/pluto
+    tag: "v3.1.1"
   resources:
     limits:
       cpu: 250m

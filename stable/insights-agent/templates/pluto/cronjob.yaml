@@ -1,0 +1,6 @@
+{{- if .Values.pluto.enabled -}}
+{{- $_ := set . "Label" "pluto" }}
+{{- $_ := set . "Config" .Values.pluto }}
+{{- $_ := set . "Template" "pluto.job.spec" }}
+{{- include "cronjob" . }}
+{{- end -}}
