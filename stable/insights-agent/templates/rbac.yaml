@@ -32,6 +32,11 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-goldilocks
   namespace: {{ .Release.Namespace }}
 {{- end }}
+{{- if .Values.pluto.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-pluto
+  namespace: {{ .Release.Namespace }}
+{{- end }}
 {{- if .Values.kubebench.enabled }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-kube-bench
