@@ -335,6 +335,9 @@ These are the criteria for a chart to be considered for stable. This list is not
 * README.md - preferably generated using helm-docs
 * NOTES.txt that provides helpful tips to the end-user
 * CODEOWNERS must be defined, and maintainers must be listed in the chart
+* Resource requests and limits are set with recommendations
+* Must pass CI
+* Must be a Fairwinds product, or a tool that we use on a regular basis
 
 ### CODEOWNERS
 
