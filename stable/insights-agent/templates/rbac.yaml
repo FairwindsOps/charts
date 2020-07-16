@@ -1,0 +1,84 @@
+---
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-get-logs
+  labels:
+    app: insights-agent
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get"]
+{{- if .Values.uploader.sendFailures }}
+- apiGroups: [""]
+  resources: ["pods/logs"]
+  verbs: ["get"]
+{{- end }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-get-logs
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "insights-agent.fullname" . }}-get-logs
+subjects:
+{{- if .Values.cronjobs.runJobsImmediately }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-cronjob-executor
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.goldilocks.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-goldilocks
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.pluto.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-pluto
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.kubebench.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-kube-bench
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.kubehunter.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-kube-hunter
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.kubesec.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-kubesec
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.polaris.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-polaris
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.rbacreporter.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-rbac-reporter
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.releasewatcher.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-release-watcher
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.trivy.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-trivy
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.workloads.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-workloads
+  namespace: {{ .Release.Namespace }}
+{{- end }}
