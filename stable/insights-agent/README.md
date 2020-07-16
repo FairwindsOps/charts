@@ -46,11 +46,12 @@ Parameter | Description | Default
 `insights.tokenSecretName` | If you don't provide a `base64token`, you can specify the name of a secret to pull the token from | ""
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
-`uploader.image.tag` | The tag to use for the uploader script | 0.1
+`uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
+`uploader.sendFailures` | Send logs of failure to Insights when a job fails. | true
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
-`cronjobs.successfulJobHistoryLimit` | Number of successful jobs to keep in history for each report | 2
+`cronjobs.successfulJobsHistoryLimit` | Number of successful jobs to keep in history for each report | 2
 `cronjobs.nodeSelector` | Node selector to use for cronjobs | null
 `cronjobs.runJobsImmediately` | Run each of the reports immediately upon install of the Insights Agent | true
 `cronjobs.dnsPolicy` | Adds pod DNS policy |
