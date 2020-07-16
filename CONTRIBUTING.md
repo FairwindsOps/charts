@@ -328,6 +328,17 @@ spec:
 
 If you would like to use [helm-docs](https://github.com/norwoodj/helm-docs), it is included in the pre-commit file. Just make sure your chart is not in the `.helmdocsignore` file.
 
+### Stable Criteria
+
+These are the criteria for a chart to be considered for stable. This list is not definitive, but it is intended to provide a guideline. As always, the final decision to move is up to the CODEOWNERS.
+
+* README.md - preferably generated using helm-docs
+* NOTES.txt that provides helpful tips to the end-user
+* CODEOWNERS must be defined, and maintainers must be listed in the chart
+* Resource requests and limits are set with recommendations
+* Must pass CI
+* Must be a Fairwinds product, or a tool that we use on a regular basis
+
 ### CODEOWNERS
 
 Please create a github-style CODEOWNERS file in your chart folder and add your name to it.  This will ensure that you are asked to review PRs that involve your chart.
