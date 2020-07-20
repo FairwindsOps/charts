@@ -31,7 +31,7 @@ helm search repo fairwinds-stable
 
 ## Stable
 
-These charts are considered stable for public consumption and use.
+These charts are considered stable for public consumption and use. See the criteria in the [contributing](CONTRIBUTING.md) document.
 
 ## Incubator
 
