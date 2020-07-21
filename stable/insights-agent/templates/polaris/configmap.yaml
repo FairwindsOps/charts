@@ -14,7 +14,7 @@ data:
       memoryRequestsMissing: warning
       memoryLimitsMissing: warning
       tagNotSpecified: danger
-      pullPolicyNotAlways: ignore
+      pullPolicyNotAlways: warning
       readinessProbeMissing: warning
       livenessProbeMissing: warning
       hostNetworkSet: warning
