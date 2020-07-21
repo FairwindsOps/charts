@@ -12,10 +12,10 @@ containers:
   image: "{{ .Values.polaris.image.repository }}:{{ .Values.polaris.image.tag }}"
   imagePullPolicy: Always
   command: [
-    "polaris", "--audit",
+    "polaris", "audit",
     "--config", "/opt/app/config.yaml",
     "--output-file", "/output/polaris.json",
-    "--output-format", "json",
+    "--format", "json",
     "--display-name", "{{ .Values.insights.cluster }}",
   ]
   volumeMounts:
