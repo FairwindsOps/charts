@@ -17,7 +17,6 @@ rules:
       - ''
     resources:
       - 'nodes'
-      - 'namespaces'
     verbs:
       - 'get'
       - 'list'
