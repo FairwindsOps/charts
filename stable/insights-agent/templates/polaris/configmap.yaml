@@ -21,7 +21,7 @@ data:
       hostPortSet: warning
       hostIPCSet: danger
       hostPIDSet: danger
-      notReadOnlyRootFileSystem: warning
+      notReadOnlyRootFilesystem: warning
       privilegeEscalationAllowed: danger
       runAsRootAllowed: warning
       runAsPrivileged: danger
