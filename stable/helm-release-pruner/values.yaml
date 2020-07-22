@@ -24,6 +24,11 @@ job:
     create: true
     # job.serviceAccount.name -- The name of a pre-existing service account to use if job.serviceAccount.create is false
     name: ExistingServiceAccountName
+  listSecretsRole:
+    # job.listSecretsRole.create -- If true, a cluster role will be created for the job to list helm releases
+    create: true
+    # job.listSecretsRole.name -- Name of a cluster role granting list secrets permission
+    name: helm-release-pruner-list-secrets
   # resources -- The resources block for the job pod
   resources:
     limits:
