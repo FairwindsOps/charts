@@ -4,7 +4,6 @@ incubator/basic-demo
 incubator/custom-iptables
 incubator/route53sync
 incubator/stackdriver-metrics-adapter
-incubator/gke-node-termination-handler
 incubator/capsize
 incubator/logentries
 incubator/kubebench

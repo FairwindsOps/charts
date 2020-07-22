@@ -1,0 +1,26 @@
+image:
+  # image.repository -- The image repository to pull from
+  repository: k8s.gcr.io/gke-node-termination-handler@sha256
+  # image.tag -- The image tag to use
+  tag: aca12d17b222dfed755e28a44d92721e477915fb73211d0a0f8925a1fa847cca
+  # image.pullPolicy -- The image pull policy. We recommend not changing this
+  pullPolicy: Always
+
+# nameOverride -- A template override for name
+nameOverride: ""
+# fullnameOverride -- A template override for fullname
+fullnameOverride: ""
+
+daemonset:
+  updateStrategy:
+    # daemonset.updateStrategy.type -- The daemonset update strategy
+    type: RollingUpdate
+
+# resources -- A resource limit and requess block for the daemonset
+resources:
+  limits:
+    cpu: 150m
+    memory: 30Mi
+  requests:
+    cpu: 150m
+    memory: 30Mi
