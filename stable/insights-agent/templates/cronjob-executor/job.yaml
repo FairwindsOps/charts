@@ -20,12 +20,17 @@ spec:
         args:
           - -c
           - |
+            curl -SsL -o /tmp/kubectl https://storage.googleapis.com/kubernetes-release/release/v1.19.0-rc.2/bin/linux/amd64/kubectl
+            chmod +x /tmp/kubectl
             # Can't use -o name because it appends cronjob.batch to the beginning
-            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo 'Does Not Exist'"
-            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
+            /tmp/kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ sh -c "/tmp/kubectl delete job ~job~ || echo 'Does Not Exist'"
+            /tmp/kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ /tmp/kubectl create job ~job~ --from=CronJob/~job~
         
         resources:
           {{- toYaml .Values.cronjobExecutor.resources | nindent 10 }}
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
@@ -35,4 +40,7 @@ spec:
           capabilities:
             drop:
               - ALL
+      volumes:
+      - name: tmp
+        emptyDir: {}
 {{- end -}}
