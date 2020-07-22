@@ -40,7 +40,7 @@ spec:
           capabilities:
             drop:
               - ALL
-  volumes:
-  - name: tmp
-    emptyDir: {}
+      volumes:
+      - name: tmp
+        emptyDir: {}
 {{- end -}}
