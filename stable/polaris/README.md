@@ -20,14 +20,15 @@ helm install fairwinds-stable/polaris --name polaris --namespace polaris --set w
 
 ## A Note on Chart Version 0.10.0+
 
-Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/) of various `extensions/v1beta1` API's, the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
+Due to the [deprecation](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/) of various `extensions/v1beta1` API's,
+the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 
 ## Configuration
 Parameter | Description | Default
 --------- | ----------- | -------
 `config`  | The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration) | [taken from Polaris](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml)
 `image.repository` | Image repo | quay.io/fairwinds/polaris
-`image.tag` | Image tag | 1.1
+`image.tag` | Image tag | 1.2
 `image.pullPolicy` | Image pull policy | Always
 `image.pullSecrets` | Image pull secrets | []
 `templateOnly` | | false
