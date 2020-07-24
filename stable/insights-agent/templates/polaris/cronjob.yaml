@@ -20,7 +20,7 @@ spec:
             configMap:
               name: polaris
           containers:
-          - {{ (include "container-spec" . | indent 12 | trim) }}
+          - {{ include "container-spec" . | indent 12 | trim }}
             command: [
               "polaris", "audit",
               "--config", "/opt/app/config.yaml",
