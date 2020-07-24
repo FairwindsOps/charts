@@ -1,0 +1,20 @@
+{{ define "cronjob-spec" -}}
+schedule: {{ regexReplaceAll "^rand" .Config.schedule (regexReplaceAll "^[0,6-9]" (randNumeric 2) "") | }}
+concurrencyPolicy: Forbid
+failedJobsHistoryLimit: {{ .Values.cronjobs.failedJobsHistoryLimit }}
+successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
+{{ end -}}
+
+{{ define "job-spec" -}}
+{{- with .Values.cronjobs.dnsPolicy }}
+dnsPolicy: {{ . }}
+{{- end }}
+backoffLimit: {{ .Values.cronjobs.backoffLimit }}
+{{- end }}
+
+{{ define "job-template-spec" -}}
+{{- with .Values.cronjobs.nodeSelector }}
+nodeSelector:
+  {{- toYaml . | nindent 12 }}
+{{- end }}
+{{- end }}

@@ -1,6 +1,53 @@
 {{- if .Values.polaris.enabled -}}
 {{- $_ := set . "Label" "polaris" }}
 {{- $_ := set . "Config" .Values.polaris }}
-{{- $_ := set . "Template" "polaris.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+{{- include "cronjob-spec" . | nindent 2 }}
+  jobTemplate:
+    spec:
+      {{- include "job-spec" . | nindent 6 }}
+      template:
+        spec:
+          {{- include "job-template-spec" . | nindent 10 }}
+          restartPolicy: Never
+          serviceAccountName: {{ include "insights-agent.fullname" . }}-polaris
+          volumes:
+          - name: output
+            emptyDir: {}
+          - name: config
+            configMap:
+              name: polaris
+          containers:
+          - name: polaris-audit
+            image: "{{ .Values.polaris.image.repository }}:{{ .Values.polaris.image.tag }}"
+            imagePullPolicy: Always
+            command: [
+              "polaris", "audit",
+              "--config", "/opt/app/config.yaml",
+              "--output-file", "/output/polaris.json",
+              "--format", "json",
+              "--display-name", "{{ .Values.insights.cluster }}",
+            ]
+            volumeMounts:
+            - name: config
+              mountPath: /opt/app/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            - name: output
+              mountPath: /output
+            resources:
+              {{- toYaml .Values.polaris.resources | nindent 12 }}
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              capabilities:
+                drop:
+                  - ALL
+{{- include "uploaderContainer" . | nindent 10 }}
 {{- end -}}
