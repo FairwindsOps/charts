@@ -1,20 +1,41 @@
-{{- define "cronjob-spec" -}}
+{{ define "cronjob-spec" }}
 schedule: {{ regexReplaceAll "^rand" .Config.schedule (regexReplaceAll "^[0,6-9]" (randNumeric 2) "") | }}
 concurrencyPolicy: Forbid
 failedJobsHistoryLimit: {{ .Values.cronjobs.failedJobsHistoryLimit }}
 successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
 {{- end }}
 
-{{- define "job-spec" -}}
+{{ define "job-spec" }}
 {{- with .Values.cronjobs.dnsPolicy }}
 dnsPolicy: {{ . }}
 {{- end }}
 backoffLimit: {{ .Values.cronjobs.backoffLimit }}
 {{- end }}
 
-{{- define "job-template-spec" -}}
+{{ define "job-template-spec" }}
+restartPolicy: Never
+serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
 {{- with .Values.cronjobs.nodeSelector }}
 nodeSelector:
-  {{- toYaml . | nindent 12 }}
+  {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- end }}
+
+{{ define "container-spec" }}
+name: polaris-audit
+image: "{{ .Values.polaris.image.repository }}:{{ .Values.polaris.image.tag }}"
+imagePullPolicy: Always
+resources:
+  {{- toYaml .Config.resources | nindent 2 }}
+{{- end }}
+
+{{ define "security-context" }}
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  privileged: false
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
 {{- end }}
