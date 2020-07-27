@@ -16,6 +16,7 @@ spec:
       containers:
       - name: start-job-from-cronjob
         image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
+        imagePullPolicy: Always
         command: ["sh"]
         args:
           - -c
