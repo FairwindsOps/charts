@@ -1,4 +1,18 @@
 ---
+{{- if .Values.job.listSecretsRole.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Values.job.listSecretsRole.name }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - list
+---
+{{- end }}
 {{- if .Values.rbac_manager.enabled }}
 apiVersion: rbacmanager.reactiveops.io/v1beta1
 kind: RBACDefinition
@@ -24,6 +38,8 @@ rbacBindings:
         namespaceSelector:
           matchLabels:
             environment: {{ .Values.rbac_manager.namespaceLabel }}
+    clusterRoleBindings:
+      - clusterRole: {{ .Values.job.listSecretsRole.name }}
 {{- else }}
 {{- if .Values.job.serviceAccount.create }}
 apiVersion: v1
