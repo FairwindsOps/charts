@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: v3.0.1
 description: This chart deploys a cronjob that purges stale Helm releases and associated namespaces. Releases are selected based on regex patterns for release name and namespace along with a Bash `date` command date string to define the stale cutoff date and time.
 name: helm-release-pruner
-version: 3.1.0
+version: 3.1.1
 maintainers:
   - name: coreypobrien
   - name: sudermanjr
