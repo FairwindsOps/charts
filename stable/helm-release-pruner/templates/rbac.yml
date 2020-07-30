@@ -1,18 +1,3 @@
----
-{{- if .Values.job.listSecretsRole.create }}
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ .Values.job.listSecretsRole.name }}
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - list
----
-{{- end }}
 {{- if .Values.rbac_manager.enabled }}
 apiVersion: rbacmanager.reactiveops.io/v1beta1
 kind: RBACDefinition
@@ -39,7 +24,7 @@ rbacBindings:
           matchLabels:
             environment: {{ .Values.rbac_manager.namespaceLabel }}
     clusterRoleBindings:
-      - clusterRole: {{ .Values.job.listSecretsRole.name }}
+      - clusterRole: cluster-admin
 {{- else }}
 {{- if .Values.job.serviceAccount.create }}
 apiVersion: v1
@@ -49,28 +34,13 @@ metadata:
 ---
 {{- end }}
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ template "helm-release-pruner.fullname" . }}
-rules:
-- apiGroups:
-  - ""
-  resources:
-  - namespaces
-  - secrets
-  verbs:
-  - delete
-  - get
-  - list
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ template "helm-release-pruner.fullname" . }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ template "helm-release-pruner.fullname" . }}
+  name: cluster-admin
 subjects:
 - kind: ServiceAccount
   {{- if .Values.job.serviceAccount.create }}
