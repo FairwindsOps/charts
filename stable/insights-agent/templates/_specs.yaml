@@ -22,8 +22,8 @@ nodeSelector:
 {{- end }}
 
 {{ define "container-spec" }}
-name: polaris-audit
-image: "{{ .Values.polaris.image.repository }}:{{ .Values.polaris.image.tag }}"
+name: {{ .Label }}-audit
+image: "{{ (index .Values .Label).image.repository }}:{{ (index .Values .Label).image.tag }}"
 imagePullPolicy: Always
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
@@ -35,6 +35,7 @@ securityContext:
   allowPrivilegeEscalation: false
   privileged: false
   runAsNonRoot: true
+  runAsUser: 10324
   capabilities:
     drop:
       - ALL
