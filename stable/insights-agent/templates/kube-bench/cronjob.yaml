@@ -1,40 +1,37 @@
-{{- define "kubebench.job.spec" -}}
+{{- if .Values.kubebench.enabled -}}
 {{- $_ := set . "Label" "kube-bench" -}}
 {{- $_ := set . "Config" .Values.kubebench -}}
-restartPolicy: Never
-serviceAccountName: {{ include "insights-agent.fullname" . }}-kube-bench
-{{- if or (eq .Values.kubebench.mode "daemonsetMaster") (eq .Values.kubebench.mode "daemonset") }}
-volumes:
-- name: output
-  emptyDir: {}
-containers:
-- name: kube-bench-aggregator
-  image: "{{ .Values.kubebench.aggregator.image.repository }}:{{ .Values.kubebench.aggregator.image.tag }}"
-  imagePullPolicy: Always
-  env:
-  - name: DAEMONSET_SERVICE
-    value: {{ include "insights-agent.fullname" . }}-kube-bench-svc
-  resources:
-    {{- toYaml .Values.kubebench.aggregator.resources | nindent 4 }}
-  volumeMounts:
-  - name: output
-    mountPath: /output
-  securityContext:
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-      - ALL
-    privileged: false
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-{{- else }}
-{{- include "kubebench.container.spec" . | nindent 0}}
-{{- end }}
-{{- include "uploaderContainer" . }}
-{{- end -}}
-{{- if .Values.kubebench.enabled -}}
-{{- $_ := set . "Label" "kube-bench" }}
-{{- $_ := set . "Config" .Values.kubebench }}
-{{- $_ := set . "Template" "kubebench.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          {{- if or (eq .Values.kubebench.mode "daemonsetMaster") (eq .Values.kubebench.mode "daemonset") }}
+          volumes:
+          - name: output
+            emptyDir: {}
+          containers:
+          - name: kube-bench-aggregator
+            image: "{{ .Values.kubebench.aggregator.image.repository }}:{{ .Values.kubebench.aggregator.image.tag }}"
+            imagePullPolicy: Always
+            env:
+            - name: DAEMONSET_SERVICE
+              value: {{ include "insights-agent.fullname" . }}-kube-bench-svc
+            resources:
+              {{- toYaml .Values.kubebench.aggregator.resources | nindent 4 }}
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            {{ include "security-context" . | indent 12 | trim }}
+          {{- else }}
+          {{- include "kubebench.container.spec" . | nindent 10 }}
+          {{- end }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

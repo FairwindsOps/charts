@@ -23,7 +23,7 @@ nodeSelector:
 
 {{ define "container-spec" }}
 name: {{ .Label }}-audit
-image: "{{ (index .Values .Label).image.repository }}:{{ (index .Values .Label).image.tag }}"
+image: "{{ .Config.image.repository }}:{{ .Config.image.tag }}"
 imagePullPolicy: Always
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
