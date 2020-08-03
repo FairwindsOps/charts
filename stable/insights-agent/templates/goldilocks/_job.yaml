@@ -1,2 +1,0 @@
-{{- define "goldilocks.job.spec" -}}
-{{- end }}

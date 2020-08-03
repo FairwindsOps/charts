@@ -1,5 +1,0 @@
-{{- define "kubehunter.job.spec" -}}
-{{- $_ := set . "Label" "kube-hunter" }}
-{{- $_ := set . "Config" .Values.kubehunter }}
-{{- include "uploaderContainer" . }}
-{{- end -}}
