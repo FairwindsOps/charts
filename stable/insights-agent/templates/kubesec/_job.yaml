@@ -1,5 +1,0 @@
-{{- define "kubesec.job.spec" -}}
-{{- $_ := set . "Label" "kubesec" }}
-{{- $_ := set . "Config" .Values.kubesec }}
-{{- include "uploaderContainer" . }}
-{{- end }}
