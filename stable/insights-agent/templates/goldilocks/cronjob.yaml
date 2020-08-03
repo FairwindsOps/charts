@@ -13,15 +13,9 @@ spec:
       template:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
-          volumes:
-          - name: output
-            emptyDir: {}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             command: ["/goldilocks", "summary", "--output-file", "/output/goldilocks.json"]
-            volumeMounts:
-            - name: output
-              mountPath: /output
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

@@ -19,14 +19,20 @@ serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
 nodeSelector:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+volumes:
+- name: output
+  emptyDir: {}
 {{- end }}
 
 {{ define "container-spec" }}
-name: {{ .Label }}-audit
+name: {{ .Label }}
 image: "{{ .Config.image.repository }}:{{ .Config.image.tag }}"
 imagePullPolicy: Always
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
+volumeMounts:
+- name: output
+  mountPath: /output
 {{- end }}
 
 {{ define "security-context" }}

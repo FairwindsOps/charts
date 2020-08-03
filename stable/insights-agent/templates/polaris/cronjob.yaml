@@ -13,14 +13,15 @@ spec:
       template:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
-          volumes:
-          - name: output
-            emptyDir: {}
           - name: config
             configMap:
               name: polaris
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
+            - name: config
+              mountPath: /opt/app/config.yaml
+              subPath: config.yaml
+              readOnly: true
             command: [
               "polaris", "audit",
               "--config", "/opt/app/config.yaml",
@@ -28,13 +29,6 @@ spec:
               "--format", "json",
               "--display-name", "{{ .Values.insights.cluster }}",
             ]
-            volumeMounts:
-            - name: config
-              mountPath: /opt/app/config.yaml
-              subPath: config.yaml
-              readOnly: true
-            - name: output
-              mountPath: /output
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
