@@ -1,6 +1,21 @@
 {{- if .Values.workloads.enabled -}}
 {{- $_ := set . "Label" "workloads" }}
 {{- $_ := set . "Config" .Values.workloads }}
-{{- $_ := set . "Template" "workloads.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            command: ["workload", "--output-file", "/output/workloads.json"]
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
