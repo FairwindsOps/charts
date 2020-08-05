@@ -19,9 +19,11 @@ serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
 nodeSelector:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- if not .Config.SkipVolumes }}
 volumes:
 - name: output
   emptyDir: {}
+{{- end }}
 {{- end }}
 
 {{ define "container-spec" }}

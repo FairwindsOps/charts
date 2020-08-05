@@ -1,6 +1,7 @@
 {{- if .Values.kubebench.enabled -}}
 {{- $_ := set . "Label" "kube-bench" -}}
 {{- $_ := set . "Config" .Values.kubebench -}}
+{{- $_ := set .Config "SkipVolumes" true -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
