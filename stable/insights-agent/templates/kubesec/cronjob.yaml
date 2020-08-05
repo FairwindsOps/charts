@@ -18,4 +18,5 @@ spec:
             command:
             - ./main.sh
             {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
