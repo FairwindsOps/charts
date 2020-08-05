@@ -1,6 +1,36 @@
 {{- if .Values.releasewatcher.enabled -}} 
 {{- $_ := set . "Label" "release-watcher" }}
 {{- $_ := set . "Config" .Values.releasewatcher }}
-{{- $_ := set . "Template" "releasewatcher.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            args:
+              - cluster
+              - -u
+              - https://charts.fairwinds.com/stable
+              - -u
+              - https://charts.fairwinds.com/incubator
+              - -u
+              - https://kubernetes-charts.storage.googleapis.com
+              - -u
+              - https://kubernetes-charts-incubator.storage.googleapis.com
+              - -o
+              - file
+              - --file-path
+              - /output/release-watcher.json
+              - --helm-version
+              - auto
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

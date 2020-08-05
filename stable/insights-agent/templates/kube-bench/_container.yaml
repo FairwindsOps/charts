@@ -62,11 +62,5 @@ containers:
   - name: usr-bin
     mountPath: /usr/local/mount-from-host/bin
     readOnly: true
-  securityContext:
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-      - ALL
-    privileged: false
-    readOnlyRootFilesystem: true
+  {{ include "security-context" . | indent 2 | trim }}
 {{- end -}}
