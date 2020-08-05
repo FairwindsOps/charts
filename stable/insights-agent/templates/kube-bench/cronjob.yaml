@@ -27,7 +27,15 @@ spec:
             volumeMounts:
             - name: output
               mountPath: /output
-            {{ include "security-context" . | indent 12 | trim }}
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: false
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
           {{- else }}
           {{- include "kubebench.container.spec" . | nindent 10 }}
           {{- end }}
