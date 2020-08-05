@@ -1,6 +1,39 @@
 {{- if .Values.kubehunter.enabled -}}
 {{- $_ := set . "Label" "kube-hunter" }}
 {{- $_ := set . "Config" .Values.kubehunter }}
-{{- $_ := set . "Template" "kubehunter.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          - name: tmp
+            emptyDir: {}
+          hostPID: true
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            - name: tmp
+              mountPath: /tmp
+            command:
+              - /bin/sh
+              - -c
+              - |
+                python ./kube-hunter.py \
+                  --pod \
+                  --log {{ .Values.kubehunter.logLevel }} \
+                  --report json \
+                  --statistics \
+                > /output/kube-hunter-tmp.json \
+                && mv /output/kube-hunter-tmp.json /output/kube-hunter.json
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

@@ -1,6 +1,61 @@
 {{- if .Values.trivy.enabled -}} 
 {{- $_ := set . "Label" "trivy" }}
 {{- $_ := set . "Config" .Values.trivy }}
-{{- $_ := set . "Template" "trivy.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          - name: tmp
+            emptyDir: {}
+          {{ with .Values.trivy.privateImages.dockerConfigSecret }}
+          - name: dockerconfig
+            secret:
+              secretName: {{ . }}
+          {{ end }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            - name: tmp
+              mountPath: /var/tmp
+            {{ with .Values.trivy.privateImages.dockerConfigSecret }}
+            - name: dockerconfig
+              mountPath: /.docker/
+            {{ end }}
+            command:
+              - "./report.sh"
+            env:
+              - name: FAIRWINDS_INSIGHTS_HOST
+                value: {{ .Values.insights.host | quote }}
+              - name: FAIRWINDS_ORG
+                value: {{ .Values.insights.organization | quote }}
+              - name: FAIRWINDS_CLUSTER
+                value: {{ .Values.insights.cluster | quote }}
+              - name: FAIRWINDS_TOKEN
+                valueFrom:
+                  secretKeyRef:
+                    {{ if .Values.insights.tokenSecretName -}}
+                    name: {{ .Values.insights.tokenSecretName }}
+                    {{ else -}}
+                    name: {{ include "insights-agent.fullname" . }}-token
+                    {{ end -}}
+                    key: token
+              - name: TRIVY_CACHE_DIR
+                value: /var/tmp
+              - name: MAX_SCANS
+                value: {{ .Values.trivy.maxScansPerRun | quote }}
+              - name: MAX_CONCURRENT_SCANS
+                value: {{ .Values.trivy.maxConcurrentScans | quote }}
+              {{ if .Values.trivy.namespaceBlacklist }}
+              - name: NAMESPACE_BLACKLIST
+                value: {{ join "," .Values.trivy.namespaceBlacklist | lower }}
+              {{ end }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

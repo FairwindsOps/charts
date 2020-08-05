@@ -1,6 +1,21 @@
-{{- if .Values.rbacreporter.enabled -}} 
+{{- if .Values.rbacreporter.enabled -}}
 {{- $_ := set . "Label" "rbac-reporter" }}
 {{- $_ := set . "Config" .Values.rbacreporter }}
-{{- $_ := set . "Template" "rbacreporter.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            command: ["rbac-reporter", "--output-file", "/output/rbac-reporter.json"]
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

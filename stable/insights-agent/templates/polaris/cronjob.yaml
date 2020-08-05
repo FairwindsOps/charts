@@ -1,6 +1,34 @@
 {{- if .Values.polaris.enabled -}}
 {{- $_ := set . "Label" "polaris" }}
 {{- $_ := set . "Config" .Values.polaris }}
-{{- $_ := set . "Template" "polaris.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          - name: config
+            configMap:
+              name: polaris
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            - name: config
+              mountPath: /opt/app/config.yaml
+              subPath: config.yaml
+              readOnly: true
+            command: [
+              "polaris", "audit",
+              "--config", "/opt/app/config.yaml",
+              "--output-file", "/output/polaris.json",
+              "--format", "json",
+              "--display-name", "{{ .Values.insights.cluster }}",
+            ]
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

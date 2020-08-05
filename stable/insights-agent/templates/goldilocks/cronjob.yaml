@@ -1,6 +1,21 @@
 {{- if .Values.goldilocks.enabled -}}
 {{- $_ := set . "Label" "goldilocks" }}
 {{- $_ := set . "Config" .Values.goldilocks }}
-{{- $_ := set . "Template" "goldilocks.job.spec" }}
-{{- include "cronjob" . }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            command: ["/goldilocks", "summary", "--output-file", "/output/goldilocks.json"]
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
