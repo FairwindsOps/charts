@@ -1,0 +1,20 @@
+apiVersion: insights.fairwinds.com/v1
+kind: CustomCheck
+metadata:
+  name: must-not-have-label
+spec:
+  output:
+    title: "Label is present"
+    severity: 0.1
+    remediation: "Remove the label"
+    category: "Reliability"
+  rego: |
+         package fairwinds
+         label-block[description] {
+           provided := {label | input.metadata.labels[label]}
+           required := {label | label := input.parameters.labels[_]}
+           missing := required - provided
+           found := required - missing
+           count(found) > 0
+           description := sprintf("Label %v is present", [found])
+         }

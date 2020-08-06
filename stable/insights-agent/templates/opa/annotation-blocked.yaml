@@ -1,0 +1,20 @@
+apiVersion: insights.fairwinds.com/v1
+kind: CustomCheck
+metadata:
+  name: must-not-have-annotation
+spec:
+  output:
+    title: "Annotation is present"
+    severity: 0.1
+    remediation: "Remove the annotation"
+    category: "Reliability"
+  rego: |
+         package fairwinds
+         annotation-block[description] {
+           provided := {annotation | input.metadata.annotations[annotation]}
+           required := {annotation | annotation := input.parameters.annotations[_]}
+           missing := required - provided
+           found := required - missing
+           count(found) > 0
+           description := sprintf("annotation %v is present", [found])
+         }
