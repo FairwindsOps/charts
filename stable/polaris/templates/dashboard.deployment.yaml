@@ -46,7 +46,7 @@ spec:
         - --base-path
         - {{ . }}
         {{- end }}
-        image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+        image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
         ports:

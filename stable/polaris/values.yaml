@@ -1,35 +1,37 @@
+# config -- The (polaris configuration)[https://github.com/FairwindsOps/polaris#configuration]. If not provided then the (default)[https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml] config from Polaris is used.
+config: null
+
 image:
+  # image.repository -- Image repo
   repository: quay.io/fairwinds/polaris
-  tag: "1.2"
+  # image.tag -- The Polaris Image tag to use. Defaults to the Chart's AppVersion
+  tag: ""
+  # image.pullPolicy -- Image pull policy
   pullPolicy: Always
+  # image.pullSecrets -- Image pull secrets
   pullSecrets: []
 
-templateOnly: false
-
 rbac:
-  # Specifies whether RBAC resources (ClusterRole, ClusterRolebinding) should be created
+  # rbac.enabled -- Whether RBAC resources (ClusterRole, ClusterRolebinding) should be created
   enabled: true
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # serviceAccount.create -- Specifies whether a service account should be created
   create: true
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # serviceAccount.name -- The name of the service account to use.
   name:
 
+# templateOnly -- Outputs Namespace names, used with `helm template`
+templateOnly: false
+
 dashboard:
+  # dashboard.basePath -- Path on which the dashboard is served. Defaults to `/`
+  basePath: null
+  # dashboard.enable -- Whether to run the dashboard.
   enable: true
+  # dashboard.replicas -- Number of replicas to run.
   replicas: 1
-  service:
-    type: ClusterIP
-    annotations: {}
-  nodeSelector: {}
-  tolerations: []
-  ingress:
-    enabled: false
-    hosts: []
-    annotations: {}
-    tls: []
+  # dashboard.resources -- Requests and limits for the dashboard
   resources:
     requests:
       cpu: 100m
@@ -37,14 +39,93 @@ dashboard:
     limits:
       cpu: 150m
       memory: 512Mi
-  # Priority Class name to be used in deployment if provided.
+  service:
+    # dashboard.service.type -- Service Type
+    type: ClusterIP
+    # dashboard.service.annotations -- Service annotations
+    annotations: {}
+  # dashboard.nodeSelector -- Dashboard pod nodeSelector
+  nodeSelector: {}
+  # dashboard.tolerations -- Dashboard pod tolerations
+  tolerations: []
+  ingress:
+    # dashboard.ingress.enabled -- Whether to enable ingress to the dashboard
+    enabled: false
+    # dashboard.ingress.hosts -- Web ingress hostnames
+    hosts: []
+    # dashboard.ingress.annotations -- Web ingress annotations
+    annotations: {}
+    # dashboard.ingress.tls -- Ingress TLS configuration
+    tls: []
+  # dashboard.priortyClassName -- Priority Class name to be used in deployment if provided.
   priorityClassName:
 
 webhook:
+  # webhook.enable -- Whether to run the Validating Webhook
   enable: false
+  # webhook.replicas -- Number of replicas
   replicas: 1
+  # webhook.nodeSelector -- Webhook pod nodeSelector
   nodeSelector: {}
+  # webhook.tolerations -- Webhook pod tolerations
   tolerations: []
+  # webhook.caBundle -- CA Bundle to use for Validating Webhook instead of cert-manager
+  caBundle: null
+  # webhook.secretName -- Name of the secret containing a TLS certificate to use if cert-manager is not used.
+  secretName: null
+  # webhook.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration
+  failurePolicy: Fail
+  # webhook.matchPolicy -- matchPolicy for the ValidatingWebhookConfiguration
+  matchPolicy: Exact
+  # webhook.namespaceSelector -- namespaceSelector for the ValidatingWebhookConfiguration
+  namespaceSelector:
+    matchExpressions:
+    - key: control-plane
+      operator: DoesNotExist
+  # webhook.objectSelector -- objectSelector for the ValidatingWebhookConfiguration
+  objectSelector: {}
+  # webhook.rules -- An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  rules: []
+  # webhook.defaultRules -- An array of rules for common types for the ValidatingWebhookConfiguration
+  defaultRules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    - v1beta1
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - daemonsets
+    - deployments
+    - statefulsets
+    scope: Namespaced
+  - apiGroups:
+    - batch
+    apiVersions:
+    - v1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - jobs
+    - cronjobs
+    scope: Namespaced
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pods
+    - replicationcontrollers
+    scope: Namespaced
+  # webhook.resources -- Requests and limits for the webhook.
   resources:
     requests:
       cpu: 100m
@@ -56,6 +137,9 @@ webhook:
   priorityClassName:
 
 audit:
+  # audit.enable -- Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others.
   enable: false
+  # audit.cleanup -- Whether to delete the namespace once the audit is finished.
   cleanup: false
+  # audit.outputURL -- A URL which will receive a POST request with audit results.
   outputURL: ""
