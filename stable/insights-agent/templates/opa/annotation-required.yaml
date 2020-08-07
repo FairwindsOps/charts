@@ -1,3 +1,4 @@
+{{- if .Values.opa.enabled -}}
 apiVersion: insights.fairwinds.com/v1
 kind: CustomCheck
 metadata:
@@ -10,10 +11,11 @@ spec:
     category: "Reliability"
   rego: |
          package fairwinds
-         annotation[description] {
+         annotationrequired[description] {
            provided := {annotation | input.metadata.annotations[annotation]}
            required := {annotation | label := input.parameters.annotations[_]}
            missing := required - provided
            count(missing) > 0
            description := sprintf("Annotation %v is missing", [missing])
          }
+{{- end -}}

@@ -1,3 +1,4 @@
+{{- if .Values.opa.enabled -}}
 apiVersion: insights.fairwinds.com/v1
 kind: CustomCheck
 metadata:
@@ -10,10 +11,11 @@ spec:
     category: "Reliability"
   rego: |
          package fairwinds
-         label[description] {
+         labelrequired[description] {
            provided := {label | input.metadata.labels[label]}
            required := {label | label := input.parameters.labels[_]}
            missing := required - provided
            count(missing) > 0
            description := sprintf("Label %v is missing", [missing])
          }
+{{- end -}}

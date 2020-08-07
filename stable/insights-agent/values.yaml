@@ -114,16 +114,16 @@ goldilocks:
       memory: 64Mi
 
 opa:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "bb-opa"
+    tag: "0.1"
   resources:
     limits:
       cpu: 100m
-      memory: 128Mi
+      memory: 256Mi
     requests:
       cpu: 10m
       memory: 64Mi

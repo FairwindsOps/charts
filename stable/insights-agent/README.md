@@ -34,6 +34,7 @@ There are several different report types which can be enabled and configured:
 * `rbacreporter`
 * `kubebench`
 * `pluto`
+* `opa`
 
 See below for configuration details.
 
