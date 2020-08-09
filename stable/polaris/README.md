@@ -32,7 +32,7 @@ Parameter | Description | Default
 `image.pullPolicy` | Image pull policy | Always
 `image.pullSecrets` | Image pull secrets | []
 `templateOnly` | | false
-`dashboard.basePath` | | Path on which the dashboard is served. | "/"
+`dashboard.basePath` | Path on which the dashboard is served. | "/"
 `dashboard.enable` | Whether to run the dashboard | true
 `dashboard.resources` | Requests and limits for the dashboard | (see values.yaml)
 `dashboard.replicas` | Number of replicas | 1
