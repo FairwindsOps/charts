@@ -1,5 +1,5 @@
 {{- if .Values.opa.enabled -}}
-apiVersion: insights.fairwinds.com/v1
+apiVersion: insights.fairwinds.com/v1beta1
 kind: CustomCheck
 metadata:
   name: must-have-annotation
