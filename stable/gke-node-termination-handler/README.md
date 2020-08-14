@@ -6,7 +6,7 @@ is a tool for gracefully draining preemptible GCP nodes before Google automatica
 ## Installation
 We recommend installing gke-node-termination-handler in its own namespace.
 
-## Values
+## Chart Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|

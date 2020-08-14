@@ -4,7 +4,8 @@ A Helm chart to install ClamAV on a cluster. This chart will run a single deploy
 as the clamd server with a configurable number of replicas. Then, a daemonset that
 mounts the host file system scans using clamdscan and the remote server.
 
-## Values
+
+## Chart Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
