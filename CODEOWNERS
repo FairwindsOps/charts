@@ -18,6 +18,7 @@
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
+/stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @bbensky @hopson
 /stable/goldilocks/ @sudermanjr @dosullivan
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy

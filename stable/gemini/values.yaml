@@ -1,0 +1,11 @@
+image:
+  tag: build_134 # TODO: replace with a version tag
+  repository: quay.io/fairwinds/gemini
+
+resources:
+  requests:
+    memory: 128Mi
+    cpu: 100m
+  limits:
+    memory: 512Mi
+    cpu: 200m

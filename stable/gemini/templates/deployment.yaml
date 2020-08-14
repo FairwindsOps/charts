@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "gemini.fullname" . }}-controller
+  labels:
+    app: gemini
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gemini
+  template:
+    metadata:
+      labels:
+        app: gemini
+    spec:
+      serviceAccountName: {{ include "gemini.fullname" . }}-controller
+      containers:
+      - command:
+        - gemini
+        image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+        imagePullPolicy: '{{.Values.image.pullPolicy}}'
+        name: gemini-controller
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
