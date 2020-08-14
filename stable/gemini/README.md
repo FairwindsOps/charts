@@ -14,6 +14,7 @@ Automated backup and restore of PersistentVolumes using the  VolumeSnapshot API
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"quay.io/fairwinds/gemini"` |  |
 | image.tag | string | `"build_134"` |  |
 | resources.limits.cpu | string | `"200m"` |  |
