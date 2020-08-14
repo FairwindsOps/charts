@@ -1,12 +1,16 @@
 image:
-  tag: build_134 # TODO: replace with a version tag
-  repository: quay.io/fairwinds/gemini
+  # pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
+  # image.repository -- Repository for the gemini image
+  repository: quay.io/fairwinds/gemini
+  # image.tag -- The goldilocks image tag to use
+  tag: build_134 # TODO: replace with a version tag
 
+# resources -- The resources block for the controller pods
 resources:
   requests:
-    memory: 128Mi
-    cpu: 100m
+    memory: 64Mi
+    cpu: 25m
   limits:
     memory: 512Mi
     cpu: 200m
