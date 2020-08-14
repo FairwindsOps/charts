@@ -1,3 +1,7 @@
+datadog:
+  apiKey: notarealkey
+  appKey: notarealkey
+
 custom_config:
   enabled: true
   data: |
