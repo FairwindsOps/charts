@@ -13,6 +13,11 @@ backups with minimal downtime.
 
 See the [Gemini README](https://github.com/FairwindsOps/gemini) for more information.
 
+## Installation
+```bash
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install gemini fairwinds-stable/gemini --namespace gemini
+```
 ## Requirements
 
 Your cluster must support the [VolumeSnapshot API](https://kubernetes.io/docs/concepts/storage/volume-snapshots/)
@@ -21,7 +26,7 @@ Your cluster must support the [VolumeSnapshot API](https://kubernetes.io/docs/co
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.pullPolicy | string | `"Always"` |  |
+| image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | image.repository | string | `"quay.io/fairwinds/gemini"` | Repository for the gemini image |
 | image.tag | string | `"build_134"` | The goldilocks image tag to use |
 | resources | object | `{"limits":{"cpu":"200m","memory":"512Mi"},"requests":{"cpu":"25m","memory":"64Mi"}}` | The resources block for the controller pods |

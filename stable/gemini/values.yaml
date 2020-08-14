@@ -1,5 +1,5 @@
 image:
-  # pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
+  # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
   # image.repository -- Repository for the gemini image
   repository: quay.io/fairwinds/gemini
