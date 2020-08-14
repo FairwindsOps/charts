@@ -1,5 +1,5 @@
 <div align="center">
-<a href="https://github.com/FairwindsOps/gemini"><img src="logo.png" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
+<a href="https://github.com/FairwindsOps/gemini"><img src="logo.png" height="200" alt="Gemini" style="padding-bottom: 20px" /></a>
 <br>
 </div>
 

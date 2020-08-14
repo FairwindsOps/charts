@@ -3,7 +3,7 @@ image:
   pullPolicy: Always
   # image.repository -- Repository for the gemini image
   repository: quay.io/fairwinds/gemini
-  # image.tag -- The goldilocks image tag to use
+  # image.tag -- The gemini image tag to use
   tag: build_134 # TODO: replace with a version tag
 
 # resources -- The resources block for the controller pods
