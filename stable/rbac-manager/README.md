@@ -16,7 +16,7 @@ We recommend installing rbac-manager in its own namespace and a simple release n
 
 ```
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install fairwinds-stable/rbac-manager --name rbac-manager --namespace rbac-manager
+helm install rbac-manager fairwinds-stable/rbac-manager --namespace rbac-manager
 ```
 
 ## Prerequisites
