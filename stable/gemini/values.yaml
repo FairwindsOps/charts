@@ -4,7 +4,7 @@ image:
   # image.repository -- Repository for the gemini image
   repository: quay.io/fairwinds/gemini
   # image.tag -- The gemini image tag to use
-  tag: build_134  # TODO: replace with a version tag
+  tag: "0.1"
 
 # resources -- The resources block for the controller pods
 resources:
