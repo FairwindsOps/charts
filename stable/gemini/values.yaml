@@ -12,6 +12,8 @@ rbac:
   # If rbac.create is false, the name of an existing ServiceAccount to use
   serviceAccountName:
 
+verbosity: 5
+
 # resources -- The resources block for the controller pods
 resources:
   requests:
