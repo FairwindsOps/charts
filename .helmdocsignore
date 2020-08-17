@@ -9,13 +9,13 @@ incubator/kubebench
 incubator/letsencrypt-setup
 incubator/load-generator
 incubator/logentries
-incubator/route53sync
-incubator/stackdriver-metrics-adapter
 incubator/opa
 incubator/ro-cert-manager
+incubator/route53sync
+incubator/stackdriver-metrics-adapter
 stable/astro
 stable/aws-iam-authenticator
-stable/polaris
 stable/ecr-cleanup
 stable/insights-agent
+stable/polaris
 stable/rbac-manager
