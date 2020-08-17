@@ -7,6 +7,12 @@
 
 This is a Helm chart for the Fairwinds [Goldilocks project](https://github.com/FairwindsOps/goldilocks). It provides an easy way to install the controller and the dashboard for viewing resource recommendations in your Kubernetes cluster. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks) for more information.
 
+## Installation
+```bash
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install goldilocks fairwinds-stable/goldilocks --namespace goldilocks
+```
+
 ## Requirements
 
 This has a hard requirement on VPA being installed. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks)
