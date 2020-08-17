@@ -1,0 +1,30 @@
+Gemini is now installed!
+
+To start using Gemini, create a SnapshotGroup. You can use an
+existing PVC, or ask Gemini to create one for you.
+
+apiVersion: gemini.fairwinds.com/v1beta1
+kind: SnapshotGroup
+metadata:
+  name: test-volume
+spec:
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+  schedule:
+    - every: 10 minutes
+      keep: 3
+    - every: hour
+      keep: 1
+    - every: day
+      keep: 1
+    - every: month
+      keep: 1
+    - every: year
+      keep: 1
+
+Read more at https://github.com/FairwindsOps/gemini
