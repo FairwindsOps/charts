@@ -28,5 +28,5 @@ Your cluster must support the [VolumeSnapshot API](https://kubernetes.io/docs/co
 |-----|------|---------|-------------|
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | image.repository | string | `"quay.io/fairwinds/gemini"` | Repository for the gemini image |
-| image.tag | string | `"build_134"` | The gemini image tag to use |
+| image.tag | string | `"0.1"` | The gemini image tag to use |
 | resources | object | `{"limits":{"cpu":"200m","memory":"512Mi"},"requests":{"cpu":"25m","memory":"64Mi"}}` | The resources block for the controller pods |
