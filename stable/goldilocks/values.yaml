@@ -12,7 +12,7 @@ image:
   repository: quay.io/fairwinds/goldilocks
   # image.tag -- The goldilocks image tag to use
   tag: v2.2.0
-  # pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
+  # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
 nameOverride: ""
