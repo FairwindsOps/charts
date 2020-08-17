@@ -1,4 +1,5 @@
-{{- if not testMode }}
+# TODO: find a way to enable VolumeSnapshot API in KIND
+{{- if not .Values.testMode }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
