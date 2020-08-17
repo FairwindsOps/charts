@@ -22,6 +22,10 @@ spec:
       containers:
       - command:
         - gemini
+        {{- with .Values.verbosity }}
+        - -v
+        - {{ . | quote }}
+        {{- end }}
         image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: gemini-controller
