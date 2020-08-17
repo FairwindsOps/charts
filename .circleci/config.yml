@@ -16,7 +16,7 @@ references:
   kind_configuration_helm3: &kind_configuration_helm3
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
-    command_runner_image: quay.io/helmpack/chart-testing:v3.0.0-beta.2
+    command_runner_image: quay.io/helmpack/chart-testing:v3.0.0
     requires:
       - lint-scripts
       - lint-charts
@@ -63,7 +63,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.0.0-beta.2
+      - image: quay.io/helmpack/chart-testing:v3.0.0
     steps:
       - checkout
       - *setup_environment
@@ -75,7 +75,7 @@ jobs:
             ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.0.0-beta.2
+      - image: quay.io/helmpack/chart-testing:v3.0.0
     steps:
       - checkout
       - *setup_environment
