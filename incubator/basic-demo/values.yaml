@@ -1,7 +1,7 @@
 demo:
   refreshInterval: 500
   title: "Kubernetes Demo"
-  metadata: "Installed with Reckoner"
+  metadata: ""
 
 hpa:
   enabled: true
@@ -22,7 +22,7 @@ pdb:
   maxUnavailable: 1
 
 image:
-  repository: ehazlett/docker-demo
+  repository: quay.io/fairwinds/docker-demo
   tag: latest
   pullPolicy: Always
 
