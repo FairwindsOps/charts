@@ -14,7 +14,11 @@ spec:
       labels:
         app: gemini
     spec:
+      {{- if .Values.rbac.create }}
       serviceAccountName: {{ include "gemini.fullname" . }}-controller
+      {{- else }}
+      serviceAccountName: {{ .Values.rbac.serviceAccountName }}
+      {{- end }}
       containers:
       - command:
         - gemini
