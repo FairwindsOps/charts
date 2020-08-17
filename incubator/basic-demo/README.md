@@ -23,7 +23,7 @@ Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprec
 | `hpa.customMetric.metric` | Custom metric to scale on | `cpu` | yes |
 | `hpa.customMetric.target` | HPA custom metric target  | `30m` | yes |
 | `image.pullPolicy` | Pull Policy  | `Always` | yes |
-| `image.repository` | Image Repository  | `ehazlett/docker-demo` | yes |
+| `image.repository` | Image Repository  | `quay.io/fairwinds/docker-demo` | yes |
 | `image.tag` | Image Tag  | `latest` | yes |
 | `ingress.annotations` | Annotations on Ingress  | `{}` | no |
 | `ingress.enabled` | Whether or not to enable the ingress  | `False` | no |
