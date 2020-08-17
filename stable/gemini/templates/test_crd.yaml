@@ -1,10 +1,11 @@
 {{- if and .Values.testMode (not .Release.IsUpgrade) }}
+{{- if not .Capabilities.APIVersions.Has "snapshot.storage.k8s.io/v1beta1/VolumeSnapshot" }}
 kind: CustomResourceDefinition
 metadata:
   name: volumesnapshots.snapshot.storage.k8s.io
   annotations:
     api-approved.kubernetes.io: "unapproved - test mode"
-    helm.sh/hook: crd-install
+    helm.sh/hook: pre-install
     helm.sh/hook-delete-policy: before-hook-creation
 {{- if .Capabilities.APIVersions.Has "apiextensions.k8s.io/v1/CustomResourceDefinition" }}
 apiVersion: apiextensions.k8s.io/v1
@@ -39,4 +40,5 @@ spec:
     plural: volumesnapshots
     singular: volumesnapshot
     kind: VolumeSnapshot
+{{- end }}
 {{- end }}
