@@ -1,5 +1,5 @@
 {{- if and .Values.testMode (not .Release.IsUpgrade) }}
-{{- if not .Capabilities.APIVersions.Has "snapshot.storage.k8s.io/v1beta1/VolumeSnapshot" }}
+{{- if not (.Capabilities.APIVersions.Has "snapshot.storage.k8s.io/v1beta1/VolumeSnapshot") }}
 kind: CustomResourceDefinition
 metadata:
   name: volumesnapshots.snapshot.storage.k8s.io
