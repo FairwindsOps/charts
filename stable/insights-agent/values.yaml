@@ -116,6 +116,7 @@ goldilocks:
 opa:
   enabled: false
   schedule: "rand * * * *"
+  role: "view"
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa

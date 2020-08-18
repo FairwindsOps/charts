@@ -70,6 +70,7 @@ Parameter | Description | Default
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
 `trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
+`opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
 `goldilocks.installVPA` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true
