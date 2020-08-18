@@ -326,7 +326,19 @@ spec:
 
 `README.md` and `NOTES.txt` are mandatory. `README.md` should contain a table listing all configuration options. `NOTES.txt` should provide accurate and useful information how the chart can be used/accessed.
 
-If you would like to use [helm-docs](https://github.com/norwoodj/helm-docs), it is included in the pre-commit file. Just make sure your chart is not in the `.helmdocsignore` file.
+### helm-docs
+If you would like to use
+[helm-docs](https://github.com/norwoodj/helm-docs)
+to autogenerate your README.md, you'll need to do the following:
+
+* In `values.yaml`, add comments with descriptions
+* Add a `README.md.gotmpl`
+* Install helm-docs (`brew install norwoodj/tap/helm-docs`)
+* Run `helm-docs` in your chart's directory
+
+See the Goldilocks chart for a good example.
+
+If you'd like to manage your README manually, add your chart to the `.helmdocsignore` file.
 
 ### Stable Criteria
 

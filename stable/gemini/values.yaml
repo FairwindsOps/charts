@@ -1,0 +1,24 @@
+image:
+  # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
+  pullPolicy: Always
+  # image.repository -- Repository for the gemini image
+  repository: quay.io/fairwinds/gemini
+  # image.tag -- The gemini image tag to use
+  tag: "0.1"
+
+rbac:
+  # rbac.create -- If true, create a new ServiceAccount and attach permissions
+  create: true
+  # If rbac.create is false, the name of an existing ServiceAccount to use
+  serviceAccountName:
+
+verbosity: 5
+
+# resources -- The resources block for the controller pods
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 25m
+  limits:
+    memory: 512Mi
+    cpu: 200m

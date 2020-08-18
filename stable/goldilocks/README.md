@@ -7,6 +7,12 @@
 
 This is a Helm chart for the Fairwinds [Goldilocks project](https://github.com/FairwindsOps/goldilocks). It provides an easy way to install the controller and the dashboard for viewing resource recommendations in your Kubernetes cluster. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks) for more information.
 
+## Installation
+```bash
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install goldilocks fairwinds-stable/goldilocks --namespace goldilocks
+```
+
 ## Requirements
 
 This has a hard requirement on VPA being installed. Please see the [Goldilocks README](https://github.com/FairwindsOps/goldilocks)
@@ -63,7 +69,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
 | dashboard.tolerations | list | `[]` |  |
 | fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"Always"` |  |
+| image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
 | image.tag | string | `"v2.2.0"` | The goldilocks image tag to use |
 | installVPA | bool | `false` | Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified. |

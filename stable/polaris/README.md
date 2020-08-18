@@ -9,13 +9,13 @@ We recommend installing polaris in its own namespace.
 ### Dashboard
 ```
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install fairwinds-stable/polaris --name polaris --namespace polaris
+helm install polaris fairwinds-stable/polaris --namespace polaris
 ```
 
 ### Webhook
 ```
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install fairwinds-stable/polaris --name polaris --namespace polaris --set webhook.enable=true --set dashboard.enable=false
+helm install polaris fairwinds-stable/polaris --namespace polaris --set webhook.enable=true --set dashboard.enable=false
 ```
 
 ## A Note on Chart Version 0.10.0+
@@ -32,6 +32,7 @@ Parameter | Description | Default
 `image.pullPolicy` | Image pull policy | Always
 `image.pullSecrets` | Image pull secrets | []
 `templateOnly` | | false
+`dashboard.basePath` | Path on which the dashboard is served. | /
 `dashboard.enable` | Whether to run the dashboard | true
 `dashboard.resources` | Requests and limits for the dashboard | (see values.yaml)
 `dashboard.replicas` | Number of replicas | 1

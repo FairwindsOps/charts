@@ -12,7 +12,8 @@ More information about astro is available on [GitHub](https://github.com/Fairwin
 We recommend installing astro in its own namespace and with a simple release name:
 
 ```
-helm install incubator/astro --name astro --namespace astro
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install astro fairwinds-stable/astro --namespace astro
 ```
 ## Changes to chart values in 1.0.0+
 When upgrading from a chart version below 1.0.0 to 1.0.0+ take into account the following changes in values:
