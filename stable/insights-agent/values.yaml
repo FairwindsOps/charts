@@ -128,13 +128,13 @@ workloads:
       cpu: 10m
       memory: 64Mi
 
-releasewatcher:
+nova:
   enabled: true
   schedule: "rand * * * *"
   timeout: 300
   image:
-    repository: quay.io/fairwinds/release-watcher
-    tag: "v1.8"
+    repository: quay.io/fairwinds/nova
+    tag: "1.0"
   resources:
     limits:
       cpu: 100m

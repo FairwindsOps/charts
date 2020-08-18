@@ -1,6 +1,6 @@
-{{- if .Values.releasewatcher.enabled -}} 
-{{- $_ := set . "Label" "release-watcher" }}
-{{- $_ := set . "Config" .Values.releasewatcher }}
+{{- if .Values.nova.enabled -}} 
+{{- $_ := set . "Label" "nova" }}
+{{- $_ := set . "Config" .Values.nova }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -16,7 +16,7 @@ spec:
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             args:
-              - cluster
+              - find
               - -u
               - https://charts.fairwinds.com/stable
               - -u
@@ -27,10 +27,11 @@ spec:
               - https://kubernetes-charts-incubator.storage.googleapis.com
               - -o
               - file
-              - --file-path
-              - /output/release-watcher.json
+              - --output-file
+              - /output/nova.json
               - --helm-version
               - auto
+              - --wide
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

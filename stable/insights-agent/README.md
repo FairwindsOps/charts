@@ -30,7 +30,7 @@ There are several different report types which can be enabled and configured:
 * `kubehunter`
 * `trivy`
 * `kubesec`
-* `releasewatcher`
+* `nova`
 * `rbacreporter`
 * `kubebench`
 * `pluto`
