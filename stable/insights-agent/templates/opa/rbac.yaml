@@ -26,7 +26,7 @@ rules:
 apiVersion: rbac.authorizations.k8s.io/v1beta1
 kind: Role
 metadata:
-  name: {{ ionclude "insights-agent.fullname" . }}-checks-edit
+  name: {{ include "insights-agent.fullname" . }}-checks-edit
   labels:
     app: insights-agent
 rules:
@@ -55,7 +55,6 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}-opa
     namespace: {{ .Release.Namespace }}
-{{- end -}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
