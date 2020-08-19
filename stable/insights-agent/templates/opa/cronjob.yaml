@@ -1,0 +1,37 @@
+{{- if .Values.opa.enabled -}}
+{{- $_ := set . "Label" "opa" }}
+{{- $_ := set . "Config" .Values.opa }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" .Label }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            command: ["fw-opa"]
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{ if .Values.insights.tokenSecretName -}}
+                  name: {{ .Values.insights.tokenSecretName }}
+                  {{ else -}}
+                  name: {{ include "insights-agent.fullname" . }}-token
+                  {{ end -}}
+                  key: token
+            - name: FAIRWINDS_INSIGHTS_HOST
+              value: {{ .Values.insights.host }}
+            - name: FAIRWINDS_ORG
+              value: {{ .Values.insights.organization }}
+            - name: FAIRWINDS_CLUSTER
+              value: {{ .Values.insights.cluster }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+{{- end -}}

@@ -113,6 +113,22 @@ goldilocks:
       cpu: 10m
       memory: 64Mi
 
+opa:
+  enabled: false
+  schedule: "rand * * * *"
+  role: "view"
+  timeout: 300
+  image:
+    repository: quay.io/fairwinds/fw-opa
+    tag: "0.2"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 256Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
 workloads:
   enabled: true
   schedule: "rand * * * *"
@@ -134,7 +150,7 @@ nova:
   timeout: 300
   image:
     repository: quay.io/fairwinds/nova
-    tag: "1.0"
+    tag: "2.0"
   resources:
     limits:
       cpu: 100m
