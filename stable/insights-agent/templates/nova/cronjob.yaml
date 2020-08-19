@@ -16,7 +16,7 @@ spec:
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             command:
-              - nova
+              - /nova
               - find
               - -u
               - https://charts.fairwinds.com/stable
@@ -26,13 +26,10 @@ spec:
               - https://kubernetes-charts.storage.googleapis.com
               - -u
               - https://kubernetes-charts-incubator.storage.googleapis.com
-              - -o
-              - file
               - --output-file
               - /output/nova.json
               - --helm-version
               - auto
-              - --wide
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
