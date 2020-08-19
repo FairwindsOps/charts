@@ -15,7 +15,8 @@ spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
-            args:
+            command:
+              - nova
               - find
               - -u
               - https://charts.fairwinds.com/stable
