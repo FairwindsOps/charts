@@ -1,15 +1,15 @@
-{{- if .Values.releasewatcher.enabled -}}
+{{- if .Values.nova.enabled -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-release-watcher
+  name: {{ include "insights-agent.fullname" . }}-nova
   labels:
     app: insights-agent
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-release-watcher-view
+  name: {{ include "insights-agent.fullname" . }}-nova-view
   labels:
     app: insights-agent
 roleRef:
@@ -18,7 +18,7 @@ roleRef:
   name: view
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-release-watcher
+    name: {{ include "insights-agent.fullname" . }}-nova
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -47,6 +47,6 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-view-secrets
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-release-watcher
+    name: {{ include "insights-agent.fullname" . }}-nova
     namespace: {{ .Release.Namespace }}
 {{- end -}}
