@@ -6,3 +6,6 @@ insights:
 
 goldilocks:
   enabled: false
+
+opa:
+  enabled: true
