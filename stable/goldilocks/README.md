@@ -37,8 +37,6 @@ This will completely remove the VPA and then re-install it using the new method.
 
 ## Chart Values
 
-## Chart Values
-
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | controller.affinity | object | `{}` | Affinity for the controller pods |
