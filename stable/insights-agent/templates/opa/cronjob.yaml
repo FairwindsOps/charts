@@ -29,9 +29,9 @@ spec:
             - name: FAIRWINDS_INSIGHTS_HOST
               value: {{ .Values.insights.host }}
             - name: FAIRWINDS_ORG
-              value: {{ .Values.insights.organization }}
+              value: {{ .Values.insights.organization | quote  }}
             - name: FAIRWINDS_CLUSTER
-              value: {{ .Values.insights.cluster }}
+              value: {{ .Values.insights.cluster | quote }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
