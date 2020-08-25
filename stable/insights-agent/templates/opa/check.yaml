@@ -64,6 +64,7 @@ spec:
     openAPIV3Schema:
       {{ include "customCheckSchema" . | nindent 6 | trim }}
 {{- end }}
+  group: insights.fairwinds.com
   scope: Namespaced
   names:
     # plural name to be used in the URL: /apis/<group>/<version>/<plural>
