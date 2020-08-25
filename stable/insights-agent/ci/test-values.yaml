@@ -8,4 +8,4 @@ goldilocks:
   enabled: false
 
 opa:
-  enabled: true
+  enabled: false
