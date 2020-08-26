@@ -23,7 +23,7 @@ rules:
   - 'get'
   - 'list'
 ---
-apiVersion: rbac.authorizations.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: Role
 metadata:
   name: {{ include "insights-agent.fullname" . }}-checks-edit
