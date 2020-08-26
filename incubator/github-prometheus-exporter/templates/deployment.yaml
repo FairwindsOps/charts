@@ -33,18 +33,37 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          {{- if .Values.config.orgs }}
+            - name: ORGS
+              value: {{ .Values.config.orgs | quote }}
+          {{- end }}
+          {{ if .Values.config.repos }}
+            - name: REPOS
+              value: {{ .Values.config.repos | quote }}
+          {{- end }}
+          {{- if .Values.config.users }}
+            - name: USERS
+              value: {{ .Values.config.users | quote }}
+          {{- end }}
+            - name: GITHUB_TOKEN
+              value: {{ .Values.config.githubToken | quote }}
+            - name: API_URL
+              value: {{ .Values.config.apiURL | quote }}
+            - name: LOG_LEVEL
+              value: {{ .Values.config.logLevel | quote }}
           ports:
-            - name: http
-              containerPort: 80
+            - name: metrics
+              containerPort: 9171
               protocol: TCP
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: metrics
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: metrics
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
