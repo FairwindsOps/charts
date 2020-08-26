@@ -54,7 +54,7 @@ service:
   # service.type -- The type of service to expose
   type: ClusterIP
   # service.port -- The port that the service will listen on
-  port: 80
+  port: 9171
 
 ingress:
   enabled: false

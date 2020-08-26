@@ -34,7 +34,7 @@ A chart for https://github.com/infinityworks/github-exporter
 | replicaCount | int | `1` |  |
 | resources | object | `{}` |  |
 | securityContext | object | `{}` |  |
-| service.port | int | `80` | The port that the service will listen on |
+| service.port | int | `9171` | The port that the service will listen on |
 | service.type | string | `"ClusterIP"` | The type of service to expose |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
