@@ -1,6 +1,6 @@
 *       @bambash @sudermanjr
 
-/incubator/autospotting/ @sudermanjr @bbensky
+/incubator/autospotting/ @sudermanjr
 /incubator/basic-demo/ @sudermanjr
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
@@ -19,7 +19,7 @@
 /stable/rbac-manager/ @robscott @sudermanjr @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
 /stable/gemini/ @rbren @dosullivan
-/stable/gke-node-termination-handler/ @bbensky @hopson
+/stable/gke-node-termination-handler/ @hopson
 /stable/goldilocks/ @sudermanjr @dosullivan
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
-/stable/helm-release-pruner @bbensky @rbren
+/stable/helm-release-pruner @rbren
