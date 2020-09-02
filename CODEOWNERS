@@ -7,6 +7,7 @@
 /incubator/fairwinds-metrics/ @sudermanjr
 /incubator/fluentd/ @dosullivan @crmejia
 /incubator/imagepullsecret-deploy/ @crmejia
+/incubator/insights-admission/ @rbren @makoscafee @baderbuddy
 /incubator/load-generator/ @sudermanjr
 /incubator/node-problem-detector/ @crmejia
 /incubator/opa/ @sudermanjr
