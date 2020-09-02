@@ -21,6 +21,7 @@ The following table lists the configurable parameters of the chart and their def
 | `clusterIssuers.selfsigned.solvers.http.enabled` | Enables http01 validation on selfsigned issuer | `false` | yes |
 | `clusterIssuers.selfsigned.solvers.http.ingressClass` | Use http01 solver with a specific ingress class | `""` | no |
 | `clusterIssuers.selfsigned.solvers.http.ingressName` | Use this solver with a specific ingress name | `""` | no |
+| `clusterIssuers.selfsigned.solvers.http.selector` | selector for http01 solver | `{}` | no |
 | `clusterIssuers.selfsigned.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | no |
 | `clusterIssuers.primary.clusterIssuerName` | Name of the selfsigned clusterIssuer | `Release.Name-primary-valid` | no |
 | `clusterIssuers.primary.enabled` | Whether or not the selfsigned ClusterIssuer is installed | `false` | yes |
@@ -29,6 +30,7 @@ The following table lists the configurable parameters of the chart and their def
 | `clusterIssuers.primary.solvers.http.enabled` | Enables http01 validation on primary issuer | `false` | yes |
 | `clusterIssuers.primary.solvers.http.ingressClass` | Use http01 solver with a specific ingress class | `nginx` | no |
 | `clusterIssuers.primary.solvers.http.ingressName` | Use this solver with a specific ingress name | `""` | no |
+| `clusterIssuers.primary.solvers.http.selector` | selector for http01 solver | `{}` | no |
 | `clusterIssuers.primary.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | no |
 
 ## DNS Solvers Configuration
@@ -78,7 +80,7 @@ The following table lists the configurable parameters of the chart and their def
 
 ## Selector Settings
 
-Selectors allow you to specify multiple DNS challenge solvers and force certain constraints on when specific solvers should be used. The most common will probably be `dnsZones`, but you can also use `dnsNames` to force a set of specific DNS entries to be solved a certain way. Finally, the third way to specify an ingress to use a specific solver is through labels using the `matchLabels` setting which accepts key/value objects to match labels against. An empty selector will attempt to be used for any and all ingress challenges.
+Selectors allow you to specify multiple challenge solvers and force certain constraints on when specific solvers should be used. The most common will probably be `dnsZones`, but you can also use `dnsNames` to force a set of specific entries to be solved a certain way. The third way to specify an ingress to use a specific solver is through labels using the `matchLabels` setting which accepts key/value objects to match labels against. An empty selector will attempt to be used for any and all ingress challenges.
 
 | Parameter | Value Type | Description |
 | --------- | --------- | --------- |
