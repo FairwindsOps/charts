@@ -16,6 +16,8 @@ spec:
     # Name of a secret used to store the ACME account private key
     privateKeySecretRef:
       name: {{ $globalScope.Release.Name }}-selfsigned-private-key
+    {{- if .solvers }}
     {{- include "solverTemplate" .solvers | indent 4 }}
+    {{- end }}
 {{- end }} {{- /* endwith .Values.clusterIssuers.selfsigned */ -}}
 {{- end }} {{- /* endif .Values.clusterIssuers.selfsigned.enabled */ -}}
