@@ -1,0 +1,53 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name:  {{ include "insights-admission.fullname" . }}-certificate-updater
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+  labels:
+    {{ include "insights-admission.labels" . | nindent 4 }}
+    component: certificate-updater
+spec:
+  template:
+    metadata:
+      labels:
+        {{ include "insights-admission.labels" . | nindent 8 }}
+        component: certificate-updater
+    spec:
+      containers:
+      - name: webhook-certificate-generator
+        image: '{{.Values.certificateupdater.image.repository}}:{{.Values.certificateupdater.image.tag}}'
+        imagePullPolicy: Always
+        command:
+          - ./generate_certificate.sh
+          - --service
+          - {{ include "insights-admission.fullname" . }}
+          - --namespace
+          - {{ .Release.Namespace }}
+          - --secret
+          - {{ include "insights-admission.fullname" . }}
+          - --webhook
+          - {{ include "insights-admission.fullname" . }}
+          - --webhook-kind
+          - ValidatingWebhookConfiguration
+        resources:
+          {{- toYaml .Values.certificateupdater.resources | nindent 10 }}
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp/
+          readOnly: false
+        securityContext:
+          allowPrivilegeEscalation: false
+          privileged: false
+          readOnlyRootFilesystem: true
+          runAsNonRoot: true
+          runAsUser: 1000
+          capabilities:
+            drop:
+            - ALL
+      serviceAccountName:  {{ include "insights-admission.fullname" . }}-certificates
+      restartPolicy: Never
+      volumes:
+        - name: tmp
+          emptyDir: {}
