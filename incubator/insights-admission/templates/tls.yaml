@@ -1,0 +1,12 @@
+# The name of this secret is static as it is populated by the webhook pod.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ include "insights-admission.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "insights-admission.labels" . | nindent 4 }}
+type: kubernetes.io/tls
+data:
+  tls.crt: ''
+  tls.key: ''

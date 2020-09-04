@@ -15,7 +15,11 @@ certificateupdater:
     limits:
       cpu: 150m
       memory: 512Mi
-
+insights:
+  organization: ""
+  cluster: ""
+  host: https://insights.fairwinds.com
+  base64token: ""
 image:
   repository: quay.io/fairwinds/insights-admission-controller
   pullPolicy: Always
