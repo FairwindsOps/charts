@@ -93,16 +93,16 @@ workflows:
       - lint-scripts
       - lint-charts
       - rok8s11/kubernetes_e2e_tests:
-          name: "End-To-End Kubernetes 1.15.7 - Helm 3"
-          kind_node_image: "kindest/node:v1.15.7@sha256:e2df133f80ef633c53c0200114fce2ed5e1f6947477dbc83261a6a921169488d"
-          <<: *kind_configuration_helm3
-      - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.16.4 - Helm 3"
           kind_node_image: "kindest/node:v1.16.4@sha256:b91a2c2317a000f3a783489dfb755064177dbc3a0b2f4147d50f04825d016f55"
           <<: *kind_configuration_helm3
       - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.17.0 - Helm 3"
           kind_node_image: "kindest/node:v1.17.0@sha256:9512edae126da271b66b990b6fff768fbb7cd786c7d39e86bdf55906352fdf62"
+          <<: *kind_configuration_helm3
+      - rok8s11/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.18.2 - Helm 3"
+          kind_node_image: "kindest/node:v1.18.2@sha256:7b27a6d0f2517ff88ba444025beae41491b016bc6af573ba467b70c5e8e0d85f"
           <<: *kind_configuration_helm3
       - sync:
           requires:
