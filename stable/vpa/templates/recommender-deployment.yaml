@@ -38,7 +38,7 @@ spec:
           {{- if .Values.recommender.extraArgs }}
           args:
           {{- range $key, $value := .Values.recommender.extraArgs }}
-            - --{{ $key }}={{ $value }}
+            - --{{ $key }}={{ quote $value }}
           {{- end }}
           {{- end }}
           ports:
