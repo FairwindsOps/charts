@@ -1,0 +1,14 @@
+Congratulations on installing the Vertical Pod Autoscaler!
+
+Components Installed:
+{{- if .Values.recommender.enabled }}
+  - recommender
+{{- end }}
+{{- if .Values.updater.enabled }}
+  - updater
+{{- end }}
+{{- if .Values.admissionController.enabled }}
+  - admission-controller
+{{- end }}
+
+To verify functionality, you can try running 'helm -n {{ .Release.Namespace}} test {{ .Release.Name }}'
