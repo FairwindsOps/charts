@@ -72,8 +72,4 @@ This will completely remove the VPA and then re-install it using the new method.
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
 | image.tag | string | `"v2.2.0"` | The goldilocks image tag to use |
-| installVPA | bool | `false` | Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified. |
 | nameOverride | string | `""` |  |
-| reinstallVPA | bool | `false` | Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks. |
-| uninstallVPA | bool | `false` | Used to uninstall the vpa controller. |
-| vpaVersion | string | `"e16a0adef6c7d79a23d57f9bbbef26fc9da59378"` | The git ref to install VPA from. |

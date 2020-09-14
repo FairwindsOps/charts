@@ -1,12 +1,3 @@
-# installVPA -- Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified.
-installVPA: false
-# uninstallVPA -- Used to uninstall the vpa controller.
-uninstallVPA: false
-# reinstallVPA -- Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks.
-reinstallVPA: false
-# vpaVersion -- The git ref to install VPA from.
-vpaVersion: e16a0adef6c7d79a23d57f9bbbef26fc9da59378
-
 image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks
