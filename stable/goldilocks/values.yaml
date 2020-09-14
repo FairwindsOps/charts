@@ -2,6 +2,15 @@ vpa:
   # vpa.enabled -- If true, the vpa will be installed as a sub-chart
   enabled: false
 
+metrics-server:
+  # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
+  enabled: false
+  apiService:
+    create: true
+  extraArgs:
+    - --kubelet-insecure-tls
+    - --kubelet-preferred-address-types=InternalIP
+
 image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks

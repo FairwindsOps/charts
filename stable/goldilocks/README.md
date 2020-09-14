@@ -76,5 +76,9 @@ This will completely remove the VPA and then re-install it using the new method.
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
 | image.tag | string | `"master"` | The goldilocks image tag to use |
+| metrics-server.apiService.create | bool | `true` |  |
+| metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
+| metrics-server.extraArgs[0] | string | `"--kubelet-insecure-tls"` |  |
+| metrics-server.extraArgs[1] | string | `"--kubelet-preferred-address-types=InternalIP"` |  |
 | nameOverride | string | `""` |  |
 | vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
