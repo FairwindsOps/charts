@@ -14,3 +14,8 @@ keywords:
   - goldilocks
   - resources
   - kubernetes
+dependencies:
+- name: vpa
+  version: 0.1.0
+  repository: https://charts.fairwinds.com/stable
+  condition: vpa.enabled

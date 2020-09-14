@@ -1,3 +1,7 @@
+vpa:
+  # vpa.enabled -- If true, the vpa will be installed as a sub-chart
+  enabled: false
+
 image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks

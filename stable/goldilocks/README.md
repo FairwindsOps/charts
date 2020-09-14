@@ -73,3 +73,4 @@ This will completely remove the VPA and then re-install it using the new method.
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
 | image.tag | string | `"master"` | The goldilocks image tag to use |
 | nameOverride | string | `""` |  |
+| vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
