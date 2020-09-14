@@ -71,5 +71,5 @@ This will completely remove the VPA and then re-install it using the new method.
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v2.2.0"` | The goldilocks image tag to use |
+| image.tag | string | `"v3.0.0"` | The goldilocks image tag to use |
 | nameOverride | string | `""` |  |
