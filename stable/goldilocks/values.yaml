@@ -1,3 +1,6 @@
+# uninstallVPA -- Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release.
+uninstallVPA: false
+
 vpa:
   # vpa.enabled -- If true, the vpa will be installed as a sub-chart
   enabled: false

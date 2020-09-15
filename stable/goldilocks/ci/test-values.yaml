@@ -1,8 +1,10 @@
-# For testing, make sure to install the vpa controller
+# For testing, make sure to install the vpa and metrics-server as sub-charts
 vpa:
   enabled: true
+
 metrics-server:
   enabled: true
+
 controller:
   flags:
     on-by-default: true

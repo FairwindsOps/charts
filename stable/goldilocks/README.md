@@ -23,9 +23,11 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Major Version Upgrade Notes
 
-## *POTENTIALLY BREAKING* Upgrading from v2.x.x to v3.x.x
+## *BREAKING* Upgrading from v2.x.x to v3.x.x
 
 In this change, the `installVPA` value and corresponding hooks have been removed in favor of the sub-chart. The recommended path forward is to remove the hook-installed resources and manage the VPA installation with the [Fairwinds VPA Chart](https://github.com/FairwindsOps/charts/tree/master/stable/vpa)
+
+We have kept the `uninstallVPA` flag in place, which will remove a vpa installation that was previously managed by this chart. This flag will be deprecated in a later release.
 
 ## *BREAKING* Upgrading to chart v2.x.x from v1.x.x
 
@@ -81,4 +83,5 @@ This will completely remove the VPA and then re-install it using the new method.
 | metrics-server.extraArgs[0] | string | `"--kubelet-insecure-tls"` |  |
 | metrics-server.extraArgs[1] | string | `"--kubelet-preferred-address-types=InternalIP"` |  |
 | nameOverride | string | `""` |  |
+| uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
 | vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
