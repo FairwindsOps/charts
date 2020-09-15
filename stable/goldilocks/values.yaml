@@ -15,7 +15,7 @@ image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks
   # image.tag -- The goldilocks image tag to use
-  tag: master
+  tag: v3.0.0
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
