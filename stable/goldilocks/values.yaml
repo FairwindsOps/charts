@@ -1,17 +1,21 @@
-# installVPA -- Whether or not to install the VPA controller from the vpa repository. Only installs the recommender. If enabled on upgrades, it will also upgrade the VPA to the version specified.
-installVPA: false
-# uninstallVPA -- Used to uninstall the vpa controller.
+# uninstallVPA -- Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release.
 uninstallVPA: false
-# reinstallVPA -- Used to upgrade or reinstall the VPA. Enables both the uninstall and install hooks.
-reinstallVPA: false
-# vpaVersion -- The git ref to install VPA from.
-vpaVersion: e16a0adef6c7d79a23d57f9bbbef26fc9da59378
+
+vpa:
+  # vpa.enabled -- If true, the vpa will be installed as a sub-chart
+  enabled: false
+
+metrics-server:
+  # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
+  enabled: false
+  apiService:
+    create: true
 
 image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks
   # image.tag -- The goldilocks image tag to use
-  tag: v2.2.0
+  tag: v3.0.0
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 

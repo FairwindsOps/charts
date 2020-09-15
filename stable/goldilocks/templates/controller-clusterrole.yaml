@@ -36,4 +36,5 @@ rules:
       - 'list'
       - 'create'
       - 'delete'
+      - 'update'
 {{- end }}
