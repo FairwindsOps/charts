@@ -10,9 +10,6 @@ metrics-server:
   enabled: false
   apiService:
     create: true
-  extraArgs:
-    - --kubelet-insecure-tls
-    - --kubelet-preferred-address-types=InternalIP
 
 image:
   # image.repository -- Repository for the goldilocks image
