@@ -38,16 +38,16 @@ spec:
             containerPort: 8443
             protocol: TCP
           - name: health
-            containerPort: 8080
+            containerPort: 8081
             protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: health
-          readinessProbe:
-            httpGet:
-              path: /readyz
-              port: health
+          #livenessProbe:
+          #  httpGet:
+          #    path: /healthz
+          #    port: health
+          #readinessProbe:
+          #  httpGet:
+          #    path: /readyz
+          #    port: health
           volumeMounts:
           - name: secret
             mountPath: /opt/cert/
@@ -59,9 +59,9 @@ spec:
                 name: {{ include "insights-admission.fullname" . }}-token
                 key: token
           - name: FAIRWINDS_ORGANIZATION
-            value: {{ .Values.insights.organization }}
+            value: {{ .Values.insights.organization | quote }}
           - name: FAIRWINDS_CLUSTER
-            value: {{ .Values.insights.cluster }}
+            value: {{ .Values.insights.cluster | quote }}
           - name: FAIRWINDS_HOSTNAME
             value: {{ .Values.insights.host }}
           resources:

@@ -80,7 +80,7 @@ affinity: {}
 rules:
 - apiGroups:
   - apps
-  apiVersion:
+  apiVersions:
   - v1
   - v1beta1
   - v1beta2
