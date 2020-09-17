@@ -37,14 +37,17 @@ spec:
           - name: https
             containerPort: 8443
             protocol: TCP
+          - name: health
+            containerPort: 8080
+            protocol: TCP
           livenessProbe:
             httpGet:
               path: /healthz
-              port: https
+              port: health
           readinessProbe:
             httpGet:
               path: /readyz
-              port: https
+              port: health
           volumeMounts:
           - name: secret
             mountPath: /opt/cert/
