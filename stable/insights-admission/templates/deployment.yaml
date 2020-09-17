@@ -37,15 +37,14 @@ spec:
           - name: https
             containerPort: 8443
             protocol: TCP
-          # TODO re add the liveness and readiness probes
-          # livenessProbe:
-          #   httpGet:
-          #     path: /healthz
-          #     port: https
-          # readinessProbe:
-          #   httpGet:
-          #     path: /readyz
-          #     port: https
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: https
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: https
           volumeMounts:
           - name: secret
             mountPath: /opt/cert/
