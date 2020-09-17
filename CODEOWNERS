@@ -7,7 +7,6 @@
 /incubator/fairwinds-metrics/ @sudermanjr
 /incubator/fluentd/ @dosullivan @crmejia
 /incubator/imagepullsecret-deploy/ @crmejia
-/incubator/insights-admission/ @rbren @makoscafee @baderbuddy
 /incubator/load-generator/ @sudermanjr
 /incubator/node-problem-detector/ @crmejia
 /incubator/opa/ @sudermanjr
@@ -22,6 +21,7 @@
 /stable/gemini/ @rbren @dosullivan
 /stable/gke-node-termination-handler/ @hopson
 /stable/goldilocks/ @sudermanjr @dosullivan
+/stable/insights-admission/ @rbren @makoscafee @baderbuddy
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
 /stable/helm-release-pruner @rbren
 /stable/vertical-pod-autoscaler @sudermanjr
