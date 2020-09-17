@@ -1,1 +1,5 @@
-1. Get the application URL by running these commands:
+The Insights Admission Controller is now installed!
+
+This controller can be configured by using the Insights API.
+
+More information can be found in the documentation https://insights.docs.fairwinds.com/

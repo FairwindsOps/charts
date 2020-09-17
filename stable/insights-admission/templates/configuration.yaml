@@ -21,42 +21,6 @@ webhooks:
       operator: DoesNotExist
   objectSelector: {}
   rules:
-  - apiGroups:
-    - apps
-    apiVersions:
-    - v1
-    - v1beta1
-    - v1beta2
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - daemonsets
-    - deployments
-    - statefulsets
-    scope: Namespaced
-  - apiGroups:
-    - batch
-    apiVersions:
-    - v1
-    - v1beta1
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - jobs
-    - cronjobs
-    scope: Namespaced
-  - apiGroups:
-    - ""
-    apiVersions:
-    - v1
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - pods
-    - replicationcontrollers
-    scope: Namespaced
+  {{- toYaml .Values.rules | nident 2 }}
   sideEffects: None
-  timeoutSeconds: 30
+  timeoutSeconds: 10

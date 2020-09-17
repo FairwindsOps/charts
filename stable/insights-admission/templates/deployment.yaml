@@ -34,9 +34,9 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: https
-              containerPort: 8443
-              protocol: TCP
+          - name: https
+            containerPort: 8443
+            protocol: TCP
           # TODO re add the liveness and readiness probes
           # livenessProbe:
           #   httpGet:

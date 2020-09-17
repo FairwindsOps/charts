@@ -1,0 +1,17 @@
+# Fairwinds Insights Admission Controller
+
+## Intro
+
+This is an Admission Controller to reject deployment of objects into your Kubernetes cluster that woudld create dangerous action items in [Fairwinds Insights](https://insights.fairwinds.com)
+
+## Installation
+```bash
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install gemini fairwinds-stable/insights-admission \
+  --namespace insights-admission \
+  --set insights.organization=acme-co \
+  --set insights.cluster=staging \
+  --set insights.base64token="dG9rZW4="
+```
+
+{{ template "chart.valuesSection" . }}
