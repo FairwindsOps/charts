@@ -24,7 +24,7 @@ image:
   repository: quay.io/fairwinds/insights-admission-controller
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: "bb-admission-controller"
+  tag: "0.1"
 
 imagePullSecrets: []
 nameOverride: ""
