@@ -8,6 +8,8 @@ metadata:
   labels:
     {{ include "insights-admission.labels" . | nindent 4 }}
     component: certificate-updater
+  annotations:
+    helm.sh/hook: pre-install
 spec:
   template:
     metadata:
