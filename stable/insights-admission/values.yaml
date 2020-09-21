@@ -77,6 +77,7 @@ tolerations: []
 
 affinity: {}
 
+# rules -- An array of rules for the ValidatingWebhookConfiguration. Each requries a set of apiGroups, apiVersions, operations, resources, and a scope.
 rules:
 - apiGroups:
   - apps
