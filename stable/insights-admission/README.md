@@ -14,7 +14,7 @@ helm install gemini fairwinds-stable/insights-admission \
   --set insights.base64token="dG9rZW4="
 ```
 
-## Values
+## Chart Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
