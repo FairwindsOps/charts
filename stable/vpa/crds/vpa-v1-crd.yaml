@@ -32,7 +32,6 @@ spec:
       properties:
         spec:
           type: object
-          required: []
           properties:
             targetRef:
               type: object
