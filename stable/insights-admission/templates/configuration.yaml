@@ -2,6 +2,8 @@ apiVersion: admissionregistration.k8s.io/v1beta1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: {{ include "insights-admission.fullname" . }}
+  annotations:
+    helm.sh/hook: pre-install
 webhooks:
 - admissionReviewVersions:
   - v1beta1

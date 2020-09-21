@@ -3,6 +3,8 @@ kind: ServiceAccount
 metadata:
   name: {{ include "insights-admission.fullname" . }}-certificates
   namespace: {{ .Release.Namespace }}
+  annotations:
+    helm.sh/hook: pre-install
   labels:
     {{- include "insights-admission.labels" . | nindent 4 }}
 ---
@@ -12,6 +14,8 @@ metadata:
   name: {{ include "insights-admission.fullname" . }}-webhook
   labels:
     {{- include "insights-admission.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install
 rules:
   - apiGroups:
       - ''
@@ -53,6 +57,8 @@ metadata:
   name: {{ include "insights-admission.fullname" . }}-webhook
   labels:
     {{- include "insights-admission.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -69,6 +75,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "insights-admission.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install
 rules:
   # required for current controller-runtime bootstrap method
   - apiGroups:
@@ -86,6 +94,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "insights-admission.labels" . | nindent 4 }}
+  annotations:
+    helm.sh/hook: pre-install
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role

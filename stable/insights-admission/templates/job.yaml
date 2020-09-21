@@ -10,6 +10,7 @@ metadata:
     component: certificate-updater
   annotations:
     helm.sh/hook: pre-install
+    helm.sh/hook-weight: "5"
 spec:
   template:
     metadata:
