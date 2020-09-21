@@ -32,7 +32,7 @@ helm install gemini fairwinds-stable/insights-admission \
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` |  |
-| image.tag | string | `"bb-admission-controller"` |  |
+| image.tag | string | `"0.1"` |  |
 | imagePullSecrets | list | `[]` |  |
 | insights.base64token | string | `""` |  |
 | insights.cluster | string | `""` |  |
@@ -48,9 +48,9 @@ helm install gemini fairwinds-stable/insights-admission \
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"128Mi"` |  |
 | rules[0].apiGroups[0] | string | `"apps"` |  |
-| rules[0].apiVersion[0] | string | `"v1"` |  |
-| rules[0].apiVersion[1] | string | `"v1beta1"` |  |
-| rules[0].apiVersion[2] | string | `"v1beta2"` |  |
+| rules[0].apiVersions[0] | string | `"v1"` |  |
+| rules[0].apiVersions[1] | string | `"v1beta1"` |  |
+| rules[0].apiVersions[2] | string | `"v1beta2"` |  |
 | rules[0].operations[0] | string | `"CREATE"` |  |
 | rules[0].operations[1] | string | `"UPDATE"` |  |
 | rules[0].resources[0] | string | `"daemonsets"` |  |
