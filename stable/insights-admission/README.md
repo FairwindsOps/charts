@@ -57,4 +57,5 @@ helm install gemini fairwinds-stable/insights-admission \
 | serviceAccount.annotations | object | `{}` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `""` |  |
+| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.6"}}` | Deploy test deployment |
 | tolerations | list | `[]` |  |
