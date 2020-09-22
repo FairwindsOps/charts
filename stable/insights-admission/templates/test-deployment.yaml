@@ -1,0 +1,56 @@
+{{- if .Values.test.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-test
+  annotations:
+    helm.sh/hook: pre-install
+  labels:
+    component: test
+    {{- include "insights-admission.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      component: test
+      {{- include "insights-admission.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        component: test
+        {{- include "insights-admission.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          command:
+          - "python"
+          - "-c"
+          - 'from http.server import BaseHTTPRequestHandler, HTTPServer\nclass FileHandler(BaseHTTPRequestHandler):\n    def do_GET(self):\n        content = "{}".encode(encoding="utf-8")\n        self.send_response(200, "success")\n        self.send_header("Content-type", "application/json")\n        self.send_header("Content-length", len(content))\n        self.end_headers()\n        self.wfile.write(content)\n        return\n    def do_POST(self):\n        content = "{}".encode(encoding="utf-8")\n        self.send_response(200, "success")\n        self.send_header("Content-type", "application/json")\n        self.send_header("Content-length", len(content))\n        self.end_headers()\n        self.wfile.write(content)\n        return\nserver = HTTPServer(('', 8080), FileHandler)\nserver.serve_forever()'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-test
+  annotations:
+    helm.sh/hook: pre-install
+  labels:
+    component: test
+    {{- include "insights-admission.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    component: test
+    {{- include "insights-admission.selectorLabels" . | nindent 4 }}
+{- end -}}

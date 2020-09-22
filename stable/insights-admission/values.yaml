@@ -116,3 +116,10 @@ rules:
   - pods
   - replicationcontrollers
   scope: Namespaced
+
+  # test -- Deploy test deployment
+test:
+  enabled: false
+  image:
+    repository: "python"
+    tag: "3.6"

@@ -10,6 +10,7 @@ spec:
 {{- end }}
   selector:
     matchLabels:
+      component: controller
       {{- include "insights-admission.selectorLabels" . | nindent 6 }}
   template:
     metadata:
@@ -18,6 +19,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
+        component: controller
         {{- include "insights-admission.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
@@ -40,14 +42,14 @@ spec:
           - name: health
             containerPort: 8081
             protocol: TCP
-          #livenessProbe:
-          #  httpGet:
-          #    path: /healthz
-          #    port: health
-          #readinessProbe:
-          #  httpGet:
-          #    path: /readyz
-          #    port: health
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
           volumeMounts:
           - name: secret
             mountPath: /opt/cert/
