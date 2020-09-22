@@ -57,7 +57,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "insights-admission.fullname" . }}-test
+  name: insights-admission-test
   annotations:
     helm.sh/hook: pre-install
   labels:
