@@ -53,4 +53,4 @@ spec:
   selector:
     component: test
     {{- include "insights-admission.selectorLabels" . | nindent 4 }}
-{- end -}}
+{{- end -}}
