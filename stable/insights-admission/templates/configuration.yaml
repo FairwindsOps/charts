@@ -28,6 +28,6 @@ webhooks:
       operator: DoesNotExist
   objectSelector: {}
   rules:
-  {{- toYaml .Values.rules | nindent 2 }}
+  {{- concat .Values.rules .Values.defaultRules | toYaml | nindent 2 }}
   sideEffects: None
   timeoutSeconds: 10

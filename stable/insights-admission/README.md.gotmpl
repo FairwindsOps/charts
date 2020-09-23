@@ -17,4 +17,20 @@ helm install insights-admission fairwinds-stable/insights-admission \
   --set insights.base64token="dG9rZW4="
 ```
 
+If you have an additional type of object to monitor with this admission controller then you can add a values file that looks like this.
+
+```
+rules:
+- apiGroups:
+  - custom
+  apiVersions:
+  - v1
+  operations:
+  - CREATE
+  - UPDATE
+  resources:
+  - customResource
+  scope: Namespaced
+```
+
 {{ template "chart.valuesSection" . }}
