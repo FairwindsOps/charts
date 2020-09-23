@@ -2,6 +2,8 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: {{ include "insights-admission.fullname" . }}-cert
+  annotations:
+    "helm.sh/hook": pre-install
 spec:
   dnsNames:
   - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc
@@ -15,6 +17,8 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: {{ include "insights-admission.fullname" . }}-selfsigned
+  annotations:
+    "helm.sh/hook": pre-install
 spec:
   selfSigned: {}
 
