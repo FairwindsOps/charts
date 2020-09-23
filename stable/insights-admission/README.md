@@ -23,12 +23,6 @@ helm install gemini fairwinds-stable/insights-admission \
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
-| certificateupdater.image.repository | string | `"newrelic/k8s-webhook-cert-manager"` |  |
-| certificateupdater.image.tag | string | `"1.3.0"` |  |
-| certificateupdater.resources.limits.cpu | string | `"150m"` |  |
-| certificateupdater.resources.limits.memory | string | `"512Mi"` |  |
-| certificateupdater.resources.requests.cpu | string | `"100m"` |  |
-| certificateupdater.resources.requests.memory | string | `"128Mi"` |  |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` |  |
