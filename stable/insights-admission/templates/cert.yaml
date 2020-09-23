@@ -1,0 +1,21 @@
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-cert
+spec:
+  dnsNames:
+  - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc
+  - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: {{ include "insights-admission.fullname" . }}-selfsigned
+  secretName: {{ include "insights-admission.fullname" . }}
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-selfsigned
+spec:
+  selfSigned: {}
+
+
