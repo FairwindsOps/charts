@@ -83,4 +83,8 @@ spec:
       volumes:
       - name: secret
         secret:
+          {{- with .Values.secretName }}
+          secretName: {{ . }}
+          {{- else }}
           secretName: {{ include "insights-admission.fullname" . }}
+          {{- end }}

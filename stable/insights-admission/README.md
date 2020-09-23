@@ -5,9 +5,12 @@
 This is an Admission Controller to reject deployment of objects into your Kubernetes cluster that woudld create dangerous action items in [Fairwinds Insights](https://insights.fairwinds.com)
 
 ## Installation
+
+A valid TLS certificate is required for this admission controller to work. If you have cert-manager installed then everything should work out of the box. If you don't use cert-manager and don't want to install it then you can supply a CA Bundle with the `caBundle` parameter and create a TLS secret and pass the name of that secret as `secretName`.
+
 ```bash
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install gemini fairwinds-stable/insights-admission \
+helm install insights-admission fairwinds-stable/insights-admission \
   --namespace insights-admission \
   --set insights.organization=acme-co \
   --set insights.cluster=staging \
@@ -23,6 +26,7 @@ helm install gemini fairwinds-stable/insights-admission \
 | autoscaling.maxReplicas | int | `100` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
+| caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` |  |
@@ -42,6 +46,7 @@ helm install gemini fairwinds-stable/insights-admission \
 | resources.requests.cpu | string | `"100m"` |  |
 | resources.requests.memory | string | `"128Mi"` |  |
 | rules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for the ValidatingWebhookConfiguration. Each requries a set of apiGroups, apiVersions, operations, resources, and a scope. |
+| secretName | string | `""` |  |
 | securityContext.capabilities.drop[0] | string | `"ALL"` |  |
 | securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | securityContext.runAsNonRoot | bool | `true` |  |
