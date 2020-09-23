@@ -117,4 +117,3 @@ test:
   image:
     repository: "python"
     tag: "3.6"
-
