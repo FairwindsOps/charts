@@ -48,7 +48,7 @@ rules:
 | fullnameOverride | string | `""` | Long name of the release to override. |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |
-| image.tag | string | `"0.1"` | The Insights admission controller tag to use. |
+| image.tag | string | `""` | The Insights admission controller tag to use. Defaults to the Chart's AppVersion |
 | imagePullSecrets | list | `[]` | Secrets to use when pulling this image. |
 | insights.base64token | string | `""` | The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded. |
 | insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
