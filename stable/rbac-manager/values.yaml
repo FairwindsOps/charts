@@ -3,6 +3,7 @@ image:
   tag: v0.9.4
   pullPolicy: Always
   imagePullSecrets: []
+#   - myRegistryKeySecretName
 
 resources:
   requests:
