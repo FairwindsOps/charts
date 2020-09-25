@@ -20,8 +20,8 @@ image:
   repository: quay.io/fairwinds/insights-admission-controller
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as 'Always'
   pullPolicy: Always
-  # image.tag -- The Insights admission controller tag to use.
-  tag: "0.1"
+  # image.tag -- The Insights admission controller tag to use. Defaults to the Chart's AppVersion
+  tag: ""
 
 # imagePullSecrets -- Secrets to use when pulling this image.
 imagePullSecrets: []
