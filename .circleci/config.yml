@@ -21,6 +21,7 @@ references:
     requires:
       - lint-scripts
       - lint-charts
+      - insights
       - check-helm-docs
     filters:
       branches:
@@ -75,7 +76,17 @@ jobs:
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
             ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug
+
+  insights:
+    docker:
+      - image: quay.io/reactiveops/ci-images:v11-stretch
+    steps:
+      - checkout
+      - run:
+          name: Run Insights Checks
+          command: |
             curl https://insights.fairwinds.com/v0/insights-ci.sh | bash
+
   sync:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.0.0
@@ -96,6 +107,7 @@ workflows:
       - check-helm-docs
       - lint-scripts
       - lint-charts
+      - insights
       - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.16.15 - Helm 3"
           kind_node_image: "kindest/node:v1.16.15@sha256:a89c771f7de234e6547d43695c7ab047809ffc71a0c3b65aa54eda051c45ed20"
@@ -116,6 +128,7 @@ workflows:
           requires:
             - lint-scripts
             - lint-charts
+            - insights
             - check-helm-docs
           filters:
             branches:
