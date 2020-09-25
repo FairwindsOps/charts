@@ -26,13 +26,15 @@ image:
 # imagePullSecrets -- Secrets to use when pulling this image.
 imagePullSecrets: []
 
+# nameOverride -- Overrides the name of the release.
 nameOverride: ""
+# fullnameOverride -- Long name of the release to override.
 fullnameOverride: ""
 
 serviceAccount:
   # serviceAccount.create -- Specifies whether a service account should be created
   create: true
-  # serviceAccount.annootations -- Annotations to add to the service account
+  # serviceAccount.annotations -- Annotations to add to the service account
   annotations: {}
   # serviceAccount.name -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
@@ -69,14 +71,21 @@ resources:
     memory: 128Mi
 
 autoscaling:
+  # autoscaling.enabled -- Autoscale instead of a static number of pods running.
   enabled: false
-  minReplicas: 1
+  # autoscaling.minReplicas -- Minimum number of pods to run.
+  minReplicas: 2
+  # autoscaling.maxReplicas -- Maximum number of pods to run.
   maxReplicas: 20
+  # autoscaling.targetCPUUtilizationPercentage -- Target CPU to scale towards.
   targetCPUUtilizationPercentage: 80
-  # targetMemoryUtilizationPercentage: 80
+  # autoscaling.targetMemoryUtilizationPercentage -- Target memory to scale towards.
+  targetMemoryUtilizationPercentage: null
 
+# nodeSelector -- nodSelector to add to the controller.
 nodeSelector: {}
 
+# tolerations -- Toleratations to add to the controller.
 tolerations: []
 
 # affinity -- Pod affinity/anti-affinity rules
