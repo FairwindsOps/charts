@@ -28,8 +28,8 @@ cronjobs:
 
 cronjobExecutor:
   image:
-    repository: boxboat/kubectl
-    tag: "1.16.6"
+    repository: quay.io/fairwinds/kubectl
+    tag: "1.19"
   resources:
     limits:
       cpu: 100m
