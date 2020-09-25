@@ -2,38 +2,49 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 1
+# replicaCount -- The number of pods to run for the admission contrller.
+replicaCount: 2
 
 insights:
+  # insights.organization -- The name of your Organization from Fairwinds Insights
   organization: ""
+  # insights.cluster -- The name of your cluster from Fairwinds Insights
   cluster: ""
+  # insights.host -- Override the hostname for Fairwinds Insights
   host: https://insights.fairwinds.com
+  # insights.base64token -- The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded.
   base64token: ""
 
 image:
+  # image.repository -- Repository for the Insights Admission Controller image
   repository: quay.io/fairwinds/insights-admission-controller
+  # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as 'Always'
   pullPolicy: Always
-  # Overrides the image tag whose default is the chart appVersion.
+  # image.tag -- The Insights admission controller tag to use.
   tag: "0.1"
 
+# imagePullSecrets -- Secrets to use when pulling this image.
 imagePullSecrets: []
+
 nameOverride: ""
 fullnameOverride: ""
 
 serviceAccount:
-  # Specifies whether a service account should be created
+  # serviceAccount.create -- Specifies whether a service account should be created
   create: true
-  # Annotations to add to the service account
+  # serviceAccount.annootations -- Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # serviceAccount.name -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
 
+# podAnnotations -- Annotations to add to each pod.
 podAnnotations: {}
 
+# podSecurityContext -- Security Context for the entire pod.
 podSecurityContext: {}
   # fsGroup: 2000
 
+# securityContext -- Security Context for the container.
 securityContext:
   capabilities:
     drop:
@@ -43,9 +54,12 @@ securityContext:
   runAsUser: 15000
 
 service:
+  # service.type -- Type of service to create.
   type: ClusterIP
+  # service.port -- Port to use for the service.
   port: 443
 
+# resources -- A resources block for the controller.
 resources:
   limits:
     cpu: 1
@@ -57,7 +71,7 @@ resources:
 autoscaling:
   enabled: false
   minReplicas: 1
-  maxReplicas: 100
+  maxReplicas: 20
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
@@ -65,6 +79,7 @@ nodeSelector: {}
 
 tolerations: []
 
+# affinity -- Pod affinity/anti-affinity rules
 affinity: {}
 
 # rules -- An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
@@ -112,6 +127,7 @@ defaultRules:
 
 # caBundle -- If you are providing your own certificate then this is the Certificate Authority for that certificate
 caBundle: ""
+# secretName -- If you are providing your own certificate then this is the name of the secret holding the certificate.
 secretName: ""
 
 # test -- Used for chart CI only - deploys a test deployment

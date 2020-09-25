@@ -37,41 +37,35 @@ rules:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| affinity | object | `{}` |  |
+| affinity | object | `{}` | Pod affinity/anti-affinity rules |
 | autoscaling.enabled | bool | `false` |  |
-| autoscaling.maxReplicas | int | `100` |  |
+| autoscaling.maxReplicas | int | `20` |  |
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` |  |
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
 | defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
 | fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"Always"` |  |
-| image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` |  |
-| image.tag | string | `"0.1"` |  |
-| imagePullSecrets | list | `[]` |  |
-| insights.base64token | string | `""` |  |
-| insights.cluster | string | `""` |  |
-| insights.host | string | `"https://insights.fairwinds.com"` |  |
-| insights.organization | string | `""` |  |
+| image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |
+| image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |
+| image.tag | string | `"0.1"` | The Insights admission controller tag to use. |
+| imagePullSecrets | list | `[]` | Secrets to use when pulling this image. |
+| insights.base64token | string | `""` | The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded. |
+| insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
+| insights.host | string | `"https://insights.fairwinds.com"` | Override the hostname for Fairwinds Insights |
+| insights.organization | string | `""` | The name of your Organization from Fairwinds Insights |
 | nameOverride | string | `""` |  |
 | nodeSelector | object | `{}` |  |
-| podAnnotations | object | `{}` |  |
-| podSecurityContext | object | `{}` |  |
-| replicaCount | int | `1` |  |
-| resources.limits.cpu | int | `1` |  |
-| resources.limits.memory | string | `"2Gi"` |  |
-| resources.requests.cpu | string | `"100m"` |  |
-| resources.requests.memory | string | `"128Mi"` |  |
+| podAnnotations | object | `{}` | Annotations to add to each pod. |
+| podSecurityContext | object | `{}` | Security Context for the entire pod. |
+| replicaCount | int | `2` | The number of pods to run for the admission contrller. |
+| resources | object | `{"limits":{"cpu":1,"memory":"2Gi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the controller. |
 | rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
 | secretName | string | `""` |  |
-| securityContext.capabilities.drop[0] | string | `"ALL"` |  |
-| securityContext.readOnlyRootFilesystem | bool | `true` |  |
-| securityContext.runAsNonRoot | bool | `true` |  |
-| securityContext.runAsUser | int | `15000` |  |
-| service.port | int | `443` |  |
-| service.type | string | `"ClusterIP"` |  |
+| securityContext | object | `{"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":15000}` | Security Context for the container. |
+| service.port | int | `443` | Port to use for the service. |
+| service.type | string | `"ClusterIP"` | Type of service to create. |
 | serviceAccount.annotations | object | `{}` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `""` |  |
+| serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
+| serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.6"}}` | Deploy test deployment |
 | tolerations | list | `[]` |  |
