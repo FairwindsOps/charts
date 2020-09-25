@@ -4,3 +4,4 @@ metadata:
   name: {{ include "insights-admission.fullname" . }}-token
 data:
   token: {{ required "You must set base64token" .Values.insights.base64token | quote }}
+

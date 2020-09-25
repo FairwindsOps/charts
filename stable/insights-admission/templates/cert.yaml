@@ -22,6 +22,7 @@ metadata:
   name: {{ include "insights-admission.fullname" . }}-selfsigned
   annotations:
     "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
 spec:
   selfSigned: {}
 ---
