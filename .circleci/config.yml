@@ -87,8 +87,7 @@ jobs:
       - run:
           name: Run Insights Checks
           command: |
-            ./insights-ci.sh
-            #curl https://insights.fairwinds.com/v0/insights-ci.sh | bash
+            curl https://insights.fairwinds.com/v0/insights-ci.sh | bash
 
   sync:
     docker:
