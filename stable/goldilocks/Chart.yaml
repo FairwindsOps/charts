@@ -4,7 +4,7 @@ description: |
   A Helm chart for running Fairwinds Goldilocks. See https://github.com/FairwindsOps/goldilocks
 name: goldilocks
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/goldilocks/icon.png
-version: 3.0.0
+version: 3.0.1
 maintainers:
   - name: sudermanjr
   - name: lucasreed
@@ -16,7 +16,7 @@ keywords:
   - kubernetes
 dependencies:
 - name: vpa
-  version: 0.1.0
+  version: 0.1.1
   repository: https://charts.fairwinds.com/stable
   condition: vpa.enabled
 - name: metrics-server
