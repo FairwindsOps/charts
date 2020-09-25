@@ -68,5 +68,5 @@ rules:
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
-| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.6"}}` | Used for chart CI only - deploys a test deployment |
+| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.8-alpine"}}` | Used for chart CI only - deploys a test deployment |
 | tolerations | list | `[]` | Toleratations to add to the controller. |
