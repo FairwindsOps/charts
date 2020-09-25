@@ -114,7 +114,7 @@ defaultRules:
 caBundle: ""
 secretName: ""
 
-# test -- Deploy test deployment
+# test -- Used for chart CI only - deploys a test deployment
 test:
   enabled: false
   image:
