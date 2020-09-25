@@ -144,4 +144,4 @@ test:
   enabled: false
   image:
     repository: "python"
-    tag: "3.6"
+    tag: "3.8-alpine"
