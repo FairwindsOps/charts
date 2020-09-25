@@ -27,6 +27,12 @@ spec:
     {{- end }}
     spec:
       serviceAccountName: {{ template "rbac-manager.fullname" . }}
+      {{- if .Values.image.imagePullSecrets }}
+      imagePullSecrets:
+        {{- range .Values.image.imagePullSecrets }}
+        - name: {{ . }}
+        {{- end}}
+      {{- end}}
 {{- if .Values.priorityClassName }}
       priorityClassName: {{ .Values.priorityClassName }}
 {{- end }}
@@ -34,10 +40,6 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-{{- if .Values.image.imagePullSecrets }}
-        imagePullSecrets:
-        {{ toYaml .Values.image.imagePullSecrets }}
-{{- end }}
         readinessProbe:
           httpGet:
             scheme: HTTP
