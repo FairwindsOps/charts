@@ -1,0 +1,11 @@
+options:
+  organization: fairwinds-production
+
+manifests:
+  helm:
+  - name: insights-agent
+    path: ./stable/insights-agent
+    valuesFile: stable/insights-agent/ci/test-values.yaml
+  - name: insights-admission
+    path: ./stable/insights-admission
+    valuesFile: stable/insights-admission/ci/test-values.yaml

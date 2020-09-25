@@ -27,6 +27,7 @@ references:
         only: /.*/
       tags:
         ignore: /.*/
+
 jobs:
   check-helm-docs:
     executor: rok8s11/ci-images
@@ -74,6 +75,7 @@ jobs:
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
             ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug
+            curl https://insights.fairwinds.com/v0/insights-ci.sh | bash
   sync:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.0.0
@@ -86,6 +88,7 @@ jobs:
       - run:
           name: sync-fw
           command: scripts/repo-sync-fw.sh
+
 workflows:
   version: 2
   test-and-sync:
