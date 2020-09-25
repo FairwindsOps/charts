@@ -1,0 +1,7 @@
+insights:
+  host: http://insights-admission-test:8080
+  organization: acme-co
+  cluster: us-east-1
+  base64token: Zm9vCg==
+test:
+  enabled: true

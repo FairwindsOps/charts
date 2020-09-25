@@ -1,0 +1,76 @@
+{{- if .Values.test.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-test
+  annotations:
+    helm.sh/hook: pre-install
+  labels:
+    component: test
+    {{- include "insights-admission.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      component: test
+      {{- include "insights-admission.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        component: test
+        {{- include "insights-admission.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          command:
+          - "python"
+          - "-c"
+          - |
+            from http.server import BaseHTTPRequestHandler, HTTPServer
+            class FileHandler(BaseHTTPRequestHandler):
+              def do_GET(self):
+                content = "{}".encode(encoding="utf-8")
+                self.send_response(200, "success")
+                self.send_header("Content-type", "application/json")
+                self.send_header("Content-length", len(content))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+              def do_POST(self):
+                content = "{}".encode(encoding="utf-8")
+                self.send_response(200, "success")
+                self.send_header("Content-type", "application/json")
+                self.send_header("Content-length", len(content))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+            server = HTTPServer(('', 8080), FileHandler)
+            server.serve_forever()
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insights-admission-test
+  annotations:
+    helm.sh/hook: pre-install
+  labels:
+    component: test
+    {{- include "insights-admission.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    component: test
+    {{- include "insights-admission.selectorLabels" . | nindent 4 }}
+{{- end -}}
