@@ -1,0 +1,90 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights-admission.fullname" . }}
+  labels:
+    {{- include "insights-admission.labels" . | nindent 4 }}
+spec:
+{{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      component: controller
+      {{- include "insights-admission.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+    {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+        component: controller
+        {{- include "insights-admission.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "insights-admission.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - name: https
+            containerPort: 8443
+            protocol: TCP
+          - name: health
+            containerPort: 8081
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
+          volumeMounts:
+          - name: secret
+            mountPath: /opt/cert/
+            readOnly: true
+          env:
+          - name: FAIRWINDS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: {{ include "insights-admission.fullname" . }}-token
+                key: token
+          - name: FAIRWINDS_ORGANIZATION
+            value: {{ .Values.insights.organization | quote }}
+          - name: FAIRWINDS_CLUSTER
+            value: {{ .Values.insights.cluster | quote }}
+          - name: FAIRWINDS_HOSTNAME
+            value: {{ .Values.insights.host }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: secret
+        secret:
+          {{- with .Values.secretName }}
+          secretName: {{ . }}
+          {{- else }}
+          secretName: {{ include "insights-admission.fullname" . }}
+          {{- end }}

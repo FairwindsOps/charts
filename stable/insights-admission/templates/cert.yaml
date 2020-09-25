@@ -1,0 +1,54 @@
+{{- if not .Values.secretName -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-cert
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "6"
+spec:
+  commonName: {{ include "insights-admission.fullname" .}}.{{ .Release.Namespace}}.svc
+  dnsNames:
+  - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc
+  - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  issuerRef:
+    kind: Issuer
+    name: {{ include "insights-admission.fullname" . }}-ca
+  secretName: {{ include "insights-admission.fullname" . }}
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-selfsigned
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "0"
+spec:
+  selfSigned: {}
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-ca-cert
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "4"
+spec:
+  commonName: {{ include "insights-admission.fullname" .}}-ca
+  isCA: true
+  issuerRef:
+    kind: Issuer
+    name: {{ include "insights-admission.fullname" . }}-selfsigned
+  secretName: {{ include "insights-admission.fullname" . }}-ca
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-ca
+  annotations:
+    "helm.sh/hook": pre-install
+    "helm.sh/hook-weight": "5"
+spec:
+  ca:
+    secretName: {{ include "insights-admission.fullname" . }}-ca
+{{- end -}}

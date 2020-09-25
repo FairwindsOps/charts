@@ -1,0 +1,147 @@
+# Default values for insights-admission.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# replicaCount -- The number of pods to run for the admission contrller.
+replicaCount: 2
+
+insights:
+  # insights.organization -- The name of your Organization from Fairwinds Insights
+  organization: ""
+  # insights.cluster -- The name of your cluster from Fairwinds Insights
+  cluster: ""
+  # insights.host -- Override the hostname for Fairwinds Insights
+  host: https://insights.fairwinds.com
+  # insights.base64token -- The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded.
+  base64token: ""
+
+image:
+  # image.repository -- Repository for the Insights Admission Controller image
+  repository: quay.io/fairwinds/insights-admission-controller
+  # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as 'Always'
+  pullPolicy: Always
+  # image.tag -- The Insights admission controller tag to use. Defaults to the Chart's AppVersion
+  tag: ""
+
+# imagePullSecrets -- Secrets to use when pulling this image.
+imagePullSecrets: []
+
+# nameOverride -- Overrides the name of the release.
+nameOverride: ""
+# fullnameOverride -- Long name of the release to override.
+fullnameOverride: ""
+
+serviceAccount:
+  # serviceAccount.create -- Specifies whether a service account should be created
+  create: true
+  # serviceAccount.annotations -- Annotations to add to the service account
+  annotations: {}
+  # serviceAccount.name -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# podAnnotations -- Annotations to add to each pod.
+podAnnotations: {}
+
+# podSecurityContext -- Security Context for the entire pod.
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# securityContext -- Security Context for the container.
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 15000
+
+service:
+  # service.type -- Type of service to create.
+  type: ClusterIP
+  # service.port -- Port to use for the service.
+  port: 443
+
+# resources -- A resources block for the controller.
+resources:
+  limits:
+    cpu: 1
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+autoscaling:
+  # autoscaling.enabled -- Autoscale instead of a static number of pods running.
+  enabled: false
+  # autoscaling.minReplicas -- Minimum number of pods to run.
+  minReplicas: 2
+  # autoscaling.maxReplicas -- Maximum number of pods to run.
+  maxReplicas: 20
+  # autoscaling.targetCPUUtilizationPercentage -- Target CPU to scale towards.
+  targetCPUUtilizationPercentage: 80
+  # autoscaling.targetMemoryUtilizationPercentage -- Target memory to scale towards.
+  targetMemoryUtilizationPercentage: null
+
+# nodeSelector -- nodSelector to add to the controller.
+nodeSelector: {}
+
+# tolerations -- Toleratations to add to the controller.
+tolerations: []
+
+# affinity -- Pod affinity/anti-affinity rules
+affinity: {}
+
+# rules -- An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+rules: []
+
+# defaultRules -- An array of rules for commons types for the ValidatingWebhookConfiguration
+defaultRules:
+- apiGroups:
+  - apps
+  apiVersions:
+  - v1
+  - v1beta1
+  - v1beta2
+  operations:
+  - CREATE
+  - UPDATE
+  resources:
+  - daemonsets
+  - deployments
+  - statefulsets
+  scope: Namespaced
+- apiGroups:
+  - batch
+  apiVersions:
+  - v1
+  - v1beta1
+  operations:
+  - CREATE
+  - UPDATE
+  resources:
+  - jobs
+  - cronjobs
+  scope: Namespaced
+- apiGroups:
+  - ""
+  apiVersions:
+  - v1
+  operations:
+  - CREATE
+  - UPDATE
+  resources:
+  - pods
+  - replicationcontrollers
+  scope: Namespaced
+
+# caBundle -- If you are providing your own certificate then this is the Certificate Authority for that certificate
+caBundle: ""
+# secretName -- If you are providing your own certificate then this is the name of the secret holding the certificate.
+secretName: ""
+
+# test -- Used for chart CI only - deploys a test deployment
+test:
+  enabled: false
+  image:
+    repository: "python"
+    tag: "3.6"

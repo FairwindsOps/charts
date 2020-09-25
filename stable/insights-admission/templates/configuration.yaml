@@ -1,0 +1,33 @@
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ include "insights-admission.fullname" . }}
+  annotations:
+    helm.sh/hook: pre-install
+    "helm.sh/hook-weight": "10"
+    {{- if not .Values.secretName }}
+    cert-manager.io/inject-apiserver-ca: "true"
+    cert-manager.io/inject-ca-from: "{{ .Release.Namespace }}/{{ include "insights-admission.fullname" . }}-cert"
+    {{- end }}
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    caBundle: {{ .Values.caBundle | quote }} 
+    service:
+      name: {{ include "insights-admission.fullname" . }}
+      namespace: {{ .Release.Namespace }}
+      path: /validate
+      port: 443
+  failurePolicy: Ignore
+  matchPolicy: Exact
+  name: insights.fairwinds.com
+  namespaceSelector:
+    matchExpressions:
+    - key: control-plane
+      operator: DoesNotExist
+  objectSelector: {}
+  rules:
+  {{- concat .Values.rules .Values.defaultRules | toYaml | nindent 2 }}
+  sideEffects: None
+  timeoutSeconds: 10

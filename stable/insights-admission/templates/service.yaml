@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "insights-admission.fullname" . }}
+  labels:
+    component: controller
+    {{- include "insights-admission.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    component: controller
+    {{- include "insights-admission.selectorLabels" . | nindent 4 }}
