@@ -21,7 +21,6 @@ references:
     requires:
       - lint-scripts
       - lint-charts
-      - insights
       - check-helm-docs
     filters:
       branches:
@@ -83,11 +82,11 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 18.09.3
+          version: 18.09
       - run:
           name: Run Insights Checks
           command: |
-            curl https://insights.fairwinds.com/v0/insights-ci.sh | bash
+            curl -L https://insights.fairwinds.com/v0/insights-ci.sh | bash
 
   sync:
     docker:
@@ -130,7 +129,6 @@ workflows:
           requires:
             - lint-scripts
             - lint-charts
-            - insights
             - check-helm-docs
           filters:
             branches:
