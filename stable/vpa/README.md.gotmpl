@@ -6,7 +6,7 @@ This chart is entirely based on the manifests and various scripts in the `deploy
 
 ## Tests and Debugging
 
-There are a few tests included with this chart that can help debug why your installation of VPA isn't working as expected. You can run `helm -n <Release Namespace> <Release Name>` to run them.
+There are a few tests included with this chart that can help debug why your installation of VPA isn't working as expected. You can run `helm test -n <Release Namespace> <Release Name>` to run them.
 
 * `checkpoint-crd-available` - Checks for the verticalpodautoscalercheckpoints CRD
 * `crd-available` - Checks for the verticalpodautoscalers CRD

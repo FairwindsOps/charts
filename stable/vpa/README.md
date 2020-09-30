@@ -32,7 +32,7 @@ helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
 ```
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
