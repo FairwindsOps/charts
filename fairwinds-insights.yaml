@@ -12,6 +12,7 @@ manifests:
     path: ./stable/insights-admission
     valuesFile: stable/insights-admission/ci/test-values.yaml
 
+# TODO: exemptions are not yet supported
 exemptions:
   - image: quay.io/fairwinds/nova
     report: trivy
