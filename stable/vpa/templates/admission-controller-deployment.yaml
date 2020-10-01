@@ -26,6 +26,10 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       serviceAccountName: {{ include "vpa.serviceAccountName" . }}-admission-controller
       securityContext:
         {{- toYaml .Values.admissionController.podSecurityContext | nindent 8 }}
