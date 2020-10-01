@@ -33,7 +33,7 @@ rules:
   scope: Namespaced
 ```
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
