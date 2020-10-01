@@ -44,7 +44,7 @@ spec:
                 self.wfile.write(content)
                 return
               def do_POST(self):
-                content = "{}".encode(encoding="utf-8")
+                content = '{"Success": true}'.encode(encoding="utf-8")
                 self.send_response(200, "success")
                 self.send_header("Content-type", "application/json")
                 self.send_header("Content-length", len(content))
