@@ -6,9 +6,8 @@ metadata:
 spec:
   commonName: {{ include "insights-admission.fullname" .}}.{{ .Release.Namespace}}.svc
   dnsNames:
-  - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}
   - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc
-  - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc.cluster.local
+  - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
   issuerRef:
     kind: Issuer
     name: {{ include "insights-admission.fullname" . }}-selfsigned

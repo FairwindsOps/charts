@@ -149,6 +149,8 @@ affinity: {}
 caBundle: ""
 # secretName -- If you are providing your own certificate then this is the name of the secret holding the certificate.
 secretName: ""
+# clusterDomain -- The base domain to use for cluster DNS
+clusterDomain: cluster.local
 
 # test -- Used for chart CI only - deploys a test deployment
 test:
