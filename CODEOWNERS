@@ -5,7 +5,7 @@
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
 /incubator/fairwinds-metrics/ @sudermanjr
-/incubator/fluentd/ @dosullivan @crmejia
+/incubator/fluentd/ @coreypobrien @crmejia
 /incubator/imagepullsecret-deploy/ @crmejia
 /incubator/load-generator/ @sudermanjr
 /incubator/node-problem-detector/ @crmejia
@@ -18,7 +18,7 @@
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @robscott @sudermanjr @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
-/stable/gemini/ @rbren @dosullivan
+/stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @hopson
 /stable/goldilocks/ @sudermanjr @dosullivan
 /stable/insights-admission/ @rbren @makoscafee @baderbuddy
