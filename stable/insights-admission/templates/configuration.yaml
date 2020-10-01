@@ -11,21 +11,22 @@ webhooks:
 - admissionReviewVersions:
   - v1beta1
   clientConfig:
+    {{- if .Values.caBundle }}
     caBundle: {{ .Values.caBundle | quote }}
+    {{- end }}
     service:
       name: {{ include "insights-admission.fullname" . }}
       namespace: {{ .Release.Namespace }}
       path: /validate
       port: 443
-  failurePolicy: {{ .Values.failurePolicy }}
-  matchPolicy: Exact
+  failurePolicy: {{ .Values.webhookConfig.failurePolicy }}
+  matchPolicy: {{ .Values.webhookConfig.matchPolicy }}
   name: insights.fairwinds.com
   namespaceSelector:
-    matchExpressions:
-    - key: control-plane
-      operator: DoesNotExist
-  objectSelector: {}
+    {{ .Values.webhookConfig.namespaceSelector | toYaml | nindent 4 }}
+  objectSelector:
+    {{ .Values.webhookConfig.objectSelector | toYaml | nindent 4 }}
   rules:
-  {{- concat .Values.rules .Values.defaultRules | toYaml | nindent 2 }}
+  {{- concat .Values.webhookConfig.rules .Values.webhookConfig.defaultRules | toYaml | nindent 2 }}
   sideEffects: None
   timeoutSeconds: 10

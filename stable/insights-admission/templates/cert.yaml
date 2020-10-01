@@ -19,24 +19,4 @@ metadata:
   name: {{ include "insights-admission.fullname" . }}-selfsigned
 spec:
   selfSigned: {}
----
-apiVersion: cert-manager.io/v1alpha2
-kind: Certificate
-metadata:
-  name: {{ include "insights-admission.fullname" . }}-ca-cert
-spec:
-  commonName: {{ include "insights-admission.fullname" .}}-ca
-  isCA: true
-  issuerRef:
-    kind: Issuer
-    name: {{ include "insights-admission.fullname" . }}-selfsigned
-  secretName: {{ include "insights-admission.fullname" . }}-ca
----
-apiVersion: cert-manager.io/v1alpha2
-kind: Issuer
-metadata:
-  name: {{ include "insights-admission.fullname" . }}-ca
-spec:
-  ca:
-    secretName: {{ include "insights-admission.fullname" . }}-ca
 {{- end -}}
