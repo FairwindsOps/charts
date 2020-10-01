@@ -3,9 +3,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: {{ include "insights-admission.fullname" . }}-cert
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "6"
 spec:
   commonName: {{ include "insights-admission.fullname" .}}.{{ .Release.Namespace}}.svc
   dnsNames:
@@ -20,9 +17,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: {{ include "insights-admission.fullname" . }}-selfsigned
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "0"
 spec:
   selfSigned: {}
 ---
@@ -30,9 +24,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Certificate
 metadata:
   name: {{ include "insights-admission.fullname" . }}-ca-cert
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "4"
 spec:
   commonName: {{ include "insights-admission.fullname" .}}-ca
   isCA: true
@@ -45,9 +36,6 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: {{ include "insights-admission.fullname" . }}-ca
-  annotations:
-    "helm.sh/hook": pre-install
-    "helm.sh/hook-weight": "5"
 spec:
   ca:
     secretName: {{ include "insights-admission.fullname" . }}-ca
