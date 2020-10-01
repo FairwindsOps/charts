@@ -41,7 +41,7 @@ helm upgrade goldilocks fairwinds-stable/goldilocks --set reinstallVPA=true
 
 This will completely remove the VPA and then re-install it using the new method.
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
