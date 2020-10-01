@@ -44,6 +44,7 @@ rules:
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU to scale towards. |
 | autoscaling.targetMemoryUtilizationPercentage | string | `nil` | Target memory to scale towards. |
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
+| clusterDomain | string | `"cluster.local"` | The base domain to use for cluster DNS |
 | fullnameOverride | string | `""` | Long name of the release to override. |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |
