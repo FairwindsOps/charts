@@ -45,6 +45,7 @@ rules:
 | autoscaling.targetMemoryUtilizationPercentage | string | `nil` | Target memory to scale towards. |
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
 | defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
+| failurePolicy | string | `"Fail"` |  |
 | fullnameOverride | string | `""` | Long name of the release to override. |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |

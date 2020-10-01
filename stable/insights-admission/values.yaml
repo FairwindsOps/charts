@@ -5,6 +5,8 @@
 # replicaCount -- The number of pods to run for the admission contrller.
 replicaCount: 2
 
+failurePolicy: Fail
+
 insights:
   # insights.organization -- The name of your Organization from Fairwinds Insights
   organization: ""

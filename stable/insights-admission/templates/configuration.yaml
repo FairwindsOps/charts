@@ -19,7 +19,7 @@ webhooks:
       namespace: {{ .Release.Namespace }}
       path: /validate
       port: 443
-  failurePolicy: Ignore
+  failurePolicy: {{ .Values.failurePolicy }}
   matchPolicy: Exact
   name: insights.fairwinds.com
   namespaceSelector:
