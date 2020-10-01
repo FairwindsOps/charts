@@ -32,7 +32,7 @@ helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
 ```
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
@@ -51,10 +51,10 @@ helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
 | admissionController.resources | object | `{"limits":{"cpu":"200m","memory":"500Mi"},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
 | admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
 | admissionController.tolerations | list | `[]` |  |
-| priorityClassName | string | `""` | To set the priorityclass for all pods |
 | fullnameOverride | string | `""` | A template override for the fullname |
 | imagePullSecrets | list | `[]` | A list of image pull secrets to be used for all pods |
 | nameOverride | string | `""` | A template override for the name |
+| priorityClassName | string | `""` | To set the priorityclass for all pods |
 | rbac.create | bool | `true` | If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components. |
 | recommender.affinity | object | `{}` |  |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
