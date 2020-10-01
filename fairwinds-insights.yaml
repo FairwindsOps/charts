@@ -11,3 +11,17 @@ manifests:
   - name: insights-admission
     path: ./stable/insights-admission
     valuesFile: stable/insights-admission/ci/test-values.yaml
+
+exemptions:
+  - image: quay.io/fairwinds/nova
+    report: trivy
+    reason: Nova's image is built from the scratch base image, and is unscannable
+  - filename: stable/insights-admission/templates/test-deployment.yaml
+    report: polaris
+    reason: This file is specifically meant to trigger Polaris findings
+  - filename: stable/insights-agent/templates/kube-bench/cronjob.yaml
+    report: polaris
+    checks:
+      - hostPIDSet
+      - runAsRootAllowed
+    reason: kube-bench needs special permissions to do its job
