@@ -22,7 +22,7 @@ helm install gemini fairwinds-stable/gemini --namespace gemini
 
 Your cluster must support the [VolumeSnapshot API](https://kubernetes.io/docs/concepts/storage/volume-snapshots/)
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|

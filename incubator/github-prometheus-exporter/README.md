@@ -2,7 +2,7 @@
 
 A chart for https://github.com/infinityworks/github-exporter
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|

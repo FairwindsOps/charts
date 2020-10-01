@@ -19,7 +19,6 @@ pruneProfiles:
     namespaceFilter: "^feature-.+"
 ```
 
-
 ## Upgrading
 
 ### v3.0.0
@@ -32,7 +31,7 @@ In addition, this version moves the image to the Fairwinds repository in Quay. S
 
 Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage access.  This is disabled by default.  If enabled with the `rbac_manager.enabled`, the release should be purged and re-installed to ensure helm manages the resources.
 
-## Chart Values
+## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
