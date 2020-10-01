@@ -4,7 +4,6 @@ metadata:
   name: {{ include "insights-admission.fullname" . }}
   annotations:
     {{- if not .Values.secretName }}
-    cert-manager.io/inject-apiserver-ca: "true"
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "insights-admission.fullname" . }}-cert
     {{- end }}
 webhooks:
