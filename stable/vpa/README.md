@@ -51,7 +51,7 @@ helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
 | admissionController.resources | object | `{"limits":{"cpu":"200m","memory":"500Mi"},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
 | admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
 | admissionController.tolerations | list | `[]` |  |
-| priorityClassName | string | `""` | To set the priorityclass for all vpa pods |
+| priorityClassName | string | `""` | To set the priorityclass for all pods |
 | fullnameOverride | string | `""` | A template override for the fullname |
 | imagePullSecrets | list | `[]` | A list of image pull secrets to be used for all pods |
 | nameOverride | string | `""` | A template override for the name |

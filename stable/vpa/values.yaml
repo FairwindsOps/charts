@@ -4,7 +4,7 @@
 
 # imagePullSecrets -- A list of image pull secrets to be used for all pods
 imagePullSecrets: []
-# priorityClassName -- To set the priorityclass for all vpa pods
+# priorityClassName -- To set the priorityclass for all pods
 priorityClassName:
 # nameOverride -- A template override for the name
 nameOverride: ""
