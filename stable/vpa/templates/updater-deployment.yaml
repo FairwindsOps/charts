@@ -27,7 +27,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.priorityClassName }}
-      priorityClassName:
+      priorityClassName: {{ . }}
       {{- end }}
       serviceAccountName: {{ include "vpa.serviceAccountName" . }}-updater
       securityContext:
