@@ -39,12 +39,12 @@ rules:
 |-----|------|---------|-------------|
 | affinity | object | `{}` | Pod affinity/anti-affinity rules |
 | autoscaling.enabled | bool | `false` | Autoscale instead of a static number of pods running. |
-| autoscaling.maxReplicas | int | `20` | Maximum number of pods to run. |
+| autoscaling.maxReplicas | int | `5` | Maximum number of pods to run. |
 | autoscaling.minReplicas | int | `2` | Minimum number of pods to run. |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU to scale towards. |
 | autoscaling.targetMemoryUtilizationPercentage | string | `nil` | Target memory to scale towards. |
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
-| defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
+| clusterDomain | string | `"cluster.local"` | The base domain to use for cluster DNS |
 | fullnameOverride | string | `""` | Long name of the release to override. |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |
@@ -60,7 +60,6 @@ rules:
 | podSecurityContext | object | `{}` | Security Context for the entire pod. |
 | replicaCount | int | `2` | The number of pods to run for the admission contrller. |
 | resources | object | `{"limits":{"cpu":1,"memory":"2Gi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the controller. |
-| rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
 | secretName | string | `""` | If you are providing your own certificate then this is the name of the secret holding the certificate. |
 | securityContext | object | `{"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":15000}` | Security Context for the container. |
 | service.port | int | `443` | Port to use for the service. |
@@ -70,3 +69,9 @@ rules:
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.8-alpine"}}` | Used for chart CI only - deploys a test deployment |
 | tolerations | list | `[]` | Toleratations to add to the controller. |
+| webhookConfig.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
+| webhookConfig.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
+| webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
+| webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
+| webhookConfig.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
+| webhookConfig.rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
