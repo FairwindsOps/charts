@@ -54,6 +54,7 @@ helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
 | fullnameOverride | string | `""` | A template override for the fullname |
 | imagePullSecrets | list | `[]` | A list of image pull secrets to be used for all pods |
 | nameOverride | string | `""` | A template override for the name |
+| priorityClassName | string | `""` | To set the priorityclass for all pods |
 | rbac.create | bool | `true` | If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components. |
 | recommender.affinity | object | `{}` |  |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
