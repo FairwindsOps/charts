@@ -31,6 +31,9 @@ Parameter | Description | Default
 `image.tag` | Image tag | 1.2
 `image.pullPolicy` | Image pull policy | Always
 `image.pullSecrets` | Image pull secrets | []
+`rbac.enabled` | Whether RBAC resources (ClusterRole, ClusterRolebinding) should be created | true
+`serviceAccount.create` | Specifies whether a service account should be created | true
+`serviceAccount.name` | The name of the service account to use | polaris.fullname
 `templateOnly` | | false
 `dashboard.basePath` | Path on which the dashboard is served. | /
 `dashboard.enable` | Whether to run the dashboard | true
