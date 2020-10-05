@@ -6,6 +6,17 @@ image:
 
 templateOnly: false
 
+rbac:
+  # Specifies whether RBAC resources (ClusterRole, ClusterRolebinding) should be created
+  enabled: true
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name:
+
 dashboard:
   enable: true
   replicas: 1
