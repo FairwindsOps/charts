@@ -54,3 +54,14 @@ app.kubernetes.io/name: {{ include "polaris.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Name of the service account to use
+*/}}
+{{- define "polaris.serviceAccountName" -}}
+{{- if .Values.serviceAccount.create -}}
+    {{ default (include "polaris.fullname" .) .Values.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
