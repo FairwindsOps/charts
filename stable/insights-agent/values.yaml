@@ -236,3 +236,11 @@ pluto:
     requests:
       cpu: 10m
       memory: 64Mi
+
+# test -- Used for chart CI only - deploys a test deployment
+test:
+  enabled: false
+  image:
+    repository: "python"
+    tag: "3.6"
+    pullPolicy: "Always"
