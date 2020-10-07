@@ -37,7 +37,10 @@ spec:
             class FileHandler(BaseHTTPRequestHandler):
               def do_GET(self):
                 content = "{}".encode(encoding="utf-8")
-                self.send_response(200, "success")
+                if "trivy" in self.path:
+                  self.send_response(404, "Not Found")
+                else:
+                  self.send_response(200, "success")
                 self.send_header("Content-type", "application/json")
                 self.send_header("Content-length", len(content))
                 self.end_headers()
