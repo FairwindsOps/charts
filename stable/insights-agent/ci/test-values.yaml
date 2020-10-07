@@ -12,3 +12,6 @@ opa:
 
 test:
   enabled: true
+
+trivy:
+  maxScansPerRun: 2

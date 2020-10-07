@@ -10,7 +10,7 @@ metadata:
 spec:
   template:
     spec:
-      serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-exector
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
       restartPolicy: Never
       containers:
       - command:
