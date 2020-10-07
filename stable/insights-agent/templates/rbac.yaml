@@ -12,7 +12,7 @@ rules:
 {{- if .Values.test.enabled }}
 - apiGroups: ["batch"]
   resources: ["jobs"]
-  verbs: ["get", "list"]
+  verbs: ["get", "list", "watch"]
 {{- end }}
 {{- if .Values.uploader.sendFailures }}
 - apiGroups: [""]
