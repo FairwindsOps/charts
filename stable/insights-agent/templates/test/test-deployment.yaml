@@ -62,7 +62,7 @@ metadata:
     helm.sh/hook: pre-install
   labels:
     component: test
-    {{- include "insights-agent.labels" . | nindent 4 }}
+    app: insights-agent
 spec:
   type: ClusterIP
   ports:
@@ -72,5 +72,5 @@ spec:
       name: http
   selector:
     component: test
-    {{- include "insights-agent.selectorLabels" . | nindent 4 }}
+    app: insights-agent
 {{- end -}}
