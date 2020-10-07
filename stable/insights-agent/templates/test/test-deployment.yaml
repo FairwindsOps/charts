@@ -7,17 +7,17 @@ metadata:
     helm.sh/hook: pre-install
   labels:
     component: test
-    {{- include "insights-agent.labels" . | nindent 4 }}
+    app: insights-agent
 spec:
   selector:
     matchLabels:
       component: test
-      {{- include "insights-agent.selectorLabels" . | nindent 6 }}
+      app: insights-agent
   template:
     metadata:
       labels:
         component: test
-        {{- include "insights-agent.selectorLabels" . | nindent 8 }}
+        app: insights-agent
     spec:
       containers:
         - name: {{ .Chart.Name }}
