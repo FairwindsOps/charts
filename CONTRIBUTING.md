@@ -333,8 +333,8 @@ to autogenerate your README.md, you'll need to do the following:
 
 * In `values.yaml`, add comments with descriptions
 * Add a `README.md.gotmpl`
-* Install helm-docs (`brew install norwoodj/tap/helm-docs`)
-* Run `helm-docs` in your chart's directory
+* Install helm-docs (`brew install norwoodj/tap/helm-docs@1.3.0`)
+* Run `helm-docs --sort-values-order=file` in your chart's directory
 
 See the Goldilocks chart for a good example.
 
