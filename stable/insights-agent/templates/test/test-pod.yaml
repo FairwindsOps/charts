@@ -1,0 +1,38 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "insights-agent.fullname" . }}
+  labels:
+    app: insights-agent
+    component: test-job
+  annotations:
+    "helm.sh/hook": test
+spec:
+  serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
+  restartPolicy: Never
+  containers:
+  - command:
+    - sh
+    args:
+    - -c
+    - |
+      kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl wait --for=condition=complete job/~job~ --timeout=480s
+      exit 1
+    image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
+    imagePullPolicy: Always
+    name: test
+    resources:
+      limits:
+        cpu: 1
+        memory: 1Gi
+      requests:
+        cpu: 100m
+        memory: 128Mi
+    securityContext:
+      allowPrivilegeEscalation: false
+      privileged: false
+      readOnlyRootFilesystem: true
+      runAsNonRoot: true
+      capabilities:
+        drop:
+        - ALL
