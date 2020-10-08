@@ -9,6 +9,11 @@ rules:
 - apiGroups: [""]
   resources: ["pods"]
   verbs: ["get"]
+{{- if .Values.test.enabled }}
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "list", "watch"]
+{{- end }}
 {{- if .Values.uploader.sendFailures }}
 - apiGroups: [""]
   resources: ["pods/logs"]
