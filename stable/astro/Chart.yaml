@@ -14,4 +14,6 @@ maintainers:
     email: micah@fastmail.us
   - name: lucasreed
     email: luke@fairwinds.com
+  - name: baderbuddy
+    email: bader@fairwinds.com
 engine: gotpl
