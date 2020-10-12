@@ -18,6 +18,10 @@ spec:
       labels:
         app.kubernetes.io/name: {{ include "astro.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- if .Values.custom_config.enabled }}
+      annotations:
+        checksum/configmap: {{ include (print $.Template.BasePath "/configmap-data.yaml") . | sha256sum }}
+      {{- end }}
     spec:
       {{- if .Values.deployment.serviceAccount.create }}
       serviceAccountName: {{ include "astro.fullname" . }}
