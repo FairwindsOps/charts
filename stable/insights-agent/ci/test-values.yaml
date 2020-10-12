@@ -1,11 +1,17 @@
 insights:
-  host: https://insights.fairwinds.com
+  host: http://insights-agent-test:8080
   organization: acme-co
   cluster: us-east-1
-  base64token: Zm9vCg==
+  base64token: Zm9v
 
 goldilocks:
   enabled: false
 
 opa:
   enabled: true
+
+test:
+  enabled: true
+
+trivy:
+  maxScansPerRun: 2
