@@ -1,5 +1,5 @@
 {{ define "cronjob-spec" }}
-schedule: {{ regexReplaceAll "^rand" .Config.schedule (regexReplaceAll "^[0,6-9]" (randNumeric 2) "") | }}
+schedule: {{ regexReplaceAll "^rand" .Config.schedule (regexReplaceAll "^[0,6-9]" (randNumeric 2) "") | quote }}
 concurrencyPolicy: Forbid
 failedJobsHistoryLimit: {{ .Values.cronjobs.failedJobsHistoryLimit }}
 successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
@@ -10,6 +10,7 @@ successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
 dnsPolicy: {{ . }}
 {{- end }}
 backoffLimit: {{ .Values.cronjobs.backoffLimit }}
+activeDeadlineSeconds: {{ .Config.timeout }}
 {{- end }}
 
 {{ define "job-template-spec" }}
