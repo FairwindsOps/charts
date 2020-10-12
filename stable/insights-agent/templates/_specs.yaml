@@ -10,7 +10,7 @@ successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
 dnsPolicy: {{ . }}
 {{- end }}
 backoffLimit: {{ .Values.cronjobs.backoffLimit }}
-activeDeadlineSeconds: {{ .Config.timeout }}
+activeDeadlineSeconds: {{ mul .Config.timeout .Values.cronjobs.backoffLimit }}
 {{- end }}
 
 {{ define "job-template-spec" }}
