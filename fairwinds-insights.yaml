@@ -1,0 +1,28 @@
+# TODO: move this file once it's configurable
+
+options:
+  organization: fairwinds-production
+
+manifests:
+  helm:
+  - name: insights-agent
+    path: ./stable/insights-agent
+    valuesFile: stable/insights-agent/ci/test-values.yaml
+  - name: insights-admission
+    path: ./stable/insights-admission
+    valuesFile: stable/insights-admission/ci/test-values.yaml
+
+# TODO: exemptions are not yet supported
+exemptions:
+  - image: quay.io/fairwinds/nova
+    report: trivy
+    reason: Nova's image is built from the scratch base image, and is unscannable
+  - filename: stable/insights-admission/templates/test-deployment.yaml
+    report: polaris
+    reason: This file is specifically meant to trigger Polaris findings
+  - filename: stable/insights-agent/templates/kube-bench/cronjob.yaml
+    report: polaris
+    checks:
+      - hostPIDSet
+      - runAsRootAllowed
+    reason: kube-bench needs special permissions to do its job
