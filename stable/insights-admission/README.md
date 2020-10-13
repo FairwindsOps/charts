@@ -67,7 +67,7 @@ rules:
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
-| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.6"}}` | Used for chart CI only - deploys a test deployment |
+| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.8-alpine"}}` | Used for chart CI only - deploys a test deployment |
 | tolerations | list | `[]` | Toleratations to add to the controller. |
 | webhookConfig.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
 | webhookConfig.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
