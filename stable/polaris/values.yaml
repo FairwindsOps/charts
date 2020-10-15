@@ -37,6 +37,8 @@ dashboard:
     limits:
       cpu: 150m
       memory: 512Mi
+  #Priority Class name to be used in deployment if provided.
+  priorityClassName:
 
 webhook:
   enable: false
