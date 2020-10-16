@@ -1,9 +1,12 @@
-# Default values for insights-admission.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-# replicaCount -- The number of pods to run for the admission contrller.
-replicaCount: 2
+insights:
+  # insights.organization -- The name of your Organization from Fairwinds Insights
+  organization: ""
+  # insights.cluster -- The name of your cluster from Fairwinds Insights
+  cluster: ""
+  # insights.host -- Override the hostname for Fairwinds Insights
+  host: https://insights.fairwinds.com
+  # insights.base64token -- The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded.
+  base64token: ""
 
 webhookConfig:
   # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration
@@ -59,15 +62,14 @@ webhookConfig:
     - replicationcontrollers
     scope: Namespaced
 
-insights:
-  # insights.organization -- The name of your Organization from Fairwinds Insights
-  organization: ""
-  # insights.cluster -- The name of your cluster from Fairwinds Insights
-  cluster: ""
-  # insights.host -- Override the hostname for Fairwinds Insights
-  host: https://insights.fairwinds.com
-  # insights.base64token -- The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded.
-  base64token: ""
+# resources -- A resources block for the controller.
+resources:
+  limits:
+    cpu: 1
+    memory: 2Gi
+  requests:
+    cpu: 100m
+    memory: 128Mi
 
 image:
   # image.repository -- Repository for the Insights Admission Controller image
@@ -79,6 +81,21 @@ image:
 
 # imagePullSecrets -- Secrets to use when pulling this image.
 imagePullSecrets: []
+
+# replicaCount -- The number of pods to run for the admission contrller.
+replicaCount: 2
+
+autoscaling:
+  # autoscaling.enabled -- Autoscale instead of a static number of pods running.
+  enabled: false
+  # autoscaling.minReplicas -- Minimum number of pods to run.
+  minReplicas: 2
+  # autoscaling.maxReplicas -- Maximum number of pods to run.
+  maxReplicas: 5
+  # autoscaling.targetCPUUtilizationPercentage -- Target CPU to scale towards.
+  targetCPUUtilizationPercentage: 80
+  # autoscaling.targetMemoryUtilizationPercentage -- Target memory to scale towards.
+  targetMemoryUtilizationPercentage: null
 
 # nameOverride -- Overrides the name of the release.
 nameOverride: ""
@@ -114,27 +131,6 @@ service:
   type: ClusterIP
   # service.port -- Port to use for the service.
   port: 443
-
-# resources -- A resources block for the controller.
-resources:
-  limits:
-    cpu: 1
-    memory: 2Gi
-  requests:
-    cpu: 100m
-    memory: 128Mi
-
-autoscaling:
-  # autoscaling.enabled -- Autoscale instead of a static number of pods running.
-  enabled: false
-  # autoscaling.minReplicas -- Minimum number of pods to run.
-  minReplicas: 2
-  # autoscaling.maxReplicas -- Maximum number of pods to run.
-  maxReplicas: 5
-  # autoscaling.targetCPUUtilizationPercentage -- Target CPU to scale towards.
-  targetCPUUtilizationPercentage: 80
-  # autoscaling.targetMemoryUtilizationPercentage -- Target memory to scale towards.
-  targetMemoryUtilizationPercentage: null
 
 # nodeSelector -- nodSelector to add to the controller.
 nodeSelector: {}
