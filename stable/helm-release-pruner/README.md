@@ -35,24 +35,24 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| fullnameOverride | string | `""` | A template override for fullname |
-| image.pullPolicy | string | `"Always"` | The image pull policy. We do not recommend changing this |
 | image.repository | string | `"quay.io/fairwinds/helm-release-pruner"` | Repo for image that the job runs on |
 | image.tag | string | `"v3.0.1"` | The image tag to use |
+| image.pullPolicy | string | `"Always"` | The image pull policy. We do not recommend changing this |
 | job.backoffLimit | int | `3` | The backoff limit for the job |
-| job.debug | bool | `false` | If true, will enable debug logging |
+| job.restartPolicy | string | `"Never"` |  |
+| job.schedule | string | `"0 */4 * * *"` | The schedule for the cronjob to run on |
 | job.dryRun | bool | `true` | If true, will only log candidates for removal and not remove them |
+| job.debug | bool | `false` | If true, will enable debug logging |
+| job.serviceAccount.create | bool | `true` | If true, a service account will be created for the job to use |
+| job.serviceAccount.name | string | `"ExistingServiceAccountName"` | The name of a pre-existing service account to use if job.serviceAccount.create is false |
 | job.listSecretsRole.create | bool | `true` | If true, a cluster role will be created for the job to list helm releases |
 | job.listSecretsRole.name | string | `"helm-release-pruner-list-secrets"` | Name of a cluster role granting list secrets permission |
 | job.resources.limits.cpu | string | `"25m"` |  |
 | job.resources.limits.memory | string | `"32Mi"` |  |
 | job.resources.requests.cpu | string | `"25m"` |  |
 | job.resources.requests.memory | string | `"32M"` |  |
-| job.restartPolicy | string | `"Never"` |  |
-| job.schedule | string | `"0 */4 * * *"` | The schedule for the cronjob to run on |
-| job.serviceAccount.create | bool | `true` | If true, a service account will be created for the job to use |
-| job.serviceAccount.name | string | `"ExistingServiceAccountName"` | The name of a pre-existing service account to use if job.serviceAccount.create is false |
-| nameOverride | string | `""` | A template override for name |
 | pruneProfiles | list | `[]` | Filters to use to find purge candidates. See example usage above for details |
 | rbac_manager.enabled | bool | `false` | If true, creates an RbacDefinition to manage access |
 | rbac_manager.namespaceLabel | string | `""` | Label to match namespaces to grant access to |
+| fullnameOverride | string | `""` | A template override for fullname |
+| nameOverride | string | `""` | A template override for name |
