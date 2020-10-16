@@ -12,6 +12,7 @@ rbac:
   # If rbac.create is false, the name of an existing ServiceAccount to use
   serviceAccountName:
 
+# verbosity -- How verbose the controller logs should be
 verbosity: 5
 
 # resources -- The resources block for the controller pods
