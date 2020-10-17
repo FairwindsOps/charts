@@ -81,6 +81,9 @@ spec:
               mountPath: /tmp/
               readOnly: false
       serviceAccountName:  {{ include "polaris.fullname" . }}
+      {{- if .Values.webhook.priorityClassName }}
+      priorityClassName: {{ .Values.webhook.priorityClassName | quote }}
+      {{- end }}
       nodeSelector:
       {{- with .Values.webhook.nodeSelector }}
 {{ toYaml . | indent 8 }}
