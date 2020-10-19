@@ -47,12 +47,14 @@ Parameter | Description | Default
 `dashboard.ingress.hosts` | Web ingress hostnames | []
 `dashboard.ingress.tls` | ingress tls configuration |
 `dashboard.ingress.annotations` | Web ingress annotations | {}
+`dashboard.priorityClassName` | Priority Class Name |
 `webhook.enable` | Whether to run the dashboard | false
 `webhook.resources` | Requests and limits for the webhook | (see values.yaml)
 `webhook.replicas` | Number of replicas | 1
 `webhook.service.type` | Service type | ClusterIP
 `webhook.nodeSelector` | Webhook pod nodeSelector | {}
 `webhook.tolerations` | Webhook pod tolerations | []
+`webhook.priorityClassName` | Priority Class Name |
 `audit.enable` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others | false
 `audit.outputURL` | A URL which will receive a POST request with audit results | ""
 `audit.cleanup` | Whether to delete the namespace once the audit is finished | false

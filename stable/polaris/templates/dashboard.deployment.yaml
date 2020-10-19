@@ -31,6 +31,9 @@ spec:
         configMap:
           name: {{ include "polaris.fullname" $ }}
       {{- end }}
+      {{- if .Values.dashboard.priorityClassName }}
+      priorityClassName: {{ .Values.dashboard.priorityClassName | quote }}
+      {{- end }}
       containers:
       - command:
         - polaris
