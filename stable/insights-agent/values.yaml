@@ -39,7 +39,7 @@ cronjobExecutor:
       memory: 3Mi
 
 polaris:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   timeout: 300
   image:
@@ -54,7 +54,7 @@ polaris:
       memory: 64Mi
 
 kubehunter:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   timeout: 300
   logLevel: INFO
@@ -85,7 +85,7 @@ kubesec:
       memory: 64Mi
 
 goldilocks:
-  enabled: true
+  enabled: false
   installVPA: true
   schedule: "rand * * * *"
   timeout: 300
@@ -145,7 +145,7 @@ workloads:
       memory: 64Mi
 
 nova:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   timeout: 300
   image:
@@ -160,7 +160,7 @@ nova:
       memory: 128Mi
 
 rbacreporter:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   timeout: 300
   image:
@@ -175,7 +175,7 @@ rbacreporter:
       memory: 64Mi
 
 kubebench:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   mode: "cronjob"
   hourInterval: 2
@@ -203,7 +203,7 @@ kubebench:
       memory: 16Mi
 
 trivy:
-  enabled: true
+  enabled: false
   namespaceBlacklist: []
   schedule: "rand * * * *"
   privateImages:
@@ -223,7 +223,7 @@ trivy:
       memory: 64Mi
 
 pluto:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   timeout: 300
   image:
