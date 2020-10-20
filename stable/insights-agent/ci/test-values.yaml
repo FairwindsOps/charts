@@ -13,5 +13,21 @@ opa:
 test:
   enabled: true
 
+kubesec:
+  enabled: true
+
+polaris:
+  enabled: true
+
+pluto:
+  enabled: true
+
+nova:
+  enabled: true
+
+kubehunter:
+  enabled: true
+
 trivy:
+  enabled: true
   maxScansPerRun: 2
