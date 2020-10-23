@@ -21,7 +21,9 @@ helm install rbac-manager fairwinds-stable/rbac-manager --namespace rbac-manager
 
 ## Prerequisites
 
-Kubernetes 1.8+, Helm 2.10+
+As of chart version 1.6.0 Kubernetes 1.16+, Helm 2.10+
+
+Helm 3 will be made mandatory in the future.
 
 ## Configuration
 
