@@ -25,43 +25,6 @@ helm install polaris fairwinds-stable/polaris --namespace polaris --set webhook.
 Due to the [deprecation](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/) of various `extensions/v1beta1` API's,
 the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 
-<<<<<<< HEAD
-## Configuration
-Parameter | Description | Default
---------- | ----------- | -------
-`config`  | The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration) | [taken from Polaris](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml)
-`image.repository` | Image repo | quay.io/fairwinds/polaris
-`image.tag` | Image tag | 1.2
-`image.pullPolicy` | Image pull policy | Always
-`image.pullSecrets` | Image pull secrets | []
-`rbac.enabled` | Whether RBAC resources (ClusterRole, ClusterRolebinding) should be created | true
-`serviceAccount.create` | Specifies whether a service account should be created | true
-`serviceAccount.name` | The name of the service account to use | polaris.fullname
-`templateOnly` | | false
-`dashboard.basePath` | Path on which the dashboard is served. | /
-`dashboard.enable` | Whether to run the dashboard | true
-`dashboard.resources` | Requests and limits for the dashboard | (see values.yaml)
-`dashboard.replicas` | Number of replicas | 1
-`dashboard.service.type` | Service type | ClusterIP
-`dashboard.service.annotatotions` | Service annotations | {}
-`dashboard.nodeSelector` | Dashboard pod nodeSelector | {}
-`dashboard.tolerations` | Dashboard pod tolerations | []
-`dashboard.ingress.enabled` | Whether to enable ingress to the dashboard | false
-`dashboard.ingress.hosts` | Web ingress hostnames | []
-`dashboard.ingress.tls` | ingress tls configuration |
-`dashboard.ingress.annotations` | Web ingress annotations | {}
-`dashboard.priorityClassName` | Priority Class Name |
-`webhook.enable` | Whether to run the dashboard | false
-`webhook.resources` | Requests and limits for the webhook | (see values.yaml)
-`webhook.replicas` | Number of replicas | 1
-`webhook.service.type` | Service type | ClusterIP
-`webhook.nodeSelector` | Webhook pod nodeSelector | {}
-`webhook.tolerations` | Webhook pod tolerations | []
-`webhook.priorityClassName` | Priority Class Name |
-`audit.enable` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others | false
-`audit.outputURL` | A URL which will receive a POST request with audit results | ""
-`audit.cleanup` | Whether to delete the namespace once the audit is finished | false
-=======
 ## Values
 
 | Key | Type | Default | Description |
@@ -87,6 +50,7 @@ Parameter | Description | Default
 | dashboard.ingress.hosts | list | `[]` | Web ingress hostnames |
 | dashboard.ingress.annotations | object | `{}` | Web ingress annotations |
 | dashboard.ingress.tls | list | `[]` | Ingress TLS configuration |
+| dashboard.priorityClassName | string | `nil` |  |
 | webhook.enable | bool | `false` | Whether to run the Validating Webhook |
 | webhook.replicas | int | `1` | Number of replicas |
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
@@ -100,7 +64,7 @@ Parameter | Description | Default
 | webhook.rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
 | webhook.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for common types for the ValidatingWebhookConfiguration |
 | webhook.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
+| webhook.priorityClassName | string | `nil` |  |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
 | audit.cleanup | bool | `false` | Whether to delete the namespace once the audit is finished. |
 | audit.outputURL | string | `""` | A URL which will receive a POST request with audit results. |
->>>>>>> c2901c3 (Fixing up polaris 2)
