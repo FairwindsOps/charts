@@ -1,7 +1,11 @@
 image:
+  # -- Docker image repo
   repository: quay.io/fairwinds/astro
+  # -- Docker image tag
   tag: "v1.5.3"
+  # -- Docker image pull policy
   pullPolicy: IfNotPresent
+# -- The resources block for the deployment.
 resources:
   limits:
     cpu: 100m
@@ -9,27 +13,44 @@ resources:
   requests:
     cpu: 100m
     memory: 128Mi
+# -- Deployment ndoeSelector
 nodeSelector: {}
+# -- Deployment tolerations
 tolerations: []
+# -- Deployment affinity
 affinity: {}
 datadog:
+  # -- Datadog API key
   apiKey: ""
+  # -- Datadog app key
   appKey: ""
 rbac:
+  # -- If true, RBAC resources will be created.
   create: true
 deployment:
-  replicas: 2
   serviceAccount:
+    # -- If true, a service account will be created. If false, you must set `deployment.serviceAccount.name`.
     create: true
-    # name: ExistingServiceAccountName
+    # -- The name of an existing service account to use.
+    name:
+  # -- The number of replicas to use.
+  replicas: 2
 secret:
+  # -- If true, a secret with API credentialss will be created. If false, you must set `secret.name`
   create: true
-  # name: ExistingSecretName
+  # -- The name of an existing secret to mount to the container.
+  name:
+# -- The path to the monitor definitions configuration. This can be a local path or a URL.
 definitionsPath: conf.yml
+# -- A unique name to designate as teh owner. This will be applied as a tag to identified managed monitors.
 owner: astro
+# -- When set to true monitors will not be managed in datadog.
 dryRun: false
 custom_config:
+  # -- If true a custom configuration must be specified in `custom_config.data`.
   enabled: false
+  # -- An astro configuration file. See the [Astro repo readme](https://github.com/fairwindsops/astro) for more details.
+  # @default -- ""
   data: |
     ---
     cluster_variables:
