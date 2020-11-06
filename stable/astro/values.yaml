@@ -36,7 +36,7 @@ deployment:
   # -- The number of replicas to use.
   replicas: 2
 secret:
-  # -- If true, a secret with API credentialss will be created. If false, you must set `secret.name`
+  # -- If true, a secret with API credentials will be created. If false, you must set `secret.name`
   create: true
   # -- The name of an existing secret to mount to the container.
   name:

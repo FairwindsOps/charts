@@ -47,7 +47,7 @@ Kubernetes 1.11+, Helm 2.13+
 | deployment.serviceAccount.create | bool | `true` | If true, a service account will be created. If false, you must set `deployment.serviceAccount.name`. |
 | deployment.serviceAccount.name | string | `nil` | The name of an existing service account to use. |
 | deployment.replicas | int | `2` | The number of replicas to use. |
-| secret.create | bool | `true` | If true, a secret with API credentialss will be created. If false, you must set `secret.name` |
+| secret.create | bool | `true` | If true, a secret with API credentials will be created. If false, you must set `secret.name` |
 | secret.name | string | `nil` | The name of an existing secret to mount to the container. |
 | definitionsPath | string | `"conf.yml"` | The path to the monitor definitions configuration. This can be a local path or a URL. |
 | owner | string | `"astro"` | A unique name to designate as teh owner. This will be applied as a tag to identified managed monitors. |
