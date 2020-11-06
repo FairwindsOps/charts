@@ -50,7 +50,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.ingress.hosts | list | `[]` | Web ingress hostnames |
 | dashboard.ingress.annotations | object | `{}` | Web ingress annotations |
 | dashboard.ingress.tls | list | `[]` | Ingress TLS configuration |
-| dashboard.priorityClassName | string | `nil` |  |
+| dashboard.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
 | webhook.enable | bool | `false` | Whether to run the Validating Webhook |
 | webhook.replicas | int | `1` | Number of replicas |
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
@@ -64,7 +64,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
 | webhook.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for common types for the ValidatingWebhookConfiguration |
 | webhook.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
-| webhook.priorityClassName | string | `nil` |  |
+| webhook.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
 | audit.cleanup | bool | `false` | Whether to delete the namespace once the audit is finished. |
 | audit.outputURL | string | `""` | A URL which will receive a POST request with audit results. |

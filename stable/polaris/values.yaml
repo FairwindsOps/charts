@@ -57,7 +57,7 @@ dashboard:
     annotations: {}
     # dashboard.ingress.tls -- Ingress TLS configuration
     tls: []
-  # dashboard.priortyClassName -- Priority Class name to be used in deployment if provided.
+  # dashboard.priorityClassName -- Priority Class name to be used in deployment if provided.
   priorityClassName:
 
 webhook:
@@ -133,7 +133,7 @@ webhook:
     limits:
       cpu: 100m
       memory: 128Mi
-  # Priority Class name to be used in deployment if provided.
+  # webhook.priorityClassName -- Priority Class name to be used in deployment if provided.
   priorityClassName:
 
 audit:
