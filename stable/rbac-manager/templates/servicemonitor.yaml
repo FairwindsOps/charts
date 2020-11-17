@@ -17,7 +17,6 @@ spec:
   - interval: {{ .Values.serviceMonitor.interval }}
     port: metrics
     path: /metrics
-  jobLabel: "{{ .Release.Name }}"
   selector:
     matchLabels:
       app: {{ template "rbac-manager.name" . }}
