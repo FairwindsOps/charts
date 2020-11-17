@@ -23,3 +23,9 @@ affinity: {}
 
 podAnnotations: {}
 podLabels: {}
+
+serviceMonitor:
+  enabled: false
+  annotations: {}
+  namespace: ""
+  interval: 60s
