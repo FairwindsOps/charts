@@ -74,6 +74,9 @@ helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
 | updater.affinity | object | `{}` |  |
 | admissionController.enabled | bool | `false` | If true, will install the admission-controller component of vpa |
 | admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
+| admissionController.certGen.repository | string | `"quay.io/reactiveops/ci-images"` |  |
+| admissionController.certGen.tag | string | `"v11-alpine"` |  |
+| admissionController.certGen.pullPolicy | string | `"Always"` |  |
 | admissionController.cleanupOnDelete | bool | `true` | If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller |
 | admissionController.replicaCount | int | `1` |  |
 | admissionController.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-admission-controller"` | The location of the vpa admission controller image |
