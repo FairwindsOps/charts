@@ -48,22 +48,4 @@ The following process has worked repeatedly for us to upgrade from an older vers
 
 In the above workflow, an RBAC Definition installed between revision 1 and 2 should persist through to revision 5. This process is admittedly quite strange, and in our testing the second rollback (step 5) is indeed required for this process to work.
 
-## Values
-
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| image.repository | string | `"quay.io/reactiveops/rbac-manager"` | The image to run for rbac manager |
-| image.tag | string | `"v0.9.4"` | The tag of the image to run |
-| image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
-| image.imagePullSecrets | list | `[]` |  |
-| resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the rbac-manager pods |
-| priorityClassName | string | `""` | The name of a priorityClass to use |
-| nodeSelector | object | `{}` | Deployment nodeSelector |
-| tolerations | list | `[]` | Deployment tolerations |
-| affinity | object | `{}` | Deployment affinity |
-| podAnnotations | object | `{}` | Annotations to apply to the pods |
-| podLabels | object | `{}` | Labels to apply to the pod |
-| serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor will be created for Prometheus |
-| serviceMonitor.annotations | object | `{}` | Annotations to apply to the serviceMonitor and headless service |
-| serviceMonitor.namespace | string | `""` | The namespace to deploy the serviceMonitor into |
-| serviceMonitor.interval | string | `"60s"` | How often to scrape the metrics endpoint |
+{{ template "chart.valuesSection" . }}
