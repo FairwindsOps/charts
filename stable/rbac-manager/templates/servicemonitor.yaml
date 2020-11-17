@@ -15,9 +15,8 @@ metadata:
 spec:
   endpoints:
   - interval: {{ .Values.serviceMonitor.interval }}
-    port: 8080
+    port: metrics
     path: /metrics
-    scheme: http
   jobLabel: "{{ .Release.Name }}"
   selector:
     matchLabels:

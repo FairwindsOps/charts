@@ -18,4 +18,9 @@ spec:
     app: {{ template "rbac-manager.name" . }}
     release: {{ .Release.Name }}
   type: ClusterIP
+  ports:
+  - name: metrics
+    port: 8080
+    protocol: TCP
+    targetPort: 8080
 {{- end }}
