@@ -97,12 +97,13 @@ admissionController:
   # admissionController.generateCertificate -- If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook
   generateCertificate: true
   certGen:
-    # admissionController.certGen.image.repository -- An image that contains certgen for creating certificates. Only used if admissionController.generateCertificate is true
-    repository: quay.io/reactiveops/ci-images
-    # admissionController.certGen.image.repository -- An image tag for the admissionController.certGen.image.repository image. Only used if admissionController.generateCertificate is true
-    tag: v11-alpine
-    # admissionController.certGen.image.pullPolicy -- The pull policy for the certgen image. Recommend not changing this
-    pullPolicy: Always
+    image:
+      # admissionController.certGen.image.repository -- An image that contains certgen for creating certificates. Only used if admissionController.generateCertificate is true
+      repository: quay.io/reactiveops/ci-images
+      # admissionController.certGen.image.tag -- An image tag for the admissionController.certGen.image.repository image. Only used if admissionController.generateCertificate is true
+      tag: v11-alpine
+      # admissionController.certGen.image.pullPolicy -- The pull policy for the certgen image. Recommend not changing this
+      pullPolicy: Always
   # admissionController.cleanupOnDelete -- If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller
   cleanupOnDelete: true
   replicaCount: 1
