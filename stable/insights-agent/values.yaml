@@ -254,6 +254,14 @@ prometheus:
     requests:
       cpu: 10m
       memory: 64Mi
+  alertmanager:
+    enabled: false
+  kubeStateMetrics:
+    enabled: false
+  nodeExporter:
+    enabled: false
+  pushgateway:
+    enabled: false
 
 # test -- Used for chart CI only - deploys a test deployment
 test:

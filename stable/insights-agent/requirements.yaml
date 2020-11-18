@@ -1,5 +1,9 @@
 dependencies:
-  - name: goldilocks
-    repository: https://charts.fairwinds.com/stable
-    version: 2.3.1
-    condition: goldilocks.enabled
+- name: goldilocks
+  repository: https://charts.fairwinds.com/stable
+  version: 2.3.1
+  condition: goldilocks.enabled
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 11.16.9
+  condition: prometheus.installPrometheus
