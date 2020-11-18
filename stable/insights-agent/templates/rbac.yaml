@@ -42,6 +42,11 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-opa
   namespace: {{ .Release.Namespace }}
 {{- end }}
+{{- if .Values.prometheus.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-prometheus
+  namespace: {{ .Release.Namespace }}
+{{- end }}
 {{- if .Values.goldilocks.enabled }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-goldilocks

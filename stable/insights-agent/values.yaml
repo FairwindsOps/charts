@@ -239,6 +239,22 @@ pluto:
       cpu: 10m
       memory: 64Mi
 
+prometheus:
+  enabled: false
+  schedule: "rand * * * *"
+  timeout: 300
+  installPrometheus: false
+  image:
+    repository: quay.io/fairwinds/prometheus-collector
+    tag: "v0.1"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
 # test -- Used for chart CI only - deploys a test deployment
 test:
   enabled: false

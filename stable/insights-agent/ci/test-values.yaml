@@ -31,3 +31,6 @@ kubehunter:
 trivy:
   enabled: true
   maxScansPerRun: 2
+
+prometheus:
+  enabled: true
