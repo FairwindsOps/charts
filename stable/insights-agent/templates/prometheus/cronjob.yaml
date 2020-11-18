@@ -17,6 +17,9 @@ spec:
           - {{ include "container-spec" . | indent 12 | trim }}
             command:
             - prometheus-collector
+            env:
+            - name: PROMETHEUS_ADDRESS
+              value: {{ .Values.prometheus.address | quote }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

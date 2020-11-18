@@ -244,6 +244,7 @@ prometheus:
   schedule: "rand * * * *"
   timeout: 300
   installPrometheus: false
+  address: "http://prometheus-server.svc"
   image:
     repository: quay.io/fairwinds/prometheus-collector
     tag: "v0.1"
