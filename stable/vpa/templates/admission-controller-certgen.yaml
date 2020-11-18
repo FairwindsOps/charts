@@ -61,7 +61,7 @@ spec:
       serviceAccountName: {{ include "vpa.fullname" . }}-certgen
       containers:
       - name: certgen
-        image: quay.io/reactiveops/ci-images:v11-alpine
+        image: "{{ .Values.admissionController.certGen.image.repository }}:{{ .Values.admissionController.certGen.image.tag | default .Chart.AppVersion }}"
         command: ["bash"]
         args:
           - -c
