@@ -1,4 +1,4 @@
-{{- if .Values.kubesec.enabled -}}
+{{- if .Values.prometheus.enabled -}}
 {{- $_ := set . "Label" "metrics" }}
 {{- $_ := set . "Config" .Values.prometheus }}
 apiVersion: batch/v1beta1

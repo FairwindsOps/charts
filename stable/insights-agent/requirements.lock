@@ -2,5 +2,8 @@ dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
   version: 2.3.1
-digest: sha256:0734b3efb9017569a001b9ac11749e2927c8284a8ca3e38e734617e262164abe
-generated: "2020-05-01T09:29:55.491445-06:00"
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 11.16.9
+digest: sha256:501e9b57d0da6d8cc75e982d36a733b26e78b89a8d5ac7086b8fa8f2e786fd6f
+generated: "2020-11-19T13:36:25.2621698-05:00"

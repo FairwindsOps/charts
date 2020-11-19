@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-prometheus
+  name: {{ include "insights-agent.fullname" . }}-metrics
   labels:
     app: insights-agent
 {{- end -}}
