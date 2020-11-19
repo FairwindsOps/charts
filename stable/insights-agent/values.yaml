@@ -121,6 +121,7 @@ opa:
   image:
     repository: quay.io/fairwinds/fw-opa
     tag: "0.2"
+  additionalAccess:
   resources:
     limits:
       cpu: 100m
