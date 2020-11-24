@@ -22,6 +22,9 @@ apiVersion: cert-manager.io/v1alpha2
 kind: Issuer
 metadata:
   name: {{ include "polaris.fullname" . }}-selfsigned
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
 spec:
   selfSigned: {}
 {{- end -}}
