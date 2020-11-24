@@ -1,6 +1,6 @@
 apiVersion: v1
 name: rbac-manager
-version: 1.6.2
+version: 1.6.3
 appVersion: 0.9.4
 description: A Kubernetes operator that simplifies the management of Role Bindings and Service Accounts.
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/rbac-manager/icon.png

@@ -17,4 +17,3 @@ stable/aws-iam-authenticator
 stable/ecr-cleanup
 stable/insights-agent
 stable/polaris
-stable/rbac-manager
