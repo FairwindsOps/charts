@@ -34,3 +34,4 @@ trivy:
 
 prometheus:
   enabled: true
+  installPrometheus: true
