@@ -1,10 +1,14 @@
 image:
+  # image.repository -- The image to run for rbac manager
   repository: quay.io/reactiveops/rbac-manager
+  # image.tag -- The tag of the image to run
   tag: v0.9.4
+  # image.pullPolicy -- The image pullPolicy. Recommend not changing this
   pullPolicy: Always
+  # imagePullSecrets -- A list of imagePullSecrets to reference for pulling the image
   imagePullSecrets: []
-#   - myRegistryKeySecretName
 
+# resources -- A resources block for the rbac-manager pods
 resources:
   requests:
     cpu: 100m
@@ -13,19 +17,29 @@ resources:
     cpu: 100m
     memory: 128Mi
 
+# priorityClassName -- The name of a priorityClass to use
 priorityClassName: ""
 
+# nodeSelector -- Deployment nodeSelector
 nodeSelector: {}
 
+# tolerations -- Deployment tolerations
 tolerations: []
 
+# affinity -- Deployment affinity
 affinity: {}
 
+# podAnnotations -- Annotations to apply to the pods
 podAnnotations: {}
+# podLabels -- Labels to apply to the pod
 podLabels: {}
 
 serviceMonitor:
+  # serviceMonitor.enabled -- If true, a ServiceMonitor will be created for Prometheus
   enabled: false
+  # serviceMonitor.annotations -- Annotations to apply to the serviceMonitor and headless service
   annotations: {}
+  # serviceMonitor.namespace -- The namespace to deploy the serviceMonitor into
   namespace: ""
+  # serviceMonitor.interval -- How often to scrape the metrics endpoint
   interval: 60s
