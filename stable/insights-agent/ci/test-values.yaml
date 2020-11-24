@@ -35,6 +35,6 @@ trivy:
 prometheus:
   enabled: true
   installPrometheus: true
-  address: "http://prometheus-server.svc"
+  address: "http://prometheus-server"
   server:
     fullnameOverride: "prometheus-server"
