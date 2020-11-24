@@ -247,7 +247,7 @@ prometheus:
   address: "http://prometheus-server.svc"
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "v0.1"
+    tag: "0.1"
   resources:
     limits:
       cpu: 250m
