@@ -9,10 +9,12 @@ metadata:
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
 spec:
-  commonName: {{ include "polaris.fullname" . }}.{{ .Release.Namespace }}.svc
+  commonName: {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
   dnsNames:
-  - {{ include "polaris.fullname" . }}.{{ .Release.Namespace }}.svc
-  - {{ include "polaris.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+  - {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
+  - {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}
+  - {{ include "polaris.fullname" . }}-webhook
+  - {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
   issuerRef:
     kind: Issuer
     name: {{ include "polaris.fullname" . }}-selfsigned
