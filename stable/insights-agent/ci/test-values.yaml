@@ -35,4 +35,6 @@ trivy:
 prometheus:
   enabled: true
   installPrometheus: true
-  address: "http://insights-agent-prometheus-server.svc"
+  address: "http://prometheus-server.svc"
+  server:
+    fullnameOverride: "prometheus-server"
