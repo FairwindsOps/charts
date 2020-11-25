@@ -1,0 +1,47 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  {{- include "metadata" "install-reporter" }}
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 30
+  backoffLimit: {{ .Values.cronjobs.backoffLimit }}
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-install-reporter
+      containers:
+      - name: start-job-from-cronjob
+        image: "{{ .Values.installReporter.image.repository }}:{{ .Values.installReporter.image.tag }}"
+        imagePullPolicy: Always
+        command: ["curl"]
+        args:
+          - -X
+          - POST
+          - "{{ .Values.insights.host }}/v0/organizations/{{ .Values.insights.organization }}/clusters/{{ .Values.insights.cluster }}/installation"
+          - -H
+          - "Content-Type: application/json"
+          - -d
+          - "@/opt/app/values.json"
+        resources:
+          {{- toYaml .Values.installReporter.resources | nindent 10 }}
+        volumeMounts:
+        - name: values
+          mountPath: /opt/app/values.json
+          subPath: values.json
+          readOnly: true
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: values
+        configMap:
+          name: {{ include "insights-agent.fullname" $ }}-values
