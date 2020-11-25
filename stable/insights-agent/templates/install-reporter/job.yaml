@@ -23,7 +23,7 @@ spec:
           - "-H"
           - "Content-Type: application/json"
           - "-H"
-          - "Authorization: Bearer {{ .Values.insights.base64token | b64dec }}"
+          - "Authorization: Bearer $FAIRWINDS_TOKEN"
           - "-d"
           - "@/opt/app/values.json"
         resources:
@@ -42,6 +42,16 @@ spec:
           capabilities:
             drop:
               - ALL
+        env:
+        - name: FAIRWINDS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+              name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+              name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+              key: token
       volumes:
       - name: values
         configMap:
