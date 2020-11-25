@@ -7,4 +7,5 @@ data:
   values.json: |
     {{ $values := .Values | deepCopy }}
     {{ $_ := unset $values "insights" }}
-    {{- toPrettyJson $values | nindent 4 }}
+    {{ $out := dict "values" $values "version" .Chart.Version }}
+    {{- toPrettyJson $out | nindent 4 }}

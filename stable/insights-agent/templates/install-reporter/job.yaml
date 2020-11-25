@@ -20,9 +20,11 @@ spec:
         args:
           - -X
           - POST
-          - "{{ .Values.insights.host }}/v0/organizations/{{ .Values.insights.organization }}/clusters/{{ .Values.insights.cluster }}/installation"
+          - "{{ .Values.insights.host }}/v0/organizations/{{ .Values.insights.organization }}/clusters/{{ .Values.insights.cluster }}/data/installation"
           - -H
           - "Content-Type: application/json"
+          - -H
+          - "Authorization: Bearer {{ .Values.insights.base64token | b64dec }}
           - -d
           - "@/opt/app/values.json"
         resources:
