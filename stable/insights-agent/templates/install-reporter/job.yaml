@@ -3,7 +3,7 @@ kind: Job
 metadata:
   {{- include "metadata" "install-reporter" }}
   annotations:
-    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
   ttlSecondsAfterFinished: 30
@@ -11,21 +11,20 @@ spec:
   template:
     spec:
       restartPolicy: Never
-      serviceAccountName: {{ include "insights-agent.fullname" . }}-install-reporter
       containers:
       - name: start-job-from-cronjob
         image: "{{ .Values.installReporter.image.repository }}:{{ .Values.installReporter.image.tag }}"
         imagePullPolicy: Always
         command: ["curl"]
         args:
-          - -X
-          - POST
+          - "-X"
+          - "POST"
           - "{{ .Values.insights.host }}/v0/organizations/{{ .Values.insights.organization }}/clusters/{{ .Values.insights.cluster }}/data/installation"
-          - -H
+          - "-H"
           - "Content-Type: application/json"
-          - -H
-          - "Authorization: Bearer {{ .Values.insights.base64token | b64dec }}
-          - -d
+          - "-H"
+          - "Authorization: Bearer {{ .Values.insights.base64token | b64dec }}"
+          - "-d"
           - "@/opt/app/values.json"
         resources:
           {{- toYaml .Values.installReporter.resources | nindent 10 }}

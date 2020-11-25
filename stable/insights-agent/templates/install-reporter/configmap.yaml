@@ -3,6 +3,10 @@ kind: ConfigMap
 metadata:
   {{- include "metadata" "values" }}
   name: {{ include "insights-agent.fullname" $ }}-values
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+    "helm.sh/hook-weight": "-1"
 data:
   values.json: |
     {{ $values := .Values | deepCopy }}
