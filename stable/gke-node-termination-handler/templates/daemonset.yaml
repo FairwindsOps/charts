@@ -35,7 +35,12 @@ spec:
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: {{ .Chart.Name }}
         command: ["./node-termination-handler"]
-        args: ["--logtostderr", "--exclude-pods=$(POD_NAME):$(POD_NAMESPACE)", "-v=10", "--taint=cloud.google.com/impending-node-termination::NoSchedule"]
+        args:
+          - "-v=10"
+          - "--logtostderr"
+          - "--exclude-pods=$(POD_NAME):$(POD_NAMESPACE)"
+          - "--taint=cloud.google.com/impending-node-termination::NoSchedule"
+          - "--system-pod-grace-period={{ .Values.systemPodGracePeriod }}"
         securityContext:
           capabilities:
             # Necessary to reboot node

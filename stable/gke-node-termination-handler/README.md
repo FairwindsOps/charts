@@ -17,3 +17,4 @@ We recommend installing gke-node-termination-handler in its own namespace.
 | fullnameOverride | string | `""` | A template override for fullname |
 | daemonset.updateStrategy.type | string | `"RollingUpdate"` | The daemonset update strategy |
 | resources | object | `{"limits":{"cpu":"150m","memory":"30Mi"},"requests":{"cpu":"150m","memory":"30Mi"}}` | A resource limit and requess block for the daemonset |
+| systemPodGracePeriod | string | `"0s"` | A period to wait for regular pods to terminate. Recommended values: 0s-14s for preemptible VMs, 0s-(regular-vm-timeout/2) for regular VMs. |
