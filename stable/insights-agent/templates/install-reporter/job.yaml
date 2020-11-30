@@ -16,6 +16,7 @@ spec:
         imagePullPolicy: Always
         command: ["curl"]
         args:
+          - "--fail"
           - "-X"
           - "POST"
           - "{{ .Values.insights.host }}/v0/organizations/{{ .Values.insights.organization }}/clusters/{{ .Values.insights.cluster }}/data/installation"
