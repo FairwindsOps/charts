@@ -22,6 +22,14 @@ properties:
               type: array
               items: 
                 type: string
+      namespaceBlocklist:
+        type: array
+        item:
+          type: string
+      namespaceAllowlist:
+        type: array
+        item:
+          type: string
       parameters:
         type: object
         x-kubernetes-preserve-unknown-fields: true
