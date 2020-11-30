@@ -3,7 +3,6 @@ kind: Job
 metadata:
   {{- include "metadata" "install-reporter" }}
   annotations:
-    "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
   ttlSecondsAfterFinished: 30
