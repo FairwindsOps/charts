@@ -36,11 +36,7 @@ spec:
         name: {{ .Chart.Name }}
         command: ["./node-termination-handler"]
         args:
-          - "-v=10"
-          - "--logtostderr"
-          - "--exclude-pods=$(POD_NAME):$(POD_NAMESPACE)"
-          - "--taint=cloud.google.com/impending-node-termination::NoSchedule"
-          - "--system-pod-grace-period={{ .Values.systemPodGracePeriod }}"
+          {{- concat .Values.args .Values.extraArgs | toYaml | nindent 12 }}
         securityContext:
           capabilities:
             # Necessary to reboot node

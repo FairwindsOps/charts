@@ -25,5 +25,12 @@ resources:
     cpu: 150m
     memory: 30Mi
 
-# systemPodGracePeriod -- A period to wait for regular pods to terminate. Recommended values: 0s-14s for preemptible VMs, 0s-(regular-vm-timeout/2) for regular VMs.
-systemPodGracePeriod: 0s
+# args -- Command arguments. Usually you don't need to override them.
+args:
+  - "-v=10"
+  - "--logtostderr"
+  - "--exclude-pods=$(POD_NAME):$(POD_NAMESPACE)"
+  - "--taint=cloud.google.com/impending-node-termination::NoSchedule"
+
+# extraArgs -- Extra arguments for command. For example, "--system-pod-grace-period=14s" to wait for 14s for regular pods to terminate.
+extraArgs: []
