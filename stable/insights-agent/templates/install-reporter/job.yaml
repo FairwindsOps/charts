@@ -23,7 +23,7 @@ spec:
           - "-H"
           - "Content-Type: application/json"
           - "-H"
-          - "Authorization: Bearer $FAIRWINDS_TOKEN"
+          - "Authorization: Bearer $(FAIRWINDS_TOKEN)"
           - "-d"
           - "@/opt/app/values.json"
         resources:
