@@ -241,7 +241,7 @@ pluto:
 
 prometheus:
   enabled: false
-  schedule: "rand * * * *"
+  schedule: "0/10 * * * *"
   timeout: 300
   installPrometheus: false
   address: "http://prometheus-server.svc"
