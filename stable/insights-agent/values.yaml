@@ -239,7 +239,7 @@ pluto:
       cpu: 10m
       memory: 64Mi
 
-resource-metrics:
+resourcemetrics:
   enabled: false
   installPrometheus: false
   schedule: "0/10 * * * *"

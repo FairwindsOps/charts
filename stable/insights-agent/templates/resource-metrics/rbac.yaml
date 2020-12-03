@@ -1,4 +1,4 @@
-{{- if .Values.resource-metrics.enabled -}}
+{{- if .Values.resourcemetrics.enabled -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:

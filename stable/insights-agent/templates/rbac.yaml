@@ -42,7 +42,7 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-opa
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.prometheus.enabled }}
+{{- if .Values.resourcemetrics.enabled }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-resource-metrics
   namespace: {{ .Release.Namespace }}
