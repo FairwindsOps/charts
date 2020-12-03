@@ -32,6 +32,6 @@ trivy:
   enabled: true
   maxScansPerRun: 2
 
-prometheus:
+resource-metrics:
   enabled: true
   installPrometheus: true

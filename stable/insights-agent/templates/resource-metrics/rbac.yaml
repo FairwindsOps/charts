@@ -1,15 +1,15 @@
-{{- if .Values.prometheus.enabled -}}
+{{- if .Values.resource-metrics.enabled -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-metrics
+  name: {{ include "insights-agent.fullname" . }}-resource-metrics
   labels:
     app: insights-agent
 ---
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-metrics-view
+  name: {{ include "insights-agent.fullname" . }}-resource-metrics-view
   labels:
     app: insights-agent
 roleRef:
@@ -18,7 +18,7 @@ roleRef:
   name: view
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-metrics
+    name: {{ include "insights-agent.fullname" . }}-resource-metrics
     namespace: {{ .Release.Namespace }}
 {{- end -}}
 

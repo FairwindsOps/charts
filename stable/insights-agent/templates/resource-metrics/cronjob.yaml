@@ -1,6 +1,6 @@
-{{- if .Values.prometheus.enabled -}}
-{{- $_ := set . "Label" "metrics" }}
-{{- $_ := set . "Config" .Values.prometheus }}
+{{- if .Values.resource-metrics.enabled -}}
+{{- $_ := set . "Label" "resource-metrics" }}
+{{- $_ := set . "Config" .Values.resource-metrics }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -19,7 +19,7 @@ spec:
             - prometheus-collector
             env:
             - name: PROMETHEUS_ADDRESS
-              value: {{ .Values.prometheus.address | quote }}
+              value: {{ .Values.resource-metrics.address | quote }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

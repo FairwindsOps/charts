@@ -239,11 +239,11 @@ pluto:
       cpu: 10m
       memory: 64Mi
 
-prometheus:
+resource-metrics:
   enabled: false
+  installPrometheus: false
   schedule: "0/10 * * * *"
   timeout: 300
-  installPrometheus: false
   address: "http://prometheus-server"
   image:
     repository: quay.io/fairwinds/prometheus-collector
@@ -255,6 +255,8 @@ prometheus:
     requests:
       cpu: 10m
       memory: 64Mi
+
+prometheus:
   alertmanager:
     enabled: false
   kubeStateMetrics:

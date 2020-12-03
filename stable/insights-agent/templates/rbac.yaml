@@ -44,7 +44,7 @@ subjects:
 {{- end }}
 {{- if .Values.prometheus.enabled }}
 - kind: ServiceAccount
-  name: {{ include "insights-agent.fullname" . }}-metrics
+  name: {{ include "insights-agent.fullname" . }}-resource-metrics
   namespace: {{ .Release.Namespace }}
 {{- end }}
 {{- if .Values.goldilocks.enabled }}
