@@ -6,4 +6,4 @@ dependencies:
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 11.16.9
-  condition: resource-metrics.installPrometheus
+  condition: resourcemetrics.installPrometheus
