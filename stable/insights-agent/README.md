@@ -41,6 +41,7 @@ See below for configuration details.
 ## Configuration
 Parameter | Description | Default
 --------- | ----------- | -------
+`disableServiceMesh` | Adds annotations to all CronJobs to not inject Linkerd or Istio | true
 `insights.organization` | The name of the organization to upload data to | ""
 `insights.cluster` | The name of the cluster the data is coming from | ""
 `insights.base64token` | Your cluster's base64-encoded auth token provided by Insights | ""

@@ -1,8 +1,10 @@
 {{- if .Values.cronjobs.runJobsImmediately -}}
+{{- $_ := set . "Label" "cronjob-executor" }}
+{{- $_ := set . "Config" .Values.cronjobs }}
 apiVersion: batch/v1
 kind: Job
 metadata:
-  {{- include "metadata" "cronjob-executor" }}
+  {{- include "metadata" . }}
   annotations:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation

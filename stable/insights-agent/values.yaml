@@ -1,3 +1,5 @@
+disableServiceMesh: true
+
 insights:
   host: https://insights.fairwinds.com
   organization: ""
