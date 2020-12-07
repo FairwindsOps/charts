@@ -53,7 +53,7 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.repository | string | `"quay.io/reactiveops/rbac-manager"` | The image to run for rbac manager |
-| image.tag | string | `"v0.9.4"` | The tag of the image to run |
+| image.tag | string | `"v0.10.0"` | The tag of the image to run |
 | image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.imagePullSecrets | list | `[]` |  |
 | resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the rbac-manager pods |
