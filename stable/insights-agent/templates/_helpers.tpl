@@ -35,7 +35,7 @@ Create chart name and version as used by the chart label.
   name: {{ .Label }}
   labels:
     app: insights-agent
-  {{- if .Values.disableServiceMesh }}
+  {{- if .Values.cronjobs.disableServiceMesh }}
   annotations:
     linkerd.io/inject: disabled
     sidecar.istio.io/inject: "false"

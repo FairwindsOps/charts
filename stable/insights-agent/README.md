@@ -41,7 +41,6 @@ See below for configuration details.
 ## Configuration
 Parameter | Description | Default
 --------- | ----------- | -------
-`disableServiceMesh` | Adds annotations to all CronJobs to not inject Linkerd or Istio | true
 `insights.organization` | The name of the organization to upload data to | ""
 `insights.cluster` | The name of the cluster the data is coming from | ""
 `insights.base64token` | Your cluster's base64-encoded auth token provided by Insights | ""
@@ -51,6 +50,7 @@ Parameter | Description | Default
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
 `uploader.sendFailures` | Send logs of failure to Insights when a job fails. | true
+`cronjobs.disableServiceMesh` | Adds annotations to all CronJobs to not inject Linkerd or Istio | true
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobsHistoryLimit` | Number of successful jobs to keep in history for each report | 2
