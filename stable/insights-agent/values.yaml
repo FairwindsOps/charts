@@ -247,7 +247,7 @@ resourcemetrics:
   address: "http://prometheus-server"
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "0.1"
+    tag: "0.2"
   resources:
     limits:
       cpu: 250m
