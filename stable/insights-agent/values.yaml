@@ -19,6 +19,7 @@ uploader:
       memory: 64Mi
 
 cronjobs:
+  disableServiceMesh: true
   backoffLimit: 1
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 2
