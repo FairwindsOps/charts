@@ -28,7 +28,7 @@ Parameter | Description | Default
 --------- | ----------- | -------
 `config`  | The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration) | [taken from Polaris](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml)
 `image.repository` | Image repo | quay.io/fairwinds/polaris
-`image.tag` | Image tag | 1.2
+`image.tag` | Image tag | 2.0
 `image.pullPolicy` | Image pull policy | Always
 `image.pullSecrets` | Image pull secrets | []
 `rbac.enabled` | Whether RBAC resources (ClusterRole, ClusterRolebinding) should be created | true
