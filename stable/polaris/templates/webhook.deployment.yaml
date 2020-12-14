@@ -34,7 +34,7 @@ spec:
             - --config
             - /opt/app/config.yaml
             {{- end }}
-          image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+          image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
           imagePullPolicy: '{{.Values.image.pullPolicy}}'
           ports:
             - containerPort: 9876
@@ -100,7 +100,11 @@ spec:
         {{- end }}
         - name: secret
           secret:
-            secretName: polaris-webhook
+            {{- with .Values.webhook.secretName }}
+            secretName: {{ . }}
+            {{- else }}
+            secretName: {{ include "polaris.fullname" . }}
+            {{- end }}
         - name: cr-logs
           emptyDir: {}
 {{- end -}}
