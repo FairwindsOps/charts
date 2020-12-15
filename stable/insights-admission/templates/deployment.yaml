@@ -58,14 +58,23 @@ spec:
           - name: FAIRWINDS_TOKEN
             valueFrom:
               secretKeyRef:
-                name: {{ include "insights-admission.fullname" . }}-token
+                name: {{ include "insights-admission.secretName" . }}
                 key: token
           - name: FAIRWINDS_ORGANIZATION
-            value: {{ .Values.insights.organization | quote }}
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "insights-admission.configmapName" . }}
+                key: organization
           - name: FAIRWINDS_CLUSTER
-            value: {{ .Values.insights.cluster | quote }}
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "insights-admission.configmapName" . }}
+                key: cluster
           - name: FAIRWINDS_HOSTNAME
-            value: {{ .Values.insights.host }}
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "insights-admission.configmapName" . }}
+                key: host
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
