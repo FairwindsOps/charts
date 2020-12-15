@@ -6,3 +6,15 @@ insights:
   base64token: Zm9vCg==
 test:
   enabled: true
+serviceAccount:
+  rbac:
+    viewSecrets: true
+    grantRole: view
+    additionalAccess:
+    - apiGroups:
+      - app
+      resources:
+      - deployments
+      verbs:
+      - get
+      - list
