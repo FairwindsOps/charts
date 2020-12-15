@@ -35,3 +35,6 @@ trivy:
 resourcemetrics:
   enabled: true
   installPrometheus: true
+
+admission:
+  enabled: true

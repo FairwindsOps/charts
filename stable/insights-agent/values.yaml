@@ -268,6 +268,19 @@ prometheus:
   server:
     fullnameOverride: "prometheus-server"
 
+admission:
+  enabled: false
+
+insights-admission:
+  nameOverride: insights-agent
+  insights:
+    secret:
+      create: false
+      suffix: 'token'
+    configmap:
+      create: false
+      suffix: 'configmap'
+
 # test -- Used for chart CI only - deploys a test deployment
 test:
   enabled: false

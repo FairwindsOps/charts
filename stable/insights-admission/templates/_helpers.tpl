@@ -66,10 +66,10 @@ Create the name of the service account to use
 Create the name of the Secret to use
 */}}
 {{- define "insights-admission.secretName" -}}
-{{- if .Values.insights.secret.name }}
-{{- .Values.insights.secret.name }}
+{{- if .Values.insights.secret.nameOverride }}
+{{- .Values.insights.secret.nameOverride }}
 {{- else }}
-{{- printf "%s-%s" (include "insights-admission.fullname" .) (default "-token" .Values.insights.secret.suffix) }}
+{{- printf "%s-%s" (include "insights-admission.fullname" .) (default "token" .Values.insights.secret.suffix) }}
 {{- end }}
 {{- end }}
 
@@ -77,9 +77,9 @@ Create the name of the Secret to use
 Create the name of the ConfigMap to use
 */}}
 {{- define "insights-admission.configmapName" -}}
-{{- if .Values.insights.configmap.name }}
-{{- .Values.insights.configmap.name }}
+{{- if .Values.insights.configmap.nameOverride }}
+{{- .Values.insights.configmap.nameOverride }}
 {{- else }}
-{{- printf "%s-%s" (include "insights-admission.fullname" .) (default "-configmap" .Values.insights.configmap.suffix) }}
+{{- printf "%s-%s" (include "insights-admission.fullname" .) (default "configmap" .Values.insights.configmap.suffix) }}
 {{- end }}
 {{- end }}
