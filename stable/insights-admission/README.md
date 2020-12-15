@@ -41,6 +41,12 @@ rules:
 | insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
 | insights.host | string | `"https://insights.fairwinds.com"` | Override the hostname for Fairwinds Insights |
 | insights.base64token | string | `""` | The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded. |
+| insights.secret.create | bool | `true` | Create a secret containing the base64 encoded token. |
+| insights.secret.name | string | `nil` | The name of the secret to use. |
+| insights.secret.suffix | string | `"-token"` | The suffix to add onto the relase name to get the secret that contains the base64 token |
+| insights.configmap.create | bool | `true` | Create a config map with Insights configuration |
+| insights.configmap.suffix | string | `nil` | The suffix to add onto the release name to get the configmap that contains the host/organization/cluster |
+| insights.configmap.name | string | `"-configmap"` | The name of the configmap to use. |
 | webhookConfig.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |

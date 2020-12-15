@@ -61,3 +61,25 @@ Create the name of the service account to use
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the Secret to use
+*/}}
+{{- define "insights-admission.secretName" -}}
+{{- if .Values.insights.secret.name }}
+{{- .Values.insights.secret.name }}
+{{- else }}
+{{- printf "%s-%s" (include "insights-admission.fullname" .) (default "-token" .Values.insights.secret.suffix) }}
+{{- end }}
+{{- end }}
+
+{{/*
+Create the name of the ConfigMap to use
+*/}}
+{{- define "insights-admission.configmapName" -}}
+{{- if .Values.insights.configmap.name }}
+{{- .Values.insights.configmap.name }}
+{{- else }}
+{{- printf "%s-%s" (include "insights-admission.fullname" .) (default "-configmap" .Values.insights.configmap.suffix) }}
+{{- end }}
+{{- end }}
