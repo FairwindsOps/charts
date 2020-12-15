@@ -109,6 +109,13 @@ serviceAccount:
   annotations: {}
   # serviceAccount.name -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
+  rbac:
+    # -- Grant the admission controller access to view secrets
+    viewSecrets: false
+    # -- Grant the admission controller access to a given role (such as view)
+    grantRole:
+    # -- Grant the admission controller access to additional objects. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a Role.
+    additionalAccess:
 
 # podAnnotations -- Annotations to add to each pod.
 podAnnotations: {}
