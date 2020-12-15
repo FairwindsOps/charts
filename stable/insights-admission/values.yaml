@@ -7,6 +7,20 @@ insights:
   host: https://insights.fairwinds.com
   # insights.base64token -- The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded.
   base64token: ""
+  secret:
+    # -- Create a secret containing the base64 encoded token.
+    create: true
+    # -- The name of the secret to use.
+    nameOverride:
+    # -- The suffix to add onto the relase name to get the secret that contains the base64 token
+    suffix: "-token"
+  configmap:
+    # -- Create a config map with Insights configuration
+    create: true
+    # -- The name of the configmap to use.
+    nameOverride: "-configmap"
+    # -- The suffix to add onto the release name to get the configmap that contains the host/organization/cluster
+    suffix:
 
 webhookConfig:
   # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration

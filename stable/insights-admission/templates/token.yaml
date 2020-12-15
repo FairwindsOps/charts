@@ -1,7 +1,8 @@
+{{- if .Values.insights.secret.create -}}
 apiVersion: v1
 kind: Secret
 metadata:
-  name: {{ include "insights-admission.fullname" . }}-token
+  name: {{ include "insights-admission.secretName" . }}
 data:
   token: {{ required "You must set base64token" .Values.insights.base64token | quote }}
-
+{{- end }}

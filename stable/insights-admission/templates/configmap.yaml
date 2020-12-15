@@ -1,0 +1,10 @@
+{{- if .Values.insights.configmap.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "insights-admission.configmapName" . }}
+data:
+  host: {{ required "You must set insights.host" .Values.insights.host | quote }}
+  cluster: {{ required "You must set insights.cluster" .Values.insights.cluster  | quote }}
+  organization: {{ required "You must set insights.organization" .Values.insights.organization | quote }}
+{{- end }}
