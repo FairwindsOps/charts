@@ -63,6 +63,9 @@ rules:
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| serviceAccount.rbac.viewSecrets | bool | `false` | Grant the admission controller access to view secrets |
+| serviceAccount.rbac.grantRole | string | `nil` | Grant the admission controller access to a given role (such as view) |
+| serviceAccount.rbac.additionalAccess | string | `nil` | Grant the admission controller access to additional objects. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a Role. |
 | podAnnotations | object | `{}` | Annotations to add to each pod. |
 | podSecurityContext | object | `{}` | Security Context for the entire pod. |
 | securityContext | object | `{"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":15000}` | Security Context for the container. |
