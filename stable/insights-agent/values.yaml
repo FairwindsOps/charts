@@ -39,6 +39,18 @@ cronjobExecutor:
       cpu: 1m
       memory: 3Mi
 
+installReporter:
+  image:
+    repository: curlimages/curl
+    tag: "7.73.0"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 1m
+      memory: 3Mi
+
 polaris:
   enabled: false
   schedule: "rand * * * *"
