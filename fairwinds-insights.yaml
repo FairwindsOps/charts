@@ -16,7 +16,6 @@ manifests:
     valuesFile: stable/goldilocks/ci/test-values.yaml
   - name: rbac-manager
     path: ./stable/rbac-manager
-    valuesFile: stable/rbac-manager/ci/test-values.yaml
 
 # TODO: exemptions are not yet supported
 exemptions:
