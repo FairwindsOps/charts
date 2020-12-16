@@ -33,6 +33,9 @@ exemptions:
       - hostPIDSet
       - runAsRootAllowed
     reason: kube-bench needs special permissions to do its job
-  - filename: goldilocks/goldilocks/charts/metrics-server/templates/deployment.yaml
+  - filename: goldilocks/goldilocks/charts/metrics-server/*
     report: polaris
-    reason: Part of a sub-chart that we do not control
+    reason: a sub-chart that we do not control
+  - filename: goldilocks/goldilocks/charts/vpa/*
+    report: polaris
+    reason: a sub-chart that we do not control
