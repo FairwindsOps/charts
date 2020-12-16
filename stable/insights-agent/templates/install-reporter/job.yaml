@@ -1,0 +1,60 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-install-reporter
+  labels:
+    app: insights-agent
+  annotations:
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 30
+  backoffLimit: {{ .Values.cronjobs.backoffLimit }}
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: start-job-from-cronjob
+        image: "{{ .Values.installReporter.image.repository }}:{{ .Values.installReporter.image.tag }}"
+        imagePullPolicy: Always
+        command: ["curl"]
+        args:
+          - "--fail"
+          - "-X"
+          - "POST"
+          - "{{ .Values.insights.host }}/v0/organizations/{{ .Values.insights.organization }}/clusters/{{ .Values.insights.cluster }}/data/installation"
+          - "-H"
+          - "Content-Type: application/json"
+          - "-H"
+          - "Authorization: Bearer $(FAIRWINDS_TOKEN)"
+          - "-d"
+          - "@/opt/app/values.json"
+        resources:
+          {{- toYaml .Values.installReporter.resources | nindent 10 }}
+        volumeMounts:
+        - name: values
+          mountPath: /opt/app/values.json
+          subPath: values.json
+          readOnly: true
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+        env:
+        - name: FAIRWINDS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+              name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+              name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+              key: token
+      volumes:
+      - name: values
+        configMap:
+          name: {{ include "insights-agent.fullname" $ }}-values
