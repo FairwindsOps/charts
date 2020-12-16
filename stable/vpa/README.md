@@ -32,6 +32,18 @@ helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 helm install vpa fairwinds-stable/vpa --namespace vpa --create-namespace
 ```
 
+## Utilize Prometheus for History
+
+In order to utilize prometheus for recommender history, you will need to pass some extra flags to the recommender. If you use prometheus operator installed in the `prometheus-operator` namespace, these values will do the trick.
+
+```
+recommender:
+  extraArgs:
+    prometheus-address: |
+      http://prometheus-operator-prometheus.prometheus-operator.svc.cluster.local:9090
+    storage: prometheus
+```
+
 ## Values
 
 | Key | Type | Default | Description |
