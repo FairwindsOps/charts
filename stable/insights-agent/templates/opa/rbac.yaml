@@ -6,7 +6,7 @@ metadata:
   labels:
     app: insights-agent
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "insights-agent.fullname" . }}-checks-view
@@ -24,7 +24,7 @@ rules:
   - 'list'
 ---
 {{- with .Values.opa.additionalAccess }}
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: {{ include "insights-agent.fullname" $ }}-opa-additional
@@ -33,7 +33,7 @@ metadata:
 rules:
 {{ toYaml . }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "insights-agent.fullname" $ }}-opa-additional
@@ -49,7 +49,7 @@ subjects:
     namespace: {{ $.Release.Namespace }}
 ---
 {{- end }}
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: {{ include "insights-agent.fullname" . }}-checks-edit
@@ -67,7 +67,7 @@ rules:
   - 'patch'
   - 'update'  
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: {{ include "insights-agent.fullname" . }}-opa-edit
@@ -82,7 +82,7 @@ subjects:
     name: {{ include "insights-agent.fullname" . }}-opa
     namespace: {{ .Release.Namespace }}
 ---
-apiVersion: rbac.authorization.k8s.io/v1beta1
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "insights-agent.fullname" . }}-opa

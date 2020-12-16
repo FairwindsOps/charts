@@ -41,6 +41,12 @@ rules:
 | insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
 | insights.host | string | `"https://insights.fairwinds.com"` | Override the hostname for Fairwinds Insights |
 | insights.base64token | string | `""` | The token for your cluster from the Cluster Settings page in Fairwinds Insights. This should already be base64 encoded. |
+| insights.secret.create | bool | `true` | Create a secret containing the base64 encoded token. |
+| insights.secret.nameOverride | string | `nil` | The name of the secret to use. |
+| insights.secret.suffix | string | `"token"` | The suffix to add onto the relase name to get the secret that contains the base64 token |
+| insights.configmap.create | bool | `true` | Create a config map with Insights configuration |
+| insights.configmap.nameOverride | string | `nil` | The name of the configmap to use. |
+| insights.configmap.suffix | string | `"configmap"` | The suffix to add onto the release name to get the configmap that contains the host/organization/cluster |
 | webhookConfig.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
@@ -63,6 +69,9 @@ rules:
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
+| serviceAccount.rbac.viewSecrets | bool | `false` | Grant the admission controller access to view secrets |
+| serviceAccount.rbac.grantRole | string | `nil` | Grant the admission controller access to a given role (such as view) |
+| serviceAccount.rbac.additionalAccess | string | `nil` | Grant the admission controller access to additional objects. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a Role. |
 | podAnnotations | object | `{}` | Annotations to add to each pod. |
 | podSecurityContext | object | `{}` | Security Context for the entire pod. |
 | securityContext | object | `{"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":15000}` | Security Context for the container. |

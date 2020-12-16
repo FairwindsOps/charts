@@ -2,7 +2,7 @@ image:
   # image.repository -- The image to run for rbac manager
   repository: quay.io/reactiveops/rbac-manager
   # image.tag -- The tag of the image to run
-  tag: v0.9.4
+  tag: v0.10.0
   # image.pullPolicy -- The image pullPolicy. Recommend not changing this
   pullPolicy: Always
   # imagePullSecrets -- A list of imagePullSecrets to reference for pulling the image

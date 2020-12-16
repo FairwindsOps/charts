@@ -2,5 +2,11 @@ dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
   version: 2.3.1
-digest: sha256:0734b3efb9017569a001b9ac11749e2927c8284a8ca3e38e734617e262164abe
-generated: "2020-05-01T09:29:55.491445-06:00"
+- name: prometheus
+  repository: https://prometheus-community.github.io/helm-charts
+  version: 11.16.9
+- name: insights-admission
+  repository: https://charts.fairwinds.com/stable
+  version: 0.3.1
+digest: sha256:ab4f6fd9fa528750d0549e6a4bdab4ce0729afb828a295e22865337809d9bb6f
+generated: "2020-12-15T14:33:37.4018302-05:00"

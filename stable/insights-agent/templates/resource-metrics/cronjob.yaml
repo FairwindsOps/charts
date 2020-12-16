@@ -1,6 +1,6 @@
-{{- if .Values.pluto.enabled -}}
-{{- $_ := set . "Label" "pluto" }}
-{{- $_ := set . "Config" .Values.pluto }}
+{{- if .Values.resourcemetrics.enabled -}}
+{{- $_ := set . "Label" "resource-metrics" }}
+{{- $_ := set . "Config" .Values.resourcemetrics }}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -15,8 +15,11 @@ spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
-            command: ["/bin/sh", "-c"]
-            args: ["/pluto detect-helm -ojson > /output/pluto-tmp.json; mv /output/pluto-tmp.json /output/pluto.json"]
+            command:
+            - prometheus-collector
+            env:
+            - name: PROMETHEUS_ADDRESS
+              value: {{ .Values.resourcemetrics.address | quote }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

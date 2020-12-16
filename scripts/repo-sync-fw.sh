@@ -23,6 +23,7 @@ readonly HELM_TARBALL=helm-v3.2.0-linux-amd64.tar.gz
 readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io
+readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
 readonly S3_BUCKET_STABLE=s3://charts.fairwinds.com/stable
 readonly S3_BUCKET_INCUBATOR=s3://charts.fairwinds.com/incubator
 
@@ -49,6 +50,7 @@ setup_helm_client() {
     helm repo add fairwinds-stable "$STABLE_REPO_URL"
     helm repo add fairwinds-incubator "$INCUBATOR_REPO_URL"
     helm repo add jetstack "$JETSTACK_REPO_URL"
+    helm repo add prometheus-community "$PROMETHEUS_REPO_URL"
 }
 
 authenticate() {
