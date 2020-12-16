@@ -16,8 +16,10 @@ manifests:
     valuesFile: stable/goldilocks/ci/test-values.yaml
   - name: rbac-manager
     path: ./stable/rbac-manager
+  - name: vpa
+    path: ./stable/vpa
+    valuesFile: stable/vpa/ci/test-values.yaml
 
-# TODO: exemptions are not yet supported
 exemptions:
   - image: quay.io/fairwinds/nova
     report: trivy
@@ -31,3 +33,6 @@ exemptions:
       - hostPIDSet
       - runAsRootAllowed
     reason: kube-bench needs special permissions to do its job
+  - filename: goldilocks/goldilocks/charts/metrics-server/templates/deployment.yaml
+    report: polaris
+    reason: Part of a sub-chart that we do not control
