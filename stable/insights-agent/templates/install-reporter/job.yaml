@@ -1,7 +1,9 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  {{- include "metadata" "install-reporter" }}
+  name: {{ include "insights-agent.fullname" $ }}-install-reporter
+  labels:
+    app: insights-agent
   annotations:
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
