@@ -36,6 +36,7 @@ There are several different report types which can be enabled and configured:
 * `pluto`
 * `opa`
 * `prometheus`
+* `admission`
 
 See below for configuration details.
 
