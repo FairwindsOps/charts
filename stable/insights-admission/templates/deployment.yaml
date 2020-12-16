@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "insights-admission.fullname" . }}
+  name: {{ include "insights-admission.fullname" . }}-admission
   labels:
     {{- include "insights-admission.labels" . | nindent 4 }}
 spec:
