@@ -19,6 +19,7 @@ uploader:
       memory: 64Mi
 
 cronjobs:
+  disableServiceMesh: true
   backoffLimit: 1
   failedJobsHistoryLimit: 2
   successfulJobsHistoryLimit: 2
@@ -30,6 +31,18 @@ cronjobExecutor:
   image:
     repository: quay.io/fairwinds/kubectl
     tag: "0.19"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 1m
+      memory: 3Mi
+
+installReporter:
+  image:
+    repository: curlimages/curl
+    tag: "7.73.0"
   resources:
     limits:
       cpu: 100m
@@ -237,6 +250,48 @@ pluto:
     requests:
       cpu: 10m
       memory: 64Mi
+
+resourcemetrics:
+  enabled: false
+  installPrometheus: false
+  schedule: "0/10 * * * *"
+  timeout: 300
+  address: "http://prometheus-server"
+  image:
+    repository: quay.io/fairwinds/prometheus-collector
+    tag: "0.3"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 10m
+      memory: 64Mi
+
+prometheus:
+  alertmanager:
+    enabled: false
+  kubeStateMetrics:
+    enabled: false
+  nodeExporter:
+    enabled: false
+  pushgateway:
+    enabled: false
+  server:
+    fullnameOverride: "prometheus-server"
+
+admission:
+  enabled: false
+
+insights-admission:
+  nameOverride: insights-agent
+  insights:
+    secret:
+      create: false
+      suffix: 'token'
+    configmap:
+      create: false
+      suffix: 'configmap'
 
 # test -- Used for chart CI only - deploys a test deployment
 test:

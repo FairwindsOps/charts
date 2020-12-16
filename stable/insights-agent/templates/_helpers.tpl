@@ -32,7 +32,12 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{- define "metadata" }}
-  name: {{ . }}
+  name: {{ .Label }}
   labels:
     app: insights-agent
+  {{- if .Values.cronjobs.disableServiceMesh }}
+  annotations:
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+  {{- end }}
 {{- end }}

@@ -1,0 +1,32 @@
+{{- if and .Values.webhook.enable (not .Values.webhook.secretName) -}}
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: {{ include "polaris.fullname" . }}-cert
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+spec:
+  commonName: {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
+  dnsNames:
+  - {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc
+  - {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}
+  - {{ include "polaris.fullname" . }}-webhook
+  - {{ include "polaris.fullname" . }}-webhook.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+  issuerRef:
+    kind: Issuer
+    name: {{ include "polaris.fullname" . }}-selfsigned
+  secretName: {{ include "polaris.fullname" . }}
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Issuer
+metadata:
+  name: {{ include "polaris.fullname" . }}-selfsigned
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+spec:
+  selfSigned: {}
+{{- end -}}

@@ -1,0 +1,33 @@
+{{- if .Values.webhook.enable -}}
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: polaris-webhook
+  {{- if not .Values.webhook.secretName }}
+  annotations:
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "polaris.fullname" . }}-cert 
+  {{- end }}
+webhooks:
+- admissionReviewVersions:
+  - v1beta1
+  clientConfig:
+    {{- if .Values.webhook.caBundle }}
+    caBundle: {{ .Values.webhook.caBundle | quote }} 
+    {{- end }}
+    service:
+      name: {{ include "polaris.fullname" . }}-webhook
+      namespace: {{ .Release.Namespace }}
+      path: /validate
+      port: 443
+  failurePolicy: {{ .Values.webhook.failurePolicy }}
+  matchPolicy: {{ .Values.webhook.matchPolicy }}
+  name: polaris.fairwinds.com
+  namespaceSelector:
+    {{ .Values.webhook.namespaceSelector | toYaml | nindent 4 }}
+  objectSelector:
+    {{ .Values.webhook.objectSelector | toYaml | nindent 4 }}
+  rules:
+  {{- concat .Values.webhook.rules .Values.webhook.defaultRules | toYaml | nindent 2 }}
+  sideEffects: None
+  timeoutSeconds: 10
+{{- end -}}

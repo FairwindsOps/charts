@@ -31,3 +31,10 @@ kubehunter:
 trivy:
   enabled: true
   maxScansPerRun: 2
+
+resourcemetrics:
+  enabled: true
+  installPrometheus: true
+
+admission:
+  enabled: true
