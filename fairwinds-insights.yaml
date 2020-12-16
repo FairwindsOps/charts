@@ -39,3 +39,9 @@ exemptions:
   - filename: goldilocks/goldilocks/charts/vpa/*
     report: polaris
     reason: a sub-chart that we do not control
+  - filename: goldilocks/goldilocks/templates/controller-deployment.yaml
+    report: polaris
+    checks:
+      - livenessProbeMissing
+      - readinessProbeMissing
+    reason: Goldilocks controller does not have any health endpoint at this time.
