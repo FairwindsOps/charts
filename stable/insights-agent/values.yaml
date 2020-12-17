@@ -279,6 +279,9 @@ prometheus:
     enabled: false
   server:
     fullnameOverride: "prometheus-server"
+    persistentVolume:
+      enabled: false
+    retention: "1d"
 
 admission:
   enabled: false
