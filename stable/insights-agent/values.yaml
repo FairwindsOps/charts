@@ -295,6 +295,9 @@ insights-admission:
     configmap:
       create: false
       suffix: 'configmap'
+  serviceAccount:
+    rbac:
+      grantRole: "view"
 
 # test -- Used for chart CI only - deploys a test deployment
 test:
