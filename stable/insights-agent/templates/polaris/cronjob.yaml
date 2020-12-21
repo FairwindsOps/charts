@@ -13,18 +13,24 @@ spec:
       template:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
+          {{ if .Values.polaris.config }}
           - name: config
             configMap:
               name: polaris
+          {{ end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
+            {{ if .Values.polaris.config }}
             - name: config
               mountPath: /opt/app/config.yaml
               subPath: config.yaml
               readOnly: true
+            {{ end }}
             command: [
               "polaris", "audit",
+              {{ if .Values.polaris.config }}
               "--config", "/opt/app/config.yaml",
+              {{ end }}
               "--output-file", "/output/polaris.json",
               "--format", "json",
               "--display-name", "{{ .Values.insights.cluster }}",
