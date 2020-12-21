@@ -16,7 +16,7 @@ spec:
           {{ if .Values.polaris.config }}
           - name: config
             configMap:
-              name: {{ .Values.polaris.existingConfigmap | default "polaris" }}
+              name: polaris
           {{ end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
