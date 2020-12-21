@@ -13,14 +13,14 @@ spec:
       template:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
-          {{ if or .Values.polaris.config .Values.polaris.existingConfigmap }}
+          {{ if .Values.polaris.config }}
           - name: config
             configMap:
               name: {{ .Values.polaris.existingConfigmap | default "polaris" }}
           {{ end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
-            {{ if or .Values.polaris.config .Values.polaris.existingConfigmap }}
+            {{ if .Values.polaris.config }}
             - name: config
               mountPath: /opt/app/config.yaml
               subPath: config.yaml
@@ -28,7 +28,7 @@ spec:
             {{ end }}
             command: [
               "polaris", "audit",
-              {{ if or .Values.polaris.config .Values.polaris.existingConfigmap }}
+              {{ if .Values.polaris.config }}
               "--config", "/opt/app/config.yaml",
               {{ end }}
               "--output-file", "/output/polaris.json",
