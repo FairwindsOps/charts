@@ -57,7 +57,7 @@ polaris:
   timeout: 300
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "1.2"
+    tag: "3.0"
   resources:
     limits:
       cpu: 100m
