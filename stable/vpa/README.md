@@ -48,57 +48,57 @@ recommender:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| imagePullSecrets | list | `[]` | A list of image pull secrets to be used for all pods |
-| priorityClassName | string | `""` | To set the priorityclass for all pods |
-| nameOverride | string | `""` | A template override for the name |
-| fullnameOverride | string | `""` | A template override for the fullname |
-| rbac.create | bool | `true` | If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components. |
-| serviceAccount.create | bool | `true` | Specifies whether a service account should be created for each component |
-| serviceAccount.annotations | object | `{}` | Annotations to add to the service accounts for each component |
-| serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |
-| recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
-| recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
-| recommender.replicaCount | int | `1` |  |
-| recommender.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender"` | The location of the recommender image |
-| recommender.image.pullPolicy | string | `"Always"` | The pull policy for the recommender image. Recommend not changing this |
-| recommender.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
-| recommender.podAnnotations | object | `{}` | Annotations to add to the recommender pod |
-| recommender.podSecurityContext.runAsNonRoot | bool | `true` |  |
-| recommender.podSecurityContext.runAsUser | int | `65534` |  |
-| recommender.securityContext | object | `{}` | The security context for the containers inside the recommender pod |
-| recommender.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
-| recommender.nodeSelector | object | `{}` |  |
-| recommender.tolerations | list | `[]` |  |
-| recommender.affinity | object | `{}` |  |
-| updater.enabled | bool | `true` | If true, the updater component will be deployed |
-| updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
-| updater.replicaCount | int | `1` |  |
-| updater.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater"` | The location of the updater image |
-| updater.image.pullPolicy | string | `"Always"` | The pull policy for the updater image. Recommend not changing this |
-| updater.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
-| updater.podAnnotations | object | `{}` | Annotations to add to the updater pod |
-| updater.podSecurityContext.runAsNonRoot | bool | `true` |  |
-| updater.podSecurityContext.runAsUser | int | `65534` |  |
-| updater.securityContext | object | `{}` | The security context for the containers inside the updater pod |
-| updater.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
-| updater.nodeSelector | object | `{}` |  |
-| updater.tolerations | list | `[]` |  |
-| updater.affinity | object | `{}` |  |
-| admissionController.enabled | bool | `false` | If true, will install the admission-controller component of vpa |
-| admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
+| admissionController.affinity | object | `{}` |  |
+| admissionController.certGen.image.pullPolicy | string | `"Always"` | The pull policy for the certgen image. Recommend not changing this |
 | admissionController.certGen.image.repository | string | `"quay.io/reactiveops/ci-images"` | An image that contains certgen for creating certificates. Only used if admissionController.generateCertificate is true |
 | admissionController.certGen.image.tag | string | `"v11-alpine"` | An image tag for the admissionController.certGen.image.repository image. Only used if admissionController.generateCertificate is true |
-| admissionController.certGen.image.pullPolicy | string | `"Always"` | The pull policy for the certgen image. Recommend not changing this |
 | admissionController.cleanupOnDelete | bool | `true` | If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller |
-| admissionController.replicaCount | int | `1` |  |
-| admissionController.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-admission-controller"` | The location of the vpa admission controller image |
+| admissionController.enabled | bool | `false` | If true, will install the admission-controller component of vpa |
+| admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
 | admissionController.image.pullPolicy | string | `"Always"` | The pull policy for the admission controller image. Recommend not changing this |
+| admissionController.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-admission-controller"` | The location of the vpa admission controller image |
 | admissionController.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
+| admissionController.nodeSelector | object | `{}` |  |
 | admissionController.podAnnotations | object | `{}` | Annotations to add to the admission controller pod |
 | admissionController.podSecurityContext.runAsNonRoot | bool | `true` |  |
 | admissionController.podSecurityContext.runAsUser | int | `65534` |  |
-| admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
+| admissionController.replicaCount | int | `1` |  |
 | admissionController.resources | object | `{"limits":{"cpu":"200m","memory":"500Mi"},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
-| admissionController.nodeSelector | object | `{}` |  |
+| admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
 | admissionController.tolerations | list | `[]` |  |
-| admissionController.affinity | object | `{}` |  |
+| fullnameOverride | string | `""` | A template override for the fullname |
+| imagePullSecrets | list | `[]` | A list of image pull secrets to be used for all pods |
+| nameOverride | string | `""` | A template override for the name |
+| priorityClassName | string | `""` | To set the priorityclass for all pods |
+| rbac.create | bool | `true` | If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components. |
+| recommender.affinity | object | `{}` |  |
+| recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
+| recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
+| recommender.image.pullPolicy | string | `"Always"` | The pull policy for the recommender image. Recommend not changing this |
+| recommender.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender"` | The location of the recommender image |
+| recommender.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
+| recommender.nodeSelector | object | `{}` |  |
+| recommender.podAnnotations | object | `{}` | Annotations to add to the recommender pod |
+| recommender.podSecurityContext.runAsNonRoot | bool | `true` |  |
+| recommender.podSecurityContext.runAsUser | int | `65534` |  |
+| recommender.replicaCount | int | `1` |  |
+| recommender.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
+| recommender.securityContext | object | `{}` | The security context for the containers inside the recommender pod |
+| recommender.tolerations | list | `[]` |  |
+| serviceAccount.annotations | object | `{}` | Annotations to add to the service accounts for each component |
+| serviceAccount.create | bool | `true` | Specifies whether a service account should be created for each component |
+| serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |
+| updater.affinity | object | `{}` |  |
+| updater.enabled | bool | `true` | If true, the updater component will be deployed |
+| updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
+| updater.image.pullPolicy | string | `"Always"` | The pull policy for the updater image. Recommend not changing this |
+| updater.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater"` | The location of the updater image |
+| updater.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
+| updater.nodeSelector | object | `{}` |  |
+| updater.podAnnotations | object | `{}` | Annotations to add to the updater pod |
+| updater.podSecurityContext.runAsNonRoot | bool | `true` |  |
+| updater.podSecurityContext.runAsUser | int | `65534` |  |
+| updater.replicaCount | int | `1` |  |
+| updater.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
+| updater.securityContext | object | `{}` | The security context for the containers inside the updater pod |
+| updater.tolerations | list | `[]` |  |

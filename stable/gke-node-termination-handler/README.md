@@ -19,3 +19,4 @@ We recommend installing gke-node-termination-handler in its own namespace.
 | resources | object | `{"limits":{"cpu":"150m","memory":"30Mi"},"requests":{"cpu":"150m","memory":"30Mi"}}` | A resource limit and requess block for the daemonset |
 | args | list | `["-v=10","--logtostderr","--exclude-pods=$(POD_NAME):$(POD_NAMESPACE)","--taint=cloud.google.com/impending-node-termination::NoSchedule"]` | Command arguments. Usually you don't need to override them. |
 | extraArgs | list | `[]` | Extra arguments for command. For example, "--system-pod-grace-period=14s" to wait for 14s for regular pods to terminate. |
+| env | object | `{"SLACK_WEBHOOK_URL":""}` | Extra environment variables. For example "SLACK_WEBHOOK_URL" |

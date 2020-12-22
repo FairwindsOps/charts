@@ -34,23 +34,23 @@ Kubernetes 1.11+, Helm 2.13+
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"quay.io/fairwinds/astro"` | Docker image repo |
-| image.tag | string | `"v1.5.3"` | Docker image tag |
-| image.pullPolicy | string | `"IfNotPresent"` | Docker image pull policy |
-| resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | The resources block for the deployment. |
-| nodeSelector | object | `{}` | Deployment ndoeSelector |
-| tolerations | list | `[]` | Deployment tolerations |
 | affinity | object | `{}` | Deployment affinity |
+| custom_config.data | string | "" | An astro configuration file. See the [Astro repo readme](https://github.com/fairwindsops/astro) for more details. |
+| custom_config.enabled | bool | `false` | If true a custom configuration must be specified in `custom_config.data`. |
 | datadog.apiKey | string | `""` | Datadog API key |
 | datadog.appKey | string | `""` | Datadog app key |
-| rbac.create | bool | `true` | If true, RBAC resources will be created. |
+| definitionsPath | string | `"conf.yml"` | The path to the monitor definitions configuration. This can be a local path or a URL. |
+| deployment.replicas | int | `2` | The number of replicas to use. |
 | deployment.serviceAccount.create | bool | `true` | If true, a service account will be created. If false, you must set `deployment.serviceAccount.name`. |
 | deployment.serviceAccount.name | string | `nil` | The name of an existing service account to use. |
-| deployment.replicas | int | `2` | The number of replicas to use. |
+| dryRun | bool | `false` | When set to true monitors will not be managed in datadog. |
+| image.pullPolicy | string | `"IfNotPresent"` | Docker image pull policy |
+| image.repository | string | `"quay.io/fairwinds/astro"` | Docker image repo |
+| image.tag | string | `"v1.5.3"` | Docker image tag |
+| nodeSelector | object | `{}` | Deployment ndoeSelector |
+| owner | string | `"astro"` | A unique name to designate as teh owner. This will be applied as a tag to identified managed monitors. |
+| rbac.create | bool | `true` | If true, RBAC resources will be created. |
+| resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | The resources block for the deployment. |
 | secret.create | bool | `true` | If true, a secret with API credentials will be created. If false, you must set `secret.name` |
 | secret.name | string | `nil` | The name of an existing secret to mount to the container. |
-| definitionsPath | string | `"conf.yml"` | The path to the monitor definitions configuration. This can be a local path or a URL. |
-| owner | string | `"astro"` | A unique name to designate as teh owner. This will be applied as a tag to identified managed monitors. |
-| dryRun | bool | `false` | When set to true monitors will not be managed in datadog. |
-| custom_config.enabled | bool | `false` | If true a custom configuration must be specified in `custom_config.data`. |
-| custom_config.data | string | "" | An astro configuration file. See the [Astro repo readme](https://github.com/fairwindsops/astro) for more details. |
+| tolerations | list | `[]` | Deployment tolerations |
