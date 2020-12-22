@@ -14,10 +14,10 @@ helm install polaris fairwinds-stable/polaris --namespace polaris
 
 ### Webhook
 
-A valid TLS certificate is required for the Polaris Validating Webhook. If you have cert-manager installed in your cluster then the helm install below will work. 
+A valid TLS certificate is required for the Polaris Validating Webhook. If you have cert-manager installed in your cluster then the helm install below will work.
 
 If you don't use cert-manager, you'll need to:
-* Supply a CA Bundle with the `webhook.caBundle` 
+* Supply a CA Bundle with the `webhook.caBundle`
 * Create a TLS secret in your cluster with a valid certificate that uses that CA
 * Pass the name of that secret with the `webhook.secretName` parameter.
 

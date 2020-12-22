@@ -93,4 +93,3 @@ Create the name of the service account to use for the scanner
     {{ default "default" .Values.scanner.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
-

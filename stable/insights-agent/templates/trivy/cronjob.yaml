@@ -1,4 +1,4 @@
-{{- if .Values.trivy.enabled -}} 
+{{- if .Values.trivy.enabled -}}
 {{- $_ := set . "Label" "trivy" }}
 {{- $_ := set . "Config" .Values.trivy }}
 apiVersion: batch/v1beta1

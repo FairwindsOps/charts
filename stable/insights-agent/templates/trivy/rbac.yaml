@@ -1,4 +1,4 @@
-{{- if .Values.trivy.enabled -}} 
+{{- if .Values.trivy.enabled -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:

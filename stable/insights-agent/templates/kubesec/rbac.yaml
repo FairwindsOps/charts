@@ -46,4 +46,3 @@ subjects:
     name: {{ include "insights-agent.fullname" . }}-kubesec
     namespace: {{ .Release.Namespace }}
 {{- end -}}
-
