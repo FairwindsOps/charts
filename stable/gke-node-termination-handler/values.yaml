@@ -34,3 +34,7 @@ args:
 
 # extraArgs -- Extra arguments for command. For example, "--system-pod-grace-period=14s" to wait for 14s for regular pods to terminate.
 extraArgs: []
+
+# env -- Extra environment variables. For example "SLACK_WEBHOOK_URL"
+env:
+  SLACK_WEBHOOK_URL: ""

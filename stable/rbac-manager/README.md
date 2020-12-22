@@ -52,18 +52,18 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| affinity | object | `{}` | Deployment affinity |
+| image.imagePullSecrets | list | `[]` |  |
+| image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.repository | string | `"quay.io/reactiveops/rbac-manager"` | The image to run for rbac manager |
 | image.tag | string | `"v0.10.0"` | The tag of the image to run |
-| image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
-| image.imagePullSecrets | list | `[]` |  |
-| resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the rbac-manager pods |
-| priorityClassName | string | `""` | The name of a priorityClass to use |
 | nodeSelector | object | `{}` | Deployment nodeSelector |
-| tolerations | list | `[]` | Deployment tolerations |
-| affinity | object | `{}` | Deployment affinity |
 | podAnnotations | object | `{}` | Annotations to apply to the pods |
 | podLabels | object | `{}` | Labels to apply to the pod |
-| serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor will be created for Prometheus |
+| priorityClassName | string | `""` | The name of a priorityClass to use |
+| resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the rbac-manager pods |
 | serviceMonitor.annotations | object | `{}` | Annotations to apply to the serviceMonitor and headless service |
-| serviceMonitor.namespace | string | `""` | The namespace to deploy the serviceMonitor into |
+| serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor will be created for Prometheus |
 | serviceMonitor.interval | string | `"60s"` | How often to scrape the metrics endpoint |
+| serviceMonitor.namespace | string | `""` | The namespace to deploy the serviceMonitor into |
+| tolerations | list | `[]` | Deployment tolerations |
