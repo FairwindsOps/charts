@@ -35,7 +35,7 @@
   - name: FAIRWINDS_AGENT_CHART_VERSION
     value: {{ .Chart.Version }}
   - name: SEND_FAILURES
-    value: {{ .Values.uploader.sendFailures | quote }} 
+    value: {{ .Values.uploader.sendFailures | quote }}
   - name: POD_NAME
     valueFrom:
       fieldRef:
