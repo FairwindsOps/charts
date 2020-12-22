@@ -1,4 +1,4 @@
-{{- if .Values.nova.enabled -}} 
+{{- if .Values.nova.enabled -}}
 {{- $_ := set . "Label" "nova" }}
 {{- $_ := set . "Config" .Values.nova }}
 apiVersion: batch/v1beta1

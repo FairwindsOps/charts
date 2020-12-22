@@ -31,5 +31,5 @@ Your cluster must support the [VolumeSnapshot API](https://kubernetes.io/docs/co
 | image.tag | string | `"0.1"` | The gemini image tag to use |
 | rbac.create | bool | `true` | If true, create a new ServiceAccount and attach permissions |
 | rbac.serviceAccountName | string | `nil` |  |
-| resources | object | `{"limits":{"cpu":"200m","memory":"512Mi"},"requests":{"cpu":"25m","memory":"64Mi"}}` | The resources block for the controller pods |
 | verbosity | int | `5` | How verbose the controller logs should be |
+| resources | object | `{"limits":{"cpu":"200m","memory":"512Mi"},"requests":{"cpu":"25m","memory":"64Mi"}}` | The resources block for the controller pods |

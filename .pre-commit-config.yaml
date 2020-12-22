@@ -34,7 +34,7 @@ repos:
     hooks:
       - id: helmlint
   - repo: https://github.com/norwoodj/helm-docs
-    rev: v1.3.0
+    rev: v1.4.0
     hooks:
       - id: helm-docs
         args:

@@ -21,4 +21,3 @@ subjects:
     name: {{ include "insights-agent.fullname" . }}-resource-metrics
     namespace: {{ .Release.Namespace }}
 {{- end -}}
-

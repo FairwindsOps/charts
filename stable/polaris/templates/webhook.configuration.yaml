@@ -5,14 +5,14 @@ metadata:
   name: polaris-webhook
   {{- if not .Values.webhook.secretName }}
   annotations:
-    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "polaris.fullname" . }}-cert 
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "polaris.fullname" . }}-cert
   {{- end }}
 webhooks:
 - admissionReviewVersions:
   - v1beta1
   clientConfig:
     {{- if .Values.webhook.caBundle }}
-    caBundle: {{ .Values.webhook.caBundle | quote }} 
+    caBundle: {{ .Values.webhook.caBundle | quote }}
     {{- end }}
     service:
       name: {{ include "polaris.fullname" . }}-webhook
