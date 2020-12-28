@@ -5,7 +5,9 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  {{- include "metadata" . }}
+  {{- include "annotation-metadata" . }}
+    polaris.fairwinds.com/hostPIDSet-exempt: "true"
+    polaris.fairwinds.com/runAsRootAllowed-exempt: "true"
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:
