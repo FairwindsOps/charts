@@ -41,3 +41,16 @@ Create chart name and version as used by the chart label.
     sidecar.istio.io/inject: "false"
   {{- end }}
 {{- end }}
+{{/*
+Metadata for the cronjobs but always show annotations
+*/}}
+{{- define "annotation-metadata" }}
+  name: {{ .Label }}
+  labels:
+    app: insights-agent
+  annotations:
+  {{- if .Values.cronjobs.disableServiceMesh }}
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+  {{- end }}
+{{- end }}
