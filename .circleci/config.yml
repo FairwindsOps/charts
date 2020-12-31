@@ -95,11 +95,7 @@ jobs:
       - *setup_environment
       - run:
           name: sync
-          command: scripts/repo-sync.sh
-      - run:
-          name: sync-fw
-          command: scripts/repo-sync-fw.sh
-
+          command: scripts/sync.sh
 workflows:
   version: 2
   test-and-sync:
