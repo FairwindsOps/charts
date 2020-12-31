@@ -97,6 +97,8 @@ sync_repo() {
         exit 1
     fi
 
+    aws cloudfront create-invalidation --distribution-id=E1ZJM6TTQD49VX --paths "stable/index.yaml" "incubator/index.yaml"
+
     ls -l "$sync_dir"
 
     return "$exit_code"
