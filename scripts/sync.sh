@@ -24,8 +24,8 @@ readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io
 readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
-readonly S3_BUCKET_STABLE=s3://charts.fairwinds.com/stable
-readonly S3_BUCKET_INCUBATOR=s3://charts.fairwinds.com/incubator
+readonly S3_BUCKET_STABLE=s3://fairwinds-helm-charts/stable
+readonly S3_BUCKET_INCUBATOR=s3://fairwinds-helm-charts/incubator
 
 main() {
     setup_helm_client
@@ -96,6 +96,8 @@ sync_repo() {
         log_error "Exiting because unable to update index. Not safe to push update."
         exit 1
     fi
+
+    aws cloudfront create-invalidation --distribution-id=E1ZJM6TTQD49VX --paths "/stable/index.yaml" "/incubator/index.yaml"
 
     ls -l "$sync_dir"
 

@@ -50,7 +50,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
 | metrics-server.apiService.create | bool | `true` |  |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v3.0.0"` | The goldilocks image tag to use |
+| image.tag | string | `"v3.1.0"` | The goldilocks image tag to use |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
@@ -73,7 +73,6 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
 | dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
 | dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
-| dashboard.basePath | string | `nil` | Sets the web app's basePath/base href |
 | dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
 | dashboard.ingress.annotations | object | `{}` |  |
 | dashboard.ingress.hosts[0].host | string | `"chart-example.local"` |  |
