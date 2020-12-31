@@ -15,7 +15,7 @@ image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks
   # image.tag -- The goldilocks image tag to use
-  tag: v3.0.0
+  tag: v3.1.0
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
@@ -76,8 +76,6 @@ dashboard:
     # dashboard.serviceAccount.name -- The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create`
     name:
 
-  # dashboard.basePath -- Sets the web app's basePath/base href
-  basePath:
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
     enabled: false

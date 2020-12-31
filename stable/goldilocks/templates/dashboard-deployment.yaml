@@ -36,9 +36,6 @@ spec:
             - /goldilocks
             - dashboard
             - --exclude-containers={{ .Values.dashboard.excludeContainers }}
-            {{- if .Values.dashboard.basePath }}
-            - --base-path={{ trimSuffix "/" .Values.dashboard.basePath }}/
-            {{- end }}
             - -v{{ .Values.dashboard.logVerbosity }}
           securityContext:
             readOnlyRootFilesystem: true
