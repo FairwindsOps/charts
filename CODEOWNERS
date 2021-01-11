@@ -19,7 +19,7 @@
 /stable/rbac-manager/ @robscott @sudermanjr @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
 /stable/gemini/ @rbren
-/stable/gke-node-termination-handler/ @hopson
+/stable/gke-node-termination-handler/ @sudermanjr
 /stable/goldilocks/ @sudermanjr @dosullivan
 /stable/insights-admission/ @rbren @makoscafee @baderbuddy
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
