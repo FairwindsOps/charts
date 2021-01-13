@@ -28,6 +28,8 @@ spec:
       {{- else }}
       serviceAccountName: {{ .Values.controller.serviceAccount.name }}
       {{- end }}
+      securityContext:
+        {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -39,15 +41,8 @@ spec:
             {{- range $name, $value := .Values.controller.flags }}
             - --{{ $name }}={{ $value }}
             {{- end }}
-
           securityContext:
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            runAsUser: 10324
-            capabilities:
-              drop:
-                - ALL
+            {{- toYaml .Values.controller.securityContext | nindent 12 }}
           resources:
             {{- toYaml .Values.controller.resources | nindent 12 }}
       {{- with .Values.controller.nodeSelector }}
