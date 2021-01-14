@@ -6,3 +6,6 @@ updater:
 admissionController:
   enabled: true
   generateCertificate: true
+  certGen:
+    env:
+      ENVIRONMENTVARIABLE: exists

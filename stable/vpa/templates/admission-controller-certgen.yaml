@@ -117,5 +117,10 @@ spec:
             # Clean up after we're done.
             echo "Deleting ${TMP_DIR}."
             rm -rf ${TMP_DIR}
+        env:
+          {{- range $key, $value := .Values.admissionController.certGen.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
 {{- end }}
 {{- end }}
