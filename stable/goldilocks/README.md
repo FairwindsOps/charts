@@ -50,7 +50,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
 | metrics-server.apiService.create | bool | `true` |  |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v3.1.0"` | The goldilocks image tag to use |
+| image.tag | string | `"v3.1.4"` | The goldilocks image tag to use |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
@@ -64,6 +64,8 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.tolerations | list | `[]` | Tolerations for the controller pod |
 | controller.affinity | object | `{}` | Affinity for the controller pods |
 | controller.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | The resources block for the controller pods |
+| controller.podSecurityContext | object | `{}` | Defines the podSecurityContext for the controller pod |
+| controller.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the controller container |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
 | dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
@@ -79,6 +81,8 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.ingress.hosts[0].paths | list | `[]` |  |
 | dashboard.ingress.tls | list | `[]` |  |
 | dashboard.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | A resources block for the dashboard. |
+| dashboard.podSecurityContext | object | `{}` | Defines the podSecurityContext for the dashboard pod |
+| dashboard.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the dashboard container |
 | dashboard.nodeSelector | object | `{}` |  |
 | dashboard.tolerations | list | `[]` |  |
 | dashboard.affinity | object | `{}` |  |
