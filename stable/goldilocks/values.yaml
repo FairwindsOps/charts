@@ -15,7 +15,7 @@ image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks
   # image.tag -- The goldilocks image tag to use
-  tag: v3.1.0
+  tag: v3.1.4
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
@@ -52,6 +52,17 @@ controller:
     requests:
       cpu: 25m
       memory: 32Mi
+  # controller.podSecurityContext -- Defines the podSecurityContext for the controller pod
+  podSecurityContext: {}
+  # controller.securityContext -- The container securityContext for the controller container
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
 
 dashboard:
   # dashboard.enabled -- If true, the dashboard component will be installed
@@ -99,7 +110,17 @@ dashboard:
     requests:
       cpu: 25m
       memory: 32Mi
-
+  # dashboard.podSecurityContext -- Defines the podSecurityContext for the dashboard pod
+  podSecurityContext: {}
+  # dashboard.securityContext -- The container securityContext for the dashboard container
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
   nodeSelector: {}
   tolerations: []
   affinity: {}

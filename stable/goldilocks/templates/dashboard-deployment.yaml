@@ -28,6 +28,8 @@ spec:
       {{- else }}
       serviceAccountName: {{ .Values.dashboard.serviceAccount.name }}
       {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
@@ -38,13 +40,7 @@ spec:
             - --exclude-containers={{ .Values.dashboard.excludeContainers }}
             - -v{{ .Values.dashboard.logVerbosity }}
           securityContext:
-            readOnlyRootFilesystem: true
-            allowPrivilegeEscalation: false
-            runAsNonRoot: true
-            runAsUser: 10324
-            capabilities:
-              drop:
-                - ALL
+            {{- toYaml .Values.securityContext | nindent 12 }}
           ports:
             - name: http
               containerPort: 8080
