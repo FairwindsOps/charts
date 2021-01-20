@@ -20,7 +20,7 @@
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
 /stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @sudermanjr
-/stable/goldilocks/ @sudermanjr @dosullivan
+/stable/goldilocks/ @sudermanjr @lucasreed
 /stable/insights-admission/ @rbren @makoscafee @baderbuddy
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
 /stable/helm-release-pruner @rbren
