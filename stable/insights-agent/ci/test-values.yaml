@@ -8,36 +8,36 @@ goldilocks:
   enabled: false
 
 opa:
-  enabled: false
+  enabled: true
 
 test:
-  enabled: false
+  enabled: true
 
 kubebench:
-  enabled: false
+  enabled: true
 
 kubesec:
-  enabled: false
+  enabled: true
 
 polaris:
-  enabled: false
+  enabled: true
 
 pluto:
-  enabled: false
+  enabled: true
 
 nova:
   enabled: true
 
 kubehunter:
-  enabled: false
+  enabled: true
 
 trivy:
-  enabled: false
+  enabled: true
   maxScansPerRun: 2
 
 resourcemetrics:
-  enabled: false
-  installPrometheus: false
+  enabled: true
+  installPrometheus: true
 
 admission:
-  enabled: false
+  enabled: true
