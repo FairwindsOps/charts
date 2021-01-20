@@ -18,18 +18,16 @@ spec:
             command:
               - /nova
               - find
-              - -u
-              - https://charts.fairwinds.com/stable
-              - -u
-              - https://charts.fairwinds.com/incubator
-              - -u
-              - https://kubernetes-charts.storage.googleapis.com
-              - -u
-              - https://kubernetes-charts-incubator.storage.googleapis.com
-              - --output-file
-              - /output/nova.json
-              - --helm-version
-              - auto
+              - --config=/config/nova.yaml
+            volumeMounts:
+              - name: config
+                mountPath: /config
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
+          volumes:
+            - name: output
+              emptyDir: {}
+            - name: config
+              configMap:
+                name: {{ include "insights-agent.fullname" $ }}-nova-config
 {{- end -}}

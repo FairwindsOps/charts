@@ -1,0 +1,9 @@
+{{- if .Values.nova.enabled -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-nova-config
+data:
+  nova.yaml: |
+{{ .Values.nova.config | toYaml | indent 4 }}
+{{- end }}
