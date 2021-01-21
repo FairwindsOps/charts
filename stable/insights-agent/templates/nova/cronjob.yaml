@@ -14,22 +14,26 @@ spec:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
-          - {{ include "container-spec" . | indent 12 | trim }}
+          - name: {{ .Label }}
+            image: "{{ .Config.image.repository }}:{{ .Config.image.tag }}"
+            imagePullPolicy: Always
+            resources:
+              {{- toYaml .Config.resources | nindent 14 }}
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: config
+              mountPath: /config
             command:
               - /nova
               - find
-              - -u
-              - https://charts.fairwinds.com/stable
-              - -u
-              - https://charts.fairwinds.com/incubator
-              - -u
-              - https://kubernetes-charts.storage.googleapis.com
-              - -u
-              - https://kubernetes-charts-incubator.storage.googleapis.com
-              - --output-file
-              - /output/nova.json
-              - --helm-version
-              - auto
+              - --config=/config/nova.yaml
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
+          volumes:
+            - name: output
+              emptyDir: {}
+            - name: config
+              configMap:
+                name: {{ include "insights-agent.fullname" $ }}-nova-config
 {{- end -}}
