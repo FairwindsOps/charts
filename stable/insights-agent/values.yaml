@@ -164,7 +164,7 @@ nova:
   timeout: 300
   image:
     repository: quay.io/fairwinds/nova
-    tag: "2.0"
+    tag: "2.2"
   resources:
     limits:
       cpu: 100m
@@ -172,6 +172,19 @@ nova:
     requests:
       cpu: 25m
       memory: 128Mi
+  SkipVolumes: true
+  config:
+    desired-versions: {}
+    helm-hub-config: https://raw.githubusercontent.com/helm/hub/master/config/repo-values.yaml
+    helm-version: "auto"
+    output-file: "/output/nova.json"
+    poll-helm-hub: true
+    url:
+    - https://charts.fairwinds.com/stable
+    - https://charts.fairwinds.com/incubator
+    - https://kubernetes-charts.storage.googleapis.com
+    - https://kubernetes-charts-incubator.storage.googleapis.com
+    - https://charts.jetstack.io
 
 rbacreporter:
   enabled: false
