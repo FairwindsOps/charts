@@ -102,9 +102,6 @@ goldilocks:
   installVPA: true
   schedule: "rand * * * *"
   timeout: 300
-  image:
-    repository: quay.io/fairwinds/goldilocks
-    tag: "v2.2.0"
   controller:
     flags:
       on-by-default: true
