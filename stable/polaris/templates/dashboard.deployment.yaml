@@ -46,21 +46,29 @@ spec:
         - --base-path
         - {{ . }}
         {{- end }}
+        {{- with .Values.dashboard.port }}
+        - --port
+        - {{ . }}
+        {{- end }}
+        {{- if .Values.dashboard.listeningAddress }}
+        - --listening-address
+        - {{ .Values.dashboard.listeningAddress }}
+        {{- end }}
         image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
         ports:
-        - containerPort: 8080
+        - containerPort: {{ .Values.dashboard.port }}
         livenessProbe:
           httpGet:
             path: {{.Values.dashboard.basePath | default "/" }}health
-            port: 8080
+            port: {{ .Values.dashboard.port }}
           initialDelaySeconds: 5
           periodSeconds: 20
         readinessProbe:
           httpGet:
             path: {{.Values.dashboard.basePath | default "/" }}health
-            port: 8080
+            port: {{ .Values.dashboard.port }}
           initialDelaySeconds: 5
           periodSeconds: 20
         resources:

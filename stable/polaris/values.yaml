@@ -30,6 +30,10 @@ dashboard:
   # dashboard.enable -- Whether to run the dashboard.
   enable: true
   # dashboard.replicas -- Number of replicas to run.
+  port: 8080
+  # dashboard.port -- Port that the dashboard will run from.
+  listeningAddress:
+  # dashboard.listeningAddress -- Dashboard listerning address.
   replicas: 1
   # dashboard.resources -- Requests and limits for the dashboard
   resources:
