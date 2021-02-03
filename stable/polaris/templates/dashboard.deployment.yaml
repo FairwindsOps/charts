@@ -48,7 +48,7 @@ spec:
         {{- end }}
         {{- with .Values.dashboard.port }}
         - --port
-        - {{ . }}
+        - {{ . | quote }}
         {{- end }}
         {{- if .Values.dashboard.listeningAddress }}
         - --listening-address
