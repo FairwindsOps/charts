@@ -29,6 +29,10 @@ dashboard:
   basePath: null
   # dashboard.enable -- Whether to run the dashboard.
   enable: true
+  # dashboard.port -- Port that the dashboard will run from.
+  port: 8080
+  # dashboard.listeningAddress -- Dashboard listerning address.
+  listeningAddress:
   # dashboard.replicas -- Number of replicas to run.
   replicas: 1
   # dashboard.resources -- Requests and limits for the dashboard
