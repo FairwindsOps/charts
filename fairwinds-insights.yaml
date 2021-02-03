@@ -28,3 +28,9 @@ exemptions:
   - filename: insights-agent/insights-agent/charts/prometheus/templates/server/deploy.yaml
     report: polaris
     reason: We don't control a lot of this
+  - filename: insights-agent/insights-agent/templates/opa/check.yaml
+    report: pluto
+    reason: We support both the new and deprecated CRD resources
+  - filename: insights-agent/insights-agent/templates/opa/instance.yaml
+    report: pluto
+    reason: We support both the new and deprecated CRD resources
