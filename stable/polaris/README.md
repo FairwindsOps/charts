@@ -46,6 +46,8 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | templateOnly | bool | `false` | Outputs Namespace names, used with `helm template` |
 | dashboard.basePath | string | `nil` | Path on which the dashboard is served. Defaults to `/` |
 | dashboard.enable | bool | `true` | Whether to run the dashboard. |
+| dashboard.port | int | `8080` | Port that the dashboard will run from. |
+| dashboard.listeningAddress | string | `nil` | Dashboard listerning address. |
 | dashboard.replicas | int | `1` | Number of replicas to run. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
