@@ -16,21 +16,34 @@ exemptions:
   - image: quay.io/fairwinds/nova
     report: trivy
     reason: Nova's image is built from the scratch base image, and is unscannable
+
+  - filename: insights-agent/insights-agent/templates/test/test-pod.yaml
+    report: polaris
+    reason: This file is specifically meant to trigger Polaris findings
+
+  - filename: insights-agent/insights-agent/templates/test/test-deployment.yaml
+    report: polaris
+    reason: This file is specifically meant to trigger Polaris findings
+
   - filename: insights-admission/insights-admission/templates/test-deployment.yaml
     report: polaris
     reason: This file is specifically meant to trigger Polaris findings
+
   - filename: insights-agent/insights-agent/templates/kube-bench/cronjob.yaml
     report: polaris
     checks:
       - hostPIDSet
       - runAsRootAllowed
     reason: kube-bench needs special permissions to do its job
+
   - filename: insights-agent/insights-agent/charts/prometheus/templates/server/deploy.yaml
     report: polaris
     reason: We don't control a lot of this
+
   - filename: insights-agent/insights-agent/templates/opa/check.yaml
     report: pluto
     reason: We support both the new and deprecated CRD resources
+
   - filename: insights-agent/insights-agent/templates/opa/instance.yaml
     report: pluto
     reason: We support both the new and deprecated CRD resources
