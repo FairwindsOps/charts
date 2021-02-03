@@ -1,4 +1,6 @@
-# Fairwinds Charts [![CircleCI](https://circleci.com/gh/FairwindsOps/charts/tree/master.svg?style=svg)](https://circleci.com/gh/FairwindsOps/charts/tree/master)
+# Fairwinds Charts
+[![CircleCI](https://circleci.com/gh/FairwindsOps/charts/tree/master.svg?style=svg)](https://circleci.com/gh/FairwindsOps/charts/tree/master)
+[![Fairwinds Insights](https://insights.fairwinds.com/v0/gh/FairwindsOps/charts/badge.svg)](https://insights.fairwinds.com/gh/FairwindsOps/charts)
 
 A repository of Helm charts. Modelled after https://github.com/helm/charts
 
