@@ -56,6 +56,7 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | image.tag | string | `"v0.10.0"` | The tag of the image to run |
 | image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.imagePullSecrets | list | `[]` |  |
+| installCRDs | bool | `true` | If true, install and upgrade CRDs. See the Helm documentation for [best practices regarding CRDs](https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource). |
 | resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the rbac-manager pods |
 | priorityClassName | string | `""` | The name of a priorityClass to use |
 | nodeSelector | object | `{}` | Deployment nodeSelector |
