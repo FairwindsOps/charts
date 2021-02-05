@@ -55,6 +55,8 @@ polaris:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
+  rbac:
+    disabled: false
   image:
     repository: quay.io/fairwinds/polaris
     tag: "3.0"
