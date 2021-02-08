@@ -40,6 +40,8 @@ podLabels: {}
 serviceMonitor:
   # serviceMonitor.enabled -- If true, a ServiceMonitor will be created for Prometheus
   enabled: false
+  # serviceMonitor.additionalLabels -- Additional labels to ServiceMonitor
+  additionalLabels: []
   # serviceMonitor.annotations -- Annotations to apply to the serviceMonitor and headless service
   annotations: {}
   # serviceMonitor.namespace -- The namespace to deploy the serviceMonitor into
