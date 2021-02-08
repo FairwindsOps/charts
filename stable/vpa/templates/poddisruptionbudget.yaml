@@ -1,0 +1,12 @@
+---
+{{- if .Values.maxUnavailable }}
+apiVersion: policy/v1beta1
+kind: PodDisruptionBudget
+metadata:
+  name: "{{ template "vpa.fullname" . }}-pdb"
+spec:
+  maxUnavailable: {{ .Values.maxUnavailable }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ template "vpa.fullname" . }}
+{{- end }}

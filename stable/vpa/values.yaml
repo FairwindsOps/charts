@@ -22,6 +22,9 @@ serviceAccount:
   # serviceAccount.name -- The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component
   name: ""
 
+# maxUnavailable -- This is the max unavailable setting for the pod disruption budget
+maxUnavailable: 1
+
 recommender:
   # recommender.enabled -- If true, the vpa recommender component will be installed.
   enabled: true
