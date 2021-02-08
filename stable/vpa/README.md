@@ -56,6 +56,7 @@ recommender:
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created for each component |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service accounts for each component |
 | serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |
+| maxUnavailable | int | `1` | This is the max unavailable setting for the pod disruption budget. |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
