@@ -59,6 +59,7 @@ recommender:
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
+| recommender.maxUnavailable | int | `1` | This is the max unavailable setting for the pod disruption budget |
 | recommender.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender"` | The location of the recommender image |
 | recommender.image.pullPolicy | string | `"Always"` | The pull policy for the recommender image. Recommend not changing this |
 | recommender.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
@@ -73,6 +74,7 @@ recommender:
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
 | updater.replicaCount | int | `1` |  |
+| updater.maxUnavailable | int | `1` | This is the max unavailable setting for the pod disruption budget |
 | updater.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater"` | The location of the updater image |
 | updater.image.pullPolicy | string | `"Always"` | The pull policy for the updater image. Recommend not changing this |
 | updater.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
