@@ -1,4 +1,4 @@
-{{- if .Values.workloads.enabled -}}
+{{- if and .Values.workloads.enabled (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
