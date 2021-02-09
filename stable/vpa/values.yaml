@@ -22,9 +22,6 @@ serviceAccount:
   # serviceAccount.name -- The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component
   name: ""
 
-# maxUnavailable -- This is the max unavailable setting for the pod disruption budget
-maxUnavailable: 1
-
 recommender:
   # recommender.enabled -- If true, the vpa recommender component will be installed.
   enabled: true
@@ -34,6 +31,8 @@ recommender:
     pod-recommendation-min-cpu-millicores: 15
     pod-recommendation-min-memory-mb: 100
   replicaCount: 1
+  # maxUnavailable -- This is the max unavailable setting for the pod disruption budget
+  maxUnavailable: 1
   image:
     # recommender.image.repository -- The location of the recommender image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender
@@ -67,6 +66,8 @@ updater:
   # updater.extraArgs -- A key-value map of flags to pass to the updater
   extraArgs: {}
   replicaCount: 1
+  # maxUnavailable -- This is the max unavailable setting for the pod disruption budget
+  maxUnavailable: 1
   image:
     # updater.image.repository -- The location of the updater image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater
