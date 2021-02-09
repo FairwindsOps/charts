@@ -31,6 +31,8 @@ recommender:
     pod-recommendation-min-cpu-millicores: 15
     pod-recommendation-min-memory-mb: 100
   replicaCount: 1
+  # recommender.maxUnavailable -- This is the max unavailable setting for the pod disruption budget
+  maxUnavailable: 1
   image:
     # recommender.image.repository -- The location of the recommender image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender
@@ -64,6 +66,8 @@ updater:
   # updater.extraArgs -- A key-value map of flags to pass to the updater
   extraArgs: {}
   replicaCount: 1
+  # updater.maxUnavailable -- This is the max unavailable setting for the pod disruption budget
+  maxUnavailable: 1
   image:
     # updater.image.repository -- The location of the updater image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater
