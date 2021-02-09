@@ -1,4 +1,4 @@
-{{- if .Values.opa.enabled -}}
+{{- if and .Values.opa.enabled (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
