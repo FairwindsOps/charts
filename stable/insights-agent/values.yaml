@@ -5,6 +5,9 @@ insights:
   base64token: ""
   tokenSecretName: ""
 
+rbac:
+  disabled: false
+
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader

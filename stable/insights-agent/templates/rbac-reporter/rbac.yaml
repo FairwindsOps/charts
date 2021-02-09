@@ -1,4 +1,4 @@
-{{- if .Values.rbacreporter.enabled -}}
+{{- if and .Values.rbacreporter.enabled (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
