@@ -20,6 +20,10 @@ serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
 nodeSelector:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- with .Values.cronjobs.tolerations }}
+tolerations:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
 {{- if not .Config.SkipVolumes }}
 volumes:
 - name: output
