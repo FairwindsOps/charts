@@ -1,4 +1,4 @@
-{{- if .Values.cronjobs.runJobsImmediately -}}
+{{- if and .Values.cronjobs.runJobsImmediately (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:

@@ -48,6 +48,7 @@ Parameter | Description | Default
 `insights.base64token` | Your cluster's base64-encoded auth token provided by Insights | ""
 `insights.tokenSecretName` | If you don't provide a `base64token`, you can specify the name of a secret to pull the token from | ""
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
+`rbac.disabled` | Don't use any of the built-in RBAC | `false`
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
@@ -66,7 +67,6 @@ Parameter | Description | Default
 `{report}.image.repository` | Repository to use for the report image |
 `{report}.image.tag` | Image tag to use for the report |
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
-`polaris.rbac.disabled` | Don't use any of the built-in RBAC for Polaris | `false`
 `kubehunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
 `kubebench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
 `kubebench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2

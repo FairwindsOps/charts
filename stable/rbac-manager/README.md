@@ -56,6 +56,7 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | image.tag | string | `"v0.10.0"` | The tag of the image to run |
 | image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.imagePullSecrets | list | `[]` |  |
+| installCRDs | bool | `true` | If true, install and upgrade CRDs. See the Helm documentation for [best practices regarding CRDs](https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource). |
 | resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the rbac-manager pods |
 | priorityClassName | string | `""` | The name of a priorityClass to use |
 | nodeSelector | object | `{}` | Deployment nodeSelector |
@@ -64,6 +65,7 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | podAnnotations | object | `{}` | Annotations to apply to the pods |
 | podLabels | object | `{}` | Labels to apply to the pod |
 | serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor will be created for Prometheus |
+| serviceMonitor.additionalLabels | list | `[]` | Additional labels to ServiceMonitor |
 | serviceMonitor.annotations | object | `{}` | Annotations to apply to the serviceMonitor and headless service |
 | serviceMonitor.namespace | string | `""` | The namespace to deploy the serviceMonitor into |
 | serviceMonitor.interval | string | `"60s"` | How often to scrape the metrics endpoint |
