@@ -1,0 +1,62 @@
+replicaCount: 1
+
+image:
+  # image.repository -- The image repository to use
+  repository: quay.io/fairwinds/kuiper
+  # image.pullPolicy -- Recommend not changing this.
+  pullPolicy: Always
+  # image.tag -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# imagePullSecrets -- A list of image pull secrets to authenticate with your registry
+imagePullSecrets: []
+# nameOverride -- A template override for name
+nameOverride: ""
+# fullnameOverride -- A template override for fullname
+fullnameOverride: ""
+
+serviceAccount:
+  # serviceAccount.create -- Specifies whether a service account should be created
+  create: true
+  # serviceAccount.annoatations -- Annotations to add to the service account
+  annotations: {}
+  # serviceAccount.name -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# podAnnotations -- Annotations to add to the pod(s)
+podAnnotations: {}
+
+# podSecurityContext -- A securityContext for the pod
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# securityContext -- A container security context
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+# resources -- A resources block for the controller
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+# nodeSelector -- A node selector for the controller pods
+nodeSelector: {}
+
+# tolerations -- Tolerations for the controller pods
+tolerations: []
+
+# affinity -- Affinity block for the controller pods
+affinity: {}

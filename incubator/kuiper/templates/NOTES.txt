@@ -1,0 +1,1 @@
+Kuiper is now installed. Please see the docs at https://github.com/FairwindsOps/kuiper for more information.
