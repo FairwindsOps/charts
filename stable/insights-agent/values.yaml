@@ -28,6 +28,7 @@ cronjobs:
   successfulJobsHistoryLimit: 2
   nodeSelector: null
   runJobsImmediately: true
+  # tolerations:
   # dnsPolicy:
 
 cronjobExecutor:
