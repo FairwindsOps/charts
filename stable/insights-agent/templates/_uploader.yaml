@@ -40,6 +40,7 @@
     valueFrom:
       fieldRef:
         fieldPath: metadata.name
+  {{- toYaml .Values.uploader.env | nindent 2 }}
   volumeMounts:
   - name: output
     mountPath: /output

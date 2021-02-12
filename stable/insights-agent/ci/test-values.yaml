@@ -4,6 +4,11 @@ insights:
   cluster: us-east-1
   base64token: Zm9v
 
+uploader:
+  env:
+  - name: foo
+    value: bar
+
 goldilocks:
   enabled: false
 
