@@ -1,0 +1,129 @@
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: alternateimagesources.kuiper.fairwinds.com
+spec:
+  group: kuiper.fairwinds.com
+  names:
+    kind: AlternateImageSource
+    listKind: AlternateImageSourceList
+    plural: alternateimagesources
+    singular: alternateimagesource
+  scope: Namespaced
+  versions:
+  - name: v1alpha1
+    schema:
+      openAPIV3Schema:
+        description: AlternateImageSource is the Schema for the alternateimagesources
+          API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: AlternateImageSourceSpec defines the desired state of AlternateImageSource
+            properties:
+              imageSourceReplacements:
+                items:
+                  description: ImageSourceReplacement is a single replacement
+                  properties:
+                    equivalentRepositories:
+                      description: EquivalentRepositories is a list of possible replacement
+                        repositories they should each have the same set of tags available
+                      items:
+                        type: string
+                      type: array
+                  required:
+                  - equivalentRepositories
+                  type: object
+                type: array
+            required:
+            - imageSourceReplacements
+            type: object
+          status:
+            description: AlternateImageSourceStatus defines the observed state of
+              AlternateImageSource
+            properties:
+              observedGeneration:
+                description: ObservedGeneration is the last observed generation of
+                  the object
+                format: int64
+                type: integer
+              switches:
+                description: Switches is each occurence of an image switch
+                items:
+                  description: SwitchStatus is a switch event
+                  properties:
+                    newImage:
+                      type: string
+                    oldImage:
+                      type: string
+                    target:
+                      description: Target is a target for image replacement
+                      properties:
+                        container:
+                          description: Container is the container that matches our
+                            list
+                          type: string
+                        name:
+                          type: string
+                        type:
+                          description: GroupKind specifies a Group and a Kind, but
+                            does not force a version.  This is useful for identifying
+                            concepts during lookup stages without having partially
+                            valid types
+                          properties:
+                            group:
+                              type: string
+                            kind:
+                              type: string
+                          required:
+                          - group
+                          - kind
+                          type: object
+                        uid:
+                          description: UID is a type that holds unique ID values,
+                            including UUIDs.  Because we don't ONLY use UUIDs, this
+                            is an alias to string.  Being a type captures intent and
+                            helps make sure that UIDs and names do not get conflated.
+                          type: string
+                      required:
+                      - name
+                      - type
+                      type: object
+                    time:
+                      format: date-time
+                      type: string
+                  required:
+                  - newImage
+                  - oldImage
+                  - target
+                  - time
+                  type: object
+                type: array
+            required:
+            - observedGeneration
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

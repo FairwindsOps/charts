@@ -3,6 +3,6 @@ name: kuiper
 description: A Helm chart to run Kuiper
 type: application
 version: 0.0.1
-appVersion: "v0.0.1"
+appVersion: "v0.0.20"
 maintainers:
   - name: sudermanjr
