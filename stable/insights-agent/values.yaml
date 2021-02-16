@@ -20,6 +20,7 @@ uploader:
     requests:
       cpu: 10m
       memory: 64Mi
+  env: []
 
 cronjobs:
   disableServiceMesh: true
