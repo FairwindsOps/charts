@@ -38,7 +38,7 @@ properties:
         type: string
 {{- end }}
 
-{{- if .Values.opa.enabled -}}
+{{- if and (.Values.opa.enabled) (.Values.opa.installCRDs) -}}
 kind: CustomResourceDefinition
 metadata:
   # name must match the spec fields below, and be in the form: <plural>.<group>
