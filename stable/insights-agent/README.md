@@ -86,4 +86,4 @@ Parameter | Description | Default
 `goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
 `resourcemetrics.installPrometheus` | Install a new Prometheus instance for the resourcemetrics report | false
-`resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `http://<service-name>.<namespace>` | `"http://prometheus-server"`
+`resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
