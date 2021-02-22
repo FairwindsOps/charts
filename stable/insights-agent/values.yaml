@@ -172,7 +172,7 @@ nova:
   timeout: 300
   image:
     repository: quay.io/fairwinds/nova
-    tag: "2.2"
+    tag: "2.3"
   resources:
     limits:
       cpu: 100m
@@ -181,6 +181,7 @@ nova:
       cpu: 25m
       memory: 128Mi
   SkipVolumes: true
+  configLocation: "/config/nova.yaml"
   config:
     desired-versions: {}
     helm-hub-config: https://raw.githubusercontent.com/helm/hub/master/config/repo-values.yaml
