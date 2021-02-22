@@ -172,7 +172,7 @@ nova:
   timeout: 300
   image:
     repository: quay.io/fairwinds/nova
-    tag: "2.2"
+    tag: "2.3"
   resources:
     limits:
       cpu: 100m
