@@ -46,7 +46,7 @@ spec:
             mountPath: /tmp
           - name: secrets
             mountPath: /var/run/secrets/github
-          {{- if .Values.selfHosted.secret }}
+          {{- if .Values.selfHostedSecret }}
           - name: self-hosted-secret
             mountPath: /var/run/secrets/self-hosted
           {{- end }}
@@ -72,7 +72,7 @@ spec:
         secret:
           secretName: github-secrets
           optional: true
-      {{- with .Values.selfHosted.secret }}
+      {{- with .Values.selfHostedSecret }}
       - name: self-hosted-secret
         secret:
           secretName: {{ . }}

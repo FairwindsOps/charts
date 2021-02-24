@@ -5,7 +5,7 @@ kind: CronJob
 metadata:
   name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: alerts-cronjob-{{ .name }}
 spec:
   schedule: "{{ .cron }}"

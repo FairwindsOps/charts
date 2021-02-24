@@ -7,3 +7,12 @@ maintainers:
 - name: rbren
 - name: makoscafee
 - name: baderbuddy  
+dependencies:
+- name: postgresql
+  version: 9.1.2
+  repository: https://charts.bitnami.com/bitnami
+  condition: postgresql.ephemeral
+- name: minio
+  version: 5.0.32
+  repository: https://helm.min.io/
+  condition: minio.install

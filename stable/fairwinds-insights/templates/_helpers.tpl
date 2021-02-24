@@ -44,8 +44,8 @@ Common labels
 helm.sh/chart: {{ include "fairwinds-insights.chart" . }}
 {{ include "fairwinds-insights.selectorLabels" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{ if $.Values.rok8sCIRef }}
-app.kubernetes.io/rok8sCIRef: {{ $.Values.rok8sCIRef }}
+{{ if .Values.rok8sCIRef }}
+app.kubernetes.io/rok8sCIRef: {{ .Values.rok8sCIRef }}
 {{ end }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

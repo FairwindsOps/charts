@@ -15,6 +15,8 @@ options:
   adminDomain: fairwinds.com
   allowHTTPCookies: false
 
+additionalEnvironmentVariables:
+
 dashboard:
   pdb:
     enabled: true

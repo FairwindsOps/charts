@@ -14,14 +14,8 @@ env:
 - name: ALLOW_HTTP_COOKIES
   value: "true"
 {{- end }}
-{{- with .Values.selfHosted.secret }}
-- name: FAIRWINDS_CERTIFICATE_LOCATION
-  value: /var/run/secrets/self-hosted/current.pem
-- name: SELF_HOSTED_PUBLIC_KEY
-  valueFrom:
-    secretKeyRef:
-      name: {{ . }}
-      key: pubkey
+{{- with .Values.additionalEnvironmentVariables }}
+{{ toYaml . }}
 {{- end }}
 - name: CACHE_BUST_TOKEN
   value: {{ randAlphaNum 10 }}
@@ -131,13 +125,5 @@ env:
 {{ with .Values.options.mixpanelID -}}
 - name: MIXPANEL_ID
   value: {{ . }}
-{{ end -}}
-{{- if .Values.airtable.strategy }}
-- name: AIRTABLE_STRATEGY
-  value: {{ .Values.airtable.strategy }}
-{{ with .Values.airtable.survey_post_url -}}
-- name: AIRTABLE_SURVEY_POST_URL
-  value: {{ . }}
-{{ end -}}
 {{ end -}}
 {{ end }}
