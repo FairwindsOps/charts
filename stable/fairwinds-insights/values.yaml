@@ -164,7 +164,7 @@ postgresql:
   existingSecret: fwinsights-postgresql
   postgresqlUsername: postgres
   postgresqlDatabase: fairwinds_insights
-  randomReadOnlyPassword: false
+  randomReadOnlyPassword: true
   service:
     port: 5432
   persistence:
@@ -185,6 +185,7 @@ email:
 reportStorage:
   strategy: minio
   bucket: reports
+  region: us-east-1
 
 minio:
   install: true

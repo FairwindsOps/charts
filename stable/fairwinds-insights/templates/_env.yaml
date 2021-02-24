@@ -78,12 +78,12 @@ env:
 - name: MINIO_ACCESS_KEY_ID
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.minio.nameOverride }}
+      name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
       key: accesskey                
 - name: MINIO_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.minio.nameOverride }}
+      name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
       key: secretkey                          
 {{ else if eq .Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
