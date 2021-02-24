@@ -27,7 +27,7 @@ spec:
             command:
               - /nova
               - find
-              - --config=/config/nova.yaml
+              - --config={{ .Config.configLocation }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
           volumes:
