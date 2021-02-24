@@ -1,0 +1,12 @@
+dependencies:
+- name: postgresql
+  repository: https://charts.bitnami.com/bitnami
+  version: 9.1.2
+- name: helm-release-pruner
+  repository: https://charts.fairwinds.com/stable
+  version: 3.1.1
+- name: minio
+  repository: https://helm.min.io/
+  version: 5.0.32
+digest: sha256:81f33c194bc409ca2f04427fdfb804d0963ea470516440adc27fbdece5b362ad
+generated: "2020-09-18T08:52:47.5940707-04:00"

@@ -1,0 +1,73 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-dashboard
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dashboard
+spec:
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: dashboard
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: dashboard
+    spec:
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      containers:
+        - name: fw-insights-dashboard
+          image: "{{ .Values.dashboardImage.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args:
+          - -c
+          - |
+            {{ with .Values.options.dashboardConfig -}}
+            cd /etc/nginx/html
+            mv -f {{ . }} ./config.js || exit 1
+            {{ end -}}
+            nginx -g "daemon off;"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          {{- include "env" . | indent 10 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+          resources:
+            {{- toYaml .Values.dashboard.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 101 # comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile
+            capabilities:
+              drop:
+                - ALL
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: tmp
+        emptyDir: {}
+    {{- with .Values.dashboard.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

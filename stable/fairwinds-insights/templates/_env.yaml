@@ -1,0 +1,143 @@
+{{ define "env" }}
+# Required values
+envFrom:
+- secretRef:
+    name: fwinsights-secrets
+env:
+- name: FAIRWINDS_HOST
+  {{- if .Values.options.host }}
+  value: {{ .Values.options.host }}
+  {{- else if gt (len .Values.ingress.hostedZones) 0 }}
+  value: {{ "https://" }}{{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ index .Values.ingress.hostedZones 0 }}
+  {{- end }}
+{{- if .Values.options.allowHTTPCookies }}
+- name: ALLOW_HTTP_COOKIES
+  value: "true"
+{{- end }}
+{{- with .Values.selfHosted.secret }}
+- name: FAIRWINDS_CERTIFICATE_LOCATION
+  value: /var/run/secrets/self-hosted/current.pem
+- name: SELF_HOSTED_PUBLIC_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ . }}
+      key: pubkey
+{{- end }}
+- name: CACHE_BUST_TOKEN
+  value: {{ randAlphaNum 10 }}
+- name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+  value: {{ .Values.options.agentChartTargetVersion }}
+# General Server
+{{- with .Values.options.authRateLimit }}
+- name: AUTH_RATE_LIMIT
+  value: {{ . | quote }}
+{{- end }}
+# Database
+- name: POSTGRES_DB
+  value: {{ .Values.postgresql.postgresqlDatabase }}
+- name: POSTGRES_USER
+  value: {{ .Values.postgresql.postgresqlUsername }}
+- name: POSTGRES_PORT
+  value: {{ .Values.postgresql.service.port | quote }}
+- name: POSTGRES_SSL_MODE
+  value: {{ .Values.postgresql.sslMode | default "require" }}
+- name: POSTGRES_HOST
+  value: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
+- name: POSTGRES_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.existingSecret }}
+      key: postgresql-password
+- name: POSTGRES_READONLY_PASSWORD
+{{- if not .Values.postgresql.randomReadOnlyPassword }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.existingSecret }}
+      key: readonly-password
+{{- else }}
+  value: {{ randAlphaNum 32 }}
+{{- end }}
+{{- with .Values.options.insightsSAASHost }}
+- name: INSIGHTS_SAAS_HOST
+  value: {{ . | quote }}
+{{- end }}
+{{- if .Values.options.addFixtures }}
+- name: ADD_FIXTURES
+  value: "true"
+{{- end }}
+{{- if .Values.reportStorage.skipFileFixtures }}
+- name: SKIP_FILE_FIXTURES 
+  value: "true"
+{{- end }}
+
+# Report Storage
+- name: REPORT_STORAGE_STRATEGY
+  value: {{ .Values.reportStorage.strategy }}
+{{ if eq .Values.reportStorage.strategy "minio" -}}
+{{ if .Values.minio.install -}}
+- name: MINIO_HOST
+  value: {{ printf "%s-%s" .Release.Name "fw-minio:9000" }}
+{{ else }}
+- name: MINIO_HOST
+  value: {{ .Values.reportStorage.minioHost }}
+{{ end -}}
+- name: MINIO_ACCESS_KEY_ID
+  secretKeyRef:
+    name: {{ .Values.minio.nameOverride }}
+    key: accesskey                
+- name: MINIO_SECRET_ACCESS_KEY
+  secretKeyRef:
+    name: {{ .Values.minio.nameOverride }}
+    key: secretkey                          
+{{ else if eq .Values.reportStorage.strategy "local" -}}
+- name: REPORT_STORAGE_DIR
+  value: {{ .Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}
+{{ end -}}
+- name: REPORT_STORAGE_REGION
+  value: {{ .Values.reportStorage.region }}
+- name: REPORT_STORAGE_BUCKET
+  value: {{ .Values.reportStorage.bucket | quote }}
+
+# Email
+- name: ADMIN_DOMAIN
+  value: {{ .Values.options.adminDomain }}
+- name: EMAIL_STRATEGY
+  value: {{ .Values.email.strategy }}
+- name: EMAIL_SENDER
+  value: {{ .Values.email.sender }}
+- name: EMAIL_RECIPIENT
+  value: {{ .Values.email.recipient }}
+{{ if eq .Values.email.strategy "smtp" -}}
+- name: SMTP_HOST
+  value: {{ .Values.email.smtpHost }}
+- name: SMTP_USERNAME
+  value: {{ .Values.email.smtpUsername }}
+- name: SMTP_PORT
+  value: {{ .Values.email.smtpPort | quote }}
+{{ else if eq .Values.email.strategy "ses" -}}
+- name: SES_AWS_REGION
+  value: {{ .Values.email.awsRegion }}
+{{ end -}}
+
+# Third-party integrations
+{{ with .Values.options.githubAppID -}}
+- name: GITHUB_APP_ID
+  value: {{ . | quote }}
+{{ end -}}
+{{ with .Values.options.githubAppName -}}
+- name: GITHUB_APP_NAME
+  value: {{ . | quote }}
+{{ end -}}
+{{ with .Values.options.mixpanelID -}}
+- name: MIXPANEL_ID
+  value: {{ . }}
+{{ end -}}
+{{- if .Values.airtable.strategy }}
+- name: AIRTABLE_STRATEGY
+  value: {{ .Values.airtable.strategy }}
+{{ with .Values.airtable.survey_post_url -}}
+- name: AIRTABLE_SURVEY_POST_URL
+  value: {{ . }}
+{{ end -}}
+{{ end -}}
+{{ end }}

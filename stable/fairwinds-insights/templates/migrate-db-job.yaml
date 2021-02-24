@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-database
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+  {{- if not .Values.postgresql.ephemeral }}
+    "helm.sh/hook": "pre-install,pre-upgrade"
+  {{- else }}
+    "helm.sh/hook": "post-install,post-upgrade"
+  {{- end }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migrate-db
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 5
+  template:
+    spec:
+      restartPolicy: Never
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      containers:
+      - name: fwinsights-db-migration
+        # Note: we use image.tag instead of migrationImage.tag for rok8s-scripts compatibility.
+        image: "{{ .Values.migrationImage.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
+        resources:
+          {{- toYaml .Values.dbMigration.resources | nindent 10 }}
+        {{- include "env" . | indent 8 }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: false
+          runAsUser: 10324
+          capabilities:
+            drop:
+              - ALL
+

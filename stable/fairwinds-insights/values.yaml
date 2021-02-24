@@ -1,0 +1,197 @@
+image:
+  tag: 3.2.4
+
+dashboardImage:
+  repository: quay.io/fairwinds/insights-dashboard
+apiImage:
+  repository: quay.io/fairwinds/insights-api
+migrationImage:
+  repository: quay.io/fairwinds/insights-db-migration
+cronjobImage:
+  repository: quay.io/fairwinds/insights-cronjob
+
+options:
+  agentChartTargetVersion: 1.9.2
+  adminDomain: fairwinds.com
+  allowHTTPCookies: false
+
+dashboard:
+  pdb:
+    enabled: true
+    minReplicas: 1
+  hpa:
+    enabled: true
+    min: 2
+    max: 4
+    metric: cpu
+    cpuTarget: 50
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 256Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
+api:
+  port: 8080
+  pdb:
+    enabled: true
+    minReplicas: 1
+  hpa:
+    enabled: true
+    min: 2
+    max: 6
+    metric: cpu
+    cpuTarget: 50
+  resources:
+    limits:
+      cpu: 2000m
+      memory: 2048Mi
+    requests:
+      cpu: 800m
+      memory: 256Mi
+  nodeSelector: {}
+  tolerations: []
+
+dbMigration:
+  resources:
+    limits:
+      cpu: 1
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+
+alertsCronjob:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  schedules:
+    - name: realtime
+      interval: 10m
+      # On the 5 minutes but the realtime job strips down to the nearest 10 minute
+      # This way there can be slight variation in when the job runs without duplicate or missed entries
+      cron: "5/10 * * * *"
+    - name: digest
+      interval: 24h
+      cron: "0 16 * * *"
+
+aggregateCronjob:
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 40m
+      memory: 32Mi
+  schedules:
+    - name: bi-hourly
+      interval: 120m
+      cron: "5 0/2 * * *"
+
+emailCronjob:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  schedules:
+    - name: weekly-email
+      interval: 168h
+      cron: "0 16 * * 1"
+
+deleteOldActionItemsCronjob:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  schedules:
+    - name: ai-cleanup
+      interval: 24h
+      cron: "0 0 * * *"
+
+service:
+  port: 80
+
+# rok8s replaces this with a branch name so we can deploy feature branches
+sanitizedBranch: main
+
+ingressApi:
+  annotations:
+    nginx.ingress.kubernetes.io/limit-connections: "250"
+    nginx.ingress.kubernetes.io/limit-rps: "100"
+    nginx.ingress.kubernetes.io/limit-rpm: "5000"
+    nginx.ingress.kubernetes.io/proxy-body-size: 24m
+    nginx.ingress.kubernetes.io/proxy-request-buffering: "off"
+    nginx.ingress.kubernetes.io/client-body-buffer-size: 1M
+
+ingress:
+  enabled: true
+  tls: true
+  # The sanitizedBranch value is prefixed to the hostedZones as long as it isn't empty
+  hostedZones: []
+  annotations:
+    kubernetes.io/ingress.ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+
+ingressDashboard:
+  annotations:
+    nginx.ingress.kubernetes.io/limit-connections: "250"
+    nginx.ingress.kubernetes.io/limit-rps: "100"
+    nginx.ingress.kubernetes.io/limit-rpm: "5000"
+    nginx.ingress.kubernetes.io/proxy-body-size: 5m
+
+
+postgresql:
+  # Use the ephemeral postgresql chart by default
+  ephemeral: true
+  existingSecret: fwinsights-postgresql
+  postgresqlUsername: postgres
+  postgresqlDatabase: fairwinds_insights
+  randomReadOnlyPassword: false
+  service:
+    port: 5432
+  persistence:
+    enabled: false
+  replication:
+    enabled: false
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 75m
+      memory: 256Mi
+
+email:
+  strategy: memory
+
+reportStorage:
+  strategy: minio
+  bucket: reports
+
+minio:
+  install: true
+  buckets:
+  - name: reports
+    policy: none
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  nameOverride: fw-minio
+  persistence:
+    enabled: false
