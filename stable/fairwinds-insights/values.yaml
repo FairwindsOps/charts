@@ -13,6 +13,7 @@ cronjobImage:
 options:
   agentChartTargetVersion: 1.9.2
   adminDomain: fairwinds.com
+  insightsSAASHost: "https://insights.fairwinds.com"
   allowHTTPCookies: false
 
 additionalEnvironmentVariables:

@@ -1,0 +1,6 @@
+ingress:
+  hostedZones:
+  - test.cluster.local
+
+options:
+  insightsSAASHost: "https://main.insights.fairwinds.com"
