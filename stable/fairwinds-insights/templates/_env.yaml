@@ -76,13 +76,15 @@ env:
   value: {{ .Values.reportStorage.minioHost }}
 {{ end -}}
 - name: MINIO_ACCESS_KEY_ID
-  secretKeyRef:
-    name: {{ .Values.minio.nameOverride }}
-    key: accesskey                
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.minio.nameOverride }}
+      key: accesskey                
 - name: MINIO_SECRET_ACCESS_KEY
-  secretKeyRef:
-    name: {{ .Values.minio.nameOverride }}
-    key: secretkey                          
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.minio.nameOverride }}
+      key: secretkey                          
 {{ else if eq .Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
   value: {{ .Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}
