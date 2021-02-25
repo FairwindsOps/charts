@@ -11,7 +11,7 @@ options:
 
 postgresql:
   sslMode: "disable"
-  password: "hardcodedpassword"
+  password: "changeme"
 
 dashboard:
   pdb:
