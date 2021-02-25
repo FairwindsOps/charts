@@ -29,12 +29,12 @@ additionalEnvironmentVariables:
 dashboard:
   pdb:
     # -- Create a pod disruption budget for the front end pods.
-    enabled: true
+    enabled: false
     # -- How many replicas should always exist for the front end pods.
     minReplicas: 1
   hpa:
     # -- Create a horizontal pod autoscaler for the front end pods.
-    enabled: true
+    enabled: false
     # -- Minimum number of replicas for the front end pods.
     min: 2
     # -- Maximum number of replicas for the front end pods.
@@ -59,11 +59,11 @@ api:
   port: 8080
   pdb:
     # -- Create a pod disruption budget for the API server.
-    enabled: true
+    enabled: false
     # -- How many replicas should always exist for the API server.
   hpa:
     # -- Create a horizontal pod autoscaler for the API server.
-    enabled: true
+    enabled: false
     # -- Minimum number of replicas for the API server.
     min: 2
     # -- Maximum number of replicas for the API server.
@@ -171,7 +171,7 @@ ingressApi:
 
 ingress:
   # -- Install Ingress objects.
-  enabled: true
+  enabled: false
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
@@ -200,7 +200,7 @@ postgresql:
     port: 5432
   persistence:
     # -- Create Persistent Volume with Postgres
-    enabled: false
+    enabled: true
   replication:
     # -- Replicate Postgres data
     enabled: false
@@ -258,4 +258,4 @@ minio:
   nameOverride: fw-minio
   persistence:
     # -- Create a persistent volume for Minio
-    enabled: false
+    enabled: true
