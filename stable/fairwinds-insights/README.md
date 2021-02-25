@@ -31,8 +31,8 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | dashboard.hpa.cpuTarget | int | `50` | Target CPU utilization for the front end pods. |
 | dashboard.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the front end pods. |
 | dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
-| dashboard.tolerations | list | `[]` |  |
-| api.port | int | `8080` |  |
+| dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
+| api.port | int | `8080` | Port for the API server to listen on. |
 | api.pdb.enabled | bool | `true` | Create a pod disruption budget for the API server. |
 | api.hpa.enabled | bool | `true` | Create a horizontal pod autoscaler for the API server. |
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
@@ -40,7 +40,7 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | api.hpa.cpuTarget | int | `50` | Target CPU utilization for the API server. |
 | api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
-| api.tolerations | list | `[]` |  |
+| api.tolerations | list | `[]` | Tolerations for the API server. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
 | alertsCronjob.schedules | list | `[{"cron":"5/10 * * * *","interval":"10m","name":"realtime"},{"cron":"0 16 * * *","interval":"24h","name":"digest"}]` | CRON schedules for the Slack/Datadog integrations |

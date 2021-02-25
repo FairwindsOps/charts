@@ -51,10 +51,11 @@ dashboard:
       memory: 256Mi
   # -- Node Selector for the front end pods.
   nodeSelector: {}
-  # --Tolerations for the front end pods.
+  # -- Tolerations for the front end pods.
   tolerations: []
 
 api:
+  # -- Port for the API server to listen on.
   port: 8080
   pdb:
     # -- Create a pod disruption budget for the API server.
@@ -79,7 +80,7 @@ api:
       memory: 256Mi
   # -- Node Selector for the API server.
   nodeSelector: {}
-  # --Tolerations for the API server.
+  # -- Tolerations for the API server.
   tolerations: []
 
 dbMigration:
