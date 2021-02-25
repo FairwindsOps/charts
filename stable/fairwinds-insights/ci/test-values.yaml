@@ -34,3 +34,15 @@ api:
     requests:
       cpu: 50m
       memory: 25Mi
+
+alertsCronjob:
+  schedules: []
+
+aggregateCronjob:
+  schedules: []
+
+emailCronjob:
+  schedules: []
+
+deleteOldActionItemsCronjob:
+  schedules: []
