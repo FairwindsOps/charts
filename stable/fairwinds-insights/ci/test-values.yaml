@@ -8,3 +8,29 @@ options:
 
 postgresql:
   sslMode: "disable"
+
+dashboard:
+  pdb:
+    enabled: false
+  hpa:
+    enabled: false
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 50m
+      memory: 25Mi
+
+api:
+  pdb:
+    enabled: false
+  hpa:
+    enabled: false
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 50m
+      memory: 25Mi
