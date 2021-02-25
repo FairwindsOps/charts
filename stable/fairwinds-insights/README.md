@@ -23,9 +23,9 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | additionalEnvironmentVariables | string | `nil` | Additional Environment Variables to set on the Fairwinds Insights pods. |
-| dashboard.pdb.enabled | bool | `true` | Create a pod disruption budget for the front end pods. |
+| dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
-| dashboard.hpa.enabled | bool | `true` | Create a horizontal pod autoscaler for the front end pods. |
+| dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
 | dashboard.hpa.min | int | `2` | Minimum number of replicas for the front end pods. |
 | dashboard.hpa.max | int | `4` | Maximum number of replicas for the front end pods. |
 | dashboard.hpa.cpuTarget | int | `50` | Target CPU utilization for the front end pods. |
@@ -33,8 +33,8 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
 | dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
 | api.port | int | `8080` | Port for the API server to listen on. |
-| api.pdb.enabled | bool | `true` | Create a pod disruption budget for the API server. |
-| api.hpa.enabled | bool | `true` | Create a horizontal pod autoscaler for the API server. |
+| api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
+| api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
 | api.hpa.cpuTarget | int | `50` | Target CPU utilization for the API server. |
@@ -53,7 +53,7 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
 | ingressApi.annotations | list | `[]` | Annotations to add to the API ingress. |
-| ingress.enabled | bool | `true` | Install Ingress objects. |
+| ingress.enabled | bool | `false` | Install Ingress objects. |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | list | `[]` | Annotations to add to the API and Dashboard ingresses. |
@@ -64,7 +64,7 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | postgresql.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
 | postgresql.randomReadOnlyPassword | bool | `true` | Create a read only user with a random password. |
 | postgresql.service.port | int | `5432` | Port of the Postgres Database |
-| postgresql.persistence.enabled | bool | `false` | Create Persistent Volume with Postgres |
+| postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
@@ -83,4 +83,4 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | minio.buckets | list | `[{"name":"reports","policy":"none"}]` | Create the following buckets for the newly installed Minio |
 | minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
-| minio.persistence.enabled | bool | `false` | Create a persistent volume for Minio |
+| minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
