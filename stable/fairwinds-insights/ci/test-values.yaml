@@ -8,6 +8,7 @@ options:
 
 postgresql:
   sslMode: "disable"
+  password: "hardcodedpassword"
 
 dashboard:
   pdb:
