@@ -95,8 +95,6 @@ env:
   value: {{ .Values.reportStorage.bucket | quote }}
 
 # Email
-- name: ADMIN_DOMAIN
-  value: {{ .Values.options.adminDomain }}
 - name: EMAIL_STRATEGY
   value: {{ .Values.email.strategy }}
 - name: EMAIL_SENDER
@@ -123,9 +121,5 @@ env:
 {{ with .Values.options.githubAppName -}}
 - name: GITHUB_APP_NAME
   value: {{ . | quote }}
-{{ end -}}
-{{ with .Values.options.mixpanelID -}}
-- name: MIXPANEL_ID
-  value: {{ . }}
 {{ end -}}
 {{ end }}

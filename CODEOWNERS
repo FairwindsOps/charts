@@ -21,6 +21,7 @@
 /stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @sudermanjr
 /stable/goldilocks/ @sudermanjr @lucasreed
+/stable/fairwinds-insights/ @rbren @makoscafee @baderbuddy
 /stable/insights-admission/ @rbren @makoscafee @baderbuddy
 /stable/insights-agent/ @rbren @makoscafee @baderbuddy
 /stable/helm-release-pruner @rbren
