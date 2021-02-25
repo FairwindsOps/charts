@@ -24,6 +24,9 @@ spec:
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: webhook
+        {{- with .Values.webhook.podAdditionalLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       containers:
         - name: webhook

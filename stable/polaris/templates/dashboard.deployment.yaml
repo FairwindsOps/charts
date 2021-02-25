@@ -24,6 +24,9 @@ spec:
       labels:
         {{- include "polaris.selectors" . | nindent 8 }}
         component: dashboard
+        {{- with .Values.dashboard.podAdditionalLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.config }}
       volumes:
