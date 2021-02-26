@@ -2,6 +2,8 @@
 
 [Fairwinds Insights](https://insights.fairwinds.com) Software to automate, monitor, and enforce Kubernetes best practices.
 
+The self-hosted version of Fairwinds Insights is currently in alpha. The documentation is incomplete, and it is subject to breaking changes.
+
 ## Installation
 We recommend installing Fairwinds Insights in its own namespace and with a simple release name:
 
