@@ -56,7 +56,7 @@ spec:
             allowPrivilegeEscalation: false
             privileged: false
             runAsNonRoot: true
-            runAsUser: 101 # comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile
+            runAsUser: {{ .Values.dashboard.securityContext.runAsUser }}
             capabilities:
               drop:
                 - ALL

@@ -1,4 +1,4 @@
-{{ range .Values.aggregateCronjob.schedules }}
+{{- range .Values.aggregateCronjob.schedules }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -36,4 +36,4 @@ spec:
                 capabilities:
                   drop:
                     - ALL
-  {{ end }}
+{{- end }}

@@ -24,6 +24,7 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | options.agentChartTargetVersion | string | `"1.9.2"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
+| options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
 | additionalEnvironmentVariables | string | `nil` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
@@ -34,6 +35,7 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | dashboard.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the front end pods. |
 | dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
 | dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
+| dashboard.securityContext.runAsUser | int | `101` | The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile |
 | api.port | int | `8080` | Port for the API server to listen on. |
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |
@@ -43,22 +45,29 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
+| api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
+| dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
 | alertsCronjob.schedules | list | `[{"cron":"5/10 * * * *","interval":"10m","name":"realtime"},{"cron":"0 16 * * *","interval":"24h","name":"digest"}]` | CRON schedules for the Slack/Datadog integrations |
+| alertsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the alerts job under. |
 | aggregateCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the Workload Metrics aggregation job. |
 | aggregateCronjob.schedules | list | `[{"cron":"5 0/2 * * *","interval":"120m","name":"bi-hourly"}]` | CRON schedules for the Workload Metrics aggregation job. |
+| aggregateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the Workload Metrics aggregation job under. |
 | emailCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Action Items email job. |
 | emailCronjob.schedules | list | `[{"cron":"0 16 * * 1","interval":"168h","name":"weekly-email"}]` | CRON schedules for the Action Items email job. |
+| emailCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the email job under. |
 | deleteOldActionItemsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the delete old Action Items job. |
 | deleteOldActionItemsCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"ai-cleanup"}]` | CRON schedules for the delete old Action Items job. |
+| deleteOldActionItemsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the delete Action Items job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
+| ingressApi.enabled | bool | `false` | Install API Ingress object. |
 | ingressApi.annotations | list | `[]` | Annotations to add to the API ingress. |
-| ingress.enabled | bool | `false` | Install Ingress objects. |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | list | `[]` | Annotations to add to the API and Dashboard ingresses. |
+| ingressDashboard.enabled | bool | `false` | Install Dashboard Ingress object. |
 | ingressDashboard.annotations | list | `[]` | Annotations to add to the Dashboard ingress. |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |

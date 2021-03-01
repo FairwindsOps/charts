@@ -1,4 +1,4 @@
-{{- if .Values.ingress.enabled }}
+{{- if .Values.ingressApi.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress

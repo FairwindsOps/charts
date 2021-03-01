@@ -35,7 +35,7 @@ spec:
           allowPrivilegeEscalation: false
           privileged: false
           runAsNonRoot: false
-          runAsUser: 10324
+          runAsUser: {{ .Values.api.securityContext.runAsUser }}
           capabilities:
             drop:
               - ALL

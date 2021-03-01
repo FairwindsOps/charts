@@ -22,6 +22,8 @@ options:
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
   allowHTTPCookies: false
+  # -- Configuration file to use for the front-end. This generally should not be changed.
+  dashboardConfig: config.self.js
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables:
@@ -53,6 +55,9 @@ dashboard:
   nodeSelector: {}
   # -- Tolerations for the front end pods.
   tolerations: []
+  securityContext:
+    # -- The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile
+    runAsUser: 101
 
 api:
   # -- Port for the API server to listen on.
@@ -82,6 +87,9 @@ api:
   nodeSelector: {}
   # -- Tolerations for the API server.
   tolerations: []
+  securityContext:
+    # -- The user ID to run the API server under.
+    runAsUser: 10324
 
 dbMigration:
   # -- Resources for the database migration job.
@@ -92,6 +100,9 @@ dbMigration:
     requests:
       cpu: 80m
       memory: 128Mi
+  securityContext:
+    # -- The user ID to run the database migration job under.
+    runAsUser: 10324
 
 alertsCronjob:
   # -- Resources for the Slack/Datadog integrations
@@ -112,6 +123,9 @@ alertsCronjob:
     - name: digest
       interval: 24h
       cron: "0 16 * * *"
+  securityContext:
+    # -- The user ID to run the alerts job under.
+    runAsUser: 10324
 
 aggregateCronjob:
   # -- Resources for the Workload Metrics aggregation job.
@@ -127,6 +141,9 @@ aggregateCronjob:
     - name: bi-hourly
       interval: 120m
       cron: "5 0/2 * * *"
+  securityContext:
+    # -- The user ID to run the Workload Metrics aggregation job under.
+    runAsUser: 10324
 
 emailCronjob:
   # -- Resources for the Action Items email job.
@@ -142,6 +159,9 @@ emailCronjob:
     - name: weekly-email
       interval: 168h
       cron: "0 16 * * 1"
+  securityContext:
+    # -- The user ID to run the email job under.
+    runAsUser: 10324
 
 deleteOldActionItemsCronjob:
   # -- Resources for the delete old Action Items job.
@@ -157,6 +177,9 @@ deleteOldActionItemsCronjob:
     - name: ai-cleanup
       interval: 24h
       cron: "0 0 * * *"
+  securityContext:
+    # -- The user ID to run the delete Action Items job under.
+    runAsUser: 10324
 
 service:
   # -- Port to be used for the API and Dashboard services.
@@ -166,12 +189,12 @@ service:
 sanitizedBranch:
 
 ingressApi:
+  # -- Install API Ingress object.
+  enabled: false
   # -- Annotations to add to the API ingress.
   annotations: []
 
 ingress:
-  # -- Install Ingress objects.
-  enabled: false
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
@@ -180,6 +203,8 @@ ingress:
   annotations: []
 
 ingressDashboard:
+  # -- Install Dashboard Ingress object.
+  enabled: false
   # -- Annotations to add to the Dashboard ingress.
   annotations: []
 
