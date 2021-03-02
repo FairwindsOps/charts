@@ -4,7 +4,8 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  {{- include "metadata" . }}
+  {{- include "annotation-metadata" . }}
+    polaris.fairwinds.com/insecureCapabilities-exempt: "true"
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:
@@ -31,6 +32,9 @@ spec:
                   --statistics \
                 > /output/kube-hunter-tmp.json \
                 && mv /output/kube-hunter-tmp.json /output/kube-hunter.json
-            {{ include "security-context" . | indent 12 | trim }}
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
