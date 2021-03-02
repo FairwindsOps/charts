@@ -1,0 +1,32 @@
+{{- if .Values.ingressApi.enabled }}
+{{- $fullName := include "fairwinds-insights.fullname" . -}}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-api
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: ingress-api
+  annotations:
+    {{- toYaml .Values.ingress.annotations | nindent 4 }}
+    {{- toYaml .Values.ingressApi.annotations | nindent 4 }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+    - secretName: {{ $fullName }}-cert
+      hosts:
+        {{- range .Values.ingress.hostedZones }}
+        - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+        {{- end }}
+{{- end }}
+  rules:
+    {{- range .Values.ingress.hostedZones }}
+    - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ $fullName }}-api-svc
+              servicePort: http
+            path: /v0
+    {{- end }}
+{{- end }}
