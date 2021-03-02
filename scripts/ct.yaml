@@ -7,4 +7,6 @@ chart-repos:
   - "jetstack=https://charts.jetstack.io"
   - "fairwinds-stable=https://charts.fairwinds.com/stable"
   - "fairwinds-incubator=https://charts.fairwinds.com/incubator"
+  - "bitnami=https://charts.bitnami.com/bitnami"
+  - "minio=https://helm.min.io/"
   - "prometheus-community=https://prometheus-community.github.io/helm-charts"
