@@ -87,3 +87,4 @@ Parameter | Description | Default
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
 `resourcemetrics.installPrometheus` | Install a new Prometheus instance for the resourcemetrics report | false
 `resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
+`nova.logLevel` | The klog log-level to use when running Nova | `3`
