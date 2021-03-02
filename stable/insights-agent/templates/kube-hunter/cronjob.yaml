@@ -31,9 +31,6 @@ spec:
                   --statistics \
                 > /output/kube-hunter-tmp.json \
                 && mv /output/kube-hunter-tmp.json /output/kube-hunter.json
-            securityContext:
-              readOnlyRootFilesystem: true
-              allowPrivilegeEscalation: false
-              privileged: false
+            {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
