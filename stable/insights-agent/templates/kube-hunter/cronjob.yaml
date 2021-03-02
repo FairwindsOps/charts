@@ -4,7 +4,8 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  {{- include "metadata" . }}
+  {{- include "annotation-metadata" . }}
+    polaris.fairwinds.com/insecureCapabilities-exempt: "true"
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:

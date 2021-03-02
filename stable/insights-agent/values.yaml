@@ -170,6 +170,7 @@ nova:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
+  logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
     tag: "2.3"
@@ -264,7 +265,7 @@ pluto:
   timeout: 300
   image:
     repository: quay.io/fairwinds/pluto
-    tag: "v3.4"
+    tag: "v3.5"
   resources:
     limits:
       cpu: 250m
