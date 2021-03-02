@@ -1,0 +1,286 @@
+image:
+  # -- Docker image tag
+  tag: main
+
+dashboardImage:
+  # -- Docker image repository for the front end
+  repository: quay.io/fairwinds/insights-dashboard
+apiImage:
+  # -- Docker image repository for the API server
+  repository: quay.io/fairwinds/insights-api
+migrationImage:
+  # -- Docker image repository for the database migration job
+  repository: quay.io/fairwinds/insights-db-migration
+cronjobImage:
+  # -- Docker image repository for maintenance CronJobs.
+  repository: quay.io/fairwinds/insights-cronjob
+
+options:
+  # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
+  agentChartTargetVersion: 1.9.2
+  # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
+  insightsSAASHost: "https://insights.fairwinds.com"
+  # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
+  allowHTTPCookies: false
+  # -- Configuration file to use for the front-end. This generally should not be changed.
+  dashboardConfig: config.self.js
+
+# -- Additional Environment Variables to set on the Fairwinds Insights pods.
+additionalEnvironmentVariables:
+
+dashboard:
+  pdb:
+    # -- Create a pod disruption budget for the front end pods.
+    enabled: false
+    # -- How many replicas should always exist for the front end pods.
+    minReplicas: 1
+  hpa:
+    # -- Create a horizontal pod autoscaler for the front end pods.
+    enabled: false
+    # -- Minimum number of replicas for the front end pods.
+    min: 2
+    # -- Maximum number of replicas for the front end pods.
+    max: 4
+    # -- Target CPU utilization for the front end pods.
+    cpuTarget: 50
+  # -- Resources for the front end pods.
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  # -- Node Selector for the front end pods.
+  nodeSelector: {}
+  # -- Tolerations for the front end pods.
+  tolerations: []
+  securityContext:
+    # -- The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile
+    runAsUser: 101
+
+api:
+  # -- Port for the API server to listen on.
+  port: 8080
+  pdb:
+    # -- Create a pod disruption budget for the API server.
+    enabled: false
+    # -- How many replicas should always exist for the API server.
+  hpa:
+    # -- Create a horizontal pod autoscaler for the API server.
+    enabled: false
+    # -- Minimum number of replicas for the API server.
+    min: 2
+    # -- Maximum number of replicas for the API server.
+    max: 4
+    # -- Target CPU utilization for the API server.
+    cpuTarget: 50
+  # -- Resources for the API server.
+  resources:
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  # -- Node Selector for the API server.
+  nodeSelector: {}
+  # -- Tolerations for the API server.
+  tolerations: []
+  securityContext:
+    # -- The user ID to run the API server under.
+    runAsUser: 10324
+
+dbMigration:
+  # -- Resources for the database migration job.
+  resources:
+    limits:
+      cpu: 1
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  securityContext:
+    # -- The user ID to run the database migration job under.
+    runAsUser: 10324
+
+alertsCronjob:
+  # -- Resources for the Slack/Datadog integrations
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  # -- CRON schedules for the Slack/Datadog integrations
+  schedules:
+    - name: realtime
+      interval: 10m
+      # On the 5 minutes but the realtime job strips down to the nearest 10 minute
+      # This way there can be slight variation in when the job runs without duplicate or missed entries
+      cron: "5/10 * * * *"
+    - name: digest
+      interval: 24h
+      cron: "0 16 * * *"
+  securityContext:
+    # -- The user ID to run the alerts job under.
+    runAsUser: 10324
+
+aggregateCronjob:
+  # -- Resources for the Workload Metrics aggregation job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 40m
+      memory: 32Mi
+  # -- CRON schedules for the Workload Metrics aggregation job.
+  schedules:
+    - name: bi-hourly
+      interval: 120m
+      cron: "5 0/2 * * *"
+  securityContext:
+    # -- The user ID to run the Workload Metrics aggregation job under.
+    runAsUser: 10324
+
+emailCronjob:
+  # -- Resources for the Action Items email job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  # -- CRON schedules for the Action Items email job.
+  schedules:
+    - name: weekly-email
+      interval: 168h
+      cron: "0 16 * * 1"
+  securityContext:
+    # -- The user ID to run the email job under.
+    runAsUser: 10324
+
+deleteOldActionItemsCronjob:
+  # -- Resources for the delete old Action Items job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  # -- CRON schedules for the delete old Action Items job.
+  schedules:
+    - name: ai-cleanup
+      interval: 24h
+      cron: "0 0 * * *"
+  securityContext:
+    # -- The user ID to run the delete Action Items job under.
+    runAsUser: 10324
+
+service:
+  # -- Port to be used for the API and Dashboard services.
+  port: 80
+
+# -- Prefix to use on hostname. Generally not needed.
+sanitizedBranch:
+
+ingressApi:
+  # -- Install API Ingress object.
+  enabled: false
+  # -- Annotations to add to the API ingress.
+  annotations: []
+
+ingress:
+  # -- Enable TLS
+  tls: true
+  # -- Hostnames to use for Ingress
+  hostedZones: []
+  # -- Annotations to add to the API and Dashboard ingresses.
+  annotations: []
+
+ingressDashboard:
+  # -- Install Dashboard Ingress object.
+  enabled: false
+  # -- Annotations to add to the Dashboard ingress.
+  annotations: []
+
+
+postgresql:
+  # -- Use the ephemeral postgresql chart by default
+  ephemeral: true
+  # -- Secret name to use for Postgres Password
+  existingSecret: fwinsights-postgresql
+  # -- Username to connect to Postgres with
+  postgresqlUsername: postgres
+  # -- Name of the Postgres Database
+  postgresqlDatabase: fairwinds_insights
+  # -- Create a read only user with a random password.
+  randomReadOnlyPassword: true
+  service:
+    # -- Port of the Postgres Database
+    port: 5432
+  persistence:
+    # -- Create Persistent Volume with Postgres
+    enabled: true
+  replication:
+    # -- Replicate Postgres data
+    enabled: false
+  # -- Resources section for Postgres
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 75m
+      memory: 256Mi
+
+email:
+  # -- How to send emails, valid values include memory, ses, and smtp
+  strategy: memory
+  # -- Email address that emails will come from
+  sender:
+  # -- Email address to send notifications of new user signups.
+  recipient:
+  # -- Host for SMTP strategy
+  smtpHost:
+  # -- Username for SMTP strategy
+  smtpUsername:
+  # -- Port for SMTP strategy
+  smtpPort:
+  # -- Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret.
+  awsRegion:
+
+
+reportStorage:
+  # -- How to store report files, valid values include minio, s3, and local
+  strategy: minio
+  # -- Name of the bucket to use for minio or s3
+  bucket: reports
+  # -- AWS region to use for S3
+  region: us-east-1
+  # -- Hostname to use for Minio
+  minioHost:
+  # -- Directory to store files in for local.
+  fixturesDir:
+
+minio:
+  # -- Install Minio
+  install: true
+  # -- Create the following buckets for the newly installed Minio
+  buckets:
+  - name: reports
+    policy: none
+  # -- Resources for Minio
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  # -- nameOverride to shorten names of Minio resources
+  nameOverride: fw-minio
+  persistence:
+    # -- Create a persistent volume for Minio
+    enabled: true
