@@ -265,7 +265,7 @@ pluto:
   timeout: 300
   image:
     repository: quay.io/fairwinds/pluto
-    tag: "v3.5"
+    tag: "v4.0"
   resources:
     limits:
       cpu: 250m
