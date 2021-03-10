@@ -8,8 +8,12 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: ingress-api
   annotations:
-    {{- toYaml .Values.ingress.annotations | nindent 4 }}
-    {{- toYaml .Values.ingressApi.annotations | nindent 4 }}
+    {{ with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
+    {{ with .Values.ingressApi.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
 spec:
 {{- if .Values.ingress.tls }}
   tls:

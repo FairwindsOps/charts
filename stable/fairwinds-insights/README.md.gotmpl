@@ -15,7 +15,9 @@ helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 helm install fairwinds-insights fairwinds-stable/fairwinds-insights \
   --namespace fairwinds-insights \
   --create-namespace=true \
+  # Options for the quickstart - these should change
   --set options.autogenerateKeys=true
+  --set postgresql.sslMode=disable
 ```
 
 ### Hardening

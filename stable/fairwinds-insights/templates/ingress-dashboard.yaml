@@ -8,19 +8,25 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: ingress-dashboard
   annotations:
-  {{- toYaml .Values.ingress.annotations | nindent 4 }}
-  {{- toYaml .Values.ingressDashboard.annotations | nindent 4 }}
+    {{ with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
+    {{ with .Values.ingressDashboard.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
   {{- if and .Values.ingress.oauth (not (hasPrefix "fwinsights-demo-" $fullName) ) }}
     nginx.ingress.kubernetes.io/auth-signin: "https://staging.auth.fairwinds.com/oauth2/start?rd=https://$host$request_uri"
     nginx.ingress.kubernetes.io/auth-url: "https://staging.auth.fairwinds.com/oauth2/auth"
   {{- end }}
 spec:
+{{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
       hosts:
         {{- range .Values.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
         {{- end }}
+{{- end }}
   rules:
     {{- range .Values.ingress.hostedZones }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
