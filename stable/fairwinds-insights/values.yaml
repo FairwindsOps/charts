@@ -198,19 +198,19 @@ ingress:
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
-  hostedZones: [""]
+  hostedZones: []
   # -- Annotations to add to the API and Dashboard ingresses.
   annotations:
 
 ingressApi:
   # -- Install API Ingress object.
-  enabled: true
+  enabled: false
   # -- Annotations to add to the API ingress.
   annotations:
 
 ingressDashboard:
   # -- Install Dashboard Ingress object.
-  enabled: true
+  enabled: false
   # -- Annotations to add to the Dashboard ingress.
   annotations:
 
