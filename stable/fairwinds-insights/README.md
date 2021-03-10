@@ -12,11 +12,12 @@ We recommend installing Fairwinds Insights in its own namespace and with a simpl
 
 ```bash
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+# These options are for quickstart only. See documentation for hardening tips
 helm install fairwinds-insights fairwinds-stable/fairwinds-insights \
   --namespace fairwinds-insights \
   --create-namespace=true \
-  # Options for the quickstart - these should change
-  --set options.autogenerateKeys=true
+  --set options.autogenerateKeys=true \
+  --set options.allowHTTPCookies=true \
   --set postgresql.sslMode=disable
 ```
 
@@ -387,11 +388,11 @@ ingress:
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
 | ingress.tls | bool | `true` | Enable TLS |
-| ingress.hostedZones | list | `[""]` | Hostnames to use for Ingress |
+| ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | string | `nil` | Annotations to add to the API and Dashboard ingresses. |
-| ingressApi.enabled | bool | `true` | Install API Ingress object. |
+| ingressApi.enabled | bool | `false` | Install API Ingress object. |
 | ingressApi.annotations | string | `nil` | Annotations to add to the API ingress. |
-| ingressDashboard.enabled | bool | `true` | Install Dashboard Ingress object. |
+| ingressDashboard.enabled | bool | `false` | Install Dashboard Ingress object. |
 | ingressDashboard.annotations | string | `nil` | Annotations to add to the Dashboard ingress. |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |

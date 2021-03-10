@@ -17,6 +17,7 @@ helm install fairwinds-insights fairwinds-stable/fairwinds-insights \
   --namespace fairwinds-insights \
   --create-namespace=true \
   --set options.autogenerateKeys=true \
+  --set options.allowHTTPCookies=true \
   --set postgresql.sslMode=disable
 ```
 
