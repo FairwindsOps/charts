@@ -18,6 +18,7 @@ spec:
             configMap:
               name: polaris
           {{ end }}
+          {{ include "get-config-container" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             {{ if .Values.polaris.config }}
@@ -26,15 +27,20 @@ spec:
               subPath: config.yaml
               readOnly: true
             {{ end }}
-            command: [
-              "polaris", "audit",
-              {{ if .Values.polaris.config }}
-              "--config", "/opt/app/config.yaml",
-              {{ end }}
-              "--output-file", "/output/polaris.json",
-              "--format", "json",
-              "--display-name", "{{ .Values.insights.cluster }}",
-            ]
+            command:
+            - "sh"
+            - "-c"
+            - |
+              CONFIG=""
+              if [ -f '/output/polaris-config.yaml' ]
+              then
+                CONFIG='--config /output/polaris-config.yaml'
+              fi
+              if [ -f '/opt/app/config.yaml' ]
+              then
+                CONFIG='--config /opt/app/config.yaml'
+              fi
+              polaris audit --output-file /output/polaris.json --format json --display-name {{ .Values.insights.cluster }} $CONFIG
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
