@@ -29,7 +29,7 @@ spec:
       http:
         paths:
           - backend:
-              serviceName: {{ $fullName }}-api-svc
+              serviceName: {{ $fullName }}-api
               servicePort: http
             path: /v0
     {{- end }}
