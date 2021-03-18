@@ -123,5 +123,7 @@ spec:
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
+        resources:
+          {{- toYaml .Values.admissionController.certGen.resources | nindent 10 }}
 {{- end }}
 {{- end }}
