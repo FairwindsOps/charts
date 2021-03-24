@@ -21,7 +21,7 @@ spec:
           {{- end }}
           containers:
             - name: fairwinds-insights
-              image: "{{ $.Values.cronjobImage.repository }}:{{ $.Values.image.tag }}"
+              image: "{{ $.Values.cronjobImage.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion  }}"
               command: ["aggregate_metrics"]
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always

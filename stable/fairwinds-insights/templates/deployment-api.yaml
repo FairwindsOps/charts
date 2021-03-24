@@ -23,7 +23,7 @@ spec:
       serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
       containers:
         - name: fairwinds-insights
-          image: "{{ .Values.apiImage.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.apiImage.repository }}:{{ .Values.image.tag | default .Chart.AppVersion  }}"
           imagePullPolicy: Always
           command: ["api"]
           args:

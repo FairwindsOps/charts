@@ -1,6 +1,3 @@
-image:
-  tag: 3.2.4
-
 ingress:
   hostedZones:
   - test.cluster.local

@@ -1,6 +1,6 @@
 image:
-  # -- Docker image tag
-  tag: main
+  # -- Docker image tag, defaults to the Chart appVersion
+  tag:
 
 dashboardImage:
   # -- Docker image repository for the front end
@@ -24,6 +24,10 @@ options:
   allowHTTPCookies: false
   # -- Configuration file to use for the front-end. This generally should not be changed.
   dashboardConfig: config.self.js
+  # -- An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account.
+  adminEmail:
+  # -- The name of your organization. This will pre-populate Insights with an organization.
+  organizationName:
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables:
