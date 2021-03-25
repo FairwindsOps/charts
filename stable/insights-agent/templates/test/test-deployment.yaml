@@ -37,7 +37,7 @@ spec:
             class FileHandler(BaseHTTPRequestHandler):
               def do_GET(self):
                 content = "{}".encode(encoding="utf-8")
-                if "trivy" in self.path:
+                if "trivy" in self.path or "polaris" in self.path:
                   self.send_response(404, "Not Found")
                 else:
                   self.send_response(200, "success")
