@@ -25,11 +25,21 @@ spec:
       containers:
       - name: fwinsights-db-migration
         # Note: we use image.tag instead of migrationImage.tag for rok8s-scripts compatibility.
-        image: "{{ .Values.migrationImage.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.migrationImage.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: Always
         resources:
           {{- toYaml .Values.dbMigration.resources | nindent 10 }}
         {{- include "env" . | indent 8 }}
+        {{- with .Values.options.adminEmail }}
+        - name: SETUP_ADMIN_EMAIL
+          value: {{ . }}
+        {{- end }}
+        {{- with .Values.options.organizationName }}
+        - name: ADD_SELF_HOSTED
+          value: "true"
+        - name: SETUP_ORG_NAME
+          value: {{ . }}
+        {{- end }}
         securityContext:
           readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
@@ -39,4 +49,14 @@ spec:
           capabilities:
             drop:
               - ALL
-
+        volumeMounts:
+        - name: secrets
+          mountPath: /tmp/
+      volumes:
+      - name: secrets
+        secret:
+          secretName: polaris-config
+          optional: true
+          items:
+          - key: polaris-config.json
+            path: polaris-config.json

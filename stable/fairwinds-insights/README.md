@@ -16,7 +16,7 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.tag | string | `"main"` | Docker image tag |
+| image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
@@ -25,6 +25,8 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
+| options.adminEmail | string | `nil` | An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account. |
+| options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | additionalEnvironmentVariables | string | `nil` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
