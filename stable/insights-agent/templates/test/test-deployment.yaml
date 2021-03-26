@@ -36,6 +36,7 @@ spec:
             from http.server import BaseHTTPRequestHandler, HTTPServer
             class FileHandler(BaseHTTPRequestHandler):
               def do_GET(self):
+                print(self.path)
                 content = "{}".encode(encoding="utf-8")
                 if "trivy" in self.path or "polaris" in self.path:
                   self.send_response(404, "Not Found")
@@ -47,6 +48,7 @@ spec:
                 self.wfile.write(content)
                 return
               def do_POST(self):
+                print(self.path)
                 content = '{"Success": true}'.encode(encoding="utf-8")
                 self.send_response(200, "success")
                 self.send_header("Content-type", "application/json")
