@@ -62,8 +62,6 @@ initContainers:
   - --file
   - /output/{{ .Label }}-config.yaml
   env:
-  - name: DEBUG
-    value: "true"
   - name: FAIRWINDS_TOKEN
     valueFrom:
       secretKeyRef:
