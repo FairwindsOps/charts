@@ -1,0 +1,18 @@
+apiVersion: v2
+appVersion: 3-5-0-beta2
+description: A Helm chart to run the Fairwinds Insights server
+name: fairwinds-insights
+version: 0.1.1
+maintainers:
+- name: rbren
+- name: makoscafee
+- name: baderbuddy
+dependencies:
+- name: postgresql
+  version: 9.1.2
+  repository: https://charts.bitnami.com/bitnami
+  condition: postgresql.ephemeral
+- name: minio
+  version: 5.0.32
+  repository: https://helm.min.io/
+  condition: minio.install

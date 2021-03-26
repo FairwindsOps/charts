@@ -24,10 +24,13 @@ spec:
               mountPath: /output
             - name: config
               mountPath: /config
+            - name: tmp
+              mountPath: /tmp
             command:
               - /nova
               - find
-              - --config=/config/nova.yaml
+              - --config={{ .Config.configLocation }}
+              - -v{{ .Config.logLevel }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
           volumes:
@@ -36,4 +39,6 @@ spec:
             - name: config
               configMap:
                 name: {{ include "insights-agent.fullname" $ }}-nova-config
+            - name: tmp
+              emptyDir: {}
 {{- end -}}

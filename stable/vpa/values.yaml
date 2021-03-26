@@ -21,6 +21,8 @@ serviceAccount:
   annotations: {}
   # serviceAccount.name -- The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component
   name: ""
+  # serviceAccount.automountServiceAccountToken -- Automount API credentials for the Service Account
+  automountServiceAccountToken: true
 
 recommender:
   # recommender.enabled -- If true, the vpa recommender component will be installed.
