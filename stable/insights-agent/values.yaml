@@ -11,7 +11,7 @@ rbac:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.3"
+    tag: "bb-fix2-download"
   sendFailures: true
   resources:
     limits:
