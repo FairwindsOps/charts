@@ -60,6 +60,9 @@ solvers:
     route53:
       hostedZoneID: {{ .hostedZoneID | default "" }}
       region: {{ .region }}
+      {{- if .role }}
+      role: {{ .role }}
+      {{- end }} {{- /* endif .role */ -}}
       {{- if .secretName }}
       accessKeyID: {{ .accessKeyID }}
       secretAccessKeySecretRef:
