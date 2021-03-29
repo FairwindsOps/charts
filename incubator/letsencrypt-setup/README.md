@@ -40,7 +40,8 @@ The following table lists the configurable parameters of the chart and their def
 | Parameter | Description |
 | --------- | --------- |
 | `accessKeyID` | For use with specific IAM account credentials, not necessary if nodes have IAM role that gives access to route53|
-| `hostedZoneID` | Route53 hosted zone ID |
+| `role` | Role ARN to assume. Handy for cross-account route53 record management |
+| `hostedZoneID` | Route53 hosted zone ID; recommended if using cross-account IAM role assumption |
 | `region` | Required if using `accessKeyID` for authentication |
 | `secretName` | Required if using `accessKeyID`, name of kubernetes secret that contains the IAM secret access key correlating to the `accessKeyID` |
 | `secretKey` | Required if using `accessKeyID`, key within a kubernetes secret data block that holds the IAM secret access key |
