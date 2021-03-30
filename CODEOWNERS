@@ -16,7 +16,7 @@
 /stable/astro/ @lucasreed
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
-/stable/rbac-manager/ @robscott @sudermanjr @lucasreed
+/stable/rbac-manager/ @sudermanjr @lucasreed
 /stable/polaris/ @rbren @makoscafee @jordandoig @baderbuddy
 /stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @sudermanjr
