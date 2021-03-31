@@ -22,7 +22,7 @@ spec:
       {{- end }}
       containers:
         - name: fw-insights-dashboard
-          image: "{{ .Values.dashboardImage.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.dashboardImage.repository }}:{{ .Values.image.tag | default .Chart.AppVersion  }}"
           imagePullPolicy: Always
           command: ["/bin/sh"]
           args:
@@ -32,6 +32,7 @@ spec:
             cd /etc/nginx/html
             mv -f {{ . }} ./config.js || exit 1
             {{ end -}}
+            sed -i 's/SERVICE.NAMESPACE.svc/{{ include "fairwinds-insights.fullname" . }}-api.{{.Release.Namespace}}.svc/' /etc/nginx/nginx.conf
             nginx -g "daemon off;"
           ports:
             - name: http

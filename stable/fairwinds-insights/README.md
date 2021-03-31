@@ -1,22 +1,17 @@
 # Fairwinds Insights
 
-[Fairwinds Insights](https://insights.fairwinds.com) Software to automate, monitor, and enforce Kubernetes best practices.
+[Fairwinds Insights](https://insights.fairwinds.com) - Software to automate, monitor, and enforce Kubernetes best practices.
 
-The self-hosted version of Fairwinds Insights is currently in alpha. The documentation is incomplete, and it is subject to breaking changes.
+> The self-hosted version of Fairwinds Insights is currently in alpha.
+> The documentation is incomplete, and it is subject to breaking changes.
 
-## Installation
-We recommend installing Fairwinds Insights in its own namespace and with a simple release name:
-
-```
-helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-insights
-```
+See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hosted) for complete documentation.
 
 ## Values
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.tag | string | `"main"` | Docker image tag |
+| image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
@@ -25,6 +20,9 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
+| options.adminEmail | string | `nil` | An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account. |
+| options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
+| options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
 | additionalEnvironmentVariables | string | `nil` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
@@ -62,14 +60,15 @@ helm install insights fairwinds-stable/fairwinds-insights --namespace fairwinds-
 | deleteOldActionItemsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the delete Action Items job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
-| ingressApi.enabled | bool | `false` | Install API Ingress object. |
-| ingressApi.annotations | list | `[]` | Annotations to add to the API ingress. |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
-| ingress.annotations | list | `[]` | Annotations to add to the API and Dashboard ingresses. |
+| ingress.annotations | string | `nil` | Annotations to add to the API and Dashboard ingresses. |
+| ingressApi.enabled | bool | `false` | Install API Ingress object. |
+| ingressApi.annotations | string | `nil` | Annotations to add to the API ingress. |
 | ingressDashboard.enabled | bool | `false` | Install Dashboard Ingress object. |
-| ingressDashboard.annotations | list | `[]` | Annotations to add to the Dashboard ingress. |
+| ingressDashboard.annotations | string | `nil` | Annotations to add to the Dashboard ingress. |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
+| postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |
 | postgresql.postgresqlUsername | string | `"postgres"` | Username to connect to Postgres with |
 | postgresql.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |

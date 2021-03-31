@@ -42,6 +42,54 @@ volumeMounts:
   mountPath: /output
 {{- end }}
 
+{{ define "get-config-container" }}
+initContainers:
+- name: insights-config-downloader
+  image: "{{ .Values.uploader.image.repository }}:{{ .Values.uploader.image.tag }}"
+  imagePullPolicy: Always
+  command:
+  - ./download.sh
+  - --datatype
+  - {{ .Label }}
+  - --organization
+  - {{ required "You must set an organization" .Values.insights.organization | quote }}
+  - --cluster
+  - {{ required "You must set a cluster" .Values.insights.cluster | quote }}
+  {{- with .Values.insights.host }}
+  - --host
+  - {{ . | quote }}
+  {{- end }}
+  - --file
+  - /output/{{ .Label }}-config.yaml
+  env:
+  - name: FAIRWINDS_TOKEN
+    valueFrom:
+      secretKeyRef:
+        {{ if .Values.insights.tokenSecretName -}}
+        name: {{ .Values.insights.tokenSecretName }}
+        {{ else -}}
+        name: {{ include "insights-agent.fullname" . }}-token
+        {{ end -}}
+        key: token
+  {{- with .Values.uploader.env }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  volumeMounts:
+  - name: output
+    mountPath: /output
+  resources:
+    {{- toYaml .Values.uploader.resources | nindent 4 }}
+  securityContext:
+    runAsNonRoot: true
+    runAsUser: 1000
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    privileged: false
+    capabilities:
+      drop:
+        - ALL
+{{- end }}
+
 {{ define "security-context" }}
 securityContext:
   readOnlyRootFilesystem: true

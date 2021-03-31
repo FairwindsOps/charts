@@ -1,13 +1,10 @@
-image:
-  tag: 3.2.4
-
 ingress:
   hostedZones:
   - test.cluster.local
 
 options:
   insightsSAASHost: "https://staging.insights.fairwinds.com"
-  autoGenerateKeys: true
+  autogenerateKeys: true
 
 postgresql:
   sslMode: "disable"
