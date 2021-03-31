@@ -2,6 +2,9 @@ image:
   # -- Docker image tag, defaults to the Chart appVersion
   tag:
 
+# -- Installation code provided by Fairwinds.
+installationCode:
+
 polaris:
   # -- Configuration for Polaris
   config:
