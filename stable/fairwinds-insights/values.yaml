@@ -2,6 +2,10 @@ image:
   # -- Docker image tag, defaults to the Chart appVersion
   tag:
 
+polaris:
+  # -- Configuration for Polaris
+  config:
+
 dashboardImage:
   # -- Docker image repository for the front end
   repository: quay.io/fairwinds/insights-dashboard
