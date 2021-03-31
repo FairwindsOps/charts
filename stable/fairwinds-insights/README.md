@@ -12,6 +12,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
+| installationCode | string | `nil` | Installation code provided by Fairwinds. |
 | polaris.config | string | `nil` | Configuration for Polaris |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
