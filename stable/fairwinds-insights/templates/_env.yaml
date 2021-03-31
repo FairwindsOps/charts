@@ -17,6 +17,10 @@ env:
 {{- with .Values.additionalEnvironmentVariables }}
 {{ toYaml . }}
 {{- end }}
+{{- with .Values.installationCode }}
+- name: INSTALLATION_CODE
+  value: {{ . | quote }}
+{{- end }}
 - name: CACHE_BUST_TOKEN
   value: {{ randAlphaNum 10 }}
 - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
