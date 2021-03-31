@@ -1,0 +1,11 @@
+{{- with .Values.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+data:
+  config.yaml: |
+    {{- toYaml . | nindent 4 }}
+{{- end }}
