@@ -30,6 +30,15 @@ rules:
     verbs:
       - 'get'
       - 'list'
+  - apiGroups: 
+      - 'monitoring.coreos.com'
+    resources: 
+      - 'prometheuses'
+      - 'alertmanagers'
+    verbs: 
+      - 'get'
+      - 'list'
+
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
