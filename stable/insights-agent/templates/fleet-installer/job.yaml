@@ -22,23 +22,25 @@ spec:
         args:
           - -c
           - |
-            echo "start!"
+            echo "Checking if cluster already exists..."
+            CLUSTER_FILE="/tmp/cluster.json"
+            SECRET_NAME="{{ required "You must specify insights.tokenSecretName for a fleet install" .Values.insights.tokenSecretName }}"
             AUTH_HEADER="Authorization: Bearer $ADMIN_TOKEN"
-            echo "Auth $AUTH_HEADER"
             CLUSTER_URL="{{ .Values.insights.host }}/v0/organizations/{{ .Values.insights.organization }}/clusters/{{ .Values.insights.cluster }}"
-            echo "url $CLUSTER_URL"
-            EXISTS=$(curl -s -o /dev/null -w "%{http_code}" "$CLUSTER_URL" -H "$AUTH_HEADER")
-            echo "Cluster exists? $EXISTS"
+            EXISTS=$(curl -s -o $CLUSTER_FILE -w "%{http_code}" "$CLUSTER_URL?showToken=true" -H "$AUTH_HEADER")
             if [[ $EXISTS -eq 404 ]]; then
               echo "Creating cluster..."
-              RESP=$(curl -X POST "$CLUSTER_URL" -H "$AUTH_HEADER")
-              CLUSTER_TOKEN=$(echo $RESP | sed 's/^.*"AuthToken":"\([^{"}]*\)".*$/\1/')
-              kubectl create secret generic \
-                --from-literal="token=$CLUSTER_TOKEN" \
-                -n {{ .Release.Namespace }} \
-                {{ include "insights-agent.fullname" . }}-token
-              echo "Created secret with auth token"
+              curl -X POST "$CLUSTER_URL" -H "$AUTH_HEADER" -o $CLUSTER_FILE
+            else
+              echo "Cluster already exists"
             fi
+            CLUSTER_TOKEN=$(cat $CLUSTER_FILE | sed 's/^.*"AuthToken":"\([^{"}]*\)".*$/\1/')
+            kubectl delete secret $SECRET_NAME || 1
+            kubectl create secret generic \
+              --from-literal="token=$CLUSTER_TOKEN" \
+              -n {{ .Release.Namespace }} \
+              $SECRET_NAME
+            echo "Created secret with auth token"
 
         resources:
           {{- toYaml .Values.cronjobExecutor.resources | nindent 10 }}
