@@ -53,6 +53,9 @@ simply need to set the following flags:
 * `insights.tokenSecretName` - the name of the secret where Insights will store your cluster's token. We recommend `insights-token`
 * `insights.cluster` - the name you want to give this cluster in the Insights UI. You might want to auto-generate this from your kubectl context
 
+With these flags set, the Helm chart will create a new cluster in the Insights UI with the specified name
+(unless a cluster with that name already exists) before installing the agent.
+
 When reinstalling the agent, you can omit `adminToken` and `fleetInstall`, and simply specify `tokenSecretName`.
 This allows you to hand off control of the agent to other teams without sharing your organization's adminToken.
 
