@@ -40,6 +40,22 @@ There are several different report types which can be enabled and configured:
 
 See below for configuration details.
 
+## Fleet Installation
+If you're installing the Insights Agent across a large fleet of clusters,
+it can be tedious to use the UI to create each cluster, then copy out the
+cluster's access token.
+
+To better serve customers with a large number of clusters, we've created a flow
+that allows you to easily deploy the Insights Agent across your fleet. You'll
+simply need to set the following flags:
+* `fleetInstall=true` - enable this flow
+* `insights.adminToken=xyz` - you can get this admin token from your organization's settings page at insights.fairwinds.com
+* `insights.tokenSecretName` - the name of the secret where Insights will store your cluster's token. We recommend `insights-token`
+* `insights.cluster` - the name you want to give this cluster in the Insights UI. You might want to auto-generate this from your kubectl context
+
+When reinstalling the agent, you can omit `adminToken` and `fleetInstall`, and simply specify `tokenSecretName`.
+This allows you to hand off control of the agent to other teams without sharing your organization's adminToken.
+
 ## Configuration
 Parameter | Description | Default
 --------- | ----------- | -------
@@ -49,6 +65,8 @@ Parameter | Description | Default
 `insights.tokenSecretName` | If you don't provide a `base64token`, you can specify the name of a secret to pull the token from | ""
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `rbac.disabled` | Don't use any of the built-in RBAC | `false`
+`fleetInstall` | See Fleet Installation docs | `false`
+`insights.adminToken` | Only needed if `fleetInstall=true` | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
