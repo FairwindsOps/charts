@@ -54,8 +54,20 @@ dashboard:
     min: 2
     # -- Maximum number of replicas for the front end pods.
     max: 4
-    # -- Target CPU utilization for the front end pods.
-    cpuTarget: 50
+    # -- Scaling metrics
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
   # -- Resources for the front end pods.
   resources:
     limits:
@@ -86,8 +98,20 @@ api:
     min: 2
     # -- Maximum number of replicas for the API server.
     max: 4
-    # -- Target CPU utilization for the API server.
-    cpuTarget: 50
+    # -- Scaling metrics
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
   # -- Resources for the API server.
   resources:
     limits:
