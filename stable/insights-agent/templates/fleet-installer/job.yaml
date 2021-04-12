@@ -48,7 +48,7 @@ spec:
           - name: ADMIN_TOKEN
             valueFrom:
               secretKeyRef:
-                name:  {{ include "insights-agent.fullname" . }}-admin-token
+                name:  {{ include "insights-agent.fullname" . }}-api-token
                 key: token
         volumeMounts:
         - name: tmp
