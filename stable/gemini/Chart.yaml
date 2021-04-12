@@ -1,7 +1,7 @@
 apiVersion: v1
-description: Automated backup and restore of PersistentVolumes using the  VolumeSnapshot API
+description: Automated backup and restore of PersistentVolumes using the VolumeSnapshot API
 name: gemini
-version: 0.0.4
+version: 0.0.6
 appVersion: 0.1.0
 maintainers:
   - name: rbren

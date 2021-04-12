@@ -24,6 +24,9 @@ readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io
 readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
+readonly MINIO_REPO_URL=https://helm.min.io/
+readonly BITNAMI_REPO_URL=https://charts.bitnami.com/bitnami
+
 readonly S3_BUCKET_STABLE=s3://fairwinds-helm-charts/stable
 readonly S3_BUCKET_INCUBATOR=s3://fairwinds-helm-charts/incubator
 
@@ -51,6 +54,8 @@ setup_helm_client() {
     helm repo add fairwinds-incubator "$INCUBATOR_REPO_URL"
     helm repo add jetstack "$JETSTACK_REPO_URL"
     helm repo add prometheus-community "$PROMETHEUS_REPO_URL"
+    helm repo add bitnami "$BITNAMI_REPO_URL"
+    helm repo add minio "$MINIO_REPO_URL"
 }
 
 authenticate() {

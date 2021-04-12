@@ -11,7 +11,7 @@ rbac:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.2"
+    tag: "0.3"
   sendFailures: true
   resources:
     limits:
@@ -64,7 +64,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "3.0"
+    tag: "3.1"
   resources:
     limits:
       cpu: 100m
@@ -170,6 +170,7 @@ nova:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
+  logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
     tag: "2.3"
@@ -264,7 +265,7 @@ pluto:
   timeout: 300
   image:
     repository: quay.io/fairwinds/pluto
-    tag: "v3.4"
+    tag: "v4.0"
   resources:
     limits:
       cpu: 250m

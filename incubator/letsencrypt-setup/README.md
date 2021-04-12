@@ -23,8 +23,8 @@ The following table lists the configurable parameters of the chart and their def
 | `clusterIssuers.selfsigned.solvers.http.ingressName` | Use this solver with a specific ingress name | `""` | no |
 | `clusterIssuers.selfsigned.solvers.http.selector` | selector for http01 solver | `{}` | no |
 | `clusterIssuers.selfsigned.solvers.dns` | List of DNS solvers and optional selectors for each. See below for configuration | `[]` | no |
-| `clusterIssuers.primary.clusterIssuerName` | Name of the selfsigned clusterIssuer | `Release.Name-primary-valid` | no |
-| `clusterIssuers.primary.enabled` | Whether or not the selfsigned ClusterIssuer is installed | `false` | yes |
+| `clusterIssuers.primary.clusterIssuerName` | Name of the primary clusterIssuer | `Release.Name-primary-valid` | no |
+| `clusterIssuers.primary.enabled` | Whether or not the primary ClusterIssuer is installed | `false` | yes |
 | `clusterIssuers.primary.issuerUrl` | The URL to use for ACME | `https://acme-v02.api.letsencrypt.org/directory` | yes |
 | `clusterIssuers.primary.email` | The email used for ACME registration | `someone@example.com` | yes |
 | `clusterIssuers.primary.solvers.http.enabled` | Enables http01 validation on primary issuer | `false` | yes |
@@ -40,7 +40,8 @@ The following table lists the configurable parameters of the chart and their def
 | Parameter | Description |
 | --------- | --------- |
 | `accessKeyID` | For use with specific IAM account credentials, not necessary if nodes have IAM role that gives access to route53|
-| `hostedZoneID` | Route53 hosted zone ID |
+| `role` | Role ARN to assume. Handy for cross-account route53 record management |
+| `hostedZoneID` | Route53 hosted zone ID; recommended if using cross-account IAM role assumption |
 | `region` | Required if using `accessKeyID` for authentication |
 | `secretName` | Required if using `accessKeyID`, name of kubernetes secret that contains the IAM secret access key correlating to the `accessKeyID` |
 | `secretKey` | Required if using `accessKeyID`, key within a kubernetes secret data block that holds the IAM secret access key |
