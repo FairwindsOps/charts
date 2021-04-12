@@ -50,12 +50,12 @@ spec:
             drop:
               - ALL
         volumeMounts:
-        - name: secrets
+        - name: polaris-config
           mountPath: /tmp/
       volumes:
-      - name: secrets
-        secret:
-          secretName: polaris-config
+      - name: polaris-config
+        configMap:
+          name: polaris-config
           optional: true
           items:
           - key: polaris-config.json
