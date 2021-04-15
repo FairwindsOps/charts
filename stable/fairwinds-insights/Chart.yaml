@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: 4.1.0 # Keep patch number pinned to ensure database migration consistency
+appVersion: 4.1.0  # Keep patch number pinned to ensure database migration consistency
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
 version: 0.1.7
