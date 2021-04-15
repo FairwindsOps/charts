@@ -18,7 +18,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
-| options.agentChartTargetVersion | string | `"1.9.2"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"1.12.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
