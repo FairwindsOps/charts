@@ -5,10 +5,10 @@
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
 /incubator/fairwinds-metrics/ @sudermanjr
-/incubator/fluentd/ @coreypobrien @crmejia
-/incubator/imagepullsecret-deploy/ @crmejia
+/incubator/fluentd/ @sudermanjr
+/incubator/imagepullsecret-deploy/ @sudermanjr
 /incubator/load-generator/ @sudermanjr
-/incubator/node-problem-detector/ @crmejia
+/incubator/node-problem-detector/ @sudermanjr
 /incubator/opa/ @sudermanjr
 /incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
