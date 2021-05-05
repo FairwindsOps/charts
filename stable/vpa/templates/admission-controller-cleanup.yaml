@@ -1,6 +1,7 @@
 {{- if .Values.admissionController.cleanupOnDelete }}
 apiVersion: v1
 kind: ServiceAccount
+automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
 metadata:
   annotations:
     "helm.sh/hook": "post-delete"
