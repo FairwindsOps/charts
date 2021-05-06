@@ -2,6 +2,7 @@
 {{- if .Values.admissionController.generateCertificate }}
 apiVersion: v1
 kind: ServiceAccount
+automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
 metadata:
   annotations:
     "helm.sh/hook": "pre-install,pre-upgrade"
