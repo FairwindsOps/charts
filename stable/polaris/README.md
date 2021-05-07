@@ -43,6 +43,7 @@ Parameter | Description | Default
 `dashboard.service.annotatotions` | Service annotations | {}
 `dashboard.nodeSelector` | Dashboard pod nodeSelector | {}
 `dashboard.tolerations` | Dashboard pod tolerations | []
+`dashboard.affinity` | Dashboard affinity settings | {} 
 `dashboard.ingress.enabled` | Whether to enable ingress to the dashboard | false
 `dashboard.ingress.hosts` | Web ingress hostnames | []
 `dashboard.ingress.tls` | ingress tls configuration |
@@ -53,6 +54,7 @@ Parameter | Description | Default
 `webhook.service.type` | Service type | ClusterIP
 `webhook.nodeSelector` | Webhook pod nodeSelector | {}
 `webhook.tolerations` | Webhook pod tolerations | []
+`webhook.affinity` | Webhook affinity settings | {}
 `audit.enable` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others | false
 `audit.outputURL` | A URL which will receive a POST request with audit results | ""
 `audit.cleanup` | Whether to delete the namespace once the audit is finished | false

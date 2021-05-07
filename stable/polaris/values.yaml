@@ -24,6 +24,7 @@ dashboard:
     type: ClusterIP
     annotations: {}
   nodeSelector: {}
+  affinity: {}
   tolerations: []
   ingress:
     enabled: false
@@ -42,6 +43,7 @@ webhook:
   enable: false
   replicas: 1
   nodeSelector: {}
+  affinity: {}
   tolerations: []
   resources:
     requests:
