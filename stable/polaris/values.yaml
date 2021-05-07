@@ -52,7 +52,7 @@ dashboard:
   nodeSelector: {}
   # dashboard.tolerations -- Dashboard pod tolerations
   tolerations: []
-  # dashboard.affinity -- Dashbaord pods affinity
+  # dashboard.affinity -- Dashboard pods affinity
   affinity: {}
   ingress:
     # dashboard.ingress.enabled -- Whether to enable ingress to the dashboard
