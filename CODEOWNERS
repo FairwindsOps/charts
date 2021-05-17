@@ -12,6 +12,7 @@
 /incubator/opa/ @sudermanjr
 /incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
+/incubator/vault-token-injector/ @sudermanjr @lucasreed
 
 /stable/astro/ @lucasreed
 /stable/aws-iam-authenticator/ @sudermanjr
