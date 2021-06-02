@@ -55,6 +55,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.service.annotations | object | `{}` | Service annotations |
 | dashboard.nodeSelector | object | `{}` | Dashboard pod nodeSelector |
 | dashboard.tolerations | list | `[]` | Dashboard pod tolerations |
+| dashboard.affinity | object | `{}` | Dashboard pods affinity |
 | dashboard.ingress.enabled | bool | `false` | Whether to enable ingress to the dashboard |
 | dashboard.ingress.hosts | list | `[]` | Web ingress hostnames |
 | dashboard.ingress.annotations | object | `{}` | Web ingress annotations |
@@ -64,6 +65,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.replicas | int | `1` | Number of replicas |
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
 | webhook.tolerations | list | `[]` | Webhook pod tolerations |
+| webhook.affinity | object | `{}` | Webhook pods affinity |
 | webhook.caBundle | string | `nil` | CA Bundle to use for Validating Webhook instead of cert-manager |
 | webhook.secretName | string | `nil` | Name of the secret containing a TLS certificate to use if cert-manager is not used. |
 | webhook.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |

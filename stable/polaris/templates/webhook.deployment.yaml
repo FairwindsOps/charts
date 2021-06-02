@@ -95,6 +95,10 @@ spec:
       {{- with .Values.webhook.tolerations }}
 {{ toYaml . | indent 6 }}
       {{- end }}
+{{- if .Values.webhook.affinity }}
+      affinity:
+{{ toYaml .Values.webhook.affinity | indent 8 }}
+{{- end }}
       volumes:
         {{- with .Values.config }}
         - name: config
