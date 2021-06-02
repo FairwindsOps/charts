@@ -41,6 +41,9 @@ spec:
           volumeMounts:
           - name: config
             mountPath: /config
+          envFrom:
+          - secretRef:
+              name: {{ include "vault-token-injector.fullname" . }}
           env:
           - name: "CIRCLE_CI_TOKEN"
             value: {{ .Values.circleToken | quote }}
