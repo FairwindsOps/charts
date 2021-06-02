@@ -22,6 +22,8 @@ config:
     vault_role: some-vault-role
     env_variable: VAULT_TOKEN
 
+# -- The klog log level (1-10)
+logLevel: 1
 
 image:
   # -- The image repository to pullt he vault-token-injector image from
