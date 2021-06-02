@@ -45,6 +45,10 @@ spec:
             value: {{ .Values.circleToken | quote }}
           - name: "VAULT_ADDR"
             value: {{ .Values.vaultAddress | quote }}
+          {{- if .Values.vaultTokenFile }}
+          - name: "VAULT_TOKEN_FILE"
+            value: {{ .Values.vaultTokenFile | quote }}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

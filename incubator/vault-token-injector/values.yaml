@@ -11,6 +11,9 @@ circleToken: thisisrequired
 # -- The vault address to get tokens from
 vaultAddress: "https://vault.example.com"
 
+# -- A file containing a vault token. Optional.
+vaultTokenFile: ""
+
 # -- The configuration of the vault-token-injector
 config:
   vaultAddress: "https://vault.example.com"

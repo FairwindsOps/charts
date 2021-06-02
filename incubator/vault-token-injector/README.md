@@ -20,6 +20,7 @@ This will inject vault tokens and address variables into circle builds on a sche
 | replicaCount | int | `1` | We currently only support a single instance |
 | circleToken | string | `"thisisrequired"` | A token for interacting with CircleCI |
 | vaultAddress | string | `"https://vault.example.com"` | The vault address to get tokens from |
+| vaultTokenFile | string | `""` | A file containing a vault token. Optional. |
 | config | object | `{"circleci":[{"env_variable":"VAULT_TOKEN","name":"FairwindsOps/example","vault_role":"some-vault-role"}],"vaultAddress":"https://vault.example.com"}` | The configuration of the vault-token-injector |
 | image.repository | string | `"quay.io/fairwinds/vault-token-injector"` | The image repository to pullt he vault-token-injector image from |
 | image.pullPolicy | string | `"Always"` | This is recommended to be set as Always |
