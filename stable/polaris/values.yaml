@@ -52,6 +52,8 @@ dashboard:
   nodeSelector: {}
   # dashboard.tolerations -- Dashboard pod tolerations
   tolerations: []
+  # dashboard.affinity -- Dashboard pods affinity
+  affinity: {}
   ingress:
     # dashboard.ingress.enabled -- Whether to enable ingress to the dashboard
     enabled: false
@@ -73,6 +75,8 @@ webhook:
   nodeSelector: {}
   # webhook.tolerations -- Webhook pod tolerations
   tolerations: []
+  # webhook.affinity -- Webhook pods affinity
+  affinity: {}
   # webhook.caBundle -- CA Bundle to use for Validating Webhook instead of cert-manager
   caBundle: null
   # webhook.secretName -- Name of the secret containing a TLS certificate to use if cert-manager is not used.

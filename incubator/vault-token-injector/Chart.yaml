@@ -1,0 +1,12 @@
+apiVersion: v2
+name: vault-token-injector
+description: |
+  A Helm chart for Fairwinds vault-token-injector
+
+  This will inject vault tokens and address variables into circle builds on a schedule
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+maintainers:
+  - name: lucasreed
+  - name: sudermanjr
