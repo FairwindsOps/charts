@@ -46,21 +46,8 @@ it can be tedious to use the UI to create each cluster, then copy out the
 cluster's access token.
 
 To better serve customers with a large number of clusters, we've created a flow
-that allows you to easily deploy the Insights Agent across your fleet. You'll
-simply need to set the following flags:
-* `fleetInstall=true` - enable this flow
-* `insights.apiToken=xyz` - you can get this admin token from your organization's settings page at insights.fairwinds.com
-* `insights.tokenSecretName` - the name of the secret where Insights will store your cluster's token. We recommend `insights-token`
-* `insights.organization` - the name your organization in Insights
-* `insights.cluster` - the name you want to give this cluster in the Insights UI. You might want to auto-generate this from your kubectl context
-
-With these flags set, the Helm chart will create a new cluster in the Insights UI with the specified name
-(unless a cluster with that name already exists) before installing the agent.
-
-When reinstalling the agent in the same cluster, you can omit `apiToken` and `fleetInstall`,
-and simply specify `tokenSecretName`.
-This allows you to hand off control of the agent to other teams without sharing your
-organization's apiToken.
+that allows you to easily deploy the Insights Agent across your fleet.
+[Read more here](https://insights.docs.fairwinds.com/run/agent/installation/#fleet-installation)
 
 ## Configuration
 Parameter | Description | Default

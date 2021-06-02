@@ -1,0 +1,78 @@
+# Default values for vault-token-injector.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- We currently only support a single instance
+replicaCount: 1
+
+# -- A token for interacting with CircleCI
+circleToken: thisisrequired
+
+# -- The vault address to get tokens from
+vaultAddress: "https://vault.example.com"
+
+# -- The configuration of the vault-token-injector
+config:
+  vaultAddress: "https://vault.example.com"
+  circleci:
+  - name: FairwindsOps/example
+    vault_role: some-vault-role
+    env_variable: VAULT_TOKEN
+
+
+image:
+  # -- The image repository to pullt he vault-token-injector image from
+  repository: quay.io/fairwinds/vault-token-injector
+  # -- This is recommended to be set as Always
+  pullPolicy: Always
+  # -- Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+
+# -- A list of imagePullSecrets to use
+imagePullSecrets: []
+# -- Overrides the name in the main template
+nameOverride: ""
+# -- Overrides the fullname in the main template
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use. If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+# -- Annotations to add to the pod
+podAnnotations: {}
+
+# -- a podSecurityContext to apply
+podSecurityContext: {}
+  # fsGroup: 2000
+
+# -- securityContext for the containers
+securityContext:
+  capabilities:
+    drop:
+    - ALL
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  runAsUser: 10000
+
+# -- resources block for the pod
+resources:
+  limits:
+    cpu: 20m
+    memory: 128Mi
+  requests:
+    cpu: 20m
+    memory: 128Mi
+
+# -- A nodeSelector block for the pod
+nodeSelector: {}
+
+# -- tolerations block for the pod
+tolerations: []
+
+# -- affinity block for the pod
+affinity: {}
