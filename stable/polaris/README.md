@@ -49,6 +49,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.port | int | `8080` | Port that the dashboard will run from. |
 | dashboard.listeningAddress | string | `nil` | Dashboard listerning address. |
 | dashboard.replicas | int | `1` | Number of replicas to run. |
+| dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
 | dashboard.service.annotations | object | `{}` | Service annotations |
@@ -73,6 +74,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
 | webhook.rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
 | webhook.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for common types for the ValidatingWebhookConfiguration |
+| webhook.podAdditionalLabels | object | `{}` | Custom additional labels on webhook pods. |
 | webhook.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
 | webhook.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
