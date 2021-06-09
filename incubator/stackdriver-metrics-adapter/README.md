@@ -15,6 +15,7 @@ This chart installs a stackdriver metrics adapter which exposes stackdriver exte
 | resources.limits.memory | string | `"200Mi"` |  |
 | resources.requests.cpu | string | `"250m"` |  |
 | resources.requests.memory | string | `"200Mi"` |  |
+| serviceAccount.annotations | map | None | Give a set of key:value pairs to annotate the serviceAccount |
 | service.port | int | `443` |  |
 | service.protocol | string | `"TCP"` |  |
 | service.targetPort | int | `443` |  |
