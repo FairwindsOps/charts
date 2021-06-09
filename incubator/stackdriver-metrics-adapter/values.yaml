@@ -15,7 +15,7 @@ serviceAccount:
 #   key: value
 
 service:
-  type: ClusterIPP
+  type: ClusterIP
   protocol: TCP
   port: 443
   targetPort: 443
