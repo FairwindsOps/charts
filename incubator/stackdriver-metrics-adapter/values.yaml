@@ -8,6 +8,12 @@ image:
 nameOverride: ""
 fullnameOverride: ""
 
+
+serviceAccount:
+# serviceAccount.annotations is a map of annotations you'd like added to the service account
+  annotations:
+#   key: value
+
 service:
   type: ClusterIP
   protocol: TCP
