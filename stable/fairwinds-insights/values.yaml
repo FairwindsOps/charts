@@ -37,6 +37,8 @@ options:
   organizationName:
   # -- Autogenerate keys for session tracking. For testing/demo purposes only
   autogenerateKeys: false
+  # -- Run the job to migrate health scores to a new format
+  migrateHealthScore: true
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables:
@@ -54,8 +56,20 @@ dashboard:
     min: 2
     # -- Maximum number of replicas for the front end pods.
     max: 4
-    # -- Target CPU utilization for the front end pods.
-    cpuTarget: 50
+    # -- Scaling metrics
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
   # -- Resources for the front end pods.
   resources:
     limits:
@@ -87,8 +101,20 @@ api:
     min: 2
     # -- Maximum number of replicas for the API server.
     max: 4
-    # -- Target CPU utilization for the API server.
-    cpuTarget: 50
+    # -- Scaling metrics
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
   # -- Resources for the API server.
   resources:
     limits:
@@ -222,7 +248,6 @@ ingressDashboard:
   # -- Annotations to add to the Dashboard ingress.
   annotations:
 
-
 postgresql:
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
@@ -234,8 +259,6 @@ postgresql:
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
   postgresqlDatabase: fairwinds_insights
-  # -- Create a read only user with a random password.
-  randomReadOnlyPassword: true
   service:
     # -- Port of the Postgres Database
     port: 5432
@@ -270,7 +293,6 @@ email:
   # -- Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret.
   awsRegion:
 
-
 reportStorage:
   # -- How to store report files, valid values include minio, s3, and local
   strategy: minio
@@ -300,3 +322,55 @@ minio:
   persistence:
     # -- Create a persistent volume for Minio
     enabled: true
+
+migrateHealthScoreJob:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+
+cronjobExecutor:
+  image:
+    repository: quay.io/fairwinds/kubectl
+    tag: "0.19"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 64Mi
+    requests:
+      cpu: 1m
+      memory: 3Mi
+
+reportjob:
+  pdb:
+    enabled: true
+    minReplicas: 1
+  hpa:
+    enabled: true
+    min: 2
+    max: 6
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 75
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 75
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  nodeSelector: { }
+  tolerations: [ ]

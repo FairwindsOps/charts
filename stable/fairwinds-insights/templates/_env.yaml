@@ -20,6 +20,15 @@ env:
   value: {{ $v | quote }}
 {{- end }}
 {{- end }}
+{{- with .Values.selfHostedSecret }}
+- name: FAIRWINDS_CERTIFICATE_LOCATION
+  value: /var/run/secrets/self-hosted/current.pem
+- name: SELF_HOSTED_PUBLIC_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ . }}
+      key: pubkey
+{{- end }}
 {{- with .Values.installationCode }}
 - name: INSTALLATION_CODE
   value: {{ . | quote }}
@@ -82,7 +91,7 @@ env:
   valueFrom:
     secretKeyRef:
       name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
-      key: secretkey                          
+      key: secretkey
 {{ else if eq .Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
   value: {{ .Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}
