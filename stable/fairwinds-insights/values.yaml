@@ -372,5 +372,5 @@ reportjob:
     requests:
       cpu: 80m
       memory: 128Mi
-  nodeSelector: { }
-  tolerations: [ ]
+  nodeSelector: {}
+  tolerations: []
