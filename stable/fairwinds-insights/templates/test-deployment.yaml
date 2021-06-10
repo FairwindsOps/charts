@@ -1,0 +1,75 @@
+{{- if .Values.test.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-test
+  annotations:
+    helm.sh/hook: pre-install
+  labels:
+    component: test
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      component: test
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        component: test
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          command:
+          - "python"
+          - "-c"
+          - |
+            from http.server import BaseHTTPRequestHandler, HTTPServer
+            import hmac
+            class SignedHandler(BaseHTTPRequestHandler):
+              def sign(key, msg):
+                return hmac.new(key, msg.encode('utf-8'), hashlib.sha256).digest()
+              def processRequest(self):
+                content = "{}".encode(encoding="utf-8")
+                self.send_response(200, "success")
+                self.send_header("Content-type", "application/json")
+                self.send_header("Content-length", len(content))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+              def do_GET(self):
+                self.processRequest()
+              def do_POST(self):
+                self.processRequest()
+            server = HTTPServer(('', 8080), SignedHandler)
+            server.serve_forever()
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: fairwinds-insights-test
+  annotations:
+    helm.sh/hook: pre-install
+  labels:
+    component: test
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    component: test
+    {{- include "fairwinds-insights.selectorLabels" . | nindent 4 }}
+{{- end -}}
