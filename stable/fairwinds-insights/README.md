@@ -31,7 +31,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
 | dashboard.hpa.min | int | `2` | Minimum number of replicas for the front end pods. |
 | dashboard.hpa.max | int | `4` | Maximum number of replicas for the front end pods. |
-| dashboard.hpa.cpuTarget | int | `50` | Target CPU utilization for the front end pods. |
+| dashboard.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | dashboard.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the front end pods. |
 | dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
 | dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
@@ -41,7 +41,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
-| api.hpa.cpuTarget | int | `50` | Target CPU utilization for the API server. |
+| api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
