@@ -25,13 +25,14 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | options.adminEmail | string | `nil` | An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account. |
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
+| options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
 | additionalEnvironmentVariables | string | `nil` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
 | dashboard.hpa.min | int | `2` | Minimum number of replicas for the front end pods. |
 | dashboard.hpa.max | int | `4` | Maximum number of replicas for the front end pods. |
-| dashboard.hpa.cpuTarget | int | `50` | Target CPU utilization for the front end pods. |
+| dashboard.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | dashboard.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the front end pods. |
 | dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
 | dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
@@ -42,7 +43,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
-| api.hpa.cpuTarget | int | `50` | Target CPU utilization for the API server. |
+| api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
@@ -75,7 +76,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |
 | postgresql.postgresqlUsername | string | `"postgres"` | Username to connect to Postgres with |
 | postgresql.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
-| postgresql.randomReadOnlyPassword | bool | `true` | Create a read only user with a random password. |
 | postgresql.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
@@ -97,3 +97,32 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
 | minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
+| migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
+| migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
+| migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
+| migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
+| cronjobExecutor.image.repository | string | `"quay.io/fairwinds/kubectl"` |  |
+| cronjobExecutor.image.tag | string | `"0.19"` |  |
+| cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
+| cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
+| cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
+| cronjobExecutor.resources.requests.memory | string | `"3Mi"` |  |
+| reportjob.pdb.enabled | bool | `true` |  |
+| reportjob.pdb.minReplicas | int | `1` |  |
+| reportjob.hpa.enabled | bool | `true` |  |
+| reportjob.hpa.min | int | `2` |  |
+| reportjob.hpa.max | int | `6` |  |
+| reportjob.hpa.metrics[0].type | string | `"Resource"` |  |
+| reportjob.hpa.metrics[0].resource.name | string | `"cpu"` |  |
+| reportjob.hpa.metrics[0].resource.target.type | string | `"Utilization"` |  |
+| reportjob.hpa.metrics[0].resource.target.averageUtilization | int | `75` |  |
+| reportjob.hpa.metrics[1].type | string | `"Resource"` |  |
+| reportjob.hpa.metrics[1].resource.name | string | `"memory"` |  |
+| reportjob.hpa.metrics[1].resource.target.type | string | `"Utilization"` |  |
+| reportjob.hpa.metrics[1].resource.target.averageUtilization | int | `75` |  |
+| reportjob.resources.limits.cpu | string | `"500m"` |  |
+| reportjob.resources.limits.memory | string | `"1024Mi"` |  |
+| reportjob.resources.requests.cpu | string | `"80m"` |  |
+| reportjob.resources.requests.memory | string | `"128Mi"` |  |
+| reportjob.nodeSelector | object | `{}` |  |
+| reportjob.tolerations | list | `[]` |  |
