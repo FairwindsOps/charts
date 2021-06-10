@@ -126,4 +126,3 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
-| test.enabled | bool | `false` | Not normally used this is releases a deployment for testing purposes. |

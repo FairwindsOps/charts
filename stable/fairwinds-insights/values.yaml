@@ -374,7 +374,3 @@ reportjob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
-
-test:
-  # -- Not normally used this is releases a deployment for testing purposes.
-  enabled: false
