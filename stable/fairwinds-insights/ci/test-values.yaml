@@ -2,9 +2,6 @@ ingress:
   hostedZones:
   - test.cluster.local
 
-test:
-  enabled: true
-
 options:
   insightsSAASHost: "https://staging.insights.fairwinds.com"
   autogenerateKeys: true
