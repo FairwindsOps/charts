@@ -57,13 +57,13 @@ env:
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.fairwindsInsights.postgresql.existingSecret }}
+      name: {{ .Values.postgresql.existingSecret }}
       key: readonly-password
 {{- else }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.fairwindsInsights.postgresql.existingSecret }}
+      name: {{ .Values.postgresql.existingSecret }}
       key: postgresql-password
 {{- end }}
 {{- with .Values.options.insightsSAASHost }}
