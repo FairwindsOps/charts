@@ -24,8 +24,7 @@ spec:
       {{- end }}
       containers:
       - name: fwinsights-db-migration
-        # Note: we use image.tag instead of migrationImage.tag for rok8s-scripts compatibility.
-        image: "{{ .Values.migrationImage.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.migrationImage.repository }}:{{ include "fairwinds-insights.migrationImageTag" . }}"
         imagePullPolicy: Always
         resources:
           {{- toYaml .Values.dbMigration.resources | nindent 10 }}
@@ -45,7 +44,7 @@ spec:
           allowPrivilegeEscalation: false
           privileged: false
           runAsNonRoot: false
-          runAsUser: {{ .Values.api.securityContext.runAsUser }}
+          runAsUser: {{ .Values.dbMigration.securityContext.runAsUser }}
           capabilities:
             drop:
               - ALL
