@@ -232,7 +232,7 @@ sanitizedBranch:
 
 ingress:
   # -- Enable Ingress
-  enabled: true
+  enabled: false
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
