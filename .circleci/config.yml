@@ -16,7 +16,7 @@ references:
   kind_configuration_helm3: &kind_configuration_helm3
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
-    command_runner_image: quay.io/helmpack/chart-testing:v3.0.0
+    command_runner_image: quay.io/helmpack/chart-testing:v3.4.0
     kind_version: 0.9.0
     requires:
       - lint-scripts
@@ -65,7 +65,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.0.0
+      - image: quay.io/helmpack/chart-testing:v3.4.0
     steps:
       - checkout
       - *setup_environment
@@ -89,13 +89,14 @@ jobs:
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.0.0
+      - image: quay.io/helmpack/chart-testing:v3.4.0
     steps:
       - checkout
       - *setup_environment
       - run:
           name: sync
           command: scripts/sync.sh
+
 workflows:
   version: 2
   test-and-sync:
@@ -119,6 +120,14 @@ workflows:
       - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.19.1 - Helm 3"
           kind_node_image: "kindest/node:v1.19.1@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600"
+          <<: *kind_configuration_helm3
+      - rok8s11/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.20.7 - Helm 3"
+          kind_node_image: "kindest/node:v1.20.7@sha256:cbeaf907fc78ac97ce7b625e4bf0de16e3ea725daf6b04f930bd14c67c671ff9"
+          <<: *kind_configuration_helm3
+      - rok8s11/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.21.1 - Helm 3"
+          kind_node_image: "kindest/node:v1.21.1@sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6"
           <<: *kind_configuration_helm3
       - sync:
           requires:
