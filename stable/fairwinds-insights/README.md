@@ -65,7 +65,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
-| ingress.enabled | bool | `true` | Enable Ingress |
+| ingress.enabled | bool | `false` | Enable Ingress |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | object | `{}` | Annotations to add to the API and Dashboard ingresses. |
