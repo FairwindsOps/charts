@@ -224,6 +224,8 @@ deleteOldActionItemsCronjob:
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
+  # -- Service type for the API and Dashboard services
+  type: ClusterIP
 
 # -- Prefix to use on hostname. Generally not needed.
 sanitizedBranch:

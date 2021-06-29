@@ -3,7 +3,7 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-api
+  name: {{ $fullName }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: ingress-api
