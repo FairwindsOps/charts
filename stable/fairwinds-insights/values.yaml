@@ -41,7 +41,7 @@ options:
   migrateHealthScore: true
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
-additionalEnvironmentVariables:
+additionalEnvironmentVariables: {}
 
 dashboard:
   pdb:
@@ -224,29 +224,21 @@ deleteOldActionItemsCronjob:
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
+  # -- Service type for the API and Dashboard services
+  type: ClusterIP
 
 # -- Prefix to use on hostname. Generally not needed.
 sanitizedBranch:
 
 ingress:
+  # -- Enable Ingress
+  enabled: false
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
   hostedZones: []
   # -- Annotations to add to the API and Dashboard ingresses.
-  annotations:
-
-ingressApi:
-  # -- Install API Ingress object.
-  enabled: false
-  # -- Annotations to add to the API ingress.
-  annotations:
-
-ingressDashboard:
-  # -- Install Dashboard Ingress object.
-  enabled: false
-  # -- Annotations to add to the Dashboard ingress.
-  annotations:
+  annotations: {}
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default
