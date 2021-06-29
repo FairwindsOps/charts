@@ -41,7 +41,7 @@ options:
   migrateHealthScore: true
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
-additionalEnvironmentVariables:
+additionalEnvironmentVariables: {}
 
 dashboard:
   pdb:
@@ -229,24 +229,14 @@ service:
 sanitizedBranch:
 
 ingress:
+  # -- Enable Ingress
+  enabled: true
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
   hostedZones: []
   # -- Annotations to add to the API and Dashboard ingresses.
-  annotations:
-
-ingressApi:
-  # -- Install API Ingress object.
-  enabled: false
-  # -- Annotations to add to the API ingress.
-  annotations:
-
-ingressDashboard:
-  # -- Install Dashboard Ingress object.
-  enabled: false
-  # -- Annotations to add to the Dashboard ingress.
-  annotations:
+  annotations: {}
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default
