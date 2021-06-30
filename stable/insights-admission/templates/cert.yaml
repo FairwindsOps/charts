@@ -1,5 +1,13 @@
 {{- if not .Values.secretName -}}
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha2" }}
 apiVersion: cert-manager.io/v1alpha2
+{{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha1" }}
+apiVersion: cert-manager.io/v1alpha1
+{{- else }}
+{{- fail "cert-manager CRDs not found. Please specify secretName or install cert-manager." }}
+{{- end }}
 kind: Certificate
 metadata:
   name: {{ include "insights-admission.fullname" . }}-cert
