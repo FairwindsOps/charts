@@ -3,10 +3,8 @@
 apiVersion: cert-manager.io/v1
 {{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha2" }}
 apiVersion: cert-manager.io/v1alpha2
-{{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha1" }}
-apiVersion: cert-manager.io/v1alpha1
 {{- else }}
-{{- fail "cert-manager CRDs not found. Please specify secretName or install cert-manager." }}
+apiVersion: cert-manager.io/v1alpha1
 {{- end }}
 kind: Certificate
 metadata:
