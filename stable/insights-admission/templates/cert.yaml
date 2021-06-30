@@ -19,7 +19,13 @@ spec:
     name: {{ include "insights-admission.fullname" . }}-selfsigned
   secretName: {{ include "insights-admission.fullname" . }}
 ---
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha2" }}
 apiVersion: cert-manager.io/v1alpha2
+{{- else }}
+apiVersion: cert-manager.io/v1alpha1
+{{- end }}
 kind: Issuer
 metadata:
   name: {{ include "insights-admission.fullname" . }}-selfsigned
