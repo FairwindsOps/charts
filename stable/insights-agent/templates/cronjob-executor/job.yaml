@@ -8,7 +8,7 @@ metadata:
     "helm.sh/hook": post-install,post-upgrade
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
-  ttlSecondsAfterFinished: 30
+  ttlSecondsAfterFinished: 3600
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
     spec:

@@ -26,7 +26,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
 | options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
-| additionalEnvironmentVariables | string | `nil` | Additional Environment Variables to set on the Fairwinds Insights pods. |
+| additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
@@ -63,14 +63,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | deleteOldActionItemsCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"ai-cleanup"}]` | CRON schedules for the delete old Action Items job. |
 | deleteOldActionItemsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the delete Action Items job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
+| service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
+| ingress.enabled | bool | `false` | Enable Ingress |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
-| ingress.annotations | string | `nil` | Annotations to add to the API and Dashboard ingresses. |
-| ingressApi.enabled | bool | `false` | Install API Ingress object. |
-| ingressApi.annotations | string | `nil` | Annotations to add to the API ingress. |
-| ingressDashboard.enabled | bool | `false` | Install Dashboard Ingress object. |
-| ingressDashboard.annotations | string | `nil` | Annotations to add to the Dashboard ingress. |
+| ingress.annotations | object | `{}` | Annotations to add to the API and Dashboard ingresses. |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |

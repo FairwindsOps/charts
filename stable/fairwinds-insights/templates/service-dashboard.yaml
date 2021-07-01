@@ -6,6 +6,7 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: dashboard
 spec:
+  type: {{ .Values.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http
