@@ -7,6 +7,6 @@ dependencies:
   version: 11.16.9
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: 0.3.4
-digest: sha256:f46a9596bf9d08f21fa3b223530cbcda423f0ed0eee1de328d5088287543de38
-generated: "2021-06-30T18:51:38.458634196Z"
+  version: 0.3.5
+digest: sha256:005b16a59af9ffa0e5a6d4d739bd74d46d286cb41fbc01c0c6e4948202892c75
+generated: "2021-07-01T13:57:14.920159762Z"
