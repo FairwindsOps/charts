@@ -9,5 +9,5 @@ dependencies:
   condition: resourcemetrics.installPrometheus
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: 0.3.3
+  version: 0.3.5
   condition: admission.enabled
