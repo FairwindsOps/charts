@@ -11,10 +11,10 @@ data:
       --older-than="{{ .olderThan }}" \
       --helm-release-filter="{{ .helmReleaseFilter }}" \
       --namespace-filter="{{ .namespaceFilter }}" \
-     {{ if .maxReleasesToKeep }}
+     {{- if .maxReleasesToKeep }}
      --max-releases-to-keep="{{ .maxReleasesToKeep }}" \
-     {{ end }}
-     {{ if $.Values.job.dryRun }}
+     {{- end }}
+     {{- if $.Values.job.dryRun }}
      --dry-run
-     {{ end }}
+     {{- end }}
 {{- end }}
