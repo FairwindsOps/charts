@@ -43,6 +43,7 @@ pruneProfiles: []
 #   - olderThan: "8 hours ago"
 #     helmReleaseFilter: "^feature-.+-web$"
 #     namespaceFilter: "^feature-.+"
+#     maxReleasesToKeep: 10
 
 rbac_manager:
   # rbac_manager.enabled -- If true, creates an RbacDefinition to manage access
