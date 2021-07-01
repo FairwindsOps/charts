@@ -27,6 +27,6 @@ spec:
         name: stackdriver-adapter
         command:
         - /adapter
-        - --use-new-resource-model=false
+        - --use-new-resource-model={{ .Values.container.useNewResourceModel }}
         resources:
           {{- toYaml .Values.resources | nindent 10 }}

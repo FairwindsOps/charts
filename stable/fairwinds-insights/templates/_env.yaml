@@ -15,7 +15,19 @@ env:
   value: "true"
 {{- end }}
 {{- with .Values.additionalEnvironmentVariables }}
-{{ toYaml . }}
+{{- range $k, $v := . }}
+- name: {{ $k }}
+  value: {{ $v | quote }}
+{{- end }}
+{{- end }}
+{{- with .Values.selfHostedSecret }}
+- name: FAIRWINDS_CERTIFICATE_LOCATION
+  value: /var/run/secrets/self-hosted/current.pem
+- name: SELF_HOSTED_PUBLIC_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ . }}
+      key: pubkey
 {{- end }}
 {{- with .Values.installationCode }}
 - name: INSTALLATION_CODE
@@ -41,19 +53,18 @@ env:
   value: {{ .Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST
   value: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
+{{- if .Values.postgresql.readOnly }}
 - name: POSTGRES_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.postgresql.existingSecret }}
-      key: postgresql-password
-- name: POSTGRES_READONLY_PASSWORD
-{{- if not .Values.postgresql.randomReadOnlyPassword }}
   valueFrom:
     secretKeyRef:
       name: {{ .Values.postgresql.existingSecret }}
       key: readonly-password
 {{- else }}
-  value: {{ randAlphaNum 32 }}
+- name: POSTGRES_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.existingSecret }}
+      key: postgresql-password
 {{- end }}
 {{- with .Values.options.insightsSAASHost }}
 - name: INSIGHTS_SAAS_HOST
@@ -88,7 +99,7 @@ env:
   valueFrom:
     secretKeyRef:
       name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
-      key: secretkey                          
+      key: secretkey
 {{ else if eq .Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
   value: {{ .Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}

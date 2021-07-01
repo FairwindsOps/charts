@@ -8,14 +8,16 @@ This chart installs a stackdriver metrics adapter which exposes stackdriver exte
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"gcr.io/google-containers/custom-metrics-stackdriver-adapter"` |  |
-| image.tag | string | `"v0.10.0"` |  |
+| image.repository | string | `"gcr.io/gke-release/custom-metrics-stackdriver-adapter"` |  |
+| image.tag | string | `"v0.12.0-gke.0"` |  |
 | replicaCount | int | `1` | Number of replicas the deployment should run. |
 | resources.limits.cpu | string | `"250m"` |  |
 | resources.limits.memory | string | `"200Mi"` |  |
 | resources.requests.cpu | string | `"250m"` |  |
 | resources.requests.memory | string | `"200Mi"` |  |
+| serviceAccount.annotations | map | None | Give a set of key:value pairs to annotate the serviceAccount |
 | service.port | int | `443` |  |
 | service.protocol | string | `"TCP"` |  |
 | service.targetPort | int | `443` |  |
 | service.type | string | `"ClusterIP"` |  |
+| container.useNewResourceModel | bool | false | [Documentation](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/custom-metrics-stackdriver-adapter#configure-cluster) (look for terms "legacy model" vs "new model" )  |
