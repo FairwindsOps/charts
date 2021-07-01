@@ -6,7 +6,11 @@ One use-case for this chart is purging ephemeral release releases after a period
 
 ## Example usage values file
 
-The following values will purge all releases matching `^feature-.+-web$` in namespace matching `^feature-.+` older than 7 days. `job.dryRun` can be toggled to output matches without deleting anything.
+The following values will purge all releases matching `^feature-.+-web$`
+in namespace matching `^feature-.+` older than 7 days. It will also only
+keep the 10 newest releases.
+
+`job.dryRun` can be toggled to output matches without deleting anything.
 
 ```
 job:
@@ -17,6 +21,7 @@ pruneProfiles:
   - olderThan: "7 days ago"
     helmReleaseFilter: "^feature-.+-web$"
     namespaceFilter: "^feature-.+"
+    maxReleasesToKeep: 10
 ```
 
 ## Upgrading
