@@ -44,6 +44,7 @@ Kubernetes 1.11+, Helm 2.13+
 | datadog.apiKey | string | `""` | Datadog API key |
 | datadog.appKey | string | `""` | Datadog app key |
 | rbac.create | bool | `true` | If true, RBAC resources will be created. |
+| deployment.env | string | `nil` | Map of key value pairs for environment variables to pass into deployment. Ex.: env:   THING: value   THING2: value2 |
 | deployment.serviceAccount.create | bool | `true` | If true, a service account will be created. If false, you must set `deployment.serviceAccount.name`. |
 | deployment.serviceAccount.name | string | `nil` | The name of an existing service account to use. |
 | deployment.replicas | int | `2` | The number of replicas to use. |
