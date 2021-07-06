@@ -115,6 +115,8 @@ admissionController:
   # admissionController.cleanupOnDelete -- If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller
   cleanupOnDelete: true
   replicaCount: 1
+  # admissionController.maxUnavailable -- This is the max unavailable setting for the pod disruption budget
+  maxUnavailable: 1
   image:
     # admissionController.image.repository -- The location of the vpa admission controller image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-admission-controller
