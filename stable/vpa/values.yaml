@@ -33,7 +33,7 @@ recommender:
     pod-recommendation-min-cpu-millicores: 15
     pod-recommendation-min-memory-mb: 100
   replicaCount: 1
-  # recommender.podDisruptionBudget -- This is the setting for the pod disruption budget.
+  # recommender.podDisruptionBudget -- This is the setting for the pod disruption budget
   podDisruptionBudget: {}
     # maxUnavailable: 1
   image:

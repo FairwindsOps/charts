@@ -60,7 +60,7 @@ recommender:
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
-| recommender.podDisruptionBudget | object | `{}` | This is the configuration for the pod disruption budget |
+| recommender.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | recommender.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender"` | The location of the recommender image |
 | recommender.image.pullPolicy | string | `"Always"` | The pull policy for the recommender image. Recommend not changing this |
 | recommender.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
@@ -75,7 +75,7 @@ recommender:
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
 | updater.replicaCount | int | `1` |  |
-| updater.podDisruptionBudget | object | `{}` | This is the configuration for the pod disruption budget |
+| updater.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | updater.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater"` | The location of the updater image |
 | updater.image.pullPolicy | string | `"Always"` | The pull policy for the updater image. Recommend not changing this |
 | updater.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
@@ -95,7 +95,7 @@ recommender:
 | admissionController.certGen.env | object | `{}` | Additional environment variables to be added to the certgen container. Format is KEY: Value format |
 | admissionController.cleanupOnDelete | bool | `true` | If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller |
 | admissionController.replicaCount | int | `1` |  |
-| admissionController.podDisruptionBudget | object | `{}` | This is the configuration for the pod disruption budget |
+| admissionController.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | admissionController.image.repository | string | `"us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-admission-controller"` | The location of the vpa admission controller image |
 | admissionController.image.pullPolicy | string | `"Always"` | The pull policy for the admission controller image. Recommend not changing this |
 | admissionController.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
