@@ -114,6 +114,8 @@ admissionController:
       pullPolicy: Always
       # admissionController.certGen.env -- Additional environment variables to be added to the certgen container. Format is KEY: Value format
     env: {}
+    # admissionController.certGen.resources -- The resources block for the certgen pod
+    resources: {}
   # admissionController.cleanupOnDelete -- If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller
   cleanupOnDelete: true
   replicaCount: 1
