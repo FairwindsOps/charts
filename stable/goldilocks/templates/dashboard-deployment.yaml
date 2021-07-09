@@ -39,8 +39,10 @@ spec:
             - dashboard
             - --exclude-containers={{ .Values.dashboard.excludeContainers }}
             - -v{{ .Values.dashboard.logVerbosity }}
+        {{- if .Values.dashboard.securityContext }}
           securityContext:
             {{- toYaml .Values.dashboard.securityContext | nindent 12 }}
+        {{- end }}
           ports:
             - name: http
               containerPort: 8080
