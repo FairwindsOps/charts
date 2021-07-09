@@ -41,8 +41,10 @@ spec:
             {{- range $name, $value := .Values.controller.flags }}
             - --{{ $name }}={{ $value }}
             {{- end }}
+        {{- if .Values.controller.securityContext }}
           securityContext:
             {{- toYaml .Values.controller.securityContext | nindent 12 }}
+        {{- end }}
           resources:
             {{- toYaml .Values.controller.resources | nindent 12 }}
       {{- with .Values.controller.nodeSelector }}
