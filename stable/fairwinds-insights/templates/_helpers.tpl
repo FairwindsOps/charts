@@ -37,6 +37,38 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.cronjobImageTag" -}}
+{{- if .Values.cronjobImage.tag -}}
+{{- .Values.cronjobImage.tag -}}
+{{- else -}}
+{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.apiImageTag" -}}
+{{- if .Values.apiImage.tag -}}
+{{- .Values.apiImage.tag -}}
+{{- else -}}
+{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.dashboardImageTag" -}}
+{{- if .Values.dashboardImage.tag -}}
+{{- .Values.dashboardImage.tag -}}
+{{- else -}}
+{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.migrationImageTag" -}}
+{{- if .Values.migrationImage.tag -}}
+{{- .Values.migrationImage.tag -}}
+{{- else -}}
+{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
+{{- end -}}
+
 {{/*
 Common labels
 */}}

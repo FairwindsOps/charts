@@ -1,11 +1,11 @@
 ---
-{{- if .Values.recommender.maxUnavailable }}
+{{- if and .Values.recommender.podDisruptionBudget (gt (int .Values.recommender.replicaCount) 1) }}
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: "{{ template "vpa.fullname" . }}-recommender-pdb"
 spec:
-  maxUnavailable: {{ .Values.recommender.maxUnavailable }}
+  {{- toYaml .Values.recommender.podDisruptionBudget | nindent 2 }}
   selector:
     matchLabels:
       app.kubernetes.io/component: recommender

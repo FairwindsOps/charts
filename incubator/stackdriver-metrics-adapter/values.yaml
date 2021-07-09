@@ -1,12 +1,18 @@
 replicaCount: 1
 
 image:
-  repository: gcr.io/google-containers/custom-metrics-stackdriver-adapter
-  tag: v0.10.2
+  repository: gcr.io/gke-release/custom-metrics-stackdriver-adapter
+  tag: v0.12.0-gke.0
   pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
+
+
+serviceAccount:
+# serviceAccount.annotations is a map of annotations you'd like added to the service account
+  annotations:
+#   key: value
 
 service:
   type: ClusterIP
@@ -21,3 +27,6 @@ resources:
   requests:
     cpu: 250m
     memory: 200Mi
+
+container:
+  useNewResourceModel: false

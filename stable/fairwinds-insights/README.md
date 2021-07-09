@@ -18,30 +18,32 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
-| options.agentChartTargetVersion | string | `"1.9.2"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"1.12.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
 | options.adminEmail | string | `nil` | An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account. |
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
-| additionalEnvironmentVariables | string | `nil` | Additional Environment Variables to set on the Fairwinds Insights pods. |
+| options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
+| additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
 | dashboard.hpa.min | int | `2` | Minimum number of replicas for the front end pods. |
 | dashboard.hpa.max | int | `4` | Maximum number of replicas for the front end pods. |
-| dashboard.hpa.cpuTarget | int | `50` | Target CPU utilization for the front end pods. |
+| dashboard.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | dashboard.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the front end pods. |
 | dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
 | dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
 | dashboard.securityContext.runAsUser | int | `101` | The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile |
 | api.port | int | `8080` | Port for the API server to listen on. |
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
+| api.pdb.minReplicas | int | `1` | How many replicas should always exist for the API server. |
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
-| api.hpa.cpuTarget | int | `50` | Target CPU utilization for the API server. |
+| api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
@@ -61,20 +63,17 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | deleteOldActionItemsCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"ai-cleanup"}]` | CRON schedules for the delete old Action Items job. |
 | deleteOldActionItemsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the delete Action Items job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
+| service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
+| ingress.enabled | bool | `false` | Enable Ingress |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
-| ingress.annotations | string | `nil` | Annotations to add to the API and Dashboard ingresses. |
-| ingressApi.enabled | bool | `false` | Install API Ingress object. |
-| ingressApi.annotations | string | `nil` | Annotations to add to the API ingress. |
-| ingressDashboard.enabled | bool | `false` | Install Dashboard Ingress object. |
-| ingressDashboard.annotations | string | `nil` | Annotations to add to the Dashboard ingress. |
+| ingress.annotations | object | `{}` | Annotations to add to the API and Dashboard ingresses. |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |
 | postgresql.postgresqlUsername | string | `"postgres"` | Username to connect to Postgres with |
 | postgresql.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
-| postgresql.randomReadOnlyPassword | bool | `true` | Create a read only user with a random password. |
 | postgresql.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
@@ -96,3 +95,32 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
 | minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
+| migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
+| migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
+| migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
+| migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
+| cronjobExecutor.image.repository | string | `"quay.io/fairwinds/kubectl"` |  |
+| cronjobExecutor.image.tag | string | `"0.19"` |  |
+| cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
+| cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
+| cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
+| cronjobExecutor.resources.requests.memory | string | `"3Mi"` |  |
+| reportjob.pdb.enabled | bool | `true` |  |
+| reportjob.pdb.minReplicas | int | `1` |  |
+| reportjob.hpa.enabled | bool | `true` |  |
+| reportjob.hpa.min | int | `2` |  |
+| reportjob.hpa.max | int | `6` |  |
+| reportjob.hpa.metrics[0].type | string | `"Resource"` |  |
+| reportjob.hpa.metrics[0].resource.name | string | `"cpu"` |  |
+| reportjob.hpa.metrics[0].resource.target.type | string | `"Utilization"` |  |
+| reportjob.hpa.metrics[0].resource.target.averageUtilization | int | `75` |  |
+| reportjob.hpa.metrics[1].type | string | `"Resource"` |  |
+| reportjob.hpa.metrics[1].resource.name | string | `"memory"` |  |
+| reportjob.hpa.metrics[1].resource.target.type | string | `"Utilization"` |  |
+| reportjob.hpa.metrics[1].resource.target.averageUtilization | int | `75` |  |
+| reportjob.resources.limits.cpu | string | `"500m"` |  |
+| reportjob.resources.limits.memory | string | `"1024Mi"` |  |
+| reportjob.resources.requests.cpu | string | `"80m"` |  |
+| reportjob.resources.requests.memory | string | `"128Mi"` |  |
+| reportjob.nodeSelector | object | `{}` |  |
+| reportjob.tolerations | list | `[]` |  |

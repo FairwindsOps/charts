@@ -35,6 +35,8 @@ dashboard:
   listeningAddress:
   # dashboard.replicas -- Number of replicas to run.
   replicas: 1
+  # dashboard.podAdditionalLabels -- Custom additional labels on dashboard pods.
+  podAdditionalLabels: {}
   # dashboard.resources -- Requests and limits for the dashboard
   resources:
     requests:
@@ -133,6 +135,8 @@ webhook:
     - pods
     - replicationcontrollers
     scope: Namespaced
+  # webhook.podAdditionalLabels -- Custom additional labels on webhook pods.
+  podAdditionalLabels: {}
   # webhook.resources -- Requests and limits for the webhook.
   resources:
     requests:

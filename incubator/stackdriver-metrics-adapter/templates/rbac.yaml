@@ -2,6 +2,10 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ include "stackdriver-metrics-adapter.fullname" . }}
+  {{- if .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml .Values.serviceAccount.annotations | nindent 4 }}
+  {{- end }}
   labels:
     app.kubernetes.io/name: {{ include "stackdriver-metrics-adapter.name" . }}
     helm.sh/chart: {{ include "stackdriver-metrics-adapter.chart" . }}
