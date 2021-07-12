@@ -64,6 +64,10 @@ controller:
       drop:
         - ALL
 
+  # controller.deployment.annotations -- Extra annotations for the controller deployment
+  deployment:
+    annotations: {}
+
 dashboard:
   # dashboard.enabled -- If true, the dashboard component will be installed
   enabled: true
@@ -74,6 +78,8 @@ dashboard:
     type: ClusterIP
     # dashboard.service.port -- The port to run the dashboard service on
     port: 80
+    # dashboard.service.annotations -- Extra annotations for the dashboard service
+    annotations: {}
   # dashboard.logVerbosity -- Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
   # dashboard.excludeContainers -- Container names to exclude from displaying in the Goldilocks dashboard
@@ -86,6 +92,10 @@ dashboard:
     create: true
     # dashboard.serviceAccount.name -- The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create`
     name:
+
+  # dashboard.deployment.annotations -- Extra annotations for the dashboard deployment
+  deployment:
+    annotations: {}
 
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
