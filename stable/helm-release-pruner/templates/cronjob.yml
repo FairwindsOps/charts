@@ -31,19 +31,19 @@ spec:
           - name: {{ .Chart.Name }}
             image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
             imagePullPolicy: {{ .Values.image.pullPolicy }}
-            command: |
-              {{- range .Values.pruneProfiles }}
-                  /usr/local/bin/prune-releases.sh \
-                    --older-than="{{ .olderThan }}" \
-                    --helm-release-filter="{{ .helmReleaseFilter }}" \
-                    --namespace-filter="{{ .namespaceFilter }}" \
-                  {{- if .maxReleasesToKeep }}
-                    --max-releases-to-keep="{{ .maxReleasesToKeep }}" \
-                  {{- end }}
-                  {{- if $.Values.job.dryRun }}
-                    --dry-run
-                  {{- end }}
+            command:
+            {{- range .Values.pruneProfiles }}
+              - /usr/local/bin/prune-releases.sh
+              - --older-than={{ .olderThan }}
+              - --helm-release-filter={{ .helmReleaseFilter }}
+              - --namespace-filter={{ .namespaceFilter }}
+              {{- if .maxReleasesToKeep }}
+              - --max-releases-to-keep={{ .maxReleasesToKeep }}
               {{- end }}
+              {{- if $.Values.job.dryRun }}
+              - --dry-run
+              {{- end }}
+            {{- end }}
             {{- if .Values.job.debug }}
             env:
             - name: DEBUG
