@@ -1,2 +1,7 @@
 job:
   debug: true
+pruneProfiles:
+- olderThan: "3 days ago"
+  helmReleaseFilter: "^fwinsights-"
+  namespaceFilter: "^fwinsights-"
+  maxReleasesToKeep: 40
