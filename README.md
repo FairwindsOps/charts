@@ -12,6 +12,12 @@ The goal of the Fairwinds Community is to exchange ideas, influence the open sou
 
 All charts are linted and tested using [Helm Chart Testing](https://github.com/helm/chart-testing)
 
+## Generating docs
+
+Fairwinds charts are using
+[helm-docs](https://github.com/norwoodj/helm-docs) for automating the
+generation of docs. Before pushing your changes, run `helm-docs --sort-values-order=file` - this will add new values together with their documentation to the README of the chart. Ideally document the values via comments inside the values file itself - those comments will end up in the README as well.
+
 ### Linting
 
 Charts are linted using both the `helm lint` command and against the [schema](scripts/schema.yaml).  This ensures that maintainers, versions, etc. are included.
