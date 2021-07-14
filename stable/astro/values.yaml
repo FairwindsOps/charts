@@ -28,6 +28,12 @@ rbac:
   # -- If true, RBAC resources will be created.
   create: true
 deployment:
+  # -- Map of key value pairs for environment variables to pass into deployment.
+  # Ex.:
+  # env:
+  #   THING: value
+  #   THING2: value2
+  env:
   serviceAccount:
     # -- If true, a service account will be created. If false, you must set `deployment.serviceAccount.name`.
     create: true

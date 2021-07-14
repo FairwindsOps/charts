@@ -9,6 +9,10 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: dashboard
+  {{- with .Values.dashboard.deployment.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.dashboard.replicaCount }}
   selector:
@@ -39,8 +43,10 @@ spec:
             - dashboard
             - --exclude-containers={{ .Values.dashboard.excludeContainers }}
             - -v{{ .Values.dashboard.logVerbosity }}
+        {{- if .Values.dashboard.securityContext }}
           securityContext:
             {{- toYaml .Values.dashboard.securityContext | nindent 12 }}
+        {{- end }}
           ports:
             - name: http
               containerPort: 8080

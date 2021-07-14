@@ -33,8 +33,9 @@ recommender:
     pod-recommendation-min-cpu-millicores: 15
     pod-recommendation-min-memory-mb: 100
   replicaCount: 1
-  # recommender.maxUnavailable -- This is the max unavailable setting for the pod disruption budget
-  maxUnavailable: 1
+  # recommender.podDisruptionBudget -- This is the setting for the pod disruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
   image:
     # recommender.image.repository -- The location of the recommender image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender
@@ -68,8 +69,9 @@ updater:
   # updater.extraArgs -- A key-value map of flags to pass to the updater
   extraArgs: {}
   replicaCount: 1
-  # updater.maxUnavailable -- This is the max unavailable setting for the pod disruption budget
-  maxUnavailable: 1
+  # updater.podDisruptionBudget -- This is the setting for the pod disruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
   image:
     # updater.image.repository -- The location of the updater image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater
@@ -112,9 +114,14 @@ admissionController:
       pullPolicy: Always
       # admissionController.certGen.env -- Additional environment variables to be added to the certgen container. Format is KEY: Value format
     env: {}
+    # admissionController.certGen.resources -- The resources block for the certgen pod
+    resources: {}
   # admissionController.cleanupOnDelete -- If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller
   cleanupOnDelete: true
   replicaCount: 1
+  # admissionController.podDisruptionBudget -- This is the setting for the pod disruption budget
+  podDisruptionBudget: {}
+    # maxUnavailable: 1
   image:
     # admissionController.image.repository -- The location of the vpa admission controller image
     repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-admission-controller
