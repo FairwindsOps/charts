@@ -1,11 +1,11 @@
 ---
-{{- if .Values.updater.maxUnavailable }}
+{{- if and .Values.updater.podDisruptionBudget (gt (int .Values.updater.replicaCount) 1) }}
 apiVersion: policy/v1beta1
 kind: PodDisruptionBudget
 metadata:
   name: "{{ template "vpa.fullname" . }}-updater-pdb"
 spec:
-  maxUnavailable: {{ .Values.updater.maxUnavailable }}
+  {{- toYaml .Values.updater.podDisruptionBudget | nindent 2 }}
   selector:
     matchLabels:
       app.kubernetes.io/component: updater
