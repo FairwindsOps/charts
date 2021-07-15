@@ -17,6 +17,9 @@ spec:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           {{- if or (eq .Values.kubebench.mode "daemonsetMaster") (eq .Values.kubebench.mode "daemonset") }}
+          volumes:
+          - name: output
+            emptyDir: {}
           containers:
           - name: kube-bench-aggregator
             image: "{{ .Values.kubebench.aggregator.image.repository }}:{{ .Values.kubebench.aggregator.image.tag }}"
@@ -25,7 +28,7 @@ spec:
             - name: DAEMONSET_SERVICE
               value: {{ include "insights-agent.fullname" . }}-kube-bench-svc
             resources:
-              {{- toYaml .Values.kubebench.aggregator.resources | nindent 4 }}
+              {{- toYaml .Values.kubebench.aggregator.resources | nindent 14 }}
             volumeMounts:
             - name: output
               mountPath: /output
