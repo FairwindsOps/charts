@@ -219,7 +219,7 @@ kubebench:
   timeout: 600
   image:
     repository: quay.io/fairwinds/fw-kube-bench
-    tag: 0.1
+    tag: 0.2
   aggregator:
     image:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
