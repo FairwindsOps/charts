@@ -15,11 +15,11 @@ uploader:
   sendFailures: true
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
   env:
 
 cronjobs:
@@ -39,10 +39,10 @@ cronjobExecutor:
   resources:
     limits:
       cpu: 100m
-      memory: 64Mi
+      memory: 128Mi
     requests:
-      cpu: 1m
-      memory: 3Mi
+      cpu: 100m
+      memory: 128Mi
 
 installReporter:
   image:
@@ -50,11 +50,11 @@ installReporter:
     tag: "7.73.0"
   resources:
     limits:
-      cpu: 100m
-      memory: 64Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu: 1m
-      memory: 3Mi
+      cpu: 100m
+      memory: 128Mi
 
 polaris:
   enabled: false
@@ -67,11 +67,11 @@ polaris:
     tag: "3.1"
   resources:
     limits:
-      cpu: 100m
+      cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
 
 kubehunter:
   enabled: false
@@ -83,11 +83,11 @@ kubehunter:
     tag: "0.3.1"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 kubesec:
   enabled: false
@@ -98,11 +98,11 @@ kubesec:
     tag: "1.3"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 goldilocks:
   enabled: false
@@ -127,11 +127,11 @@ goldilocks:
     enabled: false
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 opa:
   enabled: false
@@ -144,11 +144,11 @@ opa:
   additionalAccess:
   resources:
     limits:
-      cpu: 100m
+      cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
   installCRDs: true
 
 workloads:
@@ -160,11 +160,11 @@ workloads:
     tag: "2.0"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 nova:
   enabled: false
@@ -179,7 +179,7 @@ nova:
       cpu: 100m
       memory: 512Mi
     requests:
-      cpu: 25m
+      cpu: 100m
       memory: 128Mi
   SkipVolumes: true
   configLocation: "/config/nova.yaml"
@@ -205,11 +205,11 @@ rbacreporter:
     tag: "1.1"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 kubebench:
   enabled: false
@@ -226,18 +226,18 @@ kubebench:
       tag: 0.1
     resources:
       limits:
-        cpu: 50m
-        memory: 64Mi
+        cpu: 250m
+        memory: 512Mi
       requests:
-        cpu: 10m
-        memory: 16Mi
+        cpu: 100m
+        memory: 128Mi
   resources:
     limits:
-      cpu: 500m
-      memory: 128Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu: 1m
-      memory: 16Mi
+      cpu: 100m
+      memory: 128Mi
 
 trivy:
   enabled: false
@@ -256,8 +256,8 @@ trivy:
       cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
 
 pluto:
   enabled: false
@@ -271,8 +271,8 @@ pluto:
       cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
 
 resourcemetrics:
   enabled: false
@@ -288,8 +288,8 @@ resourcemetrics:
       cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
 
 prometheus:
   alertmanager:
