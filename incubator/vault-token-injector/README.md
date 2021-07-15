@@ -1,6 +1,6 @@
 # vault-token-injector
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.2.0](https://img.shields.io/badge/AppVersion-0.2.0-informational?style=flat-square)
 
 A Helm chart for Fairwinds vault-token-injector
 
@@ -20,7 +20,9 @@ This will inject vault tokens and address variables into circle builds on a sche
 | replicaCount | int | `1` | We currently only support a single instance |
 | circleToken | string | `"thisisrequired"` | A token for interacting with CircleCI |
 | vaultAddress | string | `"https://vault.example.com"` | The vault address to get tokens from |
+| vaultTokenFile | string | `""` | A file containing a vault token. Optional. |
 | config | object | `{"circleci":[{"env_variable":"VAULT_TOKEN","name":"FairwindsOps/example","vault_role":"some-vault-role"}],"vaultAddress":"https://vault.example.com"}` | The configuration of the vault-token-injector |
+| logLevel | int | `1` | The klog log level (1-10) |
 | image.repository | string | `"quay.io/fairwinds/vault-token-injector"` | The image repository to pullt he vault-token-injector image from |
 | image.pullPolicy | string | `"Always"` | This is recommended to be set as Always |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
