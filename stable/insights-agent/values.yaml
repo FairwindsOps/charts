@@ -34,8 +34,8 @@ cronjobs:
 
 cronjobExecutor:
   image:
-    repository: quay.io/fairwinds/kubectl
-    tag: "0.19"
+    repository: curlimages/curl
+    tag: "7.77.0"
   resources:
     limits:
       cpu: 100m
