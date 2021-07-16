@@ -61,6 +61,14 @@ spec:
               port: http
           resources:
             {{- toYaml .Values.dashboard.resources | nindent 12 }}
+          {{- if .Values.dashboard.deployment.extraVolumeMounts }}
+          volumeMounts:
+          {{ toYaml .Values.dashboard.deployment.extraVolumeMounts | nindent 12 }}
+          {{- end }}
+{{- if .Values.dashboard.deployment.extraVolumes }}
+      volumes:
+{{ toYaml .Values.dashboard.deployment.extraVolumes | indent 8}}
+{{- end }}
       {{- with .Values.dashboard.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
