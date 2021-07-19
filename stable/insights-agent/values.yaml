@@ -64,7 +64,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "4.0.5"
+    tag: "4.0"
   resources:
     limits:
       cpu: 250m
