@@ -3,17 +3,26 @@ A chart for https://github.com/xing/kubernetes-oom-event-generator
 
 # Values
 
-| Parameter | Description | Default | Required |
-| --------- | ----------- | ------- | -------- |
-| `affinity` | Pod Affinity  | `{}` | no |
-| `env` | Environment Variables for container | `{}` | no |
-| `image.pullPolicy` | Pull Policy  | `Always` | yes |
-| `image.repository` | Image Repository  | `xingse/kubernetes-oom-event-generator` | yes |
-| `image.tag` | Image Tag  | `v1.2.0` | yes |
-| `nodeSelector` |  | `{}` | no |
-| `replicaCount` | Number of replicas | `1` | no |
-| `resources.limits.cpu` |  | `100m` | yes |
-| `resources.limits.memory` |  | `128Mi` | yes |
-| `resources.requests.cpu` |  | `100m` | yes |
-| `resources.requests.memory` |  | `128Mi` | yes |
-| `tolerations` |  | `[]` | no |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| `replicaCount` | int | `1` |  |
+| `image.repository` | string | `"xingse/kubernetes-oom-event-generator"` |  |
+| `image.pullPolicy` | string | `"Always"` |  |
+| `image.tag` | string | `"v1.2.0"` |  |
+| `imagePullSecrets` | list | `[]` |  |
+| `nameOverride` | string | `""` |  |
+| `fullnameOverride` | string | `""` |  |
+| `serviceAccount.create` | bool | `true` |  |
+| `serviceAccount.annotations` | object | `{}` |  |
+| `serviceAccount.name` | string | `""` |  |
+| `podAnnotations` | object | `{}` |  |
+| `podSecurityContext` | object | `{}` |  |
+| `securityContext` | object | `{}` |  |
+| `env` | object | `{}` |  |
+| `resources.limits.cpu` | string | `"100m"` |  |
+| `resources.limits.memory` | string | `"128Mi"` |  |
+| `resources.requests.cpu` | string | `"100m"` |  |
+| `resources.requests.memory` | string | `"128Mi"` |  |
+| `nodeSelector` | object | `{}` |  |
+| `tolerations` | list | `[]` |  |
+| `affinity` | object | `{}` |  |
