@@ -37,6 +37,9 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# Environment variables to pass along to kubernetes-oom-event-generator
+# env:
+#  VERBOSE: 2
 env: {}
 
 resources:
