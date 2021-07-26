@@ -5,7 +5,7 @@ image:
 # -- Installation code provided by Fairwinds.
 installationCode:
 
-# -- Name of secret containing installation_code
+# -- Name of secret containing INSTALLATION_CODE
 installationCodeSecret:
 
 polaris:
