@@ -13,6 +13,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 |-----|------|---------|-------------|
 | image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
 | installationCode | string | `nil` | Installation code provided by Fairwinds. |
+| installationCodeSecret | string | `nil` | Name of secret containing INSTALLATION_CODE |
 | polaris.config | string | `nil` | Configuration for Polaris |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
@@ -26,6 +27,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
 | options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
+| options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
