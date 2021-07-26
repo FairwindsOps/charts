@@ -39,6 +39,8 @@ options:
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: true
+  # -- Name of the secret where session keys and other secrets are stored
+  secretName: fwinsights-secrets
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables: {}
