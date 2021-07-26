@@ -2,7 +2,7 @@
 # Required values
 envFrom:
 - secretRef:
-    name: fwinsights-secrets
+    name: {{ .Values.options.secretName }}
 env:
 - name: FAIRWINDS_HOST
   {{- if .Values.options.host }}
