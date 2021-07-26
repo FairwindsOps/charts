@@ -36,7 +36,7 @@ env:
 {{- with .Values.installationCodeSecret }}
 - name: INSTALLATION_CODE
   secretKeyRef:
-    name: {{ printf "%s-%s" .Release.Name .Values.installationCodeSecret }}
+    name: {{ .Values.installationCodeSecret }}
     key: INSTALLATION_CODE
 {{- end }}
 - name: CACHE_BUST_TOKEN
