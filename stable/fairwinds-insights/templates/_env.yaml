@@ -36,7 +36,7 @@ env:
 {{- with .Values.installationCodeSecret }}
 - name: INSTALLATION_CODE
   secretKeyRef:
-    name: {{ .Values.installationCodeSecret }}
+    name: {{ . | quote }}
     key: INSTALLATION_CODE
 {{- end }}
 - name: CACHE_BUST_TOKEN
