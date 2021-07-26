@@ -33,6 +33,12 @@ env:
 - name: INSTALLATION_CODE
   value: {{ . | quote }}
 {{- end }}
+{{- with .Values.installationCodeSecret }}
+- name: INSTALLATION_CODE
+  secretKeyRef:
+    name: {{ printf "%s-%s" .Release.Name .Values.installationCodeSecret }}
+    key: INSTALLATION_CODE
+{{- end }}
 - name: CACHE_BUST_TOKEN
   value: {{ randAlphaNum 10 }}
 - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
