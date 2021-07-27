@@ -35,9 +35,10 @@ env:
 {{- end }}
 {{- with .Values.installationCodeSecret }}
 - name: INSTALLATION_CODE
-  secretKeyRef:
-    name: {{ . | quote }}
-    key: INSTALLATION_CODE
+  valueFrom:
+    secretKeyRef:
+      name: {{ . | quote }}
+      key: INSTALLATION_CODE
 {{- end }}
 - name: CACHE_BUST_TOKEN
   value: {{ randAlphaNum 10 }}
