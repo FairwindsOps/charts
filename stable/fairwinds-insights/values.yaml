@@ -244,6 +244,8 @@ ingress:
   hostedZones: []
   # -- Annotations to add to the API and Dashboard ingresses.
   annotations: {}
+  # -- Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false.
+  starPaths: true
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default
