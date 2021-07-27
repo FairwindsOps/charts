@@ -28,7 +28,7 @@ spec:
           - backend:
               serviceName: {{ $fullName }}-api
               servicePort: http
-            {{ if .Values.ingress.starPaths }}
+            {{ if $.Values.ingress.starPaths }}
             path: /v0/*
             {{ else }}
             path: /v0
@@ -39,7 +39,7 @@ spec:
           - backend:
               serviceName: {{ $fullName }}-dashboard
               servicePort: http
-            {{ if .Values.ingress.starPaths }}
+            {{ if $.Values.ingress.starPaths }}
             path: /*
             {{ else }}
             path: /
