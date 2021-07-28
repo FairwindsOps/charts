@@ -16,13 +16,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | installationCodeSecret | string | `nil` | Name of secret containing INSTALLATION_CODE |
 | polaris.config | string | `nil` | Configuration for Polaris |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
-| dashboardImage.tag | string | `nil` | Docker tag for the dashboard |
+| dashboardImage.tag | string | `nil` | Overrides tag for the dashboard, defaults to image.tag |
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
-| apiImage.tag | string | `nil` | Docker tag for the API server |
+| apiImage.tag | string | `nil` | Overrides tag for the API server, defaults to image.tag |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
-| migrationImage.tag | string | `nil` | Docker tag for the migration image |
+| migrationImage.tag | string | `nil` | Overrides tag for the migration image, defaults to image.tag |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
-| cronjobImage.tag | string | `nil` | Docker tag for the cronjob image |
+| cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | options.agentChartTargetVersion | string | `"1.14.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
