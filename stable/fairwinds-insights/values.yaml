@@ -15,15 +15,23 @@ polaris:
 dashboardImage:
   # -- Docker image repository for the front end
   repository: quay.io/fairwinds/insights-dashboard
+  # -- Docker tag for the dashboard
+  tag:
 apiImage:
   # -- Docker image repository for the API server
   repository: quay.io/fairwinds/insights-api
+  # -- Docker tag for the API server
+  tag:
 migrationImage:
   # -- Docker image repository for the database migration job
   repository: quay.io/fairwinds/insights-db-migration
+  # -- Docker tag for the migration image
+  tag:
 cronjobImage:
   # -- Docker image repository for maintenance CronJobs.
   repository: quay.io/fairwinds/insights-cronjob
+  # -- Docker tag for the cronjob image
+  tag:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
