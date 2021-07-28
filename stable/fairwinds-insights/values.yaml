@@ -48,6 +48,11 @@ options:
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables: {}
 
+rbac:
+  serviceAccount:
+    # -- Annotations to add to the service account
+    annotations: {}
+
 dashboard:
   pdb:
     # -- Create a pod disruption budget for the front end pods.
