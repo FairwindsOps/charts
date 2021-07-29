@@ -2,7 +2,7 @@
 # Required values
 envFrom:
 - secretRef:
-    name: fwinsights-secrets
+    name: {{ .Values.options.secretName }}
 env:
 - name: FAIRWINDS_HOST
   {{- if .Values.options.host }}
@@ -32,6 +32,13 @@ env:
 {{- with .Values.installationCode }}
 - name: INSTALLATION_CODE
   value: {{ . | quote }}
+{{- end }}
+{{- with .Values.installationCodeSecret }}
+- name: INSTALLATION_CODE
+  valueFrom:
+    secretKeyRef:
+      name: {{ . | quote }}
+      key: INSTALLATION_CODE
 {{- end }}
 - name: CACHE_BUST_TOKEN
   value: {{ randAlphaNum 10 }}

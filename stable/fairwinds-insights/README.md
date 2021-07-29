@@ -13,12 +13,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 |-----|------|---------|-------------|
 | image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
 | installationCode | string | `nil` | Installation code provided by Fairwinds. |
+| installationCodeSecret | string | `nil` | Name of secret containing INSTALLATION_CODE |
 | polaris.config | string | `nil` | Configuration for Polaris |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
-| options.agentChartTargetVersion | string | `"1.12.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"1.14.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -26,7 +27,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
 | options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
+| options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
+| rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
@@ -69,6 +72,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | object | `{}` | Annotations to add to the API and Dashboard ingresses. |
+| ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |

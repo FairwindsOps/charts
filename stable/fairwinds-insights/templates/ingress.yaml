@@ -28,13 +28,21 @@ spec:
           - backend:
               serviceName: {{ $fullName }}-api
               servicePort: http
+            {{ if $.Values.ingress.starPaths }}
             path: /v0/*
+            {{ else }}
+            path: /v0
+            {{ end }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
           - backend:
               serviceName: {{ $fullName }}-dashboard
               servicePort: http
+            {{ if $.Values.ingress.starPaths }}
             path: /*
+            {{ else }}
+            path: /
+            {{ end }}
     {{- end }}
 {{- end }}
