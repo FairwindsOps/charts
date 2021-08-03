@@ -15,15 +15,23 @@ polaris:
 dashboardImage:
   # -- Docker image repository for the front end
   repository: quay.io/fairwinds/insights-dashboard
+  # -- Overrides tag for the dashboard, defaults to image.tag
+  tag:
 apiImage:
   # -- Docker image repository for the API server
   repository: quay.io/fairwinds/insights-api
+  # -- Overrides tag for the API server, defaults to image.tag
+  tag:
 migrationImage:
   # -- Docker image repository for the database migration job
   repository: quay.io/fairwinds/insights-db-migration
+  # -- Overrides tag for the migration image, defaults to image.tag
+  tag:
 cronjobImage:
   # -- Docker image repository for maintenance CronJobs.
   repository: quay.io/fairwinds/insights-cronjob
+  # -- Overrides tag for the cronjob image, defaults to image.tag
+  tag:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
@@ -251,6 +259,8 @@ ingress:
   annotations: {}
   # -- Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false.
   starPaths: true
+  # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
+  separate: false
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default
