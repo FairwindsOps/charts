@@ -38,12 +38,14 @@ job:
       cpu: 25m
       memory: 32M
 
-# pruneProfiles -- Filters to use to find purge candidates. See example usage above for details
+# pruneProfiles -- Filters to use to find purge candidates. See example usage below for details
 pruneProfiles: []
 #   - olderThan: "8 hours ago"
+#     maxReleasesToKeep: 10
 #     helmReleaseFilter: "^feature-.+-web$"
 #     namespaceFilter: "^feature-.+"
-#     maxReleasesToKeep: 10
+#     helmReleaseNegateFilter: "-permanent$"
+#     namespaceNegateFilter: "-permanent$"
 
 rbac_manager:
   # rbac_manager.enabled -- If true, creates an RbacDefinition to manage access
