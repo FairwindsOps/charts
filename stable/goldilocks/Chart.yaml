@@ -15,11 +15,11 @@ keywords:
   - resources
   - kubernetes
 dependencies:
-- name: vpa
-  version: 0.4.3
-  repository: https://charts.fairwinds.com/stable
-  condition: vpa.enabled
-- name: metrics-server
-  version: 5.3.3
-  repository: https://charts.bitnami.com/bitnami
-  condition: metrics-server.enabled
+  - name: vpa
+    version: 0.4.3
+    repository: https://charts.fairwinds.com/stable
+    condition: vpa.enabled
+  - name: metrics-server
+    version: 5.3.3
+    repository: https://charts.bitnami.com/bitnami
+    condition: metrics-server.enabled

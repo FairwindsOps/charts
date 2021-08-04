@@ -1,0 +1,23 @@
+# For testing, make sure to install the vpa and metrics-server as sub-charts
+vpa:
+  enabled: true
+
+metrics-server:
+  enabled: true
+  extraArgs:
+    kubelet-insecure-tls: 1
+    kubelet-preferred-address-types: InternalIP
+
+controller:
+  flags:
+    on-by-default: true
+    exclude-namespaces: kube-system
+
+dashboard:
+  ingress:
+    enabled: true
+    hosts:
+      - host: goldilocks.example.local
+        paths:
+          - path: /
+            type: ImplementationSpecific
