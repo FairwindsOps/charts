@@ -17,6 +17,10 @@ controller:
       test: value
 
 dashboard:
-  deployment:
-    additionalLabels:
-      test: value
+  ingress:
+    enabled: true
+    hosts:
+      - host: goldilocks.example.local
+        paths:
+          - path: /
+            type: ImplementationSpecific
