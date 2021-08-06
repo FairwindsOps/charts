@@ -209,6 +209,19 @@ dbMigration:
     # -- The user ID to run the database migration job under.
     runAsUser: 10324
 
+samlCronjob:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  schedules:
+    - name: hourly
+      interval: 60m
+      cron: "0 * * * *"
+
 alertsCronjob:
   # -- Resources for the Slack/Datadog integrations
   resources:
