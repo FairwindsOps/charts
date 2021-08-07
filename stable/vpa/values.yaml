@@ -38,7 +38,7 @@ recommender:
     # maxUnavailable: 1
   image:
     # recommender.image.repository -- The location of the recommender image
-    repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-recommender
+    repository: k8s.gcr.io/autoscaling/vpa-recommender
     # recommender.image.pullPolicy -- The pull policy for the recommender image. Recommend not changing this
     pullPolicy: Always
     # recommender.image.tag -- Overrides the image tag whose default is the chart appVersion
@@ -74,7 +74,7 @@ updater:
     # maxUnavailable: 1
   image:
     # updater.image.repository -- The location of the updater image
-    repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-updater
+    repository: k8s.gcr.io/autoscaling/vpa-updater
     # updater.image.pullPolicy -- The pull policy for the updater image. Recommend not changing this
     pullPolicy: Always
     # updater.image.tag -- Overrides the image tag whose default is the chart appVersion
@@ -124,7 +124,7 @@ admissionController:
     # maxUnavailable: 1
   image:
     # admissionController.image.repository -- The location of the vpa admission controller image
-    repository: us.gcr.io/k8s-artifacts-prod/autoscaling/vpa-admission-controller
+    repository: k8s.gcr.io/autoscaling/vpa-admission-controller
     # admissionController.image.pullPolicy -- The pull policy for the admission controller image. Recommend not changing this
     pullPolicy: Always
     # admissionController.image.tag -- Overrides the image tag whose default is the chart appVersion
