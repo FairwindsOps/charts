@@ -1,0 +1,45 @@
+{{- if .Values.awscosts.enabled -}}
+{{- $_ := set . "Label" "awscosts" }}
+{{- $_ := set . "Config" .Values.awscosts }}
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  {{- include "metadata" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            command: ["/bin/sh", "-c"]
+            args: ["/queryResults=$(aws athena start-query-execution \
+                      --query-string "SELECT line_item_product_code, sum(line_item_blended_cost) AS cost \
+                      FROM "athena_cur_database"."fairwinds_insights_cur_report" \
+                      WHERE resource_tags_user_kubernetes_cluster='{{ .Release.Namespace }}' AND year='2021' AND month='8' \
+                      GROUP BY  1 ORDER BY  1" \
+                      --work-group "cur_athena_workgroup" \
+                      --query-execution-context Database=athena_cur_database,Catalog=AwsDataCatalog); \
+                      executionId=$(echo $queryResults | jq .QueryExecutionId | sed 's/"//g');  \
+                      echo $executionId; \
+                      for i in 1 2 3 4 5 6 7 8 9 10; do \
+                         echo "Athena query is running......" \
+                         sleep 1s; \
+                         status=$(aws athena get-query-execution --query-execution-id $executionId --query 'QueryExecution.Status.State' --output text); \
+                         echo "Athena query status=$status"; \
+                         if [ $status != "RUNNING" ]; then \
+                           echo "Athena query Finished"; \
+                           if [ $status != "SUCCEEDED" ]; then \
+                               echo "Athena failed to execute query with status=$status"; \
+                               exit 3; \
+                           fi; \
+                           break; \
+                         fi; \
+                      done; \
+                      aws athena get-query-results --query-execution-id $executionId > /output/aws-costs-tmp.json; mv /output/aws-costs-tmp.json /output/aws-costs.json"]
+              {{ include "security-context" . | indent 12 | trim }}
+            {{ include "uploaderContainer" . | indent 10 | trim }}
+  {{- end -}}
