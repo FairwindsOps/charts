@@ -46,3 +46,8 @@ resourcemetrics:
 
 admission:
   enabled: true
+
+awscosts:
+  enabled: true
+  clusterName: awscosts-cluster-test
+  secretName: awscosts-secret
