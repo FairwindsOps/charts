@@ -15,6 +15,17 @@ spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
+            env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.awscosts.secretName }}
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.awscosts.secretName }}
+                  key: AWS_ACCESS_KEY_ID            
             command: ["/bin/sh", "-c"]
             args: ["month_str = $(date +%m); \
                     month = $(expr $month_str + 0); \
