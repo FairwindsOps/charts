@@ -30,11 +30,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.awscosts.secretName }}
                   key: AWS_ACCESS_KEY_ID
-            - name: AWS_ACCESS_KEY_PASSWORD
+            - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.awscosts.secretName }}
-                  key: AWS_ACCESS_KEY_PASSWORD            
+                  key: AWS_SECRET_ACCESS_KEY            
             command: ["sh"]
             args:
             - -c
