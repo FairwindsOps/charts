@@ -60,6 +60,6 @@ spec:
                       --query-execution-id $executionId \
                     > /output/aws-costs-tmp.json; \
                     mv /output/aws-costs-tmp.json /output/aws-costs.json"]
-          {{ include "security-context" . | indent 12 | trim }}
+            {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}
