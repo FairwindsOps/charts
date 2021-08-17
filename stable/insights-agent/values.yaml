@@ -324,10 +324,18 @@ insights-admission:
 
 awscosts:
   enabled: false
-  installPrometheus: false
   schedule: "0/10 * * * *"
   timeout: 300
-
+  image:
+    repository: hub.docker.com/r/amazon/aws-cli
+    tag: "2.2.29"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 # test -- Used for chart CI only - deploys a test deployment
 test:
   enabled: false
