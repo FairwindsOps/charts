@@ -327,7 +327,7 @@ awscosts:
   schedule: "0/10 * * * *"
   timeout: 300
   image:
-    repository: hub.docker.com/r/amazon/aws-cli
+    repository: amazon/aws-cli
     tag: "2.2.29"
   resources:
     limits:
