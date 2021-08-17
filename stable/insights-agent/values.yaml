@@ -322,6 +322,12 @@ insights-admission:
     rbac:
       grantRole: "view"
 
+awscosts:
+  enabled: false
+  installPrometheus: false
+  schedule: "0/10 * * * *"
+  timeout: 300
+
 # test -- Used for chart CI only - deploys a test deployment
 test:
   enabled: false
