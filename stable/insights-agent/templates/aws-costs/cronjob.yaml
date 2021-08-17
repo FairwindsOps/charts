@@ -16,10 +16,11 @@ spec:
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             command: ["/bin/sh", "-c"]
-            args: ["/queryResults=$(aws athena start-query-execution \
+            args: ["/month_str=$(date +%m); month=$(expr $month_str + 0); \
+                     queryResults=$(aws athena start-query-execution \
                       --query-string "SELECT line_item_product_code, sum(line_item_blended_cost) AS cost \
                       FROM "athena_cur_database"."fairwinds_insights_cur_report" \
-                      WHERE resource_tags_user_kubernetes_cluster='{{ .Release.Namespace }}' AND year='2021' AND month='8' \
+                      WHERE resource_tags_user_kubernetes_cluster='{{ .Values.cluster_name }}' AND year='$(date +'%Y')' AND month='$(month)' \
                       GROUP BY  1 ORDER BY  1" \
                       --work-group "cur_athena_workgroup" \
                       --query-execution-context Database=athena_cur_database,Catalog=AwsDataCatalog); \
@@ -40,6 +41,6 @@ spec:
                          fi; \
                       done; \
                       aws athena get-query-results --query-execution-id $executionId > /output/aws-costs-tmp.json; mv /output/aws-costs-tmp.json /output/aws-costs.json"]
-              {{ include "security-context" . | indent 12 | trim }}
-            {{ include "uploaderContainer" . | indent 10 | trim }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}
