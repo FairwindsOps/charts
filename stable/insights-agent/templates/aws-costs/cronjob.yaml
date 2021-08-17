@@ -27,23 +27,23 @@ spec:
                   name: {{ .Values.awscosts.secretName }}
                   key: AWS_ACCESS_KEY_ID            
             command: ["/bin/sh", "-c"]
-            args: ["month_str = $(date +%m); \
-                    month = $(expr $month_str + 0); \
-                    queryResults = $(aws athena start-query-execution \
+            args: ["month_str=$(date +%m); \
+                    month=$(expr $month_str + 0); \
+                    queryResults=$(aws athena start-query-execution \
                       --query-string \
                         "SELECT line_item_product_code, sum(line_item_blended_cost) AS cost \
                         FROM "athena_cur_database"."fairwinds_insights_cur_report" \
                         WHERE \
                           resource_tags_user_kubernetes_cluster='{{ .Values.awscosts.clusterName }}' \
                           AND year='$(date +'%Y')' \
-                          AND month='$(month)' \
+                          AND month='$month' \
                         GROUP BY  1  \
                         ORDER BY  1" \
                       --work-group "cur_athena_workgroup" \
                       --query-execution-context Database=athena_cur_database,Catalog=AwsDataCatalog); \
-                    executionId = $(echo $queryResults | jq .QueryExecutionId | sed 's/"//g');  \
+                    executionId=$(echo $queryResults | jq .QueryExecutionId | sed 's/"//g');  \
                     for i in 1 2 3 4 5 6 7 8 9 10; do \
-                      echo "Athena query is running......" \
+                      echo "Athena query is running......"; \
                       sleep 1s; \
                       status=$(aws athena get-query-execution --query-execution-id $executionId --query 'QueryExecution.Status.State' --output text); \
                       echo "Athena query status=$status"; \
