@@ -51,3 +51,5 @@ awscosts:
   enabled: true
   clusterName: awscosts-cluster-test
   secretName: awscosts-secret
+  awsAccessKeyId: access-key
+  awsSecretAccessKey: secret-access-key

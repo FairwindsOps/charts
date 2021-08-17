@@ -1,6 +1,15 @@
 {{- if .Values.awscosts.enabled -}}
 {{- $_ := set . "Label" "awscosts" }}
 {{- $_ := set . "Config" .Values.awscosts }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ .Values.awscosts.secretName }}
+type: Opaque
+data:
+  AWS_ACCESS_KEY_ID: {{ .Values.awscosts.awsAccessKeyId}}
+  AWS_SECRET_ACCESS_KEY: {{ .Values.awscosts.awsSecretAccessKey }}
+---
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -21,11 +30,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.awscosts.secretName }}
                   key: AWS_ACCESS_KEY_ID
-            - name: AWS_ACCESS_KEY_ID
+            - name: AWS_ACCESS_KEY_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.awscosts.secretName }}
-                  key: AWS_ACCESS_KEY_ID            
+                  key: AWS_ACCESS_KEY_PASSWORD            
             command: ["sh"]
             args:
             - -c
