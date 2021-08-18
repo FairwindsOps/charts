@@ -47,7 +47,7 @@ spec:
             curl -Lo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/linux/amd64/kubectl" && chmod +x kubectl
             # Can't use -o name because it appends cronjob.batch to the beginning
             echo "Cleaning up old jobs. . ."
-            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo '~job~ Does Not Exist'"
+            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo 'Does Not Exist'"
             echo "Creating jobs. . ."
             kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
 
