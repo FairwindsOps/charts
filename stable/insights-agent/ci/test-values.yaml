@@ -53,3 +53,4 @@ awscosts:
   secretName: awscosts-secret
   awsAccessKeyId: YWNjZXNzLWtleQ==
   awsSecretAccessKey: c2VjcmV0LWFjY2Vzcy1rZXk=
+  region: us-east-1

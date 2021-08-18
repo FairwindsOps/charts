@@ -1,6 +1,8 @@
 {{- if .Values.awscosts.enabled -}}
 {{- $_ := set . "Label" "awscosts" }}
 {{- $_ := set . "Config" .Values.awscosts }}
+
+{{ if .Values.awsCosts.awsAccessKeyId }}
 apiVersion: v1
 kind: Secret
 metadata:
@@ -9,7 +11,9 @@ type: Opaque
 data:
   AWS_ACCESS_KEY_ID: {{ .Values.awscosts.awsAccessKeyId}}
   AWS_SECRET_ACCESS_KEY: {{ .Values.awscosts.awsSecretAccessKey }}
+  AWS_DEFAULT_REGION : {{ .Values.awscosts.region }}
 ---
+{{- end -}}
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
@@ -35,6 +39,11 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.awscosts.secretName }}
                   key: AWS_SECRET_ACCESS_KEY            
+            - name: AWS_DEFAULT_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.awscosts.secretName }}
+                  key: AWS_DEFAULT_REGION            
             command: ["sh"]
             args:
             - -c
