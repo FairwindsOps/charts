@@ -348,8 +348,8 @@ migrateHealthScoreJob:
 
 cronjobExecutor:
   image:
-    repository: curlimages/curl
-    tag: "7.73.0"
+    repository: quay.io/fairwinds/kubectl
+    tag: "0.19"
   resources:
     limits:
       cpu: 100m
