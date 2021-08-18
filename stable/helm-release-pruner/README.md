@@ -41,7 +41,7 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.repository | string | `"quay.io/fairwinds/helm-release-pruner"` | Repo for image that the job runs on |
-| image.tag | string | `"v3.1.0"` | The image tag to use |
+| image.tag | string | `"v3.2.0"` | The image tag to use |
 | image.pullPolicy | string | `"Always"` | The image pull policy. We do not recommend changing this |
 | job.backoffLimit | int | `3` | The backoff limit for the job |
 | job.restartPolicy | string | `"Never"` |  |
@@ -56,7 +56,7 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | job.resources.limits.memory | string | `"32Mi"` |  |
 | job.resources.requests.cpu | string | `"25m"` |  |
 | job.resources.requests.memory | string | `"32M"` |  |
-| pruneProfiles | list | `[]` | Filters to use to find purge candidates. See example usage above for details |
+| pruneProfiles | list | `[]` | Filters to use to find purge candidates. See example usage in values.yaml for details |
 | rbac_manager.enabled | bool | `false` | If true, creates an RbacDefinition to manage access |
 | rbac_manager.namespaceLabel | string | `""` | Label to match namespaces to grant access to |
 | fullnameOverride | string | `""` | A template override for fullname |
