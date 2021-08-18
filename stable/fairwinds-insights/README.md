@@ -108,7 +108,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
 | migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
-| cronjobExecutor.image.repository | string | `"quay.io/fairwinds/kubectl"` |
+| cronjobExecutor.image.repository | string | `"quay.io/fairwinds/kubectl"` |  |
 | cronjobExecutor.image.tag | string | `"0.19"` |  |
 | cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
