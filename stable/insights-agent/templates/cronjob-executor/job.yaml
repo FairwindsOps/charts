@@ -57,7 +57,7 @@ spec:
         - name: tmp
           mountPath: /tmp
         securityContext:
-          runAsUser: curl_user
+          runAsUser: 1000
           readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
           privileged: false
