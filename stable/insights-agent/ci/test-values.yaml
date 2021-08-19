@@ -46,3 +46,11 @@ resourcemetrics:
 
 admission:
   enabled: true
+
+awscosts:
+  enabled: true
+  clusterName: awscosts-cluster-test
+  secretName: awscosts-secret
+  awsAccessKeyId: YWNjZXNzLWtleQ==
+  awsSecretAccessKey: c2VjcmV0LWFjY2Vzcy1rZXk=
+  region: us-east-1
