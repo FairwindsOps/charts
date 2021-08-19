@@ -2,7 +2,7 @@
 {{- $_ := set . "Label" "awscosts" }}
 {{- $_ := set . "Config" .Values.awscosts }}
 
-{{ if .Values.awsCosts.awsAccessKeyId }}
+{{ if .Values.awscosts.awsAccessKeyId }}
 apiVersion: v1
 kind: Secret
 metadata:
