@@ -327,8 +327,8 @@ awscosts:
   schedule: "0/10 * * * *"
   timeout: 300
   image:
-    repository: amazon/aws-cli
-    tag: "2.2.29"
+    repository: quay.io/fairwinds/aws-costs
+    tag: "james-aws-costs"
   resources:
     limits:
       cpu: 250m
