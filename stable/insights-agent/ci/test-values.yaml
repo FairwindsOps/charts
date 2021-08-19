@@ -51,6 +51,6 @@ awscosts:
   enabled: true
   clusterName: awscosts-cluster-test
   secretName: awscosts-secret
-  awsAccessKeyId: YWNjZXNzLWtleQ==
-  awsSecretAccessKey: c2VjcmV0LWFjY2Vzcy1rZXk=
+  awsAccessKeyId: YXdzX2Nvc3RzX2tleQo=
+  awsSecretAccessKey: YXdzX2Nvc3RzX3NlY3JldF9rZXkK
   region: us-east-1
