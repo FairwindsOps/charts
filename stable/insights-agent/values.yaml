@@ -332,7 +332,7 @@ test:
 
 awscosts:
   enabled: false
-  schedule: "0/10 * * * *"
+  schedule: "rand * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
