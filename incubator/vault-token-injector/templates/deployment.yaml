@@ -37,9 +37,13 @@ spec:
           args:
             - -c
             - /config/config.yaml
+            - -v{{ .Values.logLevel }}
           volumeMounts:
           - name: config
             mountPath: /config
+          envFrom:
+          - secretRef:
+              name: {{ include "vault-token-injector.fullname" . }}
           env:
           - name: "CIRCLE_CI_TOKEN"
             value: {{ .Values.circleToken | quote }}
@@ -47,6 +51,10 @@ spec:
             value: {{ .Values.tfCloudToken | quote }}
           - name: "VAULT_ADDR"
             value: {{ .Values.vaultAddress | quote }}
+          {{- if .Values.vaultTokenFile }}
+          - name: "VAULT_TOKEN_FILE"
+            value: {{ .Values.vaultTokenFile | quote }}
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

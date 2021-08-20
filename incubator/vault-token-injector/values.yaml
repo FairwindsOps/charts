@@ -14,6 +14,9 @@ tfCloudToken: replaceme
 # -- The vault address to get tokens from
 vaultAddress: "https://vault.example.com"
 
+# -- A file containing a vault token. Optional.
+vaultTokenFile: ""
+
 # -- The configuration of the vault-token-injector
 config:
   vaultAddress: "https://vault.example.com"
@@ -22,6 +25,8 @@ config:
     vault_role: some-vault-role
     env_variable: VAULT_TOKEN
 
+# -- The klog log level (1-10)
+logLevel: 1
 
 image:
   # -- The image repository to pullt he vault-token-injector image from
