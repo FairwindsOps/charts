@@ -5,6 +5,9 @@ image:
 # -- Installation code provided by Fairwinds.
 installationCode:
 
+# -- Name of secret containing INSTALLATION_CODE
+installationCodeSecret:
+
 polaris:
   # -- Configuration for Polaris
   config:
@@ -12,19 +15,27 @@ polaris:
 dashboardImage:
   # -- Docker image repository for the front end
   repository: quay.io/fairwinds/insights-dashboard
+  # -- Overrides tag for the dashboard, defaults to image.tag
+  tag:
 apiImage:
   # -- Docker image repository for the API server
   repository: quay.io/fairwinds/insights-api
+  # -- Overrides tag for the API server, defaults to image.tag
+  tag:
 migrationImage:
   # -- Docker image repository for the database migration job
   repository: quay.io/fairwinds/insights-db-migration
+  # -- Overrides tag for the migration image, defaults to image.tag
+  tag:
 cronjobImage:
   # -- Docker image repository for maintenance CronJobs.
   repository: quay.io/fairwinds/insights-cronjob
+  # -- Overrides tag for the cronjob image, defaults to image.tag
+  tag:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 1.12.0
+  agentChartTargetVersion: 1.14.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -39,9 +50,16 @@ options:
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: true
+  # -- Name of the secret where session keys and other secrets are stored
+  secretName: fwinsights-secrets
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables: {}
+
+rbac:
+  serviceAccount:
+    # -- Annotations to add to the service account
+    annotations: {}
 
 dashboard:
   pdb:
@@ -239,6 +257,10 @@ ingress:
   hostedZones: []
   # -- Annotations to add to the API and Dashboard ingresses.
   annotations: {}
+  # -- Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false.
+  starPaths: true
+  # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
+  separate: false
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default

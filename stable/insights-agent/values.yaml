@@ -15,11 +15,11 @@ uploader:
   sendFailures: true
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
   env:
 
 cronjobs:
@@ -34,15 +34,15 @@ cronjobs:
 
 cronjobExecutor:
   image:
-    repository: quay.io/fairwinds/kubectl
-    tag: "0.19"
+    repository: curlimages/curl
+    tag: "7.73.0"
   resources:
     limits:
       cpu: 100m
-      memory: 64Mi
+      memory: 128Mi
     requests:
-      cpu: 1m
-      memory: 3Mi
+      cpu: 100m
+      memory: 128Mi
 
 installReporter:
   image:
@@ -50,11 +50,11 @@ installReporter:
     tag: "7.73.0"
   resources:
     limits:
-      cpu: 100m
-      memory: 64Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu: 1m
-      memory: 3Mi
+      cpu: 100m
+      memory: 128Mi
 
 polaris:
   enabled: false
@@ -64,14 +64,14 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "3.1"
+    tag: "4.0"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 kubehunter:
   enabled: false
@@ -83,11 +83,11 @@ kubehunter:
     tag: "0.3.1"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 kubesec:
   enabled: false
@@ -98,11 +98,11 @@ kubesec:
     tag: "1.3"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 goldilocks:
   enabled: false
@@ -127,11 +127,11 @@ goldilocks:
     enabled: false
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 opa:
   enabled: false
@@ -140,15 +140,15 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "0.2"
+    tag: "0.3"
   additionalAccess:
   resources:
     limits:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
   installCRDs: true
 
 workloads:
@@ -157,14 +157,14 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.0"
+    tag: "2.1"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 nova:
   enabled: false
@@ -179,7 +179,7 @@ nova:
       cpu: 100m
       memory: 512Mi
     requests:
-      cpu: 25m
+      cpu: 100m
       memory: 128Mi
   SkipVolumes: true
   configLocation: "/config/nova.yaml"
@@ -202,14 +202,14 @@ rbacreporter:
   timeout: 300
   image:
     repository: quay.io/fairwinds/rbac-reporter
-    tag: "1.1"
+    tag: "1.2"
   resources:
     limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
       cpu: 100m
       memory: 128Mi
-    requests:
-      cpu: 10m
-      memory: 64Mi
 
 kubebench:
   enabled: false
@@ -219,25 +219,25 @@ kubebench:
   timeout: 600
   image:
     repository: quay.io/fairwinds/fw-kube-bench
-    tag: 0.1
+    tag: 0.3
   aggregator:
     image:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
-      tag: 0.1
+      tag: 0.2
     resources:
       limits:
-        cpu: 50m
-        memory: 64Mi
+        cpu: 250m
+        memory: 512Mi
       requests:
-        cpu: 10m
-        memory: 16Mi
+        cpu: 100m
+        memory: 128Mi
   resources:
     limits:
-      cpu: 500m
-      memory: 128Mi
+      cpu: 250m
+      memory: 512Mi
     requests:
-      cpu: 1m
-      memory: 16Mi
+      cpu: 100m
+      memory: 128Mi
 
 trivy:
   enabled: false
@@ -250,14 +250,14 @@ trivy:
   timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.12"
+    tag: "0.13"
   resources:
     limits:
       cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
 
 pluto:
   enabled: false
@@ -271,8 +271,8 @@ pluto:
       cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
 
 resourcemetrics:
   enabled: false
@@ -282,14 +282,14 @@ resourcemetrics:
   address: "http://prometheus-server"
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "0.3"
+    tag: "0.4"
   resources:
     limits:
       cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 10m
-      memory: 64Mi
+      cpu: 100m
+      memory: 128Mi
 
 prometheus:
   alertmanager:
