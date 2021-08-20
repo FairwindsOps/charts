@@ -336,7 +336,7 @@ awscosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "james-aws-costs"
+    tag: "0.1"
   resources:
     limits:
       cpu: 250m
