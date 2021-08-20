@@ -43,6 +43,8 @@ spec:
           env:
           - name: "CIRCLE_CI_TOKEN"
             value: {{ .Values.circleToken | quote }}
+          - name: "TFCLOUD_TOKEN"
+          - value: {{ .Values.tfCloudToken | quote }}
           - name: "VAULT_ADDR"
             value: {{ .Values.vaultAddress | quote }}
       {{- with .Values.nodeSelector }}

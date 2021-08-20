@@ -6,7 +6,10 @@
 replicaCount: 1
 
 # -- A token for interacting with CircleCI
-circleToken: thisisrequired
+circleToken: replaceme
+
+# -- A token for interacting with TFCloud
+tfCloudToken: replaceme
 
 # -- The vault address to get tokens from
 vaultAddress: "https://vault.example.com"
