@@ -48,7 +48,7 @@ admission:
   enabled: true
 
 awscosts:
-  enabled: true
+  enabled: false
   secretName: awscosts-secret
   awsAccessKeyId: YXdzX2Nvc3RzX2tleQo=
   awsSecretAccessKey: YXdzX2Nvc3RzX3NlY3JldF9rZXkK
