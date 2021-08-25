@@ -13,6 +13,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
+          serviceAccountName: {{ include "insights-agent.fullname" . }}-uploader
           volumes:
           - name: output
             emptyDir: {}
