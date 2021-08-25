@@ -12,11 +12,7 @@ spec:
       {{ include "job-spec" . | nindent 6 | trim }}
       template:
         spec:
-          restartPolicy: Never
-          serviceAccountName: {{ include "insights-agent.fullname" . }}-uploader
-          volumes:
-          - name: output
-            emptyDir: {}
+          {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             env:
