@@ -1,0 +1,5 @@
+dashboard:
+  ingress:
+    enabled: true
+webhook:
+  enabled: true
