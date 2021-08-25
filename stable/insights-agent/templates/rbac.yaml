@@ -99,6 +99,3 @@ subjects:
   namespace: {{ .Release.Namespace }}
 {{- end }}
 {{- end }}
-- kind: ServiceAccount
-  name: {{ include "insights-agent.fullname" . }}-uploader
-  namespace: {{ .Release.Namespace }}
