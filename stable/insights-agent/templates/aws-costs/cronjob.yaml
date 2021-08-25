@@ -28,13 +28,18 @@ spec:
                   key: AWS_SECRET_ACCESS_KEY            
             - name: AWS_DEFAULT_REGION
               value: {{ .Values.awscosts.region }}
-            command: ["/bin/sh", "-c"]
-            args: ["./aws-costs.sh \ 
-              --database {{ .Values.awscosts.database }} \
-              --table {{ .Values.awscosts.table }} \
-              --catalog {{ .Values.awscosts.catalog }} \
-              --tagkey {{ .Values.awscosts.tagkey }} \
-              --tagvalue {{ .Values.awscosts.tagvalue }}"]
+            command: ["./aws-costs.sh"]
+            args:
+              - --database 
+              - {{ .Values.awscosts.database }}
+              - --table 
+              - {{ .Values.awscosts.table }}
+              - --catalog 
+              - {{ .Values.awscosts.catalog }}
+              - --tagkey 
+              - {{ .Values.awscosts.tagkey }}
+              - --tagvalue 
+              - {{ .Values.awscosts.tagvalue }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}
