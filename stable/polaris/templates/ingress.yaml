@@ -22,9 +22,19 @@ spec:
   - host: {{ . }}
     http:
       paths:
+      {{- if not ($.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
       - backend:
           serviceName: {{ $serviceName }}
           servicePort: 80
+      {{- else }}
+      - backend:
+          service:
+            name: {{ $serviceName }}
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+      {{- end }}
   {{- end -}}
 {{- if .Values.dashboard.ingress.tls }}
   tls:
