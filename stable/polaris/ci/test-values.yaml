@@ -1,5 +1,7 @@
 dashboard:
   ingress:
     enabled: true
+    hosts:
+    - foo.com
 webhook:
   enabled: true
