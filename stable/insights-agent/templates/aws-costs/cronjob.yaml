@@ -12,7 +12,10 @@ spec:
       {{ include "job-spec" . | nindent 6 | trim }}
       template:
         spec:
-          {{ include "job-template-spec" . | indent 10 | trim }}
+          restartPolicy: Never
+          volumes:
+          - name: output
+            emptyDir: {}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             env:
