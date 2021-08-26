@@ -31,26 +31,3 @@ Create chart name and version as used by the chart label.
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
 
-{{- define "metadata" }}
-  name: {{ .Label }}
-  labels:
-    app: insights-agent
-  {{- if .Values.cronjobs.disableServiceMesh }}
-  annotations:
-    linkerd.io/inject: disabled
-    sidecar.istio.io/inject: "false"
-  {{- end }}
-{{- end }}
-{{/*
-Metadata for the cronjobs but always show annotations
-*/}}
-{{- define "annotation-metadata" }}
-  name: {{ .Label }}
-  labels:
-    app: insights-agent
-  annotations:
-  {{- if .Values.cronjobs.disableServiceMesh }}
-    linkerd.io/inject: disabled
-    sidecar.istio.io/inject: "false"
-  {{- end }}
-{{- end }}
