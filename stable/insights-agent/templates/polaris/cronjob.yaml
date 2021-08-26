@@ -1,10 +1,7 @@
 {{- if .Values.polaris.enabled -}}
 {{- $_ := set . "Label" "polaris" }}
 {{- $_ := set . "Config" .Values.polaris }}
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  {{- include "metadata" . }}
+{{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:

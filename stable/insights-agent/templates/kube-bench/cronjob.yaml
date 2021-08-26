@@ -2,10 +2,7 @@
 {{- $_ := set . "Label" "kube-bench" -}}
 {{- $_ := set . "Config" .Values.kubebench -}}
 {{- $_ := set .Config "SkipVolumes" true -}}
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  {{- include "annotation-metadata" . }}
+{{- include "cronjob" . }}
     polaris.fairwinds.com/hostPIDSet-exempt: "true"
     polaris.fairwinds.com/runAsRootAllowed-exempt: "true"
 spec:

@@ -1,10 +1,7 @@
 {{- if .Values.kubesec.enabled -}}
 {{- $_ := set . "Label" "kubesec" }}
 {{- $_ := set . "Config" .Values.kubesec }}
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  {{- include "metadata" . }}
+{{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:

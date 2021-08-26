@@ -1,10 +1,7 @@
 {{- if .Values.resourcemetrics.enabled -}}
 {{- $_ := set . "Label" "resource-metrics" }}
 {{- $_ := set . "Config" .Values.resourcemetrics }}
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  {{- include "metadata" . }}
+{{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:
