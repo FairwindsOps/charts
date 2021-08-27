@@ -21,7 +21,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-{{- if and (.Values.dashboard.ingress.ingressClassName != "") (semverCompare ">= v1.18.0" .Capabilities.KubeVersion.Version) }}
+{{- if and (.Values.dashboard.ingress.ingressClassName) (semverCompare ">= v1.18.0" .Capabilities.KubeVersion.Version) }}
   ingressClassName: {{ .Values.dashboard.ingress.ingressClassName }}
 {{- end }}
 {{- if .Values.dashboard.ingress.tls }}
