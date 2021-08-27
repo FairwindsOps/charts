@@ -112,9 +112,8 @@ dashboard:
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
     enabled: false
-    # From Kubernetes 1.18+ this field is supported in case your ingress controller supports it
-    # When set, you do not need to add the ingress class as annotation
-    ingressClassName: ""
+    # dashboard.ingress.ingressClassName -- From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation.
+    ingressClassName:
     annotations: {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
