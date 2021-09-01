@@ -44,6 +44,10 @@ spec:
             {{ else }}
             path: /
             {{ end }}
+          - backend:
+              serviceName: {{ $fullName }}-open-api
+              servicePort: http
+            path: /swagger
     {{- end }}
 {{- else }}
 apiVersion: networking.k8s.io/v1beta1
@@ -122,6 +126,10 @@ spec:
             {{ else }}
             path: /
             {{ end }}
+          - backend:
+              serviceName: {{ $fullName }}-open-api
+              servicePort: http
+            path: /swagger
     {{- end }}
 {{- end }}
 {{- end }}
