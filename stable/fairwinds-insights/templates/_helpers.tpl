@@ -53,6 +53,14 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.openApiImageTag" -}}
+{{- if .Values.openApiImage.tag -}}
+{{- .Values.openApiImage.tag -}}
+{{- else -}}
+{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "fairwinds-insights.dashboardImageTag" -}}
 {{- if .Values.dashboardImage.tag -}}
 {{- .Values.dashboardImage.tag -}}
