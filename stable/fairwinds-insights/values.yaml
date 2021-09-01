@@ -155,6 +155,8 @@ api:
     runAsUser: 10324
 
 openApi:
+  # -- Enable openAPI server
+  enabled: false
   # -- Port for the openAPI server to listen on.
   port: 8080
   pdb:
