@@ -16,7 +16,7 @@ keywords:
   - kubernetes
 dependencies:
 - name: vpa
-  version: 0.1.1
+  version: 0.4.3
   repository: https://charts.fairwinds.com/stable
   condition: vpa.enabled
 - name: metrics-server
