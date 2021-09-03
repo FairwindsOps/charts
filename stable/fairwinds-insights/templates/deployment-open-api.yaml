@@ -29,6 +29,9 @@ spec:
           - name: http
             containerPort: {{ .Values.openApi.port }}
             protocol: TCP
+          volumeMounts:
+          - name: shared-data
+            mountPath: /usr/share/nginx/html
           env:
           - name: SWAGGER_JSON_URL
             value: {{ include "fairwinds-insights.fullname" . }}-api/v0/swagger.json
@@ -49,6 +52,9 @@ spec:
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+      - name: shared-data
+        emptyDir: {}
     {{- with .Values.api.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
