@@ -34,7 +34,7 @@ cronjobImage:
   tag:
 openApiImage:
   # -- Docker image repository for the openAPI server
-  repository: quay.io/fairwinds/fairwinds-insights-open-api
+  repository: swaggerapi/swagger-ui
   # -- Overrides tag for the openAPI server, defaults to image.tag
   tag:
 

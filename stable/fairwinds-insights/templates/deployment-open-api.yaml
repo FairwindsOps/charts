@@ -30,8 +30,8 @@ spec:
             containerPort: {{ .Values.openApi.port }}
             protocol: TCP
           env:
-          - name: SWAGGER_JSON
-            value: "/opt/swagger.yaml"
+          - name: SWAGGER_JSON_URL
+            value: {{ include "fairwinds-insights.fullname" . }}-api/v0/swagger.json
           - name: BASE_URL
             value: "/swagger"
           resources:

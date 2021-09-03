@@ -23,7 +23,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | migrationImage.tag | string | `nil` | Overrides tag for the migration image, defaults to image.tag |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
-| openApiImage.repository | string | `"quay.io/fairwinds/fairwinds-insights-open-api"` | Docker image repository for the openAPI server |
+| openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the openAPI server |
 | openApiImage.tag | string | `nil` | Overrides tag for the openAPI server, defaults to image.tag |
 | options.agentChartTargetVersion | string | `"1.14.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
