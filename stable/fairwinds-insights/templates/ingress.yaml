@@ -1,5 +1,147 @@
 {{- if .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
+{{- if not (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
+{{- if not .Values.ingress.separate }}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    {{ with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+    - secretName: {{ $fullName }}-cert
+      hosts:
+        {{- range .Values.ingress.hostedZones }}
+        - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+        {{- end }}
+{{- end }}
+  rules:
+    {{- range .Values.ingress.hostedZones }}
+    - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ $fullName }}-api
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /v0/*
+            {{ else }}
+            path: /v0
+            {{ end }}
+    - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ $fullName }}-dashboard
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /*
+            {{ else }}
+            path: /
+            {{ end }}
+          - backend:
+              serviceName: {{ $fullName }}-open-api
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /swagger/*
+            {{ else }}
+            path: /swagger
+            {{ end }}
+    {{- end }}
+{{- else }}
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-api
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    {{ with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
+    {{- if .Values.ingress.api }}
+    {{ with .Values.ingress.api.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
+    {{- end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+    - secretName: {{ $fullName }}-cert
+      hosts:
+        {{- range .Values.ingress.hostedZones }}
+        - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+        {{- end }}
+{{- end }}
+  rules:
+    {{- range .Values.ingress.hostedZones }}
+    - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ $fullName }}-api
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /v0/*
+            {{ else }}
+            path: /v0
+            {{ end }}
+    {{- end }}
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: {{ $fullName }}-dashboard
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    {{ with .Values.ingress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
+    {{- if .Values.ingress.dashboard }}
+    {{ with .Values.ingress.dashboard.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{ end }}
+    {{- end }}
+spec:
+{{- if .Values.ingress.tls }}
+  tls:
+    - secretName: {{ $fullName }}-cert
+      hosts:
+        {{- range .Values.ingress.hostedZones }}
+        - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+        {{- end }}
+{{- end }}
+  rules:
+    {{- range .Values.ingress.hostedZones }}
+    - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
+      http:
+        paths:
+          - backend:
+              serviceName: {{ $fullName }}-dashboard
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /*
+            {{ else }}
+            path: /
+            {{ end }}
+          - backend:
+              serviceName: {{ $fullName }}-open-api
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /swagger/*
+            {{ else }}
+            path: /swagger
+            {{ end }}
+    {{- end }}
+{{- end }}
+{{- else }}
 {{- if not .Values.ingress.separate }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -130,5 +272,6 @@ spec:
                 port:
                   name: http
     {{- end }}
+{{- end }}
 {{- end }}
 {{- end }}
