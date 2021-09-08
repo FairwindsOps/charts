@@ -4,7 +4,7 @@ ingress:
   - test.cluster.local
 
 options:
-  insightsSAASHost: "https://staging.insights.fairwinds.com"
+  insightsSAASHost: "https://fe-main.insights.fairwinds.com"
   autogenerateKeys: true
 
 postgresql:
