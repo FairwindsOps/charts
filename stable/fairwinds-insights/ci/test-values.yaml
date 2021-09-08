@@ -4,9 +4,8 @@ ingress:
   - test.cluster.local
 
 options:
-  insightsSAASHost: "https://fe-main.k8s.insights.fairwinds.com"
+  insightsSAASHost: "https://staging.k8s.insights.fairwinds.com"
   autogenerateKeys: true
-  migrateHealthScore: false
 
 postgresql:
   sslMode: "disable"
@@ -49,7 +48,3 @@ emailCronjob:
 
 deleteOldActionItemsCronjob:
   schedules: []
-
-minio:
-  persistence:
-    enabled: false
