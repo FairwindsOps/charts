@@ -44,6 +44,14 @@ spec:
             {{ else }}
             path: /
             {{ end }}
+          - backend:
+              serviceName: {{ $fullName }}-open-api
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /swagger/*
+            {{ else }}
+            path: /swagger
+            {{ end }}
     {{- end }}
 {{- else }}
 apiVersion: networking.k8s.io/v1beta1
@@ -121,6 +129,14 @@ spec:
             path: /*
             {{ else }}
             path: /
+            {{ end }}
+          - backend:
+              serviceName: {{ $fullName }}-open-api
+              servicePort: http
+            {{ if $.Values.ingress.starPaths }}
+            path: /swagger/*
+            {{ else }}
+            path: /swagger
             {{ end }}
     {{- end }}
 {{- end }}
