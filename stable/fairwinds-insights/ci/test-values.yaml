@@ -48,3 +48,7 @@ emailCronjob:
 
 deleteOldActionItemsCronjob:
   schedules: []
+
+minio:
+  persistence:
+    enabled: false
