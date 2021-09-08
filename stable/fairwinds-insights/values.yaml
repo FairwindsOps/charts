@@ -32,6 +32,11 @@ cronjobImage:
   repository: quay.io/fairwinds/insights-cronjob
   # -- Overrides tag for the cronjob image, defaults to image.tag
   tag:
+openApiImage:
+  # -- Docker image repository for the openAPI server
+  repository: swaggerapi/swagger-ui
+  # -- Overrides tag for the openAPI server, defaults to image.tag
+  tag: v3.52.0
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
@@ -148,6 +153,48 @@ api:
   securityContext:
     # -- The user ID to run the API server under.
     runAsUser: 10324
+
+openApi:
+  # -- Port for the openAPI server to listen on.
+  port: 8080
+  pdb:
+    # -- Create a pod disruption budget for the openAPI server.
+    enabled: false
+    # -- How many replicas should always exist for the openAPI server.
+    minReplicas: 1
+  hpa:
+    # -- Create a horizontal pod autoscaler for the openAPI server.
+    enabled: false
+    # -- Minimum number of replicas for the openAPI server.
+    min: 1
+    # -- Maximum number of replicas for the openAPI server.
+    max: 2
+    # -- Scaling metrics
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
+  # -- Resources for the openAPI server.
+  resources:
+    limits:
+      cpu: 256m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  # -- Node Selector for the openAPI server.
+  nodeSelector: {}
+  # -- Tolerations for the openApi server.
+  tolerations: []
 
 dbMigration:
   # -- Resources for the database migration job.

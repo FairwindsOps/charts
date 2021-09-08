@@ -23,6 +23,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | migrationImage.tag | string | `nil` | Overrides tag for the migration image, defaults to image.tag |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
+| openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the openAPI server |
+| openApiImage.tag | string | `"v3.52.0"` | Overrides tag for the openAPI server, defaults to image.tag |
 | options.agentChartTargetVersion | string | `"1.14.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
@@ -55,6 +57,16 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
 | api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
+| openApi.port | int | `8080` | Port for the openAPI server to listen on. |
+| openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the openAPI server. |
+| openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the openAPI server. |
+| openApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the openAPI server. |
+| openApi.hpa.min | int | `1` | Minimum number of replicas for the openAPI server. |
+| openApi.hpa.max | int | `2` | Maximum number of replicas for the openAPI server. |
+| openApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
+| openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the openAPI server. |
+| openApi.nodeSelector | object | `{}` | Node Selector for the openAPI server. |
+| openApi.tolerations | list | `[]` | Tolerations for the openApi server. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
