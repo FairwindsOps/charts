@@ -167,21 +167,21 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: /
+          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-dashboard
                 port:
                   name: http
-          - path: /v0
+          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-api
                 port:
                   name: http
-          - path: /swagger
+          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:
               service:
@@ -219,7 +219,7 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: /v0
+          - path: {{ $.Values.ingress.starPaths | ternary "/v0*" "/v0" }}
             pathType: Prefix
             backend:
               service:
@@ -257,14 +257,14 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: /
+          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-dashboard
                 port:
                   name: http
-          - path: /swagger
+          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:
               service:
