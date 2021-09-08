@@ -291,6 +291,8 @@ service:
   port: 80
   # -- Service type for the API and Dashboard services
   type: ClusterIP
+  # -- Annotations for the services
+  annotations:
 
 # -- Prefix to use on hostname. Generally not needed.
 sanitizedBranch:
@@ -304,8 +306,6 @@ ingress:
   hostedZones: []
   # -- Annotations to add to the API and Dashboard ingresses.
   annotations: {}
-  # -- Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false.
-  starPaths: true
   # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
   separate: false
 

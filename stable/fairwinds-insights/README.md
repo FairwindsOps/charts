@@ -83,12 +83,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | deleteOldActionItemsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the delete Action Items job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
+| service.annotations | string | `nil` | Annotations for the services |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
 | ingress.enabled | bool | `false` | Enable Ingress |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | object | `{}` | Annotations to add to the API and Dashboard ingresses. |
-| ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |

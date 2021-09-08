@@ -1,7 +1,7 @@
 {{- if .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
 {{- if not .Values.ingress.separate }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
@@ -25,36 +25,30 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - backend:
-              serviceName: {{ $fullName }}-api
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /v0/*
-            {{ else }}
-            path: /v0
-            {{ end }}
-    - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
-      http:
-        paths:
-          - backend:
-              serviceName: {{ $fullName }}-dashboard
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /*
-            {{ else }}
-            path: /
-            {{ end }}
-          - backend:
-              serviceName: {{ $fullName }}-open-api
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /swagger/*
-            {{ else }}
-            path: /swagger
-            {{ end }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-dashboard
+                port:
+                  name: http
+          - path: /v0
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-api
+                port:
+                  name: http
+          - path: /swagger
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-open-api
+                port:
+                  name: http
     {{- end }}
 {{- else }}
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}-api
@@ -83,17 +77,16 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - backend:
-              serviceName: {{ $fullName }}-api
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /v0/*
-            {{ else }}
-            path: /v0
-            {{ end }}
+          - path: /v0
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-api
+                port:
+                  name: http
     {{- end }}
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ $fullName }}-dashboard
@@ -122,22 +115,20 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - backend:
-              serviceName: {{ $fullName }}-dashboard
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /*
-            {{ else }}
-            path: /
-            {{ end }}
-          - backend:
-              serviceName: {{ $fullName }}-open-api
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /swagger/*
-            {{ else }}
-            path: /swagger
-            {{ end }}
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-dashboard
+                port:
+                  name: http
+          - path: /swagger
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-open-api
+                port:
+                  name: http
     {{- end }}
 {{- end }}
 {{- end }}
