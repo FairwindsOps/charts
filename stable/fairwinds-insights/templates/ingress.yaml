@@ -26,33 +26,21 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - backend:
+          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
+            backend:
               serviceName: {{ $fullName }}-api
               servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /v0/*
-            {{ else }}
-            path: /v0
-            {{ end }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - backend:
-              serviceName: {{ $fullName }}-dashboard
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /*
-            {{ else }}
-            path: /
-            {{ end }}
-          - backend:
+          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
+            backend:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /swagger/*
-            {{ else }}
-            path: /swagger
-            {{ end }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+            backend:
+              serviceName: {{ $fullName }}-dashboard
+              servicePort: http
     {{- end }}
 {{- else }}
 apiVersion: networking.k8s.io/v1beta1
@@ -84,14 +72,10 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - backend:
+          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
+            backend:
               serviceName: {{ $fullName }}-api
               servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /v0/*
-            {{ else }}
-            path: /v0
-            {{ end }}
     {{- end }}
 ---
 apiVersion: networking.k8s.io/v1beta1
@@ -123,22 +107,14 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - backend:
-              serviceName: {{ $fullName }}-dashboard
-              servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /*
-            {{ else }}
-            path: /
-            {{ end }}
-          - backend:
+          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
+            backend:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
-            {{ if $.Values.ingress.starPaths }}
-            path: /swagger/*
-            {{ else }}
-            path: /swagger
-            {{ end }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+            backend:
+              serviceName: {{ $fullName }}-dashboard
+              servicePort: http
     {{- end }}
 {{- end }}
 {{- else }}
@@ -167,11 +143,11 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-dashboard
+                name: {{ $fullName }}-open-api
                 port:
                   name: http
           - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
@@ -181,11 +157,11 @@ spec:
                 name: {{ $fullName }}-api
                 port:
                   name: http
-          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-open-api
+                name: {{ $fullName }}-dashboard
                 port:
                   name: http
     {{- end }}
@@ -257,18 +233,18 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
-            pathType: Prefix
-            backend:
-              service:
-                name: {{ $fullName }}-dashboard
-                port:
-                  name: http
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:
               service:
                 name: {{ $fullName }}-open-api
+                port:
+                  name: http
+          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-dashboard
                 port:
                   name: http
     {{- end }}
