@@ -1,14 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-api
+  name: {{ include "fairwinds-insights.fullname" . }}-open-api
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
-    app.kubernetes.io/component: api
-  {{- with .Values.service.annotations }}
-  annotations:
-    {{- toYaml .Values.service.annotations | nindent 4 }}
-  {{- end }}
+    app.kubernetes.io/component: open-api
 spec:
   type: {{ .Values.service.type }}
   ports:
@@ -18,4 +14,4 @@ spec:
       name: http
   selector:
     {{- include "fairwinds-insights.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: api
+    app.kubernetes.io/component: open-api
