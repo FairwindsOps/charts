@@ -13,12 +13,19 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 |-----|------|---------|-------------|
 | image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
 | installationCode | string | `nil` | Installation code provided by Fairwinds. |
+| installationCodeSecret | string | `nil` | Name of secret containing INSTALLATION_CODE |
 | polaris.config | string | `nil` | Configuration for Polaris |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
+| dashboardImage.tag | string | `nil` | Overrides tag for the dashboard, defaults to image.tag |
 | apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
+| apiImage.tag | string | `nil` | Overrides tag for the API server, defaults to image.tag |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
+| migrationImage.tag | string | `nil` | Overrides tag for the migration image, defaults to image.tag |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
-| options.agentChartTargetVersion | string | `"1.12.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
+| openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the openAPI server |
+| openApiImage.tag | string | `"v3.52.0"` | Overrides tag for the openAPI server, defaults to image.tag |
+| options.agentChartTargetVersion | string | `"1.14.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -26,7 +33,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
 | options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
+| options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
+| rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
@@ -48,6 +57,16 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
 | api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
+| openApi.port | int | `8080` | Port for the openAPI server to listen on. |
+| openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the openAPI server. |
+| openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the openAPI server. |
+| openApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the openAPI server. |
+| openApi.hpa.min | int | `1` | Minimum number of replicas for the openAPI server. |
+| openApi.hpa.max | int | `2` | Maximum number of replicas for the openAPI server. |
+| openApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
+| openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the openAPI server. |
+| openApi.nodeSelector | object | `{}` | Node Selector for the openAPI server. |
+| openApi.tolerations | list | `[]` | Tolerations for the openApi server. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
@@ -64,11 +83,14 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | deleteOldActionItemsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the delete Action Items job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
+| service.annotations | string | `nil` | Annotations for the services |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
 | ingress.enabled | bool | `false` | Enable Ingress |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | object | `{}` | Annotations to add to the API and Dashboard ingresses. |
+| ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
+| ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |

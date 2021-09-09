@@ -1,10 +1,7 @@
 {{- if .Values.rbacreporter.enabled -}}
 {{- $_ := set . "Label" "rbac-reporter" }}
 {{- $_ := set . "Config" .Values.rbacreporter }}
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  {{- include "metadata" . }}
+{{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:

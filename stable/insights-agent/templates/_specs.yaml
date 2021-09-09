@@ -1,3 +1,25 @@
+{{- define "metadata" }}
+  name: {{ .Label }}
+  labels:
+    app: insights-agent
+  annotations:
+  {{- if .Values.cronjobs.disableServiceMesh }}
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+  {{- end }}
+{{- end }}
+
+{{ define "cronjob" }}
+{{- if not (.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
+apiVersion: batch/v1beta1
+{{- else }}
+apiVersion: batch/v1
+{{- end }}
+kind: CronJob
+metadata:
+  {{- include "metadata" . }}
+{{- end }}
+
 {{ define "cronjob-spec" }}
 schedule: {{ regexReplaceAll "^rand" .Config.schedule (regexReplaceAll "^[0,6-9]" (randNumeric 2) "") | quote }}
 concurrencyPolicy: Forbid
@@ -35,6 +57,10 @@ volumes:
 name: {{ .Label }}
 image: "{{ .Config.image.repository }}:{{ .Config.image.tag }}"
 imagePullPolicy: Always
+{{- with $.Values.cronjobs.imagePullSecret }}
+imagePullSecrets:
+  - name: {{ . }}
+{{- end }}
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
 volumeMounts:
