@@ -263,6 +263,7 @@ pluto:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
+  targetVersions: ""
   image:
     repository: quay.io/fairwinds/pluto
     tag: "v5.0"

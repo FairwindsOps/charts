@@ -12,8 +12,13 @@ spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
-            command: ["/bin/sh", "-c"]
-            args: ["/pluto detect-helm -ojson > /output/pluto-tmp.json; mv /output/pluto-tmp.json /output/pluto.json"]
+            command: ["/bin/sh"]
+            args:
+            - -c
+            - |
+              /pluto detect-helm -ojson --target-versions {{ $.Values.pluto.targetVersions | default (printf "k8s=v%s.%s.0" .Capabilities.KubeVersion.Major (trimSuffix "+" .Capabilities.KubeVersion.Minor)) }} > /output/pluto-tmp.json
+              cat /output/pluto-tmp.json
+              mv /output/pluto-tmp.json /output/pluto.json
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

@@ -85,7 +85,11 @@ jobs:
       - run:
           name: Run Insights Checks
           command: |
-            curl -L https://insights.fairwinds.com/v0/insights-ci.sh | bash
+            if [[ -z $CIRCLE_PR_NUMBER ]]; then
+              curl -L https://insights.fairwinds.com/v0/insights-ci.sh | bash
+            else
+              echo "Skipping Insights tests for forked PR"
+            fi
 
   sync:
     docker:

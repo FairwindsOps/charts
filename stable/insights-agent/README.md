@@ -100,3 +100,4 @@ Parameter | Description | Default
 `resourcemetrics.installPrometheus` | Install a new Prometheus instance for the resourcemetrics report | false
 `resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
+`pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
