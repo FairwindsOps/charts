@@ -31,7 +31,7 @@ spec:
             protocol: TCP
           env:
           - name: SWAGGER_JSON_URL
-            value: {{ include "fairwinds-insights.fullname" . }}-api/v0/swagger.json
+            value: {{ include "fairwinds-insights.fullname" . }}-api/v0/swagger.yaml
           - name: BASE_URL
             value: "/swagger"
           resources:
