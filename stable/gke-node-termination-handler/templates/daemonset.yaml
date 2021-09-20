@@ -19,14 +19,19 @@ spec:
       labels:
         name: {{ include "gke-node-termination-handler.fullname" . }}
     spec:
+      # Necessary to hit the node's metadata server when using Workload Identity
+      hostNetwork: true
       # Necessary to reboot node
       hostPID: true
       serviceAccountName: {{ include "gke-node-termination-handler.fullname" . }}
       affinity:
         nodeAffinity:
-         # Restrict to preemptible nodes
+         # Restrict to GPU nodes or preemptible nodes
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
+            - matchExpressions:
+              - key: cloud.google.com/gke-accelerator
+                operator: Exists
             - matchExpressions:
               - key: cloud.google.com/gke-preemptible
                 operator: Exists
@@ -57,7 +62,8 @@ spec:
         resources:
           {{- toYaml .Values.resources | nindent 12 }}
       tolerations:
-        - effect: NoSchedule
-          operator: Exists
-        - effect: NoExecute
-          operator: Exists
+      # Run regardless of any existing taints.
+      - effect: NoSchedule
+        operator: Exists
+      - effect: NoExecute
+        operator: Exists
