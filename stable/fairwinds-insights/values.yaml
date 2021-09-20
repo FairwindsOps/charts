@@ -5,6 +5,9 @@ image:
 # -- Installation code provided by Fairwinds.
 installationCode:
 
+# -- Name of secret containing INSTALLATION_CODE
+installationCodeSecret:
+
 polaris:
   # -- Configuration for Polaris
   config:
@@ -12,19 +15,32 @@ polaris:
 dashboardImage:
   # -- Docker image repository for the front end
   repository: quay.io/fairwinds/insights-dashboard
+  # -- Overrides tag for the dashboard, defaults to image.tag
+  tag:
 apiImage:
   # -- Docker image repository for the API server
   repository: quay.io/fairwinds/insights-api
+  # -- Overrides tag for the API server, defaults to image.tag
+  tag:
 migrationImage:
   # -- Docker image repository for the database migration job
   repository: quay.io/fairwinds/insights-db-migration
+  # -- Overrides tag for the migration image, defaults to image.tag
+  tag:
 cronjobImage:
   # -- Docker image repository for maintenance CronJobs.
   repository: quay.io/fairwinds/insights-cronjob
+  # -- Overrides tag for the cronjob image, defaults to image.tag
+  tag:
+openApiImage:
+  # -- Docker image repository for the openAPI server
+  repository: swaggerapi/swagger-ui
+  # -- Overrides tag for the openAPI server, defaults to image.tag
+  tag: v3.52.0
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 1.12.0
+  agentChartTargetVersion: 1.14.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -39,9 +55,16 @@ options:
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: true
+  # -- Name of the secret where session keys and other secrets are stored
+  secretName: fwinsights-secrets
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables: {}
+
+rbac:
+  serviceAccount:
+    # -- Annotations to add to the service account
+    annotations: {}
 
 dashboard:
   pdb:
@@ -130,6 +153,48 @@ api:
   securityContext:
     # -- The user ID to run the API server under.
     runAsUser: 10324
+
+openApi:
+  # -- Port for the openAPI server to listen on.
+  port: 8080
+  pdb:
+    # -- Create a pod disruption budget for the openAPI server.
+    enabled: false
+    # -- How many replicas should always exist for the openAPI server.
+    minReplicas: 1
+  hpa:
+    # -- Create a horizontal pod autoscaler for the openAPI server.
+    enabled: false
+    # -- Minimum number of replicas for the openAPI server.
+    min: 1
+    # -- Maximum number of replicas for the openAPI server.
+    max: 2
+    # -- Scaling metrics
+    metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 75
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 75
+  # -- Resources for the openAPI server.
+  resources:
+    limits:
+      cpu: 256m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 100Mi
+  # -- Node Selector for the openAPI server.
+  nodeSelector: {}
+  # -- Tolerations for the openApi server.
+  tolerations: []
 
 dbMigration:
   # -- Resources for the database migration job.
@@ -226,6 +291,8 @@ service:
   port: 80
   # -- Service type for the API and Dashboard services
   type: ClusterIP
+  # -- Annotations for the services
+  annotations:
 
 # -- Prefix to use on hostname. Generally not needed.
 sanitizedBranch:
@@ -239,6 +306,10 @@ ingress:
   hostedZones: []
   # -- Annotations to add to the API and Dashboard ingresses.
   annotations: {}
+  # -- Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false.
+  starPaths: true
+  # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
+  separate: false
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default

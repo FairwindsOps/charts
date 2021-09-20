@@ -1,10 +1,7 @@
 {{- if .Values.trivy.enabled -}}
 {{- $_ := set . "Label" "trivy" }}
 {{- $_ := set . "Config" .Values.trivy }}
-apiVersion: batch/v1beta1
-kind: CronJob
-metadata:
-  {{- include "metadata" . }}
+{{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:

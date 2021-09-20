@@ -12,18 +12,17 @@
 /incubator/opa/ @sudermanjr
 /incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
-/incubator/oom-event-generator/ @denraf
 
 /stable/astro/ @lucasreed
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @sudermanjr @lucasreed
-/stable/polaris/ @rbren @makoscafee @baderbuddy
+/stable/polaris/ @rbren @makoscafee
 /stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @sudermanjr
 /stable/goldilocks/ @sudermanjr @lucasreed
-/stable/fairwinds-insights/ @rbren @makoscafee @baderbuddy
-/stable/insights-admission/ @rbren @makoscafee @baderbuddy
-/stable/insights-agent/ @rbren @makoscafee @baderbuddy
-/stable/helm-release-pruner @rbren
+/stable/fairwinds-insights/ @rbren @makoscafee
+/stable/insights-admission/ @rbren @makoscafee
+/stable/insights-agent/ @rbren @makoscafee
+/stable/helm-release-pruner @rbren @makoscafee
 /stable/vertical-pod-autoscaler @sudermanjr
