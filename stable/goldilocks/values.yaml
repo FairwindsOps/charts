@@ -64,8 +64,12 @@ controller:
       drop:
         - ALL
 
-  # controller.deployment.annotations -- Extra annotations for the controller deployment
   deployment:
+    # controller.deployment.extraVolumeMounts -- Extra volume mounts for the controller container
+    extraVolumeMounts: []
+    # controller.deployment.extraVolumes -- Extra volumes for the controller pod
+    extraVolumes: []
+    # controller.deployment.annotations -- Extra annotations for the controller deployment
     annotations: {}
 
 dashboard:
@@ -93,9 +97,13 @@ dashboard:
     # dashboard.serviceAccount.name -- The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create`
     name:
 
-  # dashboard.deployment.annotations -- Extra annotations for the dashboard deployment
   deployment:
+    # dashboard.deployment.annotations -- Extra annotations for the dashboard deployment
     annotations: {}
+    # dashboard.deployment.extraVolumeMounts -- Extra volume mounts for the dashboard container
+    extraVolumeMounts: []
+    # dashboard.deployment.extraVolumes -- Extra volumes for the dashboard pod
+    extraVolumes: []
 
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
