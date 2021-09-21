@@ -69,6 +69,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | openApi.tolerations | list | `[]` | Tolerations for the openApi server. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
+| samlCronjob.resources.limits.cpu | string | `"500m"` |  |
+| samlCronjob.resources.limits.memory | string | `"1024Mi"` |  |
+| samlCronjob.resources.requests.cpu | string | `"80m"` |  |
+| samlCronjob.resources.requests.memory | string | `"128Mi"` |  |
+| samlCronjob.schedules[0].name | string | `"hourly"` |  |
+| samlCronjob.schedules[0].interval | string | `"60m"` |  |
+| samlCronjob.schedules[0].cron | string | `"0 * * * *"` |  |
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
 | alertsCronjob.schedules | list | `[{"cron":"5/10 * * * *","interval":"10m","name":"realtime"},{"cron":"0 16 * * *","interval":"24h","name":"digest"}]` | CRON schedules for the Slack/Datadog integrations |
 | alertsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the alerts job under. |
