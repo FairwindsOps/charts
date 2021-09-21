@@ -23,7 +23,7 @@ spec:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
               command: ["refresh_saml_metadata"]
-              {{- include "env-private" $ | indent 14 }}
+              {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
                 {{- toYaml $.Values.samlCronjob.resources | nindent 16 }}
