@@ -51,6 +51,14 @@ spec:
         {{- end }}
           resources:
             {{- toYaml .Values.controller.resources | nindent 12 }}
+          {{- if .Values.controller.deployment.extraVolumeMounts }}
+          volumeMounts:
+          {{ toYaml .Values.controller.deployment.extraVolumeMounts | nindent 12 }}
+          {{- end }}
+{{- if .Values.controller.deployment.extraVolumes }}
+      volumes:
+{{ toYaml .Values.controller.deployment.extraVolumes | indent 8}}
+{{- end }}
       {{- with .Values.controller.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

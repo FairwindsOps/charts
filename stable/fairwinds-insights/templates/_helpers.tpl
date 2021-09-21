@@ -33,7 +33,7 @@ Create chart name and version as used by the chart label.
 
 {{- define "fairwinds-insights.sanitizedPrefix" -}}
 {{- if .Values.sanitizedBranch -}}
-{{- printf "%s." (.Values.sanitizedBranch | replace "feature-" "" | trunc 24 | trimSuffix "-") -}}
+{{- printf "%s." (.Values.sanitizedBranch | trunc 24 | trimSuffix "-") -}}
 {{- end -}}
 {{- end -}}
 
@@ -48,6 +48,14 @@ Create chart name and version as used by the chart label.
 {{- define "fairwinds-insights.apiImageTag" -}}
 {{- if .Values.apiImage.tag -}}
 {{- .Values.apiImage.tag -}}
+{{- else -}}
+{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.openApiImageTag" -}}
+{{- if .Values.openApiImage.tag -}}
+{{- .Values.openApiImage.tag -}}
 {{- else -}}
 {{- .Values.image.tag | default .Chart.AppVersion -}}
 {{- end -}}
