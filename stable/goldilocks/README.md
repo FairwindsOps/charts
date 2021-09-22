@@ -45,21 +45,37 @@ This will completely remove the VPA and then re-install it using the new method.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| controller.affinity | object | `{}` | Affinity for the controller pods |
-| controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
+| uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
+| vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
+| metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
+| metrics-server.apiService.create | bool | `true` |  |
+| image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
+| image.tag | string | `"v3.1.4"` | The goldilocks image tag to use |
+| image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
+| nameOverride | string | `""` |  |
+| fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
+| controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
+| controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
+| controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
 | controller.flags | object | `{}` | A map of additional flags to pass to the controller |
 | controller.logVerbosity | string | `"2"` | Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | controller.nodeSelector | object | `{}` | Node selector for the controller pod |
-| controller.podSecurityContext | object | `{}` | Defines the podSecurityContext for the controller pod |
-| controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
+| controller.tolerations | list | `[]` | Tolerations for the controller pod |
+| controller.affinity | object | `{}` | Affinity for the controller pods |
 | controller.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | The resources block for the controller pods |
+| controller.podSecurityContext | object | `{}` | Defines the podSecurityContext for the controller pod |
 | controller.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the controller container |
 | controller.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the controller container |
 | controller.deployment.extraVolumes | list | `[]` | Extra volumes for the controller pod |
 | controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
 | controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
+| dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
+| dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
+| dashboard.service.port | int | `80` | The port to run the dashboard service on |
+| dashboard.service.annotations | object | `{}` | Extra annotations for the dashboard service |
+| dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
 | dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
 | dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
@@ -71,29 +87,14 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
 | dashboard.ingress.annotations | object | `{}` |  |
 | dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
+| dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
+| dashboard.ingress.annotations | object | `{}` |  |
 | dashboard.ingress.hosts[0].host | string | `"chart-example.local"` |  |
 | dashboard.ingress.hosts[0].paths | list | `[]` |  |
-| dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.tls | list | `[]` |  |
-| dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
-| dashboard.nodeSelector | object | `{}` |  |
-| dashboard.podSecurityContext | object | `{}` | Defines the podSecurityContext for the dashboard pod |
-| dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
-| dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
 | dashboard.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | A resources block for the dashboard. |
+| dashboard.podSecurityContext | object | `{}` | Defines the podSecurityContext for the dashboard pod |
 | dashboard.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the dashboard container |
-| dashboard.service.annotations | object | `{}` | Extra annotations for the dashboard service |
-| dashboard.service.port | int | `80` | The port to run the dashboard service on |
-| dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
-| dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
-| dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
+| dashboard.nodeSelector | object | `{}` |  |
 | dashboard.tolerations | list | `[]` |  |
-| fullnameOverride | string | `""` |  |
-| image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
-| image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v3.1.4"` | The goldilocks image tag to use |
-| metrics-server.apiService.create | bool | `true` |  |
-| metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
-| nameOverride | string | `""` |  |
-| uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
-| vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
+| dashboard.affinity | object | `{}` |  |
