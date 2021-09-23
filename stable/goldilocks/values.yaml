@@ -71,6 +71,8 @@ controller:
     extraVolumes: []
     # controller.deployment.annotations -- Extra annotations for the controller deployment
     annotations: {}
+    # controller.deployment.additionalLabels -- Extra labels for the controller deployment
+    additionalLabels: {}
 
 dashboard:
   # dashboard.enabled -- If true, the dashboard component will be installed
@@ -100,6 +102,8 @@ dashboard:
   deployment:
     # dashboard.deployment.annotations -- Extra annotations for the dashboard deployment
     annotations: {}
+    # dashboard.deployment.additionalLabels -- Extra labels for the dashboard deployment
+    additionalLabels: {}
     # dashboard.deployment.extraVolumeMounts -- Extra volume mounts for the dashboard container
     extraVolumeMounts: []
     # dashboard.deployment.extraVolumes -- Extra volumes for the dashboard pod
