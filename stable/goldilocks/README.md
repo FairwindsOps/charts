@@ -69,6 +69,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the controller container |
 | controller.deployment.extraVolumes | list | `[]` | Extra volumes for the controller pod |
 | controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
+| controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
 | dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
@@ -80,6 +81,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
 | dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
 | dashboard.deployment.annotations | object | `{}` | Extra annotations for the dashboard deployment |
+| dashboard.deployment.additionalLabels | object | `{}` | Extra labels for the dashboard deployment |
 | dashboard.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the dashboard container |
 | dashboard.deployment.extraVolumes | list | `[]` | Extra volumes for the dashboard pod |
 | dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
