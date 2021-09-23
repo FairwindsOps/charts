@@ -9,6 +9,9 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: controller
+    {{- if .Values.controller.deployment.additionalLabels }}
+    {{ toYaml .Values.controller.deployment.additionalLabels | nindent 4 }}
+    {{- end }}
   {{- with .Values.controller.deployment.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -26,6 +29,9 @@ spec:
         app.kubernetes.io/name: {{ include "goldilocks.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: controller
+        {- if .Values.controller.deployment.additionalLabels }}
+        {{ toYaml .Values.controller.deployment.additionalLabels | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.controller.serviceAccount.create }}
       serviceAccountName: {{ include "goldilocks.fullname" . }}-controller
