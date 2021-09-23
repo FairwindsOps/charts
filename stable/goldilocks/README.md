@@ -90,7 +90,8 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.annotations | object | `{}` |  |
 | dashboard.ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| dashboard.ingress.hosts[0].paths | list | `[]` |  |
+| dashboard.ingress.hosts[0].paths[0].path | string | `"/"` |  |
+| dashboard.ingress.hosts[0].paths[0].type | string | `"ImplementationSpecific"` |  |
 | dashboard.ingress.tls | list | `[]` |  |
 | dashboard.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | A resources block for the dashboard. |
 | dashboard.podSecurityContext | object | `{}` | Defines the podSecurityContext for the dashboard pod |
