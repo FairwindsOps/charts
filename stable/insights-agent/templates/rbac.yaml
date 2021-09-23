@@ -17,7 +17,7 @@ rules:
 {{- end }}
 {{- if .Values.uploader.sendFailures }}
 - apiGroups: [""]
-  resources: ["pods/logs"]
+  resources: ["pods/log"]
   verbs: ["get"]
 {{- end }}
 
@@ -96,6 +96,11 @@ subjects:
 {{- if .Values.workloads.enabled }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-workloads
+  namespace: {{ .Release.Namespace }}
+{{- end }}
+{{- if .Values.awscosts.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-awscosts
   namespace: {{ .Release.Namespace }}
 {{- end }}
 {{- end }}

@@ -330,3 +330,18 @@ test:
     repository: "python"
     tag: "3.6"
     pullPolicy: "Always"
+
+awscosts:
+  enabled: false
+  schedule: "rand * * * *"
+  timeout: 300
+  image:
+    repository: quay.io/fairwinds/aws-costs
+    tag: "0.1"
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
