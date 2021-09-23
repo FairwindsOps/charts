@@ -12,3 +12,6 @@ controller:
   flags:
     on-by-default: true
     exclude-namespaces: kube-system
+  deployment:
+    additionalLabels:
+      test: value
