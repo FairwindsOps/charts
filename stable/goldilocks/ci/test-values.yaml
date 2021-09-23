@@ -15,3 +15,8 @@ controller:
   deployment:
     additionalLabels:
       test: value
+
+dashboard:
+  deployment:
+    additionalLabels:
+      test: value
