@@ -23,6 +23,12 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Major Version Upgrade Notes
 
+## *BREAKING* Upgrading from v3.x.x to v4.x.x
+
+The new chart version includes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) configuration for the `networking.k8s.io/v1` Kubernetes API.
+
+Because of the new API version, you need to specify `dashboard.ingress.hosts[X].paths[Y].type` when installing this chart with enabled Ingress on a Kubernetes cluster version 1.19+.
+
 ## *BREAKING* Upgrading from v2.x.x to v3.x.x
 
 In this change, the `installVPA` value and corresponding hooks have been removed in favor of the sub-chart. The recommended path forward is to remove the hook-installed resources and manage the VPA installation with the [Fairwinds VPA Chart](https://github.com/FairwindsOps/charts/tree/master/stable/vpa)
