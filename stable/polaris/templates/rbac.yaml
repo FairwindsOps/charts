@@ -30,12 +30,12 @@ rules:
     verbs:
       - 'get'
       - 'list'
-  - apiGroups: 
+  - apiGroups:
       - 'monitoring.coreos.com'
-    resources: 
+    resources:
       - 'prometheuses'
       - 'alertmanagers'
-    verbs: 
+    verbs:
       - 'get'
       - 'list'
 
