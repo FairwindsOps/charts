@@ -148,6 +148,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
-| integrateAwsCostsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the integrate aws costs job. |
-| integrateAwsCostsCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"ai-cleanup"}]` | CRON schedules for the integrate aws costs job. |
-| integrateAwsCostsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the integrate aws costs job under. |
+| reportjob.integrateAwsCostsCronjob | string | `nil` |  |
+| reportjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the integrate aws costs job. |
+| reportjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"integrate-aws-costs"}]` | CRON schedules for the integrate aws costs job. |
+| reportjob.securityContext.runAsUser | int | `10324` | The user ID to run the integrate aws costs job under. |
