@@ -57,6 +57,15 @@ spec:
         - --listening-address
         - {{ .Values.dashboard.listeningAddress }}
         {{- end }}
+        {{- if .Values.dashboard.disallowExemptions }}
+        - --disallow-exemptions
+        {{- end }}
+        {{- if .Values.dashboard.disallowConfigExemptions }}
+        - --disallow-config-exemptions
+        {{- end }}
+        {{- if .Values.dashboard.disallowAnnotationExemptions }}
+        - --disallow-annotation-exemptions
+        {{- end }}
         image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
