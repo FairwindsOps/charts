@@ -453,7 +453,7 @@ reportjob:
   nodeSelector: {}
   tolerations: []
 
-  integrateAwsCostsCronjob:
+integrateAwsCostsCronjob:
   # -- Resources for the integrate aws costs job.
   resources:
     limits:
