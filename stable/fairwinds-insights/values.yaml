@@ -301,6 +301,24 @@ deleteOldActionItemsCronjob:
     # -- The user ID to run the delete Action Items job under.
     runAsUser: 10324
 
+integrateAwsCostsCronjob:
+  # -- Resources for the integrate aws costs job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  # -- CRON schedules for the integrate aws costs job.
+  schedules:
+    - name: integrate-aws-costs
+      interval: 24h
+      cron: "0 0 * * *"
+  securityContext:
+    # -- The user ID to run the integrate aws costs job under.
+    runAsUser: 10324
+
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80

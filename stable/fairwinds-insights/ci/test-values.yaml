@@ -50,6 +50,10 @@ emailCronjob:
 deleteOldActionItemsCronjob:
   schedules: []
 
+
+integrateAwsCostsCronjob:
+  schedules: []
+
 minio:
   persistence:
     enabled: false
