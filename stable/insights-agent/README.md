@@ -37,6 +37,7 @@ There are several different report types which can be enabled and configured:
 * `opa`
 * `resourcemetrics`
 * `admission`
+* `aws-costs`
 
 See below for configuration details.
 
@@ -101,3 +102,13 @@ Parameter | Description | Default
 `resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
+`awscosts.secretName` | AWS sercret name for AWS cli usage on AWS costs | ""
+`awscosts.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
+`awscosts.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
+`awscosts.region` | AWS region where costs was defined | ""
+`awscosts.database` | AWS database where Athena table was created | ""
+`awscosts.table` | AWS database Athena table for AWS costs | ""
+`awscosts.catalog` | AWS database catalog for AWS costs | ""
+`awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
+`awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
+`awscosts.workgroup` | Athena work group that used to run the queries | ""
