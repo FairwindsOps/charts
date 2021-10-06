@@ -37,7 +37,7 @@ There are several different report types which can be enabled and configured:
 * `opa`
 * `resourcemetrics`
 * `admission`
-* `aws-costs`
+* `awscosts`
 
 See below for configuration details.
 
