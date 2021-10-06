@@ -72,7 +72,7 @@ spec:
           - name: ADMIN_TOKEN
             valueFrom:
               secretKeyRef:
-                name:  {{ default ( printf "%s-api-token" (include "insights-agent.fullname" .) ) .Values.apiTokenSecretName }}
+                name:  {{ default ( printf "%s-api-token" (include "insights-agent.fullname" .) ) .Values.insights.apiTokenSecretName }}
                 key: token
         volumeMounts:
         - name: tmp
