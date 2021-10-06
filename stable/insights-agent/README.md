@@ -102,7 +102,7 @@ Parameter | Description | Default
 `resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
-`awscosts.secretName` | AWS sercret name for AWS cli usage on AWS costs | ""
+`awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
 `awscosts.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
 `awscosts.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
 `awscosts.region` | AWS region where costs was defined | ""
