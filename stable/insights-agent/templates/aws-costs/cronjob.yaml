@@ -40,6 +40,8 @@ spec:
               - {{ .Values.awscosts.tagkey }}
               - --tagvalue 
               - {{ .Values.awscosts.tagvalue }}
+              - --workgroup 
+              - {{ .Values.awscosts.workgroup }}              
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}

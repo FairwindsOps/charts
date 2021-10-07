@@ -58,3 +58,4 @@ awscosts:
   catalog: AwsDataCatalog
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
+  workgroup: cur_athena_workgroup
