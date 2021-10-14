@@ -106,7 +106,8 @@ kubesec:
 
 goldilocks:
   enabled: false
-  installVPA: true
+  vpa:
+    enabled: true
   schedule: "rand * * * *"
   timeout: 300
   image:
