@@ -294,9 +294,9 @@ resourcemetrics:
       memory: 128Mi
 
 prometheus:
-  alertmanager:
-    enabled: false
   kubeStateMetrics:
+    enabled: true
+  alertmanager:
     enabled: false
   nodeExporter:
     enabled: false
