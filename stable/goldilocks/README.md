@@ -47,6 +47,7 @@ This will completely remove the VPA and then re-install it using the new method.
 |-----|------|---------|-------------|
 | uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
 | vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
+| vpa.updater.enabled | bool | `false` |  |
 | metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
 | metrics-server.apiService.create | bool | `true` |  |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
