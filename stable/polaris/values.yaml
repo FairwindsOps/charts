@@ -60,7 +60,7 @@ dashboard:
     # dashboard.ingress.enabled -- Whether to enable ingress to the dashboard
     enabled: false
     # dashboard.ingress.ingressClassName -- From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation.
-    #ingressClassName:
+    ingressClassName:
     # dashboard.ingress.hosts -- Web ingress hostnames
     hosts: []
     # dashboard.ingress.annotations -- Web ingress annotations
