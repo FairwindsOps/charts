@@ -1,0 +1,74 @@
+{{- if .Values.falcoagent.enabled -}}
+{{- $_ := set . "Label" "falco" }}
+{{- $_ := set . "Config" .Values.falcoagent }}
+apiVersion: apps/v1
+{{- if .Values.falcoagent.statefulset }}
+kind: StatefulSet
+{{- else }}
+kind: Deployment
+{{- end }}
+metadata:
+  {{- include "metadata" . }}
+spec:
+  selector:
+    matchLabels:
+      name: falco-agent
+  {{- if .Values.falcoagent.statefulset }}
+  volumeClaimTemplates:
+  - metadata:
+        name: output-data
+    spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: "kops-ssd-1-17"
+        resources:
+            requests:
+                storage: 1Gi
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app: falco-agent
+      {{- if .Values.falcoagent.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
+      {{- if .Values.falcoagent.securityContext.enabled }}
+      securityContext:
+        fsGroup: {{ .Values.falcoagent.securityContext.fsGroup }}
+        runAsNonRoot: {{ .Values.falcoagent.securityContext.runAsNonRoot }}
+        runAsUser: {{ .Values.falcoagent.securityContext.runAsUser }}
+      {{- end }}
+    {{- if .Values.falcoagent.priorityClassName }}
+      priorityClassName: {{ .Values.falcoagent.priorityClassName }}
+    {{- end }}
+      containers:
+      - name: falco-agent
+        volumeMounts:
+        - name: output-data
+          mountPath: /output
+        imagePullPolicy: {{ .Values.falcoagent.image.pullPolicy }}
+        image: "{{ .Values.falcoagent.image.repository }}:{{ .Values.image.tag }}"
+        ports:
+        - containerPort: {{ .Values.falcoagent.service.port | default 3031}}
+        resources:
+        {{- toYaml .Values.falcoagent.resources | nindent 10 }}
+      {{- if .Values.falcoagent.affinity }}
+      affinity:
+{{ toYaml .Values.falcoagent.affinity | indent 8 }}
+      {{- end }}
+      {{- if .Values.falcoagent.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.falcoagent.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.falcoagent.tolerations }}
+      tolerations:
+{{ toYaml .Values.falcoagent.tolerations | indent 8 }}
+      {{- end }}
+      {{- if not .Values.falcoagent.statefulset}}
+      volumes:
+        - name: output-data
+          emptyDir: {}
+      {{- end }}
+{{- end -}}
