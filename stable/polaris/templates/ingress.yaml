@@ -17,6 +17,9 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
   name: polaris
 spec:
+{{- if and (.Values.dashboard.ingress.ingressClassName) (semverCompare ">= v1.18.0" .Capabilities.KubeVersion.Version) }}
+  ingressClassName: {{ .Values.dashboard.ingress.ingressClassName }}
+{{- end }}
   rules:
   {{- range .Values.dashboard.ingress.hosts }}
   - host: {{ . }}
