@@ -25,7 +25,7 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Upgrading from v3.x.x to v4.x.x
 
-There are not breaking changes, but the goldilocks controller and dashboard have had some major tweaks so they can work with more workload controllers. To allow v4.0.0+ to work with more than Deployments, the main change here is in RBAC permissions so that the goldilocks service accounts can access all resources in the `apps/v1`.
+There are no breaking changes, but the goldilocks controller and dashboard have had some major tweaks so they can work with more workload controllers. To allow v4.0.0+ to work with more than Deployments, the main change here is in RBAC permissions so that the goldilocks service accounts can access all resources in the `apps/v1`.
 
 ## *BREAKING* Upgrading from v2.x.x to v3.x.x
 
