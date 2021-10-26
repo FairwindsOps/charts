@@ -37,6 +37,7 @@ There are several different report types which can be enabled and configured:
 * `opa`
 * `resourcemetrics`
 * `admission`
+* `awscosts`
 
 See below for configuration details.
 
@@ -81,6 +82,7 @@ Parameter | Description | Default
 `{report}.image.repository` | Repository to use for the report image |
 `{report}.image.tag` | Image tag to use for the report |
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
+`polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
 `kubehunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
 `kubebench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
 `kubebench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
@@ -93,7 +95,7 @@ Parameter | Description | Default
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `opa.installCRDs` | Specifies whether to install the `customcheckinstances.insights.fairwinds.com` CRD. If you are installing the `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
 `goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
-`goldilocks.installVPA` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
+`goldilocks.vpa.enabled` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true
 `goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
@@ -101,3 +103,13 @@ Parameter | Description | Default
 `resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
+`awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
+`awscosts.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
+`awscosts.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
+`awscosts.region` | AWS region where costs was defined | ""
+`awscosts.database` | AWS database where Athena table was created | ""
+`awscosts.table` | AWS database Athena table for AWS costs | ""
+`awscosts.catalog` | AWS database catalog for AWS costs | ""
+`awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
+`awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
+`awscosts.workgroup` | Athena work group that used to run the queries | ""
