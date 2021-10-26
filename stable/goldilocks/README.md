@@ -55,7 +55,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
 | metrics-server.apiService.create | bool | `true` |  |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v3.1.4"` | The goldilocks image tag to use |
+| image.tag | string | `"v4.0.0"` | The goldilocks image tag to use |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
