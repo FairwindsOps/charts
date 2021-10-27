@@ -302,8 +302,20 @@ prometheus:
     enabled: false
   pushgateway:
     enabled: false
+  configmapReload:
+    image:
+      pullPolicy: Always
+    resources:
+      limits:
+        cpu: 100m
+        memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
   server:
     fullnameOverride: "prometheus-server"
+    image:
+      pullPolicy: Always
     persistentVolume:
       enabled: false
     retention: "1d"
@@ -311,6 +323,7 @@ prometheus:
       polaris.fairwinds.com/insecureCapabilities-exempt: "true"
       polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
       polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+      polaris.fairwinds.com/notReadOnlyRootFilesystem-exempt: "true"
     resources:
       limits:
         cpu: 500m
@@ -319,6 +332,8 @@ prometheus:
         cpu: 500m
         memory: 512Mi
   kube-state-metrics:
+    image:
+      pullPolicy: Always
     resources:
       limits:
         cpu: 100m
@@ -328,6 +343,7 @@ prometheus:
         memory: 32Mi
     containerSecurityContext:
       allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
       capabilities:
         drop:
           - ALL
