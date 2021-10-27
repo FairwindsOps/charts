@@ -320,20 +320,10 @@ prometheus:
     persistentVolume:
       enabled: false
     retention: "1d"
-    startupProbe:
-      enabled: true
-    securityContext:
-      runAsUser: 65534
-      runAsNonRoot: true
-      runAsGroup: 65534
-      fsGroup: 65534
-      allowPrivilegeEscalation: false
-      capabilities:
-        drop:
-          - ALL
     podAnnotations:
       polaris.fairwinds.com/insecureCapabilities-exempt: "true"
       polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
+      polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
     resources:
       limits:
         cpu: 500m
