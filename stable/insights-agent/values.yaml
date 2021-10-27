@@ -331,7 +331,7 @@ prometheus:
       capabilities:
         drop:
           - ALL
-    podAnnotations: 
+    podAnnotations:
       polaris.fairwinds.com/insecureCapabilities-exempt: "true"
       polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
     resources:
