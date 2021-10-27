@@ -303,15 +303,16 @@ prometheus:
   pushgateway:
     enabled: false
   configmapReload:
-    image:
-      pullPolicy: Always
-    resources:
-      limits:
-        cpu: 100m
-        memory: 64Mi
-      requests:
-        cpu: 10m
-        memory: 32Mi
+    prometheus:
+      image:
+        pullPolicy: Always
+      resources:
+        limits:
+          cpu: 100m
+          memory: 64Mi
+        requests:
+          cpu: 10m
+          memory: 32Mi
   server:
     fullnameOverride: "prometheus-server"
     image:
@@ -323,6 +324,7 @@ prometheus:
       polaris.fairwinds.com/insecureCapabilities-exempt: "true"
       polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
       polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+      polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
       polaris.fairwinds.com/notReadOnlyRootFilesystem-exempt: "true"
     resources:
       limits:
