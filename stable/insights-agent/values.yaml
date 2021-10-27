@@ -297,9 +297,6 @@ prometheus:
   kubeStateMetrics:
     enabled: true
     kube-state-metrics:
-      podAnnotations: 
-        polaris.fairwinds.com/insecureCapabilities-exempt: "true"
-        polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
       resources:
         limits:
           cpu: 100m
@@ -307,6 +304,11 @@ prometheus:
         requests:
           cpu: 10m
           memory: 32Mi
+      containerSecurityContext:
+        allowPrivilegeEscalation: false
+        capabilities:
+          drop:
+            - ALL
   alertmanager:
     enabled: false
   nodeExporter:
@@ -320,6 +322,15 @@ prometheus:
     retention: "1d"
     startupProbe:
       enabled: true
+    securityContext:
+      runAsUser: 65534
+      runAsNonRoot: true
+      runAsGroup: 65534
+      fsGroup: 65534
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+          - ALL
     podAnnotations: 
       polaris.fairwinds.com/insecureCapabilities-exempt: "true"
       polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
