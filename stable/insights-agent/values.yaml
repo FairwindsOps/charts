@@ -320,7 +320,7 @@ prometheus:
     retention: "1d"
     startupProbe:
       enabled: true
-    deploymentAnnotations: 
+    podAnnotations: 
       polaris.fairwinds.com/insecureCapabilities-exempt: "true"
       polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
     resources:
