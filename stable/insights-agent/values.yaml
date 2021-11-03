@@ -112,6 +112,7 @@ goldilocks:
       securityContext:
         allowPrivilegeEscalation: false
         readOnlyRootFilesystem: true
+        runAsUser: 65534
         capabilities:
           drop:
           - ALL

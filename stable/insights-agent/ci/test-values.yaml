@@ -10,7 +10,7 @@ uploader:
     value: bar
 
 goldilocks:
-  enabled: false
+  enabled: true
 
 opa:
   enabled: true
