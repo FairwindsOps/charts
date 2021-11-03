@@ -311,15 +311,7 @@ prometheus:
     enabled: false
   configmapReload:
     prometheus:
-      image:
-        pullPolicy: Always
-      resources:
-        limits:
-          cpu: 100m
-          memory: 64Mi
-        requests:
-          cpu: 10m
-          memory: 32Mi
+      enabled: false
   server:
     fullnameOverride: "prometheus-server"
     image:
