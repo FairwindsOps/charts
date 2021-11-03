@@ -4,9 +4,9 @@ dependencies:
   version: 4.0.1
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 14.7.1
+  version: 14.11.0
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
   version: 0.4.0
-digest: sha256:fe736cf2c93b54f2f04f24c843dce3758d3f21b47e324c1962a5c2da1c8b97aa
-generated: "2021-11-03T20:27:48.063316319Z"
+digest: sha256:1eaa7e66025b670a1484f628f265000c84e54f5dad07719c9d8e9e2db9e4d335
+generated: "2021-11-03T20:36:57.402441399Z"
