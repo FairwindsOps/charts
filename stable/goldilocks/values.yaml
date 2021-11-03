@@ -46,6 +46,8 @@ controller:
   tolerations: []
   # controller.affinity -- Affinity for the controller pods
   affinity: {}
+  # controller.topologySpreadConstraints -- Topology spread constraints for the controller pods
+  topologySpreadConstraints: []
   # controller.resources -- The resources block for the controller pods
   resources:
     limits:
@@ -148,3 +150,5 @@ dashboard:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # dashboard.topologySpreadConstraints -- Topology spread constraints for the dashboard pods
+  topologySpreadConstraints: []
