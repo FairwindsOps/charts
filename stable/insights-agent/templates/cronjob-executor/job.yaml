@@ -22,6 +22,8 @@ spec:
         args:
           - -c
           - |
+            set -e
+
             mkdir /tmp/bin
             export PATH=$PATH:/tmp/bin
             cd /tmp/bin
