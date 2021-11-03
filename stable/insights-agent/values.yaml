@@ -108,6 +108,13 @@ goldilocks:
   enabled: false
   vpa:
     enabled: true
+    recommender:
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        capabilities:
+          drop:
+          - ALL
   schedule: "rand * * * *"
   timeout: 300
   image:
