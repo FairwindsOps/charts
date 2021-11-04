@@ -1,4 +1,4 @@
-{{ range .Values.deleteOldActionItemsCronjob.schedules }}
+{{ range .Values.databaseCleanupCronjob.schedules }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -22,17 +22,17 @@ spec:
           containers:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
-              command: ["delete_old_action_items"]
+              command: ["database_cleanup"]
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.deleteOldActionItemsCronjob.resources | nindent 16 }}
+                {{- toYaml $.Values.databaseCleanupCronjob.resources | nindent 16 }}
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
                 privileged: false
                 runAsNonRoot: true
-                runAsUser: {{ $.Values.deleteOldActionItemsCronjob.securityContext.runAsUser }}
+                runAsUser: {{ $.Values.databaseCleanupCronjob.securityContext.runAsUser }}
                 capabilities:
                   drop:
                     - ALL
