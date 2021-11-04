@@ -47,7 +47,7 @@ aggregateCronjob:
 emailCronjob:
   schedules: []
 
-deleteOldActionItemsCronjob:
+databaseCleanupCronjob:
   schedules: []
 
 minio:
