@@ -17,7 +17,6 @@ references:
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
     command_runner_image: quay.io/helmpack/chart-testing:v3.4.0
-    kind_version: 0.9.0
     requires:
       - lint-scripts
       - lint-charts
