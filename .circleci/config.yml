@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rok8s11: fairwinds/rok8s-scripts@11
+  rok8s11: fairwinds/rok8s-scripts@dev:sudermanjr/remove-hostpath-provisioner
 
 references:
   setup_environment: &setup_environment
@@ -109,10 +109,6 @@ workflows:
       - lint-scripts
       - lint-charts
       - insights
-      - rok8s11/kubernetes_e2e_tests:
-          name: "End-To-End Kubernetes 1.18.8 - Helm 3"
-          kind_node_image: "kindest/node:v1.18.8@sha256:f4bcc97a0ad6e7abaf3f643d890add7efe6ee4ab90baeb374b4f41a4c95567eb"
-          <<: *kind_configuration_helm3
       - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.19.1 - Helm 3"
           kind_node_image: "kindest/node:v1.19.1@sha256:98cf5288864662e37115e362b23e4369c8c4a408f99cbc06e58ac30ddc721600"
