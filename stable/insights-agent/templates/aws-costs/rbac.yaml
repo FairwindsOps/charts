@@ -1,0 +1,8 @@
+{{- if and .Values.awscosts.enabled (not .Values.rbac.disabled) -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-awscosts
+  labels:
+    app: insights-agent
+{{- end -}}

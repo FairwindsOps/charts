@@ -9,6 +9,9 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
     app.kubernetes.io/component: dashboard
+    {{- if .Values.dashboard.deployment.additionalLabels }}
+    {{ toYaml .Values.dashboard.deployment.additionalLabels | nindent 4 }}
+    {{- end }}
   {{- with .Values.dashboard.deployment.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -26,6 +29,9 @@ spec:
         app.kubernetes.io/name: {{ include "goldilocks.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/component: dashboard
+        {{- if .Values.dashboard.deployment.additionalLabels }}
+        {{ toYaml .Values.dashboard.deployment.additionalLabels | nindent 8 }}
+        {{- end }}
     spec:
       {{- if .Values.dashboard.serviceAccount.create }}
       serviceAccountName: {{ include "goldilocks.fullname" . }}-dashboard
@@ -79,6 +85,10 @@ spec:
     {{- end }}
     {{- with .Values.dashboard.tolerations }}
       tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.controller.topologySpreadConstraints }}
+      topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
     {{- end }}
 {{- end }}
