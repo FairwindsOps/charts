@@ -94,7 +94,9 @@ recommender:
 | admissionController.certGen.image.pullPolicy | string | `"Always"` | The pull policy for the certgen image. Recommend not changing this |
 | admissionController.certGen.env | object | `{}` | Additional environment variables to be added to the certgen container. Format is KEY: Value format |
 | admissionController.certGen.resources | object | `{}` | The resources block for the certgen pod |
-| admissionController.cleanupOnDelete | bool | `true` | If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller |
+| admissionController.cleanupOnDelete.enabled | bool | `true` | If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller |
+| admissionController.cleanupOnDelete.image.repository | string | `"quay.io/reactiveops/ci-images"`| This is the image repository for post-delete process
+| admissionController.cleanupOnDelete.image.tag | string | `"v11-alpine"`| This is the image tag for post-delete process
 | admissionController.replicaCount | int | `1` |  |
 | admissionController.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | admissionController.image.repository | string | `"k8s.gcr.io/autoscaling/vpa-admission-controller"` | The location of the vpa admission controller image |
