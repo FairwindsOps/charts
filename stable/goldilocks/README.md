@@ -49,7 +49,9 @@ This will completely remove the VPA and then re-install it using the new method.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
+| uninstallVPA.enabled | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
+| uninstallVPA.image.repository | string | `"quay.io/reactiveops/ci-images"` | Repository for removing vpa installation. |
+| uninstallVPA.image.tag | string | `"v9-alpine"` | Tag for removing vpa installation image to use. |
 | vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
 | vpa.updater.enabled | bool | `false` |  |
 | metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |

@@ -1,5 +1,11 @@
 # uninstallVPA -- Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release.
-uninstallVPA: false
+uninstallVPA:
+  enabled: false
+  image:
+    # image.repository -- Repository for the remove vpa installation image
+    repository: quay.io/reactiveops/ci-images
+    # image.tag -- The remove vpa installation image tag to use
+    tag: v9-alpine
 
 vpa:
   # vpa.enabled -- If true, the vpa will be installed as a sub-chart
