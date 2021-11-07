@@ -117,7 +117,11 @@ admissionController:
     # admissionController.certGen.resources -- The resources block for the certgen pod
     resources: {}
   # admissionController.cleanupOnDelete -- If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller
-  cleanupOnDelete: true
+  cleanupOnDelete:
+    enabled: true
+    image:
+      repository: quay.io/reactiveops/ci-images
+      tag: v11-alpine
   replicaCount: 1
   # admissionController.podDisruptionBudget -- This is the setting for the pod disruption budget
   podDisruptionBudget: {}
