@@ -13,16 +13,27 @@ spec:
   selector:
     matchLabels:
       name: falco-agent
-  {{- if .Values.falcoagent.statefulset }}
+  {{- if .Values.falcoagent.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
         name: output-data
+      {{- with .Values.falcoagent.persistence.annotations }}
+        annotations:
+        {{- range $key, $value := . }}
+          {{ $key }}: {{ $value }}
+        {{- end }}
+      {{- end }}
     spec:
-        accessModes: ["ReadWriteOnce"]
-        storageClassName: "kops-ssd-1-17"
+        accessModes: 
+        {{- range .Values.falcoagent.persistence.accessModes }}
+          - {{ . | quote }}
+        {{- end }}
+      {{- if .Values.falcoagent.persistence.storageClass }}
+        storageClassName:  {{ .Values.falcoagent.persistence.storageClass }}
+      {{- end -}}
         resources:
-            requests:
-                storage: 1Gi
+          requests:
+            storage: {{ .Values.falcoagent.persistence.size | quote }}
   {{- end }}
   template:
     metadata:
@@ -66,7 +77,7 @@ spec:
       tolerations:
 {{ toYaml .Values.falcoagent.tolerations | indent 8 }}
       {{- end }}
-      {{- if not .Values.falcoagent.statefulset}}
+      {{- if not .Values.falcoagent.persistence.enabled }}
       volumes:
         - name: output-data
           emptyDir: {}

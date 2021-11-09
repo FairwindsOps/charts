@@ -393,6 +393,16 @@ falcoagent:
   enabled: false
   installFalco: false
   statefulset: false
+  persistence:
+    enabled: false
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    ## If defined, PVC must be created manually before volume will be bound
+    existingClaim: ""
+    mountPath: /data
+    size: 1Gi
+    # storageClass: "-"
   schedule: "rand * * * *"
   timeout: 300
   service:
