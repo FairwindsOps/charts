@@ -22,7 +22,7 @@ spec:
                 - name: {{ . }}
             {{- end }}
             resources:
-                {{- toYaml .Config.resources | nindent 12 }}
+              {{- toYaml .Config.resources | nindent 14 }}
             volumeMounts:
             - name: output
               mountPath: /output
