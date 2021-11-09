@@ -49,7 +49,7 @@ spec:
         - name: output-data
           mountPath: /output
         imagePullPolicy: {{ .Values.falcoagent.image.pullPolicy }}
-        image: "{{ .Values.falcoagent.image.repository }}:{{ .Values.image.tag }}"
+        image: "{{ .Values.falcoagent.image.repository }}:{{ .Values.falcoagent.image.tag }}"
         ports:
         - containerPort: {{ .Values.falcoagent.service.port | default 3031}}
         resources:
