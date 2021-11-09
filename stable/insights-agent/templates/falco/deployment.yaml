@@ -13,7 +13,10 @@ spec:
   selector:
     matchLabels:
       app: falco-agent
-  {{- if .Values.falcoagent.persistence.enabled }}
+{{- if .Values.falcoagent.statefulset }}
+  serviceName: falco-agent
+{{- end }}
+{{- if .Values.falcoagent.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
         name: output-data
@@ -24,17 +27,17 @@ spec:
         {{- end }}
       {{- end }}
     spec:
-        accessModes: 
-        {{- range .Values.falcoagent.persistence.accessModes }}
-          - {{ . | quote }}
-        {{- end }}
-      {{- if .Values.falcoagent.persistence.storageClass }}
-        storageClassName:  {{ .Values.falcoagent.persistence.storageClass }}
-      {{- end -}}
-        resources:
-          requests:
-            storage: {{ .Values.falcoagent.persistence.size | quote }}
-  {{- end }}
+      accessModes:
+      {{- range .Values.falcoagent.persistence.accessModes }}
+        - {{ . | quote }}
+      {{- end }}
+      resources:
+        requests:
+          storage: {{ .Values.falcoagent.persistence.size | quote }}
+    {{- if .Values.falcoagent.persistence.storageClass }}
+      storageClassName: {{ .Values.falcoagent.persistence.storageClass }}
+    {{- end -}}
+{{- end }}
   template:
     metadata:
       labels:

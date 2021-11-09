@@ -395,13 +395,13 @@ falcoagent:
   statefulset: false
   persistence:
     enabled: false
+    storageClass: ""
     accessModes:
       - ReadWriteOnce
     annotations: {}
     ## If defined, PVC must be created manually before volume will be bound
     existingClaim: ""
     size: 1Gi
-    # storageClass: "-"
   schedule: "rand * * * *"
   timeout: 300
   service:
@@ -442,4 +442,4 @@ falco:
         customHeaders: ""  # a list of comma separated custom headers to add, syntax is "key:value\,key:value"
         minimumpriority: ""
         mutualtls: false
-        checkcert: true%
+        checkcert: true

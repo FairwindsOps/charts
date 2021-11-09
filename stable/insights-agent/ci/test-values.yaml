@@ -64,3 +64,6 @@ falcoagent:
   enabled: true
   image:
     tag: "build_5220"
+  statefulset: true
+  persistence:
+    enabled: true
