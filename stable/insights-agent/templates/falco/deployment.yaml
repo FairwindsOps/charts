@@ -69,7 +69,19 @@ spec:
         imagePullPolicy: {{ .Values.falcoagent.image.pullPolicy }}
         image: "{{ .Values.falcoagent.image.repository }}:{{ .Values.falcoagent.image.tag }}"
         ports:
-        - containerPort: {{ .Values.falcoagent.service.port | default 3031}}
+        - containerPort: {{ .Values.falcoagent.service.port | default 3031 }}
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.falcoagent.service.port | default 3031 }}
+          initialDelaySeconds: 15
+          periodSeconds: 14
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: {{ .Values.falcoagent.service.port | default 3031 }}
+          initialDelaySeconds: 15
+          periodSeconds: 15
         resources:
         {{- toYaml .Values.falcoagent.resources | nindent 10 }}
       {{- if .Values.falcoagent.affinity }}
