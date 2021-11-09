@@ -22,7 +22,7 @@ spec:
               - /bin/sh
               - -c
               - |
-                python ./kube-hunter.py \
+                kube-hunter \
                   --pod \
                   --log {{ .Values.kubehunter.logLevel }} \
                   --report json \
