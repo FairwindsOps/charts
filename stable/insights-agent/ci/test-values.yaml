@@ -10,7 +10,7 @@ uploader:
     value: bar
 
 goldilocks:
-  enabled: false
+  enabled: false  # TODO: why is this disabled?
 
 opa:
   enabled: true
@@ -59,3 +59,6 @@ awscosts:
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
+
+falcoagent:
+  enabled: true
