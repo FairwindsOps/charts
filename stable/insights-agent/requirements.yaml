@@ -11,3 +11,7 @@ dependencies:
   repository: https://charts.fairwinds.com/stable
   version: 0.4.0
   condition: admission.enabled
+- name: falco
+  repository: https://falcosecurity.github.io/charts
+  version: 1.16.0
+  condition: falcoagent.installFalco

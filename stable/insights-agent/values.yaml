@@ -424,3 +424,22 @@ falcoagent:
     requests:
       cpu: 100m
       memory: 128Mi
+
+falco:
+  falco:
+    jsonOutput: true
+  ebpf:
+    # Enable eBPF support for Falco
+    enabled: true
+  falcosidekick:
+    # enable falcosidekick deployment
+    enabled: true
+    webui:
+      enabled: true
+    config:
+      webhook:
+        address: "http://falco-agent:3031/data"
+        customHeaders: ""  # a list of comma separated custom headers to add, syntax is "key:value\,key:value"
+        minimumpriority: ""
+        mutualtls: false
+        checkcert: true%
