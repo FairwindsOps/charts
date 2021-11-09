@@ -12,7 +12,7 @@ metadata:
 spec:
   selector:
     matchLabels:
-      name: falco-agent
+      app: falco-agent
   {{- if .Values.falcoagent.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
@@ -39,10 +39,10 @@ spec:
     metadata:
       labels:
         app: falco-agent
-      {{- if .Values.falcoagent.podAnnotations }}
+    {{- if .Values.falcoagent.podAnnotations }}
       annotations:
-{{ toYaml .Values.podAnnotations | indent 8 }}
-      {{- end }}
+        {{ toYaml .Values.falcoagent.podAnnotations | indent 8 }}
+    {{- end }}
     spec:
       serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
       {{- if .Values.falcoagent.securityContext.enabled }}
@@ -58,14 +58,14 @@ spec:
       - name: falco-agent
         volumeMounts:
         - name: output-data
-          mountPath: /output'
-        {{- if .Values.falcoagent.securityContext.enabled }}
+          mountPath: /output
+      {{- if .Values.falcoagent.securityContext.enabled }}
         securityContext:
           allowPrivilegeEscalation: {{ .Values.falcoagent.securityContext.allowPrivilegeEscalation }}
           readOnlyRootFilesystem: {{ .Values.falcoagent.securityContext.readOnlyRootFilesystem }}
           runAsNonRoot: {{ .Values.falcoagent.securityContext.runAsNonRoot }}
           runAsUser: {{ .Values.falcoagent.securityContext.runAsUser }}
-        {{- end }}
+      {{- end }}
         imagePullPolicy: {{ .Values.falcoagent.image.pullPolicy }}
         image: "{{ .Values.falcoagent.image.repository }}:{{ .Values.falcoagent.image.tag }}"
         ports:
@@ -84,21 +84,21 @@ spec:
           periodSeconds: 15
         resources:
         {{- toYaml .Values.falcoagent.resources | nindent 10 }}
-      {{- if .Values.falcoagent.affinity }}
+    {{- if .Values.falcoagent.affinity }}
       affinity:
-{{ toYaml .Values.falcoagent.affinity | indent 8 }}
-      {{- end }}
-      {{- if .Values.falcoagent.nodeSelector }}
+        {{ toYaml .Values.falcoagent.affinity | indent 8 }}
+    {{- end }}
+    {{- if .Values.falcoagent.nodeSelector }}
       nodeSelector:
-{{ toYaml .Values.falcoagent.nodeSelector | indent 8 }}
-      {{- end }}
-      {{- if .Values.falcoagent.tolerations }}
+        {{ toYaml .Values.falcoagent.nodeSelector | indent 8 }}
+    {{- end }}
+    {{- if .Values.falcoagent.tolerations }}
       tolerations:
-{{ toYaml .Values.falcoagent.tolerations | indent 8 }}
-      {{- end }}
-      {{- if not .Values.falcoagent.persistence.enabled }}
+        {{ toYaml .Values.falcoagent.tolerations | indent 8 }}
+    {{- end }}
+    {{- if not .Values.falcoagent.persistence.enabled }}
       volumes:
         - name: output-data
           emptyDir: {}
-      {{- end }}
+    {{- end }}
 {{- end -}}
