@@ -13,6 +13,8 @@ spec:
       template:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
+          - name: tmp
+            emptyDir: {}
           containers:
           - name: {{ .Label }}
             image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
@@ -26,6 +28,8 @@ spec:
             volumeMounts:
             - name: output
               mountPath: /output
+            - name: tmp
+              mountPath: /tmp
             command: ["sh"]
             args:
                 - -c
