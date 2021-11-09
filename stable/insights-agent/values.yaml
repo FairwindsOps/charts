@@ -409,10 +409,14 @@ falcoagent:
   image:
     repository: quay.io/fairwinds/aws-costs
     tag: "0.1"
+    pullPolicy: Always
   securityContext:
+    enabled: true
     fsGroup: 101
     runAsUser: 1200
     runAsNonRoot: true
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
   resources:
     limits:
       cpu: 250m

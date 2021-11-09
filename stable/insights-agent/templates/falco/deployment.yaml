@@ -58,7 +58,14 @@ spec:
       - name: falco-agent
         volumeMounts:
         - name: output-data
-          mountPath: /output
+          mountPath: /output'
+        {{- if .Values.falcoagent.securityContext.enabled }}
+        securityContext:
+          allowPrivilegeEscalation: {{ .Values.falcoagent.securityContext.allowPrivilegeEscalation }}
+          readOnlyRootFilesystem: {{ .Values.falcoagent.securityContext.readOnlyRootFilesystem }}
+          runAsNonRoot: {{ .Values.falcoagent.securityContext.runAsNonRoot }}
+          runAsUser: {{ .Values.falcoagent.securityContext.runAsUser }}
+        {{- end }}
         imagePullPolicy: {{ .Values.falcoagent.image.pullPolicy }}
         image: "{{ .Values.falcoagent.image.repository }}:{{ .Values.falcoagent.image.tag }}"
         ports:
