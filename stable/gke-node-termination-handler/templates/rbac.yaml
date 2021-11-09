@@ -1,22 +1,16 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  labels:
-    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
   name: {{ include "gke-node-termination-handler.fullname" . }}
+  labels:
+{{ include "gke-node-termination-handler.labels" . | indent 4 }}
 ---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  labels:
-    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
   name: {{ include "gke-node-termination-handler.fullname" . }}
+  labels:
+{{ include "gke-node-termination-handler.labels" . | indent 4 }}
 rules:
   # Allow Node Termination Handler to get and update nodes (for posting taints).
 - apiGroups: [""]
@@ -34,12 +28,9 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  labels:
-    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
   name: {{ include "gke-node-termination-handler.fullname" . }}
+  labels:
+{{ include "gke-node-termination-handler.labels" . | indent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
