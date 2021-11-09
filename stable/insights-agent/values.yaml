@@ -407,8 +407,8 @@ falcoagent:
   service:
     port: 3031
   image:
-    repository: quay.io/fairwinds/aws-costs
-    tag: "0.1"
+    repository: quay.io/fairwinds/falco-agent
+    tag: "0.0.1"
     pullPolicy: Always
   securityContext:
     enabled: true
