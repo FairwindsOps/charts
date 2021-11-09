@@ -395,6 +395,8 @@ falcoagent:
   statefulset: false
   schedule: "rand * * * *"
   timeout: 300
+  service:
+    port: 3031
   image:
     repository: quay.io/fairwinds/aws-costs
     tag: "0.1"
