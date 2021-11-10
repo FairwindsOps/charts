@@ -61,5 +61,5 @@ awscosts:
   workgroup: cur_athena_workgroup
 
 falco:
-  installFalco: false # Falco does not generarly play well with KIND cluster.
+  installFalco: false  # Falco does not work well with KIND cluster
   enabled: true
