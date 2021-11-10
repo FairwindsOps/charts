@@ -1,6 +1,6 @@
-{{- if .Values.falcoagent.enabled -}}
+{{- if .Values.falco.enabled -}}
 {{- $_ := set . "Label" "falco" }}
-{{- $_ := set . "Config" .Values.falcoagent }}
+{{- $_ := set . "Config" .Values.falco }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:

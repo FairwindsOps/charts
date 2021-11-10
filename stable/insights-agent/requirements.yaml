@@ -15,3 +15,4 @@ dependencies:
   repository: https://falcosecurity.github.io/charts
   version: 1.16.0
   condition: falcoagent.installFalco
+  alias: falcoOptions

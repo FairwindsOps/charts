@@ -1,8 +1,8 @@
-{{- if .Values.falcoagent.enabled -}}
+{{- if .Values.falco.enabled -}}
 {{- $_ := set . "Label" "falco" }}
-{{- $_ := set . "Config" .Values.falcoagent }}
+{{- $_ := set . "Config" .Values.falco }}
 apiVersion: apps/v1
-{{- if .Values.falcoagent.statefulset }}
+{{- if .Values.falco.statefulset }}
 kind: StatefulSet
 {{- else }}
 kind: Deployment
@@ -13,14 +13,14 @@ spec:
   selector:
     matchLabels:
       app: falco-agent
-{{- if .Values.falcoagent.statefulset }}
+{{- if .Values.falco.statefulset }}
   serviceName: falco-agent
 {{- end }}
-{{- if .Values.falcoagent.persistence.enabled }}
+{{- if .Values.falco.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
         name: output-data
-      {{- with .Values.falcoagent.persistence.annotations }}
+      {{- with .Values.falco.persistence.annotations }}
         annotations:
         {{- range $key, $value := . }}
           {{ $key }}: {{ $value }}
@@ -28,78 +28,71 @@ spec:
       {{- end }}
     spec:
       accessModes:
-      {{- range .Values.falcoagent.persistence.accessModes }}
+      {{- range .Values.falco.persistence.accessModes }}
         - {{ . | quote }}
       {{- end }}
       resources:
         requests:
-          storage: {{ .Values.falcoagent.persistence.size | quote }}
-    {{- if .Values.falcoagent.persistence.storageClass }}
-      storageClassName: {{ .Values.falcoagent.persistence.storageClass }}
+          storage: {{ .Values.falco.persistence.size | quote }}
+    {{- if .Values.falco.persistence.storageClass }}
+      storageClassName: {{ .Values.falco.persistence.storageClass }}
     {{- end -}}
 {{- end }}
   template:
     metadata:
       labels:
         app: falco-agent
-    {{- if .Values.falcoagent.podAnnotations }}
+    {{- if .Values.falco.podAnnotations }}
       annotations:
-        {{ toYaml .Values.falcoagent.podAnnotations | indent 8 }}
+        {{ toYaml .Values.falco.podAnnotations | indent 8 }}
     {{- end }}
     spec:
       serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
-      {{- if .Values.falcoagent.securityContext.enabled }}
       securityContext:
-        fsGroup: {{ .Values.falcoagent.securityContext.fsGroup }}
-        runAsNonRoot: {{ .Values.falcoagent.securityContext.runAsNonRoot }}
-        runAsUser: {{ .Values.falcoagent.securityContext.runAsUser }}
-      {{- end }}
-    {{- if .Values.falcoagent.priorityClassName }}
-      priorityClassName: {{ .Values.falcoagent.priorityClassName }}
+        {{- toYaml .Values.falco.podSecurityContext | nindent 8 }}
+    {{- if .Values.falco.priorityClassName }}
+      priorityClassName: {{ .Values.falco.priorityClassName }}
     {{- end }}
       containers:
       - name: falco-agent
         volumeMounts:
         - name: output-data
           mountPath: /output
-      {{- if .Values.falcoagent.securityContext.enabled }}
+      {{- if .Values.falco.securityContext }}
         securityContext:
-          allowPrivilegeEscalation: {{ .Values.falcoagent.securityContext.allowPrivilegeEscalation }}
-          readOnlyRootFilesystem: {{ .Values.falcoagent.securityContext.readOnlyRootFilesystem }}
-          runAsNonRoot: {{ .Values.falcoagent.securityContext.runAsNonRoot }}
-          runAsUser: {{ .Values.falcoagent.securityContext.runAsUser }}
+          {{- toYaml .Values.falco.securityContext | nindent 12 }}
       {{- end }}
-        imagePullPolicy: {{ .Values.falcoagent.image.pullPolicy }}
-        image: "{{ .Values.falcoagent.image.repository }}:{{ .Values.falcoagent.image.tag }}"
+        imagePullPolicy: {{ .Values.falco.image.pullPolicy }}
+        image: "{{ .Values.falco.image.repository }}:{{ .Values.falco.image.tag }}"
         ports:
-        - containerPort: {{ .Values.falcoagent.service.port | default 3031 }}
+        - containerPort: {{ .Values.falco.service.port | default 3031 }}
         readinessProbe:
           httpGet:
             path: /health
-            port: {{ .Values.falcoagent.service.port | default 3031 }}
+            port: {{ .Values.falco.service.port | default 3031 }}
           initialDelaySeconds: 15
           periodSeconds: 14
         livenessProbe:
           httpGet:
             path: /health
-            port: {{ .Values.falcoagent.service.port | default 3031 }}
+            port: {{ .Values.falco.service.port | default 3031 }}
           initialDelaySeconds: 15
           periodSeconds: 15
         resources:
-        {{- toYaml .Values.falcoagent.resources | nindent 10 }}
-    {{- if .Values.falcoagent.affinity }}
+        {{- toYaml .Values.falco.resources | nindent 10 }}
+    {{- if .Values.falco.affinity }}
       affinity:
-        {{ toYaml .Values.falcoagent.affinity | indent 8 }}
+        {{ toYaml .Values.falco.affinity | indent 8 }}
     {{- end }}
-    {{- if .Values.falcoagent.nodeSelector }}
+    {{- if .Values.falco.nodeSelector }}
       nodeSelector:
-        {{ toYaml .Values.falcoagent.nodeSelector | indent 8 }}
+        {{ toYaml .Values.falco.nodeSelector | indent 8 }}
     {{- end }}
-    {{- if .Values.falcoagent.tolerations }}
+    {{- if .Values.falco.tolerations }}
       tolerations:
-        {{ toYaml .Values.falcoagent.tolerations | indent 8 }}
+        {{ toYaml .Values.falco.tolerations | indent 8 }}
     {{- end }}
-    {{- if not .Values.falcoagent.persistence.enabled }}
+    {{- if not .Values.falco.persistence.enabled }}
       volumes:
         - name: output-data
           emptyDir: {}
