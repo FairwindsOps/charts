@@ -393,8 +393,11 @@ rightsizer:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
-  # There is no image, as the Insights uploader directly uploads a ConfigMap.
+  # This image is for the controller, the agent only runs the Insights uploader.
   image:
-    tag: latest
+    repository: quay.io/fairwinds/right-sizer
+    tag: right-sizer-jam
+    pullPolicy: Always
+  stateconfigmapname: right-sizer-state
   SkipVolumes: true
 
