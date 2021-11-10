@@ -16,7 +16,7 @@ spec:
 {{- if .Values.falco.statefulset }}
   serviceName: falco-agent
 {{- end }}
-{{- if .Values.falco.persistence.enabled }}
+{{- if and .Values.falco.statefulset .Values.falco.persistence.enabled }}
   volumeClaimTemplates:
   - metadata:
         name: output-data
