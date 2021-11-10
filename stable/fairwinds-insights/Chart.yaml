@@ -6,7 +6,7 @@ version: 0.2.23
 maintainers:
 - name: rbren
 - name: makoscafee
-- name: baderbuddy
+- name: ivanfetch-fw
 dependencies:
 - name: postgresql
   version: 9.1.2
