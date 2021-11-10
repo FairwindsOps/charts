@@ -388,3 +388,13 @@ awscosts:
     requests:
       cpu: 100m
       memory: 128Mi
+
+rightsizer:
+  enabled: false
+  schedule: "rand * * * *"
+  timeout: 300
+  # There is no image, as the Insights uploader directly uploads a ConfigMap.
+  image:
+    tag: latest
+  SkipVolumes: true
+

@@ -1,0 +1,22 @@
+{{- if .Values.rightsizer.enabled -}}
+{{- $_ := set . "Label" "rightsizer" }}
+{{- $_ := set . "Config" .Values.rightsizer }}
+{{- include "cronjob" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          volumes:
+          - name:       output
+            configMap:
+              name: right-sizer-state
+              items:
+              - key: report
+                path: rightsizer.json
+          containers:
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+{{- end -}}
