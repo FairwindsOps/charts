@@ -80,17 +80,17 @@ spec:
           periodSeconds: 15
         resources:
         {{- toYaml .Values.falco.resources | nindent 10 }}
-    {{- if .Values.falco.affinity }}
+    {{- with .Values.falco.affinity }}
       affinity:
-        {{ toYaml .Values.falco.affinity | indent 8 }}
+        {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- if .Values.falco.nodeSelector }}
+    {{- with .Values.falco.nodeSelector }}
       nodeSelector:
-        {{ toYaml .Values.falco.nodeSelector | indent 8 }}
+        {{ toYaml . | indent 8 }}
     {{- end }}
-    {{- if .Values.falco.tolerations }}
+    {{- with .Values.falco.tolerationss }}
       tolerations:
-        {{ toYaml .Values.falco.tolerations | indent 8 }}
+        {{ toYaml . | indent 8 }}
     {{- end }}
     {{- if not .Values.falco.persistence.enabled }}
       volumes:

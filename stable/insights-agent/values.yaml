@@ -420,6 +420,7 @@ falco:
     capabilities:
       drop:
         - ALL
+  tolerations: []
   resources:
     limits:
       cpu: 250m
