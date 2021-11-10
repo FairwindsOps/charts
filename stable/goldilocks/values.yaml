@@ -77,7 +77,7 @@ controller:
     annotations: {}
     # controller.deployment.additionalLabels -- Extra labels for the controller deployment
     additionalLabels: {}
-  
+
   # controller.onByDefault -- Enable by default VPAs on all namespaces
   onByDefault: false
   # controller.excludeNamespaces -- Exclude namespaces from the VPA deployments, when on By default is enabled
