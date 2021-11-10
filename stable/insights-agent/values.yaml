@@ -391,7 +391,7 @@ awscosts:
 
 falco:
   enabled: false
-  installFalco: true
+  installFalco: false
   statefulset: true
   persistence:
     enabled: true
@@ -428,7 +428,7 @@ falco:
       cpu: 100m
       memory: 128Mi
 
-falcoOptions:
+falcosecurity:
   falco:
     jsonOutput: true
   ebpf:

@@ -60,7 +60,6 @@ awscosts:
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
 
-falcoagent:
+falco:
+  installFalco: false # Falco does not generarly play well with KIND cluster.
   enabled: true
-  image:
-    tag: "build_5220"
