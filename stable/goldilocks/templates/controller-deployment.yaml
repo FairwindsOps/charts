@@ -48,6 +48,15 @@ spec:
             - /goldilocks
             - controller
             - -v{{ .Values.controller.logVerbosity }}
+            {{- if .Values.controller.onByDefault }}
+            - --on-by-default
+            {{- if ne .Values.controller.excludeNamespaces "" }}
+            - --exclude-namespaces={{ .Values.controller.excludeNamespaces }}
+            {{- end }}
+            {{- else if ne .Values.controller.includeNamespaces "" }}
+            - --include-namespaces={{ .Values.controller.includeNamespaces }}
+            {{- end }}
+
             {{- range $name, $value := .Values.controller.flags }}
             - --{{ $name }}={{ $value }}
             {{- end }}

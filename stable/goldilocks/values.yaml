@@ -77,6 +77,13 @@ controller:
     annotations: {}
     # controller.deployment.additionalLabels -- Extra labels for the controller deployment
     additionalLabels: {}
+  
+  # controller.onByDefault -- Enable by default VPAs on all namespaces
+  onByDefault: false
+  # controller.excludeNamespaces -- Exclude namespaces from the VPA deployments, when on By default is enabled
+  excludeNamespaces: ""
+  # controller.includeNamespaces -- Include Namespaces to VPA deployments, when on-by-default is not there
+  includeNamespaces: ""
 
 dashboard:
   # dashboard.enabled -- If true, the dashboard component will be installed

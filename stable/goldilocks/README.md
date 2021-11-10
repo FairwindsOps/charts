@@ -76,6 +76,9 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.deployment.extraVolumes | list | `[]` | Extra volumes for the controller pod |
 | controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
 | controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
+| controller.onByDefault | bool | `false` | Enable by default VPAs on all namespaces |
+| controller.excludeNamespaces | string | `""` | Exclude namespaces from the VPA deployments, when on By default is enabled |
+| controller.includeNamespaces | string | `""` | Include Namespaces to VPA deployments, when on-by-default is not there |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
 | dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
