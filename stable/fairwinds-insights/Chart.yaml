@@ -2,11 +2,11 @@ apiVersion: v2
 appVersion: "6.0.0"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 0.2.21
+version: 0.2.23
 maintainers:
 - name: rbren
 - name: makoscafee
-- name: baderbuddy
+- name: ivanfetch-fw
 dependencies:
 - name: postgresql
   version: 9.1.2
