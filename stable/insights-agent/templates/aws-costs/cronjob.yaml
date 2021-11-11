@@ -1,7 +1,10 @@
 {{- if .Values.awscosts.enabled -}}
 {{- $_ := set . "Label" "awscosts" }}
 {{- $_ := set . "Config" .Values.awscosts }}
+apiVersion: batch/v1beta1
+{{- else }}
 apiVersion: batch/v1
+{{- end }}
 kind: CronJob
 metadata:
   {{- include "metadata" . }}
