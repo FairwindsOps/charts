@@ -45,10 +45,6 @@ spec:
           - secretRef:
               name: {{ include "vault-token-injector.fullname" . }}
           env:
-          - name: "CIRCLE_CI_TOKEN"
-            value: {{ .Values.circleToken | quote }}
-          - name: "TFCLOUD_TOKEN"
-            value: {{ .Values.tfCloudToken | quote }}
           - name: "VAULT_ADDR"
             value: {{ .Values.vaultAddress | quote }}
           {{- if .Values.vaultTokenFile }}
