@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-rightsizer
+  name: {{ include "insights-agent.fullname" . }}-right-sizer
   labels:
     app: insights-agent
 # This ServiceAccount currently needs no permissions.

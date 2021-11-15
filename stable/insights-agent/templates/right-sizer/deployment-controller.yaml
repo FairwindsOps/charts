@@ -2,31 +2,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-rightsizer-controller
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
   annotations:
   labels:
-    component: rightsizer
+    component: right-sizer
     app: insights-agent
 spec:
   selector:
     matchLabels:
-      component: rightsizer
+      component: right-sizer
       app: insights-agent
   template:
     metadata:
       labels:
-        component: rightsizer
+        component: right-sizer
         app: insights-agent
     spec:
       containers:
-        - name: {{ .Chart.Name }}-rightsizer-controller
+        - name: {{ .Chart.Name }}-right-sizer-controller
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.rightsizer.image.repository }}:{{ .Values.rightsizer.image.tag }}"
           imagePullPolicy: {{ .Values.rightsizer.image.pullPolicy }}
           command:
-          - "rightsizer"
+          - "right-sizer"
           - "-stateconfigmap"
           - "{{ .Release.Namespace }}/{{ .Values.rightsizer.stateconfigmapname }}"
-      serviceAccountName: insights-agent-rightsizer-controller
+      serviceAccountName: insights-agent-right-sizer-controller
 {{- end -}}
