@@ -111,6 +111,15 @@ autoscaling:
   # autoscaling.targetMemoryUtilizationPercentage -- Target memory to scale towards.
   targetMemoryUtilizationPercentage: null
 
+# Pod Disruption Budget
+# PDB is enabled if either:
+# 1. autoscaling.enabled=true and autoscaling.minReplicas > 1
+# 2. autoscaling.enabled=false and replicaCount > 1
+pdb:
+  # The minimum number of admission controller pods that must still be
+  # available after an eviction, expressed as an absolute number or a percentage.
+  minAvailable: 1
+
 # nameOverride -- Overrides the name of the release.
 nameOverride: ""
 # fullnameOverride -- Long name of the release to override.
