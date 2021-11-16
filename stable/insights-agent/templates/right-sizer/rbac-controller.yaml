@@ -46,6 +46,13 @@ rules:
     verbs:
       - 'watch'
       - 'list'
+  - apiGroups:
+      - ''
+    resources:
+      - 'events'
+    verbs:
+      - 'create'
+      - 'get'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
