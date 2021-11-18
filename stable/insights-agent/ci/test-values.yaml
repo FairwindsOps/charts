@@ -59,6 +59,3 @@ awscosts:
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
-
-databaseCleanupCronjob:
-  enabled: true
