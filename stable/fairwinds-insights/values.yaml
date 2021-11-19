@@ -284,6 +284,8 @@ emailCronjob:
     runAsUser: 10324
 
 databaseCleanupCronjob:
+  # -- Enable database cleanup
+  enabled: false
   # -- Resources for the database cleanup job.
   resources:
     limits:
