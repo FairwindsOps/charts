@@ -37,4 +37,12 @@ rules:
       - 'create'
       - 'delete'
       - 'update'
+  - apiGroups:
+      - 'argoproj.io'
+    resources:
+      - rollouts
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
 {{- end }}
