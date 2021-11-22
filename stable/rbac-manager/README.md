@@ -53,7 +53,7 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.repository | string | `"quay.io/reactiveops/rbac-manager"` | The image to run for rbac manager |
-| image.tag | string | `"v0.10.0"` | The tag of the image to run |
+| image.tag | string | `"v1.0.0"` | The tag of the image to run |
 | image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.imagePullSecrets | list | `[]` |  |
 | installCRDs | bool | `true` | If true, install and upgrade CRDs. See the Helm documentation for [best practices regarding CRDs](https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource). |
