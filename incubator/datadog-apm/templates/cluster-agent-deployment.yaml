@@ -106,14 +106,14 @@ spec:
           - name: DD_API_KEY
             valueFrom:
               secretKeyRef:
-                name: {{ template "datadog.apiSecretName" . }}
+                name: {{ template "datadog-apm.apiSecretName" . }}
                 key: api-key
                 optional: true
           {{- if .Values.clusterAgent.metricsProvider.enabled }}
           - name: DD_APP_KEY
             valueFrom:
               secretKeyRef:
-                name: {{ template "datadog.appKeySecretName" . }}
+                name: {{ template "datadog-apm.appKeySecretName" . }}
                 key: app-key
           - name: DD_EXTERNAL_METRICS_PROVIDER_ENABLED
             value: {{ .Values.clusterAgent.metricsProvider.enabled | quote }}

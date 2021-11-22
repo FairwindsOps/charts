@@ -6,6 +6,7 @@
 replicaCount: 1
 nameOverride: ""
 fullnameOverride: ""
+targetSystem: "linux"
 
 agents:
   rbac:
@@ -20,8 +21,15 @@ datadog:
   apiKeyExistingSecret: # <DATADOG_API_KEY_SECRET>
   appKey: # <DATADOG_APP_KEY>
   appKeySecretName:  # <DATADOG_APP_KEY_SECRET>
+  clusterChecks:
+    enabled: false
+  orchestratorExplorer:
+    enabled: false
+  securityAgent:
+    compliance:
+      enabled: false
 
-clusterAgent:
+clusterAgent:  
   image:
     repository: datadog/agent
     pullPolicy: Always
@@ -37,7 +45,11 @@ clusterAgent:
     service:
       port: 8126
   priorityClassName: fairwinds-critical
-
+  rbac:
+    create: true
+    serviceAccountName: default
+  admissionController:
+    enabled: false
 
 env:
   DD_APM_ENABLED: true

@@ -47,6 +47,18 @@ Return secret name to be used based on provided values.
 {{- end -}}
 
 {{/*
+Return secret name to be used based on provided values.
+*/}}
+{{- define "clusterAgent.tokenSecretName" -}}
+{{- if not .Values.clusterAgent.tokenExistingSecret -}}
+{{- include "datadog-apm.fullname" . -}}-cluster-agent
+{{- else -}}
+{{- .Values.clusterAgent.tokenExistingSecret -}}
+{{- end -}}
+{{- end -}}
+
+
+{{/*
 Return the appropriate apiVersion for RBAC APIs.
 */}}
 {{- define "rbac.apiVersion" -}}
@@ -56,6 +68,29 @@ Return the appropriate apiVersion for RBAC APIs.
 "rbac.authorization.k8s.io/v1beta1"
 {{- end -}}
 {{- end -}}
+
+{{/*
+Correct `clusterAgent.metricsProvider.service.port` if Kubernetes <= 1.15
+*/}}
+{{- define "clusterAgent.metricsProvider.port" -}}
+{{- if semverCompare "^1.15-0" .Capabilities.KubeVersion.GitVersion -}}
+{{- .Values.clusterAgent.metricsProvider.service.port -}}
+{{- else -}}
+443
+{{- end -}}
+{{- end -}}
+
+{{/*
+Return the appropriate os label
+*/}}
+{{- define "label.os" -}}
+{{- if semverCompare "^1.14-0" .Capabilities.KubeVersion.GitVersion -}}
+kubernetes.io/os
+{{- else -}}
+beta.kubernetes.io/os
+{{- end -}}
+{{- end -}}
+
 
 {{/*
 Common labels
