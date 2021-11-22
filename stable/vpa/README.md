@@ -43,6 +43,18 @@ recommender:
       http://prometheus-operator-prometheus.prometheus-operator.svc.cluster.local:9090
     storage: prometheus
 ```
+# Changes to chart values in 1.0.0
+
+In the previus version, when admissionController.cleanupOnDelete flag passed to true, mutatingwebhookconfiguration and the tls secret for the admission controller is removed. There was no chance to pass any image information to start remove process. Now, it could be passed custom image by version 1.0.0.
+
+```
+cleanupOnDelete:
+    enabled: true
+    image:
+      repository: quay.io/reactiveops/ci-images
+      tag: v11-alpine
+
+```
 
 ## Values
 
