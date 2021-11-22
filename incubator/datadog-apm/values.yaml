@@ -1,0 +1,59 @@
+# Default values for oom-event-generator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# repliaCount -- The number of replicas to run
+replicaCount: 1
+nameOverride: ""
+fullnameOverride: ""
+
+agents:
+  rbac:
+    create: false
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+
+datadog:
+  apiKey: <DATADOG_API_KEY>
+  apiKeyExistingSecret: # <DATADOG_API_KEY_SECRET>
+  appKey: # <DATADOG_APP_KEY>
+  appKeySecretName:  # <DATADOG_APP_KEY_SECRET>
+
+clusterAgent:
+  image:
+    repository: datadog/agent
+    pullPolicy: Always
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: 7.23.0
+  command:
+  - trace-agent
+  - -config=/etc/datadog-agent/datadog.yaml
+  enabled: true
+  metricsProvider:
+    enabled: true
+    port: 8126
+    service:
+      port: 8126
+  priorityClassName: fairwinds-critical
+
+
+env:
+  DD_APM_ENABLED: true
+  DD_APM_NON_LOCAL_TRAFFIC: true
+  DD_APM_RECEIVER_PORT: 8126
+
+resources:
+  limits:
+    cpu: 250m
+    memory: 350Mi
+  requests:
+    cpu: 250m
+    memory: 350Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
