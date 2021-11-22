@@ -11,6 +11,9 @@ circleToken: replaceme
 # -- A token for interacting with TFCloud
 tfCloudToken: replaceme
 
+# -- An existing secret that contains the environment variables CIRCLEC_CI_TOKEN and TFCLOUD_TOKEN
+existingSecret: ""
+
 # -- The vault address to get tokens from
 vaultAddress: "https://vault.example.com"
 
