@@ -43,7 +43,11 @@ spec:
             mountPath: /config
           envFrom:
           - secretRef:
+              {{- if .Values.existingSecret }}
+              name: {{ .Values.existingSecret }}
+              {{- else }}
               name: {{ include "vault-token-injector.fullname" . }}
+              {{- end }}
           env:
           - name: "VAULT_ADDR"
             value: {{ .Values.vaultAddress | quote }}
