@@ -80,7 +80,7 @@ kubehunter:
   logLevel: INFO
   image:
     repository: aquasec/kube-hunter
-    tag: "0.3.1"
+    tag: "0.6.3"
   resources:
     limits:
       cpu: 250m
@@ -108,6 +108,14 @@ goldilocks:
   enabled: false
   vpa:
     enabled: true
+    recommender:
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsUser: 65534
+        capabilities:
+          drop:
+          - ALL
   schedule: "rand * * * *"
   timeout: 300
   image:
@@ -304,15 +312,7 @@ prometheus:
     enabled: false
   configmapReload:
     prometheus:
-      image:
-        pullPolicy: Always
-      resources:
-        limits:
-          cpu: 100m
-          memory: 64Mi
-        requests:
-          cpu: 10m
-          memory: 32Mi
+      enabled: false
   server:
     fullnameOverride: "prometheus-server"
     image:

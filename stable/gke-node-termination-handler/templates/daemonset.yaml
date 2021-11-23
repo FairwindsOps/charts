@@ -3,10 +3,6 @@ kind: DaemonSet
 metadata:
   name: {{ include "gke-node-termination-handler.fullname" . }}
   labels:
-    app.kubernetes.io/name: {{ include "gke-node-termination-handler.name" . }}
-    helm.sh/chart: {{ include "gke-node-termination-handler.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{ include "gke-node-termination-handler.labels" . | indent 4 }}
 spec:
   selector:

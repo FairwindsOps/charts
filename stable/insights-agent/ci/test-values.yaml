@@ -10,7 +10,7 @@ uploader:
     value: bar
 
 goldilocks:
-  enabled: false
+  enabled: false  # TODO: why is this disabled?
 
 opa:
   enabled: true
