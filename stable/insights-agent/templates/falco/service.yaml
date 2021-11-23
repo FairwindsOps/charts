@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: falco-agent
+  labels:
+    app: falco-agent
+spec:
+  type: ClusterIP
+  ports:
+  - port: 3031
+    name: http
+  selector:
+    app: falco-agent
