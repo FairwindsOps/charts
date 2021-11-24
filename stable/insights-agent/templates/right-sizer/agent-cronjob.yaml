@@ -13,7 +13,7 @@ spec:
           volumes:
           - name:       output
             configMap:
-              name: right-sizer-state
+              name: {{ .Values.rightsizer.stateconfigmapname }}
               items:
               - key: report
                 path: right-sizer.json

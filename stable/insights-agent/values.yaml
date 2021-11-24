@@ -398,7 +398,7 @@ rightsizer:
     repository: quay.io/fairwinds/right-sizer
     tag: right-sizer-jam
     pullPolicy: Always
-  stateconfigmapname: right-sizer-state
+  stateconfigmapname: insights-agent-right-sizer-controller-state
   SkipVolumes: true
 
 falco:
