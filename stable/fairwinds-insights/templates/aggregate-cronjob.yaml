@@ -3,7 +3,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" $ }}-agg-job-{{ .name }}
+  name: agg-job-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: workload-metrics-aggregation-{{ .name }}

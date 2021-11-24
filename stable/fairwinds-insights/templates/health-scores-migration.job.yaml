@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" $ }}-migrate-scores
+  name: migrate-scores
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: migrate-scores
@@ -41,7 +41,7 @@ spec:
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "fairwinds-insights.fullname" $ }}-start-migrate-scores
+  name: start-migrate-scores
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: migrate-scores
@@ -54,7 +54,7 @@ spec:
   template:
     spec:
       restartPolicy: Never
-      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-cronjob-executor
+      serviceAccountName: cronjob-executor
       containers:
       - name: start-job-from-cronjob
         image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
@@ -64,8 +64,8 @@ spec:
           - -c
           - |
             # Can't use -o name because it appends cronjob.batch to the beginning
-            kubectl delete job {{ include "fairwinds-insights.fullname" $ }}-migrate-scores
-            kubectl create job {{ include "fairwinds-insights.fullname" $ }}-migrate-scores --from=cj/{{ include "fairwinds-insights.fullname" $ }}-migrate-scores
+            kubectl delete job migrate-scores
+            kubectl create job migrate-scores --from=cj/migrate-scores
         resources:
           {{- toYaml .Values.cronjobExecutor.resources | nindent 10 }}
         securityContext:

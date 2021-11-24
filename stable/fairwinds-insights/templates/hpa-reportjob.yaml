@@ -2,7 +2,7 @@
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-reportjob-hpa
+  name: reportjob-hpa
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: reportjob
@@ -10,7 +10,7 @@ spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: {{ include "fairwinds-insights.fullname" . }}-reportjob
+    name: reportjob
   minReplicas: {{ .Values.reportjob.hpa.min }}
   maxReplicas: {{ .Values.reportjob.hpa.max }}
   metrics:

@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-api
+  name: api
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: api
@@ -20,7 +20,7 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
-      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      serviceAccountName: insights
       containers:
         - name: fairwinds-insights
           image: "{{ .Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"

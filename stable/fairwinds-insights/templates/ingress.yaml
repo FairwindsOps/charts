@@ -1,11 +1,10 @@
 {{- if .Values.ingress.enabled }}
-{{- $fullName := include "fairwinds-insights.fullname" . -}}
 {{- if not (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
 {{- if not .Values.ingress.separate }}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: ingress
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
@@ -15,7 +14,7 @@ metadata:
 spec:
 {{- if .Values.ingress.tls }}
   tls:
-    - secretName: {{ $fullName }}-cert
+    - secretName: cert
       hosts:
         {{- range .Values.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
@@ -28,25 +27,25 @@ spec:
         paths:
           - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
             backend:
-              serviceName: {{ $fullName }}-api
+              serviceName: api
               servicePort: http
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             backend:
-              serviceName: {{ $fullName }}-open-api
+              serviceName: open-api
               servicePort: http
           - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             backend:
-              serviceName: {{ $fullName }}-dashboard
+              serviceName: dashboard
               servicePort: http
     {{- end }}
 {{- else }}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-api
+  name: api
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
@@ -61,7 +60,7 @@ metadata:
 spec:
 {{- if .Values.ingress.tls }}
   tls:
-    - secretName: {{ $fullName }}-cert
+    - secretName: cert
       hosts:
         {{- range .Values.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
@@ -74,14 +73,14 @@ spec:
         paths:
           - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
             backend:
-              serviceName: {{ $fullName }}-api
+              serviceName: api
               servicePort: http
     {{- end }}
 ---
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-dashboard
+  name: dashboard
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
@@ -96,7 +95,7 @@ metadata:
 spec:
 {{- if .Values.ingress.tls }}
   tls:
-    - secretName: {{ $fullName }}-cert
+    - secretName: cert
       hosts:
         {{- range .Values.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
@@ -109,11 +108,11 @@ spec:
         paths:
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             backend:
-              serviceName: {{ $fullName }}-open-api
+              serviceName: open-api
               servicePort: http
           - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             backend:
-              serviceName: {{ $fullName }}-dashboard
+              serviceName: dashboard
               servicePort: http
     {{- end }}
 {{- end }}
@@ -122,7 +121,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}
+  name: ingress
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
@@ -132,7 +131,7 @@ metadata:
 spec:
 {{- if .Values.ingress.tls }}
   tls:
-    - secretName: {{ $fullName }}-cert
+    - secretName: cert
       hosts:
         {{- range .Values.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
@@ -147,21 +146,21 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-open-api
+                name: open-api
                 port:
                   name: http
           - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-api
+                name: api
                 port:
                   name: http
           - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-dashboard
+                name: dashboard
                 port:
                   name: http
     {{- end }}
@@ -169,7 +168,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-api
+  name: api
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
@@ -184,7 +183,7 @@ metadata:
 spec:
 {{- if .Values.ingress.tls }}
   tls:
-    - secretName: {{ $fullName }}-cert
+    - secretName: cert
       hosts:
         {{- range .Values.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
@@ -199,7 +198,7 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-api
+                name: api
                 port:
                   name: http
     {{- end }}
@@ -207,7 +206,7 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ $fullName }}-dashboard
+  name: dashboard
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
@@ -222,7 +221,7 @@ metadata:
 spec:
 {{- if .Values.ingress.tls }}
   tls:
-    - secretName: {{ $fullName }}-cert
+    - secretName: cert
       hosts:
         {{- range .Values.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
@@ -237,14 +236,14 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-open-api
+                name: open-api
                 port:
                   name: http
           - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
               service:
-                name: {{ $fullName }}-dashboard
+                name: dashboard
                 port:
                   name: http
     {{- end }}
