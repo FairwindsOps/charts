@@ -1,7 +1,7 @@
 # Chart is a subset of the datadog chart v2.4.25
 apiVersion: v2
 name: datadog
-description: A Helm chart to install datadog-apm agent
+description: A modified Helm chart to install datadog-apm agent
 type: application
 version: 2.4.25
 appVersion: "7"
