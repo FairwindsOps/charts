@@ -1,6 +1,6 @@
 # vault-token-injector
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
+![Version: 1.1.0](https://img.shields.io/badge/Version-1.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.0.0](https://img.shields.io/badge/AppVersion-v1.0.0-informational?style=flat-square)
 
 A Helm chart for Fairwinds vault-token-injector
 
@@ -20,6 +20,7 @@ This will inject vault tokens and address variables into circle builds on a sche
 | replicaCount | int | `1` | We currently only support a single instance |
 | circleToken | string | `"replaceme"` | A token for interacting with CircleCI |
 | tfCloudToken | string | `"replaceme"` | A token for interacting with TFCloud |
+| existingSecret | string | `""` | An existing secret that contains the environment variables CIRCLEC_CI_TOKEN and TFCLOUD_TOKEN |
 | vaultAddress | string | `"https://vault.example.com"` | The vault address to get tokens from |
 | vaultTokenFile | string | `""` | A file containing a vault token. Optional. |
 | config | object | `{"circleci":[{"env_variable":"VAULT_TOKEN","name":"FairwindsOps/example","vault_role":"some-vault-role"}],"vaultAddress":"https://vault.example.com"}` | The configuration of the vault-token-injector |
