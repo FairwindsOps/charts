@@ -117,7 +117,7 @@ roleRef:
 subjects:
   - kind: ServiceAccount
     name: {{ template "datadog-apm.fullname" . }}
-    namespace: {{ .Release.Namespace }}
+    namespace: {{ .Values.namespace }}
 ---
 apiVersion: v1
 kind: ServiceAccount
