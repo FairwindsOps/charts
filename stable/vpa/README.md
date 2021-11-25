@@ -25,6 +25,19 @@ The admissionController is the only one that poses a stability consideration bec
 
 For more details, please see the values below, and the vertical pod autosclaer documentation.
 
+## *BREAKING* Upgrading from v0.x.x to v1.x.x
+
+In the previus version, when admissionController.cleanupOnDelete flag passed to true, mutatingwebhookconfiguration and the tls secret for the admission controller is removed. There was no chance to pass any image information to start remove process. Now, it could be passed custom image by version 1.0.0.
+
+```
+cleanupOnDelete:
+    enabled: true
+    image:
+      repository: quay.io/reactiveops/ci-images
+      tag: v11-alpine
+
+```
+
 ## Installation
 
 ```bash
@@ -42,18 +55,6 @@ recommender:
     prometheus-address: |
       http://prometheus-operator-prometheus.prometheus-operator.svc.cluster.local:9090
     storage: prometheus
-```
-# Changes to chart values in 1.0.0
-
-In the previus version, when admissionController.cleanupOnDelete flag passed to true, mutatingwebhookconfiguration and the tls secret for the admission controller is removed. There was no chance to pass any image information to start remove process. Now, it could be passed custom image by version 1.0.0.
-
-```
-cleanupOnDelete:
-    enabled: true
-    image:
-      repository: quay.io/reactiveops/ci-images
-      tag: v11-alpine
-
 ```
 
 ## Values
