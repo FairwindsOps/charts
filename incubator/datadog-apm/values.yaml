@@ -41,6 +41,7 @@ clusterAgent:
   - trace-agent
   - -config=/etc/datadog-agent/datadog.yaml
   enabled: true
+  token: # <DATADOG_CLUSTER_AGENT_TOKEN>
   metricsProvider:
     enabled: true
     port: 8126
