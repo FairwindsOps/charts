@@ -80,7 +80,7 @@ kubehunter:
   logLevel: INFO
   image:
     repository: aquasec/kube-hunter
-    tag: "0.3.1"
+    tag: "0.6.3"
   resources:
     limits:
       cpu: 250m
@@ -388,3 +388,62 @@ awscosts:
     requests:
       cpu: 100m
       memory: 128Mi
+
+falco:
+  enabled: false
+  installFalco: false
+  statefulset: true
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    size: 1Gi
+  schedule: "rand * * * *"
+  timeout: 300
+  service:
+    port: 3031
+  image:
+    repository: quay.io/fairwinds/falco-agent
+    tag: "0.1.0"
+    pullPolicy: Always
+  podSecurityContext:
+    fsGroup: 101
+    runAsUser: 1200
+    runAsNonRoot: true
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1200
+    capabilities:
+      drop:
+        - ALL
+  tolerations: []
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+falcosecurity:
+  falco:
+    jsonOutput: true
+  ebpf:
+    # Enable eBPF support for Falco
+    enabled: true
+  falcosidekick:
+    # enable falcosidekick deployment
+    enabled: true
+    webui:
+      enabled: true
+    config:
+      webhook:
+        address: "http://falco-agent:3031/data"
+        customHeaders: ""  # a list of comma separated custom headers to add, syntax is "key:value\,key:value"
+        minimumpriority: ""
+        mutualtls: false
+        checkcert: true
