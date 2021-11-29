@@ -43,12 +43,12 @@ spec:
             mountPath: /config
           envFrom:
           - secretRef:
+              {{- if .Values.existingSecret }}
+              name: {{ .Values.existingSecret }}
+              {{- else }}
               name: {{ include "vault-token-injector.fullname" . }}
+              {{- end }}
           env:
-          - name: "CIRCLE_CI_TOKEN"
-            value: {{ .Values.circleToken | quote }}
-          - name: "TFCLOUD_TOKEN"
-            value: {{ .Values.tfCloudToken | quote }}
           - name: "VAULT_ADDR"
             value: {{ .Values.vaultAddress | quote }}
           {{- if .Values.vaultTokenFile }}

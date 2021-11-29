@@ -90,12 +90,12 @@ env:
 - name: REPORT_STORAGE_STRATEGY
   value: {{ .Values.reportStorage.strategy }}
 {{ if eq .Values.reportStorage.strategy "minio" -}}
-{{ if .Values.minio.install -}}
-- name: MINIO_HOST
-  value: {{ printf "%s-%s" .Release.Name "fw-minio:9000" }}
-{{ else }}
+{{ if .Values.reportStorage.minioHost -}}
 - name: MINIO_HOST
   value: {{ .Values.reportStorage.minioHost }}
+{{ else }}
+- name: MINIO_HOST
+  value: {{ printf "%s-%s" .Release.Name "fw-minio:9000" }}
 {{ end -}}
 - name: MINIO_ACCESS_KEY_ID
   valueFrom:

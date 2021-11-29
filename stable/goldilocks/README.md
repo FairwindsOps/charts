@@ -68,6 +68,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.nodeSelector | object | `{}` | Node selector for the controller pod |
 | controller.tolerations | list | `[]` | Tolerations for the controller pod |
 | controller.affinity | object | `{}` | Affinity for the controller pods |
+| controller.topologySpreadConstraints | list | `[]` | Topology spread constraints for the controller pods |
 | controller.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | The resources block for the controller pods |
 | controller.podSecurityContext | object | `{}` | Defines the podSecurityContext for the controller pod |
 | controller.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the controller container |
@@ -100,3 +101,4 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.nodeSelector | object | `{}` |  |
 | dashboard.tolerations | list | `[]` |  |
 | dashboard.affinity | object | `{}` |  |
+| dashboard.topologySpreadConstraints | list | `[]` | Topology spread constraints for the dashboard pods |
