@@ -430,6 +430,13 @@ falco:
       memory: 128Mi
 
 falcosecurity:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
   falco:
     jsonOutput: true
   ebpf:
