@@ -1,0 +1,14 @@
+{{- if .Values.clusterAgent.hpa.enabled -}}
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "datadog-apm.fullname" . }}-hpa
+spec:
+  maxReplicas: {{ .Values.clusterAgent.hpa.maxReplicas }}
+  minReplicas: {{ .Values.clusterAgent.hpa.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ template "datadog-apm.fullname" . }}-hpa
+  targetCPUUtilizationPercentage: {{ .Values.clusterAgent.hpa.averageCpuUtilization }}
+{{- end }}
