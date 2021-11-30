@@ -15,10 +15,10 @@ podSecurityContext: {}
 securityContext: {}
 
 datadog:
-  apiKey: # <DATADOG_API_KEY>
-  apiKeyExistingSecret: # <DATADOG_API_KEY_SECRET>
-  appKey: # <DATADOG_APP_KEY>
-  appKeySecretName:  # <DATADOG_APP_KEY_SECRET>
+  apiKey: "" # <DATADOG_API_KEY>
+  apiKeyExistingSecret: "" # <DATADOG_API_KEY_SECRET>
+  appKey: "" # <DATADOG_APP_KEY>
+  appKeySecretName: ""  # <DATADOG_APP_KEY_SECRET>
   clusterChecks:
     enabled: false
   orchestratorExplorer:
@@ -39,7 +39,7 @@ clusterAgent:
   - trace-agent
   - -config=/etc/datadog-agent/datadog.yaml
   enabled: true
-  token: # <DATADOG_CLUSTER_AGENT_TOKEN>
+  token: "" # <DATADOG_CLUSTER_AGENT_TOKEN>
   metricsProvider:
     enabled: true
     port: 8126
