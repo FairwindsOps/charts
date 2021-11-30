@@ -438,6 +438,7 @@ falcosecurity:
   falcosidekick:
     # enable falcosidekick deployment
     enabled: true
+    fullfqdn: true
     webui:
       enabled: true
     config:
