@@ -5,7 +5,7 @@
 nameOverride: ""
 fullnameOverride: ""
 targetSystem: linux
-namespace: default # Need to override this value with datadog
+namespace: default   # Need to override this value with datadog
 
 agents:
   rbac:
