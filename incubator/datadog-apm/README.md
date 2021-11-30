@@ -19,8 +19,13 @@ A modified Helm chart to install datadog-apm agent
 | clusterAgent.admissionController.enabled | bool | `false` |  |
 | clusterAgent.command[0] | string | `"trace-agent"` |  |
 | clusterAgent.command[1] | string | `"-config=/etc/datadog-agent/datadog.yaml"` |  |
+| clusterAgent.createPodDisruptionBudget | bool | `true` |  |
 | clusterAgent.enabled | bool | `true` |  |
 | clusterAgent.healthPort | int | `5555` |  |
+| clusterAgent.hpa.averageCpuUtilization | int | `50` |  |
+| clusterAgent.hpa.enabled | bool | `true` |  |
+| clusterAgent.hpa.maxReplicas | int | `6` |  |
+| clusterAgent.hpa.minReplicas | int | `1` |  |
 | clusterAgent.image.pullPolicy | string | `"IfNotPresent"` |  |
 | clusterAgent.image.repository | string | `"datadog/agent"` |  |
 | clusterAgent.image.tag | string | `"7.23.0"` |  |
