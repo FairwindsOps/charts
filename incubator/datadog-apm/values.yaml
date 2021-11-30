@@ -1,24 +1,21 @@
+# Default values file
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 nameOverride: ""
 fullnameOverride: ""
-targetSystem: "linux"
+targetSystem: linux
 namespace: datadog
 
 agents:
   rbac:
     create: true
 
-podAnnotations: {}
-podSecurityContext: {}
-securityContext: {}
-
 datadog:
-  apiKey: "" # <DATADOG_API_KEY>
-  apiKeyExistingSecret: "" # <DATADOG_API_KEY_SECRET>
-  appKey: "" # <DATADOG_APP_KEY>
-  appKeySecretName: ""  # <DATADOG_APP_KEY_SECRET>
+  apiKey:  # <DATADOG_API_KEY>
+  apiKeyExistingSecret:   # <DATADOG_API_KEY_SECRET>
+  appKey:   # <DATADOG_APP_KEY>
+  appKeySecretName:   # <DATADOG_APP_KEY_SECRET>
   clusterChecks:
     enabled: false
   orchestratorExplorer:
@@ -36,10 +33,10 @@ clusterAgent:
     # Overrides the image tag whose default is the chart appVersion.
     tag: 7.23.0
   command:
-  - trace-agent
-  - -config=/etc/datadog-agent/datadog.yaml
+    - trace-agent
+    - -config=/etc/datadog-agent/datadog.yaml
   enabled: true
-  token: "" # <DATADOG_CLUSTER_AGENT_TOKEN>
+  token:   # <DATADOG_CLUSTER_AGENT_TOKEN>
   metricsProvider:
     enabled: true
     port: 8126
@@ -86,9 +83,9 @@ clusterAgent:
     averageCpuUtilization: 50
   createPodDisruptionBudget: true
 
-
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
 nodeSelector: {}
-
 tolerations: []
-
 affinity: {}
