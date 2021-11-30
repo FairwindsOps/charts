@@ -57,7 +57,6 @@ Return secret name to be used based on provided values.
 {{- end -}}
 {{- end -}}
 
-
 {{/*
 Return the appropriate apiVersion for RBAC APIs.
 */}}
