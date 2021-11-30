@@ -4,6 +4,6 @@ name: datadog-apm
 description: A modified Helm chart to install datadog-apm agent
 type: application
 version: 2.4.25
-appVersion: 7
+appVersion: "7"
 maintainers:
   - name: sammc3
