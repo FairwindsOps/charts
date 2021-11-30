@@ -406,7 +406,7 @@ falco:
     port: 3031
   image:
     repository: quay.io/fairwinds/falco-agent
-    tag: "0.1.0"
+    tag: "0.1.2"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -430,6 +430,13 @@ falco:
       memory: 128Mi
 
 falcosecurity:
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
   falco:
     jsonOutput: true
   ebpf:
@@ -438,6 +445,7 @@ falcosecurity:
   falcosidekick:
     # enable falcosidekick deployment
     enabled: true
+    fullfqdn: true
     webui:
       enabled: true
     config:
