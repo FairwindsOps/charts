@@ -1,8 +1,6 @@
-# Default values for oom-event-generator.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-# repliaCount -- The number of replicas to run
 nameOverride: ""
 fullnameOverride: ""
 targetSystem: "linux"
@@ -17,7 +15,7 @@ podSecurityContext: {}
 securityContext: {}
 
 datadog:
-  apiKey: <DATADOG_API_KEY>
+  apiKey: # <DATADOG_API_KEY>
   apiKeyExistingSecret: # <DATADOG_API_KEY_SECRET>
   appKey: # <DATADOG_APP_KEY>
   appKeySecretName:  # <DATADOG_APP_KEY_SECRET>
