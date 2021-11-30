@@ -26,6 +26,7 @@ readonly JETSTACK_REPO_URL=https://charts.jetstack.io
 readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
 readonly MINIO_REPO_URL=https://helm.min.io/
 readonly BITNAMI_REPO_URL=https://charts.bitnami.com/bitnami
+readonly FALCO_REPO_URL=https://falcosecurity.github.io/charts
 
 readonly S3_BUCKET_STABLE=s3://fairwinds-helm-charts/stable
 readonly S3_BUCKET_INCUBATOR=s3://fairwinds-helm-charts/incubator
@@ -36,9 +37,11 @@ main() {
 
     if ! sync_repo stable "$S3_BUCKET_STABLE" "$STABLE_REPO_URL"; then
         log_error "Not all stable charts could be packaged and synced!"
+        exit 1
     fi
     if ! sync_repo incubator "$S3_BUCKET_INCUBATOR" "$INCUBATOR_REPO_URL"; then
         log_error "Not all incubator charts could be packaged and synced!"
+        exit 1
     fi
 }
 
@@ -56,6 +59,7 @@ setup_helm_client() {
     helm repo add prometheus-community "$PROMETHEUS_REPO_URL"
     helm repo add bitnami "$BITNAMI_REPO_URL"
     helm repo add minio "$MINIO_REPO_URL"
+    helm repo add falco "$FALCO_REPO_URL"
 }
 
 authenticate() {
