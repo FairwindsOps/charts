@@ -3,7 +3,7 @@ apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
   name: {{ template "datadog-apm.fullname" . }}-cluster-agent
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ .Values.namespace }}
   labels:
 {{ include "datadog-apm.labels" . | indent 4 }}
 spec:
