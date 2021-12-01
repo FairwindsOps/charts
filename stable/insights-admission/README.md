@@ -64,6 +64,8 @@ rules:
 | autoscaling.maxReplicas | int | `5` | Maximum number of pods to run. |
 | autoscaling.targetCPUUtilizationPercentage | int | `80` | Target CPU to scale towards. |
 | autoscaling.targetMemoryUtilizationPercentage | string | `nil` | Target memory to scale towards. |
+| pdb.enabled | bool | `true` | Create a Pod Disruption Budget (PDB). This also requires `autoscaling.minReplicas` > 1 or `replicaCount` > 1 |
+| pdb.minAvailable | int | `1` | The minimum number of admission controller pods that must still be available after an eviction, expressed as an absolute number or a percentage. |
 | nameOverride | string | `""` | Overrides the name of the release. |
 | fullnameOverride | string | `""` | Long name of the release to override. |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |

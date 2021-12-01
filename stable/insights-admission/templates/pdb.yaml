@@ -1,0 +1,14 @@
+{{- if or (and .Values.pdb.enabled .Values.autoscaling.enabled (gt (.Values.autoscaling.minReplicas | int) 1)) (and .Values.pdb.enabled (not .Values.autoscaling.enabled) (gt (.Values.replicaCount | int) 1)) }}
+apiVersion: {{ ternary "policy/v1" "policy/v1beta1" (semverCompare ">=1.21.0-0" .Capabilities.KubeVersion.Version) }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "insights-admission.fullname" . }}-admission
+  labels:
+    {{- include "insights-admission.labels" . | nindent 4 }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "insights-admission.selectorLabels" . | nindent 6 }}
+  minAvailable: {{ .Values.pdb.minAvailable }}
+{{- end }}
