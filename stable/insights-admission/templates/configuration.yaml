@@ -1,4 +1,4 @@
-apiVersion: admissionregistration.k8s.io/v1beta1
+apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: {{ include "insights-admission.fullname" . }}
@@ -8,7 +8,7 @@ metadata:
     {{- end }}
 webhooks:
 - admissionReviewVersions:
-  - v1beta1
+  - v1
   clientConfig:
     {{- if .Values.caBundle }}
     caBundle: {{ .Values.caBundle | quote }}
