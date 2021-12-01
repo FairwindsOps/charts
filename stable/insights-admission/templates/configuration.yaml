@@ -9,6 +9,7 @@ metadata:
 webhooks:
 - admissionReviewVersions:
   - v1
+  - v1beta1
   clientConfig:
     {{- if .Values.caBundle }}
     caBundle: {{ .Values.caBundle | quote }}
