@@ -9,50 +9,16 @@ metadata:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-events
   labels:
     app: insights-agent
 rules:
-  - apiGroups:
-      - 'apps'
-    resources:
-      - 'pods'
-      - 'deployments'
-      - 'statefulsets'
-      - 'daemonsets'
-      - 'replicasets'
-      - 'cronjobs'
-      - 'jobs'
-    verbs:
-      - 'get'
-      - 'list'
-      - 'update'
-      - 'patch'
-  - apiGroups:
-      - 'batch'
-    resources:
-      - 'jobs'
-      - 'cronjobs'
-    verbs:
-      - 'get'
-      - 'list'
-      - 'update'
-      - 'patch'
-  - apiGroups:
-      - ''
-    resources:
-      - 'events'
-      - 'pods'
-    verbs:
-      - 'watch'
-      - 'list'
   - apiGroups:
       - ''
     resources:
       - 'events'
     verbs:
       - 'create'
-      - 'get'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -81,13 +47,28 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-view
   labels:
     app: insights-agent
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+    namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-events
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-events
 subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
