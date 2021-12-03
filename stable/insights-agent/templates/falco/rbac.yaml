@@ -14,9 +14,31 @@ metadata:
     app: insights-agent
 rules:
   - apiGroups:
+      - 'apps'
+      - 'extensions'
+    resources:
+      - 'deployments'
+      - 'statefulsets'
+      - 'replicasets'
+      - 'daemonsets'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'batch'
+    resources:
+      - 'jobs'
+      - 'cronjobs'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
       - ''
     resources:
+      - 'nodes'
+      - 'namespaces'
       - 'pods'
+      - 'replicationcontrollers'
     verbs:
       - 'get'
       - 'list'

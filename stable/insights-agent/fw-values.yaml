@@ -1,0 +1,12 @@
+insights:
+  organization: "acme-co"
+  cluster: "umoja"
+  base64token: "UHo1TURWWk1CY2JfQ2FFR2NOS2trb3FGTmtuXzduRlcwaUswSjdIdm9OQVVxNEd4XzVRM3FhYy1STklMX3hUag=="
+  host: "https://staging.insights.fairwinds.com"
+kubehunter:
+  enabled: true
+workloads:
+  enabled: true
+falco:
+  enabled: true
+  installFalco: true
