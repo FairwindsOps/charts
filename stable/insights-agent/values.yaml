@@ -166,7 +166,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.1"
+    tag: "2.2"
   resources:
     limits:
       cpu: 250m
