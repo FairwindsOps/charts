@@ -35,7 +35,6 @@ rules:
   - apiGroups:
       - ''
     resources:
-      - 'nodes'
       - 'namespaces'
       - 'pods'
       - 'replicationcontrollers'
