@@ -440,8 +440,8 @@ falcosecurity:
   falco:
     jsonOutput: true
   ebpf:
-    # Enable eBPF support for Falco
-    enabled: true
+    # Enable eBPF support for Falco instead of falco-probe kernel module
+    enabled: false
   falcosidekick:
     # enable falcosidekick deployment
     enabled: true
