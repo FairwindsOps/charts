@@ -430,6 +430,7 @@ falco:
       memory: 128Mi
 
 falcosecurity:
+  fullnameOverride: insights-agent
   resources:
     requests:
       cpu: 50m
