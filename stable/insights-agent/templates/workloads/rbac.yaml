@@ -7,43 +7,6 @@ metadata:
     app: insights-agent
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-workloads
-  labels:
-    app: insights-agent
-rules:
-  - apiGroups:
-      - 'apps'
-      - 'extensions'
-    resources:
-      - 'deployments'
-      - 'statefulsets'
-      - 'replicasets'
-      - 'daemonsets'
-    verbs:
-      - 'get'
-      - 'list'
-  - apiGroups:
-      - 'batch'
-    resources:
-      - 'jobs'
-      - 'cronjobs'
-    verbs:
-      - 'get'
-      - 'list'
-  - apiGroups:
-      - ''
-    resources:
-      - 'nodes'
-      - 'namespaces'
-      - 'pods'
-      - 'replicationcontrollers'
-    verbs:
-      - 'get'
-      - 'list'
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "insights-agent.fullname" . }}-workloads
@@ -52,7 +15,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "insights-agent.fullname" . }}-workloads
+  name: view
 subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}-workloads
