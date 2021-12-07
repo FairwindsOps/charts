@@ -46,8 +46,8 @@ cronjobExecutor:
 
 installReporter:
   image:
-    repository: curlimages/curl
-    tag: "7.79.1"
+    repository: quay.io/fairwinds/insights-uploader
+    tag: "0.3"
   resources:
     limits:
       cpu: 250m
