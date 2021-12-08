@@ -24,7 +24,7 @@ This will inject vault tokens and address variables into circle builds on a sche
 | vaultAddress | string | `"https://vault.example.com"` | The vault address to get tokens from |
 | vaultTokenFile | string | `""` | A file containing a vault token. Optional. |
 | config | object | `{"circleci":[{"env_variable":"VAULT_TOKEN","name":"FairwindsOps/example","vault_role":"some-vault-role"}],"vaultAddress":"https://vault.example.com"}` | The configuration of the vault-token-injector |
-| logLevel | int | `1` | The klog log level (1-10) |
+| logLevel | int | `1` | The klog log level (1-10). WARNING: Log level 10 will print secrets to logs |
 | image.repository | string | `"quay.io/fairwinds/vault-token-injector"` | The image repository to pullt he vault-token-injector image from |
 | image.pullPolicy | string | `"Always"` | This is recommended to be set as Always |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
