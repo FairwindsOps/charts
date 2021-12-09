@@ -18,8 +18,7 @@ For example, to disable the terminating pods metric, set the following in your v
 ```
 controller:
   env:
-    - name: TERMINATING_PODS_ENABLED
-      value: "false"
+    TERMINATING_PODS_ENABLED: "false"
 ```
 
 Also, if you don't need the istio root CA expire check and want to limit the RBAC permissions so that secrets are not visible to this workload, you can set `controller.istio.enabled` to `false` and the environment variable for that check will automatically get set as well.

@@ -61,8 +61,8 @@ spec:
             {{- end }}
             {{- if .Values.controller.env }}
             {{- range $k, $v := .Values.controller.env }}
-            - name: {{ $v.name }}
-              value: {{ $v.value }}
+            - name: {{ $k }}
+              value: {{ $v | quote }}
             {{- end }}
             {{- end }}
           {{- end }}

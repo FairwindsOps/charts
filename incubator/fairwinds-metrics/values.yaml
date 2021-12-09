@@ -32,8 +32,8 @@ controller:
     enabled: true
   # controller.logVerbosity -- The verbosity of the controller's logs
   logVerbosity: "2"
-  # controller.env - Environment variables to set in the controller pod
-  env: []
+  # controller.env -- Map of environment var name and value to be set on the controller pods
+  env: {}
   # controller.nodeSelector -- Node selector for the controller pod
   nodeSelector: {}
   # controller.tolerations -- Tolerations for the controller podons - List of tolerations to put on the deployment pods

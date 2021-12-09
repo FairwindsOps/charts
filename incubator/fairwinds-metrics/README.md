@@ -18,8 +18,7 @@ For example, to disable the terminating pods metric, set the following in your v
 ```
 controller:
   env:
-    - name: TERMINATING_PODS_ENABLED
-      value: "false"
+    TERMINATING_PODS_ENABLED: "false"
 ```
 
 Also, if you don't need the istio root CA expire check and want to limit the RBAC permissions so that secrets are not visible to this workload, you can set `controller.istio.enabled` to `false` and the environment variable for that check will automatically get set as well.
@@ -40,7 +39,7 @@ Also, if you don't need the istio root CA expire check and want to limit the RBA
 | controller.serviceAccount.name | string | `nil` |  |
 | controller.datadogAnnotations.enabled | bool | `true` | If set to true, the controller will add datadog annotations to the pods |
 | controller.logVerbosity | string | `"2"` | The verbosity of the controller's logs |
-| controller.env | list | `[]` |  |
+| controller.env | object | `{}` | Map of environment var name and value to be set on the controller pods |
 | controller.nodeSelector | object | `{}` | Node selector for the controller pod |
 | controller.tolerations | list | `[]` | Tolerations for the controller podons - List of tolerations to put on the deployment pods |
 | controller.affinity | object | `{}` | Affinity for the controller pods |
