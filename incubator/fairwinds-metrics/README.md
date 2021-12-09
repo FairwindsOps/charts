@@ -14,6 +14,14 @@ If you set any of the following pod env variables to `"false"` then the metric w
 - EPOCH_TIME_ENABLED
 - TERMINATING_PODS_ENABLED
 
+For example, to disable the terminating pods metric, set the following in your values:
+```
+controller:
+  env:
+    - name: TERMINATING_PODS_ENABLED
+      value: "false"
+```
+
 Also, if you don't need the istio root CA expire check and want to limit the RBAC permissions so that secrets are not visible to this workload, you can set `controller.istio.enabled` to `false` and the environment variable for that check will automatically get set as well.
 
 ## Values
