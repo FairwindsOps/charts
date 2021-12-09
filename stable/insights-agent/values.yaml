@@ -408,6 +408,10 @@ rightsizer:
     requests:
       cpu: 100m
       memory: 128Mi
+  deploymentAnnotations:
+    # Temporarily exclude these checks until the next controller release includes health-check endpoints.
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false

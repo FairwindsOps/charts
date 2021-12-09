@@ -3,7 +3,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  {{- if .Values.rightsizer.deploymentAnnotations }}
   annotations:
+    {{- toYaml .Values.rightsizer.deploymentAnnotations | nindent 4 }}
+  {{- end }}
   labels:
     component: right-sizer
     app: insights-agent
