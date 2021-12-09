@@ -1,0 +1,44 @@
+{{- if .Values.falco.enabled -}}
+{{- $_ := set . "Label" "falco" }}
+{{- $_ := set . "Config" .Values.falco }}
+{{- if not (.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
+apiVersion: batch/v1beta1
+{{- else }}
+apiVersion: batch/v1
+{{- end }}
+kind: CronJob
+metadata:
+  {{- include "metadata" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          - name: tmp
+            emptyDir: {}
+          containers:
+          - name: {{ .Label }}
+            image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
+            imagePullPolicy: Always
+            {{- with $.Values.cronjobs.imagePullSecret }}
+            imagePullSecrets:
+                - name: {{ . }}
+            {{- end }}
+            resources:
+              {{- toYaml .Config.resources | nindent 14 }}
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: tmp
+              mountPath: /tmp
+            command: ["sh"]
+            args:
+                - -c
+                - |
+                  curl http://falco-agent:3031/output -o /tmp/falco.json && mv /tmp/falco.json /output/falco.json        
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+  {{- end -}}

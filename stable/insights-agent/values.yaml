@@ -46,8 +46,8 @@ cronjobExecutor:
 
 installReporter:
   image:
-    repository: curlimages/curl
-    tag: "7.79.1"
+    repository: quay.io/fairwinds/insights-uploader
+    tag: "0.3"
   resources:
     limits:
       cpu: 250m
@@ -166,7 +166,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.1"
+    tag: "2.2"
   resources:
     limits:
       cpu: 250m
@@ -388,3 +388,71 @@ awscosts:
     requests:
       cpu: 100m
       memory: 128Mi
+
+falco:
+  enabled: false
+  installFalco: false
+  statefulset: true
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    size: 1Gi
+  schedule: "rand * * * *"
+  timeout: 300
+  service:
+    port: 3031
+  image:
+    repository: quay.io/fairwinds/falco-agent
+    tag: "0.1"
+    pullPolicy: Always
+  podSecurityContext:
+    fsGroup: 101
+    runAsUser: 1200
+    runAsNonRoot: true
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1200
+    capabilities:
+      drop:
+        - ALL
+  tolerations: []
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+falcosecurity:
+  fullnameOverride: insights-agent
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
+  falco:
+    jsonOutput: true
+  ebpf:
+    # Enable eBPF support for Falco instead of falco-probe kernel module
+    enabled: false
+  falcosidekick:
+    # enable falcosidekick deployment
+    enabled: true
+    fullfqdn: true
+    webui:
+      enabled: true
+    config:
+      webhook:
+        address: "http://falco-agent:3031/data"
+        customHeaders: ""  # a list of comma separated custom headers to add, syntax is "key:value\,key:value"
+        minimumpriority: ""
+        mutualtls: false
+        checkcert: true
