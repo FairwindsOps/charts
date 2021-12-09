@@ -396,10 +396,19 @@ rightsizer:
   # This image is for the controller, the agent only runs the Insights uploader.
   image:
     repository: quay.io/fairwinds/right-sizer
-    tag: right-sizer-jam
+    tag: 0.1.0
     pullPolicy: Always
   stateconfigmapname: insights-agent-right-sizer-controller-state
   SkipVolumes: true
+  # Resources for the controller deployment
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  securitycontext: {}
 
 falco:
   enabled: false

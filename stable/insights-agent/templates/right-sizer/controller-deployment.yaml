@@ -23,7 +23,7 @@ spec:
           ports:
           - containerPort: 8080
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.rightsizer.securityContext | nindent 12 }}
           image: "{{ .Values.rightsizer.image.repository }}:{{ .Values.rightsizer.image.tag }}"
           imagePullPolicy: {{ .Values.rightsizer.image.pullPolicy }}
           command:
@@ -31,5 +31,7 @@ spec:
           # NOt yet supported by the controller:
           #- "-stateconfigmap"
           #- "{{ .Release.Namespace }}/{{ .Values.rightsizer.stateconfigmapname }}"
+          resources:
+            {{- toYaml .Values.rightsizer.resources | nindent 12 }}
       serviceAccountName: insights-agent-right-sizer-controller
 {{- end -}}
