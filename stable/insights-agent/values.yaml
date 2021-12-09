@@ -46,8 +46,8 @@ cronjobExecutor:
 
 installReporter:
   image:
-    repository: curlimages/curl
-    tag: "7.79.1"
+    repository: quay.io/fairwinds/insights-uploader
+    tag: "0.3"
   resources:
     limits:
       cpu: 250m
@@ -166,7 +166,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.1"
+    tag: "2.2"
   resources:
     limits:
       cpu: 250m
@@ -427,7 +427,7 @@ falco:
     port: 3031
   image:
     repository: quay.io/fairwinds/falco-agent
-    tag: "0.1.2"
+    tag: "0.1"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -451,6 +451,7 @@ falco:
       memory: 128Mi
 
 falcosecurity:
+  fullnameOverride: insights-agent
   resources:
     requests:
       cpu: 50m
@@ -461,8 +462,8 @@ falcosecurity:
   falco:
     jsonOutput: true
   ebpf:
-    # Enable eBPF support for Falco
-    enabled: true
+    # Enable eBPF support for Falco instead of falco-probe kernel module
+    enabled: false
   falcosidekick:
     # enable falcosidekick deployment
     enabled: true
