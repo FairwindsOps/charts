@@ -408,7 +408,14 @@ rightsizer:
     requests:
       cpu: 100m
       memory: 128Mi
-  securitycontext: {}
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1200
+    capabilities:
+      drop:
+        - ALL
 
 falco:
   enabled: false
