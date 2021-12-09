@@ -60,7 +60,10 @@ spec:
               value: "false"
             {{- end }}
             {{- if .Values.controller.env }}
-            {{- toYaml .Values.controller.env | indent 12 }}
+            {{- range $k, $v := .Values.controller.env }}
+            - name: {{ $v.name }}
+              value: {{ $v.value }}
+            {{- end }}
             {{- end }}
           {{- end }}
           securityContext:
