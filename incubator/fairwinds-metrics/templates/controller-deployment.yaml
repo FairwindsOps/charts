@@ -53,18 +53,15 @@ spec:
             - controller
           args:
             - -v{{ .Values.controller.logVerbosity }}
-          {{- if .Values.listener.enabled }}
-            - --event-listener=true
-            - --events-port={{ .Values.listener.port }}
-            - --max-age={{.Values.listener.maxJobAge }}
-            - --namespace={{ .Release.Namespace }}
-          envFrom:
-          - secretRef:
-          {{- if .Values.listener.secret.create }}
-              name: {{ include "fairwinds-metrics.fullname" . }}
-          {{- else }}
-              name: {{ .Values.listener.secret.name }}
-          {{- end }}
+          {{- if or (.Values.controller.env) (eq .Values.controller.istio.enabled false) }}
+          env:
+            {{- if not .Values.controller.istio.enabled }}
+            - name: ISTIO_ROOT_CA_EXPIRATION_DAYS_ENABLED
+              value: "false"
+            {{- end }}
+            {{- if .Values.controller.env }}
+            {{- toYaml .Values.controller.env | indent 12 }}
+            {{- end }}
           {{- end }}
           securityContext:
             readOnlyRootFilesystem: true
@@ -78,11 +75,6 @@ spec:
             - name: http
               containerPort: 2112
               protocol: TCP
-          {{- if .Values.listener.enabled }}
-            - name: listener
-              containerPort: {{ .Values.listener.port }}
-              protocol: TCP
-          {{- end }}
           livenessProbe:
             httpGet:
               path: /metrics

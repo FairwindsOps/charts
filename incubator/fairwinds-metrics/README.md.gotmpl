@@ -1,0 +1,19 @@
+# Fairwinds Custom Metrics
+
+A controller for a collection of non-standard metrics.
+## A Note on Chart Version 0.4.0+
+
+Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/) of various `extensions/v1beta1` API's, the 0.4.0 version of this chart will only work on kubernetes 1.14.0+
+
+## Disabling certain metrics
+
+As of chart version 0.6.0 you can disable metrics by using environment variables.
+
+If you set any of the following pod env variables to `"false"` then the metric will be disabled. By default they are all enabled:
+- ISTIO_ROOT_CA_EXPIRATION_DAYS_ENABLED
+- EPOCH_TIME_ENABLED
+- TERMINATING_PODS_ENABLED
+
+Also, if you don't need the istio root CA expire check and want to limit the RBAC permissions so that secrets are not visible to this workload, you can set `controller.istio.enabled` to `false` and the environment variable for that check will automatically get set as well.
+
+{{ template "chart.valuesSection" . }}

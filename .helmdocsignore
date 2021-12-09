@@ -2,7 +2,6 @@ incubator/autospotting
 incubator/basic-demo
 incubator/capsize
 incubator/custom-iptables
-incubator/fairwinds-metrics
 incubator/fluentd
 incubator/imagepullsecret-deploy
 incubator/kubebench
