@@ -90,6 +90,8 @@ dashboard:
     port: 80
     # dashboard.service.annotations -- Extra annotations for the dashboard service
     annotations: {}
+  # dashboard.flags -- A map of additional flags to pass to the dashboard
+  flags: {}
   # dashboard.logVerbosity -- Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
   # dashboard.excludeContainers -- Container names to exclude from displaying in the Goldilocks dashboard
