@@ -1,0 +1,40 @@
+{{- if .Values.rightsizer.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  {{- if .Values.rightsizer.deploymentAnnotations }}
+  annotations:
+    {{- toYaml .Values.rightsizer.deploymentAnnotations | nindent 4 }}
+  {{- end }}
+  labels:
+    component: right-sizer
+    app: insights-agent
+spec:
+  selector:
+    matchLabels:
+      component: right-sizer
+      app: insights-agent
+  template:
+    metadata:
+      labels:
+        component: right-sizer
+        app: insights-agent
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}-right-sizer-controller
+          ports:
+          - containerPort: 8080
+          securityContext:
+            {{- toYaml .Values.rightsizer.securityContext | nindent 12 }}
+          image: "{{ .Values.rightsizer.image.repository }}:{{ .Values.rightsizer.image.tag }}"
+          imagePullPolicy: {{ .Values.rightsizer.image.pullPolicy }}
+          command:
+          - "right-sizer"
+          # NOt yet supported by the controller:
+          #- "-stateconfigmap"
+          #- "{{ .Release.Namespace }}/{{ .Values.rightsizer.stateconfigmapname }}"
+          resources:
+            {{- toYaml .Values.rightsizer.resources | nindent 12 }}
+      serviceAccountName: insights-agent-right-sizer-controller
+{{- end -}}
