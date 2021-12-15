@@ -398,6 +398,7 @@ rightsizer:
     repository: quay.io/fairwinds/right-sizer
     tag: 0.1.0
     pullPolicy: Always
+  imagePullSecrets:
   stateconfigmapname: insights-agent-right-sizer-controller-state
   SkipVolumes: true
   # Resources for the controller deployment

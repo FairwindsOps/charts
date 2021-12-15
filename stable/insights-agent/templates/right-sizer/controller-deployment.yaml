@@ -21,6 +21,10 @@ spec:
         component: right-sizer
         app: insights-agent
     spec:
+      {{- with .Values.rightsizer.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-right-sizer-controller
           ports:
