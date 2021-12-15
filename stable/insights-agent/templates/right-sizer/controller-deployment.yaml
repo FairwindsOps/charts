@@ -40,5 +40,5 @@ spec:
           #- "{{ .Release.Namespace }}/{{ .Values.rightsizer.stateconfigmapname }}"
           resources:
             {{- toYaml .Values.rightsizer.resources | nindent 12 }}
-      serviceAccountName: insights-agent-right-sizer-controller
+      serviceAccountName: {{ .Values.rightsizer.serviceAccountName }}
 {{- end -}}

@@ -396,7 +396,7 @@ rightsizer:
   # This image is for the controller, the agent only runs the Insights uploader.
   image:
     repository: quay.io/fairwinds/right-sizer
-    tag: 0.1.0
+    tag: 0.1.1
     pullPolicy: Always
   imagePullSecrets:
   stateconfigmapname: insights-agent-right-sizer-controller-state
@@ -421,6 +421,8 @@ rightsizer:
     capabilities:
       drop:
         - ALL
+  # The global `rbac.disabled` causes this ServiceAccount to not be created.
+  serviceAccountName: insights-agent-right-sizer-controller
 
 falco:
   enabled: false
