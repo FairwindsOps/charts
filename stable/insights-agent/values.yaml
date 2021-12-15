@@ -400,6 +400,10 @@ rightsizer:
     pullPolicy: Always
   imagePullSecrets:
   stateconfigmapname: insights-agent-right-sizer-controller-state
+  updateMemoryLimits:
+    enabled: true
+    maxLimitMultiplier: "2.0"
+    increaseMultiplier: "1.2"
   SkipVolumes: true
   # Resources for the controller deployment
   resources:
@@ -423,6 +427,19 @@ rightsizer:
         - ALL
   # The global `rbac.disabled` causes this ServiceAccount to not be created.
   serviceAccountName: insights-agent-right-sizer-controller
+  rbac:
+    # See the global rbac.disabled value is used instead of `create` here.
+    additionalAccess:
+      # Grant access to additional resources, such as CRDs.
+      # Specify an array of RBAC rules,
+      # each having an array of apiGroups, resources, and verbs.
+      # For example:
+      #- apiGroups:
+      #   - ''
+      # resources:
+     #    - 'nodes'
+      # verbs:
+      #   - 'get'
 
 falco:
   enabled: false
