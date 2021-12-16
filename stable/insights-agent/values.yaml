@@ -401,9 +401,9 @@ rightsizer:
   imagePullSecrets:
   stateconfigmapname: insights-agent-right-sizer-controller-state
   updateMemoryLimits:
-    enabled: true
-    maxLimitMultiplier: "2.0"
-    increaseMultiplier: "1.2"
+    enabled: false
+    max: "2.0"
+    increment: "1.2"
   SkipVolumes: true
   # Resources for the controller deployment
   resources:
