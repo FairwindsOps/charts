@@ -400,10 +400,22 @@ rightsizer:
     pullPolicy: Always
   imagePullSecrets:
   stateconfigmapname: insights-agent-right-sizer-controller-state
+  # rightsizer.resetOOMsWindow -- The amount of time after which, if no OOMs have been seen, a resource will be removed from this Insights report.
+  resetOOMsWindow: "24H"
+  # rightsizer.namespaces -- Only operate in these Kubernetes namespaces.
+  # By default, all namespaces are allowed.
+  # This applies both to alerting on OOM-kills, and updating memory limits (if enabled).
+  namespaces:
   updateMemoryLimits:
-    enabled: false
-    max: "2.0"
+    # rightsizer.updateMemoryLimits.enabled -- Update memory limibs of resources whos containers are OOM-killed.
+    enabled: "false"
+    # rightsizer.updateMemoryLimits.increment -- The multiplier used to increase memory limits, in response to an OOM-kill. This value is multiplied by the limits of the OOM-killed container.
     increment: "1.2"
+    # rightsizer.updateMemoryLimits.minOOMs -- The number of OOM-kills required before a containers memory limits will be updated.
+    minOOMs: "2"
+    # rightsizer.updateMemoryLimits.max -- The multiplier used to calculate the maximum value to update a containers memory limits.
+    # This value is multiplied by the starting memory limits of the first OOM-killed container seen by this controller.
+    max: "2.0"
   SkipVolumes: true
   # Resources for the controller deployment
   resources:

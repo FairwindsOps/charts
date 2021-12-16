@@ -35,9 +35,25 @@ spec:
           imagePullPolicy: {{ .Values.rightsizer.image.pullPolicy }}
           command:
           - "right-sizer"
-          # NOt yet supported by the controller:
-          #- "-stateconfigmap"
-          #- "{{ .Release.Namespace }}/{{ .Values.rightsizer.stateconfigmapname }}"
+          - "--state-configmap-namespace"
+          - "{{ .Release.Namespace }}"
+          - "--state-configmap-name"
+          - "{{ .Values.rightsizer.stateconfigmapname }}"
+          {{- range .Values.rightsizer.namespaces }}
+          - "--namespace"
+          - "{{ . }}"
+          {{- end }}
+          {{- if .Values.rightsizer.updateMemoryLimits.enabled }}
+          - "--update-memory-limits"
+          - "--update-memory-limits-increment"
+          - "{{ .Values.rightsizer.updateMemoryLimits.increment }}"
+          - "--update-memory-limits-max"
+          - "{{ .Values.rightsizer.updateMemoryLimits.max }}"
+          - "--update-memory-limits-min-ooms"
+          - "{{ .Values.rightsizer.updateMemoryLimits.minOOMs }}"
+{{- end }}
+          - "--reset-ooms-window"
+          - "{{ .Values.rightsizer.resetOOMsWindow }}"
           resources:
             {{- toYaml .Values.rightsizer.resources | nindent 12 }}
       serviceAccountName: {{ .Values.rightsizer.serviceAccountName }}
