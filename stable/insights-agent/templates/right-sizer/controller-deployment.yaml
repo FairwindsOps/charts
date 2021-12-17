@@ -30,7 +30,7 @@ spec:
           ports:
           - containerPort: 8080
           securityContext:
-            {{- toYaml .Values.rightsizer.securityContext | nindent 12 }}
+            {{- toYaml .Values.rightsizer.containerSecurityContext | nindent 12 }}
           image: "{{ .Values.rightsizer.image.repository }}:{{ .Values.rightsizer.image.tag }}"
           imagePullPolicy: {{ .Values.rightsizer.image.pullPolicy }}
           command:
@@ -54,6 +54,17 @@ spec:
 {{- end }}
           - "--reset-ooms-window"
           - "{{ .Values.rightsizer.resetOOMsWindow }}"
+          {{- range .Values.rightsizer.extraArgs }}
+          - "{{ . }}"
+          {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
           resources:
             {{- toYaml .Values.rightsizer.resources | nindent 12 }}
       serviceAccountName: {{ .Values.rightsizer.serviceAccountName }}
