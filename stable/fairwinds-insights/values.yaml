@@ -327,6 +327,8 @@ ingress:
   starPaths: true
   # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
   separate: false
+  # -- Adds additional path ie. Redirect path for ALB
+  extraPaths: {}
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default
