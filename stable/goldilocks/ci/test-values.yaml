@@ -15,6 +15,16 @@ controller:
   deployment:
     additionalLabels:
       test: value
+  rbac:
+    extraRules:
+      - apiGroups:
+          - "batch"
+        resources:
+          - "*"
+        verbs:
+          - "get"
+          - "list"
+          - "watch"
 
 dashboard:
   replicaCount: 2
