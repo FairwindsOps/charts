@@ -61,6 +61,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
 | controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
+| controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
 | controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
 | controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
 | controller.flags | object | `{}` | A map of additional flags to pass to the controller |
