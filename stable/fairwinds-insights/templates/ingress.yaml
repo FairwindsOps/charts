@@ -33,7 +33,7 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with .Values.ingress.extraPaths }}
+          {{ with $.Values.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
@@ -110,7 +110,7 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with .Values.ingress.extraPaths }}
+          {{ with $.Values.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
@@ -149,7 +149,7 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with .Values.ingress.extraPaths }}
+          {{ with $.Values.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
@@ -242,7 +242,7 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with .Values.ingress.extraPaths }}
+          {{ with $.Values.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
