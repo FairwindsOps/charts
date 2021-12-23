@@ -30,6 +30,8 @@ controller:
   rbac:
     # controller.rbac.create -- If set to true, rbac resources will be created for the controller
     create: true
+    # controller.rbac.extraRules -- Extra rbac rules for the controller clusterrole
+    extraRules: []
   serviceAccount:
     # controller.serviceAccount.create -- If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`
     create: true
@@ -118,7 +120,8 @@ dashboard:
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
     enabled: false
-    annotations: {}
+    annotations:
+      {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     hosts:
