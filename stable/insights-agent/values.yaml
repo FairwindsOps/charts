@@ -440,7 +440,7 @@ rightsizer:
   deploymentAnnotations: {}
   # rightsizer.extraArgs -- Additional command-line flags for the controller.
   extraArgs: []
-  #- "-v2"
+    # - "-v2"
   # rightsizer.containerSecurityContext -- The securityContext for the
   # controller container.
   containerSecurityContext:
@@ -462,12 +462,14 @@ rightsizer:
     # Specify a list of RBAC rules,
     # each with a list of apiGroups, resources, and verbs.
     additionalAccess: []
-      #- apiGroups:
-      #   - ''
-      # resources:
-     #    - 'nodes'
-      # verbs:
-      #   - 'get'
+      # - apiGroups:
+      #     - ''
+      #  resources:
+     #     - 'ACustomResource'
+      #  verbs:
+      #    - 'get'
+      #    - 'update'
+      #    - 'patch'
 
 falco:
   enabled: false
