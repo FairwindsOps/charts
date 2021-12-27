@@ -1,6 +1,7 @@
 dashboard:
   ingress:
     enabled: true
+    ingressClassName: ingress
     hosts:
     - foo.com
 webhook:
