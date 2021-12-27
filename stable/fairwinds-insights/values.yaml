@@ -40,7 +40,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 1.15.4
+  agentChartTargetVersion: 1.17.4
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -284,8 +284,8 @@ emailCronjob:
     runAsUser: 10324
 
 databaseCleanupCronjob:
-  # -- Enable database cleanup
-  enabled: false
+  # -- Enable database cleanup true by default
+  enabled: true
   # -- Resources for the database cleanup job.
   resources:
     limits:
@@ -327,6 +327,8 @@ ingress:
   starPaths: true
   # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
   separate: false
+  # -- Adds additional path ie. Redirect path for ALB
+  extraPaths: {}
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default

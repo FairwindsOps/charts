@@ -33,6 +33,9 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
+          {{ with $.Values.ingress.extraPaths }}
+          {{- toYaml . | nindent 10 }}
+          {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             backend:
               serviceName: {{ $fullName }}-open-api
@@ -107,6 +110,9 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
+          {{ with $.Values.ingress.extraPaths }}
+          {{- toYaml . | nindent 10 }}
+          {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             backend:
               serviceName: {{ $fullName }}-open-api
@@ -143,6 +149,9 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
+          {{ with $.Values.ingress.extraPaths }}
+          {{- toYaml . | nindent 10 }}
+          {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:
@@ -233,6 +242,9 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
+          {{ with $.Values.ingress.extraPaths }}
+          {{- toYaml . | nindent 10 }}
+          {{ end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:

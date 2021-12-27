@@ -85,6 +85,9 @@ sync_repo() {
     local exit_code=0
 
     for dir in "$repo_dir"/*; do
+        if [[ -f $dir ]]; then
+            continue
+        fi
         if helm dependency build "$dir"; then
             helm package --destination "$sync_dir" "$dir"
         else
