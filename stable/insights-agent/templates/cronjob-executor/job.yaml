@@ -6,7 +6,7 @@ kind: Job
 metadata:
   {{- include "metadata" . }}
     "helm.sh/hook": post-install,post-upgrade
-    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+    "helm.sh/hook-delete-policy": before-hook-creation
 spec:
   ttlSecondsAfterFinished: 3600
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
@@ -22,6 +22,8 @@ spec:
         args:
           - -c
           - |
+            set -e
+
             mkdir /tmp/bin
             export PATH=$PATH:/tmp/bin
             cd /tmp/bin

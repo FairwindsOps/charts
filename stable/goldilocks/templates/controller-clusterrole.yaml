@@ -13,7 +13,7 @@ rules:
   - apiGroups:
       - 'apps'
     resources:
-      - 'deployments'
+      - '*'
     verbs:
       - 'get'
       - 'list'
@@ -37,4 +37,15 @@ rules:
       - 'create'
       - 'delete'
       - 'update'
+  - apiGroups:
+      - 'argoproj.io'
+    resources:
+      - rollouts
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  {{- if .Values.controller.rbac.extraRules -}}
+  {{ toYaml .Values.controller.rbac.extraRules | nindent 2 }}
+  {{- end }}
 {{- end }}

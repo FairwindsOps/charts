@@ -23,11 +23,15 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Major Version Upgrade Notes
 
-## *BREAKING* Upgrading from v3.x.x to v4.x.x
+## *BREAKING* Upgrading from v4.x.x to v5.x.x
 
 The new chart version includes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) configuration for the `networking.k8s.io/v1` Kubernetes API.
 
 Because of the new API version, you need to specify `dashboard.ingress.hosts[X].paths[Y].type` when installing this chart with enabled Ingress on a Kubernetes cluster version 1.19+.
+
+## Upgrading from v3.x.x to v4.x.x
+
+There are no breaking changes, but the goldilocks controller and dashboard have had some major tweaks so they can work with more workload controllers. To allow v4.0.0+ to work with more than Deployments, the main change here is in RBAC permissions so that the goldilocks service accounts can access all resources in the `apps/v1`.
 
 ## *BREAKING* Upgrading from v2.x.x to v3.x.x
 
@@ -53,15 +57,17 @@ This will completely remove the VPA and then re-install it using the new method.
 |-----|------|---------|-------------|
 | uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
 | vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
+| vpa.updater.enabled | bool | `false` |  |
 | metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
 | metrics-server.apiService.create | bool | `true` |  |
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v3.1.4"` | The goldilocks image tag to use |
+| image.tag | string | `"v4.0.0"` | The goldilocks image tag to use |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
 | controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
+| controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
 | controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
 | controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
 | controller.flags | object | `{}` | A map of additional flags to pass to the controller |
@@ -69,6 +75,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.nodeSelector | object | `{}` | Node selector for the controller pod |
 | controller.tolerations | list | `[]` | Tolerations for the controller pod |
 | controller.affinity | object | `{}` | Affinity for the controller pods |
+| controller.topologySpreadConstraints | list | `[]` | Topology spread constraints for the controller pods |
 | controller.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | The resources block for the controller pods |
 | controller.podSecurityContext | object | `{}` | Defines the podSecurityContext for the controller pod |
 | controller.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the controller container |
@@ -81,6 +88,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
 | dashboard.service.port | int | `80` | The port to run the dashboard service on |
 | dashboard.service.annotations | object | `{}` | Extra annotations for the dashboard service |
+| dashboard.flags | object | `{}` | A map of additional flags to pass to the dashboard |
 | dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
 | dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
@@ -103,3 +111,4 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.nodeSelector | object | `{}` |  |
 | dashboard.tolerations | list | `[]` |  |
 | dashboard.affinity | object | `{}` |  |
+| dashboard.topologySpreadConstraints | list | `[]` | Topology spread constraints for the dashboard pods |

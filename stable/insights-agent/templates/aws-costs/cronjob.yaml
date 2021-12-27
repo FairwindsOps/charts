@@ -1,7 +1,11 @@
 {{- if .Values.awscosts.enabled -}}
 {{- $_ := set . "Label" "awscosts" }}
 {{- $_ := set . "Config" .Values.awscosts }}
+{{- if not (.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
 apiVersion: batch/v1beta1
+{{- else }}
+apiVersion: batch/v1
+{{- end }}
 kind: CronJob
 metadata:
   {{- include "metadata" . }}
@@ -40,6 +44,8 @@ spec:
               - {{ .Values.awscosts.tagkey }}
               - --tagvalue 
               - {{ .Values.awscosts.tagvalue }}
+              - --workgroup 
+              - {{ .Values.awscosts.workgroup }}              
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}

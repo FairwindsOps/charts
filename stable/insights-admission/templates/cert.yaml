@@ -14,6 +14,7 @@ spec:
   dnsNames:
   - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc
   - {{ include "insights-admission.fullname" . }}.{{ .Release.Namespace }}.svc.{{ .Values.clusterDomain }}
+  isCA: true
   issuerRef:
     kind: Issuer
     name: {{ include "insights-admission.fullname" . }}-selfsigned

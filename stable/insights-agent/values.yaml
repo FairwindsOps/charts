@@ -35,7 +35,7 @@ cronjobs:
 cronjobExecutor:
   image:
     repository: curlimages/curl
-    tag: "7.73.0"
+    tag: "7.79.1"
   resources:
     limits:
       cpu: 100m
@@ -46,8 +46,8 @@ cronjobExecutor:
 
 installReporter:
   image:
-    repository: curlimages/curl
-    tag: "7.73.0"
+    repository: quay.io/fairwinds/insights-uploader
+    tag: "0.3"
   resources:
     limits:
       cpu: 250m
@@ -64,7 +64,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "4.0"
+    tag: "4.2"
   resources:
     limits:
       cpu: 250m
@@ -80,7 +80,7 @@ kubehunter:
   logLevel: INFO
   image:
     repository: aquasec/kube-hunter
-    tag: "0.3.1"
+    tag: "0.6.3"
   resources:
     limits:
       cpu: 250m
@@ -106,7 +106,16 @@ kubesec:
 
 goldilocks:
   enabled: false
-  installVPA: true
+  vpa:
+    enabled: true
+    recommender:
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsUser: 65534
+        capabilities:
+          drop:
+          - ALL
   schedule: "rand * * * *"
   timeout: 300
   image:
@@ -157,7 +166,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.1"
+    tag: "2.2"
   resources:
     limits:
       cpu: 250m
@@ -250,7 +259,7 @@ trivy:
   timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.13"
+    tag: "0.14"
   resources:
     limits:
       cpu: 250m
@@ -293,19 +302,53 @@ resourcemetrics:
       memory: 128Mi
 
 prometheus:
-  alertmanager:
-    enabled: false
   kubeStateMetrics:
+    enabled: true
+  alertmanager:
     enabled: false
   nodeExporter:
     enabled: false
   pushgateway:
     enabled: false
+  configmapReload:
+    prometheus:
+      enabled: false
   server:
     fullnameOverride: "prometheus-server"
+    image:
+      pullPolicy: Always
     persistentVolume:
       enabled: false
     retention: "1d"
+    deploymentAnnotations:
+      polaris.fairwinds.com/insecureCapabilities-exempt: "true"
+      polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
+      polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+      polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
+      polaris.fairwinds.com/notReadOnlyRootFilesystem-exempt: "true"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 512Mi
+      requests:
+        cpu: 500m
+        memory: 512Mi
+  kube-state-metrics:
+    image:
+      pullPolicy: Always
+    resources:
+      limits:
+        cpu: 100m
+        memory: 64Mi
+      requests:
+        cpu: 10m
+        memory: 32Mi
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
 
 admission:
   enabled: false
@@ -345,3 +388,103 @@ awscosts:
     requests:
       cpu: 100m
       memory: 128Mi
+
+rightsizer:
+  enabled: false
+  schedule: "rand * * * *"
+  timeout: 300
+  # This image is for the controller, the agent only runs the Insights uploader.
+  image:
+    repository: quay.io/fairwinds/right-sizer
+    tag: 0.1.0
+    pullPolicy: Always
+  stateconfigmapname: insights-agent-right-sizer-controller-state
+  SkipVolumes: true
+  # Resources for the controller deployment
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  deploymentAnnotations:
+    # Temporarily exclude these checks until the next controller release includes health-check endpoints.
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1200
+    capabilities:
+      drop:
+        - ALL
+
+falco:
+  enabled: false
+  installFalco: false
+  statefulset: true
+  persistence:
+    enabled: true
+    storageClass: ""
+    accessModes:
+      - ReadWriteOnce
+    annotations: {}
+    size: 1Gi
+  schedule: "rand * * * *"
+  timeout: 300
+  service:
+    port: 3031
+  image:
+    repository: quay.io/fairwinds/falco-agent
+    tag: "0.1"
+    pullPolicy: Always
+  podSecurityContext:
+    fsGroup: 101
+    runAsUser: 1200
+    runAsNonRoot: true
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1200
+    capabilities:
+      drop:
+        - ALL
+  tolerations: []
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+
+falcosecurity:
+  fullnameOverride: insights-agent
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 50m
+      memory: 128Mi
+  falco:
+    jsonOutput: true
+  ebpf:
+    # Enable eBPF support for Falco instead of falco-probe kernel module
+    enabled: false
+  falcosidekick:
+    # enable falcosidekick deployment
+    enabled: true
+    fullfqdn: true
+    webui:
+      enabled: true
+    config:
+      webhook:
+        address: "http://falco-agent:3031/data"
+        customHeaders: ""  # a list of comma separated custom headers to add, syntax is "key:value\,key:value"
+        minimumpriority: ""
+        mutualtls: false
+        checkcert: true

@@ -10,7 +10,7 @@ uploader:
     value: bar
 
 goldilocks:
-  enabled: false
+  enabled: false  # TODO: why is this disabled?
 
 opa:
   enabled: true
@@ -58,3 +58,8 @@ awscosts:
   catalog: AwsDataCatalog
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
+  workgroup: cur_athena_workgroup
+
+falco:
+  installFalco: false  # Falco does not work well with KIND cluster
+  enabled: true

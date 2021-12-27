@@ -40,7 +40,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 1.14.0
+  agentChartTargetVersion: 1.17.4
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -283,8 +283,10 @@ emailCronjob:
     # -- The user ID to run the email job under.
     runAsUser: 10324
 
-deleteOldActionItemsCronjob:
-  # -- Resources for the delete old Action Items job.
+databaseCleanupCronjob:
+  # -- Enable database cleanup true by default
+  enabled: true
+  # -- Resources for the database cleanup job.
   resources:
     limits:
       cpu: 500m
@@ -292,13 +294,13 @@ deleteOldActionItemsCronjob:
     requests:
       cpu: 80m
       memory: 128Mi
-  # -- CRON schedules for the delete old Action Items job.
+  # -- CRON schedules for the database cleanup job.
   schedules:
-    - name: ai-cleanup
+    - name: database-cleanup
       interval: 24h
       cron: "0 0 * * *"
   securityContext:
-    # -- The user ID to run the delete Action Items job under.
+    # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
 service:
@@ -325,6 +327,8 @@ ingress:
   starPaths: true
   # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
   separate: false
+  # -- Adds additional path ie. Redirect path for ALB
+  extraPaths: {}
 
 postgresql:
   # -- Use the ephemeral postgresql chart by default

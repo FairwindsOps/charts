@@ -37,6 +37,15 @@ spec:
             - --config
             - /opt/app/config.yaml
             {{- end }}
+            {{- if .Values.webhook.disallowExemptions }}
+            - --disallow-exemptions
+            {{- end }}
+            {{- if .Values.webhook.disallowConfigExemptions }}
+            - --disallow-config-exemptions
+            {{- end }}
+            {{- if .Values.webhook.disallowAnnotationExemptions }}
+            - --disallow-annotation-exemptions
+            {{- end }}
           image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
           imagePullPolicy: '{{.Values.image.pullPolicy}}'
           ports:

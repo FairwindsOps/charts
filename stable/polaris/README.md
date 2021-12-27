@@ -61,6 +61,9 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.ingress.annotations | object | `{}` | Web ingress annotations |
 | dashboard.ingress.tls | list | `[]` | Ingress TLS configuration |
 | dashboard.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
+| dashboard.disallowExemptions | bool | `false` | Disallow any exemption |
+| dashboard.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
+| dashboard.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
 | webhook.enable | bool | `false` | Whether to run the Validating Webhook |
 | webhook.replicas | int | `1` | Number of replicas |
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
@@ -77,6 +80,9 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.podAdditionalLabels | object | `{}` | Custom additional labels on webhook pods. |
 | webhook.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
 | webhook.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
+| webhook.disallowExemptions | bool | `false` | Disallow any exemption |
+| webhook.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
+| webhook.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
 | audit.cleanup | bool | `false` | Whether to delete the namespace once the audit is finished. |
 | audit.outputURL | string | `""` | A URL which will receive a POST request with audit results. |

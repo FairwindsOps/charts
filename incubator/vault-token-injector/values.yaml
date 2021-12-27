@@ -11,6 +11,9 @@ circleToken: replaceme
 # -- A token for interacting with TFCloud
 tfCloudToken: replaceme
 
+# -- An existing secret that contains the environment variables CIRCLEC_CI_TOKEN and TFCLOUD_TOKEN
+existingSecret: ""
+
 # -- The vault address to get tokens from
 vaultAddress: "https://vault.example.com"
 
@@ -25,7 +28,7 @@ config:
     vault_role: some-vault-role
     env_variable: VAULT_TOKEN
 
-# -- The klog log level (1-10)
+# -- The klog log level (1-10). WARNING: Log level 10 will print secrets to logs
 logLevel: 1
 
 image:

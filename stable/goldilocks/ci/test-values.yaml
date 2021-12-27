@@ -15,6 +15,16 @@ controller:
   deployment:
     additionalLabels:
       test: value
+  rbac:
+    extraRules:
+      - apiGroups:
+          - "batch"
+        resources:
+          - "*"
+        verbs:
+          - "get"
+          - "list"
+          - "watch"
 
 dashboard:
   ingress:
@@ -24,3 +34,15 @@ dashboard:
         paths:
           - path: /
             type: ImplementationSpecific
+  replicaCount: 2
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: DoNotSchedule
+      labelSelector:
+        matchLabels:
+          app: alertmanager
+  deployment:
+    additionalLabels:
+      test: value
+

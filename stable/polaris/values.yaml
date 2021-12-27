@@ -67,6 +67,12 @@ dashboard:
     tls: []
   # dashboard.priorityClassName -- Priority Class name to be used in deployment if provided.
   priorityClassName:
+  # dashboard.disallowExemptions -- Disallow any exemption
+  disallowExemptions: false
+  # dashboard.disallowConfigExemptions -- Disallow exemptions that are configured in the config file
+  disallowConfigExemptions: false
+  # dashboard.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
+  disallowAnnotationExemptions: false
 
 webhook:
   # webhook.enable -- Whether to run the Validating Webhook
@@ -147,6 +153,12 @@ webhook:
       memory: 128Mi
   # webhook.priorityClassName -- Priority Class name to be used in deployment if provided.
   priorityClassName:
+  # webhook.disallowExemptions -- Disallow any exemption
+  disallowExemptions: false
+  # webhook.disallowConfigExemptions -- Disallow exemptions that are configured in the config file
+  disallowConfigExemptions: false
+  # webhook.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
+  disallowAnnotationExemptions: false
 
 audit:
   # audit.enable -- Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others.

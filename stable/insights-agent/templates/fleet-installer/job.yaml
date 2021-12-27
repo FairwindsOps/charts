@@ -22,6 +22,7 @@ spec:
         args:
           - -c
           - |
+            set -eo pipefail
             mkdir /tmp/bin
             export PATH=$PATH:/tmp/bin
             cd /tmp/bin
@@ -29,9 +30,9 @@ spec:
             # using kubectl 1.19 for clusters <= 1.19.
             default_kubectl_version='v1.19.6'
             echo "Downloading jq . . ."
-            curl -Lo jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && chmod +x jq
+            curl -fLo jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && chmod +x jq
             echo "Getting the Kubernetes version from the API. . ."
-            kube_version=$(curl -ks https://kubernetes.default.svc/version?timeout=32s |jq -r .gitVersion)
+            kube_version=$(curl -fks https://kubernetes.default.svc/version?timeout=32s |jq -r .gitVersion)
             kube_minor_version=$(echo $kube_version |cut -d. -f2)
             if [ "x${kube_version}" == "x" ] ; then
               kubectl_version="${default_kubectl_version}"
@@ -44,7 +45,7 @@ spec:
               echo "Using kubectl version ${kubectl_version} because the cluster is <= version 1.19"
             fi
             echo Downloading kubectl version ${kubectl_version}
-            curl -Lo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/linux/amd64/kubectl" && chmod +x kubectl
+            curl -fLo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/linux/amd64/kubectl" && chmod +x kubectl
           
             echo "Checking if cluster already exists..."
             CLUSTER_FILE="/tmp/cluster.json"
@@ -54,7 +55,7 @@ spec:
             EXISTS=$(curl -s -o $CLUSTER_FILE -w "%{http_code}" "$CLUSTER_URL?showToken=true" -H "$AUTH_HEADER")
             if [[ $EXISTS -eq 404 ]]; then
               echo "Creating cluster..."
-              curl -X POST "$CLUSTER_URL" -H "$AUTH_HEADER" -o $CLUSTER_FILE
+              curl -f -X POST "$CLUSTER_URL" -H "$AUTH_HEADER" -o $CLUSTER_FILE
             else
               echo "Cluster already exists"
             fi
@@ -72,7 +73,7 @@ spec:
           - name: ADMIN_TOKEN
             valueFrom:
               secretKeyRef:
-                name:  {{ include "insights-agent.fullname" . }}-api-token
+                name:  {{ default ( printf "%s-api-token" (include "insights-agent.fullname" .) ) .Values.insights.apiTokenSecretName }}
                 key: token
         volumeMounts:
         - name: tmp

@@ -20,7 +20,7 @@ rules:
   - apiGroups:
       - 'apps'
     resources:
-      - 'deployments'
+      - '*'
     verbs:
       - 'get'
       - 'list'
@@ -28,6 +28,14 @@ rules:
       - ''
     resources:
       - 'namespaces'
+      - 'pods'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'argoproj.io'
+    resources:
+      - rollouts
     verbs:
       - 'get'
       - 'list'

@@ -1,3 +1,4 @@
+{{ if gt (len .Values.ingress.hostedZones) 0 }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -34,6 +35,14 @@ spec:
             value: {{ "https://" }}{{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ index .Values.ingress.hostedZones 0 }}{{ "/v0/swagger.yaml" }}
           - name: BASE_URL
             value: "/swagger"
+          livenessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /swagger
+              port: http
           resources:
             {{- toYaml .Values.openApi.resources | nindent 12 }}
           securityContext:
@@ -52,3 +61,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+{{ end }}

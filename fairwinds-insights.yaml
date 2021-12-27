@@ -39,6 +39,10 @@ exemptions:
   - filename: stable/insights-agent/charts/prometheus/templates/server/deploy.yaml
     report: polaris
     reason: We don't control a lot of this
+    
+  - filename: stable/insights-agent/charts/prometheus/charts/kube-state-metrics/templates/deployment.yaml
+    report: polaris
+    reason: We don't control a lot of this
 
   - filename: stable/insights-agent/templates/opa/check.yaml
     report: pluto
