@@ -49,6 +49,9 @@ spec:
             - dashboard
             - --exclude-containers={{ .Values.dashboard.excludeContainers }}
             - -v{{ .Values.dashboard.logVerbosity }}
+            {{- range $name, $value := .Values.dashboard.flags }}
+            - --{{ $name }}={{ $value }}
+            {{- end }}
         {{- if .Values.dashboard.securityContext }}
           securityContext:
             {{- toYaml .Values.dashboard.securityContext | nindent 12 }}

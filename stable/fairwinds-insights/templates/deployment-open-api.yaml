@@ -35,6 +35,14 @@ spec:
             value: {{ "https://" }}{{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ index .Values.ingress.hostedZones 0 }}{{ "/v0/swagger.yaml" }}
           - name: BASE_URL
             value: "/swagger"
+          livenessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /swagger
+              port: http
           resources:
             {{- toYaml .Values.openApi.resources | nindent 12 }}
           securityContext:
