@@ -23,6 +23,12 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Major Version Upgrade Notes
 
+## *BREAKING* Upgrading from v4.x.x to v5.x.x
+
+The new chart version includes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) configuration for the `networking.k8s.io/v1` Kubernetes API.
+
+Because of the new API version, you need to specify `dashboard.ingress.hosts[X].paths[Y].type` when installing this chart with enabled Ingress on a Kubernetes cluster version 1.19+.
+
 ## Upgrading from v3.x.x to v4.x.x
 
 There are no breaking changes, but the goldilocks controller and dashboard have had some major tweaks so they can work with more workload controllers. To allow v4.0.0+ to work with more than Deployments, the main change here is in RBAC permissions so that the goldilocks service accounts can access all resources in the `apps/v1`.
@@ -96,9 +102,11 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the dashboard container |
 | dashboard.deployment.extraVolumes | list | `[]` | Extra volumes for the dashboard pod |
 | dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
+| dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.annotations | object | `{}` |  |
 | dashboard.ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| dashboard.ingress.hosts[0].paths | list | `[]` |  |
+| dashboard.ingress.hosts[0].paths[0].path | string | `"/"` |  |
+| dashboard.ingress.hosts[0].paths[0].type | string | `"ImplementationSpecific"` |  |
 | dashboard.ingress.tls | list | `[]` |  |
 | dashboard.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | A resources block for the dashboard. |
 | dashboard.podSecurityContext | object | `{}` | Defines the podSecurityContext for the dashboard pod |
