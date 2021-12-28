@@ -30,6 +30,8 @@ controller:
   rbac:
     # controller.rbac.create -- If set to true, rbac resources will be created for the controller
     create: true
+    # controller.rbac.extraRules -- Extra rbac rules for the controller clusterrole
+    extraRules: []
   serviceAccount:
     # controller.serviceAccount.create -- If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`
     create: true
@@ -97,6 +99,8 @@ dashboard:
     port: 80
     # dashboard.service.annotations -- Extra annotations for the dashboard service
     annotations: {}
+  # dashboard.flags -- A map of additional flags to pass to the dashboard
+  flags: {}
   # dashboard.logVerbosity -- Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
   # dashboard.excludeContainers -- Container names to exclude from displaying in the Goldilocks dashboard
@@ -123,7 +127,8 @@ dashboard:
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
     enabled: false
-    annotations: {}
+    annotations:
+      {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     hosts:
