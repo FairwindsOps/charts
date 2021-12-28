@@ -45,4 +45,3 @@ dashboard:
   deployment:
     additionalLabels:
       test: value
-
