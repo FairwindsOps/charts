@@ -259,7 +259,7 @@ trivy:
   timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.13"
+    tag: "0.14"
   resources:
     limits:
       cpu: 250m
@@ -396,11 +396,39 @@ rightsizer:
   # This image is for the controller, the agent only runs the Insights uploader.
   image:
     repository: quay.io/fairwinds/right-sizer
-    tag: 0.1.0
+    tag: 0.2
     pullPolicy: Always
+  # rightsizer.imagePullSecrets -- imagePullSecrets containing private registry credentials.
+  imagePullSecrets: []
+
+  # rightsizer.stateconfigmapname -- The name of a ConfigMap where controller
+  # state is stored inbetween restarts.
   stateconfigmapname: insights-agent-right-sizer-controller-state
+  # rightsizer.resetOOMsWindow -- The amount of time after which, if no OOMs
+  # have been seen, items will be removed from the Insights report.
+  resetOOMsWindow: "24h"
+  # rightsizer.namespaces -- Kubernetes namespaces to restrict all operations.
+  # By default, all namespaces are allowed.
+  # This applies both to OOM-kill alerts, and updating memory limits if enabled.
+  namespaces: []
+  updateMemoryLimits:
+    # rightsizer.updateMemoryLimits.enabled -- Update memory limits of
+    # pod-controller resources whos containers are OOM-killed.
+    enabled: false
+    # rightsizer.updateMemoryLimits.increment -- The multiplier used to
+    # increase memory limits, in response to an OOM-kill. This value is
+    # multiplied by the limits of the OOM-killed container.
+    increment: 1.2
+    # rightsizer.updateMemoryLimits.minOOMs -- The number of OOM-kills required
+    # before a pod-controller memory limits will be updated.
+    minOOMs: 2
+    # rightsizer.updateMemoryLimits.max -- The multiplier used to calculate a
+    # maximum value to update a pod-controller memory limits.
+    # This value is multiplied by the starting memory limits of the first
+    # OOM-killed container seen by this controller.
+    max: 2.0
   SkipVolumes: true
-  # Resources for the controller deployment
+  # rightsizer.resources -- Resources for the controller deployment
   resources:
     limits:
       cpu: 250m
@@ -408,11 +436,14 @@ rightsizer:
     requests:
       cpu: 100m
       memory: 128Mi
-  deploymentAnnotations:
-    # Temporarily exclude these checks until the next controller release includes health-check endpoints.
-    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
-    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
-  securityContext:
+  # rightsizer.deploymentAnnotations -- Annotations to add to the right-sizer controller deployment.
+  deploymentAnnotations: {}
+  # rightsizer.extraArgs -- Additional command-line flags for the controller.
+  extraArgs: []
+    # - "-v2"
+  # rightsizer.containerSecurityContext -- The securityContext for the
+  # controller container.
+  containerSecurityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
     runAsNonRoot: true
@@ -420,6 +451,25 @@ rightsizer:
     capabilities:
       drop:
         - ALL
+  # The global `rbac.disabled` causes this ServiceAccount to not be created.
+  # rightsizer.serviceAccountName -- The Kubernetes ServiceAccount for the
+  # controller. This account will be created unless `rbac.disabled` is set to true.
+  serviceAccountName: insights-agent-right-sizer-controller
+  rbac:
+    # See the global rbac.disabled value is used instead of `create` here.
+    # rightsizer.rbac.additionalAccess -- RBAC rules to be granted to the
+    # controller, providing access to custom resources.
+    # Specify a list of RBAC rules,
+    # each with a list of apiGroups, resources, and verbs.
+    additionalAccess: []
+      # - apiGroups:
+      #     - ''
+      #  resources:
+     #     - 'ACustomResource'
+      #  verbs:
+      #    - 'get'
+      #    - 'update'
+      #    - 'patch'
 
 falco:
   enabled: false

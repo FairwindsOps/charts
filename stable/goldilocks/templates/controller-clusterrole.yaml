@@ -45,4 +45,7 @@ rules:
       - 'get'
       - 'list'
       - 'watch'
+  {{- if .Values.controller.rbac.extraRules -}}
+  {{ toYaml .Values.controller.rbac.extraRules | nindent 2 }}
+  {{- end }}
 {{- end }}
