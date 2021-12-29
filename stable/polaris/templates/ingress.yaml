@@ -17,6 +17,9 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
   name: polaris
 spec:
+{{- if and (.Values.dashboard.ingress.ingressClassName) (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
+  ingressClassName: {{ .Values.dashboard.ingress.ingressClassName }}
+{{- end }}
   rules:
   {{- range .Values.dashboard.ingress.hosts }}
   - host: {{ . }}
