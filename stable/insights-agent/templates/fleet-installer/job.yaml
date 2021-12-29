@@ -60,7 +60,8 @@ spec:
               echo "Cluster already exists"
             fi
             CLUSTER_TOKEN=$(cat $CLUSTER_FILE | sed 's/^.*"AuthToken":"\([^{"}]*\)".*$/\1/')
-            kubectl delete secret $SECRET_NAME || 1
+            kubectl delete secret $SECRET_NAME || echo "Secret $SECRET_NAME does not already exist"
+            echo "Creating secret $SECRET_NAME"
             kubectl create secret generic \
               --from-literal="token=$CLUSTER_TOKEN" \
               -n {{ .Release.Namespace }} \
