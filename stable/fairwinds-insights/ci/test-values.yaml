@@ -49,3 +49,7 @@ emailCronjob:
 databaseCleanupCronjob:
   enabled: true
   schedules: []
+  
+minio:
+  persistence:
+    enabled: false 
