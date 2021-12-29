@@ -35,7 +35,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| config | string | `nil` | The (polaris configuration)[https://github.com/FairwindsOps/polaris#configuration]. If not provided then the (default)[https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml] config from Polaris is used. |
+| config | string | `nil` | The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration). If not provided then the [default](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml) config from Polaris is used. |
 | image.repository | string | `"quay.io/fairwinds/polaris"` | Image repo |
 | image.tag | string | `""` | The Polaris Image tag to use. Defaults to the Chart's AppVersion |
 | image.pullPolicy | string | `"Always"` | Image pull policy |
