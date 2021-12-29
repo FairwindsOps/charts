@@ -1,4 +1,4 @@
-# config -- The (polaris configuration)[https://github.com/FairwindsOps/polaris#configuration]. If not provided then the (default)[https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml] config from Polaris is used.
+# config -- The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration). If not provided then the [default](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml) config from Polaris is used.
 config: null
 
 image:
