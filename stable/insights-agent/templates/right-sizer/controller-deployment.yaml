@@ -21,20 +21,51 @@ spec:
         component: right-sizer
         app: insights-agent
     spec:
+      {{- with .Values.rightsizer.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       containers:
         - name: {{ .Chart.Name }}-right-sizer-controller
           ports:
           - containerPort: 8080
           securityContext:
-            {{- toYaml .Values.rightsizer.securityContext | nindent 12 }}
+            {{- toYaml .Values.rightsizer.containerSecurityContext | nindent 12 }}
           image: "{{ .Values.rightsizer.image.repository }}:{{ .Values.rightsizer.image.tag }}"
           imagePullPolicy: {{ .Values.rightsizer.image.pullPolicy }}
           command:
           - "right-sizer"
-          # NOt yet supported by the controller:
-          #- "-stateconfigmap"
-          #- "{{ .Release.Namespace }}/{{ .Values.rightsizer.stateconfigmapname }}"
+          - "--state-configmap-namespace"
+          - "{{ .Release.Namespace }}"
+          - "--state-configmap-name"
+          - "{{ .Values.rightsizer.stateconfigmapname }}"
+          {{- range .Values.rightsizer.namespaces }}
+          - "--namespace"
+          - "{{ . }}"
+          {{- end }}
+          {{- if .Values.rightsizer.updateMemoryLimits.enabled }}
+          - "--update-memory-limits"
+          - "--update-memory-limits-increment"
+          - "{{ .Values.rightsizer.updateMemoryLimits.increment }}"
+          - "--update-memory-limits-max"
+          - "{{ .Values.rightsizer.updateMemoryLimits.max }}"
+          - "--update-memory-limits-min-ooms"
+          - "{{ .Values.rightsizer.updateMemoryLimits.minOOMs }}"
+{{- end }}
+          - "--reset-ooms-window"
+          - "{{ .Values.rightsizer.resetOOMsWindow }}"
+          {{- range .Values.rightsizer.extraArgs }}
+          - "{{ . }}"
+          {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8080
           resources:
             {{- toYaml .Values.rightsizer.resources | nindent 12 }}
-      serviceAccountName: insights-agent-right-sizer-controller
+      serviceAccountName: {{ .Values.rightsizer.serviceAccountName }}
 {{- end -}}

@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  name: {{ .Values.rightsizer.serviceAccountName }}
   labels:
     app: insights-agent
 ---
@@ -56,7 +56,7 @@ roleRef:
   name: view
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+    name: {{ .Values.rightsizer.serviceAccountName }}
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -71,7 +71,7 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-events
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+    name: {{ .Values.rightsizer.serviceAccountName }}
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -86,6 +86,68 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-state
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+    name: {{ .Values.rightsizer.serviceAccountName }}
     namespace: {{ .Release.Namespace }}
+{{ if .Values.rightsizer.updateMemoryLimits.enabled -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-update-memory-limits
+  labels:
+    app: insights-agent
+rules:
+  - apiGroups:
+      - 'apps'
+    resources:
+      - 'pods'
+      - 'deployments'
+      - 'statefulsets'
+      - 'daemonsets'
+      - 'replicasets'
+    verbs:
+      - 'update'
+      - 'patch'
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-update-memory-limits
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-update-memory-limits
+subjects:
+  - kind: ServiceAccount
+    name: {{ .Values.rightsizer.serviceAccountName }}
+    namespace: {{ .Release.Namespace }}
+{{ end -}}
+{{ if .Values.rightsizer.rbac.additionalAccess -}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-additional-access
+  labels:
+    app: insights-agent
+rules:
+{{ toYaml .Values.rightsizer.rbac.additionalAccess }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-additional-access
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-additional-access
+subjects:
+- kind: ServiceAccount
+  name: {{ .Values.rightsizer.serviceAccountName }}
+  namespace: {{ .Release.Namespace }}
+{{ end }}
 {{- end -}}
