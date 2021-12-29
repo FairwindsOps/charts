@@ -40,6 +40,11 @@ spec:
       - name: {{ .Chart.Name }}
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command:
+          - /rbac-manager
+          {{- range $name, $value := .Values.extraArgs }}
+          - --{{ $name }}={{ $value }}
+          {{- end }}
         readinessProbe:
           httpGet:
             scheme: HTTP
