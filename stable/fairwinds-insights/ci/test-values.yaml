@@ -6,6 +6,7 @@ ingress:
 options:
   insightsSAASHost: "https://staging.k8s.insights.fairwinds.com"
   autogenerateKeys: true
+  migrateHealthScore: false
 
 postgresql:
   sslMode: "disable"
