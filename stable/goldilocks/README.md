@@ -67,6 +67,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
 | controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
+| controller.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
 | controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
 | controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
 | controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
@@ -92,6 +93,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
 | dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
+| dashboard.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
 | dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
 | dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
 | dashboard.deployment.annotations | object | `{}` | Extra annotations for the dashboard deployment |
@@ -101,9 +103,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
 | dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.annotations | object | `{}` |  |
-| dashboard.ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| dashboard.ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| dashboard.ingress.hosts[0].paths[0].type | string | `"ImplementationSpecific"` |  |
+| dashboard.ingress.hosts | list | `[{"host":"chart-example.local","paths":[{"path":"/","type":"ImplementationSpecific"}]}]` |  kubernetes.io/tls-acme: "true" |
 | dashboard.ingress.tls | list | `[]` |  |
 | dashboard.resources | object | `{"limits":{"cpu":"25m","memory":"32Mi"},"requests":{"cpu":"25m","memory":"32Mi"}}` | A resources block for the dashboard. |
 | dashboard.podSecurityContext | object | `{}` | Defines the podSecurityContext for the dashboard pod |
