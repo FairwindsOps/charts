@@ -8,6 +8,9 @@ image:
   # imagePullSecrets -- A list of imagePullSecrets to reference for pulling the image
   imagePullSecrets: []
 
+# extraArgs -- A map of flag=value to pass to rbac-manager
+extraArgs: {}
+
 # installCRDs -- If true, install and upgrade CRDs. See the Helm documentation for [best practices regarding CRDs](https://helm.sh/docs/chart_best_practices/custom_resource_definitions/#install-a-crd-declaration-before-using-the-resource).
 installCRDs: true
 
