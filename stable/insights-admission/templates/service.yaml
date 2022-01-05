@@ -5,6 +5,8 @@ metadata:
   labels:
     component: controller
     {{- include "insights-admission.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
 spec:
   type: {{ .Values.service.type }}
   ports:
