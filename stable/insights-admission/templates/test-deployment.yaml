@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: {{ include "insights-admission.fullname" . }}-test
   annotations:
-    helm.sh/hook: post-install
+    helm.sh/hook: pre-install
   labels:
     component: test
     {{- include "insights-admission.labels" . | nindent 4 }}
