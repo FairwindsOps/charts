@@ -5,6 +5,9 @@ metadata:
   labels:
     component: controller
     {{- include "insights-admission.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-delete-policy": before-hook-creation 
 spec:
   type: {{ .Values.service.type }}
   ports:
