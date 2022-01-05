@@ -4,8 +4,6 @@ metadata:
   name: {{ include "insights-admission.fullname" . }}-admission
   labels:
     {{- include "insights-admission.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": "pre-install"
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
