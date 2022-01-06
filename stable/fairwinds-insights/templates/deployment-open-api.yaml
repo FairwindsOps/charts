@@ -22,6 +22,10 @@ spec:
         - name: {{ . }}
       {{- end }}
       serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: openapi-nginx-conf
       containers:
         - name: fairwinds-insights
           image: "{{ .Values.openApiImage.repository }}:{{ include "fairwinds-insights.openApiImageTag" . }}"
@@ -35,6 +39,10 @@ spec:
             value: {{ "https://" }}{{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ index .Values.ingress.hostedZones 0 }}{{ "/v0/swagger.yaml" }}
           - name: BASE_URL
             value: "/swagger"
+          volumeMounts:
+          - name: nginx-conf
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
           livenessProbe:
             httpGet:
               path: /swagger
