@@ -6,7 +6,8 @@ dependencies:
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 14.11.0
-  condition: resourcemetrics.installPrometheus
+  condition: prometheus.installPrometheusServer
+  alias: prometheus-server
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
   version: 0.4.2

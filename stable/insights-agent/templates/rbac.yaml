@@ -43,9 +43,9 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-opa
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.resourcemetrics.enabled }}
+{{- if .Values.prometheus.enabled }}
 - kind: ServiceAccount
-  name: {{ include "insights-agent.fullname" . }}-resource-metrics
+  name: {{ include "insights-agent.fullname" . }}-prometheus
   namespace: {{ .Release.Namespace }}
 {{- end }}
 {{- if .Values.goldilocks.enabled }}

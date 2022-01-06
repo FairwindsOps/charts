@@ -40,9 +40,9 @@ trivy:
   enabled: true
   maxScansPerRun: 2
 
-resourcemetrics:
+prometheus:
   enabled: true
-  installPrometheus: true
+  installPrometheusServer: true
 
 admission:
   enabled: true

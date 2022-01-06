@@ -284,9 +284,9 @@ pluto:
       cpu: 100m
       memory: 128Mi
 
-resourcemetrics:
+prometheus:
   enabled: false
-  installPrometheus: false
+  installPrometheusServer: false
   schedule: "0/10 * * * *"
   timeout: 300
   address: "http://prometheus-server"
@@ -301,7 +301,7 @@ resourcemetrics:
       cpu: 100m
       memory: 128Mi
 
-prometheus:
+prometheus-server:
   kubeStateMetrics:
     enabled: true
   alertmanager:
