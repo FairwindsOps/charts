@@ -7,7 +7,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: {{ include "insights-admission.fullname" . }}
   annotations:
-    "helm.sh/hook": "post-install,post-upgrade,post-delete"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-delete-policy": before-hook-creation
     {{- if not .Values.secretName }}
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "insights-admission.fullname" . }}-cert
