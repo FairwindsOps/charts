@@ -41,8 +41,11 @@ spec:
             value: "/swagger"
           volumeMounts:
           - name: nginx-conf
-            mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
+            mountPath: /etc/nginx/nginx.conf
+          - name: nginx-conf
+            subPath: run.sh
+            mountPath: /usr/share/nginx/run.sh
           livenessProbe:
             httpGet:
               path: /swagger
