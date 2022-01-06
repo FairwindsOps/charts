@@ -27,12 +27,6 @@ references:
       tags:
         ignore: /.*/
 
-executors:
-  ci-images-large:
-    resource_class: large
-    docker:
-      - image: quay.io/reactiveops/ci-images:v11-stretch
-
 jobs:
   check-helm-docs:
     executor: rok8s11/ci-images
