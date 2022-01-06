@@ -6,7 +6,6 @@ metadata:
     {{- include "insights-admission.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": "pre-install"
-    "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
 {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
