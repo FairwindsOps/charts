@@ -36,8 +36,6 @@ spec:
           env:
           - name: SWAGGER_JSON_URL
             value: /v0/swagger.yaml
-          - name: BASE_URL
-            value: /swagger
           volumeMounts:
           - name: nginx-conf
             subPath: nginx.conf
