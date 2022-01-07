@@ -1,15 +1,15 @@
-{{- if and .Values.prometheus.enabled (not .Values.rbac.disabled) -}}
+{{- if and .Values.prometheus-metrics.enabled (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-prometheus
+  name: {{ include "insights-agent.fullname" . }}-prometheus-metrics
   labels:
     app: insights-agent
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-prometheus-view
+  name: {{ include "insights-agent.fullname" . }}-prometheus-metrics-view
   labels:
     app: insights-agent
 roleRef:
@@ -18,6 +18,6 @@ roleRef:
   name: view
 subjects:
   - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-prometheus
+    name: {{ include "insights-agent.fullname" . }}-prometheus-metrics
     namespace: {{ .Release.Namespace }}
 {{- end -}}

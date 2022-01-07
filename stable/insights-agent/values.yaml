@@ -284,7 +284,7 @@ pluto:
       cpu: 100m
       memory: 128Mi
 
-prometheus:
+prometheus-metrics:
   enabled: false
   installPrometheusServer: false
   schedule: "0/10 * * * *"
@@ -301,7 +301,7 @@ prometheus:
       cpu: 100m
       memory: 128Mi
 
-prometheus-server:
+prometheus:
   kubeStateMetrics:
     enabled: true
   alertmanager:

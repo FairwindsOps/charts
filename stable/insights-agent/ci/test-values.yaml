@@ -40,7 +40,7 @@ trivy:
   enabled: true
   maxScansPerRun: 2
 
-prometheus:
+prometheus-metrics:
   enabled: true
   installPrometheusServer: true
 

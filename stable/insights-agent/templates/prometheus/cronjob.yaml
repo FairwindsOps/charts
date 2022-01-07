@@ -1,6 +1,6 @@
-{{- if .Values.prometheus.enabled -}}
-{{- $_ := set . "Label" "prometheus" }}
-{{- $_ := set . "Config" .Values.prometheus }}
+{{- if .Values.prometheus-metrics.enabled -}}
+{{- $_ := set . "Label" "resource-metrics" }} # TODO(Barnie)- change this before merging to master
+{{- $_ := set . "Config" .Values.prometheus-metrics }}
 {{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}

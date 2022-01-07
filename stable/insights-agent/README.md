@@ -35,7 +35,7 @@ There are several different report types which can be enabled and configured:
 * `kubebench`
 * `pluto`
 * `opa`
-* `prometheus`
+* `resource-metrics`
 * `admission`
 * `awscosts`
 
@@ -99,8 +99,8 @@ Parameter | Description | Default
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true
 `goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
-`prometheus.installPrometheusServer` | Install a new Prometheus server instance for the proemetheus report | false
-`prometheus.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
+`resource-metrics.installPrometheusServer` | Install a new Prometheus server instance for the proemetheus report | false
+`resource-metrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
 `awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
