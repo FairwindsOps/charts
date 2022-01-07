@@ -430,7 +430,7 @@ rightsizer:
     # rightsizer.updateMemoryLimits.namespaces -- Kubernetes namespaces to
     # restrict where memory limits will be updated.
     # This value narrows the namespaces specified in the global `rightsizer.namespaces` one.
-  namespaces: []
+    namespaces: []
   SkipVolumes: true
   # rightsizer.resources -- Resources for the controller deployment
   resources:
