@@ -51,6 +51,10 @@ spec:
           - "{{ .Values.rightsizer.updateMemoryLimits.max }}"
           - "--update-memory-limits-min-ooms"
           - "{{ .Values.rightsizer.updateMemoryLimits.minOOMs }}"
+          {{- range .Values.rightsizer.updateMemoryLimits.namespaces }}
+          - "--update-memory-limits-namespace"
+          - "{{ . }}"
+          {{- end }}
 {{- end }}
           - "--reset-ooms-window"
           - "{{ .Values.rightsizer.resetOOMsWindow }}"
