@@ -158,7 +158,6 @@ opa:
     requests:
       cpu: 100m
       memory: 128Mi
-  installCRDs: true
 
 workloads:
   enabled: true
