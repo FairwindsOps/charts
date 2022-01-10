@@ -1,6 +1,6 @@
-{{- if .Values.prometheus-metrics.enabled -}}
+{{- if .Values.prometheusmetrics.enabled -}}
 {{- $_ := set . "Label" "resource-metrics" }} # TODO(Barnie)- change this before merging to master
-{{- $_ := set . "Config" .Values.prometheus-metrics }}
+{{- $_ := set . "Config" .Values.prometheusmetrics }}
 {{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
@@ -16,7 +16,7 @@ spec:
             - prometheus-collector
             env:
             - name: PROMETHEUS_ADDRESS
-              value: {{ .Values.prometheus.address | quote }}
+              value: {{ .Values.prometheusmetrics.address | quote }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
