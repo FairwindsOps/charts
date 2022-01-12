@@ -120,6 +120,9 @@ dashboard:
     # dashboard.deployment.extraVolumes -- Extra volumes for the dashboard pod
     extraVolumes: []
 
+    # dashboard.deployment.podAnnotations -- Extra annotations for the dashboard pod
+    podAnnotations: {}
+
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
     enabled: false
