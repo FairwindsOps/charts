@@ -38,7 +38,7 @@ spec:
           ports:
           - name: https
             {{- if .Values.service.usePod443 }}
-            {{- if or (.Values.securityContext.runAsNonRoot (ne .Values.securityContext.runAsUser 0)) }}
+            {{- if or ((ne .Values.securityContext.runAsNonRoot false) (ne .Values.securityContext.runAsUser 0)) }}
               {{- fail "If using usePod443, you must specify securityContext.runAsNonRoot=false and securityContext.runAsUser=0" }}
             {{- end }}
             containerPort: 443
