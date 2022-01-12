@@ -45,6 +45,7 @@ spec:
       containers:
       - name: aws-iam-authenticator
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: Always
         args:
         - server
         - --config={{ .Values.volumes.config.mountPath }}config.yaml

@@ -15,8 +15,25 @@ controller:
   deployment:
     additionalLabels:
       test: value
+  rbac:
+    extraRules:
+      - apiGroups:
+          - "batch"
+        resources:
+          - "*"
+        verbs:
+          - "get"
+          - "list"
+          - "watch"
 
 dashboard:
+  ingress:
+    enabled: true
+    hosts:
+      - host: goldilocks.example.local
+        paths:
+          - path: /
+            type: ImplementationSpecific
   replicaCount: 2
   topologySpreadConstraints:
     - maxSkew: 1

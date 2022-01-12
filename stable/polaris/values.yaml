@@ -1,4 +1,4 @@
-# config -- The (polaris configuration)[https://github.com/FairwindsOps/polaris#configuration]. If not provided then the (default)[https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml] config from Polaris is used.
+# config -- The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration). If not provided then the [default](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml) config from Polaris is used.
 config: null
 
 image:
@@ -59,6 +59,8 @@ dashboard:
   ingress:
     # dashboard.ingress.enabled -- Whether to enable ingress to the dashboard
     enabled: false
+    # dashboard.ingress.ingressClassName -- From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation.
+    ingressClassName:
     # dashboard.ingress.hosts -- Web ingress hostnames
     hosts: []
     # dashboard.ingress.annotations -- Web ingress annotations

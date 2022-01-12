@@ -1,6 +1,12 @@
 {{- if and .Values.dashboard.enabled .Values.dashboard.ingress.enabled }}
 {{- $fullName := include "goldilocks.fullname" . -}}
+{{- $apiV1 := false -}}
+{{- if and (.Capabilities.APIVersions.Has "networking.k8s.io/v1") (semverCompare ">= v1.19.0" .Capabilities.KubeVersion.Version) -}}
+apiVersion: networking.k8s.io/v1
+{{- $apiV1 = true -}}
+{{- else if .Capabilities.APIVersions.Has "networking.k8s.io/v1beta1" -}}
 apiVersion: networking.k8s.io/v1beta1
+{{- end }}
 kind: Ingress
 metadata:
   name: {{ $fullName }}-dashboard
@@ -15,6 +21,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+{{- if and (.Values.dashboard.ingress.ingressClassName) (semverCompare ">= v1.18.0" .Capabilities.KubeVersion.Version) }}
+  ingressClassName: {{ .Values.dashboard.ingress.ingressClassName }}
+{{- end }}
 {{- if .Values.dashboard.ingress.tls }}
   tls:
   {{- range .Values.dashboard.ingress.tls }}
@@ -31,10 +40,20 @@ spec:
       http:
         paths:
         {{- range .paths }}
-          - path: {{ . }}
+          {{- if $apiV1 }}
+          - path: {{ .path }}
+            pathType: {{ .type }}
+            backend:
+              service:
+                name: {{ $fullName }}-dashboard
+                port:
+                  name: http
+          {{- else }}
+          - path: {{ .path }}
             backend:
               serviceName: {{ $fullName }}-dashboard
               servicePort: http
+          {{- end }}
         {{- end }}
   {{- end }}
 {{- end }}

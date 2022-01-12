@@ -2,7 +2,6 @@ incubator/autospotting
 incubator/basic-demo
 incubator/capsize
 incubator/custom-iptables
-incubator/fairwinds-metrics
 incubator/fluentd
 incubator/imagepullsecret-deploy
 incubator/kubebench
@@ -13,6 +12,5 @@ incubator/opa
 incubator/ro-cert-manager
 incubator/route53sync
 incubator/stackdriver-metrics-adapter
-stable/aws-iam-authenticator
 stable/ecr-cleanup
 stable/insights-agent

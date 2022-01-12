@@ -17,9 +17,12 @@ image:
   # image.repository -- Repository for the goldilocks image
   repository: quay.io/fairwinds/goldilocks
   # image.tag -- The goldilocks image tag to use
-  tag: v4.0.0
+  tag: v4.1.0
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
+
+# imagePullSecrets -- A list of image pull secret names to use
+imagePullSecrets: []
 
 nameOverride: ""
 fullnameOverride: ""
@@ -30,6 +33,10 @@ controller:
   rbac:
     # controller.rbac.create -- If set to true, rbac resources will be created for the controller
     create: true
+    # controller.rbac.enableArgoproj -- If set to true, the clusterrole will give access to argoproj.io resources
+    enableArgoproj: true
+    # controller.rbac.extraRules -- Extra rbac rules for the controller clusterrole
+    extraRules: []
   serviceAccount:
     # controller.serviceAccount.create -- If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`
     create: true
@@ -90,6 +97,8 @@ dashboard:
     port: 80
     # dashboard.service.annotations -- Extra annotations for the dashboard service
     annotations: {}
+  # dashboard.flags -- A map of additional flags to pass to the dashboard
+  flags: {}
   # dashboard.logVerbosity -- Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
   # dashboard.excludeContainers -- Container names to exclude from displaying in the Goldilocks dashboard
@@ -97,6 +106,8 @@ dashboard:
   rbac:
     # dashboard.rbac.create -- If set to true, rbac resources will be created for the dashboard
     create: true
+    # dashboard.rbac.enableArgoproj -- If set to true, the clusterrole will give access to argoproj.io resources
+    enableArgoproj: true
   serviceAccount:
     # dashboard.serviceAccount.create -- If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name`
     create: true
@@ -113,15 +124,23 @@ dashboard:
     # dashboard.deployment.extraVolumes -- Extra volumes for the dashboard pod
     extraVolumes: []
 
+    # dashboard.deployment.podAnnotations -- Extra annotations for the dashboard pod
+    podAnnotations: {}
+
   ingress:
     # dashboard.ingress.enabled -- Enables an ingress object for the dashboard.
     enabled: false
+
+    # dashboard.ingress.ingressClassName -- From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation.
+    ingressClassName:
     annotations: {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     hosts:
       - host: chart-example.local
-        paths: []
+        paths:
+          - path: /
+            type: ImplementationSpecific
 
     tls: []
     #  - secretName: chart-example-tls
