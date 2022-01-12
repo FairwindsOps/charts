@@ -1,0 +1,9 @@
+# aws-iam-authenticator
+
+Runs the AWS Iam Authenticator as a daemonset on master nodes in order to authenticate your users with AWS IAM.  This requires additional setup on your cluster to work.  See the [docs](https://github.com/kubernetes-sigs/aws-iam-authenticator) for more information.
+
+## Upgrading to v1.3.0+
+
+In this version, due to updates for Kubernetes 1.16+, the labelSelector for the pod-deployment relationship has changed. This means that the chart will have to be deleted and re-installed in order to accomadate this upgrade.
+
+{{ template "chart.valuesSection" . }}

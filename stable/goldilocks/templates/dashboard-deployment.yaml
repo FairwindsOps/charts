@@ -33,6 +33,10 @@ spec:
         {{ toYaml .Values.dashboard.deployment.additionalLabels | nindent 8 }}
         {{- end }}
     spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- if .Values.dashboard.serviceAccount.create }}
       serviceAccountName: {{ include "goldilocks.fullname" . }}-dashboard
       {{- else }}

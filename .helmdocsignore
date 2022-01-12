@@ -12,6 +12,5 @@ incubator/opa
 incubator/ro-cert-manager
 incubator/route53sync
 incubator/stackdriver-metrics-adapter
-stable/aws-iam-authenticator
 stable/ecr-cleanup
 stable/insights-agent
