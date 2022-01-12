@@ -63,6 +63,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | image.repository | string | `"quay.io/fairwinds/goldilocks"` | Repository for the goldilocks image |
 | image.tag | string | `"v4.1.0"` | The goldilocks image tag to use |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
+| imagePullSecrets | list | `[]` | A list of image pull secret names to use |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |

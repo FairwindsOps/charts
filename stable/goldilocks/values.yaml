@@ -21,6 +21,9 @@ image:
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
+# imagePullSecrets -- A list of image pull secret names to use
+imagePullSecrets: []
+
 nameOverride: ""
 fullnameOverride: ""
 
