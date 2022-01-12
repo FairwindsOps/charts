@@ -1,31 +1,52 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: "[CHART NAME] <brief description of problem>"
+title: ''
 labels: ''
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+---
+name: Bug report
+about: Let us know about an unexpected error, a crash, or an incorrect behavior.
 
-**To Reproduce**
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '....'
-3. Scroll down to '....'
-4. See error
+---
+### Installation Process
+<!---
+Did you install on your local machine, or in a kubernetes cluster? Did you use kubectl, helm, brew, a GitHub release, or the source code? Let us know below.
+-->
 
-**Expected behavior**
-A clear and concise description of what you expected to happen.
+### Version
+<!---
+What version are you running? Is it the latest version? If not, please try with the latest version, as your issue may have been fixed.
+-->
 
-**CLI Output**
-If applicable, please enter the entire output of the CLI command that you ran.
+```
+...
+```
 
-**Environment (please complete the following information):**
- - Helm Version: [`helm version`]
- - Kubernetes Version [`kubectl version`]
+### Expected Behavior
+<!--
+What should have happened?
+-->
 
-**Additional context**
-Add any other context about the problem here.
+### Actual Behavior
+<!--
+What actually happened?
+-->
+
+### Steps to Reproduce
+<!--
+Please list the full steps required to reproduce the issue.
+-->
+
+### Additional Context
+<!--
+Are there anything atypical about your situation that we should know?
+-->
+
+### References
+<!--
+Are there any other GitHub issues (open or closed) or Pull Requests that should be linked here?
+-->
