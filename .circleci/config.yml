@@ -85,7 +85,7 @@ jobs:
             ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug
 
   insights:
-    executor: rok8s11/ci-images
+    executor: ci-images
     steps:
       - checkout
       - setup_remote_docker
