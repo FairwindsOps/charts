@@ -99,7 +99,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.deployment.additionalLabels | object | `{}` | Extra labels for the dashboard deployment |
 | dashboard.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the dashboard container |
 | dashboard.deployment.extraVolumes | list | `[]` | Extra volumes for the dashboard pod |
-| dashboard.deployment.podAnnotations | object | `{}}` | Extra annotations for the dashboard pod |
+| dashboard.deployment.podAnnotations | object | `{}` | Extra annotations for the dashboard pod |
 | dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
 | dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.annotations | object | `{}` |  |
