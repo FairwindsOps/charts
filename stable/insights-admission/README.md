@@ -79,6 +79,7 @@ rules:
 | securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":15000}` | Security Context for the container. |
 | service.type | string | `"ClusterIP"` | Type of service to create. |
 | service.port | int | `443` | Port to use for the service. |
+| service.usePod443 | bool | `false` | Force binding to port 443 on pods. This is useful for GKE private clusters. Requires running as root |
 | nodeSelector | object | `{}` | nodSelector to add to the controller. |
 | tolerations | list | `[]` | Toleratations to add to the controller. |
 | affinity | object | `{}` | Pod affinity/anti-affinity rules |
