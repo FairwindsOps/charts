@@ -1,0 +1,65 @@
+insights:
+  host: http://insights-agent-test:8080
+  organization: acme-co
+  cluster: us-east-1
+  base64token: Zm9v
+
+uploader:
+  env:
+  - name: foo
+    value: bar
+
+goldilocks:
+  enabled: false  # TODO: why is this disabled?
+
+opa:
+  enabled: true
+
+test:
+  enabled: true
+
+kubebench:
+  enabled: false
+
+kubesec:
+  enabled: true
+
+polaris:
+  enabled: true
+
+pluto:
+  enabled: true
+
+nova:
+  enabled: true
+
+kubehunter:
+  enabled: true
+
+trivy:
+  enabled: true
+  maxScansPerRun: 2
+
+resourcemetrics:
+  enabled: true
+  installPrometheus: true
+
+admission:
+  enabled: true
+
+awscosts:
+  enabled: true
+  secretName: awscosts-secret
+  awsAccessKeyId: YXdzX2Nvc3RzX2tleQo=
+  awsSecretAccessKey: YXdzX2Nvc3RzX3NlY3JldF9rZXkK
+  region: us-east-1
+  database: athena_cur_database
+  table: fairwinds_insights_cur_report
+  catalog: AwsDataCatalog
+  tagkey: kubernetes_cluster
+  tagvalue: staging.internal.reactiveops.com
+  workgroup: cur_athena_workgroup
+
+falco:
+  installFalco: false  # Falco does not work well with KIND cluster
+  enabled: true

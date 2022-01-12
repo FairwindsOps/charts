@@ -5,10 +5,7 @@ set -o nounset
 set -x
 
 echo "Starting e2e tests"
-
-if helm version --short --client; then
-    echo "Helm 2 Detected"
-fi
+echo "helm version: $(helm version --short --client)"
 
 cd /charts
 scripts/e2e-test.sh test
