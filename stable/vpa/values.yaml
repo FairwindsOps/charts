@@ -120,9 +120,9 @@ admissionController:
   cleanupOnDelete:
     enabled: true
     image:
-      # admissionController.cleanupOnDelete.repository -- The location of the post-delete image
+      # admissionController.cleanupOnDelete.image.repository -- The repository of the post-delete image
       repository: quay.io/reactiveops/ci-images
-      # admissionController.cleanupOnDelete.tag -- Overrides the image tag whose default is the chart appVersion
+      # admissionController.cleanupOnDelete.image.tag -- The image tag to use for the admission controller cleanup image
       tag: v11-alpine
   replicaCount: 1
   # admissionController.podDisruptionBudget -- This is the setting for the pod disruption budget
