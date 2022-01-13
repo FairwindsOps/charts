@@ -25,6 +25,19 @@ The admissionController is the only one that poses a stability consideration bec
 
 For more details, please see the values below, and the vertical pod autosclaer documentation.
 
+## *BREAKING* Upgrading from v0.x.x to v1.x.x
+
+In the previus version, when admissionController.cleanupOnDelete flag passed to true, mutatingwebhookconfiguration and the tls secret for the admission controller is removed. There was no chance to pass any image information to start remove process. Now, it could be passed custom image by version 1.0.0.
+
+```
+cleanupOnDelete:
+    enabled: true
+    image:
+      repository: quay.io/reactiveops/ci-images
+      tag: v11-alpine
+
+```
+
 ## Installation
 
 ```bash
@@ -94,7 +107,9 @@ recommender:
 | admissionController.certGen.image.pullPolicy | string | `"Always"` | The pull policy for the certgen image. Recommend not changing this |
 | admissionController.certGen.env | object | `{}` | Additional environment variables to be added to the certgen container. Format is KEY: Value format |
 | admissionController.certGen.resources | object | `{}` | The resources block for the certgen pod |
-| admissionController.cleanupOnDelete | bool | `true` | If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller |
+| admissionController.cleanupOnDelete.enabled | bool | `true` | If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller |
+| admissionController.cleanupOnDelete.image.repository | string | `"quay.io/reactiveops/ci-images"` | The repository of the post-delete image |
+| admissionController.cleanupOnDelete.image.tag | string | `"v11-alpine"` | The image tag to use for the admission controller cleanup image |
 | admissionController.replicaCount | int | `1` |  |
 | admissionController.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | admissionController.image.repository | string | `"k8s.gcr.io/autoscaling/vpa-admission-controller"` | The location of the vpa admission controller image |
