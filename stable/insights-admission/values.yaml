@@ -148,6 +148,7 @@ podSecurityContext: {}
 
 # securityContext -- Security Context for the container.
 securityContext:
+  allowPrivilegeEscalation: false
   capabilities:
     drop:
     - ALL

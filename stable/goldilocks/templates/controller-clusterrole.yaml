@@ -37,6 +37,7 @@ rules:
       - 'create'
       - 'delete'
       - 'update'
+  {{- if .Values.controller.rbac.enableArgoproj }}
   - apiGroups:
       - 'argoproj.io'
     resources:
@@ -45,6 +46,7 @@ rules:
       - 'get'
       - 'list'
       - 'watch'
+  {{- end }}
   {{- if .Values.controller.rbac.extraRules -}}
   {{ toYaml .Values.controller.rbac.extraRules | nindent 2 }}
   {{- end }}
