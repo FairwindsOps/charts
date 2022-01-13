@@ -29,7 +29,6 @@ There are several different report types which can be enabled and configured:
 * `workloads`
 * `kubehunter`
 * `trivy`
-* `kubesec`
 * `nova`
 * `rbacreporter`
 * `kubebench`
