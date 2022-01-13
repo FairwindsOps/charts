@@ -33,7 +33,7 @@ pluto:
 nova:
   enabled: true
 
-kubehunter:
+kube-hunter:
   enabled: true
 
 trivy:

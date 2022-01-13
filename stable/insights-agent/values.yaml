@@ -73,7 +73,7 @@ polaris:
       cpu: 100m
       memory: 128Mi
 
-kubehunter:
+kube-hunter:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300

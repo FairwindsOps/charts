@@ -63,7 +63,7 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-kube-bench
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.kubehunter.enabled }}
+{{- if index .Values "kube-hunter" "enabled" }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-kube-hunter
   namespace: {{ .Release.Namespace }}
