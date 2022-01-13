@@ -284,9 +284,9 @@ pluto:
       cpu: 100m
       memory: 128Mi
 
-resourcemetrics:
+prometheusmetrics:
   enabled: false
-  installPrometheus: false
+  installPrometheusServer: false
   schedule: "0/10 * * * *"
   timeout: 300
   address: "http://prometheus-server"
