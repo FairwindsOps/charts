@@ -33,7 +33,7 @@ spec:
             echo "Downloading jq . . ."
             curl -Lo jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && chmod +x jq
             echo "Getting the Kubernetes version from the API. . ."
-            kube_version=$(curl -ks https://kubernetes.default.svc/version?timeout=32s |jq -r .gitVersion)
+            kube_version=$(curl -ks https://kubernetes.default.svc/version?timeout=32s | jq -r .gitVersion | cut -d- -f1)
             kube_minor_version=$(echo $kube_version |cut -d. -f2)
             if [ "x${kube_version}" == "x" ] ; then
               kubectl_version="${default_kubectl_version}"
