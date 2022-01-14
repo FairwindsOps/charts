@@ -396,7 +396,7 @@ rightsizer:
   # This image is for the controller, the agent only runs the Insights uploader.
   image:
     repository: quay.io/fairwinds/right-sizer
-    tag: 0.2
+    tag: 0.3
     pullPolicy: Always
   # rightsizer.imagePullSecrets -- imagePullSecrets containing private registry credentials.
   imagePullSecrets: []
@@ -427,6 +427,10 @@ rightsizer:
     # This value is multiplied by the starting memory limits of the first
     # OOM-killed container seen by this controller.
     max: 2.0
+    # rightsizer.updateMemoryLimits.namespaces -- Kubernetes namespaces to
+    # restrict where memory limits will be updated.
+    # This value narrows the namespaces specified in the global `rightsizer.namespaces` one.
+    namespaces: []
   SkipVolumes: true
   # rightsizer.resources -- Resources for the controller deployment
   resources:
