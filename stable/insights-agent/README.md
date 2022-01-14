@@ -35,7 +35,7 @@ There are several different report types which can be enabled and configured:
 * `kubebench`
 * `pluto`
 * `opa`
-* `resourcemetrics`
+* `prometheusmetrics`
 * `admission`
 * `awscosts`
 
@@ -93,14 +93,14 @@ Parameter | Description | Default
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
-`opa.installCRDs` | Specifies whether to install the `customcheckinstances.insights.fairwinds.com` CRD. If you are installing the `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
+`insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
 `goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
 `goldilocks.vpa.enabled` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true
 `goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
-`resourcemetrics.installPrometheus` | Install a new Prometheus instance for the resourcemetrics report | false
-`resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
+`prometheusmetrics.installPrometheusServer` | Install a new Prometheus server instance for the proemetheus report | false
+`prometheusmetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
 `awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
