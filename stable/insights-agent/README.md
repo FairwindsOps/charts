@@ -32,7 +32,7 @@ There are several different report types which can be enabled and configured:
 * `kubesec`
 * `nova`
 * `rbacreporter`
-* `kubebench`
+* `kube-bench`
 * `pluto`
 * `opa`
 * `prometheus-metrics`
@@ -84,9 +84,9 @@ Parameter | Description | Default
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
 `kube-hunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
-`kubebench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
-`kubebench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
-`kubebench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
+`kube-bench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
+`kube-bench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
+`kube-bench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
 `trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20

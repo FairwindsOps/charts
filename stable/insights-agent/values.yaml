@@ -219,7 +219,7 @@ rbacreporter:
       cpu: 100m
       memory: 128Mi
 
-kubebench:
+kube-bench:
   enabled: false
   schedule: "rand * * * *"
   mode: "cronjob"

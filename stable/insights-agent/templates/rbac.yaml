@@ -58,7 +58,7 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-pluto
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.kubebench.enabled }}
+{{- if (index .Values "kube-bench" "enabled") }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-kube-bench
   namespace: {{ .Release.Namespace }}

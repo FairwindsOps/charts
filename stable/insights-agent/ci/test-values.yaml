@@ -18,7 +18,7 @@ opa:
 test:
   enabled: true
 
-kubebench:
+kube-bench:
   enabled: true
 
 kubesec:
