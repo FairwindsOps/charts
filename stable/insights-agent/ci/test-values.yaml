@@ -47,7 +47,7 @@ prometheus-metrics:
 admission:
   enabled: true
 
-awscosts:
+aws-costs:
   enabled: true
   secretName: awscosts-secret
   awsAccessKeyId: YXdzX2Nvc3RzX2tleQo=
