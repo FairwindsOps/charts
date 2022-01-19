@@ -48,7 +48,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.enable | bool | `true` | Whether to run the dashboard. |
 | dashboard.port | int | `8080` | Port that the dashboard will run from. |
 | dashboard.listeningAddress | string | `nil` | Dashboard listerning address. |
-| dashboard.replicas | int | `1` | Number of replicas to run. |
+| dashboard.replicas | int | `2` | Number of replicas to run. |
 | dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
@@ -66,7 +66,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
 | dashboard.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
 | webhook.enable | bool | `false` | Whether to run the Validating Webhook |
-| webhook.replicas | int | `1` | Number of replicas |
+| webhook.replicas | int | `2` | Number of replicas |
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
 | webhook.tolerations | list | `[]` | Webhook pod tolerations |
 | webhook.affinity | object | `{}` | Webhook pods affinity |
