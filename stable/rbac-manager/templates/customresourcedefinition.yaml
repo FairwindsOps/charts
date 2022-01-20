@@ -8,6 +8,9 @@ metadata:
     chart: {{ template "rbac-manager.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+    {{- if .Values.crds.additionalLabels }}
+{{ toYaml .Values.crds.additionalLabels | indent 4 }}
+    {{- end }}
 spec:
   group: rbacmanager.reactiveops.io
   names:
