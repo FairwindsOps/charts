@@ -1,6 +1,6 @@
-{{- if .Values.kubehunter.enabled -}}
+{{- if (index .Values "kube-hunter" "enabled") -}}
 {{- $_ := set . "Label" "kube-hunter" }}
-{{- $_ := set . "Config" .Values.kubehunter }}
+{{- $_ := set . "Config" (index .Values "kube-hunter") }}
 {{- include "cronjob" . }}
     polaris.fairwinds.com/insecureCapabilities-exempt: "true"
 spec:
@@ -24,7 +24,7 @@ spec:
               - |
                 kube-hunter \
                   --pod \
-                  --log {{ .Values.kubehunter.logLevel }} \
+                  --log {{ (index .Values "kube-hunter" "logLevel") }} \
                   --report json \
                   --statistics \
                 > /output/kube-hunter-tmp.json \

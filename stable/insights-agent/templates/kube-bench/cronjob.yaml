@@ -1,6 +1,6 @@
-{{- if .Values.kubebench.enabled -}}
+{{- if (index .Values "kube-bench" "enabled") -}}
 {{- $_ := set . "Label" "kube-bench" -}}
-{{- $_ := set . "Config" .Values.kubebench -}}
+{{- $_ := set . "Config" (index .Values "kube-bench") -}}
 {{- $_ := set .Config "SkipVolumes" true -}}
 {{- include "cronjob" . }}
     polaris.fairwinds.com/hostPIDSet-exempt: "true"
@@ -13,19 +13,19 @@ spec:
       template:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
-          {{- if or (eq .Values.kubebench.mode "daemonsetMaster") (eq .Values.kubebench.mode "daemonset") }}
+          {{- if or (eq (index .Values "kube-bench" "mode") "daemonsetMaster") (eq (index .Values "kube-bench" "mode") "daemonset") }}
           volumes:
           - name: output
             emptyDir: {}
           containers:
           - name: kube-bench-aggregator
-            image: "{{ .Values.kubebench.aggregator.image.repository }}:{{ .Values.kubebench.aggregator.image.tag }}"
+            image: "{{ (index .Values "kube-bench" "aggregator" "image" "repository") }}:{{ (index .Values "kube-bench" "aggregator" "image" "tag") }}"
             imagePullPolicy: Always
             env:
             - name: DAEMONSET_SERVICE
               value: {{ include "insights-agent.fullname" . }}-kube-bench-svc
             resources:
-              {{- toYaml .Values.kubebench.aggregator.resources | nindent 14 }}
+              {{- toYaml (index .Values "kube-bench" "aggregator" "resources") | nindent 14 }}
             volumeMounts:
             - name: output
               mountPath: /output

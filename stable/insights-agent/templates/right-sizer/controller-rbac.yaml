@@ -1,8 +1,8 @@
-{{- if and .Values.rightsizer.enabled (not .Values.rbac.disabled) -}}
+{{- if and (index .Values "right-sizer" "enabled") (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ .Values.rightsizer.serviceAccountName }}
+  name: {{ (index .Values "right-sizer" "serviceAccountName") }}
   labels:
     app: insights-agent
 ---
@@ -33,7 +33,7 @@ rules:
     resources:
       - 'configmaps'
     resourceNames:
-      - '{{ .Values.rightsizer.stateconfigmapname }}'
+      - '{{ (index .Values "right-sizer" "stateconfigmapname") }}'
     verbs:
       - 'get'
       - 'update'
@@ -56,7 +56,7 @@ roleRef:
   name: view
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.rightsizer.serviceAccountName }}
+    name: {{ (index .Values "right-sizer" "serviceAccountName") }}
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -71,7 +71,7 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-events
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.rightsizer.serviceAccountName }}
+    name: {{ (index .Values "right-sizer" "serviceAccountName") }}
     namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -86,9 +86,9 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-state
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.rightsizer.serviceAccountName }}
+    name: {{ (index .Values "right-sizer" "serviceAccountName") }}
     namespace: {{ .Release.Namespace }}
-{{ if .Values.rightsizer.updateMemoryLimits.enabled -}}
+{{ if (index .Values "right-sizer" "updateMemoryLimits" "enabled") -}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -121,10 +121,10 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-update-memory-limits
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.rightsizer.serviceAccountName }}
+    name: {{ (index .Values "right-sizer" "serviceAccountName") }}
     namespace: {{ .Release.Namespace }}
 {{ end -}}
-{{ if .Values.rightsizer.rbac.additionalAccess -}}
+{{ if (index .Values "right-sizer" "rbac" "additionalAccess") -}}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -133,7 +133,7 @@ metadata:
   labels:
     app: insights-agent
 rules:
-{{ toYaml .Values.rightsizer.rbac.additionalAccess }}
+{{ toYaml (index .Values "right-sizer" "rbac" "additionalAccess") }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
@@ -147,7 +147,7 @@ roleRef:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller-additional-access
 subjects:
 - kind: ServiceAccount
-  name: {{ .Values.rightsizer.serviceAccountName }}
+  name: {{ (index .Values "right-sizer" "serviceAccountName") }}
   namespace: {{ .Release.Namespace }}
 {{ end }}
 {{- end -}}

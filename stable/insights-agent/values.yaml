@@ -73,7 +73,7 @@ polaris:
       cpu: 100m
       memory: 128Mi
 
-kubehunter:
+kube-hunter:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -204,7 +204,7 @@ nova:
     - https://kubernetes-charts-incubator.storage.googleapis.com
     - https://charts.jetstack.io
 
-rbacreporter:
+rbac-reporter:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -219,7 +219,7 @@ rbacreporter:
       cpu: 100m
       memory: 128Mi
 
-kubebench:
+kube-bench:
   enabled: false
   schedule: "rand * * * *"
   mode: "cronjob"
@@ -283,7 +283,7 @@ pluto:
       cpu: 100m
       memory: 128Mi
 
-prometheusmetrics:
+prometheus-metrics:
   enabled: false
   installPrometheusServer: false
   schedule: "0/10 * * * *"
@@ -373,7 +373,7 @@ test:
     tag: "3.6"
     pullPolicy: "Always"
 
-awscosts:
+aws-costs:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -388,7 +388,7 @@ awscosts:
       cpu: 100m
       memory: 128Mi
 
-rightsizer:
+right-sizer:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300

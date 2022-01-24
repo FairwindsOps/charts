@@ -1,6 +1,6 @@
-{{- if .Values.rightsizer.enabled -}}
+{{- if (index .Values "right-sizer" "enabled") -}}
 {{- $_ := set . "Label" "right-sizer" }}
-{{- $_ := set . "Config" .Values.rightsizer }}
+{{- $_ := set . "Config" (index .Values "right-sizer") }}
 {{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
@@ -13,7 +13,7 @@ spec:
           volumes:
           - name:       output
             configMap:
-              name: {{ .Values.rightsizer.stateconfigmapname }}
+              name: {{ (index .Values "right-sizer" "stateconfigmapname")}}
               items:
               - key: report
                 path: right-sizer.json
