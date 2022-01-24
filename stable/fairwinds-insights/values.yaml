@@ -457,3 +457,31 @@ reportjob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+
+repoScanJob:
+  hpa:
+    enabled: true
+    min: 2
+    max: 6
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 75
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 75
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
