@@ -459,6 +459,7 @@ reportjob:
   tolerations: []
 
 repoScanJob:
+  enabled: false
   hpa:
     enabled: true
     min: 2
