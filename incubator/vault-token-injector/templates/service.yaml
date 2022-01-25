@@ -1,0 +1,15 @@
+{{- if and .Values.metrics.enabled .Values.metrics.service.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "vault-token-injector.fullname" . }}
+  labels:
+    {{- include "vault-token-injector.labels" . | nindent 4 }}
+spec:
+  ports:
+    - name: http-metrics
+      port: 4329
+      targetport: 4329
+  selector:
+    {{- include "vault-token-injector.selectorLabels" . | nindent 4 }}
+{{- end }}

@@ -28,6 +28,12 @@ config:
     vault_role: some-vault-role
     env_variable: VAULT_TOKEN
 
+metrics:
+  # -- If true, a prometheus endpoint will be enabled on port 4329
+  enabled: false
+  service:
+    enabled: true
+
 # -- The klog log level (1-10). WARNING: Log level 10 will print secrets to logs
 logLevel: 1
 

@@ -1,6 +1,6 @@
 # vault-token-injector
 
-![Version: 1.2.0](https://img.shields.io/badge/Version-1.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.3.0](https://img.shields.io/badge/AppVersion-v1.3.0-informational?style=flat-square)
+![Version: 1.3.0](https://img.shields.io/badge/Version-1.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.4.0](https://img.shields.io/badge/AppVersion-v1.4.0-informational?style=flat-square)
 
 A Helm chart for Fairwinds vault-token-injector
 
@@ -24,6 +24,8 @@ This will inject vault tokens and address variables into circle builds on a sche
 | vaultAddress | string | `"https://vault.example.com"` | The vault address to get tokens from |
 | vaultTokenFile | string | `""` | A file containing a vault token. Optional. |
 | config | object | `{"circleci":[{"env_variable":"VAULT_TOKEN","name":"FairwindsOps/example","vault_role":"some-vault-role"}],"vaultAddress":"https://vault.example.com"}` | The configuration of the vault-token-injector |
+| metrics.enabled | bool | `false` | If true, a prometheus endpoint will be enabled on port 4329 |
+| metrics.service.enabled | bool | `true` |  |
 | logLevel | int | `1` | The klog log level (1-10). WARNING: Log level 10 will print secrets to logs |
 | image.repository | string | `"quay.io/fairwinds/vault-token-injector"` | The image repository to pullt he vault-token-injector image from |
 | image.pullPolicy | string | `"Always"` | This is recommended to be set as Always |
