@@ -150,6 +150,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| repoScanJob.enabled | bool | `false` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |
