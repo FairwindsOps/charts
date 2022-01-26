@@ -9,7 +9,7 @@ spec:
   ports:
     - name: http-metrics
       port: 4329
-      targetport: 4329
+      targetPort: 4329
   selector:
     {{- include "vault-token-injector.selectorLabels" . | nindent 4 }}
 {{- end }}
