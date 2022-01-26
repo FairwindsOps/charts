@@ -35,6 +35,8 @@ spec:
           volumeMounts:
             - name: secrets
               mountPath: /var/run/secrets/github
+            - name: repositories
+              mountPath: /app/repositories
           resources:
             {{- toYaml .Values.repoScanJob.resources | nindent 12 }}
           securityContext:
@@ -55,6 +57,9 @@ spec:
           secret:
             secretName: github-secrets
             optional: true
+        - name: repositories
+          emptyDir:
+            sizeLimit: 5Gi
     {{- with .Values.repoScanJob.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
