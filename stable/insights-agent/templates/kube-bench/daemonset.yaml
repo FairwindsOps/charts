@@ -1,4 +1,4 @@
-{{- if and (.Values.kubebench.enabled) (or (eq .Values.kubebench.mode "daemonsetMaster") (eq .Values.kubebench.mode "daemonset")) -}}
+{{- if and (index .Values "kube-bench" "enabled") (or (eq (index .Values "kube-bench" "mode") "daemonsetMaster") (eq (index .Values "kube-bench" "mode") "daemonset")) -}}
 apiVersion: apps/v1
 kind: DaemonSet
 metadata:

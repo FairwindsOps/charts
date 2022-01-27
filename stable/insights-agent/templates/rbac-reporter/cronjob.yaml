@@ -1,6 +1,6 @@
-{{- if .Values.rbacreporter.enabled -}}
+{{- if (index .Values "rbac-reporter" "enabled") -}}
 {{- $_ := set . "Label" "rbac-reporter" }}
-{{- $_ := set . "Config" .Values.rbacreporter }}
+{{- $_ := set . "Config" (index .Values "rbac-reporter") }}
 {{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}

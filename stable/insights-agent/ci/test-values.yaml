@@ -18,7 +18,7 @@ opa:
 test:
   enabled: true
 
-kubebench:
+kube-bench:
   enabled: true
 
 polaris:
@@ -30,7 +30,7 @@ pluto:
 nova:
   enabled: true
 
-kubehunter:
+kube-hunter:
   enabled: true
 
 trivy:
@@ -44,7 +44,7 @@ prometheus-metrics:
 admission:
   enabled: true
 
-awscosts:
+aws-costs:
   enabled: true
   secretName: awscosts-secret
   awsAccessKeyId: YXdzX2Nvc3RzX2tleQo=
