@@ -58,17 +58,6 @@ Return secret name to be used based on provided values.
 {{- end -}}
 
 {{/*
-Return the appropriate apiVersion for RBAC APIs.
-*/}}
-{{- define "rbac.apiVersion" -}}
-{{- if semverCompare "^1.8-0" .Capabilities.KubeVersion.GitVersion -}}
-"rbac.authorization.k8s.io/v1"
-{{- else -}}
-"rbac.authorization.k8s.io/v1beta1"
-{{- end -}}
-{{- end -}}
-
-{{/*
 Correct `clusterAgent.metricsProvider.service.port` if Kubernetes <= 1.15
 */}}
 {{- define "clusterAgent.metricsProvider.port" -}}
@@ -89,7 +78,6 @@ kubernetes.io/os
 beta.kubernetes.io/os
 {{- end -}}
 {{- end -}}
-
 
 {{/*
 Common labels
@@ -115,9 +103,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 Create the name of the service account to use
 */}}
 {{- define "datadog-apm.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "datadog-apm.fullname" .) .Values.serviceAccount.name }}
+{{- if .Values.clusterAgent.serviceAccount.create }}
+{{- default (include "datadog-apm.fullname" .) .Values.clusterAgent.serviceAccount.name }}
 {{- else }}
-{{- default "default" .Values.serviceAccount.name }}
+{{- default "default" .Values.clusterAgent.serviceAccount.name }}
 {{- end }}
 {{- end }}

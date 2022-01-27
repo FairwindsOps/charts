@@ -15,6 +15,7 @@ spec:
 {{- if .Values.clusterAgent.strategy }}
 {{ toYaml .Values.clusterAgent.strategy | indent 4 }}
 {{- else }}
+    type: RollingUpdate
     rollingUpdate:
       maxSurge: 1
       maxUnavailable: 0
@@ -67,7 +68,7 @@ spec:
       imagePullSecrets:
 {{ toYaml .Values.clusterAgent.image.pullSecrets | indent 8 }}
       {{- end }}
-      serviceAccountName: {{ if .Values.clusterAgent.rbac.create }}"{{ template "datadog-apm.fullname" . }}"{{ else }}"{{ .Values.clusterAgent.rbac.serviceAccountName }}"{{ end }}
+      serviceAccountName: {{ template "datadog-apm.serviceAccountName" . }}
       {{- if .Values.clusterAgent.useHostNetwork }}
       hostNetwork: {{ .Values.clusterAgent.useHostNetwork }}
       dnsPolicy: ClusterFirstWithHostNet
@@ -126,22 +127,6 @@ spec:
           - name: DD_EXTERNAL_METRICS_AGGREGATOR
             value: {{ .Values.clusterAgent.metricsProvider.aggregator | quote }}
           {{- end }}
-          {{- if .Values.clusterAgent.admissionController.enabled }}
-          - name: DD_ADMISSION_CONTROLLER_ENABLED
-            value: {{ .Values.clusterAgent.admissionController.enabled | quote }}
-          - name: DD_ADMISSION_CONTROLLER_MUTATE_UNLABELLED
-            value: {{ .Values.clusterAgent.admissionController.mutateUnlabelled | quote }}
-          - name: DD_ADMISSION_CONTROLLER_SERVICE_NAME
-            value: {{ template "datadog-apm.fullname" . }}-cluster-agent-admission-controller
-          {{- end }}
-          {{- if .Values.datadog.clusterChecks.enabled }}
-          - name: DD_CLUSTER_CHECKS_ENABLED
-            value: {{ .Values.datadog.clusterChecks.enabled | quote }}
-          - name: DD_EXTRA_CONFIG_PROVIDERS
-            value: "kube_endpoints kube_services"
-          - name: DD_EXTRA_LISTENERS
-            value: "kube_endpoints kube_services"
-          {{- end }}
           {{- if .Values.datadog.clusterName }}
           {{- if not (regexMatch "^([a-z]([a-z0-9\\-]{0,38}[a-z0-9])?\\.)*([a-z]([a-z0-9\\-]{0,38}[a-z0-9])?)$" .Values.datadog.clusterName) }}
           {{- fail "Your `clusterName` isn’t valid. It must be dot-separated tokens where a token start with a lowercase letter followed by up to 39 lowercase letters, numbers, or hyphens and cannot end with a hyphen."}}
@@ -182,29 +167,17 @@ spec:
                 name: {{ template "clusterAgent.tokenSecretName" . }}
                 key: token
           - name: DD_KUBE_RESOURCES_NAMESPACE
-            value: {{ .Values.namespace }}
-          - name: DD_ORCHESTRATOR_EXPLORER_ENABLED
-            value: {{ .Values.datadog.orchestratorExplorer.enabled | quote }}
-          {{- if  .Values.datadog.orchestratorExplorer.enabled }}
-          - name: DD_ORCHESTRATOR_EXPLORER_CONTAINER_SCRUBBING_ENABLED
-            value: {{ .Values.datadog.orchestratorExplorer.container_scrubbing.enabled | quote }}
-          {{- end }}
-          - name: DD_COMPLIANCE_CONFIG_ENABLED
-            value:  {{ .Values.datadog.securityAgent.compliance.enabled | quote }}
-          {{- if .Values.datadog.securityAgent.compliance.enabled }}
-          - name: DD_COMPLIANCE_CONFIG_CHECK_INTERVAL
-            value: {{ .Values.datadog.securityAgent.compliance.checkInterval | quote }}
-          {{- end }}
+            value: {{ .Release.Namespace }}
           - name: DD_HOSTNAME
             valueFrom:
               fieldRef:
                 fieldPath: spec.nodeName
           - name: DD_APM_ENABLED
-            value: "true"
+            value: {{ .Values.clusterAgent.apm.enabled | quote }}
           - name: DD_APM_NON_LOCAL_TRAFFIC
-            value: "true"
+            value: {{ .Values.clusterAgent.apm.nonLocalTraffic | quote }}
           - name: DD_APM_RECEIVER_PORT
-            value: "8126"
+            value: {{ .Values.clusterAgent.apm.receiverPort | quote }}
 {{- if .Values.clusterAgent.env }}
 {{ toYaml .Values.clusterAgent.env | indent 10 }}
 {{- end }}
@@ -215,11 +188,7 @@ spec:
         volumeMounts:
           - name: installinfo
             subPath: install_info
-            {{- if eq .Values.targetSystem "windows" }}
-            mountPath: C:/ProgramData/Datadog/install_info
-            {{- else }}
             mountPath: /etc/datadog-agent/install_info
-            {{- end }}
             readOnly: true
 {{- if .Values.clusterAgent.volumeMounts }}
 {{ toYaml .Values.clusterAgent.volumeMounts | indent 10 }}
@@ -235,11 +204,6 @@ spec:
             subPath: datadog-cluster.yaml
             readOnly: true
 {{- end}}
-{{- if and .Values.datadog.securityAgent.compliance.enabled .Values.datadog.securityAgent.compliance.configMap }}
-          - name: complianceconfigdir
-            mountPath: /etc/datadog-agent/compliance.d
-            readOnly: true
-{{- end}}
       volumes:
         - name: installinfo
           configMap:
@@ -253,11 +217,6 @@ spec:
         - name: cluster-agent-yaml
           configMap:
             name: {{ template "datadog-apm.fullname" . }}-cluster-agent-config
-{{- end}}
-{{- if  and .Values.datadog.securityAgent.compliance.enabled .Values.datadog.securityAgent.compliance.configMap }}
-        - name: complianceconfigdir
-          configMap:
-            name: {{ .Values.datadog.securityAgent.compliance.configMap }}
 {{- end}}
 
 {{- if .Values.clusterAgent.volumes }}

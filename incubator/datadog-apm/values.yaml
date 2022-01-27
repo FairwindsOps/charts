@@ -1,42 +1,33 @@
-# Default values file
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
+# Default values
 
 nameOverride: ""
 fullnameOverride: ""
 targetSystem: linux
-namespace: default   # Need to override this value with datadog
-
-agents:
-  rbac:
-    create: true
 
 datadog:
   apiKey:  # <DATADOG_API_KEY>
   apiKeyExistingSecret:   # <DATADOG_API_KEY_SECRET>
   appKey:   # <DATADOG_APP_KEY>
   appKeySecretName:   # <DATADOG_APP_KEY_SECRET>
-  clusterChecks:
-    enabled: false
-  orchestratorExplorer:
-    enabled: false
-  securityAgent:
-    compliance:
-      enabled: false
   logLevel: INFO
+  site: datadoghq.com
 
 clusterAgent:
-  replicas: 1
+  replicas: 2
   image:
     repository: datadog/agent
-    pullPolicy: IfNotPresent
-    # Overrides the image tag whose default is the chart appVersion.
+    pullPolicy: Always
+    # Overrides the image tag which defaults to the chart appVersion, created by datadog
     tag: 7.23.0
   command:
     - trace-agent
     - -config=/etc/datadog-agent/datadog.yaml
   enabled: true
   token:   # <DATADOG_CLUSTER_AGENT_TOKEN>
+  apm:
+    enabled: true
+    nonLocalTraffic: true
+    receiverPort: 8126
   metricsProvider:
     enabled: true
     port: 8126
@@ -46,12 +37,10 @@ clusterAgent:
     aggregator: avg
     wpaController: false
     useDatadogMetrics: false
-  priorityClassName: fairwinds-critical
-  rbac:
+  priorityClassName:  # <FW_PRIORITY_CLASS_NAME>
+  serviceAccount:
     create: true
-    serviceAccountName: datadog
-  admissionController:
-    enabled: false
+    name: datadog-apm
   healthPort: 5555
   livenessProbe:
     failureThreshold: 6
@@ -71,16 +60,16 @@ clusterAgent:
     timeoutSeconds: 5
   resources:
     limits:
-      cpu: 250m
-      memory: 350Mi
+      cpu: 50m
+      memory: 150Mi
     requests:
-      cpu: 250m
-      memory: 350Mi
+      cpu: 50m
+      memory: 150Mi
   hpa:
     enabled: true
     minReplicas: 1
     maxReplicas: 6
-    averageCpuUtilization: 50
+    averageCpuUtilization: 30
   createPodDisruptionBudget: true
 
 podAnnotations: {}
