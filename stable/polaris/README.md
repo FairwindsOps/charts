@@ -35,7 +35,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| config | string | `nil` | The (polaris configuration)[https://github.com/FairwindsOps/polaris#configuration]. If not provided then the (default)[https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml] config from Polaris is used. |
+| config | string | `nil` | The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration). If not provided then the [default](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml) config from Polaris is used. |
 | image.repository | string | `"quay.io/fairwinds/polaris"` | Image repo |
 | image.tag | string | `""` | The Polaris Image tag to use. Defaults to the Chart's AppVersion |
 | image.pullPolicy | string | `"Always"` | Image pull policy |
@@ -57,6 +57,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.tolerations | list | `[]` | Dashboard pod tolerations |
 | dashboard.affinity | object | `{}` | Dashboard pods affinity |
 | dashboard.ingress.enabled | bool | `false` | Whether to enable ingress to the dashboard |
+| dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.hosts | list | `[]` | Web ingress hostnames |
 | dashboard.ingress.annotations | object | `{}` | Web ingress annotations |
 | dashboard.ingress.tls | list | `[]` | Ingress TLS configuration |

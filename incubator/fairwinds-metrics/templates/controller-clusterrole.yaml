@@ -14,7 +14,9 @@ rules:
       - ''
     resources:
       - 'namespaces'
+      {{- if .Values.controller.istio.enabled }}
       - 'secrets'
+      {{- end }}
       - 'pods'
     verbs:
       - 'get'

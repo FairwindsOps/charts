@@ -37,7 +37,14 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
           - name: https
+            {{- if .Values.service.usePod443 }}
+            {{- if or ((ne .Values.securityContext.runAsNonRoot false) (ne .Values.securityContext.runAsUser 0)) }}
+              {{- fail "If using usePod443, you must specify securityContext.runAsNonRoot=false and securityContext.runAsUser=0" }}
+            {{- end }}
+            containerPort: 443
+            {{- else }}
             containerPort: 8443
+            {{- end }}
             protocol: TCP
           - name: health
             containerPort: 8081
@@ -55,6 +62,10 @@ spec:
             mountPath: /opt/cert/
             readOnly: true
           env:
+          {{- if .Values.service.usePod443 }}
+          - name: WEBHOOK_PORT
+            value: "443"
+          {{- end }}
           - name: FAIRWINDS_TOKEN
             valueFrom:
               secretKeyRef:
