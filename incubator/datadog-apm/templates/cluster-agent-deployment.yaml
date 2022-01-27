@@ -36,7 +36,6 @@ spec:
         {{- end }}
       name: {{ template "datadog-apm.fullname" . }}-cluster-agent
       annotations:
-        checksum/install_info: {{ printf "%s-%s" .Chart.Name .Chart.Version | sha256sum }}
         {{- if .Values.clusterAgent.datadog_cluster_yaml }}
         checksum/clusteragent-config: {{ tpl (toYaml .Values.clusterAgent.datadog_cluster_yaml) . | sha256sum }}
         {{- end }}
@@ -183,10 +182,6 @@ spec:
         readinessProbe:
 {{ toYaml .Values.clusterAgent.readinessProbe | indent 10 }}
         volumeMounts:
-          - name: installinfo
-            subPath: install_info
-            mountPath: /etc/datadog-agent/install_info
-            readOnly: true
 {{- if .Values.clusterAgent.volumeMounts }}
 {{ toYaml .Values.clusterAgent.volumeMounts | indent 10 }}
 {{- end }}
@@ -202,9 +197,6 @@ spec:
             readOnly: true
 {{- end}}
       volumes:
-        - name: installinfo
-          configMap:
-            name: {{ template "datadog-apm.fullname" . }}-installinfo
 {{- if .Values.clusterAgent.confd }}
         - name: confd
           configMap:
