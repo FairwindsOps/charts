@@ -66,10 +66,10 @@ clusterAgent:
       cpu: 50m
       memory: 150Mi
   hpa:
-    enabled: true
+    enabled: false
     minReplicas: 1
     maxReplicas: 6
-    averageCpuUtilization: 30
+    averageCpuUtilization: 50
   createPodDisruptionBudget: true
 
 podAnnotations: {}
