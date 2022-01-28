@@ -9,7 +9,6 @@ metadata:
   annotations:
     polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
     polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
-
 spec:
   selector:
     matchLabels:
@@ -25,7 +24,7 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
-      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-repo-scan-job
       containers:
         - name: fairwinds-insights
           image: "{{ .Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"
@@ -35,8 +34,6 @@ spec:
           volumeMounts:
             - name: secrets
               mountPath: /var/run/secrets/github
-            - name: repositories
-              mountPath: /app/repositories
           resources:
             {{- toYaml .Values.repoScanJob.resources | nindent 12 }}
           securityContext:
@@ -48,6 +45,9 @@ spec:
             capabilities:
               drop:
                 - ALL
+          env:
+          - name: NAMESPACE
+            value: {{ .Release.Namespace }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -57,9 +57,6 @@ spec:
           secret:
             secretName: github-secrets
             optional: true
-        - name: repositories
-          emptyDir:
-            sizeLimit: 5Gi
     {{- with .Values.repoScanJob.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
