@@ -46,8 +46,10 @@ spec:
               drop:
                 - ALL
           env:
-          - name: NAMESPACE
+          - name: K8S_NAMESPACE
             value: {{ .Release.Namespace }}
+          - name: INSIGHTS_CI_IMAGE_VERSION
+            value: {{ .Values.repoScanJob.insightsCIVersion }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
