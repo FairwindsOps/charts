@@ -9,7 +9,6 @@ metadata:
   annotations:
     polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
     polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
-
 spec:
   selector:
     matchLabels:
@@ -25,7 +24,7 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
-      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-repo-scan-job
       containers:
         - name: fairwinds-insights
           image: "{{ .Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"
@@ -48,6 +47,11 @@ spec:
             capabilities:
               drop:
                 - ALL
+          env:
+          - name: K8S_NAMESPACE
+            value: {{ .Release.Namespace }}
+          - name: INSIGHTS_CI_IMAGE_VERSION
+            value: {{ .Values.repoScanJob.insightsCIVersion }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
