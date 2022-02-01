@@ -38,6 +38,12 @@ spec:
             - -c
             - /config/config.yaml
             - -v{{ .Values.logLevel }}
+            - --enable-metrics={{ .Values.metrics.enabled }}
+          {{- if .Values.metrics.enabled }}
+          ports:
+          - containerPort: 4329
+            name: metrics
+          {{- end }}
           volumeMounts:
           - name: config
             mountPath: /config
