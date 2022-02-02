@@ -7,35 +7,74 @@ metadata:
     app: insights-agent
     component: test-job
   annotations:
-    "helm.sh/hook": test
+    "helm.sh/hook": post-install,post-upgrade
 spec:
   serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
   restartPolicy: Never
   containers:
-  - command:
-    - sh
-    args:
-    - -c
-    - |
-      sleep 15
-      kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl wait --for=condition=complete job/~job~ --timeout=120s
-    image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
-    imagePullPolicy: Always
-    name: test
-    resources:
-      limits:
-        cpu: 1
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    securityContext:
-      runAsUser: 1000
-      allowPrivilegeEscalation: false
-      privileged: false
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      capabilities:
-        drop:
-        - ALL
+    - name: test
+      image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
+      imagePullPolicy: Always
+      command: 
+        - "sh"
+        - "-c"
+        - |
+          set -eo pipefail
+          mkdir /tmp/bin
+          export PATH=$PATH:/tmp/bin
+          cd /tmp/bin
+          # Download kubectl to match the cluster version,
+          # using kubectl 1.19 for clusters <= 1.19.
+          default_kubectl_version='v1.19.6'
+          echo "Downloading jq . . ."
+          curl -Lo jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && chmod +x jq
+          echo "Getting the Kubernetes version from the API. . ."
+          kube_version=$(curl -ks https://kubernetes.default.svc/version?timeout=32s | jq -r .gitVersion | cut -d- -f1)
+          kube_minor_version=$(echo $kube_version |cut -d. -f2)
+          if [ "x${kube_version}" == "x" ] ; then
+            kubectl_version="${default_kubectl_version}"
+            echo "Using kubectl version ${kubectl_version} because I was unable to get the Kubernetes cluster version"
+          elif [ "$kube_minor_version" -gt 19 ] ; then
+            kubectl_version="${kube_version}"
+            echo "Using kubectl version ${kubectl_version} to match the cluster"
+          else
+            kubectl_version="${default_kubectl_version}"
+            echo "Using kubectl version ${kubectl_version} because the cluster is <= version 1.19"
+          fi
+          echo Downloading kubectl version ${kubectl_version}
+          curl -Lo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/linux/amd64/kubectl" && chmod +x kubectl
+          sleep 15
+          kubectl wait --for=condition=complete job/falco --timeout=240s
+          kubectl wait --for=condition=complete job/nova --timeout=240s
+          kubectl wait --for=condition=complete job/opa --timeout=240s
+          kubectl wait --for=condition=complete job/pluto --timeout=240s
+          kubectl wait --for=condition=complete job/polaris --timeout=240s
+          kubectl wait --for=condition=complete job/resource-metrics --timeout=240s
+          kubectl wait --for=condition=complete job/trivy --timeout=240s
+          kubectl wait --for=condition=complete job/workloads --timeout=240s
+          kubectl wait --for=condition=complete job/kube-bench --timeout=240s
+          kubectl wait --for=condition=complete job/kube-hunter --timeout=240s
+          kubectl get jobs
+      resources:
+        limits:
+          cpu: 1
+          memory: 1Gi
+        requests:
+          cpu: 50m
+          memory: 128Mi
+      volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      securityContext:
+        runAsUser: 1000
+        allowPrivilegeEscalation: false
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+  volumes:
+    - name: tmp
+      emptyDir: {}
 {{- end -}}
