@@ -89,7 +89,7 @@ prometheus:
   server:
     resources:
       requests:
-        cpu: 100m
+        cpu: 200m
 
 admission:
   enabled: true
