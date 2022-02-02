@@ -15,9 +15,9 @@ spec:
     - name: test
       image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
       imagePullPolicy: Always
-      command: 
-        - "sh"
-        - "-c"
+      command: ["sh"]
+      args:
+        - -c
         - |
           {{ .Files.Get "download-kubectl.sh" | nindent 12 }}
           sleep 15
