@@ -1,6 +1,6 @@
 #! /bin/sh
 
-set -eo pipeline
+set -e
 
 mkdir /tmp/bin
 export PATH=$PATH:/tmp/bin
