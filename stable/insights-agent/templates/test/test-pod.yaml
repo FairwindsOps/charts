@@ -17,6 +17,7 @@ spec:
     args:
     - -c
     - |
+      {{ .Files.Get "download-kubectl.sh" | nindent 12 }}
       sleep 15
       kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl wait --for=condition=complete job/~job~ --timeout=120s
     image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
