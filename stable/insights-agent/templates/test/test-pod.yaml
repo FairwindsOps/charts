@@ -19,7 +19,6 @@ spec:
       args:
         - -c
         - |
-          set -eo pipeline
           {{ .Files.Get "download-kubectl.sh" | nindent 10 }}
           sleep 15
           kubectl wait --for=condition=complete job/falco --timeout=240s

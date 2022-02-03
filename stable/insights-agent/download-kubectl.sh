@@ -1,6 +1,6 @@
 #! /bin/sh
 
-set -e
+set -eo pipefail
 
 mkdir /tmp/bin
 export PATH=$PATH:/tmp/bin
