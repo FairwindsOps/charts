@@ -5,53 +5,101 @@ insights:
   base64token: Zm9v
 
 uploader:
+  resources:
+    requests:
+      cpu: 50m
   env:
   - name: foo
     value: bar
 
+# We set the CPU requests to 50m so the node doesn't run out of CPU
+# TODO: why is this disabled?
 goldilocks:
-  enabled: false  # TODO: why is this disabled?
+  enabled: false
+  resources:
+    requests:
+      cpu: 50m
 
 opa:
   enabled: true
+  resources:
+    requests:
+      cpu: 50m
+
+workloads:
+  resources:
+    requests:
+      cpu: 50m
 
 test:
   enabled: true
 
 kubebench:
   enabled: true
+  resources:
+    requests:
+      cpu: 50m
 
+# This is being removed in the near future
 kubesec:
-  enabled: true
+  enabled: false
+  resources:
+    requests:
+      cpu: 50m
 
 polaris:
   enabled: true
+  resources:
+    requests:
+      cpu: 50m
 
 pluto:
   enabled: true
+  resources:
+    requests:
+      cpu: 50m
 
 nova:
   enabled: true
+  resources:
+    requests:
+      cpu: 50m
 
 kubehunter:
   enabled: true
+  resources:
+    requests:
+      cpu: 50m
 
 trivy:
   enabled: true
   maxScansPerRun: 2
+  resources:
+    requests:
+      cpu: 50m
 
 resourcemetrics:
   enabled: true
   installPrometheus: true
+  resources:
+    requests:
+      cpu: 50m
+
+prometheus:
+  server:
+    resources:
+      requests:
+        cpu: 200m
 
 admission:
   enabled: true
 
+# We don't want to test AWS here with real secrets
 awscosts:
-  enabled: true
+  enabled: false
   secretName: awscosts-secret
-  awsAccessKeyId: YXdzX2Nvc3RzX2tleQo=
-  awsSecretAccessKey: YXdzX2Nvc3RzX3NlY3JldF9rZXkK
+  awsAccessKeyId: someAccessID
+  awsSecretAccessKey: someAccessKey
   region: us-east-1
   database: athena_cur_database
   table: fairwinds_insights_cur_report
@@ -60,6 +108,10 @@ awscosts:
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
 
+# Falco does not work well with KIND cluster
 falco:
-  installFalco: false  # Falco does not work well with KIND cluster
+  installFalco: false
   enabled: true
+  resources:
+    requests:
+      cpu: 50m
