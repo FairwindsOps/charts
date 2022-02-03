@@ -25,7 +25,7 @@ echo "Minor version is ${kube_minor_version}"
 
 version_pattern='v[0-9]+\.[0-9]+.[0-9]+)'
 kubectl_version=""
-if [ "${git_version}" =~ $pat ];
+if [ "${git_version}" =~ $pat ]; then
   kubectl_version="${git_version}"
 fi
 if [ "$kube_minor_version" -lt 19 ] ; then
