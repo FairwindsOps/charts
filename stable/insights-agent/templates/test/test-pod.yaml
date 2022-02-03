@@ -7,35 +7,52 @@ metadata:
     app: insights-agent
     component: test-job
   annotations:
-    "helm.sh/hook": test
+    "helm.sh/hook": post-install,post-upgrade
 spec:
   serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
   restartPolicy: Never
   containers:
-  - command:
-    - sh
-    args:
-    - -c
-    - |
-      sleep 15
-      kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl wait --for=condition=complete job/~job~ --timeout=120s
-    image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
-    imagePullPolicy: Always
-    name: test
-    resources:
-      limits:
-        cpu: 1
-        memory: 1Gi
-      requests:
-        cpu: 100m
-        memory: 128Mi
-    securityContext:
-      runAsUser: 1000
-      allowPrivilegeEscalation: false
-      privileged: false
-      readOnlyRootFilesystem: true
-      runAsNonRoot: true
-      capabilities:
-        drop:
-        - ALL
+    - name: test
+      image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
+      imagePullPolicy: Always
+      command: ["sh"]
+      args:
+        - -c
+        - |
+          set -eo pipeline
+          {{ .Files.Get "download-kubectl.sh" | nindent 10 }}
+          sleep 15
+          kubectl wait --for=condition=complete job/falco --timeout=240s
+          kubectl wait --for=condition=complete job/nova --timeout=240s
+          kubectl wait --for=condition=complete job/opa --timeout=240s
+          kubectl wait --for=condition=complete job/pluto --timeout=240s
+          kubectl wait --for=condition=complete job/polaris --timeout=240s
+          kubectl wait --for=condition=complete job/resource-metrics --timeout=240s
+          kubectl wait --for=condition=complete job/trivy --timeout=240s
+          kubectl wait --for=condition=complete job/workloads --timeout=240s
+          kubectl wait --for=condition=complete job/kube-bench --timeout=240s
+          kubectl wait --for=condition=complete job/kube-hunter --timeout=240s
+          kubectl get jobs
+      resources:
+        limits:
+          cpu: 1
+          memory: 1Gi
+        requests:
+          cpu: 50m
+          memory: 128Mi
+      volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      securityContext:
+        runAsUser: 1000
+        allowPrivilegeEscalation: false
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+  volumes:
+    - name: tmp
+      emptyDir: {}
 {{- end -}}
