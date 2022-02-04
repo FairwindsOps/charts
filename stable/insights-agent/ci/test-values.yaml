@@ -111,7 +111,7 @@ awscosts:
 # Falco does not work well with KIND cluster
 falco:
   installFalco: false
-  enabled: true
+  enabled: false
   resources:
     requests:
       cpu: 50m
