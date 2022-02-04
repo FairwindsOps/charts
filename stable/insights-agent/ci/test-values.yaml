@@ -21,9 +21,6 @@ test:
 kube-bench:
   enabled: true
 
-kubesec:
-  enabled: true
-
 polaris:
   enabled: true
 

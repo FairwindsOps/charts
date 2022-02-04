@@ -89,21 +89,6 @@ kube-hunter:
       cpu: 100m
       memory: 128Mi
 
-kubesec:
-  enabled: false
-  schedule: "rand * * * *"
-  timeout: 1200
-  image:
-    repository: quay.io/fairwinds/fw-kubesec
-    tag: "1.3"
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
-
 goldilocks:
   enabled: false
   vpa:

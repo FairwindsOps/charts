@@ -68,11 +68,6 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-kube-hunter
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.kubesec.enabled }}
-- kind: ServiceAccount
-  name: {{ include "insights-agent.fullname" . }}-kubesec
-  namespace: {{ .Release.Namespace }}
-{{- end }}
 {{- if .Values.polaris.enabled }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-polaris
