@@ -16,7 +16,7 @@ curl -fsSLo jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux6
 
 echo "Getting the Kubernetes version from the API. . ."
 kube_version_info=$(curl -kfsSL https://kubernetes.default.svc/version?timeout=32s)
-echo "Found Kubernetes version info: $kube_version"
+echo "Found Kubernetes version info: $kube_version_info"
 git_version=$(echo "${kube_version_info}" | jq -r .gitVersion | cut -d- -f1)
 echo "Git version is ${git_version}"
 kube_minor_version=$(echo "${kube_version_info}" | jq -r .minor)
