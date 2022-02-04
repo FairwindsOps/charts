@@ -13,6 +13,6 @@ dependencies:
   condition: admission.enabled
 - name: falco
   repository: https://falcosecurity.github.io/charts
-  version: '1.16.0'
+  version: '1.17.0'
   condition: falco.installFalco
   alias: falcosecurity
