@@ -51,7 +51,11 @@ spec:
           - "{{ (index .Values "right-sizer" "updateMemoryLimits" "max") }}"
           - "--update-memory-limits-min-ooms"
           - "{{ (index .Values "right-sizer" "updateMemoryLimits" "minOOMs") }}"
-{{- end }}
+          {{- range (index .Values "right-sizer" "updateMemoryLimits" "namespaces") }}
+          - "--update-memory-limits-namespace"
+          - "{{ . }}"
+          {{- end }}
+          {{- end }}
           - "--reset-ooms-window"
           - "{{ (index .Values "right-sizer" "resetOOMsWindow") }}"
           {{- range (index .Values "right-sizer" "extraArgs") }}
