@@ -55,7 +55,7 @@ spec:
           - "--update-memory-limits-namespace"
           - "{{ . }}"
           {{- end }}
-          {{- end }}
+{{- end }}
           - "--reset-ooms-window"
           - "{{ (index .Values "right-sizer" "resetOOMsWindow") }}"
           {{- range (index .Values "right-sizer" "extraArgs") }}
