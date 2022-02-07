@@ -41,7 +41,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 1.17.4
+  agentChartTargetVersion: 1.17.13
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -431,6 +431,36 @@ reportjob:
   pdb:
     enabled: true
     minReplicas: 1
+  hpa:
+    enabled: true
+    min: 2
+    max: 6
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 75
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 75
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+
+repoScanJob:
+  enabled: false
+  insightsCIVersion: "0.13"
   hpa:
     enabled: true
     min: 2

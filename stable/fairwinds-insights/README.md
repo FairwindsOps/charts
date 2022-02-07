@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the openAPI server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the openAPI server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"1.17.4"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"1.17.13"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -150,3 +150,22 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| repoScanJob.enabled | bool | `false` |  |
+| repoScanJob.insightsCIVersion | string | `"0.13"` |  |
+| repoScanJob.hpa.enabled | bool | `true` |  |
+| repoScanJob.hpa.min | int | `2` |  |
+| repoScanJob.hpa.max | int | `6` |  |
+| repoScanJob.hpa.metrics[0].type | string | `"Resource"` |  |
+| repoScanJob.hpa.metrics[0].resource.name | string | `"cpu"` |  |
+| repoScanJob.hpa.metrics[0].resource.target.type | string | `"Utilization"` |  |
+| repoScanJob.hpa.metrics[0].resource.target.averageUtilization | int | `75` |  |
+| repoScanJob.hpa.metrics[1].type | string | `"Resource"` |  |
+| repoScanJob.hpa.metrics[1].resource.name | string | `"memory"` |  |
+| repoScanJob.hpa.metrics[1].resource.target.type | string | `"Utilization"` |  |
+| repoScanJob.hpa.metrics[1].resource.target.averageUtilization | int | `75` |  |
+| repoScanJob.resources.limits.cpu | string | `"500m"` |  |
+| repoScanJob.resources.limits.memory | string | `"1024Mi"` |  |
+| repoScanJob.resources.requests.cpu | string | `"80m"` |  |
+| repoScanJob.resources.requests.memory | string | `"128Mi"` |  |
+| repoScanJob.nodeSelector | object | `{}` |  |
+| repoScanJob.tolerations | list | `[]` |  |
