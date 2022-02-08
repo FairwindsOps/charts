@@ -197,7 +197,6 @@ nova:
     desired-versions: {}
     include-all: true
     wide: true
-    desired-versions: {}
     output-file: "/output/nova.json"
 
 rbacreporter:
