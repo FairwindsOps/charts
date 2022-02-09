@@ -5,6 +5,7 @@
 /incubator/basic-demo/ @sudermanjr
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
+/incubator/datadog-apm/ @sammc3 @azahorscak
 /incubator/fairwinds-metrics/ @sudermanjr
 /incubator/fluentd/ @sudermanjr
 /incubator/imagepullsecret-deploy/ @sudermanjr
