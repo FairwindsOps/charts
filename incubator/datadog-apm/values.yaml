@@ -13,7 +13,6 @@ datadog:
   site: datadoghq.com
 
 clusterAgent:
-  replicas: 2
   image:
     repository: datadog/agent
     pullPolicy: Always
@@ -69,7 +68,7 @@ clusterAgent:
     enabled: true
     minReplicas: 1
     maxReplicas: 6
-    averageMemoryUtilization: 130Mi
+    averageMemoryUtilization: 75
   createPodDisruptionBudget: true
 
 podAnnotations: {}
