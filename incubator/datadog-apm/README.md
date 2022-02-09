@@ -1,6 +1,6 @@
 # datadog-apm
 
-![Version: 0.0.4](https://img.shields.io/badge/Version-0.0.4-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.32.4](https://img.shields.io/badge/AppVersion-7.32.4-informational?style=flat-square)
+![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.32.4](https://img.shields.io/badge/AppVersion-7.32.4-informational?style=flat-square)
 
 A modified chart that only installs the datadog-apm agent
 
@@ -23,7 +23,6 @@ A modified chart that only installs the datadog-apm agent
 | datadog.appKeySecretName | string | `nil` |  |
 | datadog.logLevel | string | `"INFO"` |  |
 | datadog.site | string | `"datadoghq.com"` |  |
-| clusterAgent.replicas | int | `2` |  |
 | clusterAgent.image.repository | string | `"datadog/agent"` |  |
 | clusterAgent.image.pullPolicy | string | `"Always"` |  |
 | clusterAgent.image.tag | string | `"7.32.4"` |  |
@@ -64,7 +63,7 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.hpa.enabled | bool | `true` |  |
 | clusterAgent.hpa.minReplicas | int | `1` |  |
 | clusterAgent.hpa.maxReplicas | int | `6` |  |
-| clusterAgent.hpa.averageMemoryUtilization | string | `"130Mi"` |  |
+| clusterAgent.hpa.averageMemoryUtilization | int | `75` |  |
 | clusterAgent.createPodDisruptionBudget | bool | `true` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
