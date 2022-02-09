@@ -24,7 +24,7 @@ insights:
 
 webhookConfig:
   # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration
-  failurePolicy: Fail
+  failurePolicy: Ignore
   # webhookConfig.matchPolicy -- matchPolicy for the ValidatingWebhookConfiguration
   matchPolicy: Exact
   # webhookConfig.namespaceSelector -- namespaceSelector for the ValidatingWebhookConfiguration
@@ -185,4 +185,4 @@ test:
   enabled: false
   image:
     repository: "python"
-    tag: "3.8-alpine"
+    tag: "3.10-alpine"
