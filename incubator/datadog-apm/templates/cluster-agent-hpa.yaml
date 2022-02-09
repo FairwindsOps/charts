@@ -15,7 +15,5 @@ spec:
   - type: Resource
     resource:
       name: memory
-      target:
-        type: Utilization
-        targetAverageUtilization: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
+      targetAverageUtilization: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
 {{- end }}
