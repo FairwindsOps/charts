@@ -13,7 +13,6 @@ datadog:
   site: datadoghq.com
 
 clusterAgent:
-  replicas: 2
   image:
     repository: datadog/agent
     pullPolicy: Always
