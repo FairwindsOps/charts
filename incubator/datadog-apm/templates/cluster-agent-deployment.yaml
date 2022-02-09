@@ -11,7 +11,6 @@ metadata:
     app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
     app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 spec:
-  replicas: {{ .Values.clusterAgent.replicas }}
   strategy:
 {{- if .Values.clusterAgent.strategy }}
 {{ toYaml .Values.clusterAgent.strategy | indent 4 }}
