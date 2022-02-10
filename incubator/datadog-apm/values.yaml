@@ -17,7 +17,7 @@ clusterAgent:
     repository: datadog/agent
     pullPolicy: Always
     # Overrides the image tag whose default is {{ .Chart.AppVersion }}
-    tag: 7.32.4
+    tag: ""
   command:
     - trace-agent
     - -config=/etc/datadog-agent/datadog.yaml
