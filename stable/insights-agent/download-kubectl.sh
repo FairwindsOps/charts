@@ -4,6 +4,9 @@ set -eo pipefail
 
 mkdir /tmp/bin
 export PATH=$PATH:/tmp/bin
+export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+export CACERT=${SERVICEACCOUNT}/ca.crt
 cd /tmp/bin
 
 # Download kubectl to match the cluster version,
@@ -18,7 +21,7 @@ version_pattern='v[0-9]+\.[0-9]+.[0-9]+)'
 kubectl_version=""
 
 echo "Getting the Kubernetes version from the API. . ."
-if kube_version_info=$(curl -kfsSL https://kubernetes.default.svc/version?timeout=32s); then
+if kube_version_info=$(curl -kfsSL --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" https://kubernetes.default.svc/version?timeout=32s); then
   echo "Found Kubernetes version info: $kube_version_info"
   git_version=$(echo "${kube_version_info}" | jq -r .gitVersion | cut -d- -f1)
   echo "Git version is ${git_version}"
