@@ -13,12 +13,11 @@ datadog:
   site: datadoghq.com
 
 clusterAgent:
-  replicas: 2
   image:
     repository: datadog/agent
     pullPolicy: Always
     # Overrides the image tag which defaults to the chart appVersion, created by datadog
-    tag: 7.23.0
+    tag: 7.32.4
   command:
     - trace-agent
     - -config=/etc/datadog-agent/datadog.yaml
@@ -69,7 +68,7 @@ clusterAgent:
     enabled: true
     minReplicas: 1
     maxReplicas: 6
-    averageMemoryUtilization: 130Mi
+    averageMemoryUtilization: 75
   createPodDisruptionBudget: true
 
 podAnnotations: {}

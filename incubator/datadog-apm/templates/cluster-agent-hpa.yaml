@@ -1,6 +1,6 @@
 {{- if .Values.clusterAgent.hpa.enabled -}}
 ---
-apiVersion: autoscaling/v2beta2
+apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
   name: {{ template "datadog-apm.fullname" . }}-hpa-mem
@@ -15,7 +15,5 @@ spec:
   - type: Resource
     resource:
       name: memory
-      target:
-        type: Utilization
-        averageValue: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
+      targetAverageUtilization: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
 {{- end }}
