@@ -12,7 +12,7 @@ spec:
   maxReplicas: {{ .Values.clusterAgent.hpa.maxReplicas }}
   minReplicas: {{ .Values.clusterAgent.hpa.minReplicas }}
   metrics:
-  - type: Resource
+    - type: Resource
       resource:
         name: memory
         target:
