@@ -1,9 +1,9 @@
 {{- if .Values.clusterAgent.hpa.enabled -}}
 ---
-apiVersion: autoscaling/v2beta1
+apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: {{ template "datadog-apm.fullname" . }}-hpa-mem
+  name: {{ template "datadog-apm.fullname" . }}-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
@@ -12,8 +12,10 @@ spec:
   maxReplicas: {{ .Values.clusterAgent.hpa.maxReplicas }}
   minReplicas: {{ .Values.clusterAgent.hpa.minReplicas }}
   metrics:
-  - type: Resource
-    resource:
-      name: memory
-      targetAverageUtilization: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          averageUtilization: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
+          type: Utilization
 {{- end }}

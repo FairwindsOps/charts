@@ -77,7 +77,7 @@ spec:
       {{- end }}
       containers:
       - name: cluster-agent
-        image: "{{ .Values.clusterAgent.image.repository }}:{{ .Values.clusterAgent.image.tag }}"
+        image: "{{ .Values.clusterAgent.image.repository }}:{{ default .Chart.AppVersion .Values.clusterAgent.image.tag }}"
         {{- with .Values.clusterAgent.command }}
         command: {{ range . }}
           - {{ . | quote }}

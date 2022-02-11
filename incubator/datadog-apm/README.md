@@ -1,6 +1,6 @@
 # datadog-apm
 
-![Version: 0.0.5](https://img.shields.io/badge/Version-0.0.5-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.32.4](https://img.shields.io/badge/AppVersion-7.32.4-informational?style=flat-square)
+![Version: 0.0.6](https://img.shields.io/badge/Version-0.0.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.32.4](https://img.shields.io/badge/AppVersion-7.32.4-informational?style=flat-square)
 
 A modified chart that only installs the datadog-apm agent
 
@@ -9,6 +9,7 @@ A modified chart that only installs the datadog-apm agent
 | Name | Email | Url |
 | ---- | ------ | --- |
 | sammc3 |  |  |
+| Azahorscak |  |  |
 
 ## Values
 
@@ -25,7 +26,7 @@ A modified chart that only installs the datadog-apm agent
 | datadog.site | string | `"datadoghq.com"` |  |
 | clusterAgent.image.repository | string | `"datadog/agent"` |  |
 | clusterAgent.image.pullPolicy | string | `"Always"` |  |
-| clusterAgent.image.tag | string | `"7.32.4"` |  |
+| clusterAgent.image.tag | string | `""` | Overrides the image tag whose default is {{ .Chart.AppVersion }} |
 | clusterAgent.command[0] | string | `"trace-agent"` |  |
 | clusterAgent.command[1] | string | `"-config=/etc/datadog-agent/datadog.yaml"` |  |
 | clusterAgent.enabled | bool | `true` |  |
@@ -61,7 +62,7 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.resources.requests.cpu | string | `"50m"` |  |
 | clusterAgent.resources.requests.memory | string | `"150Mi"` |  |
 | clusterAgent.hpa.enabled | bool | `true` |  |
-| clusterAgent.hpa.minReplicas | int | `1` |  |
+| clusterAgent.hpa.minReplicas | int | `2` |  |
 | clusterAgent.hpa.maxReplicas | int | `6` |  |
 | clusterAgent.hpa.averageMemoryUtilization | int | `75` |  |
 | clusterAgent.createPodDisruptionBudget | bool | `true` |  |
