@@ -22,7 +22,8 @@ clusterAgent:
     - trace-agent
     - -config=/etc/datadog-agent/datadog.yaml
   enabled: true
-  token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=  # <DATADOG_CLUSTER_AGENT_TOKEN>
+  # -- DATADOG_CLUSTER_AGENT_TOKEN
+  token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=  
   apm:
     enabled: true
     nonLocalTraffic: true
