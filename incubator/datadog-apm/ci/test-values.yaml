@@ -23,7 +23,7 @@ clusterAgent:
     - -config=/etc/datadog-agent/datadog.yaml
   enabled: true
   # -- DATADOG_CLUSTER_AGENT_TOKEN
-  token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=  
+  token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=
   apm:
     enabled: true
     nonLocalTraffic: true
