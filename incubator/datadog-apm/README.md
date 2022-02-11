@@ -26,7 +26,7 @@ A modified chart that only installs the datadog-apm agent
 | datadog.site | string | `"datadoghq.com"` |  |
 | clusterAgent.image.repository | string | `"datadog/agent"` |  |
 | clusterAgent.image.pullPolicy | string | `"Always"` |  |
-| clusterAgent.image.tag | string | `""` | `"Overrides the image tag whose default is {{ .Chart.AppVersion }}"` |
+| clusterAgent.image.tag | string | `""` | Overrides the image tag whose default is {{ .Chart.AppVersion }} |
 | clusterAgent.command[0] | string | `"trace-agent"` |  |
 | clusterAgent.command[1] | string | `"-config=/etc/datadog-agent/datadog.yaml"` |  |
 | clusterAgent.enabled | bool | `true` |  |
