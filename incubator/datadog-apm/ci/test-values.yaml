@@ -37,7 +37,8 @@ clusterAgent:
     aggregator: avg
     wpaController: false
     useDatadogMetrics: false
-  priorityClassName:  # <FW_PRIORITY_CLASS_NAME>
+  # -- A priority class to use
+  priorityClassName:
   serviceAccount:
     create: true
     name: datadog-apm
