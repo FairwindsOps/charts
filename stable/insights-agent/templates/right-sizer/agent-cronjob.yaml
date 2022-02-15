@@ -1,3 +1,6 @@
+{{ if has "rightsizer" .Values }}
+{{ fail "rightsizer has been renamed to right-sizer in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
+{{ end }}
 {{- if (index .Values "right-sizer" "enabled") -}}
 {{- $_ := set . "Label" "right-sizer" }}
 {{- $_ := set . "Config" (index .Values "right-sizer") }}

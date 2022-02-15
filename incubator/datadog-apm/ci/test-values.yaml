@@ -9,23 +9,21 @@ datadog:
   apiKeyExistingSecret:   # <DATADOG_API_KEY_SECRET>
   appKey: YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY  # <DATADOG_APP_KEY>
   appKeySecretName:   # <DATADOG_APP_KEY_SECRET>
-  clusterChecks:
-    enabled: false
   logLevel: INFO
   site: datadoghq.com
 
 clusterAgent:
-  replicas: 2
   image:
     repository: datadog/agent
     pullPolicy: Always
-    # Overrides the image tag which defaults to the chart appVersion, created by datadog
-    tag: 7.23.0
+    # -- Overrides the image tag whose default is {{ .Chart.AppVersion }}
+    tag: ""
   command:
     - trace-agent
     - -config=/etc/datadog-agent/datadog.yaml
   enabled: true
-  token: XXXYYYXXXYYYXXXYYYXXXYYYXXXYYYXXXYYYXXXYYYX=  # <DATADOG_CLUSTER_AGENT_TOKEN>
+  # -- DATADOG_CLUSTER_AGENT_TOKEN
+  token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=
   apm:
     enabled: true
     nonLocalTraffic: true
@@ -39,13 +37,11 @@ clusterAgent:
     aggregator: avg
     wpaController: false
     useDatadogMetrics: false
-  priorityClassName:  # <FW_PRIORITY_CLASS_NAME>l
+  # -- A priority class to use
+  priorityClassName:
   serviceAccount:
     create: true
     name: datadog-apm
-  rbac:
-    create: false
-    serviceAccount: datadog-apm
   healthPort: 5555
   livenessProbe:
     failureThreshold: 6
@@ -72,9 +68,9 @@ clusterAgent:
       memory: 150Mi
   hpa:
     enabled: true
-    minReplicas: 1
+    minReplicas: 2
     maxReplicas: 6
-    averageMemoryUtilization: 130Mi
+    averageMemoryUtilization: 75
   createPodDisruptionBudget: true
 
 podAnnotations: {}

@@ -1,3 +1,6 @@
+{{ if has "rbacreporter" .Values }}
+{{ fail "rbacreporter has been renamed to rbac-reporter in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
+{{ end }}
 {{- if (index .Values "rbac-reporter" "enabled") -}}
 {{- $_ := set . "Label" "rbac-reporter" }}
 {{- $_ := set . "Config" (index .Values "rbac-reporter") }}
