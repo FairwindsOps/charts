@@ -1,4 +1,4 @@
-{{ if has "awscosts" .Values }}
+{{ if hasKey .Values "awscosts" }}
 {{ fail "awscosts has been renamed to aws-costs in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
 {{ end }}
 {{- if (index .Values "aws-costs" "enabled") -}}

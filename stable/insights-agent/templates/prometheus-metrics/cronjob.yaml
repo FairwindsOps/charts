@@ -1,4 +1,4 @@
-{{ if has "resourcemetrics" .Values }}
+{{ if hasKey .Values "resourcemetrics" }}
 {{ fail "resourcemetrics has been renamed to prometheus-metrics in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
 {{ end }}
 {{- if (index .Values "prometheus-metrics" "enabled") -}}
