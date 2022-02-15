@@ -135,7 +135,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "0.3"
+    tag: "1.0"
   additionalAccess:
   resources:
     limits:
