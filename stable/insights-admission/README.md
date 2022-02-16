@@ -47,7 +47,7 @@ rules:
 | insights.configmap.create | bool | `true` | Create a config map with Insights configuration |
 | insights.configmap.nameOverride | string | `nil` | The name of the configmap to use. |
 | insights.configmap.suffix | string | `"configmap"` | The suffix to add onto the release name to get the configmap that contains the host/organization/cluster |
-| webhookConfig.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
+| webhookConfig.failurePolicy | string | `"Ignore"` | failurePolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
 | webhookConfig.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
@@ -86,4 +86,4 @@ rules:
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
 | secretName | string | `""` | If you are providing your own certificate then this is the name of the secret holding the certificate. |
 | clusterDomain | string | `"cluster.local"` | The base domain to use for cluster DNS |
-| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.8-alpine"}}` | Used for chart CI only - deploys a test deployment |
+| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.10-alpine"}}` | Used for chart CI only - deploys a test deployment |

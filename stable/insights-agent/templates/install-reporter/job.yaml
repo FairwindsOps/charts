@@ -6,6 +6,9 @@ metadata:
     app: insights-agent
   annotations:
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+  {{- with .Values.installReporter.additionalAnnotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   ttlSecondsAfterFinished: 300
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}

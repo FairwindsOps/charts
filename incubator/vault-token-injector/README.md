@@ -1,3 +1,5 @@
+![Version: 2.1.0](https://img.shields.io/badge/Version-2.1.0-informational?style=flat-square)
+
 # Vault Token Injector Chart
 
 A Helm chart for Fairwinds vault-token-injector
@@ -23,6 +25,10 @@ Chart version 2.0.0 introduced a metrics endpoint by default.
 | config | object | `{"circleci":[{"env_variable":"VAULT_TOKEN","name":"FairwindsOps/example","vault_role":"some-vault-role"}],"vaultAddress":"https://vault.example.com"}` | The configuration of the vault-token-injector |
 | metrics.enabled | bool | `true` | If true, a prometheus endpoint will be enabled on port 4329 |
 | metrics.service.enabled | bool | `true` |  |
+| metrics.serviceMonitor.enabled | bool | `false` |  |
+| metrics.serviceMonitor.interval | string | `"60s"` |  |
+| metrics.serviceMonitor.scrapeTimeout | string | `"30s"` |  |
+| metrics.serviceMonitor.labels | object | `{}` |  |
 | logLevel | int | `1` | The klog log level (1-10). WARNING: Log level 10 will print secrets to logs |
 | image.repository | string | `"quay.io/fairwinds/vault-token-injector"` | The image repository to pullt he vault-token-injector image from |
 | image.pullPolicy | string | `"Always"` | This is recommended to be set as Always |

@@ -55,6 +55,7 @@ installReporter:
     requests:
       cpu: 100m
       memory: 128Mi
+  additionalAnnotations: {}
 
 polaris:
   enabled: false
@@ -182,7 +183,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "3.0.0"
+    tag: "v3.0"
   resources:
     limits:
       cpu: 100m
