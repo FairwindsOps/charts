@@ -43,15 +43,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- if .Values.podLabels }}
 {{ toYaml .Values.podLabels }}
 {{- end }}
-{{- if .Values.recommender.podLabels }}
-{{ toYaml .Values.recommender.podLabels }}
-{{- end }}
-{{- if .Values.updater.podLabels }}
-{{ toYaml .Values.updater.podLabels }}
-{{- end }}
-{{- if .Values.admissionController.podLabels }}
-{{ toYaml .Values.admissionController.podLabels }}
-{{- end }}
 {{- end }}
 
 {{/*

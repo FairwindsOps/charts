@@ -18,7 +18,10 @@ spec:
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+    {{- with .Values.recommender.podLabels }}
       labels:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
         app.kubernetes.io/component: recommender
         {{- include "vpa.selectorLabels" . | nindent 8 }}
     spec:
