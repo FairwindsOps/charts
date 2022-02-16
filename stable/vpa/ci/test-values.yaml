@@ -1,11 +1,23 @@
 testMode: true
 recommender:
   enabled: true
+  podLabels:
+    app: test
+    foo: bar
 updater:
   enabled: true
+  podLabels:
+    app: test
+    foo: bar
 admissionController:
   enabled: true
   generateCertificate: true
   certGen:
     env:
       ENVIRONMENTVARIABLE: exists
+  podLabels:
+    app: test
+    foo: bar
+podLabels:
+  app: test
+  foo: bar
