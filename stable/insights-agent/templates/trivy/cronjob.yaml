@@ -12,6 +12,8 @@ spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           - name: tmp
             emptyDir: {}
+          - name: vartmp
+            emptyDir: {}
           {{ with .Values.trivy.privateImages.dockerConfigSecret }}
           - name: dockerconfig
             secret:
@@ -19,8 +21,10 @@ spec:
           {{ end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
-            - name: tmp
+            - name: vartmp
               mountPath: /var/tmp
+            - name: tmp
+              mountPath: /tmp
             {{ with .Values.trivy.privateImages.dockerConfigSecret }}
             - name: dockerconfig
               mountPath: /.docker/
