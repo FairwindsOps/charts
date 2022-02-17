@@ -34,7 +34,7 @@ dashboard:
   # dashboard.listeningAddress -- Dashboard listerning address.
   listeningAddress:
   # dashboard.replicas -- Number of replicas to run.
-  replicas: 1
+  replicas: 2
   # dashboard.podAdditionalLabels -- Custom additional labels on dashboard pods.
   podAdditionalLabels: {}
   # dashboard.resources -- Requests and limits for the dashboard
@@ -80,7 +80,7 @@ webhook:
   # webhook.enable -- Whether to run the Validating Webhook
   enable: false
   # webhook.replicas -- Number of replicas
-  replicas: 1
+  replicas: 2
   # webhook.nodeSelector -- Webhook pod nodeSelector
   nodeSelector: {}
   # webhook.tolerations -- Webhook pod tolerations
