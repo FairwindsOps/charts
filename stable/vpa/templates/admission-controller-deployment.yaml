@@ -19,6 +19,9 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
+      {{- with .Values.admissionController.podLabels }}
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
         app.kubernetes.io/component: admission-controller
         {{- include "vpa.selectorLabels" . | nindent 8 }}
     spec:
