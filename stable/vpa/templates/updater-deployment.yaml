@@ -19,6 +19,9 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
+      {{- with .Values.updater.podLabels }}
+          {{- toYaml . | nindent 8 }}
+      {{- end }}
         app.kubernetes.io/component: updater
         {{- include "vpa.selectorLabels" . | nindent 8 }}
     spec:
