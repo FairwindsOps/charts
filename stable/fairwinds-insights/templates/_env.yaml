@@ -144,4 +144,10 @@ env:
 - name: GITHUB_APP_NAME
   value: {{ . | quote }}
 {{ end -}}
+
+# repo-scan-job specific
+- name: K8S_NAMESPACE
+  value: {{ .Release.Namespace }}
+- name: INSIGHTS_CI_IMAGE_VERSION
+  value: {{ .Values.repoScanJob.insightsCIVersion | quote }}
 {{ end }}

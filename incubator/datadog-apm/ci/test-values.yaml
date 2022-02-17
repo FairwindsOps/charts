@@ -1,0 +1,81 @@
+# Default values
+
+nameOverride: ""
+fullnameOverride: ""
+targetSystem: linux
+
+datadog:
+  apiKey: XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX  # <DATADOG_API_KEY>
+  apiKeyExistingSecret:   # <DATADOG_API_KEY_SECRET>
+  appKey: YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY  # <DATADOG_APP_KEY>
+  appKeySecretName:   # <DATADOG_APP_KEY_SECRET>
+  logLevel: INFO
+  site: datadoghq.com
+
+clusterAgent:
+  image:
+    repository: datadog/agent
+    pullPolicy: Always
+    # -- Overrides the image tag whose default is {{ .Chart.AppVersion }}
+    tag: ""
+  command:
+    - trace-agent
+    - -config=/etc/datadog-agent/datadog.yaml
+  enabled: true
+  # -- DATADOG_CLUSTER_AGENT_TOKEN
+  token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=
+  apm:
+    enabled: true
+    nonLocalTraffic: true
+    receiverPort: 8126
+  metricsProvider:
+    enabled: true
+    port: 8126
+    service:
+      type: ClusterIP
+      port: 8126
+    aggregator: avg
+    wpaController: false
+    useDatadogMetrics: false
+  # -- A priority class to use
+  priorityClassName:
+  serviceAccount:
+    create: true
+    name: datadog-apm
+  healthPort: 5555
+  livenessProbe:
+    failureThreshold: 6
+    initialDelaySeconds: 15
+    periodSeconds: 15
+    successThreshold: 1
+    tcpSocket:
+      port: 8126
+    timeoutSeconds: 5
+  readinessProbe:
+    failureThreshold: 6
+    initialDelaySeconds: 15
+    periodSeconds: 15
+    successThreshold: 1
+    tcpSocket:
+      port: 8126
+    timeoutSeconds: 5
+  resources:
+    limits:
+      cpu: 50m
+      memory: 150Mi
+    requests:
+      cpu: 50m
+      memory: 150Mi
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 6
+    averageMemoryUtilization: 75
+  createPodDisruptionBudget: true
+
+podAnnotations: {}
+podSecurityContext: {}
+securityContext: {}
+nodeSelector: {}
+tolerations: []
+affinity: {}

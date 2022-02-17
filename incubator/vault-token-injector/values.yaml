@@ -1,7 +1,3 @@
-# Default values for vault-token-injector.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
 # -- We currently only support a single instance
 replicaCount: 1
 
@@ -27,6 +23,17 @@ config:
   - name: FairwindsOps/example
     vault_role: some-vault-role
     env_variable: VAULT_TOKEN
+
+metrics:
+  # -- If true, a prometheus endpoint will be enabled on port 4329
+  enabled: true
+  service:
+    enabled: true
+  serviceMonitor:
+    enabled: false
+    interval: 60s
+    scrapeTimeout: 30s
+    labels: {}
 
 # -- The klog log level (1-10). WARNING: Log level 10 will print secrets to logs
 logLevel: 1

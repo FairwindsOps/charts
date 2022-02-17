@@ -55,6 +55,7 @@ installReporter:
     requests:
       cpu: 100m
       memory: 128Mi
+  additionalAnnotations: {}
 
 polaris:
   enabled: false
