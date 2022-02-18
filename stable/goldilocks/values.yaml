@@ -85,6 +85,9 @@ controller:
     # controller.deployment.additionalLabels -- Extra labels for the controller deployment
     additionalLabels: {}
 
+    # controller.deployment.podAnnotations -- Extra annotations for the controller pod
+    podAnnotations: {}
+
 dashboard:
   # dashboard.enabled -- If true, the dashboard component will be installed
   enabled: true
