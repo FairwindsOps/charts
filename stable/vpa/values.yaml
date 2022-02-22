@@ -10,6 +10,8 @@ priorityClassName: ""
 nameOverride: ""
 # fullnameOverride -- A template override for the fullname
 fullnameOverride: ""
+# podLabels -- Labels to add to all pods
+podLabels: {}
 rbac:
   # rbac.create -- If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components.
   create: true
@@ -45,6 +47,8 @@ recommender:
     tag: ""
   # recommender.podAnnotations -- Annotations to add to the recommender pod
   podAnnotations: {}
+  # recommender.podLabels -- Labels to add to the recommender pod
+  podLabels: {}
   # recommender.podSecurityContetxt -- The security context for the recommender pod
   podSecurityContext:
     runAsNonRoot: true
@@ -81,6 +85,8 @@ updater:
     tag: ""
   # updater.podAnnotations -- Annotations to add to the updater pod
   podAnnotations: {}
+  # updater.podLabels -- Labels to add to the updater pod
+  podLabels: {}
   # updater.podSecurityContetxt -- The security context for the updater pod
   podSecurityContext:
     runAsNonRoot: true
@@ -137,6 +143,8 @@ admissionController:
     tag: ""
   # admissionController.podAnnotations -- Annotations to add to the admission controller pod
   podAnnotations: {}
+  # admissionController.podLabels -- Labels to add to the admission controller pod
+  podLabels: {}
   # admissionController.podSecurityContetxt -- The security context for the admission controller pod
   podSecurityContext:
     runAsNonRoot: true

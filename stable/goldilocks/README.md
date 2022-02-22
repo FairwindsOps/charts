@@ -85,6 +85,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.deployment.extraVolumes | list | `[]` | Extra volumes for the controller pod |
 | controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
 | controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
+| controller.deployment.podAnnotations | object | `{}` | Extra annotations for the controller pod |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
 | dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
