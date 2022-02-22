@@ -32,6 +32,10 @@ spec:
         {{- if .Values.controller.deployment.additionalLabels }}
         {{ toYaml .Values.controller.deployment.additionalLabels | nindent 8 }}
         {{- end }}
+      {{- with .Values.controller.deployment.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
