@@ -354,6 +354,52 @@ prometheus:
 admission:
   enabled: false
 
+  # admission.rules -- An array of additional rules for the admission controller
+  # ValidatingWebhookConfiguration and OPA plugins.
+  # See also: admission.defaultRules
+  # Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  rules: []
+  # admission.defaultRules -- An array of rules for common resources for the
+  # admission controller ValidatingWebhookConfiguration and OPA plugins.
+  defaultRules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    - v1beta1
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - daemonsets
+    - deployments
+    - statefulsets
+    scope: Namespaced
+  - apiGroups:
+    - batch
+    apiVersions:
+    - v1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - jobs
+    - cronjobs
+    scope: Namespaced
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pods
+    - replicationcontrollers
+    scope: Namespaced
+
 insights-admission:
   nameOverride: insights-agent
   insights:
