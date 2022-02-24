@@ -152,6 +152,22 @@ opa:
     repository: quay.io/fairwinds/fw-opa
     tag: "0.3"
   additionalAccess:
+  # opa.rules -- An array of rules listing Kubernetes APIGroups and Resources
+  # to which OPA policies will be applied.
+  # Each requires a set of apiGroups and Resources. The apiVersions, operations,
+  # and scope portion of rules are not used by this plugin.
+  # IF the admission controller is enabled, those rules will be applied prior to those specified here.
+  # See also: the separate insights-admission Helm chart for `rules` and `defaultRules` values.
+  rules:
+  - apiGroups:
+    - apps
+    resources:
+    - sunshine
+    - clouds
+  - apiGroups:
+    - batch
+    resources:
+    - rain
   resources:
     limits:
       cpu: 250m
@@ -354,51 +370,6 @@ prometheus:
 admission:
   enabled: false
 
-  # admission.rules -- An array of additional rules for the admission controller
-  # ValidatingWebhookConfiguration and OPA plugins.
-  # See also: admission.defaultRules
-  # Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
-  rules: []
-  # admission.defaultRules -- An array of rules for common resources for the
-  # admission controller ValidatingWebhookConfiguration and OPA plugins.
-  defaultRules:
-  - apiGroups:
-    - apps
-    apiVersions:
-    - v1
-    - v1beta1
-    - v1beta2
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - daemonsets
-    - deployments
-    - statefulsets
-    scope: Namespaced
-  - apiGroups:
-    - batch
-    apiVersions:
-    - v1
-    - v1beta1
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - jobs
-    - cronjobs
-    scope: Namespaced
-  - apiGroups:
-    - ""
-    apiVersions:
-    - v1
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - pods
-    - replicationcontrollers
-    scope: Namespaced
 
 insights-admission:
   nameOverride: insights-agent
