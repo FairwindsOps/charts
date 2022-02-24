@@ -4,5 +4,5 @@ kind: Secret
 metadata:
   name: {{ include "insights-admission.secretName" . }}
 data:
-  token: {{ required "You must set base64token" .Values.insights.base64token | quote }}
+  token: {{ required "You must set insights.base64token" .Values.insights.base64token | quote }}
 {{- end }}
