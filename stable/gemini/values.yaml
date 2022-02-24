@@ -3,8 +3,8 @@ image:
   pullPolicy: Always
   # image.repository -- Repository for the gemini image
   repository: quay.io/fairwinds/gemini
-  # image.tag -- The gemini image tag to use
-  tag: "0.1"
+  # image.tag -- The gemini image tag to use. Defaults to .Chart.appVersion
+  tag:
 
 rbac:
   # rbac.create -- If true, create a new ServiceAccount and attach permissions
