@@ -151,7 +151,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/self-hoste
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"1.1"` |  |
+| repoScanJob.insightsCIVersion | string | `"1.2"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |
