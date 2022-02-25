@@ -5,25 +5,8 @@ metadata:
   name: {{ include "insights-agent.fullname" . }}-opa
   labels:
     app: insights-agent
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-checks-view
-  labels:
-    app: insights-agent
-    rbac.authorization.k8s.io/aggregate-to-view: "true"
-rules:
-- apiGroups:
-  - 'insights.fairwinds.com'
-  resources:
-  - 'customchecks'
-  - 'customcheckinstances'
-  verbs:
-  - 'get'
-  - 'list'
----
 {{- with .Values.opa.additionalAccess }}
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -47,13 +30,13 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" $ }}-opa
     namespace: {{ $.Release.Namespace }}
----
 {{- end }}
 {{- if and .Values.admission.enabled .Values.opa.admissionRulesAsTargetResources }}
 {{- /* The use of index below is required to access a hyphanated sub-chart name.
     Ref: https://github.com/helm/helm/issues/2192 */}}
 {{- $AdmissionValues := index .Values "insights-admission" }}
 {{- with $AdmissionValues.serviceAccount.rbac.additionalAccess }}
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -77,41 +60,8 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" $ }}-opa
     namespace: {{ $.Release.Namespace }}
----
 {{- end }}
 {{- end }}
-apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-checks-edit
-  labels:
-    app: insights-agent
-rules:
-- apiGroups:
-  - 'insights.fairwinds.com'
-  resources:
-  - 'customchecks'
-  - 'customcheckinstances'
-  verbs:
-  - 'create'
-  - 'delete'
-  - 'patch'
-  - 'update'
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-opa-edit
-  labels:
-    app: insights-agent
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: Role
-  name: {{ include "insights-agent.fullname" . }}-checks-edit
-subjects:
-  - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" . }}-opa
-    namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
