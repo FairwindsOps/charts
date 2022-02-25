@@ -330,9 +330,9 @@ prometheus:
     resources:
       limits:
         cpu: 500m
-        memory: 2Gi
+        memory: 3Gi
       requests:
-        cpu: 500m
+        cpu: 250m
         memory: 2Gi
   kube-state-metrics:
     image:
