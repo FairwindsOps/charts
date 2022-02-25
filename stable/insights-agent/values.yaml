@@ -520,11 +520,11 @@ falcosecurity:
   fullnameOverride: insights-agent
   resources:
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 100m
+      memory: 512Mi
     limits:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 100m
+      memory: 512Mi
   falco:
     jsonOutput: true
   ebpf:
