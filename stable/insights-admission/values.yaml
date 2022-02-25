@@ -137,6 +137,8 @@ serviceAccount:
     # -- Grant the admission controller access to a given role (such as view)
     grantRole:
     # -- Grant the admission controller access to additional objects. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a Role.
+    # RBAC rules specified here may also be granted to the Insights OPA plugin,
+    # see also the insights-agent chart values for opa.
     additionalAccess:
 
 # podAnnotations -- Annotations to add to each pod.

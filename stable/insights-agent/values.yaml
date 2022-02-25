@@ -152,22 +152,58 @@ opa:
     repository: quay.io/fairwinds/fw-opa
     tag: "0.3"
   additionalAccess:
-  # opa.rules -- An array of rules listing Kubernetes APIGroups and Resources
-  # to which OPA policies will be applied.
-  # Each requires a set of apiGroups and Resources. The apiVersions, operations,
-  # and scope portion of rules are not used by this plugin.
-  # IF the admission controller is enabled, those rules will be applied prior to those specified here.
-  # See also: the separate insights-admission Helm chart for `rules` and `defaultRules` values.
-  rules:
+  # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
+  # policies will be applied.
+  # Each target requires a list of apiGroups and a list of Resources.
+  defaultTargetResources:
   - apiGroups:
     - apps
+    apiVersions:
+    - v1
+    - v1beta1
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
     resources:
-    - sunshine
-    - clouds
+    - daemonsets
+    - deployments
+    - statefulsets
+    scope: Namespaced
   - apiGroups:
     - batch
+    apiVersions:
+    - v1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
     resources:
-    - rain
+    - jobs
+    - cronjobs
+    scope: Namespaced
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pods
+    - replicationcontrollers
+    scope: Namespaced
+  # opa.admissionRulesAsTargetResources -- IF the admission controller is
+  # enabled, the APIGroups and Resources found in admission rules will be
+  # used as Kubernetes target resources for this plugin.
+  # This also grants RBAC rules to this plugin that have been specified in
+  # the insights-admission chart `serviceAccount.rbac.additionalAccess` value.
+  # See also: the insights-admission chart `webhookConfig.rules` value.
+  admissionRulesAsTargetResources: true
+  # opa.targetResources -- A user-specified list of Kubernetes targets to which
+  # OPA policies will be applied.
+  # Each target requires a list of apiGroups and a list of Resources.
+  targetResources: {}
   resources:
     limits:
       cpu: 250m
@@ -369,7 +405,6 @@ prometheus:
 
 admission:
   enabled: false
-
 
 insights-admission:
   nameOverride: insights-agent
