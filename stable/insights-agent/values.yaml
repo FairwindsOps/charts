@@ -521,9 +521,9 @@ falcosecurity:
   resources:
     requests:
       cpu: 100m
-      memory: 512Mi
+      memory: 256Mi
     limits:
-      cpu: 100m
+      cpu: 200m
       memory: 512Mi
   falco:
     jsonOutput: true
