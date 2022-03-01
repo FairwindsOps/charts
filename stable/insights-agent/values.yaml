@@ -65,7 +65,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "4.2"
+    tag: "5.0"
   resources:
     limits:
       cpu: 250m
@@ -74,7 +74,7 @@ polaris:
       cpu: 100m
       memory: 128Mi
 
-kubehunter:
+kube-hunter:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -82,21 +82,6 @@ kubehunter:
   image:
     repository: aquasec/kube-hunter
     tag: "0.6.4"
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
-
-kubesec:
-  enabled: false
-  schedule: "rand * * * *"
-  timeout: 1200
-  image:
-    repository: quay.io/fairwinds/fw-kubesec
-    tag: "1.3"
   resources:
     limits:
       cpu: 250m
@@ -150,7 +135,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "0.3"
+    tag: "1.0"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -257,7 +242,7 @@ nova:
     - https://kubernetes-charts-incubator.storage.googleapis.com
     - https://charts.jetstack.io
 
-rbacreporter:
+rbac-reporter:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -272,7 +257,7 @@ rbacreporter:
       cpu: 100m
       memory: 128Mi
 
-kubebench:
+kube-bench:
   enabled: false
   schedule: "rand * * * *"
   mode: "cronjob"
@@ -336,9 +321,9 @@ pluto:
       cpu: 100m
       memory: 128Mi
 
-resourcemetrics:
+prometheus-metrics:
   enabled: false
-  installPrometheus: false
+  installPrometheusServer: false
   schedule: "0/10 * * * *"
   timeout: 300
   address: "http://prometheus-server"
@@ -426,7 +411,7 @@ test:
     tag: "3.6"
     pullPolicy: "Always"
 
-awscosts:
+aws-costs:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -441,7 +426,7 @@ awscosts:
       cpu: 100m
       memory: 128Mi
 
-rightsizer:
+right-sizer:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300

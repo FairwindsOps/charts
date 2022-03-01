@@ -1,6 +1,9 @@
-{{- if .Values.awscosts.enabled -}}
-{{- $_ := set . "Label" "awscosts" }}
-{{- $_ := set . "Config" .Values.awscosts }}
+{{ if hasKey .Values "awscosts" }}
+{{ fail "awscosts has been renamed to aws-costs in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
+{{ end }}
+{{- if (index .Values "aws-costs" "enabled") -}}
+{{- $_ := set . "Label" "awscosts" }} #TODO(Barnie): change to aws-cost once the backend is fixed for this
+{{- $_ := set . "Config" (index .Values "aws-costs")}}
 {{- if not (.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
 apiVersion: batch/v1beta1
 {{- else }}
@@ -23,29 +26,29 @@ spec:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.awscosts.secretName }}
+                  name: {{ (index .Values "aws-costs" "secretName") }}
                   key: AWS_ACCESS_KEY_ID
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.awscosts.secretName }}
+                  name: {{ (index .Values "aws-costs" "secretName") }}
                   key: AWS_SECRET_ACCESS_KEY            
             - name: AWS_DEFAULT_REGION
-              value: {{ .Values.awscosts.region }}
+              value: {{ (index .Values "aws-costs" "region") }}
             command: ["./aws-costs.sh"]
             args:
               - --database 
-              - {{ .Values.awscosts.database }}
+              - {{ (index .Values "aws-costs" "database") }}
               - --table 
-              - {{ .Values.awscosts.table }}
+              - {{ (index .Values "aws-costs" "table") }}
               - --catalog 
-              - {{ .Values.awscosts.catalog }}
+              - {{ (index .Values "aws-costs" "catalog") }}
               - --tagkey 
-              - {{ .Values.awscosts.tagkey }}
+              - {{ (index .Values "aws-costs" "tagkey") }}
               - --tagvalue 
-              - {{ .Values.awscosts.tagvalue }}
+              - {{ (index .Values "aws-costs" "tagvalue") }}
               - --workgroup 
-              - {{ .Values.awscosts.workgroup }}              
+              - {{ (index .Values "aws-costs" "workgroup") }}              
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}

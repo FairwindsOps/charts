@@ -27,17 +27,16 @@ There are several different report types which can be enabled and configured:
 * `polaris`
 * `goldilocks`
 * `workloads`
-* `kubehunter`
+* `kube-hunter`
 * `trivy`
-* `kubesec`
 * `nova`
-* `rbacreporter`
-* `kubebench`
+* `rbac-reporter`
+* `kube-bench`
 * `pluto`
 * `opa`
-* `resourcemetrics`
+* `prometheus-metrics`
 * `admission`
-* `awscosts`
+* `aws-costs`
 
 See below for configuration details.
 
@@ -83,16 +82,17 @@ Parameter | Description | Default
 `{report}.image.tag` | Image tag to use for the report |
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
-`kubehunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
-`kubebench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
-`kubebench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
-`kubebench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
+`kube-hunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
+`kube-bench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
+`kube-bench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
+`kube-bench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
 `trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
+`insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
 `opa.targetResources` | A user-specified list of Kubernetes targets to which OPA policies will be applied. Each target requires a list of apiGroups and a list of Resources. | `{}`
 `opa.admissionRulesAsTargetResources` | IF the admission controller is enabled, the APIGroups and Resources found in admission rules will be used as Kubernetes target resources for this plugin. This also grants RBAC rules to this plugin that have been specified in the insights-admission chart `serviceAccount.rbac.additionalAccess` value. See also: the insights-admission chart `webhookConfig.rules` value. | `true`
 `goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
@@ -100,17 +100,17 @@ Parameter | Description | Default
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true
 `goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
-`resourcemetrics.installPrometheus` | Install a new Prometheus instance for the resourcemetrics report | false
-`resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
+`prometheus-metrics.installPrometheusServer` | Install a new Prometheus server instance for the proemetheus report | false
+`prometheus-metrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
-`awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
-`awscosts.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
-`awscosts.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
-`awscosts.region` | AWS region where costs was defined | ""
-`awscosts.database` | AWS database where Athena table was created | ""
-`awscosts.table` | AWS database Athena table for AWS costs | ""
-`awscosts.catalog` | AWS database catalog for AWS costs | ""
-`awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
-`awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
-`awscosts.workgroup` | Athena work group that used to run the queries | ""
+`aws-costs.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
+`aws-costs.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
+`aws-costs.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
+`aws-costs.region` | AWS region where costs was defined | ""
+`aws-costs.database` | AWS database where Athena table was created | ""
+`aws-costs.table` | AWS database Athena table for AWS costs | ""
+`aws-costs.catalog` | AWS database catalog for AWS costs | ""
+`aws-costs.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
+`aws-costs.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
+`aws-costs.workgroup` | Athena work group that used to run the queries | ""

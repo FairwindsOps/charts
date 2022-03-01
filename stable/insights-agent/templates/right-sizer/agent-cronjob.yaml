@@ -1,6 +1,9 @@
-{{- if .Values.rightsizer.enabled -}}
+{{ if hasKey .Values  "rightsizer" }}
+{{ fail "rightsizer has been renamed to right-sizer in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
+{{ end }}
+{{- if (index .Values "right-sizer" "enabled") -}}
 {{- $_ := set . "Label" "right-sizer" }}
-{{- $_ := set . "Config" .Values.rightsizer }}
+{{- $_ := set . "Config" (index .Values "right-sizer") }}
 {{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
@@ -13,7 +16,7 @@ spec:
           volumes:
           - name:       output
             configMap:
-              name: {{ .Values.rightsizer.stateconfigmapname }}
+              name: {{ (index .Values "right-sizer" "stateconfigmapname")}}
               items:
               - key: report
                 path: right-sizer.json

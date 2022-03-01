@@ -34,15 +34,8 @@ workloads:
 test:
   enabled: true
 
-kubebench:
+kube-bench:
   enabled: true
-  resources:
-    requests:
-      cpu: 50m
-
-# This is being removed in the near future
-kubesec:
-  enabled: false
   resources:
     requests:
       cpu: 50m
@@ -65,7 +58,7 @@ nova:
     requests:
       cpu: 50m
 
-kubehunter:
+kube-hunter:
   enabled: true
   resources:
     requests:
@@ -78,9 +71,9 @@ trivy:
     requests:
       cpu: 50m
 
-resourcemetrics:
+prometheus-metrics:
   enabled: true
-  installPrometheus: true
+  installPrometheusServer: true
   resources:
     requests:
       cpu: 50m
@@ -94,8 +87,7 @@ prometheus:
 admission:
   enabled: true
 
-# We don't want to test AWS here with real secrets
-awscosts:
+aws-costs:
   enabled: false
   secretName: awscosts-secret
   awsAccessKeyId: someAccessID
