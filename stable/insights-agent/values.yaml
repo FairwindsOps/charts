@@ -321,12 +321,10 @@ prometheus:
     persistentVolume:
       enabled: false
     retention: "1d"
-    securityContext:
-      allowPrivilegeEscalation: false
-      readOnlyRootFilesystem: true
-      capabilities:
-        drop:
-          - ALL
+    deploymentAnnotations:
+      polaris.fairwinds.com/insecureCapabilities-exempt: "true"
+      polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
+      polaris.fairwinds.com/notReadOnlyRootFilesystem-exempt: "true"
     resources:
       limits:
         cpu: 500m
