@@ -17,6 +17,8 @@ In this version, due to updates for Kubernetes 1.16+, the labelSelector for the 
 | volumes.state.mountPath | string | `"/var/aws-iam-authenticator/"` |  |
 | volumes.state.hostPath | string | `"/srv/kubernetes/aws-iam-authenticator/"` |  |
 | volumes.config.mountPath | string | `"/etc/aws-iam-authenticator/"` |  |
+| nodeSelector | object | `{"node-role.kubernetes.io/master":""}` | Node selection constraint |
+| tolerations | list | Tolerate node-role.kubernetes.io/master and CriticalAddonsOnly | Taint tolerations |
 | configMap | object | `{}` |  |
 | resources.requests.memory | string | `"20Mi"` |  |
 | resources.requests.cpu | string | `"10m"` |  |
