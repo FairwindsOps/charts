@@ -46,3 +46,10 @@ fi
 
 echo Downloading kubectl version ${kubectl_version}
 curl -fsSLo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/linux/amd64/kubectl" && chmod +x kubectl
+echo Downloading kubectl checksum
+curl -fsSLO https://dl.k8s.io/${kubectl_version}/bin/linux/amd64/kubectl.sha256 >kubectl.sha256 >/tmp/bin/kubectl.sha256
+# THe busybox version of sha256sum wants two spaces between the checksum and filename.
+sed -i -e 's/$/  kubectl/'  /tmp/bin/kubectl.sha256
+echo Verifying kubectl checksum
+sha256sum -c /tmp/bin/kubectl.sha256
+
