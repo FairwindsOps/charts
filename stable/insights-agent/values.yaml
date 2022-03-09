@@ -137,6 +137,37 @@ opa:
     repository: quay.io/fairwinds/fw-opa
     tag: "1.0"
   additionalAccess:
+  # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
+  # policies will be applied.
+  # Each target requires a list of apiGroups and a list of Resources.
+  defaultTargetResources:
+  - apiGroups:
+    - apps
+    resources:
+    - daemonsets
+    - deployments
+    - statefulsets
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+  - apiGroups:
+    - ""
+    resources:
+    - pods
+    - replicationcontrollers
+  # opa.admissionRulesAsTargetResources -- IF the admission controller is
+  # enabled, the APIGroups and Resources found in admission rules will be
+  # used as Kubernetes target resources for this plugin.
+  # This also grants RBAC rules to this plugin that have been specified in
+  # the insights-admission chart `serviceAccount.rbac.additionalAccess` value.
+  # See also: the insights-admission chart `webhookConfig.rules` value.
+  admissionRulesAsTargetResources: true
+  # opa.targetResources -- A user-specified list of Kubernetes targets to which
+  # OPA policies will be applied.
+  # Each target requires a list of apiGroups and a list of Resources.
+  targetResources: {}
   resources:
     limits:
       cpu: 250m

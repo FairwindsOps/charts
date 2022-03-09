@@ -28,7 +28,7 @@ Your cluster must support the [VolumeSnapshot API](https://kubernetes.io/docs/co
 |-----|------|---------|-------------|
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | image.repository | string | `"quay.io/fairwinds/gemini"` | Repository for the gemini image |
-| image.tag | string | `"0.1"` | The gemini image tag to use |
+| image.tag | string | `nil` | The gemini image tag to use. Defaults to .Chart.appVersion |
 | rbac.create | bool | `true` | If true, create a new ServiceAccount and attach permissions |
 | rbac.serviceAccountName | string | `nil` |  |
 | verbosity | int | `5` | How verbose the controller logs should be |

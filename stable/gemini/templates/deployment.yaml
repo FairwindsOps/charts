@@ -26,7 +26,7 @@ spec:
         - -v
         - {{ . | quote }}
         {{- end }}
-        image: '{{.Values.image.repository}}:{{.Values.image.tag}}'
+        image: "{{.Values.image.repository}}:{{ .Values.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: gemini-controller
         resources:
