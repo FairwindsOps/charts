@@ -10,7 +10,7 @@ metadata:
     {{- include "skopeo-sync.labels" $ | nindent 4 }}
     app.kubernetes.io/component: {{ .name }}
 spec:
-  schedule: {{ .schedule }}
+  schedule: {{ .schedule | quote }}
   successfulJobsHistoryLimit: {{ $.Values.successfulJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ $.Values.failedJobsHistoryLimit }}
   jobTemplate:
