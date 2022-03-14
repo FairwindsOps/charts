@@ -1,0 +1,47 @@
+{{- range .Values.syncs }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "skopeo-sync.fullname" $ }}-{{ .name }}
+  labels:
+    {{- include "skopeo-sync.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ .name }}
+spec:
+  schedule: {{ .schedule }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: {{ include "skopeo-sync.serviceAccountName" $ }}
+          containers:
+          - name: skopeo
+            image: {{ $.Values.image.repository }}:{{ $.Values.image.tag | default $.Chart.AppVersion }}
+            imagePullPolicy: Always
+            args:
+            - sync
+            - --src={{ default "docker" .srcType }}
+            - --dest={{ default "docker" .dstType }}
+            - --dest-authfile=/creds/{{ .dstCred }}
+            - --src-authfile=/creds/{{ .srcCred }}
+            - {{ .src }}
+            - {{ .dst }}
+            resources:
+              {{- toYaml $.Values.resources | nindent 12 }}
+            volumeMounts:
+              - name: creds
+                mountPath: /creds
+            securityContext:
+              readOnlyRootFilesystem: true
+              runAsNonRoot: true
+              runAsUser: 2000
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                  - ALL
+          volumes:
+            - name: creds
+              secret:
+                secretName: {{ $.Values.secretName }}
+          restartPolicy: Never
+{{- end }}
