@@ -9,6 +9,8 @@ metadata:
     app.kubernetes.io/component: {{ .name }}
 spec:
   schedule: {{ .schedule }}
+  successfulJobsHistoryLimit: {{ $.Values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ $.Values.failedJobsHistoryLimit }}
   jobTemplate:
     spec:
       template:

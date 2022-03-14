@@ -9,6 +9,8 @@ A Helm chart for Kubernetes
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | secretName | string | `"registry-creds"` |  |
+| successfulJobsHistoryLimit | int | `0` |  |
+| failedJobsHistoryLimit | int | `1` |  |
 | syncs[0].name | string | `"farglebargle"` |  |
 | syncs[0].schedule | string | `"2 5 * * *"` |  |
 | syncs[0].srcCred | string | `"gcr"` |  |

@@ -1,6 +1,12 @@
 ## -- A secret containing all of the authfiles necessary
 secretName: registry-creds
 
+## -- The number of successful finished jobs to retain. Value must be non-negative integer
+successfulJobsHistoryLimit: 0
+
+## -- The number of failed finished jobs to retain. Value must be non-negative integer.
+failedJobsHistoryLimit: 1
+
 ## -- A list of syncs to use
 syncs:
   - name: farglebargle
