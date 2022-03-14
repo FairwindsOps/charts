@@ -11,12 +11,18 @@ A Helm chart for Kubernetes
 | secretName | string | `"registry-creds"` |  |
 | successfulJobsHistoryLimit | int | `0` |  |
 | failedJobsHistoryLimit | int | `1` |  |
-| syncs[0].name | string | `"farglebargle"` |  |
+| syncs[0].name | string | `"fargle"` |  |
 | syncs[0].schedule | string | `"2 5 * * *"` |  |
 | syncs[0].srcCred | string | `"gcr"` |  |
 | syncs[0].dstCred | string | `"quay"` |  |
-| syncs[0].src | string | `"us-docker.pkg.dev/registry/farglebargle"` |  |
-| syncs[0].dst | string | `"quay.io/company/farglebargle"` |  |
+| syncs[0].src | string | `"us-docker.pkg.dev/registry/fargle"` |  |
+| syncs[0].dst | string | `"quay.io/company/fargle"` |  |
+| syncs[1].name | string | `"bargle"` |  |
+| syncs[1].schedule | string | `"2 6 * * *"` |  |
+| syncs[1].srcCred | string | `"quay"` |  |
+| syncs[1].dstCred | string | `"gcr"` |  |
+| syncs[1].src | string | `"quay.io/company/bargle"` |  |
+| syncs[1].dst | string | `"us-docker.pkg.dev/registry/bargle"` |  |
 | image.repository | string | `"quay.io/skopeo/stable"` |  |
 | image.pullPolicy | string | `"Always"` | Sets the pullPolicy. Recommend leaving this as Always |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |

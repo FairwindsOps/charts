@@ -1,5 +1,7 @@
-{{- range .Values.syncs }}
+{{- range $idx, $sync := .Values.syncs }}
+{{- if ne $idx 0 }}
 ---
+{{- end }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
@@ -29,7 +31,7 @@ spec:
             - {{ .src }}
             - {{ .dst }}
             resources:
-              {{- toYaml $.Values.resources | nindent 12 }}
+              {{- toYaml $.Values.resources | nindent 14 }}
             volumeMounts:
               - name: creds
                 mountPath: /creds
