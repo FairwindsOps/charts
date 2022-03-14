@@ -14,6 +14,19 @@ volumes:
   config:
     mountPath: /etc/aws-iam-authenticator/
 
+# -- Node selection constraint
+nodeSelector:
+  # Run on each master node
+  node-role.kubernetes.io/master: ""
+
+# -- Taint tolerations
+# @default -- Tolerate node-role.kubernetes.io/master and CriticalAddonsOnly
+tolerations:
+  # Allow execution on master nodes
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+  - key: CriticalAddonsOnly
+    operator: Exists
 
 ## Use this to specify the entire configmap as an override if you don't want the default templated configmap.  Allows for more advanced configuration
 configMap: {}
