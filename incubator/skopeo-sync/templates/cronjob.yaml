@@ -26,8 +26,12 @@ spec:
             - sync
             - --src={{ default "docker" .srcType }}
             - --dest={{ default "docker" .dstType }}
+            {{- if .dstCred }}
             - --dest-authfile=/creds/{{ .dstCred }}
+            {{- end }}
+            {{- if .srcCred }}
             - --src-authfile=/creds/{{ .srcCred }}
+            {{- end }}
             - {{ .src }}
             - {{ .dst }}
             resources:

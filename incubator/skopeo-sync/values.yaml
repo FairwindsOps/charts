@@ -12,12 +12,10 @@ syncs:
   - name: fargle
     schedule: "2 5 * * *"
     srcCred: gcr
-    dstCred: quay
     src: us-docker.pkg.dev/registry/fargle
     dst: quay.io/company/fargle
   - name: bargle
     schedule: "2 6 * * *"
-    srcCred: quay
     dstCred: gcr
     src: quay.io/company/bargle
     dst: us-docker.pkg.dev/registry/bargle
