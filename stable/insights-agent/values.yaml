@@ -254,7 +254,7 @@ trivy:
   timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.14"
+    tag: "0.16"
   resources:
     limits:
       cpu: 250m
@@ -318,16 +318,14 @@ prometheus:
     deploymentAnnotations:
       polaris.fairwinds.com/insecureCapabilities-exempt: "true"
       polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
-      polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
-      polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
       polaris.fairwinds.com/notReadOnlyRootFilesystem-exempt: "true"
     resources:
       limits:
         cpu: 500m
-        memory: 512Mi
+        memory: 3Gi
       requests:
-        cpu: 500m
-        memory: 512Mi
+        cpu: 250m
+        memory: 2Gi
   kube-state-metrics:
     image:
       pullPolicy: Always
@@ -514,11 +512,11 @@ falcosecurity:
   fullnameOverride: insights-agent
   resources:
     requests:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 100m
+      memory: 256Mi
     limits:
-      cpu: 50m
-      memory: 128Mi
+      cpu: 200m
+      memory: 512Mi
   falco:
     jsonOutput: true
   ebpf:
