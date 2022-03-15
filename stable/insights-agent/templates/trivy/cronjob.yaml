@@ -51,6 +51,8 @@ spec:
                 value: /var/tmp
               - name: MAX_SCANS
                 value: {{ .Values.trivy.maxScansPerRun | quote }}
+              - name: IGNORE_UNFIXED
+                value: {{ .Values.trivy.ignoreUnfixed | quote }}
               - name: MAX_CONCURRENT_SCANS
                 value: {{ .Values.trivy.maxConcurrentScans | quote }}
               {{ if .Values.trivy.namespaceBlacklist }}
