@@ -2,7 +2,11 @@
 {{- if ne $idx 0 }}
 ---
 {{- end }}
+{{- if not ($.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
+apiVersion: batch/v1beta1
+{{- else }}
 apiVersion: batch/v1
+{{- end }}
 kind: CronJob
 metadata:
   name: {{ include "skopeo-sync.fullname" $ }}-{{ .name }}
