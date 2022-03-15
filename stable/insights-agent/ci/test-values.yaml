@@ -83,6 +83,7 @@ prometheus:
     resources:
       requests:
         cpu: 200m
+        memory: 512Mi
 
 admission:
   enabled: true

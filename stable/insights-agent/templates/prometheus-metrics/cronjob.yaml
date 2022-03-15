@@ -2,7 +2,7 @@
 {{ fail "resourcemetrics has been renamed to prometheus-metrics in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
 {{ end }}
 {{- if (index .Values "prometheus-metrics" "enabled") -}}
-{{- $_ := set . "Label" "resource-metrics" }} # TODO(Barnie)- change this to `prometheus-metrics` before merging to master
+{{- $_ := set . "Label" "prometheus-metrics" }}
 {{- $_ := set . "Config" (index .Values "prometheus-metrics")}}
 {{- include "cronjob" . }}
 spec:
