@@ -261,6 +261,7 @@ kube-bench:
 trivy:
   enabled: false
   namespaceBlacklist: []
+  ignoreUnfixed: false
   schedule: "rand * * * *"
   privateImages:
     dockerConfigSecret: ""
