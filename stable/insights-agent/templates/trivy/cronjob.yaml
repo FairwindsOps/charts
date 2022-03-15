@@ -59,6 +59,10 @@ spec:
                 value: {{ .Values.trivy.ignoreUnfixed | quote }}
               - name: MAX_CONCURRENT_SCANS
                 value: {{ .Values.trivy.maxConcurrentScans | quote }}
+              {{- if .Values.trivy.offline }}
+              - name: OFFLINE
+                value: "true"
+              {{- end }}
               {{ if .Values.trivy.namespaceBlacklist }}
               - name: NAMESPACE_BLACKLIST
                 value: {{ join "," .Values.trivy.namespaceBlacklist | lower }}
