@@ -183,7 +183,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "2.3"
+    tag: "v3.0"
   resources:
     limits:
       cpu: 100m
@@ -194,17 +194,11 @@ nova:
   SkipVolumes: true
   configLocation: "/config/nova.yaml"
   config:
+    context: ""
     desired-versions: {}
-    helm-hub-config: https://raw.githubusercontent.com/helm/hub/master/config/repo-values.yaml
-    helm-version: "auto"
+    include-all: true
+    wide: true
     output-file: "/output/nova.json"
-    poll-helm-hub: true
-    url:
-    - https://charts.fairwinds.com/stable
-    - https://charts.fairwinds.com/incubator
-    - https://kubernetes-charts.storage.googleapis.com
-    - https://kubernetes-charts-incubator.storage.googleapis.com
-    - https://charts.jetstack.io
 
 rbacreporter:
   enabled: false
@@ -252,6 +246,7 @@ kubebench:
 trivy:
   enabled: false
   namespaceBlacklist: []
+  ignoreUnfixed: false
   schedule: "rand * * * *"
   privateImages:
     dockerConfigSecret: ""
@@ -260,7 +255,7 @@ trivy:
   timeout: 2400
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.14"
+    tag: "0.16"
   resources:
     limits:
       cpu: 250m
