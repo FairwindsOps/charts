@@ -82,8 +82,11 @@ prometheus:
   server:
     resources:
       requests:
-        cpu: 200m
-        memory: 512Mi
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 50m
+        memory: 128Mi
 
 admission:
   enabled: true

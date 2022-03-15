@@ -26,7 +26,7 @@ spec:
           kubectl wait --for=condition=complete job/opa --timeout=240s
           kubectl wait --for=condition=complete job/pluto --timeout=240s
           kubectl wait --for=condition=complete job/polaris --timeout=240s
-          kubectl wait --for=condition=complete job/prometheus-metrics --timeout=240s
+          kubectl wait --for=condition=complete job/prometheus-metrics --timeout=300s
           kubectl wait --for=condition=complete job/trivy --timeout=240s
           kubectl wait --for=condition=complete job/workloads --timeout=240s
           kubectl wait --for=condition=complete job/kube-bench --timeout=240s
