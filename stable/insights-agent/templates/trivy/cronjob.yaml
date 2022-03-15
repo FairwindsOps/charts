@@ -13,16 +13,16 @@ spec:
           - name: tmp
             emptyDir: {}
           - name: vartmp
-          {{ if .Values.trivy.cacheVolume }}
-            {{ toYaml .Values.trivy.cacheVolume | nindent 8 }}
-          {{ else }}
+          {{- if .Values.trivy.cacheVolume }}
+            {{- toYaml .Values.trivy.cacheVolume | nindent 12 }}
+          {{- else }}
             emptyDir: {}
-          {{ end }}
-          {{ with .Values.trivy.privateImages.dockerConfigSecret }}
+          {{- end }}
+          {{- with .Values.trivy.privateImages.dockerConfigSecret }}
           - name: dockerconfig
             secret:
               secretName: {{ . }}
-          {{ end }}
+          {{- end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             - name: vartmp
