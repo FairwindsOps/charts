@@ -28,6 +28,9 @@ spec:
             imagePullPolicy: Always
             args:
             - sync
+            {{- if .additionalArgs }}
+            {{- .additionalArgs | toYaml | nindent 12 }}
+            {{- end }}
             - --src={{ default "docker" .srcType }}
             - --dest={{ default "docker" .dstType }}
             {{- if .dstCred }}

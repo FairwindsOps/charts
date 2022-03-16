@@ -14,6 +14,8 @@ syncs:
     srcCred: gcr
     src: us-docker.pkg.dev/registry/fargle
     dst: quay.io/company/fargle
+    additionalArgs:
+      - --remove-signatures
   - name: bargle
     schedule: "2 6 * * *"
     dstCred: gcr
