@@ -1,6 +1,6 @@
 # skopeo-sync
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.5.2](https://img.shields.io/badge/AppVersion-v1.5.2-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: v1.5.2](https://img.shields.io/badge/AppVersion-v1.5.2-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -22,6 +22,7 @@ A Helm chart for Kubernetes
 | syncs[0].srcCred | string | `"gcr"` |  |
 | syncs[0].src | string | `"us-docker.pkg.dev/registry/fargle"` |  |
 | syncs[0].dst | string | `"quay.io/company/fargle"` |  |
+| syncs[0].additionalArgs[0] | string | `"--remove-signatures"` |  |
 | syncs[1].name | string | `"bargle"` |  |
 | syncs[1].schedule | string | `"2 6 * * *"` |  |
 | syncs[1].dstCred | string | `"gcr"` |  |
