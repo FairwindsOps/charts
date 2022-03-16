@@ -23,7 +23,9 @@ insights:
     suffix: "configmap"
 
 webhookConfig:
-  # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration
+  # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration.
+  # This also informs whether the admission controller blocks validation requests
+  # on errors, such as while executing OPA policies.
   failurePolicy: Ignore
   # webhookConfig.matchPolicy -- matchPolicy for the ValidatingWebhookConfiguration
   matchPolicy: Exact

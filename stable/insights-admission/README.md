@@ -47,7 +47,7 @@ rules:
 | insights.configmap.create | bool | `true` | Create a config map with Insights configuration |
 | insights.configmap.nameOverride | string | `nil` | The name of the configmap to use. |
 | insights.configmap.suffix | string | `"configmap"` | The suffix to add onto the release name to get the configmap that contains the host/organization/cluster |
-| webhookConfig.failurePolicy | string | `"Ignore"` | failurePolicy for the ValidatingWebhookConfiguration |
+| webhookConfig.failurePolicy | string | `"Ignore"` | failurePolicy for the ValidatingWebhookConfiguration. This also informs whether the admission controller blocks validation requests on errors, such as while executing OPA policies. |
 | webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
 | webhookConfig.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
