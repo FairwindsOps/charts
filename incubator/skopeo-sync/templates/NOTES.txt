@@ -1,0 +1,5 @@
+You should now have the following cronjobs running:
+
+{{- range .Values.syncs }}
+- {{ .name }}
+{{- end }}
