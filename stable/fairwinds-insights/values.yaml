@@ -8,8 +8,8 @@ installationCode:
 # -- Name of secret containing INSTALLATION_CODE
 installationCodeSecret:
 
-# -- Deployment additional labels
-deployment:
+# -- Deployments additional labels
+deployments:
   additionalLabels:
   additionalPodLabels:
 
