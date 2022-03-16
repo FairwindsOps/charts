@@ -13,6 +13,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
 | installationCode | string | `nil` | Installation code provided by Fairwinds. |
 | installationCodeSecret | string | `nil` | Name of secret containing INSTALLATION_CODE |
+| deployment | object | `{"additionalLabels":null,"additionalPodLabels":null}` | Deployment additional labels |
 | polaris.config | string | `nil` | Configuration for Polaris |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
 | dashboardImage.tag | string | `nil` | Overrides tag for the dashboard, defaults to image.tag |
