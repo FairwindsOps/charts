@@ -5,8 +5,8 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: api
-    {{- if .Values.deployment.additionalLabels }}
-    {{ toYaml .Values.deployment.additionalLabels | nindent 4 }}
+    {{- if .Values.deployments.additionalLabels }}
+    {{ toYaml .Values.deployments.additionalLabels | nindent 4 }}
     {{- end }}
 spec:
   selector:
@@ -18,8 +18,8 @@ spec:
       labels:
         {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: api
-        {{- if .Values.deployment.additionalPodLabels }}
-        {{ toYaml .Values.deployment.additionalPodLabels | nindent 8 }}
+        {{- if .Values.deployments.additionalPodLabels }}
+        {{ toYaml .Values.deployments.additionalPodLabels | nindent 8 }}
         {{- end }}
     spec:
       {{- with .Values.image.pullSecret }}
