@@ -8,6 +8,11 @@ installationCode:
 # -- Name of secret containing INSTALLATION_CODE
 installationCodeSecret:
 
+# -- Deployments additional labels
+deployments:
+  additionalLabels:
+  additionalPodLabels:
+
 polaris:
   # -- Configuration for Polaris
   config:

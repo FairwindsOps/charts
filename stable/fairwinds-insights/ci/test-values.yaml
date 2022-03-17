@@ -8,6 +8,12 @@ options:
   autogenerateKeys: true
   migrateHealthScore: false
 
+deployments:
+  additionalLabels:
+    foo: bar
+  additionalPodLabels:
+    pod-foo: pod-bar
+
 postgresql:
   sslMode: "disable"
   password: "changeme"

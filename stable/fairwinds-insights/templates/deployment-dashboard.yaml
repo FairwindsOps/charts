@@ -5,6 +5,9 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: dashboard
+    {{- if .Values.deployments.additionalLabels }}
+    {{ toYaml .Values.deployments.additionalLabels | nindent 4 }}
+    {{- end }}
 spec:
   selector:
     matchLabels:
@@ -15,6 +18,9 @@ spec:
       labels:
         {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
         app.kubernetes.io/component: dashboard
+        {{- if .Values.deployments.additionalPodLabels }}
+        {{ toYaml .Values.deployments.additionalPodLabels | nindent 8 }}
+        {{- end }}
     spec:
       {{- with .Values.image.pullSecret }}
       imagePullSecrets:
