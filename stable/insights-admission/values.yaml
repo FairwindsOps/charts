@@ -38,7 +38,7 @@ webhookConfig:
   objectSelector: {}
   # webhookConfig.rules -- An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
   # Rules specified here may also be granted to the Insights OPA plugin,
-  # see also the insights-agent chart values for opa.
+  # see also the insights-al  qgent chart values for opa.
   rules: []
   # webhookConfig.defaultRules -- An array of rules for commons types for the ValidatingWebhookConfiguration
   defaultRules:
@@ -79,6 +79,9 @@ webhookConfig:
     - pods
     - replicationcontrollers
     scope: Namespaced
+  # webhookConfig.rulesAutoRBAC -- AUtomatically add RBAC rules allowing get and list operations for the APIGroups and Resources supplied in rules.
+  # This *does not* impact RBAC rules added for `defaultRules`.
+  rulesAutoRBAC: true
 
 # resources -- A resources block for the controller.
 resources:
@@ -141,8 +144,6 @@ serviceAccount:
     # -- Grant the admission controller access to a given role (such as view)
     grantRole:
     # -- Grant the admission controller access to additional objects. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a Role.
-    # RBAC rules specified here may also be granted to the Insights OPA plugin,
-    # see also the insights-agent chart values for opa.
     additionalAccess:
 
 # podAnnotations -- Annotations to add to each pod.
