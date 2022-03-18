@@ -95,7 +95,8 @@ Parameter | Description | Default
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
 `opa.targetResources` | A user-specified list of Kubernetes targets to which OPA policies will be applied. Each target requires a list of apiGroups and a list of Resources. | `{}`
-`opa.admissionRulesAsTargetResources` | IF the admission controller is enabled, the APIGroups and Resources found in admission rules will be used as Kubernetes target resources for this plugin. This also grants RBAC rules to this plugin that have been specified in the insights-admission chart `serviceAccount.rbac.additionalAccess` value. See also: the insights-admission chart `webhookConfig.rules` value. | `true`
+`opa.targetResourcesAutoRBAC` | Automatically add RBAC rules allowing get and list operations for APIGroups and Resources supplied via `targetResources`. This *does not* impact RBAC rules added for `defaultTargetResources`. | `true`
+`opa.admissionRulesAsTargetResources` | IF the admission controller is enabled, the APIGroups and Resources found in insights-admission `webhookConfig.rules` will be added as OPA Kubernetes target resources, plus supporting RBAC rules are granted to OPA, if the insights-admission `webhookConfig.rulesAutoRBAC` value is also set. | `true`
 `goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
 `goldilocks.vpa.enabled` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true

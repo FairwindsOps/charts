@@ -157,17 +157,20 @@ opa:
     resources:
     - pods
     - replicationcontrollers
-  # opa.admissionRulesAsTargetResources -- IF the admission controller is
-  # enabled, the APIGroups and Resources found in admission rules will be
-  # used as Kubernetes target resources for this plugin.
-  # This also grants RBAC rules to this plugin that have been specified in
-  # the insights-admission chart `serviceAccount.rbac.additionalAccess` value.
-  # See also: the insights-admission chart `webhookConfig.rules` value.
+  # opa.admissionRulesAsTargetResources -- If the admission controller is enabled,
+  # the APIGroups and Resources found in insights-admission `webhookConfig.rules`
+  # will be added as OPA Kubernetes target resources, plus
+  # supporting RBAC rules are granted to OPA, if the insights-admission
+  # `webhookConfig.rulesAutoRBAC` value is also set.
   admissionRulesAsTargetResources: true
   # opa.targetResources -- A user-specified list of Kubernetes targets to which
   # OPA policies will be applied.
   # Each target requires a list of apiGroups and a list of Resources.
-  targetResources: {}
+  targetResources: []
+  # opa.targetResourcesAutoRBAC -- Automatically add RBAC rules allowing get
+  # and list operations for APIGroups and Resources supplied via `targetResources`.
+  # This *does not* impact RBAC rules added for `defaultTargetResources`.
+  targetResourcesAutoRBAC: true
   resources:
     limits:
       cpu: 250m

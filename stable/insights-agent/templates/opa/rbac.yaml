@@ -5,6 +5,116 @@ metadata:
   name: {{ include "insights-agent.fullname" . }}-opa
   labels:
     app: insights-agent
+{{- if .Values.opa.defaultTargetResources }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-opa-defaulttargetresources
+  labels:
+    app: insights-agent
+rules:
+{{- range .Values.opa.defaultTargetResources }}
+- apiGroups:
+{{ toYaml .apiGroups | indent 2 }}
+  resources:
+{{ toYaml .resources | indent 2 }}
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-opa-defaulttargetresources
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" $ }}-opa-defaulttargetresources
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" $ }}-opa
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- if and .Values.opa.targetResources .Values.opa.targetResourcesAutoRBAC }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-opa-targetresources
+  labels:
+    app: insights-agent
+rules:
+{{- range .Values.opa.targetResources }}
+- apiGroups:
+{{ toYaml .apiGroups | indent 2 }}
+  resources:
+{{ toYaml .resources | indent 2 }}
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-opa-targetresources
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" $ }}-opa-targetresources
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" $ }}-opa
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- if and .Values.admission.enabled .Values.opa.admissionRulesAsTargetResources }}
+{{- /* The use of index below is required to access a hyphanated sub-chart name.
+    Ref: https://github.com/helm/helm/issues/2192 */}}
+{{- $AdmissionValues := index .Values "insights-admission" }}
+{{- if and $AdmissionValues.webhookConfig.rules $AdmissionValues.webhookConfig.rulesAutoRBAC }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-opa-admission-targetresources
+  labels:
+    app: insights-agent
+{{- range $AdmissionValues.webhookConfig.rules }}
+rules:
+- apiGroups:
+{{ toYaml .apiGroups | indent 2 }}
+  resources:
+{{ toYaml .resources | indent 2 }}
+  verbs:
+  - get
+  - list
+  - watch
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-opa-admission-targetresources
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" $ }}-opa-admission-targetresources
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" $ }}-opa
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
 {{- with .Values.opa.additionalAccess }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -31,42 +141,12 @@ subjects:
     name: {{ include "insights-agent.fullname" $ }}-opa
     namespace: {{ $.Release.Namespace }}
 {{- end }}
-{{- if and .Values.admission.enabled .Values.opa.admissionRulesAsTargetResources }}
-{{- /* The use of index below is required to access a hyphanated sub-chart name.
-    Ref: https://github.com/helm/helm/issues/2192 */}}
-{{- $AdmissionValues := index .Values "insights-admission" }}
-{{- with $AdmissionValues.serviceAccount.rbac.additionalAccess }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "insights-agent.fullname" $ }}-opa-additional-from-admission
-  labels:
-    app: insights-agent
-rules:
-{{ toYaml . }}
+{{- if .Values.opa.role }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ include "insights-agent.fullname" $ }}-opa-additional-from-admission
-  labels:
-    app: insights-agent
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: {{ include "insights-agent.fullname" $ }}-opa-additional-from-admission
-subjects:
-  - kind: ServiceAccount
-    name: {{ include "insights-agent.fullname" $ }}-opa
-    namespace: {{ $.Release.Namespace }}
-{{- end }}
-{{- end }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-opa
+  name: {{ include "insights-agent.fullname" . }}-opa-role
   labels:
     app: insights-agent
 roleRef:
@@ -77,4 +157,5 @@ subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}-opa
     namespace: {{ .Release.Namespace }}
+{{- end -}}
 {{- end -}}

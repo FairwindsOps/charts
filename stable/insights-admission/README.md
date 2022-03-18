@@ -53,6 +53,7 @@ rules:
 | webhookConfig.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
 | webhookConfig.rules | list | `[]` | An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. Rules specified here may also be granted to the Insights OPA plugin, see also the insights-agent chart values for opa. |
 | webhookConfig.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
+| webhookConfig.rulesAutoRBAC | bool | `true` | Automatically add RBAC rules allowing get and list operations for the APIGroups and Resources supplied in rules. This *does not* impact RBAC rules added for `defaultRules`. |
 | resources | object | `{"limits":{"cpu":1,"memory":"2Gi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the controller. |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |
@@ -73,7 +74,7 @@ rules:
 | serviceAccount.name | string | `""` | The name of the service account to use. If not set and create is true, a name is generated using the fullname template |
 | serviceAccount.rbac.viewSecrets | bool | `false` | Grant the admission controller access to view secrets |
 | serviceAccount.rbac.grantRole | string | `nil` | Grant the admission controller access to a given role (such as view) |
-| serviceAccount.rbac.additionalAccess | string | `nil` | Grant the admission controller access to additional objects. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a Role. RBAC rules specified here may also be granted to the Insights OPA plugin, see also the insights-agent chart values for opa. |
+| serviceAccount.rbac.additionalAccess | string | `nil` | Grant the admission controller access to additional objects. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a Role. |
 | podAnnotations | object | `{}` | Annotations to add to each pod. |
 | podSecurityContext | object | `{}` | Security Context for the entire pod. |
 | securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":15000}` | Security Context for the container. |
