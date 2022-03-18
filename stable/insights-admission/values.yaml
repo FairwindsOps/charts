@@ -79,7 +79,7 @@ webhookConfig:
     - pods
     - replicationcontrollers
     scope: Namespaced
-  # webhookConfig.rulesAutoRBAC -- AUtomatically add RBAC rules allowing get and list operations for the APIGroups and Resources supplied in rules.
+  # webhookConfig.rulesAutoRBAC -- Automatically add RBAC rules allowing get and list operations for the APIGroups and Resources supplied in rules.
   # This *does not* impact RBAC rules added for `defaultRules`.
   rulesAutoRBAC: true
 
