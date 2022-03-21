@@ -92,6 +92,7 @@ Parameter | Description | Default
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
 `trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
+`trivy.pullRefReplacements` | Modify references to docker images, in the format `quay.io/foo,docker.io/foo;quay.io/bar,docker.io/bar` | ""
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `opa.installCRDs` | Specifies whether to install the `customcheckinstances.insights.fairwinds.com` CRD. If you are installing the `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true

@@ -59,6 +59,8 @@ spec:
                 value: {{ .Values.trivy.ignoreUnfixed | quote }}
               - name: MAX_CONCURRENT_SCANS
                 value: {{ .Values.trivy.maxConcurrentScans | quote }}
+              - name: PULL_REF_REPLACEMENTS
+                value: {{ .Values.trivy.pullRefReplacements }}
               {{- if .Values.trivy.offline }}
               - name: OFFLINE
                 value: "true"
