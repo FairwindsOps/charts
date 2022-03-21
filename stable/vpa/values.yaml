@@ -159,6 +159,14 @@ admissionController:
     requests:
       cpu: 50m
       memory: 200Mi
+  # admissionController.tlsSecretKeys -- The keys in the vpa-tls-certs secret to map in to the admission controller
+  tlsSecretKeys: []
+    # - key: ca.crt
+    #   path: caCert.pem
+    # - key: tls.crt
+    #   path: serverCert.pem
+    # - key: tls.key
+    #   path: serverKey.pem
   nodeSelector: {}
   tolerations: []
   affinity: {}
