@@ -173,6 +173,10 @@ spec:
             value: {{ .Values.clusterAgent.apm.nonLocalTraffic | quote }}
           - name: DD_APM_RECEIVER_PORT
             value: {{ .Values.clusterAgent.apm.receiverPort | quote }}
+        {{- range $name, $keyname := .Values.clusterAgent.apm.additionalEnvVars }}
+          - name: {{ $name }}
+            value: {{ $keyname | quote }}
+        {{- end }}
 {{- if .Values.clusterAgent.env }}
 {{ toYaml .Values.clusterAgent.env | indent 10 }}
 {{- end }}
