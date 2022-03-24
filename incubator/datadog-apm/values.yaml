@@ -27,7 +27,7 @@ clusterAgent:
     enabled: true
     nonLocalTraffic: true
     receiverPort: 8126
-    additionalEnvVars: {}
+  additionalEnvVars: {}
   metricsProvider:
     enabled: true
     port: 8126
@@ -77,4 +77,3 @@ podSecurityContext: {}
 securityContext: {}
 nodeSelector: {}
 tolerations: []
-affinity: {}
