@@ -173,6 +173,10 @@ spec:
             value: {{ .Values.clusterAgent.apm.nonLocalTraffic | quote }}
           - name: DD_APM_RECEIVER_PORT
             value: {{ .Values.clusterAgent.apm.receiverPort | quote }}
+        {{- range $name, $keyname := .Values.clusterAgent.additionalEnvVars }}
+          - name: {{ $name }}
+            value: {{ $keyname | quote }}
+        {{- end }}
 {{- if .Values.clusterAgent.env }}
 {{ toYaml .Values.clusterAgent.env | indent 10 }}
 {{- end }}
@@ -214,10 +218,18 @@ spec:
       tolerations:
 {{ toYaml .Values.clusterAgent.tolerations | indent 8 }}
       {{- end }}
-      {{- if .Values.clusterAgent.affinity }}
       affinity:
-{{ toYaml .Values.clusterAgent.affinity | indent 8 }}
-      {{- end }}
+        podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - weight: 100
+                podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - {{ template "datadog-apm.fullname" . }}-cluster-agent
+                  topologyKey: "kubernetes.io/zone"
       nodeSelector:
         {{ template "label.os" . }}: {{ .Values.targetSystem }}
       {{- if .Values.clusterAgent.nodeSelector }}
