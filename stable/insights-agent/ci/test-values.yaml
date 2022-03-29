@@ -76,7 +76,7 @@ prometheus-metrics:
   installPrometheusServer: true
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "build_7135"
+    tag: "1.0"
   resources:
     requests:
       cpu: 50m
