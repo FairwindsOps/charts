@@ -1,0 +1,50 @@
+## -- A secret containing all of the authfiles necessary
+secretName: registry-creds
+
+## -- The number of successful finished jobs to retain. Value must be non-negative integer
+successfulJobsHistoryLimit: 0
+
+## -- The number of failed finished jobs to retain. Value must be non-negative integer.
+failedJobsHistoryLimit: 1
+
+## -- A list of syncs to use
+syncs:
+  - name: fargle
+    schedule: "2 5 * * *"
+    srcCred: gcr
+    src: us-docker.pkg.dev/registry/fargle
+    dst: quay.io/company/fargle
+    additionalArgs:
+      - --remove-signatures
+  - name: bargle
+    schedule: "2 6 * * *"
+    dstCred: gcr
+    src: quay.io/company/bargle
+    dst: us-docker.pkg.dev/registry/bargle
+
+image:
+  repository: quay.io/skopeo/stable
+  # -- Sets the pullPolicy. Recommend leaving this as Always
+  pullPolicy: Always
+  # -- Overrides the image tag whose default is the chart appVersion
+  tag: ""
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # -- Specifies whether a service account should be created
+  create: true
+  # -- Annotations to add to the service account
+  annotations: {}
+  # -- The name of the service account to use.
+  name: ""
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 50Mi
+  requests:
+    cpu: 200m
+    memory: 50Mi

@@ -124,6 +124,7 @@ recommender:
 | admissionController.podSecurityContext.runAsUser | int | `65534` |  |
 | admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
 | admissionController.resources | object | `{"limits":{"cpu":"200m","memory":"500Mi"},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
+| admissionController.tlsSecretKeys | list | `[]` | The keys in the vpa-tls-certs secret to map in to the admission controller |
 | admissionController.nodeSelector | object | `{}` |  |
 | admissionController.tolerations | list | `[]` |  |
 | admissionController.affinity | object | `{}` |  |

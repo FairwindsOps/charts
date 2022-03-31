@@ -81,6 +81,10 @@ spec:
         - name: tls-certs
           secret:
             secretName: vpa-tls-certs
+            {{- with .Values.admissionController.tlsSecretKeys }}
+            items:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
       {{- with .Values.admissionController.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
