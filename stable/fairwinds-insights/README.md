@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the openAPI server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the openAPI server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"1.17.13"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"1.17.28"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -125,8 +125,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
 | migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
-| cronjobExecutor.image.repository | string | `"quay.io/fairwinds/kubectl"` |  |
-| cronjobExecutor.image.tag | string | `"0.19"` |  |
+| cronjobExecutor.image.repository | string | `"bitnami/kubectl"` |  |
+| cronjobExecutor.image.tag | string | `"1.22.8"` |  |
 | cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
