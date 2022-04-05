@@ -3,6 +3,8 @@
 The Fairwinds Insights Agent is a collection of reporting tools, which send data back
 to [Fairwinds Insights](https://insights.fairwinds.com).
 
+A list of breaking changes for each major version release is available at the bottom of this document.
+
 ## Installation
 We recommend installing `insights-agent` in its own namespace.
 
@@ -116,3 +118,55 @@ Parameter | Description | Default
 `aws-costs.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `aws-costs.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `aws-costs.workgroup` | Athena work group that used to run the queries | ""
+
+## Breaking Changes
+
+### Version 2.0
+The 2.0 release of insights-agent contains several breaking changes to help simplify the installation
+and adoption of new tools.
+
+#### Configuration changes
+You'll need to change your `values.yaml` to accommodate these changes.
+-   Some report names in `values.yaml` have been renamed:
+    -   `resourcemetrics` is now `prometheus-metrics`
+    -   `kubehunter` is now `kube-hunter`
+    -   `rbacreporter` is now `rbac-reporter`
+    -   `kubebench` is now `kube-bench`
+    -   `awscosts` is now `aws-costs`
+    -   `rightsizer` is now `right-sizer`
+-   `prometheus-metrics` will now install a prometheus server by default. If you'd like to use an existing server, set `prometheus-metrics.installPrometheusServer=false`
+-   The `kubesec` report has been deprecated, and should be removed from your values.yaml
+-   The `falcosecurity` subchart has been removed. If you want to continue using Falco with Fairwinds Insights, you'll need to install and configure the [Falco chart](https://github.com/falcosecurity/charts/tree/master/falco) separately
+    -   we recommend these values:
+
+```yaml
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 200m
+    memory: 512Mi
+falco:
+  jsonOutput: true
+ebpf:
+  enabled: false # You can enable this on newer nodes that support eBPF
+falcosidekick:
+  enabled: true
+  fullfqdn: true
+  config:
+    webhook:
+      address: "http://falco-agent:3031/data"
+```
+
+#### Behavior changes
+No action is required here, but be aware:
+
+-   The `polaris` checks `runAsRootAllowed` and `hostNetwork` have had their severity level increased - they will now block in CI and Admission control after updating to 2.0
+-   The Admission Controller will now default to `failureMode=Ignore`
+    -   This option determines what the Admission Controller should do when it is experiencing problems or cannot reach the Insights API to make a decision. It can either reject all requests (`failureMode=Fail`) or accept all requests (`failureMode=Ignore`)
+    -   The new default will help to make the Admission Controller less disruptive for folks using it in `Passive Mode`
+    -   If you are using the Admission Controller as a security measure, and would like to reject requests when there's a problem, you should add `insights-admission.webhookConfig.failurePolicy=Fail` to your `values.yaml`
+-   Newer versions of Admission Controller and CI will block on `severity >= 0.7` (CRITICAL or HIGH severity). Previously the threshold was `0.67`
+-   The CRDs for OPA have been removed. If you had added any `CustomCheck` or `CustomCheckInstance` resources directly to your cluster, they will be deleted.
+
