@@ -77,6 +77,12 @@ trivy:
   resources:
     requests:
       cpu: 50m
+  extraVolumes:
+  - volume:
+      name: certificate
+      secret:
+        secretName: docker-cert
+    mountPath: /etc/containers/certs.d
 
 resourcemetrics:
   enabled: true
