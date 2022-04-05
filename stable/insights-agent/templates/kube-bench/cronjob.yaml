@@ -1,5 +1,5 @@
 {{ if hasKey .Values  "kubebench" }}
-{{ fail "kubebench has been renamed to kube-bench in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
+{{ fail "kubebench has been renamed to kube-bench in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/README.md" }}
 {{ end }}
 {{- if (index .Values "kube-bench" "enabled") -}}
 {{- $_ := set . "Label" "kube-bench" -}}

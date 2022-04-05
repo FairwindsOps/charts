@@ -1,5 +1,5 @@
 {{ if hasKey .Values "awscosts" }}
-{{ fail "awscosts has been renamed to aws-costs in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
+{{ fail "awscosts has been renamed to aws-costs in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/README.md" }}
 {{ end }}
 {{- if (index .Values "aws-costs" "enabled") -}}
 {{- $_ := set . "Label" "awscosts" }} #TODO(Barnie): change to aws-cost once the backend is fixed for this

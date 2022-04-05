@@ -1,5 +1,5 @@
 {{ if hasKey .Values  "kubehunter" }}
-{{ fail "kubehunter has been renamed to kube-hunter in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/CHANGELOG.md" }}
+{{ fail "kubehunter has been renamed to kube-hunter in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/README.md" }}
 {{ end }}
 {{- if (index .Values "kube-hunter" "enabled") -}}
 {{- $_ := set . "Label" "kube-hunter" }}
