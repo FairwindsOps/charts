@@ -23,6 +23,9 @@ spec:
             secret:
               secretName: {{ . }}
           {{- end }}
+          {{- range .Values.trivy.extraVolumes }}
+            {{ -toYaml .volume }}
+          {{- end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             - name: vartmp
@@ -33,6 +36,10 @@ spec:
             - name: dockerconfig
               mountPath: /.docker/
             {{ end }}
+            {{- range .Values.trivy.extraVolumes }}
+            - name: .volume.name
+              mountPath: .mountPath
+            {{- end }}
             command:
               - "./report.sh"
             env:
