@@ -91,7 +91,7 @@ prometheus:
 admission:
   enabled: true
 
-aws-costs:
+awscosts:
   enabled: false
   secretName: awscosts-secret
   awsAccessKeyId: someAccessID

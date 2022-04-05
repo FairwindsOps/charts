@@ -386,7 +386,7 @@ test:
     tag: "3.6"
     pullPolicy: "Always"
 
-aws-costs:
+awscosts:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300

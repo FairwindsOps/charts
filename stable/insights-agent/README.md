@@ -38,7 +38,7 @@ There are several different report types which can be enabled and configured:
 * `opa`
 * `prometheus-metrics`
 * `admission`
-* `aws-costs`
+* `awscosts`
 
 See below for configuration details.
 
@@ -108,16 +108,16 @@ Parameter | Description | Default
 `prometheus-metrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
-`aws-costs.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
-`aws-costs.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
-`aws-costs.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
-`aws-costs.region` | AWS region where costs was defined | ""
-`aws-costs.database` | AWS database where Athena table was created | ""
-`aws-costs.table` | AWS database Athena table for AWS costs | ""
-`aws-costs.catalog` | AWS database catalog for AWS costs | ""
-`aws-costs.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
-`aws-costs.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
-`aws-costs.workgroup` | Athena work group that used to run the queries | ""
+`awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
+`awscosts.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
+`awscosts.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
+`awscosts.region` | AWS region where costs was defined | ""
+`awscosts.database` | AWS database where Athena table was created | ""
+`awscosts.table` | AWS database Athena table for AWS costs | ""
+`awscosts.catalog` | AWS database catalog for AWS costs | ""
+`awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
+`awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
+`awscosts.workgroup` | Athena work group that used to run the queries | ""
 
 ## Breaking Changes
 
@@ -132,7 +132,6 @@ You'll need to change your `values.yaml` to accommodate these changes.
     -   `kubehunter` is now `kube-hunter`
     -   `rbacreporter` is now `rbac-reporter`
     -   `kubebench` is now `kube-bench`
-    -   `awscosts` is now `aws-costs`
     -   `rightsizer` is now `right-sizer`
 -   `prometheus-metrics` will now install a prometheus server by default. If you'd like to use an existing server, set `prometheus-metrics.installPrometheusServer=false`
 -   The `kubesec` report has been deprecated, and should be removed from your values.yaml
