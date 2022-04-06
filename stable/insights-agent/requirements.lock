@@ -1,18 +1,15 @@
 dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
-  version: '4.0.*'
-  condition: goldilocks.enabled
+  version: 4.0.4
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: '15.5.2'
-  condition: prometheus-metrics.installPrometheusServer
+  version: 15.5.2
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: '1.0.*'
-  condition: admission.enabled
+  version: 1.0.3
 - name: falco
   repository: https://falcosecurity.github.io/charts
-  version: '1.17.0'
-  condition: falco.installFalco
-  alias: falcosecurity
+  version: 1.17.0
+digest: sha256:acde64cf988329e08936d7eaa2a3ba477e7b66ae43b9b15d387a7476c3721b20
+generated: "2022-03-21T22:58:03.300959+03:00"
