@@ -43,9 +43,9 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-opa
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.resourcemetrics.enabled }}
+{{- if .Values.prometheus.enabled }}
 - kind: ServiceAccount
-  name: {{ include "insights-agent.fullname" . }}-resource-metrics
+  name: {{ include "insights-agent.fullname" . }}-prometheus
   namespace: {{ .Release.Namespace }}
 {{- end }}
 {{- if .Values.goldilocks.enabled }}
@@ -58,19 +58,14 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-pluto
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.kubebench.enabled }}
+{{- if (index .Values "kube-bench" "enabled") }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-kube-bench
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.kubehunter.enabled }}
+{{- if (index .Values "kube-hunter" "enabled") }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-kube-hunter
-  namespace: {{ .Release.Namespace }}
-{{- end }}
-{{- if .Values.kubesec.enabled }}
-- kind: ServiceAccount
-  name: {{ include "insights-agent.fullname" . }}-kubesec
   namespace: {{ .Release.Namespace }}
 {{- end }}
 {{- if .Values.polaris.enabled }}
@@ -78,7 +73,7 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-polaris
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.rbacreporter.enabled }}
+{{- if (index .Values "rbac-reporter" "enabled") }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-rbac-reporter
   namespace: {{ .Release.Namespace }}
@@ -98,7 +93,7 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-workloads
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.awscosts.enabled }}
+{{- if (index .Values "awscosts" "enabled") }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-awscosts
   namespace: {{ .Release.Namespace }}

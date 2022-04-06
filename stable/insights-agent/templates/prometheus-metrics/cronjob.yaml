@@ -1,6 +1,9 @@
-{{- if .Values.resourcemetrics.enabled -}}
-{{- $_ := set . "Label" "resource-metrics" }}
-{{- $_ := set . "Config" .Values.resourcemetrics }}
+{{ if hasKey .Values "resourcemetrics" }}
+{{ fail "resourcemetrics has been renamed to prometheus-metrics in version 2.0. See breaking changes at https://github.com/FairwindsOps/charts/blob/master/stable/insights-agent/README.md" }}
+{{ end }}
+{{- if (index .Values "prometheus-metrics" "enabled") -}}
+{{- $_ := set . "Label" "prometheus-metrics" }}
+{{- $_ := set . "Config" (index .Values "prometheus-metrics")}}
 {{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
@@ -16,7 +19,7 @@ spec:
             - prometheus-collector
             env:
             - name: PROMETHEUS_ADDRESS
-              value: {{ .Values.resourcemetrics.address | quote }}
+              value: {{ (index .Values "prometheus-metrics"  "address") | quote }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
