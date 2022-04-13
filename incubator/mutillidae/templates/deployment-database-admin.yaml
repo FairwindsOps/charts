@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mutillidae.fullname" . }}-database-admin
+  labels:
+    {{- include "mutillidae.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.databaseAdmin.autoscaling.enabled }}
+  replicas: {{ .Values.databaseAdmin.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mutillidae.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: database-admin
+  template:
+    metadata:
+      {{- with .Values.databaseAdmin.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mutillidae.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: database-admin
+    spec:
+      {{- with .Values.databaseAdmin.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mutillidae.databaseAdmin.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.databaseAdmin.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.databaseAdmin.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:database_admin-{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+          resources:
+            {{- toYaml .Values.databaseAdmin.resources | nindent 12 }}
+      {{- with .Values.databaseAdmin.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.databaseAdmin.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.databaseAdmin.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
