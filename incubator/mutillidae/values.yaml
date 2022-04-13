@@ -63,7 +63,7 @@ ldapAdmin:
           - path: /
             pathType: ImplementationSpecific
     tls:
-    - secretName: mutillidae-tls
+    - secretName: mutillidae-ldap-tls
       hosts:
         - mutillidae-ldap.kepler.hillghost.com
 
@@ -183,7 +183,7 @@ databaseAdmin:
           - path: /
             pathType: ImplementationSpecific
     tls:
-    - secretName: mutillidae-tls
+    - secretName: mutillidae-db-tls
       hosts:
         - mutillidae-db.kepler.hillghost.com
 

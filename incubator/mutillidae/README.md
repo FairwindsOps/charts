@@ -42,7 +42,7 @@ A Helm chart for Kubernetes
 | ldapAdmin.ingress.hosts[0].host | string | `"mutillidae-ldap.kepler.hillghost.com"` |  |
 | ldapAdmin.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | ldapAdmin.ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ldapAdmin.ingress.tls[0].secretName | string | `"mutillidae-tls"` |  |
+| ldapAdmin.ingress.tls[0].secretName | string | `"mutillidae-ldap-tls"` |  |
 | ldapAdmin.ingress.tls[0].hosts[0] | string | `"mutillidae-ldap.kepler.hillghost.com"` |  |
 | ldapAdmin.podAnnotations | object | `{}` |  |
 | ldapAdmin.podSecurityContext | object | `{}` |  |
@@ -109,7 +109,7 @@ A Helm chart for Kubernetes
 | databaseAdmin.ingress.hosts[0].host | string | `"mutillidae-db.kepler.hillghost.com"` |  |
 | databaseAdmin.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | databaseAdmin.ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| databaseAdmin.ingress.tls[0].secretName | string | `"mutillidae-tls"` |  |
+| databaseAdmin.ingress.tls[0].secretName | string | `"mutillidae-db-tls"` |  |
 | databaseAdmin.ingress.tls[0].hosts[0] | string | `"mutillidae-db.kepler.hillghost.com"` |  |
 | databaseAdmin.podAnnotations | object | `{}` |  |
 | databaseAdmin.podSecurityContext | object | `{}` |  |
