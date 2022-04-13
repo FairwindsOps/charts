@@ -82,3 +82,14 @@ Create the name of the service account to use for ldap
 {{- default "default" .Values.database.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Create the name of the service account to use for ldap
+*/}}
+{{- define "mutillidae.ldapAdmin.serviceAccountName" -}}
+{{- if .Values.ldapAdmin.serviceAccount.create }}
+{{- default (include "mutillidae.fullname" .) .Values.ldap.serviceAccount.name }}-ldap-admin
+{{- else }}
+{{- default "default" .Values.ldapAdmin.serviceAccount.name }}
+{{- end }}
+{{- end }}

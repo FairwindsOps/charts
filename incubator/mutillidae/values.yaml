@@ -38,6 +38,54 @@ ldap:
   tolerations: []
   affinity: {}
 
+ldapAdmin:
+  replicaCount: 1
+  imagePullSecrets: []
+
+  serviceAccount:
+    # Specifies whether a service account should be created
+    create: true
+    # Annotations to add to the service account
+    annotations: {}
+    # The name of the service account to use. Will be appended with -ldap-admin
+    # If not set and create is true, a name is generated using the fullname template
+    name: ""
+
+  ingress:
+    enabled: false
+    className: ""
+    annotations:
+      kubernetes.io/ingress.class: nginx-ingress
+      cert-manager.io/cluster-issuer: letsencrypt-prod
+    hosts:
+      - host: mutillidae-ldap.kepler.hillghost.com
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+    tls:
+    - secretName: mutillidae-tls
+      hosts:
+        - mutillidae-ldap.kepler.hillghost.com
+
+  podAnnotations: {}
+
+  podSecurityContext: {}
+  securityContext: {}
+  service:
+    type: ClusterIP
+    port: 80
+
+  resources: {}
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+    # targetMemoryUtilizationPercentage: 80
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+
 www:
   replicaCount: 1
   imagePullSecrets: []

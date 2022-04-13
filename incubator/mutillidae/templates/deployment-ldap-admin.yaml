@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mutillidae.fullname" . }}-ldap-admin
+  labels:
+    {{- include "mutillidae.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.ldapAdmin.autoscaling.enabled }}
+  replicas: {{ .Values.ldapAdmin.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mutillidae.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: ldap-admin
+  template:
+    metadata:
+      {{- with .Values.ldapAdmin.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mutillidae.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: ldap-admin
+    spec:
+      {{- with .Values.ldapAdmin.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mutillidae.ldapAdmin.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.ldapAdmin.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.ldapAdmin.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:ldap_admin-{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: http
+          readinessProbe:
+            tcpSocket:
+              port: http
+          resources:
+            {{- toYaml .Values.ldapAdmin.resources | nindent 12 }}
+      {{- with .Values.ldapAdmin.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ldapAdmin.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.ldapAdmin.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
