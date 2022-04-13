@@ -274,6 +274,8 @@ trivy:
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.18"
+  serviceAccount:
+    annotations:
   resources:
     limits:
       cpu: 250m
