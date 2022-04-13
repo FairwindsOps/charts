@@ -55,7 +55,7 @@ Create the name of the service account to use for www
 */}}
 {{- define "mutillidae.www.serviceAccountName" -}}
 {{- if .Values.www.serviceAccount.create }}
-{{- default (include "mutillidae.fullname" .) .Values.www.serviceAccount.name }}
+{{- default (include "mutillidae.fullname" .) .Values.www.serviceAccount.name }}-www
 {{- else }}
 {{- default "default" .Values.www.serviceAccount.name }}
 {{- end }}
@@ -66,7 +66,7 @@ Create the name of the service account to use for ldap
 */}}
 {{- define "mutillidae.ldap.serviceAccountName" -}}
 {{- if .Values.ldap.serviceAccount.create }}
-{{- default (include "mutillidae.fullname" .) .Values.ldap.serviceAccount.name }}
+{{- default (include "mutillidae.fullname" .) .Values.ldap.serviceAccount.name }}-ldap
 {{- else }}
 {{- default "default" .Values.ldap.serviceAccount.name }}
 {{- end }}

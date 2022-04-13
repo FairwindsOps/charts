@@ -16,7 +16,7 @@ ldap:
     create: true
     # Annotations to add to the service account
     annotations: {}
-    # The name of the service account to use.
+    # The name of the service account to use. Will be appended with -ldap
     # If not set and create is true, a name is generated using the fullname template
     name: ""
 
@@ -64,7 +64,7 @@ www:
     create: true
     # Annotations to add to the service account
     annotations: {}
-    # The name of the service account to use.
+    # The name of the service account to use. Will be appended with -www
     # If not set and create is true, a name is generated using the fullname template
     name: ""
 
