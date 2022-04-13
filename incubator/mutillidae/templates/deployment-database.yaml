@@ -31,20 +31,18 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.database.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:database-{{ .Values.image.tag | default .Chart.AppVersion }}"
+          image: "{{ .Values.image.repository }}:database"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
+            - name: mysql
               containerPort: 3306
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: 3306
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: 3306
           resources:
             {{- toYaml .Values.database.resources | nindent 12 }}
       {{- with .Values.database.nodeSelector }}

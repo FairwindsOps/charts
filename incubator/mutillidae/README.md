@@ -22,14 +22,6 @@ A Helm chart for Kubernetes
 | ldap.podSecurityContext | object | `{}` |  |
 | ldap.securityContext | object | `{}` |  |
 | ldap.service.type | string | `"ClusterIP"` |  |
-| ldap.service.port | int | `80` |  |
-| ldap.ingress.enabled | bool | `false` |  |
-| ldap.ingress.className | string | `""` |  |
-| ldap.ingress.annotations | object | `{}` |  |
-| ldap.ingress.hosts[0].host | string | `"chart-example.local"` |  |
-| ldap.ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ldap.ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| ldap.ingress.tls | list | `[]` |  |
 | ldap.resources | object | `{}` |  |
 | ldap.autoscaling.enabled | bool | `false` |  |
 | ldap.autoscaling.minReplicas | int | `1` |  |
@@ -72,7 +64,6 @@ A Helm chart for Kubernetes
 | database.podSecurityContext | object | `{}` |  |
 | database.securityContext | object | `{}` |  |
 | database.service.type | string | `"ClusterIP"` |  |
-| database.service.port | int | `80` |  |
 | database.resources | object | `{}` |  |
 | database.nodeSelector | object | `{}` |  |
 | database.tolerations | list | `[]` |  |

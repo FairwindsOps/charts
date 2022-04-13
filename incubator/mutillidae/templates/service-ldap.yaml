@@ -1,17 +1,17 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: database
+  name: directory
   labels:
     {{- include "mutillidae.labels" . | nindent 4 }}
-    app.kubernetes.io/component: database
+    app.kubernetes.io/component: ldap
 spec:
-  type: {{ .Values.database.service.type }}
+  type: {{ .Values.ldap.service.type }}
   ports:
-    - port: 3306
-      targetPort: mysql
+    - port: 389
+      targetPort: ldap
       protocol: TCP
-      name: mysql
+      name: ldap
   selector:
     {{- include "mutillidae.selectorLabels" . | nindent 4 }}
-    app.kubernetes.io/component: database
+    app.kubernetes.io/component: ldap

@@ -36,17 +36,15 @@ spec:
           image: "{{ .Values.image.repository }}:ldap-{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - name: http
+            - name: ldap
               containerPort: 389
               protocol: TCP
           livenessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: 389
           readinessProbe:
-            httpGet:
-              path: /
-              port: http
+            tcpSocket:
+              port: 389
           resources:
             {{- toYaml .Values.ldap.resources | nindent 12 }}
       {{- with .Values.ldap.nodeSelector }}
