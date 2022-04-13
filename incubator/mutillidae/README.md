@@ -42,11 +42,13 @@ A Helm chart for Kubernetes
 | www.service.port | int | `80` |  |
 | www.ingress.enabled | bool | `false` |  |
 | www.ingress.className | string | `""` |  |
-| www.ingress.annotations | object | `{}` |  |
-| www.ingress.hosts[0].host | string | `"chart-example.local"` |  |
+| www.ingress.annotations."kubernetes.io/ingress.class" | string | `"nginx-ingress"` |  |
+| www.ingress.annotations."cert-manager.io/cluster-issuer" | string | `"letsencrypt-prod"` |  |
+| www.ingress.hosts[0].host | string | `"mutillidae.kepler.hillghost.com"` |  |
 | www.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | www.ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
-| www.ingress.tls | list | `[]` |  |
+| www.ingress.tls[0].secretName | string | `"mutillidae-tls"` |  |
+| www.ingress.tls[0].hosts[0] | string | `"mutillidae.kepler.hillghost.com"` |  |
 | www.resources | object | `{}` |  |
 | www.autoscaling.enabled | bool | `false` |  |
 | www.autoscaling.minReplicas | int | `1` |  |
