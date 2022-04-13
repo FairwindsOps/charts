@@ -1,0 +1,28 @@
+{{- if .Values.www.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "mutillidae.fullname" . }}-www
+  labels:
+    {{- include "mutillidae.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "mutillidae.fullname" . }}-www
+  minReplicas: {{ .Values.www.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.www.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.www.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.www.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.www.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.www.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

@@ -1,31 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "mutillidae.fullname" . }}
+  name: {{ include "mutillidae.fullname" . }}-www
   labels:
     {{- include "mutillidae.labels" . | nindent 4 }}
 spec:
-  replicas: {{ .Values.replicaCount }}
+  {{- if not .Values.www.autoscaling.enabled }}
+  replicas: {{ .Values.www.replicaCount }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "mutillidae.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: www
   template:
     metadata:
+      {{- with .Values.www.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       labels:
         {{- include "mutillidae.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: www
     spec:
-    {{- with .Values.imagePullSecrets }}
+      {{- with .Values.www.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-      serviceAccountName: {{ include "mutillidae.serviceAccountName" . }}
+      {{- end }}
+      serviceAccountName: {{ include "mutillidae.www.serviceAccountName" . }}
       securityContext:
-        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.www.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
-          image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
+            {{- toYaml .Values.www.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:www-{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: http
@@ -40,16 +48,16 @@ spec:
               path: /
               port: http
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+            {{- toYaml .Values.www.resources | nindent 12 }}
+      {{- with .Values.www.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.affinity }}
+      {{- with .Values.www.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
+      {{- end }}
+      {{- with .Values.www.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}

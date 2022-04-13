@@ -1,0 +1,28 @@
+{{- if .Values.ldap.autoscaling.enabled }}
+apiVersion: autoscaling/v2beta1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "mutillidae.fullname" . }}-ldap
+  labels:
+    {{- include "mutillidae.labels" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "mutillidae.fullname" . }}-ldap
+  minReplicas: {{ .Values.ldap.autoscaling.minReplicas }}
+  maxReplicas: {{ .Values.ldap.autoscaling.maxReplicas }}
+  metrics:
+    {{- if .Values.ldap.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        targetAverageUtilization: {{ .Values.ldap.autoscaling.targetCPUUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.ldap.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        targetAverageUtilization: {{ .Values.ldap.autoscaling.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}
