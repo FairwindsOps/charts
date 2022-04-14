@@ -75,15 +75,15 @@ env:
 {{- end }}
 # Timescale Database
 - name: TIMESCALE_DB
-  value: {{ .Values.timescale.timescaleDatabase }}
+  value: {{ .Values.timescale.postgresqlDatabase }}
 - name: TIMESCALE_USER
-  value: {{ .Values.timescale.timescalelUsername }}
+  value: {{ .Values.timescale.postgresqlUsername }}
 - name: TIMESCALE_PORT
   value: {{ .Values.timescale.service.port | quote }}
 - name: TIMESCALE_SSL_MODE
   value: {{ .Values.timescale.sslMode | default "require" }}
 - name: TIMESCALE_HOST
-  value: {{ .Values.timescale.timescaleHost | default (printf "%s-%s" .Release.Name "timescale") }}
+  value: {{ .Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}
 {{- if .Values.timescale.readOnly }}
 - name: TIMESCALE_PASSWORD
   valueFrom:

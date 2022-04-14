@@ -107,8 +107,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.existingSecret | string | `"fwinsights-timescale"` | Secret name to use for Timescale Password |
-| timescale.timescaleUsername | string | `"postgres"` | Username to connect to Timescale with |
-| timescale.timescaleDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
+| timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
+| timescale.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
 | timescale.service.port | int | `5432` | Port of the Timescale Database |
 | timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
 | timescale.replication.enabled | bool | `false` | Replicate Timescale data |
