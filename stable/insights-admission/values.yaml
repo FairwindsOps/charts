@@ -23,7 +23,9 @@ insights:
     suffix: "configmap"
 
 webhookConfig:
-  # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration
+  # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration.
+  # This also informs whether the admission controller blocks validation requests
+  # on errors, such as while executing OPA policies.
   failurePolicy: Ignore
   # webhookConfig.matchPolicy -- matchPolicy for the ValidatingWebhookConfiguration
   matchPolicy: Exact
@@ -34,7 +36,9 @@ webhookConfig:
       operator: DoesNotExist
   # webhookConfig.objectSelector -- objectSelector for the ValidatingWebhookConfiguration
   objectSelector: {}
-  # webhookConfig.rules -- An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  # webhookConfig.rules -- An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  # Rules specified here may also be granted to the Insights OPA plugin,
+  # see also the insights-agent chart values for opa.
   rules: []
   # webhookConfig.defaultRules -- An array of rules for commons types for the ValidatingWebhookConfiguration
   defaultRules:
@@ -75,6 +79,9 @@ webhookConfig:
     - pods
     - replicationcontrollers
     scope: Namespaced
+  # webhookConfig.rulesAutoRBAC -- Automatically add RBAC rules allowing get and list operations for the APIGroups and Resources supplied in rules.
+  # This *does not* impact RBAC rules added for `defaultRules`.
+  rulesAutoRBAC: true
 
 # resources -- A resources block for the controller.
 resources:

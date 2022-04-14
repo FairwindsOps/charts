@@ -41,6 +41,12 @@ spec:
             {{- toYaml .Values.admissionController.securityContext | nindent 12 }}
           image: "{{ .Values.admissionController.image.repository }}:{{ .Values.admissionController.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.admissionController.image.pullPolicy }}
+          {{- if .Values.admissionController.extraArgs }}
+          args:
+          {{- range $key, $value := .Values.admissionController.extraArgs }}
+            - --{{ $key }}={{ $value }}
+          {{- end }}
+          {{- end }}
           volumeMounts:
             - name: tls-certs
               mountPath: "/etc/tls-certs"

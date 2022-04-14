@@ -62,6 +62,8 @@ spec:
             mountPath: /opt/cert/
             readOnly: true
           env:
+          - name: WEBHOOK_FAILURE_POLICY
+            value: {{ .Values.webhookConfig.failurePolicy }}
           {{- if .Values.service.usePod443 }}
           - name: WEBHOOK_PORT
             value: "443"

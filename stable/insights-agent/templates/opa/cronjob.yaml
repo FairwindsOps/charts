@@ -12,7 +12,25 @@ spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
-            command: ["fw-opa"]
+            command:
+            - "fw-opa"
+            {{- range .Values.opa.defaultTargetResources }}
+            - "--target-resource"
+            - "{{ join "," .apiGroups }}/{{ join "," .resources }}"
+            {{- end }}
+            {{- if and .Values.admission.enabled .Values.opa.admissionRulesAsTargetResources }}
+            {{- /* The below use of index is required to access a hyphanated sub-chart name.
+                Ref: https://github.com/helm/helm/issues/2192 */}}
+            {{- $AdmissionValues := index .Values "insights-admission" }}
+            {{- range $AdmissionValues.webhookConfig.rules }}
+            - "--target-resource"
+            - "{{ join "," .apiGroups }}/{{ join "," .resources }}"
+            {{- end }}
+            {{- end }}
+            {{- range .Values.opa.targetResources }}
+            - "--target-resource"
+            - "{{ join "," .apiGroups }}/{{ join "," .resources }}"
+            {{- end }}
             env:
             - name: FAIRWINDS_TOKEN
               valueFrom:

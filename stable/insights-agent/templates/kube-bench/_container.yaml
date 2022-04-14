@@ -1,6 +1,6 @@
 {{- define "kubebench.container.spec" -}}
 hostPID: true
-{{- if eq .Values.kubebench.mode "daemonsetMaster" }}
+{{- if eq (index .Values "kube-bench" "mode") "daemonsetMaster" }}
 tolerations:
 - key: node-role.kubernetes.io/master
   effect: NoSchedule
@@ -27,7 +27,7 @@ volumes:
     path: "/usr/bin"
     type: Directory
 containers:
-- image: "{{ .Values.kubebench.image.repository }}:{{ .Values.kubebench.image.tag }}"
+- image: "{{ (index .Values "kube-bench" "image" "repository") }}:{{ (index .Values "kube-bench" "image" "tag") }}"
   imagePullPolicy: Always
   name: kube-bench
   env:
@@ -35,14 +35,14 @@ containers:
     valueFrom:
       fieldRef:
         fieldPath: spec.nodeName
-  {{- if eq .Values.kubebench.mode "cronjob" }}
+  {{- if eq (index .Values "kube-bench" "mode") "cronjob" }}
   - name: RUN_ONCE
     value: "true"
   {{- end }}
   - name: INTERVAL_HOURS
-    value: {{ .Values.kubebench.hourInterval | quote }}
+    value: {{ (index .Values "kube-bench" "hourInterval") | quote }}
   resources:
-    {{- toYaml .Values.kubebench.resources | nindent 4 }}
+    {{- toYaml (index .Values "kube-bench" "resources") | nindent 4 }}
   volumeMounts:
   - name: output
     mountPath: /output
