@@ -73,6 +73,30 @@ env:
       name: {{ .Values.postgresql.existingSecret }}
       key: postgresql-password
 {{- end }}
+# Timescale Database
+- name: TIMESCALE_DB
+  value: {{ .Values.timescale.timescaleDatabase }}
+- name: TIMESCALE_USER
+  value: {{ .Values.timescale.timescalelUsername }}
+- name: TIMESCALE_PORT
+  value: {{ .Values.timescale.service.port | quote }}
+- name: TIMESCALE_SSL_MODE
+  value: {{ .Values.timescale.sslMode | default "require" }}
+- name: TIMESCALE_HOST
+  value: {{ .Values.timescale.timescaleHost | default (printf "%s-%s" .Release.Name "timescale") }}
+{{- if .Values.timescale.readOnly }}
+- name: TIMESCALE_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.timescale.existingSecret }}
+      key: readonly-password
+{{- else }}
+- name: TIMESCALE_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.timescale.existingSecret }}
+      key: timescale-password
+{{- end }}
 {{- with .Values.options.insightsSAASHost }}
 - name: INSIGHTS_SAAS_HOST
   value: {{ . | quote }}
