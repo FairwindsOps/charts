@@ -20,3 +20,4 @@ dependencies:
   version: 0.11.0
   repository: https://charts.timescale.com
   condition: timescale.ephemeral
+  
