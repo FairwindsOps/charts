@@ -11,6 +11,8 @@ updater:
     foo: bar
 admissionController:
   enabled: true
+  extraArgs:
+    v: "4"
   generateCertificate: true
   certGen:
     env:
