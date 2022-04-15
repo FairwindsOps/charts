@@ -113,6 +113,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
 | timescale.replication.enabled | bool | `false` | Replicate Timescale data |
 | timescale.loadBalancer.enabled | bool | `false` |  |
+| timescale.nameOverride | string | `"timescale"` |  |
 | timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
