@@ -109,7 +109,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.existingSecret | string | `"fwinsights-timescale"` | Secret name to use for Timescale Password |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
 | timescale.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
-| timescale.service.port | int | `5432` | Port of the Timescale Database |
+| timescale.service.port | int | `5433` | Port of the Timescale Database |
 | timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
 | timescale.replication.enabled | bool | `false` | Replicate Timescale data |
 | timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
