@@ -378,7 +378,7 @@ timescale:
   postgresqlDatabase: fairwinds_insights
   service:
     # -- Port of the Timescale Database
-    port: 5432
+    port: 5433
   persistence:
     # -- Create Persistent Volume with Timescale
     enabled: true
