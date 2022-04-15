@@ -112,6 +112,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.service.port | int | `5433` | Port of the Timescale Database |
 | timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
 | timescale.replication.enabled | bool | `false` | Replicate Timescale data |
+| timescale.loadBalancer.enabled | bool | `false` |  |
 | timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
