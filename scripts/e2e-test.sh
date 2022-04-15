@@ -66,7 +66,7 @@ pre_test_script () {
 
 run_tests () {
     printf "Running e2e tests...\n"
-    ct install --config scripts/ct.yaml --debug --upgrade --helm-extra-args "--timeout 600s"
+    ct install --config scripts/ct.yaml --debug --upgrade --helm-extra-args "--timeout 900s --debug"
 }
 
 
