@@ -387,6 +387,7 @@ timescale:
     enabled: false
   loadBalancer:
     enabled: false
+  nameOverride: timescale
   # -- Resources section for Timescale
   resources:
     limits:
