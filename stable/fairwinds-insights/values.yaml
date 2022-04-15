@@ -386,7 +386,7 @@ timescale:
     # -- Replicate Timescale data
     enabled: false
   loadBalancer:
-    enabled: false    
+    enabled: false
   # -- Resources section for Timescale
   resources:
     limits:
