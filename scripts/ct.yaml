@@ -11,3 +11,4 @@ chart-repos:
   - "minio=https://helm.min.io/"
   - "prometheus-community=https://prometheus-community.github.io/helm-charts"
   - "falcosecurity=https://falcosecurity.github.io/charts"
+  - "timescaledb-single=https://charts.timescale.com"

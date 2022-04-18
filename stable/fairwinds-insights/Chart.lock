@@ -5,5 +5,8 @@ dependencies:
 - name: minio
   repository: https://helm.min.io/
   version: 8.0.10
-digest: sha256:85cdd51aeced332ca3f5a32940201328290c4325a3151f0e9713f5bc195b8361
-generated: "2022-01-12T13:44:17.949437263Z"
+- name: timescaledb-single
+  repository: https://charts.timescale.com
+  version: 0.11.0
+digest: sha256:317e900f64df3ecafbefa45f3e386a882f4ff6f8d614ccbb90a0c2c49c9bc706
+generated: "2022-04-15T13:55:29.9862373-03:00"

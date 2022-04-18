@@ -18,6 +18,9 @@ postgresql:
   sslMode: "disable"
   password: "changeme"
 
+timescale:
+  sslMode: "disable"
+
 dashboard:
   pdb:
     enabled: false
