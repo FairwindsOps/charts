@@ -366,7 +366,6 @@ postgresql:
       memory: 256Mi
 
 timescale:
-
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
@@ -397,9 +396,7 @@ timescale:
     requests:
       cpu: 75m
       memory: 256Mi
-  persistentVolumes:
-    data:
-      mountPath: "/var/lib/postgresql-timescale"
+
 email:
   # -- How to send emails, valid values include memory, ses, and smtp
   strategy: memory

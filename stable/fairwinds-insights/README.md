@@ -117,7 +117,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.resources.limits.memory | string | `"1Gi"` |  |
 | timescale.resources.requests.cpu | string | `"75m"` |  |
 | timescale.resources.requests.memory | string | `"256Mi"` |  |
-| timescale.persistentVolumes.data.mountPath | string | `"/var/lib/postgresql-timescale"` |  |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
