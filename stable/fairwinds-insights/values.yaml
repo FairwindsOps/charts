@@ -366,13 +366,14 @@ postgresql:
       memory: 256Mi
 
 timescale:
+
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- Secret name to use for Timescale Password
   existingSecret: fwinsights-timescale
-  # -- Username to connect to Timescale with
+    # -- Username to connect to Timescale with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
   postgresqlDatabase: fairwinds_insights
@@ -387,8 +388,7 @@ timescale:
     enabled: false
   loadBalancer:
     enabled: false
-  nameOverride: timescale
-  # -- Resources section for Timescale
+    # -- Resources section for Timescale
   resources:
     limits:
       cpu: 1
@@ -396,7 +396,9 @@ timescale:
     requests:
       cpu: 75m
       memory: 256Mi
-
+  persistentVolumes:
+    data:
+      mountPath: "/var/lib/postgresql-timescale"
 email:
   # -- How to send emails, valid values include memory, ses, and smtp
   strategy: memory

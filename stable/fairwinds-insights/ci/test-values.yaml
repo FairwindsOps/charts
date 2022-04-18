@@ -20,7 +20,6 @@ postgresql:
 
 timescale:
   sslMode: "disable"
-  password: "changeme"
 
 dashboard:
   pdb:
