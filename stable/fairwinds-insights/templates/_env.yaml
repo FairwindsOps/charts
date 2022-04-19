@@ -84,19 +84,11 @@ env:
   value: {{ .Values.timescale.sslMode | default "require" }}
 - name: TIMESCALE_HOST
   value: {{ .Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}
-{{- if .Values.timescale.readOnly }}
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.timescale.existingSecret }}
-      key: readonly-password
-{{- else }}
-- name: TIMESCALE_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ .Values.timescale.existingSecret }}
-      key: timescale-password
-{{- end }}
+      name: {{ include "fairwinds-insights.fullname" . }}-credentials
+      key: PATRONI_SUPERUSER_PASSWORD
 {{- with .Values.options.insightsSAASHost }}
 - name: INSIGHTS_SAAS_HOST
   value: {{ . | quote }}
