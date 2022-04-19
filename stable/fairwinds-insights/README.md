@@ -105,7 +105,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | timescale.replicaCount | int | `1` |  |
-| timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
+| timescale.ephemeral | bool | `false` | Use the ephemeral Timescale chart by default |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
 | timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
