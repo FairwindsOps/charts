@@ -111,7 +111,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
-| timescale.service | object | `{"primary":{"port":5433}}` | Secret name to use for Timescale Password |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
 | timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
 | timescale.replication.enabled | bool | `false` | Replicate Timescale data |
