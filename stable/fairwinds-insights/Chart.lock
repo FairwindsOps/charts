@@ -9,4 +9,4 @@ dependencies:
   repository: https://charts.timescale.com
   version: 0.11.0
 digest: sha256:317e900f64df3ecafbefa45f3e386a882f4ff6f8d614ccbb90a0c2c49c9bc706
-generated: "2022-04-18T22:14:58.6153565-03:00"
+generated: "2022-04-18T22:34:20.4396636-03:00"
