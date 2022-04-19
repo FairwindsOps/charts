@@ -104,11 +104,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| timescale.replicaCount | int | `1` |  |
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
-| timescale.existingSecret | string | `"fwinsights-timescale"` | Secret name to use for Timescale Password |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
-| timescale.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
+| timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
+| timescale.password | string | `""` |  |
+| timescale.service | object | `{"primary":{"port":5433}}` | Secret name to use for Timescale Password |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
 | timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
 | timescale.replication.enabled | bool | `false` | Replicate Timescale data |

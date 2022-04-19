@@ -366,16 +366,17 @@ postgresql:
       memory: 256Mi
 
 timescale:
+  replicaCount: 1
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-  # -- Secret name to use for Timescale Password
-  existingSecret: fwinsights-timescale
     # -- Username to connect to Timescale with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_insights
+  postgresqlDatabase: fairwinds_timescale
+  password: ""
+  # -- Secret name to use for Timescale Password
   service:
     # -- Port of the Timescale Database
     primary:
