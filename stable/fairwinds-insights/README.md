@@ -104,6 +104,22 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| timescale.replicaCount | int | `1` |  |
+| timescale.ephemeral | bool | `false` | Use the ephemeral Timescale chart by default |
+| timescale.enabled | bool | `false` |  |
+| timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
+| timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
+| timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
+| timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
+| timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
+| timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
+| timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
+| timescale.replication.enabled | bool | `false` | Replicate Timescale data |
+| timescale.loadBalancer.enabled | bool | `false` |  |
+| timescale.resources.limits.cpu | int | `1` |  |
+| timescale.resources.limits.memory | string | `"1Gi"` |  |
+| timescale.resources.requests.cpu | string | `"75m"` |  |
+| timescale.resources.requests.memory | string | `"256Mi"` |  |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
