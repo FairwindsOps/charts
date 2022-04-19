@@ -108,6 +108,9 @@ goldilocks:
     repository: quay.io/fairwinds/goldilocks
     tag: "v2.2.0"
   controller:
+    deployment:
+      annotations:
+        polaris.fairwinds.com/deploymentMissingReplicas-exempt: "true"
     flags:
       on-by-default: true
       exclude-namespaces: "kube-system"
