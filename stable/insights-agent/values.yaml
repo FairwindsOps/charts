@@ -95,6 +95,7 @@ goldilocks:
   vpa:
     enabled: true
     recommender:
+      replicaCount: 2
       securityContext:
         allowPrivilegeEscalation: false
         readOnlyRootFilesystem: true
