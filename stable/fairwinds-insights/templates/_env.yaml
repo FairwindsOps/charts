@@ -87,7 +87,7 @@ env:
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ include "fairwinds-insights.fullname" . }}-credentials
+      name: fwinsights-timescale
       key: PATRONI_SUPERUSER_PASSWORD
 {{- with .Values.options.insightsSAASHost }}
 - name: INSIGHTS_SAAS_HOST
