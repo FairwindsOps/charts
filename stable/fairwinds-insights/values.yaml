@@ -367,7 +367,7 @@ postgresql:
 
 timescale:
   # -- Use the ephemeral Timescale chart by default
-  ephemeral: true
+  ephemeral: false
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- Secret name to use for Timescale Password
