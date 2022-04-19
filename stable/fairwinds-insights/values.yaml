@@ -369,6 +369,7 @@ timescale:
   replicaCount: 1
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
+  enabled: true
   # -- SSL mode for connecting to the database
   sslMode: require
     # -- Username to connect to Timescale with
@@ -377,8 +378,7 @@ timescale:
   postgresqlDatabase: fairwinds_timescale
   secrets:
     certificateSecretName: fwinsights-timescale-ca
-    credentialsSecretName: "fwinsights-timescale"
-  # -- Secret name to use for Timescale Password
+    credentialsSecretName: fwinsights-timescale
   service:
     # -- Port of the Timescale Database
     primary:
