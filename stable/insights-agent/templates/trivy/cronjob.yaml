@@ -47,9 +47,9 @@ spec:
                     name: {{ include "insights-agent.fullname" . }}-token
                     {{ end -}}
                     key: token
-              {{ if .Values.trivy.dockerTLSVerify }}
-              - name: DOCKER_TLS_VERIFY
-                value: 1
+              {{ if .Values.trivy.insecureSSL }}
+              - name: TRIVY_INSECURE
+                value: true
               {{ end }}
               - name: TRIVY_CACHE_DIR
                 value: /var/tmp
