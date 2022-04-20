@@ -367,6 +367,7 @@ postgresql:
 
 timescale:
   replicaCount: 1
+  clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
   ephemeral: false
   enabled: false
