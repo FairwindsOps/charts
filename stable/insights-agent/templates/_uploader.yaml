@@ -43,6 +43,7 @@
   {{- with .Values.uploader.env }}
   {{- toYaml . | nindent 2 }}
   {{- end }}
+  {{ include "proxy-env-spec" . | indent 2 | trim }}
   volumeMounts:
   - name: output
     mountPath: /output

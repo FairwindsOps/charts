@@ -29,6 +29,8 @@ spec:
         - name: {{ .Chart.Name }}-right-sizer-controller
           ports:
           - containerPort: 8080
+          env:
+          {{ include "proxy-env-spec" . | indent 12 | trim }}
           securityContext:
             {{- toYaml (index .Values "right-sizer" "containerSecurityContext") | nindent 12 }}
           image: "{{ (index .Values "right-sizer" "image" "repository") }}:{{ (index .Values "right-sizer" "image" "tag") }}"

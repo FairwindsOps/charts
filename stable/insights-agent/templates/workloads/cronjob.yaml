@@ -14,5 +14,7 @@ spec:
           - {{ include "container-spec" . | indent 12 | trim }}
             command: ["workload", "--output-file", "/output/workloads.json"]
             {{ include "security-context" . | indent 12 | trim }}
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

@@ -16,6 +16,8 @@ spec:
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             command: ["rbac-reporter", "--output-file", "/output/rbac-reporter.json"]
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
