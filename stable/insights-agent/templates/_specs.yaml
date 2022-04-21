@@ -146,6 +146,7 @@ securityContext:
   value: {{ .Values.proxy.ftp }}
 - name: FTP_PROXY
   value: {{ .Values.proxy.ftp }}
+{{- end }}
 {{- if .Values.proxy.no_proxy }}
 - name: no_proxy
   value: {{ .Values.proxy.no_proxy }}
