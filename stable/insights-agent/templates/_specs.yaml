@@ -132,13 +132,24 @@ securityContext:
 {{- if .Values.proxy.https }}
 - name: https_proxy
   value: {{ .Values.proxy.https }}
+- name: HTTPS_PROXY
+  value: {{ .Values.proxy.https }}
 {{- end }}
 {{- if .Values.proxy.http }}
 - name: http_proxy
   value: {{ .Values.proxy.http }}
+- name: HTTP_PROXY
+  value: {{ .Values.proxy.http }}
 {{- end }}
+{{- if .Values.proxy.ftp }}
+- name: ftp_proxy
+  value: {{ .Values.proxy.ftp }}
+- name: FTP_PROXY
+  value: {{ .Values.proxy.ftp }}
 {{- if .Values.proxy.no_proxy }}
 - name: no_proxy
+  value: {{ .Values.proxy.no_proxy }}
+- name: NO_PROXY
   value: {{ .Values.proxy.no_proxy }}
 {{- end }}
 {{- end }}
