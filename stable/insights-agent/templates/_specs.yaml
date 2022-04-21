@@ -127,3 +127,18 @@ securityContext:
     drop:
       - ALL
 {{- end }}
+
+{{ define "proxy-env-spec" }}
+{{- if .Values.proxy.https }}
+- name: https_proxy
+  value: {{ .Values.proxy.https }}
+{{- end }}
+{{- if .Values.proxy.http }}
+- name: http_proxy
+  value: {{ .Values.proxy.http }}
+{{- end }}
+{{- if .Values.proxy.no_proxy }}
+- name: no_proxy
+  value: {{ .Values.proxy.no_proxy }}
+{{- end }}
+{{- end }}

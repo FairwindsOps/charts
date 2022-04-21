@@ -36,5 +36,7 @@ spec:
               readOnlyRootFilesystem: true
               allowPrivilegeEscalation: false
               privileged: false
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

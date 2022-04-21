@@ -39,6 +39,8 @@ spec:
                 - -c
                 - |
                   curl http://falco-agent:3031/output -o /tmp/falco.json && mv /tmp/falco.json /output/falco.json        
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}

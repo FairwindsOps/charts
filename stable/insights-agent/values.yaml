@@ -5,6 +5,14 @@ insights:
   base64token: ""
   tokenSecretName: ""
 
+proxy:
+  # proxy.http -- Annotations used to access the proxy servers(http).
+  http:
+  # proxy.https -- Annotations used to access the proxy servers(https).
+  https:
+  # proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
+  no_proxy:
+
 rbac:
   disabled: false
 

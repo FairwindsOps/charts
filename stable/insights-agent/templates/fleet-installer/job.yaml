@@ -48,11 +48,12 @@ spec:
         resources:
           {{- toYaml .Values.cronjobExecutor.resources | nindent 10 }}
         env:
-          - name: ADMIN_TOKEN
-            valueFrom:
-              secretKeyRef:
-                name:  {{ default ( printf "%s-api-token" (include "insights-agent.fullname" .) ) .Values.insights.apiTokenSecretName }}
-                key: token
+        {{ include "proxy-env-spec" . | indent 8 | trim }}
+        - name: ADMIN_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name:  {{ default ( printf "%s-api-token" (include "insights-agent.fullname" .) ) .Values.insights.apiTokenSecretName }}
+              key: token
         volumeMounts:
         - name: tmp
           mountPath: /tmp

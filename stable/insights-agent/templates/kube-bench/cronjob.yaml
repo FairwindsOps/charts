@@ -27,6 +27,7 @@ spec:
             env:
             - name: DAEMONSET_SERVICE
               value: {{ include "insights-agent.fullname" . }}-kube-bench-svc
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             resources:
               {{- toYaml (index .Values "kube-bench" "aggregator" "resources") | nindent 14 }}
             volumeMounts:
