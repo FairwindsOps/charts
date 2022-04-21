@@ -62,6 +62,9 @@ Parameter | Description | Default
 `rbac.disabled` | Don't use any of the built-in RBAC | `false`
 `fleetInstall` | See Fleet Installation docs | `false`
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
+`proxy.http` | Annotations used to access the proxy servers(http) | ""
+`proxy.https` | Annotations used to access the proxy servers(https) | ""
+`proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
