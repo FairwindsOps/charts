@@ -271,6 +271,7 @@ trivy:
   maxConcurrentScans: 1
   maxScansPerRun: 20
   timeout: 2400
+  insecureSSL: false
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.18"
