@@ -32,6 +32,8 @@ spec:
 
         resources:
           {{- toYaml .Values.cronjobExecutor.resources | nindent 10 }}
+        env:
+          {{ include "proxy-env-spec" . | indent 10 | trim }}
         volumeMounts:
         - name: tmp
           mountPath: /tmp

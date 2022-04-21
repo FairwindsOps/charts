@@ -47,6 +47,7 @@ spec:
               value: {{ .Values.insights.organization | quote  }}
             - name: FAIRWINDS_CLUSTER
               value: {{ .Values.insights.cluster | quote }}
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

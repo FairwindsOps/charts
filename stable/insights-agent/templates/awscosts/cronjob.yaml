@@ -32,6 +32,7 @@ spec:
                   key: AWS_SECRET_ACCESS_KEY            
             - name: AWS_DEFAULT_REGION
               value: {{ .Values.awscosts.region }}
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./aws-costs.sh"]
             args:
               - --database 
