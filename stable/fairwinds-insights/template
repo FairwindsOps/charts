@@ -1,0 +1,2282 @@
+---
+# Source: fairwinds-insights/charts/minio/templates/post-install-prometheus-metrics-serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fairwinds-insights-fw-minio-update-prometheus-secret
+  labels:
+    app: fw-minio-update-prometheus-secret
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+---
+# Source: fairwinds-insights/charts/minio/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "fairwinds-insights-fw-minio"
+  namespace: "default"
+  labels:
+    app: fw-minio
+    chart: minio-8.0.10
+    release: "fairwinds-insights"
+---
+# Source: fairwinds-insights/templates/cronjob-executor.rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fairwinds-insights-cronjob-executor
+  labels:
+    app: fairwinds-insights
+---
+# Source: fairwinds-insights/templates/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fairwinds-insights-insights
+---
+# Source: fairwinds-insights/charts/minio/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: fairwinds-insights-fw-minio
+  labels:
+    app: fw-minio
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+type: Opaque
+data:
+  accesskey: "OHVvUW9MMzVBRzBoV1V6RHVOcUg="
+  secretkey: "NzRESHg4Z2phT2V2clZtUHptbHBQZ0k4OTZnZ3NHekd0VzhUcFY1SA=="
+---
+# Source: fairwinds-insights/templates/secret.yml
+apiVersion: v1
+data:
+    postgresql-password: dERHWGZtOHp6VHVFWjI4U09QekpXVFhSM0xIbXBpanc=
+kind: Secret
+metadata:
+    name: fwinsights-postgresql
+type: Opaque
+---
+# Source: fairwinds-insights/charts/minio/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: fairwinds-insights-fw-minio
+  labels:
+    app: fw-minio
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+data:
+  initialize: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for Minio service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/accesskey) ; SECRET=$(cat /config/secretkey) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to Minio server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} config host add myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkBucketExists ($bucket)
+    # Check if the bucket exists, by using the exit code of `mc ls`
+    checkBucketExists() {
+      BUCKET=$1
+      CMD=$(${MC} ls myminio/$BUCKET > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createBucket ($bucket, $policy, $purge)
+    # Ensure bucket exists, purging if asked to
+    createBucket() {
+      BUCKET=$1
+      POLICY=$2
+      PURGE=$3
+      VERSIONING=$4
+    
+      # Purge the bucket, if set & exists
+      # Since PURGE is user input, check explicitly for `true`
+      if [ $PURGE = true ]; then
+        if checkBucketExists $BUCKET ; then
+          echo "Purging bucket '$BUCKET'."
+          set +e ; # don't exit if this fails
+          ${MC} rm -r --force myminio/$BUCKET
+          set -e ; # reset `e` as active
+        else
+          echo "Bucket '$BUCKET' does not exist, skipping purge."
+        fi
+      fi
+    
+      # Create the bucket if it does not exist
+      if ! checkBucketExists $BUCKET ; then
+        echo "Creating bucket '$BUCKET'"
+        ${MC} mb myminio/$BUCKET
+      else
+        echo "Bucket '$BUCKET' already exists."
+      fi
+    
+    
+      # set versioning for bucket
+      if [ ! -z $VERSIONING ] ; then
+        if [ $VERSIONING = true ] ; then
+            echo "Enabling versioning for '$BUCKET'"
+            ${MC} version enable myminio/$BUCKET
+        elif [ $VERSIONING = false ] ; then
+            echo "Suspending versioning for '$BUCKET'"
+            ${MC} version suspend myminio/$BUCKET
+        fi
+      else
+          echo "Bucket '$BUCKET' versioning unchanged."
+      fi
+    
+      # At this point, the bucket should exist, skip checking for existence
+      # Set policy on the bucket
+      echo "Setting policy of bucket '$BUCKET' to '$POLICY'."
+      ${MC} policy set $POLICY myminio/$BUCKET
+    }
+    
+    # Try connecting to Minio instance
+    scheme=http
+    connectToMinio $scheme
+    # Create the buckets
+    createBucket reports none
+---
+# Source: fairwinds-insights/templates/openapi-nginx-conf.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openapi-nginx-conf
+data:
+  # Copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/run.sh
+  # and a sed command was replaced, since we can't edit mounted files
+  run.sh: |
+    #! /bin/sh
+
+    set -e
+    BASE_URL=${BASE_URL:-/}
+    NGINX_ROOT=/usr/share/nginx/html
+    INDEX_FILE=$NGINX_ROOT/index.html
+    NGINX_CONF=/etc/nginx/nginx.conf
+
+    node /usr/share/nginx/configurator $INDEX_FILE
+
+    replace_in_index () {
+      if [ "$1" != "**None**" ]; then
+        sed -i "s|/\*||g" $INDEX_FILE
+        sed -i "s|\*/||g" $INDEX_FILE
+        sed -i "s|$1|$2|g" $INDEX_FILE
+      fi
+    }
+
+    replace_or_delete_in_index () {
+      if [ -z "$2" ]; then
+        sed -i "/$1/d" $INDEX_FILE
+      else
+        replace_in_index $1 $2
+      fi
+    }
+
+    replace_in_index myApiKeyXXXX123456789 $API_KEY
+
+    if [ "$SWAGGER_JSON_URL" ]; then
+      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$SWAGGER_JSON_URL|g" $INDEX_FILE
+      sed -i "s|http://example.com/api|$SWAGGER_JSON_URL|g" $INDEX_FILE
+    fi
+
+    if [[ -f "$SWAGGER_JSON" ]]; then
+      cp -s "$SWAGGER_JSON" "$NGINX_ROOT"
+      REL_PATH="./$(basename $SWAGGER_JSON)"
+
+      if [[ -z "$SWAGGER_ROOT" ]]; then
+        SWAGGER_ROOT="$(dirname $SWAGGER_JSON)"
+      fi
+
+      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$REL_PATH|g" $INDEX_FILE
+      sed -i "s|http://example.com/api|$REL_PATH|g" $INDEX_FILE
+    fi
+
+    find $NGINX_ROOT -type f -regex ".*\.\(html\|js\|css\)" -exec sh -c "gzip < {} > {}.gz" \;
+
+    exec nginx -g 'daemon off;'
+
+  # This is copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/nginx.conf
+  # A /health path is added and BASE_URL is manually set
+  nginx.conf: |
+    worker_processes      1;
+
+    events {
+      worker_connections  1024;
+    }
+
+    http {
+      include             mime.types;
+      default_type        application/octet-stream;
+
+      sendfile on;
+
+      keepalive_timeout   65;
+
+      gzip on;
+      gzip_static on;
+      gzip_disable "msie6";
+
+      gzip_vary on;
+      gzip_types text/plain text/css application/javascript;
+
+      map $request_method $access_control_max_age {
+        OPTIONS 1728000; # 20 days
+      }
+      server_tokens off; # Hide Nginx version
+
+      server {
+        listen            8080;
+        server_name       localhost;
+        index             index.html index.htm;
+
+        location /swagger {
+          absolute_redirect off;
+          alias            /usr/share/nginx/html/;
+          expires 1d;
+
+          location ~* \.(?:json|yml|yaml)$ {
+            #SWAGGER_ROOT
+            expires -1;
+
+            include cors.conf;
+          }
+
+          include cors.conf;
+        }
+
+        location /health {
+          return 200 'OK';
+        }
+        # This is a hack to prevent nginx from running sed on this file, which causes a crash
+        # listen  [::]:80;
+      }
+    }
+---
+# Source: fairwinds-insights/charts/minio/templates/pvc.yaml
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: fairwinds-insights-fw-minio
+  labels:
+    app: fw-minio
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+spec:
+  accessModes:
+    - "ReadWriteOnce"
+  resources:
+    requests:
+      storage: "500Gi"
+---
+# Source: fairwinds-insights/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: fairwinds-insights-view-kubesystem
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  resourceNames:
+  - kube-system
+  verbs:
+  - get
+---
+# Source: fairwinds-insights/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: fairwinds-insights-view-kubesystem
+subjects:
+- kind: ServiceAccount
+  name: fairwinds-insights-insights
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: fairwinds-insights-view-kubesystem
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: fairwinds-insights/charts/minio/templates/post-install-prometheus-metrics-role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: fairwinds-insights-fw-minio-update-prometheus-secret
+  labels:
+    app: fw-minio-update-prometheus-secret
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+      - create
+      - update
+      - patch
+    resourceNames:
+      - fairwinds-insights-fw-minio-prometheus
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+  - apiGroups:
+      - monitoring.coreos.com
+    resources:
+      - servicemonitors
+    verbs:
+      - get
+    resourceNames:
+      - fairwinds-insights-fw-minio
+---
+# Source: fairwinds-insights/templates/cronjob-executor.rbac.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: fairwinds-insights-cronjob-executor
+  labels:
+    app: fairwinds-insights
+rules:
+- apiGroups: [""]
+  resources: ["cronjobs"]
+  verbs: ["get", "list"]
+- apiGroups: ["batch"]
+  resources: ["cronjobs"]
+  verbs: ["get", "list"]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["create", "delete"]
+---
+# Source: fairwinds-insights/charts/minio/templates/post-install-prometheus-metrics-rolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fairwinds-insights-fw-minio-update-prometheus-secret
+  labels:
+    app: fw-minio-update-prometheus-secret
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: fairwinds-insights-fw-minio-update-prometheus-secret
+subjects:
+  - kind: ServiceAccount
+    name: fairwinds-insights-fw-minio-update-prometheus-secret
+    namespace: "default"
+---
+# Source: fairwinds-insights/templates/cronjob-executor.rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: fairwinds-insights-cronjob-executor
+  labels:
+    app: fairwinds-insights
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: fairwinds-insights-cronjob-executor
+subjects:
+- kind: ServiceAccount
+  name: fairwinds-insights-cronjob-executor
+  namespace: default
+---
+# Source: fairwinds-insights/charts/minio/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fairwinds-insights-fw-minio
+  labels:
+    app: fw-minio
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: fw-minio
+    release: fairwinds-insights
+---
+# Source: fairwinds-insights/charts/postgresql/templates/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fairwinds-insights-postgresql-headless
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.15.1
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    # Use this annotation in addition to the actual publishNotReadyAddresses
+    # field below because the annotation will stop being respected soon but the
+    # field is broken in some versions of Kubernetes:
+    # https://github.com/kubernetes/kubernetes/issues/58662
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+  namespace: default
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: fairwinds-insights
+---
+# Source: fairwinds-insights/charts/postgresql/templates/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fairwinds-insights-postgresql
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.15.1
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+  annotations:
+  namespace: default
+spec:
+  type: ClusterIP
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: fairwinds-insights
+    role: primary
+---
+# Source: fairwinds-insights/templates/service-api.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fairwinds-insights-api
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/component: api
+---
+# Source: fairwinds-insights/templates/service-dashboard.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fairwinds-insights-dashboard
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: dashboard
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/component: dashboard
+---
+# Source: fairwinds-insights/templates/service-open-api.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: fairwinds-insights-open-api
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: open-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/component: open-api
+---
+# Source: fairwinds-insights/charts/minio/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fairwinds-insights-fw-minio
+  labels:
+    app: fw-minio
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 100%
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: fw-minio
+      release: fairwinds-insights
+  template:
+    metadata:
+      name: fairwinds-insights-fw-minio
+      labels:
+        app: fw-minio
+        release: fairwinds-insights
+      annotations:
+        checksum/secrets: ea6780d5b5fae6fdc5cea74211e4136fe0e2f85a2fe3eec79be800803ee6a06f
+        checksum/config: b4219e952550ff8f046e62aef063d1f0b50bcf072f7509dfe2cd1640b093ab86
+    spec:
+      serviceAccountName: "fairwinds-insights-fw-minio"
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+        - name: minio
+          image: "minio/minio:RELEASE.2021-02-14T04-01-33Z"
+          imagePullPolicy: IfNotPresent
+          command:
+            - "/bin/sh"
+            - "-ce"
+            - "/usr/bin/docker-entrypoint.sh minio -S /etc/minio/certs/ server /export"
+          volumeMounts:
+            - name: export
+              mountPath: /export            
+          ports:
+            - name: http
+              containerPort: 9000
+          env:
+            - name: MINIO_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: fairwinds-insights-fw-minio
+                  key: accesskey
+            - name: MINIO_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: fairwinds-insights-fw-minio
+                  key: secretkey
+          resources:
+            requests:
+              cpu: 50m
+              memory: 256Mi      
+      volumes:
+        - name: export
+          persistentVolumeClaim:
+            claimName: fairwinds-insights-fw-minio
+        - name: minio-user
+          secret:
+            secretName: fairwinds-insights-fw-minio
+---
+# Source: fairwinds-insights/templates/deployment-api.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fairwinds-insights-api
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: api
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fairwinds-insights
+      app.kubernetes.io/instance: fairwinds-insights
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fairwinds-insights
+        app.kubernetes.io/instance: fairwinds-insights
+        app.kubernetes.io/component: api
+    spec:
+      serviceAccountName: fairwinds-insights-insights
+      containers:
+        - name: fairwinds-insights
+          image: "quay.io/fairwinds/insights-api:8.2.2"
+          imagePullPolicy: Always
+          command: ["api"]
+          args:
+          - "--port=8080"
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP          
+          # Required values
+          envFrom:
+          - secretRef:
+              name: fwinsights-secrets
+          env:
+          - name: FAIRWINDS_HOST
+          - name: CACHE_BUST_TOKEN
+            value: lE8U7Tefsq
+          - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+            value: 2.0.1
+          # General Server
+          # Database
+          - name: POSTGRES_DB
+            value: fairwinds_insights
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_SSL_MODE
+            value: require
+          - name: POSTGRES_HOST
+            value: fairwinds-insights-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-postgresql
+                key: postgresql-password
+          - name: INSIGHTS_SAAS_HOST
+            value: "https://insights.fairwinds.com"
+          
+          # Report Storage
+          - name: REPORT_STORAGE_STRATEGY
+            value: minio
+          
+          - name: MINIO_HOST
+            value: fairwinds-insights-fw-minio:9000
+          - name: MINIO_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: fairwinds-insights-fw-minio
+                key: accesskey                
+          - name: MINIO_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fairwinds-insights-fw-minio
+                key: secretkey
+          - name: REPORT_STORAGE_REGION
+            value: us-east-1
+          - name: REPORT_STORAGE_BUCKET
+            value: "reports"
+          
+          # Email
+          - name: EMAIL_STRATEGY
+            value: memory
+          - name: EMAIL_SENDER
+            value: 
+          - name: EMAIL_RECIPIENT
+            value: 
+          # Third-party integrations
+          # repo-scan-job specific
+          - name: K8S_NAMESPACE
+            value: default
+          - name: INSIGHTS_CI_IMAGE_VERSION
+            value: "1.2"
+          
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+          - name: secrets
+            mountPath: /var/run/secrets/github
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 10324
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: secrets
+        secret:
+          secretName: github-secrets
+          optional: true
+---
+# Source: fairwinds-insights/templates/deployment-dashboard.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fairwinds-insights-dashboard
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fairwinds-insights
+      app.kubernetes.io/instance: fairwinds-insights
+      app.kubernetes.io/component: dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fairwinds-insights
+        app.kubernetes.io/instance: fairwinds-insights
+        app.kubernetes.io/component: dashboard
+    spec:
+      containers:
+        - name: fw-insights-dashboard
+          image: "quay.io/fairwinds/insights-dashboard:8.2.2"
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args:
+          - -c
+          - |
+            cd /etc/nginx/html
+            mv -f config.self.js ./config.js || exit 1
+            sed -i 's/SERVICE.NAMESPACE.svc/fairwinds-insights-api.default.svc/' /etc/nginx/nginx.conf
+            nginx -g "daemon off;"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP          
+          # Required values
+          envFrom:
+          - secretRef:
+              name: fwinsights-secrets
+          env:
+          - name: FAIRWINDS_HOST
+          - name: CACHE_BUST_TOKEN
+            value: g854c1ltUV
+          - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+            value: 2.0.1
+          # General Server
+          # Database
+          - name: POSTGRES_DB
+            value: fairwinds_insights
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_SSL_MODE
+            value: require
+          - name: POSTGRES_HOST
+            value: fairwinds-insights-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-postgresql
+                key: postgresql-password
+          - name: INSIGHTS_SAAS_HOST
+            value: "https://insights.fairwinds.com"
+          
+          # Report Storage
+          - name: REPORT_STORAGE_STRATEGY
+            value: minio
+          
+          - name: MINIO_HOST
+            value: fairwinds-insights-fw-minio:9000
+          - name: MINIO_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: fairwinds-insights-fw-minio
+                key: accesskey                
+          - name: MINIO_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fairwinds-insights-fw-minio
+                key: secretkey
+          - name: REPORT_STORAGE_REGION
+            value: us-east-1
+          - name: REPORT_STORAGE_BUCKET
+            value: "reports"
+          
+          # Email
+          - name: EMAIL_STRATEGY
+            value: memory
+          - name: EMAIL_SENDER
+            value: 
+          - name: EMAIL_RECIPIENT
+            value: 
+          # Third-party integrations
+          # repo-scan-job specific
+          - name: K8S_NAMESPACE
+            value: default
+          - name: INSIGHTS_CI_IMAGE_VERSION
+            value: "1.2"
+          
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 101
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+      - name: tmp
+        emptyDir: {}
+---
+# Source: fairwinds-insights/templates/deployment-open-api.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fairwinds-insights-open-api
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: open-api
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fairwinds-insights
+      app.kubernetes.io/instance: fairwinds-insights
+      app.kubernetes.io/component: open-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fairwinds-insights
+        app.kubernetes.io/instance: fairwinds-insights
+        app.kubernetes.io/component: open-api
+    spec:
+      serviceAccountName: fairwinds-insights-insights
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: openapi-nginx-conf
+      containers:
+        - name: fairwinds-insights
+          image: swaggerapi/swagger-ui:v4.1.3
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          env:
+          - name: SWAGGER_JSON_URL
+            value: /v0/swagger.yaml
+          volumeMounts:
+          - name: nginx-conf
+            subPath: nginx.conf
+            mountPath: /etc/nginx/nginx.conf
+          - name: nginx-conf
+            subPath: run.sh
+            mountPath: /usr/share/nginx/run.sh
+          livenessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          resources:
+            limits:
+              cpu: 256m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 101
+            capabilities:
+              drop:
+                - ALL
+---
+# Source: fairwinds-insights/templates/deployment-report-job.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fairwinds-insights-reportjob
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: reportjob
+  annotations:
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
+
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: fairwinds-insights
+      app.kubernetes.io/instance: fairwinds-insights
+      app.kubernetes.io/component: reportjob
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: fairwinds-insights
+        app.kubernetes.io/instance: fairwinds-insights
+        app.kubernetes.io/component: reportjob
+    spec:
+      serviceAccountName: fairwinds-insights-insights
+      containers:
+        - name: fairwinds-insights
+          image: "quay.io/fairwinds/insights-api:8.2.2"
+          imagePullPolicy: Always
+          command: ["report_job"]          
+          # Required values
+          envFrom:
+          - secretRef:
+              name: fwinsights-secrets
+          env:
+          - name: FAIRWINDS_HOST
+          - name: CACHE_BUST_TOKEN
+            value: yoKuZ1gkjh
+          - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+            value: 2.0.1
+          # General Server
+          # Database
+          - name: POSTGRES_DB
+            value: fairwinds_insights
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_SSL_MODE
+            value: require
+          - name: POSTGRES_HOST
+            value: fairwinds-insights-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-postgresql
+                key: postgresql-password
+          - name: INSIGHTS_SAAS_HOST
+            value: "https://insights.fairwinds.com"
+          
+          # Report Storage
+          - name: REPORT_STORAGE_STRATEGY
+            value: minio
+          
+          - name: MINIO_HOST
+            value: fairwinds-insights-fw-minio:9000
+          - name: MINIO_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: fairwinds-insights-fw-minio
+                key: accesskey                
+          - name: MINIO_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: fairwinds-insights-fw-minio
+                key: secretkey
+          - name: REPORT_STORAGE_REGION
+            value: us-east-1
+          - name: REPORT_STORAGE_BUCKET
+            value: "reports"
+          
+          # Email
+          - name: EMAIL_STRATEGY
+            value: memory
+          - name: EMAIL_SENDER
+            value: 
+          - name: EMAIL_RECIPIENT
+            value: 
+          # Third-party integrations
+          # repo-scan-job specific
+          - name: K8S_NAMESPACE
+            value: default
+          - name: INSIGHTS_CI_IMAGE_VERSION
+            value: "1.2"
+          
+          volumeMounts:
+            - name: secrets
+              mountPath: /var/run/secrets/github
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1024Mi
+            requests:
+              cpu: 80m
+              memory: 128Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 10324
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: secrets
+          secret:
+            secretName: github-secrets
+            optional: true
+---
+# Source: fairwinds-insights/templates/hpa-reportjob.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: fairwinds-insights-reportjob-hpa
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: reportjob
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: fairwinds-insights-reportjob
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 75
+          type: Utilization
+      type: Resource
+    - resource:
+        name: memory
+        target:
+          averageUtilization: 75
+          type: Utilization
+      type: Resource
+---
+# Source: fairwinds-insights/charts/postgresql/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: fairwinds-insights-postgresql
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-10.15.1
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+  namespace: default
+spec:
+  serviceName: fairwinds-insights-postgresql-headless
+  replicas: 1
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/instance: fairwinds-insights
+      role: primary
+  template:
+    metadata:
+      name: fairwinds-insights-postgresql
+      labels:
+        app.kubernetes.io/name: postgresql
+        helm.sh/chart: postgresql-10.15.1
+        app.kubernetes.io/instance: fairwinds-insights
+        app.kubernetes.io/managed-by: Helm
+        role: primary
+        app.kubernetes.io/component: primary
+    spec:      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/instance: fairwinds-insights
+                    app.kubernetes.io/component: primary
+                namespaces:
+                  - "default"
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+      automountServiceAccountToken: false
+      containers:
+        - name: fairwinds-insights-postgresql
+          image: docker.io/bitnami/postgresql:11.14.0-debian-10-r24
+          imagePullPolicy: "IfNotPresent"
+          resources:
+            limits:
+              cpu: 1
+              memory: 1Gi
+            requests:
+              cpu: 75m
+              memory: 256Mi
+          securityContext:
+            runAsUser: 1001
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            - name: POSTGRES_USER
+              value: "postgres"
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fwinsights-postgresql
+                  key: postgresql-password
+            - name: POSTGRES_DB
+              value: "fairwinds_insights"
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "no"
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U "postgres" -d "dbname=fairwinds_insights" -h 127.0.0.1 -p 5432
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          readinessProbe:
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                - |
+                  exec pg_isready -U "postgres" -d "dbname=fairwinds_insights" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 6
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+            - name: data
+              mountPath: /bitnami/postgresql
+              subPath: 
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: fairwinds-insights/templates/aggregate-cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fairwinds-insights-agg-job-bi-hourly
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: workload-metrics-aggregation-bi-hourly
+spec:
+  schedule: "5 0/2 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:8.2.2"
+              command: ["aggregate_metrics"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: 649ggOSXav
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.0.1
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: fairwinds-insights-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: fairwinds-insights-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: accesskey                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: secretkey
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              # repo-scan-job specific
+              - name: K8S_NAMESPACE
+                value: default
+              - name: INSIGHTS_CI_IMAGE_VERSION
+                value: "1.2"
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 250m
+                  memory: 512Mi
+                requests:
+                  cpu: 40m
+                  memory: 32Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/templates/database-cleanup.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fairwinds-insights-cronjob-database-cleanup
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: action-items-cronjob-database-cleanup
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:8.2.2"
+              command: ["database_cleanup"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: y6vxdCA8qn
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.0.1
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: fairwinds-insights-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: fairwinds-insights-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: accesskey                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: secretkey
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              # repo-scan-job specific
+              - name: K8S_NAMESPACE
+                value: default
+              - name: INSIGHTS_CI_IMAGE_VERSION
+                value: "1.2"
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 80m
+                  memory: 128Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/templates/email-cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fairwinds-insights-cronjob-weekly-email
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: email-cronjob-weekly-email
+spec:
+  schedule: "0 16 * * 1"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:8.2.2"
+              command: ["email_digest"]
+              args:
+                - --interval=168h              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: c5jZSC7VKj
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.0.1
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: fairwinds-insights-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: fairwinds-insights-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: accesskey                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: secretkey
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              # repo-scan-job specific
+              - name: K8S_NAMESPACE
+                value: default
+              - name: INSIGHTS_CI_IMAGE_VERSION
+                value: "1.2"
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 80m
+                  memory: 128Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/templates/health-scores-migration.job.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fairwinds-insights-migrate-scores
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: migrate-scores
+spec:
+  schedule: "0 0 1 1 0"
+  concurrencyPolicy: Forbid
+  suspend: true
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: migrate-scores
+            image: "quay.io/fairwinds/insights-cronjob:8.2.2"
+            command: ["health_score"]
+            imagePullPolicy: Always
+            resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 80m
+                  memory: 128Mi
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL            
+            # Required values
+            envFrom:
+            - secretRef:
+                name: fwinsights-secrets
+            env:
+            - name: FAIRWINDS_HOST
+            - name: CACHE_BUST_TOKEN
+              value: WTnPmcO3tX
+            - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+              value: 2.0.1
+            # General Server
+            # Database
+            - name: POSTGRES_DB
+              value: fairwinds_insights
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_SSL_MODE
+              value: require
+            - name: POSTGRES_HOST
+              value: fairwinds-insights-postgresql
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fwinsights-postgresql
+                  key: postgresql-password
+            - name: INSIGHTS_SAAS_HOST
+              value: "https://insights.fairwinds.com"
+            
+            # Report Storage
+            - name: REPORT_STORAGE_STRATEGY
+              value: minio
+            
+            - name: MINIO_HOST
+              value: fairwinds-insights-fw-minio:9000
+            - name: MINIO_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: fairwinds-insights-fw-minio
+                  key: accesskey                
+            - name: MINIO_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: fairwinds-insights-fw-minio
+                  key: secretkey
+            - name: REPORT_STORAGE_REGION
+              value: us-east-1
+            - name: REPORT_STORAGE_BUCKET
+              value: "reports"
+            
+            # Email
+            - name: EMAIL_STRATEGY
+              value: memory
+            - name: EMAIL_SENDER
+              value: 
+            - name: EMAIL_RECIPIENT
+              value: 
+            # Third-party integrations
+            # repo-scan-job specific
+            - name: K8S_NAMESPACE
+              value: default
+            - name: INSIGHTS_CI_IMAGE_VERSION
+              value: "1.2"
+---
+# Source: fairwinds-insights/templates/integration-cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fairwinds-insights-cronjob-realtime
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: alerts-cronjob-realtime
+spec:
+  schedule: "5/10 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:8.2.2"
+              command: ["notifications_digest"]
+              args:
+                - --interval=10m              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: ajCq7Mszoq
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.0.1
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: fairwinds-insights-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: fairwinds-insights-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: accesskey                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: secretkey
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              # repo-scan-job specific
+              - name: K8S_NAMESPACE
+                value: default
+              - name: INSIGHTS_CI_IMAGE_VERSION
+                value: "1.2"
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 80m
+                  memory: 128Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/templates/integration-cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fairwinds-insights-cronjob-digest
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: alerts-cronjob-digest
+spec:
+  schedule: "0 16 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:8.2.2"
+              command: ["notifications_digest"]
+              args:
+                - --interval=24h              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: Qwuqb2gTpy
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.0.1
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: fairwinds-insights-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: fairwinds-insights-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: accesskey                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: secretkey
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              # repo-scan-job specific
+              - name: K8S_NAMESPACE
+                value: default
+              - name: INSIGHTS_CI_IMAGE_VERSION
+                value: "1.2"
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 80m
+                  memory: 128Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/templates/saml-cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: fairwinds-insights-saml-hourly
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: saml-cronjob-hourly
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:8.2.2"
+              command: ["refresh_saml_metadata"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: zh3XUMxch3
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.0.1
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: fairwinds-insights-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: fairwinds-insights-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: accesskey                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: fairwinds-insights-fw-minio
+                    key: secretkey
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              # repo-scan-job specific
+              - name: K8S_NAMESPACE
+                value: default
+              - name: INSIGHTS_CI_IMAGE_VERSION
+                value: "1.2"
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 80m
+                  memory: 128Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/templates/secret.yml
+---
+---
+# Source: fairwinds-insights/charts/minio/templates/post-install-create-bucket-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fairwinds-insights-fw-minio-make-bucket-job
+  labels:
+    app: fw-minio-make-bucket-job
+    chart: minio-8.0.10
+    release: fairwinds-insights
+    heritage: Helm
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        app: fw-minio-job
+        release: fairwinds-insights
+    spec:
+      restartPolicy: OnFailure      
+      volumes:
+        - name: minio-configuration
+          projected:
+            sources:
+            - configMap:
+                name: fairwinds-insights-fw-minio
+            - secret:
+                name: fairwinds-insights-fw-minio
+      serviceAccountName: "fairwinds-insights-fw-minio"
+      containers:
+      - name: minio-mc
+        image: "minio/mc:RELEASE.2021-02-14T04-28-06Z"
+        imagePullPolicy: IfNotPresent
+        command: ["/bin/sh", "/config/initialize"]
+        env:
+          - name: MINIO_ENDPOINT
+            value: fairwinds-insights-fw-minio
+          - name: MINIO_PORT
+            value: "9000"
+        volumeMounts:
+          - name: minio-configuration
+            mountPath: /config
+        resources:
+          requests:
+            memory: 128Mi
+---
+# Source: fairwinds-insights/templates/health-scores-migration.job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: fairwinds-insights-start-migrate-scores
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: migrate-scores
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 30
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: fairwinds-insights-cronjob-executor
+      containers:
+      - name: start-job-from-cronjob
+        image: "bitnami/kubectl:1.22.8"
+        imagePullPolicy: Always
+        command: ["sh"]
+        args:
+          - -c
+          - |
+            # Can't use -o name because it appends cronjob.batch to the beginning
+            kubectl delete job fairwinds-insights-migrate-scores
+            kubectl create job fairwinds-insights-migrate-scores --from=cj/fairwinds-insights-migrate-scores
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi
+          requests:
+            cpu: 1m
+            memory: 3Mi
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+---
+# Source: fairwinds-insights/templates/migrate-db-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-database
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook": "post-install,post-upgrade"
+  labels:
+    helm.sh/chart: fairwinds-insights-0.4.12
+    app.kubernetes.io/name: fairwinds-insights
+    app.kubernetes.io/instance: fairwinds-insights
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "8.2.2"
+    app.kubernetes.io/component: migrate-db
+spec:
+  ttlSecondsAfterFinished: 100
+  backoffLimit: 5
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: fwinsights-db-migration
+        image: "quay.io/fairwinds/insights-db-migration:8.2.2"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 1
+            memory: 1024Mi
+          requests:
+            cpu: 80m
+            memory: 128Mi        
+        # Required values
+        envFrom:
+        - secretRef:
+            name: fwinsights-secrets
+        env:
+        - name: FAIRWINDS_HOST
+        - name: CACHE_BUST_TOKEN
+          value: ASXw9AbkPv
+        - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+          value: 2.0.1
+        # General Server
+        # Database
+        - name: POSTGRES_DB
+          value: fairwinds_insights
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_SSL_MODE
+          value: require
+        - name: POSTGRES_HOST
+          value: fairwinds-insights-postgresql
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: fwinsights-postgresql
+              key: postgresql-password
+        - name: INSIGHTS_SAAS_HOST
+          value: "https://insights.fairwinds.com"
+        
+        # Report Storage
+        - name: REPORT_STORAGE_STRATEGY
+          value: minio
+        
+        - name: MINIO_HOST
+          value: fairwinds-insights-fw-minio:9000
+        - name: MINIO_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: fairwinds-insights-fw-minio
+              key: accesskey                
+        - name: MINIO_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: fairwinds-insights-fw-minio
+              key: secretkey
+        - name: REPORT_STORAGE_REGION
+          value: us-east-1
+        - name: REPORT_STORAGE_BUCKET
+          value: "reports"
+        
+        # Email
+        - name: EMAIL_STRATEGY
+          value: memory
+        - name: EMAIL_SENDER
+          value: 
+        - name: EMAIL_RECIPIENT
+          value: 
+        # Third-party integrations
+        # repo-scan-job specific
+        - name: K8S_NAMESPACE
+          value: default
+        - name: INSIGHTS_CI_IMAGE_VERSION
+          value: "1.2"
+        
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: false
+          runAsUser: 10324
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+        - name: polaris-config
+          mountPath: /tmp/
+      volumes:
+      - name: polaris-config
+        configMap:
+          name: polaris-config
+          optional: true
+          items:
+          - key: polaris-config.json
+            path: polaris-config.json

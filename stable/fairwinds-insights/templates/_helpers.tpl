@@ -101,9 +101,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{- define "secrets_certificate" -}}
-"fwinsights-timescale-ca"
+"fwinsights-timescaledb-ca"
 {{- end -}}
 
 {{- define "secrets_credentials" -}}
-"fwinsights-timescale"
+"fwinsights-timescaledb"
 {{- end -}}

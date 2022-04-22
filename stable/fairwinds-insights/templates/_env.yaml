@@ -73,22 +73,22 @@ env:
       name: {{ .Values.postgresql.existingSecret }}
       key: postgresql-password
 {{- end }}
-{{- if .Values.timescale.enabled }}
+{{- if .Values.timescaledb.enabled }}
 # Timescale Database
 - name: TIMESCALE_DB
-  value: {{ .Values.timescale.postgresqlDatabase }}
+  value: {{ .Values.timescaledb.postgresqlDatabase }}
 - name: TIMESCALE_USER
-  value: {{ .Values.timescale.postgresqlUsername }}
+  value: {{ .Values.timescaledb.postgresqlUsername }}
 - name: TIMESCALE_PORT
-  value: {{ .Values.timescale.service.port | quote }}
+  value: {{ .Values.timescaledb.service.port | quote }}
 - name: TIMESCALE_SSL_MODE
-  value: {{ .Values.timescale.sslMode | default "require" }}
+  value: {{ .Values.timescaledb.sslMode | default "require" }}
 - name: TIMESCALE_HOST
-  value: {{ .Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}
+  value: {{ .Values.timescaledb.postgresqlHost | default (printf "%s-%s" .Release.Name "timescaledb") }}
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: fwinsights-timescale
+      name: fwinsights-timescaledb
       key: PATRONI_SUPERUSER_PASSWORD
 {{- end }}
 {{- with .Values.options.insightsSAASHost }}

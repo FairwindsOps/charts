@@ -18,7 +18,7 @@ postgresql:
   sslMode: "disable"
   password: "changeme"
 
-timescale:
+timescaledb:
   sslMode: "disable"
 
 dashboard:
