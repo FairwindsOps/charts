@@ -61,7 +61,6 @@ setup_helm_client() {
     helm repo add bitnami "$BITNAMI_REPO_URL"
     helm repo add minio "$MINIO_REPO_URL"
     helm repo add falco "$FALCO_REPO_URL"
-    helm repo add timescaledb-single "$TIMESCALE_REPO_URL"
 }
 
 authenticate() {
