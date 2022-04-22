@@ -154,7 +154,7 @@ TimescaleDB HA Deployment.
 | service.replica.labels | object | `{}` |  |
 | service.replica.annotations | object | `{}` |  |
 | service.replica.spec | object | `{}` |  |
-| loadBalancer.enabled | bool | `true` |  |
+| loadBalancer.enabled | bool | `false` |  |
 | loadBalancer.port | int | `5432` |  |
 | loadBalancer.annotations."service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout" | string | `"4000"` |  |
 | loadBalancer.spec | string | `nil` |  |
