@@ -1,0 +1,42 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "timescaledb.fullname" . }}-pgbackrest
+  labels:
+    app: {{ template "timescaledb.fullname" . }}
+    chart: {{ template "timescaledb.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+{{- $globalDefaults := dict "spool-path" (include "socket_directory" .) "compress-level" "3" "repo1-path" (printf "/%s/%s/" .Release.Namespace (include "clusterName" .)) }}
+{{- $globals := merge .Values.backup.pgBackRest $globalDefaults }}
+{{- $push := index .Values.backup "pgBackRest:archive-push" | default dict }}
+{{- $get := index .Values.backup "pgBackRest:archive-get" | default dict }}
+data:
+  pgbackrest.conf: |
+    [global]
+{{- range $key := keys $globals | sortAlpha }}
+    {{ $key }}={{ index $globals $key }}
+{{- end }}
+
+    [poddb]
+    pg1-port=5432
+    pg1-host-user=postgres
+    pg1-path={{ template "data_directory" . }}
+    pg1-socket-path={{ template "socket_directory" . }}
+
+    link-all=y
+
+    [global:archive-push]
+{{- range $key := keys $push | sortAlpha }}
+    {{ $key }}={{ index $push $key }}
+{{- end }}
+
+    [global:archive-get]
+{{- range $key := keys $get | sortAlpha }}
+    {{ $key }}={{ index $get $key }}
+{{- end }}
+...
