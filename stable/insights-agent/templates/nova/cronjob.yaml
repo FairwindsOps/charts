@@ -28,6 +28,8 @@ spec:
               - find
               - --config={{ .Config.configLocation }}
               - -v{{ .Config.logLevel }}
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
           volumes:

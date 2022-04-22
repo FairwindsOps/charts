@@ -35,6 +35,7 @@ containers:
     valueFrom:
       fieldRef:
         fieldPath: spec.nodeName
+  {{ include "proxy-env-spec" . | indent 2 | trim }}
   {{- if eq (index .Values "kube-bench" "mode") "cronjob" }}
   - name: RUN_ONCE
     value: "true"

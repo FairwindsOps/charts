@@ -57,6 +57,7 @@ spec:
               name: {{ include "insights-agent.fullname" . }}-token
               {{ end -}}
               key: token
+        {{ include "proxy-env-spec" . | indent 8 | trim }}
       volumes:
       - name: values
         configMap:

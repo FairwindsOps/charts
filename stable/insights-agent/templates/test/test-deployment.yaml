@@ -21,6 +21,8 @@ spec:
     spec:
       containers:
         - name: {{ .Chart.Name }}
+          env:
+          {{ include "proxy-env-spec" . | indent 10 | trim }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"

@@ -62,6 +62,10 @@ Parameter | Description | Default
 `rbac.disabled` | Don't use any of the built-in RBAC | `false`
 `fleetInstall` | See Fleet Installation docs | `false`
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
+`proxy.http` | Annotations used to access the proxy servers(http) | ""
+`proxy.https` | Annotations used to access the proxy servers(https) | ""
+`proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
+`proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
@@ -89,6 +93,7 @@ Parameter | Description | Default
 `kube-bench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
 `kube-bench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
 `trivy.ignoreUnfixed` | Adds `--ignore-unfixed` trivy flag | false
+`trivy.insecureSSL` | Can be used to allow insecure connections to a container registry when using SSL. | `false`
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
 `trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20

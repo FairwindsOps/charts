@@ -38,6 +38,8 @@ spec:
                 CONFIG='--config /opt/app/config.yaml'
               fi
               polaris audit --output-file /output/polaris.json --format json --display-name {{ .Values.insights.cluster }} {{ .Values.polaris.extraArgs }} $CONFIG
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
