@@ -16,3 +16,7 @@ dependencies:
   version: 8.0.10
   repository: https://helm.min.io/
   condition: minio.install
+- name: timescale
+  version: 0.11.0
+  repository: https://charts.fairwinds.com/incubator
+  condition: timescale.ephemeral
