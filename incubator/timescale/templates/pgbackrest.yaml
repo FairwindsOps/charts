@@ -1,0 +1,76 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+{{- if or .Values.backup.enable .Values.backup.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "timescaledb.fullname" . }}-backup
+  labels:
+    app: {{ template "timescaledb.fullname" . }}
+    chart: {{ template "timescaledb.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cluster-name: {{ template "clusterName" . }}
+spec:
+  ports:
+  - port: 8081
+    protocol: TCP
+  selector:
+    app: {{ template "timescaledb.fullname" . }}
+    role: master
+    cluster-name: {{ template "clusterName" . }}
+...
+{{- range .Values.backup.jobs }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ template "timescaledb.fullname" $ }}-{{ .name }}
+  labels:
+    app: {{ template "timescaledb.fullname" $ }}
+    chart: {{ template "timescaledb.chart" $ }}
+    release: {{ $.Release.Name }}
+    heritage: {{ $.Release.Service }}
+    backup-type: {{ .type }}
+    cluster-name: {{ template "clusterName" $ }}
+spec:
+  schedule: {{ quote .schedule }}
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: {{ template "timescaledb.fullname" $ }}
+        backup-type: {{ .type }}
+        cluster-name: {{ template "clusterName" $ }}
+    spec:
+      activeDeadlineSeconds: 60
+      template:
+        metadata:
+          labels:
+            app: {{ template "timescaledb.fullname" $ }}
+            backup-type: {{ .type }}
+            cluster-name: {{ template "clusterName" $ }}
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: {{ template "timescaledb.fullname" $ }}-{{ .type }}
+              image: curlimages/curl
+              command: ["/usr/bin/curl"]
+              args:
+              - --connect-timeout
+              - '10'
+              - --include
+              - --silent
+              - --show-error
+              - --fail
+              - --request
+              - POST
+              - --data
+              - |
+                  {"type": {{ quote .type }}}
+              - "http://{{ template "timescaledb.fullname" $ }}-backup:8081/backups/"
+...
+{{- end }}
+{{ end }}
