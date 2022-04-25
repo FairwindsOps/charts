@@ -27,7 +27,6 @@ readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
 readonly MINIO_REPO_URL=https://helm.min.io/
 readonly BITNAMI_REPO_URL=https://charts.bitnami.com/bitnami
 readonly FALCO_REPO_URL=https://falcosecurity.github.io/charts
-readonly TIMESCALE_REPO_URL=https://charts.timescale.com
 
 readonly S3_BUCKET_STABLE=s3://fairwinds-helm-charts/stable
 readonly S3_BUCKET_INCUBATOR=s3://fairwinds-helm-charts/incubator
@@ -61,7 +60,6 @@ setup_helm_client() {
     helm repo add bitnami "$BITNAMI_REPO_URL"
     helm repo add minio "$MINIO_REPO_URL"
     helm repo add falco "$FALCO_REPO_URL"
-    helm repo add timescaledb-single "$TIMESCALE_REPO_URL"
 }
 
 authenticate() {
