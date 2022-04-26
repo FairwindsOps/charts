@@ -5,5 +5,8 @@ dependencies:
 - name: minio
   repository: https://helm.min.io/
   version: 8.0.10
-digest: sha256:85cdd51aeced332ca3f5a32940201328290c4325a3151f0e9713f5bc195b8361
-generated: "2022-04-22T16:11:23.1695062-03:00"
+- name: timescaledb-single
+  repository: https://charts.fairwinds.com/incubator
+  version: 0.11.1
+digest: sha256:d29f7caa99bd06ea471c2a6d560b568344ee8a44eefd47a765eb25122c5c32ce
+generated: "2022-04-26T09:55:32.5431225-03:00"

@@ -1,5 +1,5 @@
 ## DO NOT EDIT - Managed by Terraform
-* @sudermanjr @rbren @lucasreed
+* @sudermanjr @rbren
 
 /incubator/autospotting/ @sudermanjr
 /incubator/basic-demo/ @sudermanjr
@@ -15,14 +15,14 @@
 /incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
 
-/stable/astro/ @lucasreed
+/stable/astro/ @sudermanjr
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
-/stable/rbac-manager/ @sudermanjr @lucasreed
+/stable/rbac-manager/ @sudermanjr
 /stable/polaris/ @rbren @makoscafee
 /stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @sudermanjr
-/stable/goldilocks/ @sudermanjr @lucasreed
+/stable/goldilocks/ @sudermanjr
 /stable/fairwinds-insights/ @rbren @makoscafee @ivanfetch-fw
 /stable/insights-admission/ @rbren @makoscafee @ivanfetch-fw
 /stable/insights-agent/ @rbren @makoscafee @ivanfetch-fw
