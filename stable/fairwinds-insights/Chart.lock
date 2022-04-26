@@ -7,6 +7,6 @@ dependencies:
   version: 8.0.10
 - name: timescaledb-single
   repository: https://charts.fairwinds.com/incubator
-  version: 0.11.0
-digest: sha256:656875161cda1920e777b92c900e3fe21a7512375bbf22d0e4fbabff8064cdc3
-generated: "2022-04-25T10:06:26.8473858-03:00"
+  version: 0.11.1
+digest: sha256:d29f7caa99bd06ea471c2a6d560b568344ee8a44eefd47a765eb25122c5c32ce
+generated: "2022-04-26T09:55:32.5431225-03:00"
