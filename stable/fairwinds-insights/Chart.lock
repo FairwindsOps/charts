@@ -9,4 +9,4 @@ dependencies:
   repository: https://charts.fairwinds.com/incubator
   version: 0.11.1
 digest: sha256:d29f7caa99bd06ea471c2a6d560b568344ee8a44eefd47a765eb25122c5c32ce
-generated: "2022-04-26T09:55:32.5431225-03:00"
+generated: "2022-04-28T09:45:26.8682238-03:00"
