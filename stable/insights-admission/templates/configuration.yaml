@@ -35,4 +35,4 @@ webhooks:
   rules:
   {{- concat .Values.webhookConfig.rules .Values.webhookConfig.defaultRules | toYaml | nindent 2 }}
   sideEffects: None
-  timeoutSeconds: 10
+  timeoutSeconds: {{ .Values.webhookConfig.timeoutSeconds }}
