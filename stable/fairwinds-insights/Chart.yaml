@@ -2,12 +2,16 @@ apiVersion: v2
 appVersion: "8.2.2"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 0.4.16
+version: 0.4.17
 maintainers:
 - name: rbren
 - name: makoscafee
 - name: ivanfetch-fw
 dependencies:
+- name: helm-release-pruner
+  version: '3.2.*'
+  repository: https://charts.fairwinds.com/stable
+  condition: helm-release-pruner.enabled
 - name: postgresql
   version: 10.15.1
   repository: https://charts.bitnami.com/bitnami
