@@ -92,7 +92,7 @@ benchmarkCronjob:
     requests:
       cpu: 80m
       memory: 128Mi
-  schedules: [] # turned off until we need it again
+  schedules: []
 
 helm-release-pruner:
   enabled: false
