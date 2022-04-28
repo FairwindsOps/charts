@@ -1,4 +1,3 @@
-{{- if .Values.hubspotCronjob.enabled }}
 {{- if not (index .Values "options" "insightsSAASHost") }}
 {{ range .Values.hubspotCronjob.schedules }}
 ---
@@ -38,6 +37,5 @@ spec:
                 capabilities:
                   drop:
                     - ALL
-{{ end }}
-{{- end }}
-{{- end }}
+  {{ end }}
+  {{- end }}

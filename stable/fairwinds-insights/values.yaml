@@ -72,7 +72,6 @@ options:
     cpu: 1000m
 
 hubspotCronjob:
-  enabled: false
   resources:
     limits:
       cpu: 500m
@@ -80,10 +79,7 @@ hubspotCronjob:
     requests:
       cpu: 80m
       memory: 128Mi
-  schedules:
-    - name: hubspot-sync
-      interval: 1h
-      cron: "30 * * * *"
+  schedules: []
 
 benchmarkCronjob:
   resources:
