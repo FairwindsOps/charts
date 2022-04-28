@@ -72,6 +72,7 @@ options:
     cpu: 1000m
 
 hubspotCronjob:
+  enabled: false
   resources:
     limits:
       cpu: 500m
