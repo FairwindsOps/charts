@@ -49,6 +49,7 @@ rules:
 | insights.configmap.suffix | string | `"configmap"` | The suffix to add onto the release name to get the configmap that contains the host/organization/cluster |
 | webhookConfig.failurePolicy | string | `"Ignore"` | failurePolicy for the ValidatingWebhookConfiguration. This also informs whether the admission controller blocks validation requests on errors, such as while executing OPA policies. |
 | webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
+| webhookConfig.timeoutSeconds | int | `30` | number of seconds to wait before failing the admission request (max is 30) |
 | webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
 | webhookConfig.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
 | webhookConfig.rules | list | `[]` | An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. Rules specified here may also be granted to the Insights OPA plugin, see also the insights-agent chart values for opa. |
