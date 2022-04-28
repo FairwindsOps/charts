@@ -399,8 +399,7 @@ timescale:
   replicaCount: 1
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
-  ephemeral: false
-  enabled: false
+  ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
     # -- Username to connect to Timescale with
