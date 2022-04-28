@@ -23,7 +23,7 @@ spec:
           {{- end }}
           containers:
             - name: fairwinds-insights
-              image: "{{  index $.Values "cronjobImage" "repository" }}:{{ include "fairwinds-insights-private.cronjobImageTag" $ }}"
+              image: "{{  index $.Values "cronjobImage" "repository" }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
               command: ["hubspot_sync"]
               {{- include "env-private" $ | indent 14 }}
               imagePullPolicy: Always

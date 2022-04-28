@@ -107,11 +107,3 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "secrets_credentials" -}}
 "fwinsights-timescale"
 {{- end -}}
-
-{{- define "fairwinds-insights-private.cronjobImageTag" -}}
-{{- if  .Values.fairwindsInsights.cronjobImage.tag  -}}
-{{- .Values.fairwindsInsights.cronjobImage.tag -}}
-{{- else -}}
-{{- .Values.fairwindsInsights.image.tag | default .Chart.AppVersion -}}
-{{- end -}}
-{{- end -}}
