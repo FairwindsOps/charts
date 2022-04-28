@@ -34,6 +34,23 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
 | options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
 | options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
+| options.overprovisioning.enabled | bool | `false` |  |
+| options.overprovisioning.memory | string | `"1Gi"` |  |
+| options.overprovisioning.cpu | string | `"1000m"` |  |
+| hubspotCronjob.resources.limits.cpu | string | `"500m"` |  |
+| hubspotCronjob.resources.limits.memory | string | `"1024Mi"` |  |
+| hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |
+| hubspotCronjob.resources.requests.memory | string | `"128Mi"` |  |
+| hubspotCronjob.schedules[0].name | string | `"hubspot-sync"` |  |
+| hubspotCronjob.schedules[0].interval | string | `"1h"` |  |
+| hubspotCronjob.schedules[0].cron | string | `"30 * * * *"` |  |
+| benchmarkCronjob.resources.limits.cpu | string | `"500m"` |  |
+| benchmarkCronjob.resources.limits.memory | string | `"1024Mi"` |  |
+| benchmarkCronjob.resources.requests.cpu | string | `"80m"` |  |
+| benchmarkCronjob.resources.requests.memory | string | `"128Mi"` |  |
+| benchmarkCronjob.schedules | list | `[]` |  |
+| helm-release-pruner.enabled | bool | `false` |  |
+| selfHostedSecret | string | `nil` |  |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
