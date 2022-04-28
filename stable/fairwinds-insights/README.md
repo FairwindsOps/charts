@@ -49,7 +49,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | benchmarkCronjob.resources.requests.cpu | string | `"80m"` |  |
 | benchmarkCronjob.resources.requests.memory | string | `"128Mi"` |  |
 | benchmarkCronjob.schedules | list | `[]` |  |
-| helm-release-pruner.enabled | bool | `false` |  |
 | selfHostedSecret | string | `nil` |  |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |

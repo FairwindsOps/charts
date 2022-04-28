@@ -94,9 +94,6 @@ benchmarkCronjob:
       memory: 128Mi
   schedules: []
 
-helm-release-pruner:
-  enabled: false
-
 selfHostedSecret:
 
 
