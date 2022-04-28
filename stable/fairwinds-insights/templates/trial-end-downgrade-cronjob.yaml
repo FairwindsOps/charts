@@ -22,7 +22,6 @@ spec:
             - name: fairwinds-insights
               image: "{{  index $.Values "cronjobImage" "repository" }}:{{ include "fairwinds-insights.cronjobImageTag" . }}"
               command: ["trial_end_downgrade"]
-              {{- include "env-private" . | indent 14 }}
               imagePullPolicy: Always
               resources:
                 limits:
