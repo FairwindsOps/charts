@@ -41,9 +41,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | hubspotCronjob.resources.limits.memory | string | `"1024Mi"` |  |
 | hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |
 | hubspotCronjob.resources.requests.memory | string | `"128Mi"` |  |
-| hubspotCronjob.schedules[0].name | string | `"hubspot-sync"` |  |
-| hubspotCronjob.schedules[0].interval | string | `"1h"` |  |
-| hubspotCronjob.schedules[0].cron | string | `"30 * * * *"` |  |
+| hubspotCronjob.schedules | list | `[]` |  |
 | benchmarkCronjob.resources.limits.cpu | string | `"500m"` |  |
 | benchmarkCronjob.resources.limits.memory | string | `"1024Mi"` |  |
 | benchmarkCronjob.resources.requests.cpu | string | `"80m"` |  |
