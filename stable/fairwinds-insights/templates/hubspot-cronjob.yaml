@@ -4,7 +4,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-cronjob-{{ .name }}
+  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: hubspot-cronjob-{{ .name }}
