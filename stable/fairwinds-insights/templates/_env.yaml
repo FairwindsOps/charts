@@ -85,11 +85,19 @@ env:
   value: {{ .Values.timescale.sslMode | default "require" }}
 - name: TIMESCALE_HOST
   value: {{ .Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}
+{{- if .Values.timescale.ephemeral }}
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: fwinsights-timescale
+      name: {{ .Values.timescale.secrets.credentialsSecretName }}
       key: PATRONI_SUPERUSER_PASSWORD
+{{- else }}
+- name: TIMESCALE_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.existingSecret }}
+      key: timescale-password
+{{- end }}
 {{- end }}
 {{- with .Values.options.insightsSAASHost }}
 - name: INSIGHTS_SAAS_HOST

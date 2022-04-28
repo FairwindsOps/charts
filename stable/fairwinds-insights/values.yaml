@@ -64,6 +64,36 @@ options:
   # -- Name of the secret where session keys and other secrets are stored
   secretName: fwinsights-secrets
 
+  # This adds an empty low-priority pod, so we don't have
+  # to wait for cluster-autoscaler with each deployment
+  overprovisioning:
+    enabled: false
+    memory: 1Gi
+    cpu: 1000m
+
+hubspotCronjob:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  schedules: []
+
+benchmarkCronjob:
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  schedules: []
+
+selfHostedSecret:
+
+
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables: {}
 
