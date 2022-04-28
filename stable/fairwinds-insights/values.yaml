@@ -79,10 +79,7 @@ hubspotCronjob:
     requests:
       cpu: 80m
       memory: 128Mi
-  schedules:
-    - name: hubspot-sync
-      interval: 1h
-      cron: "30 * * * *"
+  schedules: []
 
 benchmarkCronjob:
   resources:
