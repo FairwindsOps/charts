@@ -121,6 +121,7 @@ Parameter | Description | Default
 `awscosts.database` | AWS database where Athena table was created | ""
 `awscosts.table` | AWS database Athena table for AWS costs | ""
 `awscosts.catalog` | AWS database catalog for AWS costs | ""
+`awscosts.serviceAccount.annotations` | Annotations to add to the awscosts service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing aws | nil
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
