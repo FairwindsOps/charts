@@ -406,6 +406,8 @@ awscosts:
   image:
     repository: quay.io/fairwinds/aws-costs
     tag: "0.1"
+  serviceAccount:
+    annotations:
   resources:
     limits:
       cpu: 250m
