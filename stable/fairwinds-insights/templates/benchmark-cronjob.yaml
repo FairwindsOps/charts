@@ -2,7 +2,7 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ $.Values.fullnameOverride }}-cronjob-{{ .name }}
+  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: benchmark-cronjob-{{ .name }}
@@ -14,7 +14,7 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
-          {{- with index $.Values  "image" "pullSecret" }}
+          {{- with index $.Values "image" "pullSecret" }}
           imagePullSecrets:
             - name: {{ . }}
           {{- end }}
@@ -22,7 +22,6 @@ spec:
             - name: fairwinds-insights
               image: "{{  index $.Values "cronjobImage" "repository" }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
               command: ["benchmark"]
-              {{- include "env-private" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
                 {{- toYaml $.Values.benchmarkCronjob.resources | nindent 16 }}

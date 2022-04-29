@@ -29,6 +29,8 @@ webhookConfig:
   failurePolicy: Ignore
   # webhookConfig.matchPolicy -- matchPolicy for the ValidatingWebhookConfiguration
   matchPolicy: Exact
+  # webhookConfig.timeoutSeconds -- number of seconds to wait before failing the admission request (max is 30)
+  timeoutSeconds: 30
   # webhookConfig.namespaceSelector -- namespaceSelector for the ValidatingWebhookConfiguration
   namespaceSelector:
     matchExpressions:
