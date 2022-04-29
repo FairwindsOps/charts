@@ -1,5 +1,3 @@
-** Please be patient while the chart is being deployed **
-
-Welcome to Fairwinds Insights
-
-The self-hosted version of Fairwinds Insights is currently in alpha. The documentation is incomplete, and it is subject to breaking changes.
+{{ if gt (len .Values.fairwindsInsights.ingress.hostedZones) 0 }}
+Fairwinds Insights is now running at https://{{ include "fairwinds-insights.sanitizedPrefix" . }}{{ index .Values.fairwindsInsights.ingress.hostedZones 0 }}
+{{ end }}
