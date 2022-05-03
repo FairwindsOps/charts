@@ -23,7 +23,7 @@ spec:
           containers:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
-              command: ["database_cleanup"]
+              command: ["truncate_workload_metrics"]
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
