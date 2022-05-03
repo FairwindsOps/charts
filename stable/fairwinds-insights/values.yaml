@@ -339,6 +339,25 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
+truncateWorkloadMetrics:
+  # -- Enable truncating workload metrics false by default
+  enabled: false
+  # -- Resources for the truncating workload metrics job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 40m
+      memory: 32Mi
+  # -- CRON schedules for the truncating workload metrics job.
+  schedules:
+    - name: truncate-workload
+      cron: "0 */48 * * *"
+  securityContext:
+    # -- The user ID to run the truncating workload metrics job under.
+    runAsUser: 10324
+
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
