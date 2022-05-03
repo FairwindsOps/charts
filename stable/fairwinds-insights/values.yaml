@@ -351,9 +351,7 @@ truncateWorkloadMetrics:
       cpu: 40m
       memory: 32Mi
   # -- CRON schedules for the truncating workload metrics job.
-  schedules:
-    - name: truncate-workload
-      cron: "0 */48 * * *"
+  schedules: []
   securityContext:
     # -- The user ID to run the truncating workload metrics job under.
     runAsUser: 10324

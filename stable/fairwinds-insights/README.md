@@ -100,7 +100,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
 | truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
 | truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
-| truncateWorkloadMetrics.schedules | list | `[{"cron":"0 */48 * * *","name":"truncate-workload"}]` | CRON schedules for the truncating workload metrics job. |
+| truncateWorkloadMetrics.schedules | list | `[]` | CRON schedules for the truncating workload metrics job. |
 | truncateWorkloadMetrics.securityContext.runAsUser | int | `10324` | The user ID to run the truncating workload metrics job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
