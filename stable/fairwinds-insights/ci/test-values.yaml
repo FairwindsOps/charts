@@ -23,7 +23,17 @@ postgresql:
   password: "changeme"
 
 timescale:
-  sslMode: "disable"
+  ephemeral: true
+  enabled: true
+  password: postgres
+  postgresqlHost: timescale
+  postgresqlDatabase: postgres
+  persistence:
+    enabled: false
+  service:
+    port: 5433
+  replica:
+    port: 5433
 
 dashboard:
   pdb:
