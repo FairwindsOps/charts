@@ -431,7 +431,8 @@ timescale:
     credentialsSecretName: fwinsights-timescale
   service:
     # -- Port of the Timescale Database
-    port: 5433
+    primary:
+      port: 5433
   persistence:
     # -- Create Persistent Volume with Timescale
     enabled: true
