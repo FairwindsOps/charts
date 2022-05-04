@@ -129,6 +129,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
 | timescale.postgresqlHost | string | `"timescale"` | Host for Timescale |
 | timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
+| timescale.password | string | `"postgres"` |  |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
