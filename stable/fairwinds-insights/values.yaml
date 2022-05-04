@@ -419,8 +419,10 @@ timescale:
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-    # -- Username to connect to Timescale with
+  # -- Username to connect to Timescale with
   postgresqlUsername: postgres
+  # -- Host for Timescale
+  postgresqlHost: timescale
   # -- Name of the Postgres Database
   postgresqlDatabase: fairwinds_timescale
   secrets:

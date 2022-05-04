@@ -127,6 +127,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
+| timescale.postgresqlHost | string | `"timescale"` | Host for Timescale |
 | timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
