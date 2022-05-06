@@ -50,9 +50,6 @@ resources:
     cpu: 100m
     memory: 128Mi
 
-rbac:
-  apiVersion: v1
-
 nodeSelector: {}
 
 tolerations: []
