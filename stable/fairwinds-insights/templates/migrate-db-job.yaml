@@ -13,7 +13,6 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: migrate-db
 spec:
-  ttlSecondsAfterFinished: 100
   backoffLimit: 5
   template:
     spec:
