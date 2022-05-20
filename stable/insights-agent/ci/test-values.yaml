@@ -33,7 +33,7 @@ workloads:
 
 test:
   enabled: true
-  
+
 kube-bench:
   enabled: true
   resources:
