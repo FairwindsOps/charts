@@ -401,6 +401,15 @@ test:
     repository: "python"
     tag: "3.6"
     pullPolicy: "Always"
+  securityContext:
+    runAsUser: 1200
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
 
 awscosts:
   enabled: false

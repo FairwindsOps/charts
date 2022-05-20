@@ -33,16 +33,7 @@ workloads:
 
 test:
   enabled: true
-  securityContext:
-    runAsUser: 1200
-    allowPrivilegeEscalation: false
-    privileged: false
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    capabilities:
-      drop:
-        - ALL
-
+  
 kube-bench:
   enabled: true
   resources:
