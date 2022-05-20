@@ -4,12 +4,12 @@ dependencies:
   version: 4.0.4
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 15.5.2
+  version: 15.8.7
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
   version: 1.0.3
 - name: falco
   repository: https://falcosecurity.github.io/charts
   version: 1.17.0
-digest: sha256:acde64cf988329e08936d7eaa2a3ba477e7b66ae43b9b15d387a7476c3721b20
-generated: "2022-03-21T22:58:03.300959+03:00"
+digest: sha256:80d703eb7a96c8d6d1fcf05f24ca6eff3898a905a60be21d16c27c4c963ea6d5
+generated: "2022-05-19T18:48:02.312792+03:00"

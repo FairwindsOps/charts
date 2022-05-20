@@ -5,15 +5,16 @@ insights:
   base64token: ""
   tokenSecretName: ""
 
-proxy:
-  # proxy.http -- Annotations used to access the proxy servers(http).
-  http:
-  # proxy.https -- Annotations used to access the proxy servers(https).
-  https:
-  # proxy.ftp -- Annotations used to access the proxy servers(ftp).
-  ftp:
-  # proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
-  no_proxy:
+global:
+  proxy:
+    # global.proxy.http -- Annotations used to access the proxy servers(http).
+    http:
+    # global.proxy.https -- Annotations used to access the proxy servers(https).
+    https:
+    # global.proxy.ftp -- Annotations used to access the proxy servers(ftp).
+    ftp:
+    # global.proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
+    no_proxy:
 
 rbac:
   disabled: false
@@ -347,10 +348,6 @@ prometheus:
     persistentVolume:
       enabled: false
     retention: "1d"
-    deploymentAnnotations:
-      polaris.fairwinds.com/insecureCapabilities-exempt: "true"
-      polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
-      polaris.fairwinds.com/notReadOnlyRootFilesystem-exempt: "true"
     resources:
       limits:
         cpu: 500m
@@ -358,6 +355,12 @@ prometheus:
       requests:
         cpu: 250m
         memory: 2Gi
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
   kube-state-metrics:
     image:
       pullPolicy: Always
@@ -405,6 +408,15 @@ test:
     repository: "python"
     tag: "3.6"
     pullPolicy: "Always"
+  securityContext:
+    runAsUser: 1200
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
 
 awscosts:
   enabled: false
