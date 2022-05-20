@@ -88,6 +88,7 @@ spec:
               configMapKeyRef:
                 name: {{ include "insights-admission.configmapName" . }}
                 key: host
+          {{ include "proxy-env-spec" . | indent 10 | trim }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
