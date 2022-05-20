@@ -1,3 +1,14 @@
+global:
+  proxy:
+    # global.proxy.http -- Annotations used to access the proxy servers(http).
+    http:
+    # global.proxy.https -- Annotations used to access the proxy servers(https).
+    https:
+    # global.proxy.ftp -- Annotations used to access the proxy servers(ftp).
+    ftp:
+    # global.proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
+    no_proxy:
+
 insights:
   # insights.organization -- The name of your Organization from Fairwinds Insights
   organization: ""

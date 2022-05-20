@@ -88,29 +88,29 @@ initContainers:
   - --file
   - /output/{{ .Label }}-config.yaml
   env:
-  {{- if .Values.proxy.https }}
+  {{- if .Values.global.proxy.https }}
   - name: https_proxy
-    value: {{ .Values.proxy.https }}
+    value: {{ .Values.global.proxy.https }}
   - name: HTTPS_PROXY
-    value: {{ .Values.proxy.https }}
+    value: {{ .Values.global.proxy.https }}
   {{- end }}
-  {{- if .Values.proxy.http }}
+  {{- if .Values.global.proxy.http }}
   - name: http_proxy
-    value: {{ .Values.proxy.http }}
+    value: {{ .Values.global.proxy.http }}
   - name: HTTP_PROXY
-    value: {{ .Values.proxy.http }}
+    value: {{ .Values.global.proxy.http }}
   {{- end }}
-  {{- if .Values.proxy.ftp }}
+  {{- if .Values.global.proxy.ftp }}
   - name: ftp_proxy
-    value: {{ .Values.proxy.ftp }}
+    value: {{ .Values.global.proxy.ftp }}
   - name: FTP_PROXY
-    value: {{ .Values.proxy.ftp }}
+    value: {{ .Values.global.proxy.ftp }}
   {{- end }}
-  {{- if .Values.proxy.no_proxy }}
+  {{- if .Values.global.proxy.no_proxy }}
   - name: no_proxy
-    value: {{ .Values.proxy.no_proxy }}
+    value: {{ .Values.global.proxy.no_proxy }}
   - name: NO_PROXY
-    value: {{ .Values.proxy.no_proxy }}
+    value: {{ .Values.global.proxy.no_proxy }}
   {{- end }}
   - name: FAIRWINDS_TOKEN
     valueFrom:
@@ -153,28 +153,28 @@ securityContext:
 {{- end }}
 
 {{ define "proxy-env-spec" }}
-{{- if .Values.proxy.https }}
+{{- if .Values.global.proxy.https }}
 - name: https_proxy
-  value: {{ .Values.proxy.https }}
+  value: {{ .Values.global.proxy.https }}
 - name: HTTPS_PROXY
-  value: {{ .Values.proxy.https }}
+  value: {{ .Values.global.proxy.https }}
 {{- end }}
-{{- if .Values.proxy.http }}
+{{- if .Values.global.proxy.http }}
 - name: http_proxy
-  value: {{ .Values.proxy.http }}
+  value: {{ .Values.global.proxy.http }}
 - name: HTTP_PROXY
-  value: {{ .Values.proxy.http }}
+  value: {{ .Values.global.proxy.http }}
 {{- end }}
-{{- if .Values.proxy.ftp }}
+{{- if .Values.global.proxy.ftp }}
 - name: ftp_proxy
-  value: {{ .Values.proxy.ftp }}
+  value: {{ .Values.global.proxy.ftp }}
 - name: FTP_PROXY
-  value: {{ .Values.proxy.ftp }}
+  value: {{ .Values.global.proxy.ftp }}
 {{- end }}
-{{- if .Values.proxy.no_proxy }}
+{{- if .Values.global.proxy.no_proxy }}
 - name: no_proxy
-  value: {{ .Values.proxy.no_proxy }}
+  value: {{ .Values.global.proxy.no_proxy }}
 - name: NO_PROXY
-  value: {{ .Values.proxy.no_proxy }}
+  value: {{ .Values.global.proxy.no_proxy }}
 {{- end }}
 {{- end }}
