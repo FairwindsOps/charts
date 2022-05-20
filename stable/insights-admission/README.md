@@ -37,6 +37,10 @@ rules:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| global.proxy.http | string | `nil` | Annotations used to access the proxy servers(http). |
+| global.proxy.https | string | `nil` | Annotations used to access the proxy servers(https). |
+| global.proxy.ftp | string | `nil` | Annotations used to access the proxy servers(ftp). |
+| global.proxy.no_proxy | string | `nil` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy. |
 | insights.organization | string | `""` | The name of your Organization from Fairwinds Insights |
 | insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
 | insights.host | string | `"https://insights.fairwinds.com"` | Override the hostname for Fairwinds Insights |
