@@ -547,7 +547,7 @@ reportjob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "1.2"
+  insightsCIVersion: "1.6"
   hpa:
     enabled: true
     min: 2
