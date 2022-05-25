@@ -89,6 +89,8 @@ controller:
     podAnnotations: {}
 
 dashboard:
+  # dashboard.basePath -- Path on which the dashboard is served. Defaults to `/`
+  basePath: null
   # dashboard.enabled -- If true, the dashboard component will be installed
   enabled: true
   # dashboard.replicaCount -- Number of dashboard pods to run

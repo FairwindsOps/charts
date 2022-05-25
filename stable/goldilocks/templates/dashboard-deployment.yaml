@@ -60,6 +60,10 @@ spec:
             {{- range $name, $value := .Values.dashboard.flags }}
             - --{{ $name }}={{ $value }}
             {{- end }}
+            {{- with .Values.dashboard.basePath }}
+            - --base-path
+            - {{ . }}
+            {{- end }}
         {{- if .Values.dashboard.securityContext }}
           securityContext:
             {{- toYaml .Values.dashboard.securityContext | nindent 12 }}
@@ -70,11 +74,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: /health
+              path: {{.Values.dashboard.basePath | default "/" }}health
               port: http
           readinessProbe:
             httpGet:
-              path: /health
+              path: {{.Values.dashboard.basePath | default "/" }}health
               port: http
           resources:
             {{- toYaml .Values.dashboard.resources | nindent 12 }}
