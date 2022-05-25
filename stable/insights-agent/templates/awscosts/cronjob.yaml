@@ -30,24 +30,24 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: {{ .Values.awscosts.secretName }}
-                  key: AWS_SECRET_ACCESS_KEY            
+                  key: AWS_SECRET_ACCESS_KEY
             - name: AWS_DEFAULT_REGION
               value: {{ .Values.awscosts.region }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./aws-costs.sh"]
             args:
-              - --database 
+              - --database
               - {{ .Values.awscosts.database }}
-              - --table 
+              - --table
               - {{ .Values.awscosts.table }}
-              - --catalog 
+              - --catalog
               - {{ .Values.awscosts.catalog }}
-              - --tagkey 
+              - --tagkey
               - {{ .Values.awscosts.tagkey }}
-              - --tagvalue 
+              - --tagvalue
               - {{ .Values.awscosts.tagvalue }}
-              - --workgroup 
-              - {{ .Values.awscosts.workgroup }}              
+              - --workgroup
+              - {{ .Values.awscosts.workgroup }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}
