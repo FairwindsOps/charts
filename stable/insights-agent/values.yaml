@@ -427,6 +427,8 @@ awscosts:
     requests:
       cpu: 100m
       memory: 128Mi
+  # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
+  containerSecurityContext: {}
 
 right-sizer:
   enabled: false
