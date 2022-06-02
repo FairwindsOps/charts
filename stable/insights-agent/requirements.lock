@@ -7,9 +7,9 @@ dependencies:
   version: 15.8.7
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: 1.1.2
+  version: 1.1.3
 - name: falco
   repository: https://falcosecurity.github.io/charts
   version: 1.17.0
-digest: sha256:5c77c5ff24744098c6c26983f4726059222df2d2e3a6ae835659bda09864b516
-generated: "2022-05-20T21:53:35.297507+03:00"
+digest: sha256:3aae2c57dcc3ccb4495a02a76c2a722c2e618dbaf8931e59d74f6033dd926ea7
+generated: "2022-06-02T18:56:51.718612+03:00"
