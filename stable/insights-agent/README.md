@@ -61,11 +61,11 @@ Parameter | Description | Default
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `rbac.disabled` | Don't use any of the built-in RBAC | `false`
 `fleetInstall` | See Fleet Installation docs | `false`
+`global.proxy.http` | Annotations used to access the proxy servers(http) | ""
+`global.proxy.https` | Annotations used to access the proxy servers(https) | ""
+`global.proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
+`global.proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
-`proxy.http` | Annotations used to access the proxy servers(http) | ""
-`proxy.https` | Annotations used to access the proxy servers(https) | ""
-`proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
-`proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
@@ -121,6 +121,7 @@ Parameter | Description | Default
 `awscosts.database` | AWS database where Athena table was created | ""
 `awscosts.table` | AWS database Athena table for AWS costs | ""
 `awscosts.catalog` | AWS database catalog for AWS costs | ""
+`awscosts.serviceAccount.annotations` | Annotations to add to the awscosts service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing aws | nil
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""

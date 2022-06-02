@@ -1,10 +1,10 @@
 {{- if not (index .Values "options" "insightsSAASHost") }}
 {{ range .Values.hubspotCronjob.schedules }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-cronjob-{{ .name }}
+  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
     app.kubernetes.io/component: hubspot-cronjob-{{ .name }}
@@ -24,6 +24,7 @@ spec:
             - name: fairwinds-insights
               image: "{{  index $.Values "cronjobImage" "repository" }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
               command: ["hubspot_sync"]
+              {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
                 {{- toYaml $.Values.hubspotCronjob.resources | nindent 16 }}

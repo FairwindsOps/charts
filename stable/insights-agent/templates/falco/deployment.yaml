@@ -59,7 +59,7 @@ spec:
         - name: output-data
           mountPath: /output
         env:
-        {{ include "proxy-env-spec" . | indent 12 | trim }}
+        {{ include "proxy-env-spec" . | indent 8 | trim }}
       {{- if .Values.falco.securityContext }}
         securityContext:
           {{- toYaml .Values.falco.securityContext | nindent 12 }}

@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   name: {{ include "insights-agent.fullname" . }}-test
   annotations:
-    helm.sh/hook: pre-install
+    helm.sh/hook: pre-install,pre-upgrade
   labels:
     component: test
     app: insights-agent
@@ -24,7 +24,7 @@ spec:
           env:
           {{ include "proxy-env-spec" . | indent 10 | trim }}
           securityContext:
-            {{- toYaml .Values.securityContext | nindent 12 }}
+            {{- toYaml .Values.test.securityContext | nindent 12 }}
           image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
           imagePullPolicy: {{ .Values.test.image.pullPolicy }}
           ports:
@@ -66,7 +66,7 @@ kind: Service
 metadata:
   name: insights-agent-test
   annotations:
-    helm.sh/hook: pre-install
+    helm.sh/hook: pre-install,pre-upgrade
   labels:
     component: test
     app: insights-agent

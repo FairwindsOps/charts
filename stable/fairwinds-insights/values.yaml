@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.0.1
+  agentChartTargetVersion: 2.0.7
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -339,6 +339,23 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
+truncateWorkloadMetrics:
+  # -- Enable truncating workload metrics false by default
+  enabled: false
+  # -- Resources for the truncating workload metrics job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 40m
+      memory: 32Mi
+  # -- CRON schedules for the truncating workload metrics job.
+  schedules: []
+  securityContext:
+    # -- The user ID to run the truncating workload metrics job under.
+    runAsUser: 10324
+
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
@@ -399,8 +416,7 @@ timescale:
   replicaCount: 1
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
-  ephemeral: false
-  enabled: false
+  ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
     # -- Username to connect to Timescale with
@@ -531,7 +547,7 @@ reportjob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "1.2"
+  insightsCIVersion: "1.6"
   hpa:
     enabled: true
     min: 2

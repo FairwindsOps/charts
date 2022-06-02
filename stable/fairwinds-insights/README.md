@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the openAPI server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the openAPI server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.0.1"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.0.7"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -98,6 +98,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
+| truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
+| truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
+| truncateWorkloadMetrics.schedules | list | `[]` | CRON schedules for the truncating workload metrics job. |
+| truncateWorkloadMetrics.securityContext.runAsUser | int | `10324` | The user ID to run the truncating workload metrics job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | service.annotations | string | `nil` | Annotations for the services |
@@ -120,8 +124,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | timescale.replicaCount | int | `1` |  |
 | timescale.clusterName | string | `"timescale"` |  |
-| timescale.ephemeral | bool | `false` | Use the ephemeral Timescale chart by default |
-| timescale.enabled | bool | `false` |  |
+| timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
 | timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
@@ -182,7 +185,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"1.2"` |  |
+| repoScanJob.insightsCIVersion | string | `"1.6"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |
