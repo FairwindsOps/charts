@@ -35,6 +35,12 @@ backoffLimit: {{ .Values.cronjobs.backoffLimit }}
 activeDeadlineSeconds: {{ mul .Config.timeout .Values.cronjobs.backoffLimit }}
 {{- end }}
 
+{{ define "job-spec-metadata" }}
+metadata:
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+{{- end }}
+
 {{ define "job-template-spec" }}
 restartPolicy: Never
 serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
