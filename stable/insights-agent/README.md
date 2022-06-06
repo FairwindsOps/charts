@@ -163,7 +163,7 @@ falcosidekick:
   fullfqdn: true
   config:
     webhook:
-      address: "http://falco-agent:3031/data"
+      address: "http://falco-agent.insights-agent:3031/data"
 ```
 
 #### Behavior changes
