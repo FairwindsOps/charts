@@ -125,6 +125,7 @@ Parameter | Description | Default
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
+`awscosts.containerSecurityContext` | Additional container securityContext items for the cronJob. | {}
 
 ## Breaking Changes
 
