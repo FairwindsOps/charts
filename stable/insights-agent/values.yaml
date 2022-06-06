@@ -417,7 +417,7 @@ awscosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "0.1"
+    tag: "1.0"
   serviceAccount:
     annotations:
   resources:
