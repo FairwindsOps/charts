@@ -6,6 +6,7 @@ metadata:
     app: insights-agent
   annotations:
     polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
   {{- with .Values.installReporter.additionalAnnotations }}
     {{- toYaml . | nindent 4 }}
