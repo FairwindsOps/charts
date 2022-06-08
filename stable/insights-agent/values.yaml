@@ -50,7 +50,6 @@ cronjobExecutor:
   resources:
     limits:
       cpu: 100m
-      memory: 128Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -62,7 +61,6 @@ installReporter:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -80,7 +78,6 @@ polaris:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -96,7 +93,6 @@ kube-hunter:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -125,7 +121,6 @@ goldilocks:
     resources:
       limits:
         cpu: 250m
-        memory: 545Mi
       requests:
         cpu: 25m
         memory: 262Mi
@@ -134,7 +129,6 @@ goldilocks:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -185,7 +179,6 @@ opa:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -200,7 +193,6 @@ workloads:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -216,7 +208,6 @@ nova:
   resources:
     limits:
       cpu: 100m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -239,7 +230,6 @@ rbac-reporter:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -260,14 +250,12 @@ kube-bench:
     resources:
       limits:
         cpu: 250m
-        memory: 512Mi
       requests:
         cpu: 100m
         memory: 128Mi
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -291,7 +279,6 @@ trivy:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -307,7 +294,6 @@ pluto:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -324,7 +310,6 @@ prometheus-metrics:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -423,7 +408,6 @@ awscosts:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -477,7 +461,6 @@ right-sizer:
   resources:
     limits:
       cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -561,7 +544,6 @@ falcosecurity:
   resources:
     requests:
       cpu: 100m
-      memory: 256Mi
     limits:
       cpu: 200m
       memory: 512Mi
