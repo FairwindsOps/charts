@@ -3,6 +3,7 @@
   labels:
     app: insights-agent
   annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
   {{- if .Values.cronjobs.disableServiceMesh }}
     linkerd.io/inject: disabled
     sidecar.istio.io/inject: "false"
