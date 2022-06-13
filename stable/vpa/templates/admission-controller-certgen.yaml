@@ -129,5 +129,17 @@ spec:
           {{- end }}
         resources:
             {{- toYaml .Values.admissionController.certGen.resources | nindent 10 }}
+      {{- with .Values.admissionController.certGen.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.admissionController.certGen.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.admissionController.certGen.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 {{- end }}
 {{- end }}

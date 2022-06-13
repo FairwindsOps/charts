@@ -61,11 +61,11 @@ Parameter | Description | Default
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `rbac.disabled` | Don't use any of the built-in RBAC | `false`
 `fleetInstall` | See Fleet Installation docs | `false`
+`global.proxy.http` | Annotations used to access the proxy servers(http) | ""
+`global.proxy.https` | Annotations used to access the proxy servers(https) | ""
+`global.proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
+`global.proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
-`proxy.http` | Annotations used to access the proxy servers(http) | ""
-`proxy.https` | Annotations used to access the proxy servers(https) | ""
-`proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
-`proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
@@ -125,6 +125,7 @@ Parameter | Description | Default
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
+`awscosts.containerSecurityContext` | Additional container securityContext items for the cronJob. | {}
 
 ## Breaking Changes
 
@@ -162,7 +163,7 @@ falcosidekick:
   fullfqdn: true
   config:
     webhook:
-      address: "http://falco-agent:3031/data"
+      address: "http://falco-agent.insights-agent:3031/data"
 ```
 
 #### Behavior changes
