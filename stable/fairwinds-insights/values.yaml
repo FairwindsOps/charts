@@ -231,6 +231,10 @@ openApi:
   nodeSelector: {}
   # -- Tolerations for the openApi server.
   tolerations: []
+  ingress:
+    enabled: true
+  service:
+    type:
 
 dbMigration:
   # -- Resources for the database migration job.
