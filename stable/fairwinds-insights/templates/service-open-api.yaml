@@ -10,7 +10,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  type: {{ default .Vaules.service.type .Values.openApi.service.type }}
+  type: {{ default .Values.service.type .Values.openApi.service.type }}
   ports:
     - port: {{ .Values.service.port }}
       targetPort: http
