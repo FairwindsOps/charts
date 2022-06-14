@@ -189,6 +189,12 @@ api:
   securityContext:
     # -- The user ID to run the API server under.
     runAsUser: 10324
+  ingress:
+    # -- Enable the Open API ingress
+    enabled: true
+  service:
+    # -- Service type for Open API server
+    type:
 
 openApi:
   # -- Port for the Open API server to listen on.

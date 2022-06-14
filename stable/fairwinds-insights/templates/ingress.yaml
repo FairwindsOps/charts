@@ -23,6 +23,7 @@ spec:
 {{- end }}
   rules:
     {{- range .Values.ingress.hostedZones }}
+    {{- if $.Values.api.ingress.enabled }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
@@ -30,6 +31,7 @@ spec:
             backend:
               serviceName: {{ $fullName }}-api
               servicePort: http
+    {{- end }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
@@ -165,6 +167,7 @@ spec:
                 port:
                   name: http
           {{- end }}
+          {{- if $.Values.api.ingress.enabled }}
           - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
             pathType: Prefix
             backend:
@@ -172,6 +175,7 @@ spec:
                 name: {{ $fullName }}-api
                 port:
                   name: http
+          {{- end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
@@ -181,6 +185,7 @@ spec:
                   name: http
     {{- end }}
 {{- else }}
+{{- if $.Values.api.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -218,6 +223,7 @@ spec:
                 port:
                   name: http
     {{- end }}
+{{- end }}
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
