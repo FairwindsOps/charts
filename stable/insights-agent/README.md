@@ -125,6 +125,7 @@ Parameter | Description | Default
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
+`awscosts.containerSecurityContext` | Additional container securityContext items for the cronJob. | {}
 
 ## Breaking Changes
 
@@ -162,7 +163,7 @@ falcosidekick:
   fullfqdn: true
   config:
     webhook:
-      address: "http://falco-agent:3031/data"
+      address: "http://falco-agent.insights-agent:3031/data"
 ```
 
 #### Behavior changes
