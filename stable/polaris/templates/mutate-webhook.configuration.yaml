@@ -20,6 +20,8 @@ webhooks:
       namespace: {{ .Release.Namespace }}
       path: /mutate
       port: 443
+  failurePolicy: {{ .Values.webhook.failurePolicy }}
+  matchPolicy: {{ .Values.webhook.matchPolicy }}
   name: polaris.fairwinds.com
   namespaceSelector:
     {{ .Values.webhook.namespaceSelector | toYaml | nindent 4 }}
