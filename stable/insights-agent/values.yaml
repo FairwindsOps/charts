@@ -48,9 +48,6 @@ cronjobExecutor:
     repository: curlimages/curl
     tag: "7.79.1"
   resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -60,9 +57,6 @@ installReporter:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.3"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -78,9 +72,6 @@ polaris:
     repository: quay.io/fairwinds/polaris
     tag: "5.0"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -94,9 +85,6 @@ kube-hunter:
     repository: aquasec/kube-hunter
     tag: "0.6.4"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -123,18 +111,12 @@ goldilocks:
       on-by-default: true
       exclude-namespaces: "kube-system"
     resources:
-      limits:
-        cpu: 250m
-        memory: 545Mi
       requests:
         cpu: 25m
         memory: 262Mi
   dashboard:
     enabled: false
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -183,9 +165,6 @@ opa:
   # This *does not* impact RBAC rules added for `defaultTargetResources`.
   targetResourcesAutoRBAC: true
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -198,9 +177,6 @@ workloads:
     repository: quay.io/fairwinds/workloads
     tag: "2.2"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -214,9 +190,6 @@ nova:
     repository: quay.io/fairwinds/nova
     tag: "v3.0"
   resources:
-    limits:
-      cpu: 100m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -237,9 +210,6 @@ rbac-reporter:
     repository: quay.io/fairwinds/rbac-reporter
     tag: "1.2"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -258,16 +228,10 @@ kube-bench:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
       tag: 0.2
     resources:
-      limits:
-        cpu: 250m
-        memory: 512Mi
       requests:
         cpu: 100m
         memory: 128Mi
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -289,9 +253,6 @@ trivy:
   serviceAccount:
     annotations:
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -305,9 +266,6 @@ pluto:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
     tag: "v5.3"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -322,9 +280,6 @@ prometheus-metrics:
     repository: quay.io/fairwinds/prometheus-collector
     tag: "1.0"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -421,9 +376,6 @@ awscosts:
   serviceAccount:
     annotations:
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -475,9 +427,6 @@ right-sizer:
   SkipVolumes: true
   # rightsizer.resources -- Resources for the controller deployment
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -561,9 +510,6 @@ falcosecurity:
   resources:
     requests:
       cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 200m
       memory: 512Mi
   falco:
     jsonOutput: true
