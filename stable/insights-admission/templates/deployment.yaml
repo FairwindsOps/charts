@@ -62,6 +62,9 @@ spec:
             mountPath: /opt/cert/
             readOnly: true
           env:
+          # This is always specified as pluto is enabled in Insights settings.
+          - name: PLUTO_TARGET_VERSIONS
+            value: {{ $.Values.pluto.targetVersions | default (printf "k8s=v%s.%s.0" .Capabilities.KubeVersion.Major (trimSuffix "+" .Capabilities.KubeVersion.Minor)) }}
           - name: WEBHOOK_FAILURE_POLICY
             value: {{ .Values.webhookConfig.failurePolicy }}
           {{- if .Values.service.usePod443 }}
