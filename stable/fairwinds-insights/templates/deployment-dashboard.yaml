@@ -39,6 +39,7 @@ spec:
             mv -f {{ . }} ./config.js || exit 1
             {{ end -}}
             sed -i 's/SERVICE.NAMESPACE.svc/{{ include "fairwinds-insights.fullname" . }}-api.{{.Release.Namespace}}.svc/' /etc/nginx/nginx.conf
+            sed -i 's/SERVICE-OPEN-API.NAMESPACE.svc/{{ include "fairwinds-insights.fullname" . }}-open-api.{{.Release.Namespace}}.svc/' /etc/nginx/nginx.conf
             nginx -g "daemon off;"
           ports:
             - name: http
