@@ -55,6 +55,7 @@ rules:
 | webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
 | webhookConfig.timeoutSeconds | int | `30` | number of seconds to wait before failing the admission request (max is 30) |
 | webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
+| webhookConfig.annotations | object | `{}` | Annotations to add to the ValidatingWebhookConfiguration |
 | webhookConfig.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
 | webhookConfig.rules | list | `[]` | An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. Rules specified here may also be granted to the Insights OPA plugin, see also the insights-agent chart values for opa. |
 | webhookConfig.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
