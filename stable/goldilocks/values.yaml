@@ -57,9 +57,7 @@ controller:
   topologySpreadConstraints: []
   # controller.resources -- The resources block for the controller pods
   resources:
-    limits:
-      cpu: 25m
-      memory: 32Mi
+    limits: {}
     requests:
       cpu: 25m
       memory: 32Mi
