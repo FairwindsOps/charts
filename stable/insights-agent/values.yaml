@@ -114,6 +114,9 @@ goldilocks:
       requests:
         cpu: 25m
         memory: 262Mi
+      limits:
+        cpu:
+        memory:
   dashboard:
     enabled: false
   resources:
