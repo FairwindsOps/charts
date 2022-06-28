@@ -351,6 +351,13 @@ insights-admission:
   serviceAccount:
     rbac:
       grantRole: "view"
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 # test -- Used for chart CI only - deploys a test deployment
 test:
