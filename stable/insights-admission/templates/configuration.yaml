@@ -10,6 +10,9 @@ metadata:
     {{- if not .Values.secretName }}
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "insights-admission.fullname" . }}-cert
     {{- end }}
+    {{- with .Values.webhookConfig.annotations }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
 webhooks:
 - admissionReviewVersions:
 {{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
