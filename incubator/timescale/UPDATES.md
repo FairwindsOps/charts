@@ -13,6 +13,7 @@ To update this chart, run:
 ```bash
 git clone github.com/timescale/timescaledb-kubernetes
 cp -r timescaledb-kubernetes/charts/timescaledb-single/* ~/git/charts/incubator/timescale/
+rm incubator/timescale/templates/job-update-patroni.yaml
 git checkout -- incubator/timescale/templates/role-timescaledb.yaml
 helm-docs --sort-values-order=file
 ```
