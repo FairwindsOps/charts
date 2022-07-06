@@ -37,7 +37,7 @@ secrets:
 
   # Selector used to provision your own Secret containing patroni configuration details
   # This is mutually exclusive with `credentials` option and takes precedence over it.
-  # WARNING: Use this option with caution  
+  # WARNING: Use this option with caution
   credentialsSecretName: ""
 
   # This map should contain tls key and certifiacte. When empty,
@@ -58,7 +58,7 @@ secrets:
     PGBACKREST_REPO1_S3_KEY_SECRET: ""
     PGBACKREST_REPO1_S3_BUCKET: ""
     PGBACKREST_REPO1_S3_ENDPOINT: "s3.amazonaws.com"
-  
+
   # Selector used to provision your own Secret containing pgbackrest configuration details
   # This is mutually exclusive with `pgbackrest` option and takes precedence over it.
   # WARNING: Use this option with caution
