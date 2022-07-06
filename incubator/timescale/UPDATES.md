@@ -14,3 +14,5 @@ cp -r timescaledb-kubernetes/charts/timescaledb-single/* ~/git/charts/incubator/
 rm incubator/timescale/templates/job-update-patroni.yaml
 helm-docs --sort-values-order=file
 ```
+
+You may also need to change the chart version to make the linter happy.
