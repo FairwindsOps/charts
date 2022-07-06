@@ -1,6 +1,6 @@
 # timescaledb-single
 
-![Version: 0.11.1](https://img.shields.io/badge/Version-0.11.1-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+![Version: 0.13.1](https://img.shields.io/badge/Version-0.13.1-informational?style=flat-square) ![AppVersion: 0.13.1](https://img.shields.io/badge/AppVersion-0.13.1-informational?style=flat-square)
 
 TimescaleDB HA Deployment.
 
@@ -27,7 +27,7 @@ TimescaleDB HA Deployment.
 | clusterName | string | `nil` |  |
 | version | string | `nil` |  |
 | image.repository | string | `"timescale/timescaledb-ha"` |  |
-| image.tag | string | `"pg13.4-ts2.4.2-p0"` |  |
+| image.tag | string | `"pg14.3-ts2.7.0-p0"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | secrets.credentials.PATRONI_SUPERUSER_PASSWORD | string | `""` |  |
 | secrets.credentials.PATRONI_REPLICATION_PASSWORD | string | `""` |  |
@@ -154,7 +154,7 @@ TimescaleDB HA Deployment.
 | service.replica.labels | object | `{}` |  |
 | service.replica.annotations | object | `{}` |  |
 | service.replica.spec | object | `{}` |  |
-| loadBalancer.enabled | bool | `false` |  |
+| loadBalancer.enabled | bool | `true` |  |
 | loadBalancer.port | int | `5432` |  |
 | loadBalancer.annotations."service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout" | string | `"4000"` |  |
 | loadBalancer.spec | string | `nil` |  |
