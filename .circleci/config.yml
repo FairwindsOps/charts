@@ -12,7 +12,7 @@ references:
         echo 'Install AWS CLI'
         pip install awscli
         echo 'Install needed packages'
-        apk --update add bash jq
+        apk --update add bash jq curl yq
   kind_configuration_helm3: &kind_configuration_helm3
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
@@ -104,6 +104,10 @@ jobs:
     steps:
       - checkout
       - *setup_environment
+      - rok8s11/get_vault_aws_credentials:
+          vault_path: fairwindsops/sts/charts
+      - rok8s11/get_vault_env:
+          vault_path: repo/charts/env
       - run:
           name: sync
           command: scripts/sync.sh
