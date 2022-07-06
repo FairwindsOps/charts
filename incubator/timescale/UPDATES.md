@@ -12,4 +12,5 @@ To update this chart, run:
 git clone github.com/timescale/timescaledb-kubernetes
 cp -r timescaledb-kubernetes/charts/timescaledb-single/* ~/git/charts/incubator/timescale/
 rm incubator/timescale/templates/job-update-patroni.yaml
+helm-docs --sort-values-order=file
 ```
