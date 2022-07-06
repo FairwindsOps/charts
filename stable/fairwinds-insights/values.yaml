@@ -426,6 +426,8 @@ postgresql:
 
 timescale:
   replicaCount: 1
+  loadBalancer:
+    enabled: false
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
@@ -442,12 +444,6 @@ timescale:
     # -- Port of the Timescale Database
     primary:
       port: 5433
-  persistence:
-    # -- Create Persistent Volume with Timescale
-    enabled: true
-  replication:
-    # -- Replicate Timescale data
-    enabled: false
   loadBalancer:
     enabled: false
     # -- Resources section for Timescale
