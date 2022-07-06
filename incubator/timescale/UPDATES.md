@@ -13,8 +13,11 @@ To update this chart, run:
 ```bash
 git clone github.com/timescale/timescaledb-kubernetes
 cp -r timescaledb-kubernetes/charts/timescaledb-single/* ~/git/charts/incubator/timescale/
-rm incubator/timescale/templates/job-update-patroni.yaml
+git checkout -- incubator/timescale/templates/role-timescaledb.yaml
 helm-docs --sort-values-order=file
 ```
+
+Note that changes to role-timescaledb.yaml are reverted above. This is to remove the
+ability to create services. Other changes to this file may need to be persisted.
 
 You may also need to change the Chart.yaml to make the linter happy
