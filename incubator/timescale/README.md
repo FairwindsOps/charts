@@ -1,234 +1,158 @@
-# timescaledb-single
+<!---
+This file and its contents are licensed under the Apache License 2.0.
+Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+-->
 
-![Version: 0.11.1](https://img.shields.io/badge/Version-0.11.1-informational?style=flat-square) ![AppVersion: 0.1.0](https://img.shields.io/badge/AppVersion-0.1.0-informational?style=flat-square)
+# TimescaleDB Single
 
-TimescaleDB HA Deployment.
+##### Table of Contents
+- [Introduction](#introduction)
+- [Installing](#installing)
+  - [Installing from the Timescale Helm Repo](#installing-from-the-timescale-helm-repo)
+- [Connecting to TimescaleDBs](#connecting-to-timescaledbs)
+  - [Connecting from inside the Cluster](#connecting-from-inside-the-cluster)
+- [Create backups to S3](#create-backups-to-s3)
+- [Cleanup](#cleanup)
+- [Further reading](#further-reading)
 
-**Homepage:** <https://github.com/timescale/timescaledb-kubernetes>
+## Introduction
+This directory contains a Helm chart to deploy a three
+node [TimescaleDB](https://github.com/timescale/timescaledb/) cluster in a
+High Availability (HA) configuration on Kubernetes. This chart will do the following:
 
-## Maintainers
+- Creates three (by default) pods using a Kubernetes [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/).
+- Each pod has a container created using the [TimescaleDB Docker image](https://github.com/timescale/timescaledb-docker-ha).
+  - TimescaleDB 2.1 and PG 13
+- Each of the containers runs a TimescaleDB instance and [Patroni](https://patroni.readthedocs.io/en/latest/) agent.
+- Each TimescaleDB instance is configured for replication (1 Master + 2 Replicas).
 
-| Name | Email | Url |
-| ---- | ------ | --- |
-| TimescaleDB | support@timescale.com |  |
+<img src="./timescaledb-single.png" width="640" />
 
-## Source Code
+When deploying on AWS EKS:
+- The pods will be scheduled on nodes which run in different Availability Zones (AZs).
+- An AWS Elastic Load Balancer (ELB) is configured to handle routing incoming traffic to the Master pod.
 
-* <https://github.com/timescale/timescaledb-kubernetes>
-* <https://github.com/timescale/timescaledb-docker-ha>
-* <https://github.com/zalando/patroni>
+When configured for Backups to S3:
+- Each pod will also include a container running [pgBackRest](https://pgbackrest.org/).
+- By default, two [CronJobs](https://kubernetes.io/docs/concepts/workloads/controllers/cron-jobs/) are created to handle full weekly and incremental daily backups.
+- The backups are stored to an S3 bucket.
 
-## Values
+<img src="./timescaledb-single-backups.png" width="640" />
 
-| Key | Type | Default | Description |
-|-----|------|---------|-------------|
-| replicaCount | int | `3` |  |
-| nameOverride | string | `"timescaledb"` |  |
-| clusterName | string | `nil` |  |
-| version | string | `nil` |  |
-| image.repository | string | `"timescale/timescaledb-ha"` |  |
-| image.tag | string | `"pg13.4-ts2.4.2-p0"` |  |
-| image.pullPolicy | string | `"Always"` |  |
-| secrets.credentials.PATRONI_SUPERUSER_PASSWORD | string | `""` |  |
-| secrets.credentials.PATRONI_REPLICATION_PASSWORD | string | `""` |  |
-| secrets.credentials.PATRONI_admin_PASSWORD | string | `""` |  |
-| secrets.credentialsSecretName | string | `""` |  |
-| secrets.certificate."tls.crt" | string | `""` |  |
-| secrets.certificate."tls.key" | string | `""` |  |
-| secrets.certificateSecretName | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_REGION | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_KEY | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_KEY_SECRET | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_BUCKET | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_ENDPOINT | string | `"s3.amazonaws.com"` |  |
-| secrets.pgbackrestSecretName | string | `""` |  |
-| backup.enabled | bool | `false` |  |
-| backup.pgBackRest.compress-type | string | `"lz4"` |  |
-| backup.pgBackRest.process-max | int | `4` |  |
-| backup.pgBackRest.start-fast | string | `"y"` |  |
-| backup.pgBackRest.repo1-retention-diff | int | `2` |  |
-| backup.pgBackRest.repo1-retention-full | int | `2` |  |
-| backup.pgBackRest.repo1-type | string | `"s3"` |  |
-| backup.pgBackRest.repo1-cipher-type | string | `"none"` |  |
-| backup.pgBackRest.repo1-s3-region | string | `"us-east-2"` |  |
-| backup.pgBackRest.repo1-s3-endpoint | string | `"s3.amazonaws.com"` |  |
-| backup.pgBackRest:archive-push | object | `{}` |  |
-| backup.pgBackRest:archive-get | object | `{}` |  |
-| backup.jobs[0].name | string | `"full-weekly"` |  |
-| backup.jobs[0].type | string | `"full"` |  |
-| backup.jobs[0].schedule | string | `"12 02 * * 0"` |  |
-| backup.jobs[1].name | string | `"incremental-daily"` |  |
-| backup.jobs[1].type | string | `"incr"` |  |
-| backup.jobs[1].schedule | string | `"12 02 * * 1-6"` |  |
-| backup.envFrom | string | `nil` |  |
-| backup.env | string | `nil` |  |
-| bootstrapFromBackup.enabled | bool | `false` |  |
-| bootstrapFromBackup.repo1-path | string | `nil` |  |
-| bootstrapFromBackup.secretName | string | `"pgbackrest-bootstrap"` |  |
-| env | string | `nil` |  |
-| envFrom | string | `nil` |  |
-| patroni.log.level | string | `"WARNING"` |  |
-| patroni.bootstrap.method | string | `"restore_or_initdb"` |  |
-| patroni.bootstrap.restore_or_initdb.command | string | `"/etc/timescaledb/scripts/restore_or_initdb.sh --encoding=UTF8 --locale=C.UTF-8\n"` |  |
-| patroni.bootstrap.restore_or_initdb.keep_existing_recovery_conf | bool | `true` |  |
-| patroni.bootstrap.post_init | string | `"/etc/timescaledb/scripts/post_init.sh"` |  |
-| patroni.bootstrap.dcs.loop_wait | int | `10` |  |
-| patroni.bootstrap.dcs.maximum_lag_on_failover | int | `33554432` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.archive_command | string | `"/etc/timescaledb/scripts/pgbackrest_archive.sh %p"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.archive_mode | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.archive_timeout | string | `"1800s"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.autovacuum_analyze_scale_factor | float | `0.02` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.autovacuum_naptime | string | `"5s"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.autovacuum_max_workers | int | `10` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.autovacuum_vacuum_cost_limit | int | `500` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.autovacuum_vacuum_scale_factor | float | `0.05` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_autovacuum_min_duration | string | `"1min"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.hot_standby | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_checkpoints | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_connections | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_disconnections | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_line_prefix | string | `"%t [%p]: [%c-%l] %u@%d,app=%a [%e] "` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_lock_waits | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_min_duration_statement | string | `"1s"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.log_statement | string | `"ddl"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.max_connections | int | `100` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.max_prepared_transactions | int | `150` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.shared_preload_libraries | string | `"timescaledb,pg_stat_statements"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.ssl | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.ssl_cert_file | string | `"/etc/certificate/tls.crt"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.ssl_key_file | string | `"/etc/certificate/tls.key"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.tcp_keepalives_idle | int | `900` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.tcp_keepalives_interval | int | `100` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.temp_file_limit | string | `"1GB"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters."timescaledb.passfile" | string | `"../.pgpass"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.unix_socket_directories | string | `"/var/run/postgresql"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.unix_socket_permissions | string | `"0750"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.wal_level | string | `"hot_standby"` |  |
-| patroni.bootstrap.dcs.postgresql.parameters.wal_log_hints | string | `"on"` |  |
-| patroni.bootstrap.dcs.postgresql.use_pg_rewind | bool | `true` |  |
-| patroni.bootstrap.dcs.postgresql.use_slots | bool | `true` |  |
-| patroni.bootstrap.dcs.retry_timeout | int | `10` |  |
-| patroni.bootstrap.dcs.ttl | int | `30` |  |
-| patroni.kubernetes.role_label | string | `"role"` |  |
-| patroni.kubernetes.scope_label | string | `"cluster-name"` |  |
-| patroni.kubernetes.use_endpoints | bool | `true` |  |
-| patroni.postgresql.create_replica_methods[0] | string | `"pgbackrest"` |  |
-| patroni.postgresql.create_replica_methods[1] | string | `"basebackup"` |  |
-| patroni.postgresql.pgbackrest.command | string | `"/etc/timescaledb/scripts/pgbackrest_restore.sh"` |  |
-| patroni.postgresql.pgbackrest.keep_data | bool | `true` |  |
-| patroni.postgresql.pgbackrest.no_params | bool | `true` |  |
-| patroni.postgresql.pgbackrest.no_master | bool | `true` |  |
-| patroni.postgresql.basebackup[0].waldir | string | `"/var/lib/postgresql/wal/pg_wal"` |  |
-| patroni.postgresql.recovery_conf.restore_command | string | `"/etc/timescaledb/scripts/pgbackrest_archive_get.sh %f \"%p\""` |  |
-| patroni.postgresql.callbacks.on_role_change | string | `"/etc/timescaledb/scripts/patroni_callback.sh"` |  |
-| patroni.postgresql.callbacks.on_start | string | `"/etc/timescaledb/scripts/patroni_callback.sh"` |  |
-| patroni.postgresql.callbacks.on_reload | string | `"/etc/timescaledb/scripts/patroni_callback.sh"` |  |
-| patroni.postgresql.callbacks.on_restart | string | `"/etc/timescaledb/scripts/patroni_callback.sh"` |  |
-| patroni.postgresql.callbacks.on_stop | string | `"/etc/timescaledb/scripts/patroni_callback.sh"` |  |
-| patroni.postgresql.authentication.replication.username | string | `"standby"` |  |
-| patroni.postgresql.authentication.superuser.username | string | `"postgres"` |  |
-| patroni.postgresql.listen | string | `"0.0.0.0:5432"` |  |
-| patroni.postgresql.pg_hba[0] | string | `"local     all             postgres                              peer"` |  |
-| patroni.postgresql.pg_hba[1] | string | `"local     all             all                                   md5"` |  |
-| patroni.postgresql.pg_hba[2] | string | `"hostnossl all,replication all                all                reject"` |  |
-| patroni.postgresql.pg_hba[3] | string | `"hostssl   all             all                127.0.0.1/32       md5"` |  |
-| patroni.postgresql.pg_hba[4] | string | `"hostssl   all             all                ::1/128            md5"` |  |
-| patroni.postgresql.pg_hba[5] | string | `"hostssl   replication     standby            all                md5"` |  |
-| patroni.postgresql.pg_hba[6] | string | `"hostssl   all             all                all                md5"` |  |
-| patroni.postgresql.use_unix_socket | bool | `true` |  |
-| patroni.restapi.listen | string | `"0.0.0.0:8008"` |  |
-| callbacks.configMap | string | `nil` |  |
-| postInit[0].configMap.name | string | `"custom-init-scripts"` |  |
-| postInit[0].configMap.optional | bool | `true` |  |
-| postInit[1].secret.name | string | `"custom-secret-scripts"` |  |
-| postInit[1].secret.optional | bool | `true` |  |
-| service.primary.type | string | `"ClusterIP"` |  |
-| service.primary.port | int | `5432` |  |
-| service.primary.nodePort | string | `nil` |  |
-| service.primary.labels | object | `{}` |  |
-| service.primary.annotations | object | `{}` |  |
-| service.primary.spec | object | `{}` |  |
-| service.replica.type | string | `"ClusterIP"` |  |
-| service.replica.port | int | `5432` |  |
-| service.replica.nodePort | string | `nil` |  |
-| service.replica.labels | object | `{}` |  |
-| service.replica.annotations | object | `{}` |  |
-| service.replica.spec | object | `{}` |  |
-| loadBalancer.enabled | bool | `false` |  |
-| loadBalancer.port | int | `5432` |  |
-| loadBalancer.annotations."service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout" | string | `"4000"` |  |
-| loadBalancer.spec | string | `nil` |  |
-| replicaLoadBalancer.enabled | bool | `false` |  |
-| replicaLoadBalancer.port | int | `5432` |  |
-| replicaLoadBalancer.annotations."service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout" | string | `"4000"` |  |
-| replicaLoadBalancer.spec | string | `nil` |  |
-| readinessProbe.enabled | bool | `true` |  |
-| readinessProbe.initialDelaySeconds | int | `5` |  |
-| readinessProbe.periodSeconds | int | `30` |  |
-| readinessProbe.timeoutSeconds | int | `5` |  |
-| readinessProbe.failureThreshold | int | `6` |  |
-| readinessProbe.successThreshold | int | `1` |  |
-| persistentVolumes.data.enabled | bool | `true` |  |
-| persistentVolumes.data.size | string | `"2Gi"` |  |
-| persistentVolumes.data.subPath | string | `""` |  |
-| persistentVolumes.data.mountPath | string | `"/var/lib/postgresql"` |  |
-| persistentVolumes.data.annotations | object | `{}` |  |
-| persistentVolumes.data.accessModes[0] | string | `"ReadWriteOnce"` |  |
-| persistentVolumes.wal.enabled | bool | `true` |  |
-| persistentVolumes.wal.size | string | `"1Gi"` |  |
-| persistentVolumes.wal.subPath | string | `""` |  |
-| persistentVolumes.wal.storageClass | string | `nil` |  |
-| persistentVolumes.wal.mountPath | string | `"/var/lib/postgresql/wal"` |  |
-| persistentVolumes.wal.annotations | object | `{}` |  |
-| persistentVolumes.wal.accessModes[0] | string | `"ReadWriteOnce"` |  |
-| fullWalPrevention.enabled | bool | `false` |  |
-| fullWalPrevention.checkFrequency | int | `30` |  |
-| fullWalPrevention.thresholds.readOnlyFreePercent | int | `5` |  |
-| fullWalPrevention.thresholds.readOnlyFreeMB | int | `64` |  |
-| fullWalPrevention.thresholds.readWriteFreePercent | int | `8` |  |
-| fullWalPrevention.thresholds.readWriteFreeMB | int | `128` |  |
-| resources | object | `{}` |  |
-| sharedMemory.useMount | bool | `false` |  |
-| timescaledbTune.enabled | bool | `true` |  |
-| timescaledbTune.args | object | `{}` |  |
-| pgBouncer.enabled | bool | `false` |  |
-| pgBouncer.port | int | `6432` |  |
-| pgBouncer.config.server_reset_query | string | `"DISCARD ALL"` |  |
-| pgBouncer.config.max_client_conn | int | `500` |  |
-| pgBouncer.config.default_pool_size | int | `12` |  |
-| pgBouncer.config.pool_mode | string | `"transaction"` |  |
-| pgBouncer.pg_hba[0] | string | `"local     all postgres                   peer"` |  |
-| pgBouncer.pg_hba[1] | string | `"host      all postgres,standby 0.0.0.0/0 reject"` |  |
-| pgBouncer.pg_hba[2] | string | `"host      all postgres,standby ::0/0     reject"` |  |
-| pgBouncer.pg_hba[3] | string | `"hostssl   all all              0.0.0.0/0 md5"` |  |
-| pgBouncer.pg_hba[4] | string | `"hostssl   all all              ::0/0     md5"` |  |
-| pgBouncer.pg_hba[5] | string | `"hostnossl all all              0.0.0.0/0 reject"` |  |
-| pgBouncer.pg_hba[6] | string | `"hostnossl all all              ::0/0     reject"` |  |
-| pgBouncer.userListSecretName | string | `nil` |  |
-| networkPolicy.enabled | bool | `false` |  |
-| networkPolicy.prometheusApp | string | `"prometheus"` |  |
-| networkPolicy.ingress | string | `nil` |  |
-| nodeSelector | object | `{}` |  |
-| prometheus.enabled | bool | `false` |  |
-| prometheus.image.repository | string | `"wrouesnel/postgres_exporter"` |  |
-| prometheus.image.tag | string | `"v0.7.0"` |  |
-| prometheus.image.pullPolicy | string | `"Always"` |  |
-| prometheus.env | string | `nil` |  |
-| prometheus.volumes | string | `nil` |  |
-| prometheus.volumeMounts | string | `nil` |  |
-| serviceMonitor.enabled | bool | `false` |  |
-| serviceMonitor.portName | string | `"metrics"` |  |
-| serviceMonitor.path | string | `"/metrics"` |  |
-| serviceMonitor.interval | string | `"10s"` |  |
-| podManagementPolicy | string | `"OrderedReady"` |  |
-| podAnnotations | object | `{}` |  |
-| tolerations | list | `[]` |  |
-| affinityTemplate | string | `"podAntiAffinity:\n  preferredDuringSchedulingIgnoredDuringExecution:\n  - weight: 100\n    podAffinityTerm:\n      topologyKey: \"kubernetes.io/hostname\"\n      labelSelector:\n        matchLabels:\n          app: {{ template \"timescaledb.fullname\" . }}\n          release: {{ .Release.Name | quote }}\n          cluster-name: {{ template \"clusterName\" . }}\n  - weight: 50\n    podAffinityTerm:\n      topologyKey: failure-domain.beta.kubernetes.io/zone\n      labelSelector:\n        matchLabels:\n          app: {{ template \"timescaledb.fullname\" . }}\n          release: {{ .Release.Name | quote }}\n          cluster-name: {{ template \"clusterName\" . }}\n"` |  |
-| affinity | object | `{}` |  |
-| rbac.create | bool | `true` |  |
-| serviceAccount.create | bool | `true` |  |
-| serviceAccount.name | string | `nil` |  |
-| debug.execStartPre | string | `nil` |  |
 
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.5.0](https://github.com/norwoodj/helm-docs/releases/v1.5.0)
+## Installing
+
+To install the chart with the release name `my-release`, first  in `values.yaml` you need to set credentials mentioned in list
+below. If you decide not to set those credentials, they will be randomly generated. Those credentials can be setup via helm only
+during helm first run and they won't be rotated with subsequent helm update commands to prevent breaking the database.
+
+* The credentials for the superuser, admin and stand-by users
+* TLS Certificates
+* pgbackrest config (optional)
+
+Then you can install the chart with:
+```console
+helm install --name my-release charts/timescaledb-single
+```
+
+You can override parameters using the `--set key=value[,key=value]` argument to `helm install`,
+e.g., to install the chart with backup enabled:
+
+```console
+helm install --name my-release charts/timescaledb-single --set backup.enabled=true
+```
+
+Alternatively, a YAML file that specifies the values for the parameters can be provided while installing the chart. For example,
+```console
+helm install --name my-release -f myvalues.yaml charts/timescaledb-single
+```
+
+For details about what parameters you can set, have a look at the [Administrator Guide](admin-guide.md#configure)
+
+### Installing from the Timescale Helm Repo
+
+We have a Helm Repository that you can use, instead of cloning this Git repo. 
+
+First add the repository with:
+```console
+helm repo add timescale 'https://charts.timescale.com'
+```
+> **NOTICE**: Helm chart installation will randomly generate secrets which cannot be rotated with subsequent helm upgrades.
+If you want to use predefined credentials, please set them in `secrets` section of `values.yaml` before running `helm install`.
+
+Next proceed to install the chart:
+
+```console
+helm install my-release .
+```
+
+To keep the repo up to date with new versions you can do:
+```console
+helm repo update
+``` 
+## Connecting to TimescaleDBs
+
+To connect to the TimescaleDB instance, we first need to know to which host we need to connect. Use `kubectl` to get that information:
+```console
+kubectl get service/my-release
+```
+```
+NAME         TYPE           CLUSTER-IP       EXTERNAL-IP                 PORT(S)          AGE
+my-release   LoadBalancer   10.100.149.189    verylongname.example.com   5432:31294/TCP   27s
+```
+
+Using the External IP for the service (which will route through the LoadBalancer to the Master), you
+can connect via `psql` using the superuser `postgres` by:
+* decoding the password you generated with kustomize
+```console
+PGPOSTGRESPASSWORD=$(kubectl get secret --namespace default my-release-credentials -o jsonpath="{.data.PATRONI_SUPERUSER_PASSWORD}" | base64 --decode)
+```
+* Connecting with psql
+```console
+PGPASSWORD=$PGPOSTGRESPASSWORD psql -h verylongname.example.com -U postgres
+```
+
+> NOTICE: You may have to wait a few minutes before you can resolve the DNS record
+
+From here, you can start creating users and databases, for example, using the above `psql` session:
+```sql
+CREATE USER example WITH PASSWORD 'thisIsInsecure';
+CREATE DATABASE example OWNER example;
+```
+
+Connect to the example database with the example user:
+
+```console
+psql -h verylongname.example.com -U example -d example
+```
+
+This should get you into the example database, from here on you can follow
+our [TimescaleDB > Getting Started](https://docs.timescale.com/latest/getting-started/creating-hypertables) to create hypertables
+and start using TimescaleDB.
+
+### Connecting from inside the Cluster
+
+To access the database from inside the cluster, you can run `psql` inside the Pod containing the primary:
+
+```
+RELEASE=my-release
+kubectl exec -ti $(kubectl get pod -o name -l role=master,release=$RELEASE) psql
+```
+
+## Create backups to S3
+The backup is disabled by default, look at the
+[Administrator Guide](admin-guide.md#backups) on how to configure backup location, credentials, schedules, etc.
+
+## Cleanup
+
+To remove the spawned pods you can run a simple
+```console
+helm delete my-release
+```
+Some items, (pvc's and S3 backups for example) are not immediately removed.
+To also purge these items, have a look at the [Administrator Guide](admin-guide.md#cleanup)
+
+## Further reading
+
+- [Administrator Guide](admin-guide.md)
+- [TimescaleDB Documentation](https://docs.timescale.com/latest/main)

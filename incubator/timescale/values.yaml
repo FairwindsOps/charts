@@ -20,7 +20,7 @@ image:
   # Image was built from
   # https://github.com/timescale/timescaledb-docker-ha
   repository: timescale/timescaledb-ha
-  tag: pg13.4-ts2.4.2-p0
+  tag: pg14.3-ts2.7.0-p0
   pullPolicy: Always
 
 # By default those secrets are randomly generated.
@@ -37,7 +37,7 @@ secrets:
 
   # Selector used to provision your own Secret containing patroni configuration details
   # This is mutually exclusive with `credentials` option and takes precedence over it.
-  # WARNING: Use this option with caution
+  # WARNING: Use this option with caution  
   credentialsSecretName: ""
 
   # This map should contain tls key and certifiacte. When empty,
@@ -58,7 +58,7 @@ secrets:
     PGBACKREST_REPO1_S3_KEY_SECRET: ""
     PGBACKREST_REPO1_S3_BUCKET: ""
     PGBACKREST_REPO1_S3_ENDPOINT: "s3.amazonaws.com"
-
+  
   # Selector used to provision your own Secret containing pgbackrest configuration details
   # This is mutually exclusive with `pgbackrest` option and takes precedence over it.
   # WARNING: Use this option with caution
@@ -322,7 +322,7 @@ service:
 loadBalancer:
   # If not enabled, we still expose the primary using a so called Headless Service
   # https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
-  enabled: false
+  enabled: true
   port: 5432
   # Read more about the AWS annotations here:
   # https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/#aws
