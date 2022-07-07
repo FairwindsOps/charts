@@ -5,7 +5,7 @@
 /incubator/basic-demo/ @sudermanjr
 /incubator/capsize/ @sudermanjr
 /incubator/custom-iptables/ @sudermanjr
-/incubator/datadog-apm/ @sammc3 @azahorscak
+/incubator/datadog-apm/ @sudermanjr @azahorscak
 /incubator/fairwinds-metrics/ @sudermanjr
 /incubator/fluentd/ @sudermanjr
 /incubator/imagepullsecret-deploy/ @sudermanjr
@@ -14,6 +14,7 @@
 /incubator/opa/ @sudermanjr
 /incubator/ro-cert-manager/ @sudermanjr
 /incubator/route53sync/ @sudermanjr
+/incubator/timescale/ @jdesouza
 
 /stable/astro/ @sudermanjr
 /stable/aws-iam-authenticator/ @sudermanjr

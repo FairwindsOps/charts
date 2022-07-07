@@ -15,6 +15,7 @@ spec:
     spec:
       {{ include "job-spec" . | nindent 6 | trim }}
       template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           - name: tmp
@@ -38,7 +39,7 @@ spec:
             args:
                 - -c
                 - |
-                  curl http://falco-agent:3031/output -o /tmp/falco.json && mv /tmp/falco.json /output/falco.json        
+                  curl http://falco-agent:3031/output -o /tmp/falco.json && mv /tmp/falco.json /output/falco.json
             env:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}

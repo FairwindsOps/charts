@@ -3,6 +3,8 @@
   labels:
     app: insights-agent
   annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
   {{- if .Values.cronjobs.disableServiceMesh }}
     linkerd.io/inject: disabled
     sidecar.istio.io/inject: "false"
@@ -33,6 +35,12 @@ dnsPolicy: {{ . }}
 {{- end }}
 backoffLimit: {{ .Values.cronjobs.backoffLimit }}
 activeDeadlineSeconds: {{ mul .Config.timeout .Values.cronjobs.backoffLimit }}
+{{- end }}
+
+{{ define "job-spec-metadata" }}
+metadata:
+  annotations:
+    cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
 {{- end }}
 
 {{ define "job-template-spec" }}

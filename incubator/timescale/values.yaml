@@ -20,7 +20,7 @@ image:
   # Image was built from
   # https://github.com/timescale/timescaledb-docker-ha
   repository: timescale/timescaledb-ha
-  tag: pg13.4-ts2.4.2-p0
+  tag: pg14.3-ts2.7.0-p0
   pullPolicy: Always
 
 # By default those secrets are randomly generated.
@@ -322,7 +322,7 @@ service:
 loadBalancer:
   # If not enabled, we still expose the primary using a so called Headless Service
   # https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
-  enabled: false
+  enabled: true
   port: 5432
   # Read more about the AWS annotations here:
   # https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/#aws
