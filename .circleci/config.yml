@@ -107,7 +107,7 @@ jobs:
       - checkout
       - *setup_environment
       - rok8s11/get_vault_aws_credentials:
-          vault_path: fairwindsops/sts/charts
+          vault_path: fairwindsops/sts/charts-docs
       - rok8s11/get_vault_env:
           vault_path: repo/charts/env
       - run:
