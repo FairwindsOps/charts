@@ -114,7 +114,7 @@ jobs:
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.4.0
+      - image: quay.io/helmpack/chart-testing:v3.6.0
     steps:
       - checkout
       - *setup_environment
