@@ -102,12 +102,15 @@ jobs:
       - checkout
       - setup_remote_docker
       - rok8s11/get_vault_env:
-          vault_path: repo/charts/env
+          vault_path: repo/global/env
       - run:
           name: Run Insights Checks
           command: |
             if [[ -z $CIRCLE_PR_NUMBER ]]; then
-              curl -L https://insights.fairwinds.com/v0/insights-ci.sh | bash
+              curl -L https://insights.fairwinds.com/v0/insights-ci-2.0.0.sh > insights-ci.sh
+              echo "0ee9fd3c580cd008e493568f05607ff32d8866fec53ecd08a0320f86de481317 *insights-ci.sh" | shasum -a 256 --check
+              chmod +x insights-ci.sh
+              ./insights-ci.sh
             else
               echo "Skipping Insights tests for forked PR"
             fi
