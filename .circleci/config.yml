@@ -102,7 +102,7 @@ jobs:
       - checkout
       - setup_remote_docker
       - rok8s11/get_vault_env:
-          vault_path: repo/charts/env
+          vault_path: repo/global/env
       - run:
           name: Run Insights Checks
           command: |
