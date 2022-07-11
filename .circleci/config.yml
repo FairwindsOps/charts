@@ -12,7 +12,19 @@ references:
         echo 'Install AWS CLI'
         pip install awscli
         echo 'Install needed packages'
-        apk --update add bash jq
+        apk --update add bash jq curl yq
+
+  install_vault_alpine: &install_vault_alpine
+    run:
+      name: install hashicorp vault
+      command: |
+        apk --update add curl yq
+        cd /tmp
+        curl -LO https://releases.hashicorp.com/vault/1.9.7/vault_1.9.7_linux_amd64.zip
+        sha256sum vault_1.9.7_linux_amd64.zip | grep d312f6852cdec8d29e50b72af5d36c6890e1e8bfcbedfdb71785dfc11e907c3d
+        unzip vault_1.9.7_linux_amd64.zip
+        mv vault /usr/bin/vault
+
   kind_configuration_helm3: &kind_configuration_helm3
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
@@ -89,21 +101,31 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - rok8s11/get_vault_env:
+          vault_path: repo/global/env
       - run:
           name: Run Insights Checks
           command: |
             if [[ -z $CIRCLE_PR_NUMBER ]]; then
-              curl -L https://insights.fairwinds.com/v0/insights-ci.sh | bash
+              curl -L https://insights.fairwinds.com/v0/insights-ci-2.0.0.sh > insights-ci.sh
+              echo "0ee9fd3c580cd008e493568f05607ff32d8866fec53ecd08a0320f86de481317 *insights-ci.sh" | shasum -a 256 --check
+              chmod +x insights-ci.sh
+              ./insights-ci.sh
             else
               echo "Skipping Insights tests for forked PR"
             fi
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.4.0
+      - image: quay.io/helmpack/chart-testing:v3.6.0
     steps:
       - checkout
       - *setup_environment
+      - *install_vault_alpine
+      - rok8s11/get_vault_aws_credentials:
+          vault_path: fairwindsops/sts/charts-docs
+      - rok8s11/get_vault_env:
+          vault_path: repo/charts/env
       - run:
           name: sync
           command: scripts/sync.sh
