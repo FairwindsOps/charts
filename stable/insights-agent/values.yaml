@@ -70,7 +70,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "5.0"
+    tag: "6.0"
   resources:
     requests:
       cpu: 100m
