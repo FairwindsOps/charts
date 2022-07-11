@@ -135,8 +135,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
-| timescale.persistence.enabled | bool | `true` | Create Persistent Volume with Timescale |
-| timescale.replication.enabled | bool | `false` | Replicate Timescale data |
 | timescale.loadBalancer.enabled | bool | `false` |  |
 | timescale.resources.limits.cpu | int | `1` |  |
 | timescale.resources.limits.memory | string | `"1Gi"` |  |
