@@ -76,7 +76,8 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
 | webhook.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
 | webhook.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
-| webhook.rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
+| webhook.rules | list | `[]` | An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
+| webhook.mutatingRules | list | `[]` | An array of additional rules for the MutatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
 | webhook.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for common types for the ValidatingWebhookConfiguration |
 | webhook.podAdditionalLabels | object | `{}` | Custom additional labels on webhook pods. |
 | webhook.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
@@ -84,6 +85,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.disallowExemptions | bool | `false` | Disallow any exemption |
 | webhook.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
 | webhook.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
+| webhook.enableMutation | bool | `false` | Whether to run the Mutation Webhook |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
 | audit.cleanup | bool | `false` | Whether to delete the namespace once the audit is finished. |
 | audit.outputURL | string | `""` | A URL which will receive a POST request with audit results. |
