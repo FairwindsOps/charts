@@ -102,8 +102,10 @@ webhook:
       operator: DoesNotExist
   # webhook.objectSelector -- objectSelector for the ValidatingWebhookConfiguration
   objectSelector: {}
-  # webhook.rules -- An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  # webhook.rules -- An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
   rules: []
+  # webhook.mutatingRules -- An array of additional rules for the MutatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  mutatingRules: []
   # webhook.defaultRules -- An array of rules for common types for the ValidatingWebhookConfiguration
   defaultRules:
   - apiGroups:
@@ -161,6 +163,8 @@ webhook:
   disallowConfigExemptions: false
   # webhook.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
+  # webhook.enableMutation -- Whether to run the Mutation Webhook
+  enableMutation: false
 
 audit:
   # audit.enable -- Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others.
