@@ -46,6 +46,8 @@ spec:
             {{- if .Values.webhook.disallowAnnotationExemptions }}
             - --disallow-annotation-exemptions
             {{- end }}
+            - --validate={{ .Values.webhook.validate }}
+            - --mutate={{ .Values.webhook.mutate }}
           image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
           imagePullPolicy: '{{.Values.image.pullPolicy}}'
           ports:
