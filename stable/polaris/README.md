@@ -65,7 +65,9 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.disallowExemptions | bool | `false` | Disallow any exemption |
 | dashboard.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
 | dashboard.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
-| webhook.enable | bool | `false` | Whether to run the Validating Webhook |
+| webhook.enable | bool | `false` | Whether to run the webhook |
+| webhook.validate | bool | `true` | Enables the Validating Webhook, to reject resources with issues |
+| webhook.mutate | bool | `false` | Enables the Mutating Webhook, to modify resources with issues |
 | webhook.replicas | int | `2` | Number of replicas |
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
 | webhook.tolerations | list | `[]` | Webhook pod tolerations |
