@@ -115,8 +115,8 @@ goldilocks:
         cpu: 25m
         memory: 262Mi
       limits:
-        cpu:
-        memory:
+        cpu: ""
+        memory: ""
   dashboard:
     enabled: false
   resources:
