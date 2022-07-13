@@ -1,5 +1,11 @@
 {{- if and .Values.webhook.enable (not .Values.webhook.secretName) -}}
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha2" }}
 apiVersion: cert-manager.io/v1alpha2
+{{- else }}
+apiVersion: cert-manager.io/v1alpha1
+{{- end }}
 kind: Certificate
 metadata:
   name: {{ include "polaris.fullname" . }}-cert
@@ -20,7 +26,13 @@ spec:
     name: {{ include "polaris.fullname" . }}-selfsigned
   secretName: {{ include "polaris.fullname" . }}
 ---
+{{- if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
+apiVersion: cert-manager.io/v1
+{{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha2" }}
 apiVersion: cert-manager.io/v1alpha2
+{{- else }}
+apiVersion: cert-manager.io/v1alpha1
+{{- end }}
 kind: Issuer
 metadata:
   name: {{ include "polaris.fullname" . }}-selfsigned
