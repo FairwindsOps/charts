@@ -6,4 +6,4 @@ dashboard:
     - foo.com
 webhook:
   enabled: true
-  enableMutation: true
+  mutate: true

@@ -167,8 +167,6 @@ webhook:
   disallowConfigExemptions: false
   # webhook.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
-  # webhook.enableMutation -- Whether to run the Mutation Webhook
-  enableMutation: false
 
 audit:
   # audit.enable -- Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others.
