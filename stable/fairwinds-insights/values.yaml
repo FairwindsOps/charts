@@ -431,7 +431,9 @@ timescale:
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-    # -- Username to connect to Timescale with
+  # -- Host for timescale
+  postgresqlHost: timescale
+  # -- Username to connect to Timescale with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
   postgresqlDatabase: fairwinds_timescale
@@ -444,7 +446,7 @@ timescale:
       port: 5433
   loadBalancer:
     enabled: false
-    # -- Resources section for Timescale
+  # -- Resources section for Timescale
   resources:
     limits:
       cpu: 1
@@ -452,6 +454,11 @@ timescale:
     requests:
       cpu: 75m
       memory: 256Mi
+  persistentVolumes:
+    data:
+      enabled: false
+    wal:
+      enabled: false
 
 email:
   # -- How to send emails, valid values include memory, ses, and smtp
