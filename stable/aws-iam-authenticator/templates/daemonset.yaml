@@ -39,6 +39,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
       # run `aws-iam-authenticator server` with three volumes
       # - config (mounted from the ConfigMap at /etc/aws-iam-authenticator/config.yaml)
       # - state (persisted TLS certificate and keys, mounted from the host)
