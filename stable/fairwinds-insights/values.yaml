@@ -454,11 +454,6 @@ timescale:
     requests:
       cpu: 75m
       memory: 256Mi
-  persistentVolumes:
-    data:
-      enabled: false
-    wal:
-      enabled: false
 
 email:
   # -- How to send emails, valid values include memory, ses, and smtp
