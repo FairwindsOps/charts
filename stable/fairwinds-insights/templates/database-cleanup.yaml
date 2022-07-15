@@ -16,6 +16,10 @@ spec:
       template:
         spec:
           restartPolicy: OnFailure
+          {{- with $.Values.image.pullSecret }}
+          imagePullSecrets:
+            - name: {{ . }}
+          {{- end }}
           containers:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
