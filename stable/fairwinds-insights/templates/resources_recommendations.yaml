@@ -1,5 +1,5 @@
-{{- if .Values.databaseCleanupCronjob.enabled }}
-{{ range .Values.databaseCleanupCronjob.schedules }}
+{{- if .Values.resourcesRecommendationsCronjob.enabled }}
+{{ range .Values.resourcesRecommendationsCronjob.schedules }}
 ---
 apiVersion: batch/v1beta1
 kind: CronJob
@@ -7,7 +7,7 @@ metadata:
   name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: database-cleanup-cronjob-{{ .name }}
+    app.kubernetes.io/component: resources-recommendations-cronjob-{{ .name }}
 spec:
   concurrencyPolicy: Forbid
   schedule: "{{ .cron }}"
@@ -23,17 +23,17 @@ spec:
           containers:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
-              command: ["database_cleanup"]
+              command: ["resources_recommendations"]
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.databaseCleanupCronjob.resources | nindent 16 }}
+                {{- toYaml $.Values.resourcesRecommendationsCronjob.resources | nindent 16 }}
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
                 privileged: false
                 runAsNonRoot: true
-                runAsUser: {{ $.Values.databaseCleanupCronjob.securityContext.runAsUser }}
+                runAsUser: {{ $.Values.resourcesRecommendationsCronjob.securityContext.runAsUser }}
                 capabilities:
                   drop:
                     - ALL
