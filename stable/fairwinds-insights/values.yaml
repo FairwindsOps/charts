@@ -353,7 +353,7 @@ databaseCleanupCronjob:
 
 resourcesRecommendationsCronjob:
   # -- Enable resources recommendations true by default
-  enabled: true
+  enabled: false
   # -- Resources for the resources recommendations job.
   resources:
     limits:
