@@ -360,8 +360,8 @@ resourcesRecommendationsCronjob:
       cpu: 500m
       memory: 1024Mi
     requests:
-      cpu: 80m
-      memory: 128Mi
+      cpu: 500m
+      memory: 1024Mi
   # -- CRON schedules for the resources recommendations job.
   schedules:
     - name: resources-recommendations

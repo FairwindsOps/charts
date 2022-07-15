@@ -75,7 +75,7 @@ databaseCleanupCronjob:
   schedules: []
 
 resourcesRecommendationsCronjob:
-  enabled: false
+  enabled: true
   schedules: []
 
 minio:
