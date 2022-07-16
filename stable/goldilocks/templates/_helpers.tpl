@@ -30,3 +30,14 @@ Create chart name and version as used by the chart label.
 {{- define "goldilocks.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Make sure base path doesn't end in /
+*/}}
+{{- define "goldilocks.basePath" -}}
+{{- if .Values.dashboard.basePath -}}
+{{- printf "/%s" (.Values.dashboard.basePath | trimSuffix "/" | trimPrefix "/") -}}
+{{- else -}}
+{{- printf "%s" "" -}}
+{{- end -}}
+{{- end -}}
