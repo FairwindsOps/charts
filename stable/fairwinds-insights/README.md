@@ -138,8 +138,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
 | timescale.loadBalancer.enabled | bool | `false` |  |
 | timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
-| timescale.persistentVolumes.data.enabled | bool | `false` |  |
-| timescale.persistentVolumes.wal.enabled | bool | `false` |  |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
