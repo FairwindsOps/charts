@@ -5,6 +5,17 @@ insights:
   base64token: ""
   tokenSecretName: ""
 
+global:
+  proxy:
+    # global.proxy.http -- Annotations used to access the proxy servers(http).
+    http:
+    # global.proxy.https -- Annotations used to access the proxy servers(https).
+    https:
+    # global.proxy.ftp -- Annotations used to access the proxy servers(ftp).
+    ftp:
+    # global.proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
+    no_proxy:
+
 rbac:
   disabled: false
 
@@ -35,11 +46,8 @@ cronjobs:
 cronjobExecutor:
   image:
     repository: curlimages/curl
-    tag: "7.79.1"
+    tag: "7.83.1"
   resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -49,9 +57,6 @@ installReporter:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.3"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -65,16 +70,13 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "4.2"
+    tag: "5.0"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
 
-kubehunter:
+kube-hunter:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -83,24 +85,6 @@ kubehunter:
     repository: aquasec/kube-hunter
     tag: "0.6.4"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 100m
-      memory: 128Mi
-
-kubesec:
-  enabled: false
-  schedule: "rand * * * *"
-  timeout: 1200
-  image:
-    repository: quay.io/fairwinds/fw-kubesec
-    tag: "1.3"
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -127,18 +111,15 @@ goldilocks:
       on-by-default: true
       exclude-namespaces: "kube-system"
     resources:
-      limits:
-        cpu: 250m
-        memory: 545Mi
       requests:
         cpu: 25m
         memory: 262Mi
+      limits:
+        cpu:
+        memory:
   dashboard:
     enabled: false
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -150,16 +131,46 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "0.3"
+    tag: "2.0"
   additionalAccess:
+  # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
+  # policies will be applied.
+  # Each target requires a list of apiGroups and a list of Resources.
+  defaultTargetResources:
+  - apiGroups:
+    - apps
+    resources:
+    - daemonsets
+    - deployments
+    - statefulsets
+  - apiGroups:
+    - batch
+    resources:
+    - jobs
+    - cronjobs
+  - apiGroups:
+    - ""
+    resources:
+    - pods
+    - replicationcontrollers
+  # opa.admissionRulesAsTargetResources -- If the admission controller is enabled,
+  # the APIGroups and Resources found in insights-admission `webhookConfig.rules`
+  # will be added as OPA Kubernetes target resources, plus
+  # supporting RBAC rules are granted to OPA, if the insights-admission
+  # `webhookConfig.rulesAutoRBAC` value is also set.
+  admissionRulesAsTargetResources: true
+  # opa.targetResources -- A user-specified list of Kubernetes targets to which
+  # OPA policies will be applied.
+  # Each target requires a list of apiGroups and a list of Resources.
+  targetResources: []
+  # opa.targetResourcesAutoRBAC -- Automatically add RBAC rules allowing get
+  # and list operations for APIGroups and Resources supplied via `targetResources`.
+  # This *does not* impact RBAC rules added for `defaultTargetResources`.
+  targetResourcesAutoRBAC: true
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
-  installCRDs: true
 
 workloads:
   enabled: true
@@ -169,9 +180,6 @@ workloads:
     repository: quay.io/fairwinds/workloads
     tag: "2.2"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -183,11 +191,8 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.0"
+    tag: "v3.2"
   resources:
-    limits:
-      cpu: 100m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -200,7 +205,7 @@ nova:
     wide: true
     output-file: "/output/nova.json"
 
-rbacreporter:
+rbac-reporter:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -208,14 +213,11 @@ rbacreporter:
     repository: quay.io/fairwinds/rbac-reporter
     tag: "1.2"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
 
-kubebench:
+kube-bench:
   enabled: false
   schedule: "rand * * * *"
   mode: "cronjob"
@@ -229,16 +231,10 @@ kubebench:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
       tag: 0.2
     resources:
-      limits:
-        cpu: 250m
-        memory: 512Mi
       requests:
         cpu: 100m
         memory: 128Mi
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -253,13 +249,13 @@ trivy:
   maxConcurrentScans: 1
   maxScansPerRun: 20
   timeout: 2400
+  insecureSSL: false
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.18"
+  serviceAccount:
+    annotations:
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -273,26 +269,20 @@ pluto:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
     tag: "v5.3"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
 
-resourcemetrics:
+prometheus-metrics:
   enabled: false
-  installPrometheus: false
+  installPrometheusServer: false
   schedule: "0/10 * * * *"
   timeout: 300
   address: "http://prometheus-server"
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "0.4"
+    tag: "1.0"
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -316,10 +306,6 @@ prometheus:
     persistentVolume:
       enabled: false
     retention: "1d"
-    deploymentAnnotations:
-      polaris.fairwinds.com/insecureCapabilities-exempt: "true"
-      polaris.fairwinds.com/privilegeEscalationAllowed-exempt: "true"
-      polaris.fairwinds.com/notReadOnlyRootFilesystem-exempt: "true"
     resources:
       limits:
         cpu: 500m
@@ -327,6 +313,12 @@ prometheus:
       requests:
         cpu: 250m
         memory: 2Gi
+    containerSecurityContext:
+      allowPrivilegeEscalation: false
+      readOnlyRootFilesystem: true
+      capabilities:
+        drop:
+          - ALL
   kube-state-metrics:
     image:
       pullPolicy: Always
@@ -359,6 +351,13 @@ insights-admission:
   serviceAccount:
     rbac:
       grantRole: "view"
+  resources:
+    limits:
+      cpu: 1
+      memory: 2Gi
+    requests:
+      cpu: 100m
+      memory: 128Mi
 
 # test -- Used for chart CI only - deploys a test deployment
 test:
@@ -367,6 +366,15 @@ test:
     repository: "python"
     tag: "3.6"
     pullPolicy: "Always"
+  securityContext:
+    runAsUser: 1200
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
 
 awscosts:
   enabled: false
@@ -374,16 +382,17 @@ awscosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "0.1"
+    tag: "1.0"
+  serviceAccount:
+    annotations:
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
+  # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
+  containerSecurityContext: {}
 
-rightsizer:
+right-sizer:
   enabled: false
   schedule: "rand * * * *"
   timeout: 300
@@ -428,9 +437,6 @@ rightsizer:
   SkipVolumes: true
   # rightsizer.resources -- Resources for the controller deployment
   resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
@@ -514,9 +520,6 @@ falcosecurity:
   resources:
     requests:
       cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 200m
       memory: 512Mi
   falco:
     jsonOutput: true

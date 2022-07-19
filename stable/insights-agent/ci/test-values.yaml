@@ -34,15 +34,8 @@ workloads:
 test:
   enabled: true
 
-kubebench:
+kube-bench:
   enabled: true
-  resources:
-    requests:
-      cpu: 50m
-
-# This is being removed in the near future
-kubesec:
-  enabled: false
   resources:
     requests:
       cpu: 50m
@@ -65,7 +58,7 @@ nova:
     requests:
       cpu: 50m
 
-kubehunter:
+kube-hunter:
   enabled: true
   resources:
     requests:
@@ -84,9 +77,12 @@ trivy:
         secretName: docker-cert
     mountPath: /etc/containers/certs.d
 
-resourcemetrics:
+prometheus-metrics:
   enabled: true
-  installPrometheus: true
+  installPrometheusServer: true
+  image:
+    repository: quay.io/fairwinds/prometheus-collector
+    tag: "1.0"
   resources:
     requests:
       cpu: 50m
@@ -95,12 +91,12 @@ prometheus:
   server:
     resources:
       requests:
-        cpu: 200m
+        cpu: 250m
+        memory: 512Mi
 
 admission:
   enabled: true
 
-# We don't want to test AWS here with real secrets
 awscosts:
   enabled: false
   secretName: awscosts-secret

@@ -7,10 +7,10 @@ image:
 volumes:
   output:
     mountPath: /etc/kubernetes/aws-iam-authenticator/
-    hostPath: /srv/kubernetes/aws-iam-authenticator/
+    hostPath: /srv/kubernetes/kube-apiserver/aws-iam-authenticator/
   state:
     mountPath: /var/aws-iam-authenticator/
-    hostPath: /srv/kubernetes/aws-iam-authenticator/
+    hostPath: /srv/kubernetes/kube-apiserver/aws-iam-authenticator/
   config:
     mountPath: /etc/aws-iam-authenticator/
 

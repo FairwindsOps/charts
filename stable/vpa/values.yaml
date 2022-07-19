@@ -108,6 +108,8 @@ updater:
 admissionController:
   # admissionController.enabled -- If true, will install the admission-controller component of vpa
   enabled: false
+  # admissionController.extraArgs -- A key-value map of flags to pass to the admissionController
+  extraArgs: {}
   # admissionController.generateCertificate -- If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook
   generateCertificate: true
   certGen:
@@ -118,10 +120,13 @@ admissionController:
       tag: v11-alpine
       # admissionController.certGen.image.pullPolicy -- The pull policy for the certgen image. Recommend not changing this
       pullPolicy: Always
-      # admissionController.certGen.env -- Additional environment variables to be added to the certgen container. Format is KEY: Value format
+    # admissionController.certGen.env -- Additional environment variables to be added to the certgen container. Format is KEY: Value format
     env: {}
     # admissionController.certGen.resources -- The resources block for the certgen pod
     resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
   # admissionController.cleanupOnDelete.enabled -- If true, a post-delete job will remove the mutatingwebhookconfiguration and the tls secret for the admission controller
   cleanupOnDelete:
     enabled: true
@@ -130,6 +135,10 @@ admissionController:
       repository: quay.io/reactiveops/ci-images
       # admissionController.cleanupOnDelete.image.tag -- The image tag to use for the admission controller cleanup image
       tag: v11-alpine
+    resources: {}
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
   replicaCount: 1
   # admissionController.podDisruptionBudget -- This is the setting for the pod disruption budget
   podDisruptionBudget: {}

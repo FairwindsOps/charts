@@ -1,11 +1,11 @@
-{{- if .Values.rightsizer.enabled -}}
+{{- if (index .Values "right-sizer" "enabled") -}}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
-  {{- if .Values.rightsizer.deploymentAnnotations }}
+  {{- if  (index .Values "right-sizer" "deploymentAnnotations") }}
   annotations:
-    {{- toYaml .Values.rightsizer.deploymentAnnotations | nindent 4 }}
+    {{- toYaml (index .Values "right-sizer" "deploymentAnnotations") | nindent 4 }}
   {{- end }}
   labels:
     component: right-sizer
@@ -21,7 +21,7 @@ spec:
         component: right-sizer
         app: insights-agent
     spec:
-      {{- with .Values.rightsizer.imagePullSecrets }}
+      {{- with (index .Values "right-sizer" "imagePullSecrets") }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -29,36 +29,38 @@ spec:
         - name: {{ .Chart.Name }}-right-sizer-controller
           ports:
           - containerPort: 8080
+          env:
+          {{ include "proxy-env-spec" . | indent 12 | trim }}
           securityContext:
-            {{- toYaml .Values.rightsizer.containerSecurityContext | nindent 12 }}
-          image: "{{ .Values.rightsizer.image.repository }}:{{ .Values.rightsizer.image.tag }}"
-          imagePullPolicy: {{ .Values.rightsizer.image.pullPolicy }}
+            {{- toYaml (index .Values "right-sizer" "containerSecurityContext") | nindent 12 }}
+          image: "{{ (index .Values "right-sizer" "image" "repository") }}:{{ (index .Values "right-sizer" "image" "tag") }}"
+          imagePullPolicy: {{ (index .Values "right-sizer" "image" "pullPolicy") }}
           command:
           - "right-sizer"
           - "--state-configmap-namespace"
           - "{{ .Release.Namespace }}"
           - "--state-configmap-name"
-          - "{{ .Values.rightsizer.stateconfigmapname }}"
-          {{- range .Values.rightsizer.namespaces }}
+          - "{{ (index .Values "right-sizer" "stateconfigmapname") }}"
+          {{- range (index .Values "right-sizer" "namespaces") }}
           - "--namespace"
           - "{{ . }}"
           {{- end }}
-          {{- if .Values.rightsizer.updateMemoryLimits.enabled }}
+          {{- if (index .Values "right-sizer" "updateMemoryLimits" "enabled") }}
           - "--update-memory-limits"
           - "--update-memory-limits-increment"
-          - "{{ .Values.rightsizer.updateMemoryLimits.increment }}"
+          - "{{ (index .Values "right-sizer" "updateMemoryLimits" "increment") }}"
           - "--update-memory-limits-max"
-          - "{{ .Values.rightsizer.updateMemoryLimits.max }}"
+          - "{{ (index .Values "right-sizer" "updateMemoryLimits" "max") }}"
           - "--update-memory-limits-min-ooms"
-          - "{{ .Values.rightsizer.updateMemoryLimits.minOOMs }}"
-          {{- range .Values.rightsizer.updateMemoryLimits.namespaces }}
+          - "{{ (index .Values "right-sizer" "updateMemoryLimits" "minOOMs") }}"
+          {{- range (index .Values "right-sizer" "updateMemoryLimits" "namespaces") }}
           - "--update-memory-limits-namespace"
           - "{{ . }}"
           {{- end }}
 {{- end }}
           - "--reset-ooms-window"
-          - "{{ .Values.rightsizer.resetOOMsWindow }}"
-          {{- range .Values.rightsizer.extraArgs }}
+          - "{{ (index .Values "right-sizer" "resetOOMsWindow") }}"
+          {{- range (index .Values "right-sizer" "extraArgs") }}
           - "{{ . }}"
           {{- end }}
           readinessProbe:
@@ -70,6 +72,6 @@ spec:
               path: /healthz
               port: 8080
           resources:
-            {{- toYaml .Values.rightsizer.resources | nindent 12 }}
-      serviceAccountName: {{ .Values.rightsizer.serviceAccountName }}
+            {{- toYaml (index .Values "right-sizer" "resources") | nindent 12 }}
+      serviceAccountName: {{ (index .Values "right-sizer" "serviceAccountName") }}
 {{- end -}}

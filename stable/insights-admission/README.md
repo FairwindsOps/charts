@@ -37,6 +37,10 @@ rules:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
+| global.proxy.http | string | `nil` | Annotations used to access the proxy servers(http). |
+| global.proxy.https | string | `nil` | Annotations used to access the proxy servers(https). |
+| global.proxy.ftp | string | `nil` | Annotations used to access the proxy servers(ftp). |
+| global.proxy.no_proxy | string | `nil` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy. |
 | insights.organization | string | `""` | The name of your Organization from Fairwinds Insights |
 | insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
 | insights.host | string | `"https://insights.fairwinds.com"` | Override the hostname for Fairwinds Insights |
@@ -47,12 +51,16 @@ rules:
 | insights.configmap.create | bool | `true` | Create a config map with Insights configuration |
 | insights.configmap.nameOverride | string | `nil` | The name of the configmap to use. |
 | insights.configmap.suffix | string | `"configmap"` | The suffix to add onto the release name to get the configmap that contains the host/organization/cluster |
-| webhookConfig.failurePolicy | string | `"Ignore"` | failurePolicy for the ValidatingWebhookConfiguration |
+| webhookConfig.failurePolicy | string | `"Ignore"` | failurePolicy for the ValidatingWebhookConfiguration. This also informs whether the admission controller blocks validation requests on errors, such as while executing OPA policies. |
 | webhookConfig.matchPolicy | string | `"Exact"` | matchPolicy for the ValidatingWebhookConfiguration |
+| webhookConfig.timeoutSeconds | int | `30` | number of seconds to wait before failing the admission request (max is 30) |
 | webhookConfig.namespaceSelector | object | `{"matchExpressions":[{"key":"control-plane","operator":"DoesNotExist"}]}` | namespaceSelector for the ValidatingWebhookConfiguration |
+| webhookConfig.annotations | object | `{}` | Annotations to add to the ValidatingWebhookConfiguration |
 | webhookConfig.objectSelector | object | `{}` | objectSelector for the ValidatingWebhookConfiguration |
-| webhookConfig.rules | list | `[]` | An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
+| webhookConfig.rules | list | `[]` | An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. Rules specified here may also be granted to the Insights OPA plugin, see also the insights-agent chart values for opa. |
 | webhookConfig.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for commons types for the ValidatingWebhookConfiguration |
+| webhookConfig.rulesAutoRBAC | bool | `true` | Automatically add RBAC rules allowing get and list operations for the APIGroups and Resources supplied in rules. This *does not* impact RBAC rules added for `defaultRules`. |
+| pluto.targetVersions | string | `""` | Pluto target versions specified as key=value[,key=value...]. These supersede all defaults in Pluto version files. If unset, the `k8s` component will use the current Kubernetes cluster version. For example: k8s=v1.20.0,cert-manager=v1.8.0 |
 | resources | object | `{"limits":{"cpu":1,"memory":"2Gi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the controller. |
 | image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |

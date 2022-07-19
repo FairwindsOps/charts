@@ -3,6 +3,8 @@
 The Fairwinds Insights Agent is a collection of reporting tools, which send data back
 to [Fairwinds Insights](https://insights.fairwinds.com).
 
+A list of breaking changes for each major version release is available at the bottom of this document.
+
 ## Installation
 We recommend installing `insights-agent` in its own namespace.
 
@@ -27,15 +29,14 @@ There are several different report types which can be enabled and configured:
 * `polaris`
 * `goldilocks`
 * `workloads`
-* `kubehunter`
+* `kube-hunter`
 * `trivy`
-* `kubesec`
 * `nova`
-* `rbacreporter`
-* `kubebench`
+* `rbac-reporter`
+* `kube-bench`
 * `pluto`
 * `opa`
-* `resourcemetrics`
+* `prometheus-metrics`
 * `admission`
 * `awscosts`
 
@@ -60,6 +61,10 @@ Parameter | Description | Default
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `rbac.disabled` | Don't use any of the built-in RBAC | `false`
 `fleetInstall` | See Fleet Installation docs | `false`
+`global.proxy.http` | Annotations used to access the proxy servers(http) | ""
+`global.proxy.https` | Annotations used to access the proxy servers(https) | ""
+`global.proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
+`global.proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
@@ -83,26 +88,31 @@ Parameter | Description | Default
 `{report}.image.tag` | Image tag to use for the report |
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
-`kubehunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
-`kubebench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
-`kubebench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
-`kubebench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
+`kube-hunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
+`kube-bench.mode` | Changes the way this plugin is deployed, either `cronjob` where it will run a single pod on the `schedule` that will pull the data necessary from a single node and report that back to Insights. `daemonset` which deploys a daemonset to the cluster which gathers data then a cronjob will gather data from each of those pods. `daemonsetMaster`  is the same as `daemonset` except the daemonset can also run on masters. | `cronjob`
+`kube-bench.hourInterval` | If running in `daemonset` or `daemonsetMaster` this configuration changes how often the daemonset pods will rescan the node they are running on | 2
+`kube-bench.aggregator` | contains `resources` and `image.repository` and `image.tag`, this controls the pod scheduled via a CronJob that aggregates from the daemonset in `daemonset` or `daemonsetMaster` deployment modes. |
 `trivy.ignoreUnfixed` | Adds `--ignore-unfixed` trivy flag | false
+`trivy.insecureSSL` | Can be used to allow insecure connections to a container registry when using SSL. | `false`
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
 `trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
 `trivy.pullRefReplacements` | Modify references to docker images, in the format `quay.io/foo,docker.io/foo;quay.io/bar,docker.io/bar` | ""
+`trivy.serviceAccount.annotations` | Annotations to add to the Trivy service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing private images | nil
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
-`opa.installCRDs` | Specifies whether to install the `customcheckinstances.insights.fairwinds.com` CRD. If you are installing the `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
+`insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
+`opa.targetResources` | A user-specified list of Kubernetes targets to which OPA policies will be applied. Each target requires a list of apiGroups and a list of Resources. | `{}`
+`opa.targetResourcesAutoRBAC` | Automatically add RBAC rules allowing get and list operations for APIGroups and Resources supplied via `targetResources`. This *does not* impact RBAC rules added for `defaultTargetResources`. | `true`
+`opa.admissionRulesAsTargetResources` | IF the admission controller is enabled, the APIGroups and Resources found in insights-admission `webhookConfig.rules` will be added as OPA Kubernetes target resources, plus supporting RBAC rules are granted to OPA, if the insights-admission `webhookConfig.rulesAutoRBAC` value is also set. | `true`
 `goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
 `goldilocks.vpa.enabled` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true
 `goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
-`resourcemetrics.installPrometheus` | Install a new Prometheus instance for the resourcemetrics report | false
-`resourcemetrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
+`prometheus-metrics.installPrometheusServer` | Install a new Prometheus server instance for the prometheus report | false
+`prometheus-metrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
 `awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
@@ -112,6 +122,59 @@ Parameter | Description | Default
 `awscosts.database` | AWS database where Athena table was created | ""
 `awscosts.table` | AWS database Athena table for AWS costs | ""
 `awscosts.catalog` | AWS database catalog for AWS costs | ""
+`awscosts.serviceAccount.annotations` | Annotations to add to the awscosts service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing aws | nil
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
+`awscosts.containerSecurityContext` | Additional container securityContext items for the cronJob. | {}
+
+## Breaking Changes
+
+### Version 2.0
+The 2.0 release of insights-agent contains several breaking changes to help simplify the installation
+and adoption of new tools.
+
+#### Configuration changes
+You'll need to change your `values.yaml` to accommodate these changes.
+-   Some report names in `values.yaml` have been renamed:
+    -   `resourcemetrics` is now `prometheus-metrics`
+    -   `kubehunter` is now `kube-hunter`
+    -   `rbacreporter` is now `rbac-reporter`
+    -   `kubebench` is now `kube-bench`
+    -   `rightsizer` is now `right-sizer`
+-   `prometheus-metrics` will now install a prometheus server by default. If you'd like to use an existing server, set `prometheus-metrics.installPrometheusServer=false`
+-   The `kubesec` report has been deprecated, and should be removed from your values.yaml
+-   The `falcosecurity` subchart has been removed. If you want to continue using Falco with Fairwinds Insights, you'll need to install and configure the [Falco chart](https://github.com/falcosecurity/charts/tree/master/falco) separately
+    -   we recommend these values:
+
+```yaml
+resources:
+  requests:
+    cpu: 100m
+    memory: 256Mi
+  limits:
+    cpu: 200m
+    memory: 512Mi
+falco:
+  jsonOutput: true
+ebpf:
+  enabled: false # You can enable this on newer nodes that support eBPF
+falcosidekick:
+  enabled: true
+  fullfqdn: true
+  config:
+    webhook:
+      address: "http://falco-agent.insights-agent:3031/data"
+```
+
+#### Behavior changes
+No action is required here, but be aware:
+
+-   The `polaris` checks `runAsRootAllowed` and `hostNetwork` have had their severity level increased - they will now block in CI and Admission control after updating to 2.0
+-   The Admission Controller will now default to `failureMode=Ignore`
+    -   This option determines what the Admission Controller should do when it is experiencing problems or cannot reach the Insights API to make a decision. It can either reject all requests (`failureMode=Fail`) or accept all requests (`failureMode=Ignore`)
+    -   The new default will help to make the Admission Controller less disruptive for folks using it in `Passive Mode`
+    -   If you are using the Admission Controller as a security measure, and would like to reject requests when there's a problem, you should add `insights-admission.webhookConfig.failurePolicy=Fail` to your `values.yaml`
+-   Newer versions of Admission Controller and CI will block on `severity >= 0.7` (CRITICAL or HIGH severity). Previously the threshold was `0.67`
+-   The CRDs for OPA have been removed. If you had added any `CustomCheck` or `CustomCheckInstance` resources directly to your cluster, they will be deleted.
+

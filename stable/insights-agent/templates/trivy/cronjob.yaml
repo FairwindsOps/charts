@@ -8,6 +8,7 @@ spec:
     spec:
       {{ include "job-spec" . | nindent 6 | trim }}
       template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           - name: tmp
@@ -43,6 +44,7 @@ spec:
             command:
               - "./report.sh"
             env:
+<<<<<<< HEAD
               - name: FAIRWINDS_INSIGHTS_HOST
                 value: {{ .Values.insights.host | quote }}
               - name: FAIRWINDS_ORG
@@ -58,6 +60,10 @@ spec:
                     name: {{ include "insights-agent.fullname" . }}-token
                     {{ end -}}
                     key: token
+              {{ if .Values.trivy.insecureSSL }}
+              - name: TRIVY_INSECURE
+                value: "true"
+              {{ end }}
               - name: TRIVY_CACHE_DIR
                 value: /var/tmp
               - name: MAX_SCANS

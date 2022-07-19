@@ -1,0 +1,34 @@
+{{/*
+This file and its contents are licensed under the Apache License 2.0.
+Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+*/}}
+TimescaleDB can be accessed via port 5432 on the following DNS name from within your cluster:
+{{ template "clusterName" . }}.{{ .Release.Namespace }}.svc.cluster.local
+
+To get your password for superuser run:
+
+    # superuser password
+    PGPASSWORD_POSTGRES=$(kubectl get secret --namespace {{ .Release.Namespace }} {{ template "secrets_credentials" . }} -o jsonpath="{.data.PATRONI_SUPERUSER_PASSWORD}" | base64 --decode)
+
+    # admin password
+    PGPASSWORD_ADMIN=$(kubectl get secret --namespace {{ .Release.Namespace }} {{ template "secrets_credentials" . }} -o jsonpath="{.data.PATRONI_admin_PASSWORD}" | base64 --decode)
+
+To connect to your database, choose one of these options:
+
+1. Run a postgres pod and connect using the psql cli:
+    # login as superuser
+    kubectl run -i --tty --rm psql --image=postgres \
+      --env "PGPASSWORD=$PGPASSWORD_POSTGRES" \
+      --command -- psql -U postgres \
+      -h {{ template "clusterName" . }}.{{ .Release.Namespace }}.svc.cluster.local postgres
+
+    # login as admin
+    kubectl run -i --tty --rm psql --image=postgres \
+      --env "PGPASSWORD=$PGPASSWORD_ADMIN" \
+      --command -- psql -U admin \
+      -h {{ template "clusterName" . }}.{{ .Release.Namespace }}.svc.cluster.local postgres
+
+2. Directly execute a psql session on the master node
+
+   MASTERPOD="$(kubectl get pod -o name --namespace {{ .Release.Namespace }} -l release={{ .Release.Name }},role=master)"
+   kubectl exec -i --tty --namespace {{ .Release.Namespace }} ${MASTERPOD} -- psql -U postgres

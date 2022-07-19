@@ -1,0 +1,602 @@
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ template "timescaledb.fullname" . }}
+  labels:
+    app: {{ template "timescaledb.fullname" . }}
+    chart: {{ template "timescaledb.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+    cluster-name: {{ template "clusterName" . }}
+spec:
+  serviceName: {{ template "timescaledb.fullname" . }}
+  replicas: {{ .Values.replicaCount }}
+  podManagementPolicy: {{ .Values.podManagementPolicy }}
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ template "timescaledb.fullname" . }}
+      release: {{ .Release.Name }}
+  template:
+    metadata:
+      name: {{ template "timescaledb.fullname" . }}
+      labels:
+        app: {{ template "timescaledb.fullname" . }}
+        release: {{ .Release.Name }}
+        cluster-name: {{ template "clusterName" . }}
+{{- if .Values.podAnnotations }}
+      annotations:
+{{ toYaml .Values.podAnnotations | indent 8 }}
+{{- end }}
+    spec:
+      serviceAccountName: {{ template "timescaledb.serviceAccountName" . }}
+      securityContext:
+        # The postgres user inside the TimescaleDB image has uid=1000.
+        # This configuration ensures the permissions of the mounts are suitable
+        fsGroup: {{ template "postgres.uid" }}
+        runAsGroup: {{ template "postgres.uid" }}
+        runAsNonRoot: true
+        runAsUser: {{ template "postgres.uid" }}
+      initContainers:
+{{- if .Values.timescaledbTune.enabled }}
+      - name: tstune
+        securityContext:
+          allowPrivilegeEscalation: false
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        env:
+        - name: TSTUNE_FILE
+          value: {{ template "tstune_config" . }}
+        - name: RESOURCES_WAL_VOLUME
+          value: {{ if .Values.persistentVolumes.wal.enabled }}{{ .Values.persistentVolumes.wal.size }}{{ else }}"0"{{ end }}
+        - name: RESOURCES_DATA_VOLUME
+          value: {{ .Values.persistentVolumes.data.size }}
+        - name: INCLUDE_DIRECTIVE
+          value: include_if_exists = '{{ template "tstune_config" . }}'
+        - name: CPUS
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: requests.cpu
+              divisor: "1"
+        - name: MEMORY
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: requests.memory
+              divisor: 1Mi
+        - name: RESOURCES_CPU_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: limits.cpu
+              divisor: "1"
+        - name: RESOURCES_MEMORY_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: limits.memory
+              divisor: 1Mi
+        command:
+          - sh
+          - "-c"
+          - |
+              set -e
+              [ $CPUS -eq 0 ]   && CPUS="${RESOURCES_CPU_LIMIT}"
+              [ $MEMORY -eq 0 ] && MEMORY="${RESOURCES_MEMORY_LIMIT}"
+
+              if [ -f "${PGDATA}/postgresql.base.conf" ] && ! grep "${INCLUDE_DIRECTIVE}" postgresql.base.conf -qxF; then
+                echo "${INCLUDE_DIRECTIVE}" >> "${PGDATA}/postgresql.base.conf"
+              fi
+
+              touch "${TSTUNE_FILE}"
+              timescaledb-tune -quiet -pg-version 11 -conf-path "${TSTUNE_FILE}" -cpus "${CPUS}" -memory "${MEMORY}MB" \
+                {{ range $key, $value := .Values.timescaledbTune.args | default dict }}{{ printf "--%s %s " $key (quote $value)}}{{ end }} -yes
+
+              # If there is a dedicated WAL Volume, we want to set max_wal_size to 60% of that volume
+              # If there isn't a dedicated WAL Volume, we set it to 20% of the data volume
+              if [ "${RESOURCES_WAL_VOLUME}" = "0" ]; then
+                WALMAX="${RESOURCES_DATA_VOLUME}"
+                WALPERCENT=20
+              else
+                WALMAX="${RESOURCES_WAL_VOLUME}"
+                WALPERCENT=60
+              fi
+
+              WALMAX=$(numfmt --from=auto ${WALMAX})
+
+              # Wal segments are 16MB in size, in this way we get a "nice" number of the nearest
+              # 16MB
+              WALMAX=$(( $WALMAX / 100 * $WALPERCENT / 16777216 * 16 ))
+              WALMIN=$(( $WALMAX / 2 ))
+
+              echo "max_wal_size=${WALMAX}MB" >> "${TSTUNE_FILE}"
+              echo "min_wal_size=${WALMIN}MB" >> "${TSTUNE_FILE}"
+        volumeMounts:
+        - name: socket-directory
+          mountPath: {{ template "socket_directory" . }}
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+{{- end }}
+      # Issuing the final checkpoints on a busy database may take considerable time.
+      # Unfinished checkpoints will require more time during startup, so the tradeoff
+      # here is time spent in shutdown/time spent in startup.
+      # We choose shutdown here, especially as during the largest part of the shutdown
+      # we can still serve clients.
+      terminationGracePeriodSeconds: 600
+      containers:
+      - name: timescaledb
+        securityContext:
+          allowPrivilegeEscalation: false
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - psql
+              - -X
+              - --file
+              - "{{ template "scripts_dir" . }}/lifecycle_preStop.psql"
+        # When reusing an already existing volume it sometimes happens that the permissions
+        # of the PGDATA and/or wal directory are incorrect. To guard against this, we always correctly
+        # set the permissons of these directories before we hand over to Patroni.
+        # We also create all the tablespaces that are defined, to ensure a smooth restore/recovery on a
+        # pristine set of Volumes.
+        # As PostgreSQL requires to have full control over the permissions of the tablespace directories,
+        # we create a subdirectory "data" in every tablespace mountpoint. The full path of every tablespace
+        # therefore always ends on "/data".
+        # By creating a .pgpass file in the $HOME directory, we expose the superuser password
+        # to processes that may not have it in their environment (like the preStop lifecycle hook).
+        # To ensure Patroni will not mingle with this file, we give Patroni its own pgpass file.
+        # As these files are in the $HOME directory, they are only available to *this* container,
+        # and they are ephemeral.
+        command:
+          - /bin/bash
+          - "-c"
+          - |
+            {{ .Values.debug.execStartPre }}
+            install -o postgres -g postgres -d -m 0700 {{ include "data_directory" . | quote }} {{ include "wal_directory" . | quote }} || exit 1
+            TABLESPACES={{ $.Values.persistentVolumes.tablespaces | default dict | keys | join " " | quote }}
+            for tablespace in {{ $.Values.persistentVolumes.tablespaces | default dict | keys | join " " }}; do
+              install -o postgres -g postgres -d -m 0700 "{{ include "tablespaces_dir" . }}/${tablespace}/data"
+            done
+
+            # Environment variables can be read by regular users of PostgreSQL. Especially in a Kubernetes
+            # context it is likely that some secrets are part of those variables.
+            # To ensure we expose as little as possible to the underlying PostgreSQL instance, we have a list
+            # of allowed environment variable patterns to retain.
+            #
+            # We need the KUBERNETES_ environment variables for the native Kubernetes support of Patroni to work.
+            #
+            # NB: Patroni will remove all PATRONI_.* environment variables before starting PostgreSQL
+
+            # We store the current environment, as initscripts, callbacks, archive_commands etc. may require
+            # to have the environment available to them
+            set -o posix
+            export -p > "{{ template "pod_environment_file" }}"
+            export -p | grep PGBACKREST > "{{ template "pgbackrest_environment_file" }}"
+
+            for UNKNOWNVAR in $(env | awk -F '=' '!/^(PATRONI_.*|HOME|PGDATA|PGHOST|LC_.*|LANG|PATH|KUBERNETES_SERVICE_.*)=/ {print $1}')
+            do
+                unset "${UNKNOWNVAR}"
+            done
+
+            touch {{ template "tstune_config" . | quote }}
+            touch {{ template "wal_status_file" . | quote }}
+
+            echo "*:*:*:postgres:${PATRONI_SUPERUSER_PASSWORD}" >> ${HOME}/.pgpass
+            chmod 0600 ${HOME}/.pgpass
+
+            export PATRONI_POSTGRESQL_PGPASS="${HOME}/.pgpass.patroni"
+
+            exec patroni /etc/timescaledb/patroni.yaml
+        env:
+        # We use mixed case environment variables for Patroni User management,
+        # as the variable themselves are documented to be PATRONI_<username>_OPTIONS.
+        # Where possible, we want to have lowercase usernames in PostgreSQL as more complex postgres usernames
+        # requiring quoting to be done in certain contexts, which many tools do not do correctly, or even at all.
+        # https://patroni.readthedocs.io/en/latest/ENVIRONMENT.html#bootstrap-configuration
+        - name: PATRONI_admin_OPTIONS
+          value: createrole,createdb
+        - name: PATRONI_REPLICATION_USERNAME
+          value: standby
+        # To specify the PostgreSQL and Rest API connect addresses we need
+        # the PATRONI_KUBERNETES_POD_IP to be available as a bash variable, so we can compose an
+        # IP:PORT address later on
+        - name: PATRONI_KUBERNETES_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: PATRONI_POSTGRESQL_CONNECT_ADDRESS
+          value: "$(PATRONI_KUBERNETES_POD_IP):5432"
+        - name: PATRONI_RESTAPI_CONNECT_ADDRESS
+          value: "$(PATRONI_KUBERNETES_POD_IP):8008"
+        - name: PATRONI_KUBERNETES_PORTS
+          {{- if .Values.pgBouncer.enabled }}
+          value: '[{"name": "postgresql", "port": 5432}, {"name": "pgbouncer", "port": 6432}]'
+          {{- else }}
+          value: '[{"name": "postgresql", "port": 5432}]'
+          {{- end }}
+        - name: PATRONI_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: PATRONI_POSTGRESQL_DATA_DIR
+          value: {{ include "data_directory" . | quote }}
+        - name: PATRONI_KUBERNETES_NAMESPACE
+          value: {{ $.Release.Namespace }}
+        - name: PATRONI_KUBERNETES_LABELS
+          value: {{ printf "{app: %s, cluster-name: %s, release: %s}" (include "timescaledb.fullname" .) (include "clusterName" .) .Release.Name  | quote }}
+        - name: PATRONI_SCOPE
+          value: {{ template "clusterName" . }}
+        - name: PGBACKREST_CONFIG
+          value: /etc/pgbackrest/pgbackrest.conf
+        # PGDATA and PGHOST are not required to let Patroni/PostgreSQL run correctly,
+        # but for interactive sessions, callbacks and PostgreSQL tools they should be correct.
+        - name: PGDATA
+          value: "$(PATRONI_POSTGRESQL_DATA_DIR)"
+        - name: PGHOST
+          value: "{{ template "socket_directory" . }}"
+        - name: BOOTSTRAP_FROM_BACKUP
+          value: {{ .Values.bootstrapFromBackup.enabled | int | quote }}
+        {{- if .Values.env }}{{ .Values.env | default list | toYaml | nindent 8 }}{{- end }}
+          # pgBackRest is also called using the archive_command if the backup is enabled.
+          # this script will also need access to the environment variables specified for
+          # the backup. This can be removed once we do not directly invoke pgBackRest
+          # from inside the TimescaleDB container anymore
+        {{- if .Values.backup.env }}{{ .Values.backup.env | default list | toYaml | nindent 8 }}{{- end }}
+        {{- if .Values.version }}
+        - name: PATH
+          value: /usr/lib/postgresql/{{ .Values.version }}/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+        {{- end }}
+        envFrom:
+        - secretRef:
+            name: {{ template "secrets_credentials" . }}
+            optional: false
+        - secretRef:
+            name: {{ template "secrets_pgbackrest" . }}
+            optional: true
+        {{- if or .Values.envFrom .Values.backup.envFrom -}}
+        {{- .Values.backup.envFrom | default list | concat (.Values.envFrom | default list) | toYaml | nindent 8 -}}
+        {{- end }}
+        ports:
+        - containerPort: 8008
+          name: patroni
+        - containerPort: 5432
+          name: postgresql
+        {{- if .Values.readinessProbe.enabled }}
+        readinessProbe:
+          exec:
+            command:
+              - pg_isready
+              - -h
+              - {{ template "socket_directory" . }}
+          initialDelaySeconds: {{ .Values.readinessProbe.initialDelaySeconds }}
+          periodSeconds: {{ .Values.readinessProbe.periodSeconds }}
+          timeoutSeconds: {{ .Values.readinessProbe.timeoutSeconds }}
+          successThreshold: {{ .Values.readinessProbe.successThreshold }}
+          failureThreshold: {{ .Values.readinessProbe.failureThreshold }}
+        {{- end }}
+        volumeMounts:
+        - name: storage-volume
+          mountPath: {{ .Values.persistentVolumes.data.mountPath | quote }}
+          subPath: {{ .Values.persistentVolumes.data.subPath | quote }}
+        {{- if .Values.persistentVolumes.wal.enabled }}
+        - name: wal-volume
+          mountPath: {{ .Values.persistentVolumes.wal.mountPath | quote }}
+          subPath: {{ .Values.persistentVolumes.wal.subPath | quote }}
+        {{- end }}
+        {{- if .Values.sharedMemory.useMount }}
+        - name: shared-memory
+          mountPath: /dev/shm
+        {{- end }}
+{{- range $tablespaceName := ( .Values.persistentVolumes.tablespaces | default dict | keys ) }}
+        - name: {{ $tablespaceName }}
+          mountPath: {{ printf "%s/%s" (include "tablespaces_dir" $) $tablespaceName }}
+{{- end }}
+        - mountPath: /etc/timescaledb/patroni.yaml
+          subPath: patroni.yaml
+          name: patroni-config
+          readOnly: true
+        - mountPath: {{ template "scripts_dir" . }}
+          name: timescaledb-scripts
+          readOnly: true
+        - mountPath: {{ template "post_init_dir" . | quote }}
+          name: post-init
+          readOnly: true
+        - mountPath: /etc/certificate
+          name: certificate
+          readOnly: true
+        - name: socket-directory
+          mountPath: {{ template "socket_directory" . }}
+        {{ if .Values.callbacks.configMap -}}
+        - name: patroni-callbacks
+          mountPath: {{ template "callbacks_dir" . }}
+          readOnly: true
+        {{- end }}
+        - mountPath: /etc/pgbackrest
+          name: pgbackrest
+          readOnly: true
+        - mountPath: {{ template "pgbackrest_bootstrap_environment_dir" . }}
+          name: pgbackrest-bootstrap
+          readOnly: true
+        resources:
+{{ toYaml .Values.resources | indent 10 }}
+
+{{- if .Values.pgBouncer.enabled }}
+      - name: pgbouncer
+        securityContext:
+          allowPrivilegeEscalation: false
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - sh
+              - -c
+              # Only shutdown pgBouncer if PostgreSQL is no longer listening
+              - |
+                while test -S {{ template "socket_directory" . }}/.s.PGSQL.5432; do sleep 1; done
+        volumeMounts:
+          - mountPath: /etc/certificate
+            name: certificate
+            readOnly: true
+          - name: socket-directory
+            mountPath: {{ template "socket_directory" . }}
+            readOnly: false
+          - mountPath: {{ template "scripts_dir" . }}
+            name: timescaledb-scripts
+            readOnly: true
+          - mountPath: /etc/pgbouncer/
+            name: pgbouncer
+            readOnly: true
+{{- if .Values.pgBouncer.userListSecretName }}
+          - mountPath: /etc/pgbouncer/userlist/userlist.txt
+            name: pgbouncer-userlist
+            readOnly: true
+{{- end }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+          - containerPort: 6432
+            name: pgbouncer
+        command:
+        - /usr/bin/env
+        - -i
+        - /usr/sbin/pgbouncer
+        - /etc/pgbouncer/pgbouncer-sidecar.ini
+{{- end }}
+
+{{- if or .Values.backup.enabled .Values.backup.enable }}
+      - name: pgbackrest
+        securityContext:
+          allowPrivilegeEscalation: false
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        command:
+          - {{ template "scripts_dir" . }}/pgbackrest_bootstrap.sh
+        ports:
+        - containerPort: 8081
+          name: pgbackrest
+        volumeMounts:
+        - name: socket-directory
+          mountPath: {{ template "socket_directory" . }}
+          readOnly: true
+        - name: storage-volume
+          mountPath: {{ .Values.persistentVolumes.data.mountPath | quote }}
+          subPath: {{ .Values.persistentVolumes.data.subPath | quote }}
+        {{- if .Values.persistentVolumes.wal.enabled }}
+        - name: wal-volume
+          mountPath: {{ .Values.persistentVolumes.wal.mountPath | quote }}
+          subPath: {{ .Values.persistentVolumes.wal.subPath | quote }}
+        {{- end }}
+{{- range $tablespaceName := ( .Values.persistentVolumes.tablespaces | default dict | keys ) }}
+        - name: {{ $tablespaceName }}
+          mountPath: {{ printf "%s/%s" (include "tablespaces_dir" $) $tablespaceName }}
+{{- end }}
+        - mountPath: /etc/pgbackrest
+          name: pgbackrest
+          readOnly: true
+        - mountPath: {{ template "scripts_dir" . }}
+          name: timescaledb-scripts
+          readOnly: true
+        env:
+          - name: PGHOST
+            value: {{ template "socket_directory" . }}
+          - name: PGBACKREST_STANZA
+            value: poddb
+          - name: PGBACKREST_CONFIG
+            value: /etc/pgbackrest/pgbackrest.conf
+          {{- if .Values.backup.env }}{{ .Values.backup.env | default list | toYaml | nindent 10 }}{{- end }}
+        envFrom:
+        - secretRef:
+            name: {{ template "secrets_credentials" . }}
+            optional: false
+        - secretRef:
+            name: {{ template "secrets_pgbackrest" . }}
+            optional: false
+        {{- if or .Values.envFrom .Values.backup.envFrom -}}
+        {{- .Values.backup.envFrom | default list | concat (.Values.envFrom | default list) | toYaml | nindent 8 -}}
+        {{- end }}
+{{ end }}
+
+{{- if .Values.prometheus.enabled }}
+      - name: postgres-exporter
+        image: "{{ .Values.prometheus.image.repository }}:{{ .Values.prometheus.image.tag }}"
+        imagePullPolicy: {{ .Values.prometheus.image.pullPolicy }}
+        securityContext:
+          allowPrivilegeEscalation: false
+        ports:
+        - containerPort: 9187
+          name: pg-exporter
+        volumeMounts:
+        - name: socket-directory
+          mountPath: {{ template "socket_directory" . }}
+          readOnly: true
+          {{- if .Values.prometheus.volumeMounts }}
+{{ .Values.prometheus.volumeMounts | default list | toYaml | indent 8 }}
+          {{- end }}
+        env:
+        - name: DATA_SOURCE_NAME
+          value: "host={{ template "socket_directory" . }} user=postgres application_name=postgres_exporter"
+        - name: PG_EXPORTER_CONSTANT_LABELS
+          value: release={{ .Release.Name }},namespace={{ .Release.Namespace }}
+          {{- if .Values.prometheus.env }}
+{{ .Values.prometheus.env | default list | toYaml | indent 8 }}
+          {{- end }}
+{{ end }}
+
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- if .Values.schedulerName }}
+      schedulerName: {{ .Values.schedulerName }}
+    {{- end }}
+    {{- if .Values.affinity }}
+      affinity:
+{{ .Values.affinity | toYaml | indent 8 }}
+    {{- else if .Values.affinityTemplate }}
+      affinity:
+{{ tpl .Values.affinityTemplate . | indent 8 }}
+    {{- end }}
+      volumes:
+      - name: socket-directory
+        emptyDir: {}
+      - name: patroni-config
+        configMap:
+          name: {{ template "timescaledb.fullname" . }}-patroni
+      - name: timescaledb-scripts
+        configMap:
+          name: {{ template "timescaledb.fullname" . }}-scripts
+          defaultMode: 488 # 0750 permissions
+      {{ if .Values.callbacks.configMap -}}
+      - name: patroni-callbacks
+        configMap:
+          name: {{ tpl .Values.callbacks.configMap . }}
+          defaultMode: 488 # 0750 permissions
+      {{- end }}
+      {{- if .Values.sharedMemory.useMount }}
+      - name: shared-memory
+        emptyDir:
+          medium: Memory
+      {{- end }}
+      - name: post-init
+        projected:
+          defaultMode: 0750
+          sources:
+{{ .Values.postInit | default list | toYaml | indent 12 }}
+      - name: pgbouncer
+        configMap:
+          name: {{ template "timescaledb.fullname" . }}-pgbouncer
+          defaultMode: 416 # 0640 permissions
+          optional: true
+{{- if .Values.pgBouncer.userListSecretName }}
+      - name: pgbouncer-userlist
+        secret:
+          secretName: {{ .Values.pgBouncer.userListSecretName }}
+          defaultMode: 416 # 0640 permissions
+          optional: True
+{{- end }}
+      - name: pgbackrest
+        configMap:
+          name: {{ template "timescaledb.fullname" . }}-pgbackrest
+          defaultMode: 416 # 0640 permissions
+          optional: true
+      - name: certificate
+        secret:
+          secretName: {{ template "secrets_certificate" . }}
+          defaultMode: 416 # 0640 permissions
+      - name: pgbackrest-bootstrap
+        secret:
+          secretName: {{ .Values.bootstrapFromBackup.secretName }}
+          optional: True
+      {{- if not .Values.persistentVolumes.data.enabled }}
+      - name: storage-volume
+        emptyDir: {}
+      {{- end }}
+      {{- if .Values.prometheus.volumes }}
+{{ .Values.prometheus.volumes | toYaml | indent 6 }}
+      {{- end }}
+  volumeClaimTemplates:
+  {{- if .Values.persistentVolumes.data.enabled }}
+    - metadata:
+        name: storage-volume
+        annotations:
+        {{- if .Values.persistentVolumes.data.annotations }}
+{{ toYaml .Values.persistentVolumes.data.annotations | indent 10 }}
+        {{- end }}
+        labels:
+          app: {{ template "timescaledb.fullname" . }}
+          release: {{ .Release.Name }}
+          heritage: {{ .Release.Service }}
+          cluster-name: {{ template "clusterName" . }}
+          purpose: data-directory
+      spec:
+        accessModes:
+{{ toYaml .Values.persistentVolumes.data.accessModes | indent 8 }}
+        resources:
+          requests:
+            storage: "{{ .Values.persistentVolumes.data.size }}"
+      {{- if .Values.persistentVolumes.data.storageClass }}
+      {{- if (eq "-" .Values.persistentVolumes.data.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistentVolumes.data.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+  {{- if .Values.persistentVolumes.wal.enabled }}
+    - metadata:
+        name: wal-volume
+        annotations:
+        {{- if .Values.persistentVolumes.wal.annotations }}
+{{ toYaml .Values.persistentVolumes.wal.annotations | indent 10 }}
+        {{- end }}
+        labels:
+          app: {{ template "timescaledb.fullname" . }}
+          release: {{ .Release.Name }}
+          heritage: {{ .Release.Service }}
+          cluster-name: {{ template "clusterName" . }}
+          purpose: wal-directory
+      spec:
+        accessModes:
+{{ toYaml .Values.persistentVolumes.wal.accessModes | indent 8 }}
+        resources:
+          requests:
+            storage: "{{ .Values.persistentVolumes.wal.size }}"
+      {{- if .Values.persistentVolumes.wal.storageClass }}
+      {{- if (eq "-" .Values.persistentVolumes.wal.storageClass) }}
+        storageClassName: ""
+      {{- else }}
+        storageClassName: "{{ .Values.persistentVolumes.wal.storageClass }}"
+      {{- end }}
+      {{- end }}
+  {{- end }}
+{{- range $tablespaceName, $volume := ($.Values.persistentVolumes.tablespaces | default dict ) }}
+    - metadata:
+        name: {{ $tablespaceName }}
+        annotations:
+{{ $volume.annotations | default dict | toYaml | indent 10 }}
+        labels:
+          app: {{ template "timescaledb.fullname" $ }}
+          release: {{ $.Release.Name }}
+          heritage: {{ $.Release.Service }}
+          cluster-name: {{ template "clusterName" $ }}
+          tablespace: {{ $tablespaceName }}
+          purpose: tablespace
+      spec:
+        accessModes:
+{{ $volume.accessModes | default (list "ReadWriteOnce") | toYaml | indent 8 }}
+        resources:
+          requests:
+            storage: "{{ $volume.size }}"
+        storageClassName: {{ $volume.storageClass | default "" }}
+{{- end }}

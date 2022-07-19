@@ -23,9 +23,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | migrationImage.tag | string | `nil` | Overrides tag for the migration image, defaults to image.tag |
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
-| openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the openAPI server |
-| openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the openAPI server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"1.17.28"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
+| openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
+| options.agentChartTargetVersion | string | `"2.2.4"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -34,6 +34,20 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
 | options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
 | options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
+| options.overprovisioning.enabled | bool | `false` |  |
+| options.overprovisioning.memory | string | `"1Gi"` |  |
+| options.overprovisioning.cpu | string | `"1000m"` |  |
+| hubspotCronjob.resources.limits.cpu | string | `"500m"` |  |
+| hubspotCronjob.resources.limits.memory | string | `"1024Mi"` |  |
+| hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |
+| hubspotCronjob.resources.requests.memory | string | `"128Mi"` |  |
+| hubspotCronjob.schedules | list | `[]` |  |
+| benchmarkCronjob.resources.limits.cpu | string | `"500m"` |  |
+| benchmarkCronjob.resources.limits.memory | string | `"1024Mi"` |  |
+| benchmarkCronjob.resources.requests.cpu | string | `"80m"` |  |
+| benchmarkCronjob.resources.requests.memory | string | `"128Mi"` |  |
+| benchmarkCronjob.schedules | list | `[]` |  |
+| selfHostedSecret | string | `nil` |  |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
@@ -57,16 +71,20 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
 | api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
-| openApi.port | int | `8080` | Port for the openAPI server to listen on. |
-| openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the openAPI server. |
-| openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the openAPI server. |
-| openApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the openAPI server. |
-| openApi.hpa.min | int | `1` | Minimum number of replicas for the openAPI server. |
-| openApi.hpa.max | int | `2` | Maximum number of replicas for the openAPI server. |
+| api.ingress.enabled | bool | `true` | Enable the Open API ingress |
+| api.service.type | string | `nil` | Service type for Open API server |
+| openApi.port | int | `8080` | Port for the Open API server to listen on. |
+| openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
+| openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
+| openApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the Open API server. |
+| openApi.hpa.min | int | `1` | Minimum number of replicas for the Open API server. |
+| openApi.hpa.max | int | `2` | Maximum number of replicas for the Open API server. |
 | openApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
-| openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the openAPI server. |
-| openApi.nodeSelector | object | `{}` | Node Selector for the openAPI server. |
-| openApi.tolerations | list | `[]` | Tolerations for the openApi server. |
+| openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the Open API server. |
+| openApi.nodeSelector | object | `{}` | Node Selector for the Open API server. |
+| openApi.tolerations | list | `[]` | Tolerations for the Open API server. |
+| openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
+| openApi.service.type | string | `nil` | Service type for Open API server |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
 | samlCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the SAML sync job. |
@@ -84,6 +102,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
+| truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
+| truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
+| truncateWorkloadMetrics.schedules | list | `[]` | CRON schedules for the truncating workload metrics job. |
+| truncateWorkloadMetrics.securityContext.runAsUser | int | `10324` | The user ID to run the truncating workload metrics job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | service.annotations | string | `nil` | Annotations for the services |
@@ -104,6 +126,20 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| timescale.replicaCount | int | `1` |  |
+| timescale.clusterName | string | `"timescale"` |  |
+| timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
+| timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
+| timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
+| timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
+| timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
+| timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
+| timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
+| timescale.loadBalancer.enabled | bool | `false` |  |
+| timescale.resources.limits.cpu | int | `1` |  |
+| timescale.resources.limits.memory | string | `"1Gi"` |  |
+| timescale.resources.requests.cpu | string | `"75m"` |  |
+| timescale.resources.requests.memory | string | `"256Mi"` |  |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
@@ -151,7 +187,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"1.2"` |  |
+| repoScanJob.insightsCIVersion | string | `"2.0"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |

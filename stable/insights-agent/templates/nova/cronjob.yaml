@@ -8,6 +8,7 @@ spec:
     spec:
       {{ include "job-spec" . | nindent 6 | trim }}
       template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
@@ -28,6 +29,8 @@ spec:
               - find
               - --config={{ .Config.configLocation }}
               - -v{{ .Config.logLevel }}
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
           volumes:

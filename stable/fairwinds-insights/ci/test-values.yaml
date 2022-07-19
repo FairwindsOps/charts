@@ -1,3 +1,7 @@
+rok8sCIRef: this-is-a-really-long-string-that-will-need-to-be-truncated
+sanitizedBranch: this-is-a-really-long-string-that-will-need-to-be-truncated
+fullnameOverride: this-is-a-really-long-string-that-will-need-to-be-truncated
+
 ingress:
   enabled: true
   hostedZones:
@@ -17,6 +21,19 @@ deployments:
 postgresql:
   sslMode: "disable"
   password: "changeme"
+
+timescale:
+  ephemeral: true
+  enabled: true
+  password: postgres
+  postgresqlHost: timescale
+  postgresqlDatabase: postgres
+  persistence:
+    enabled: false
+  service:
+    port: 5433
+  replica:
+    port: 5433
 
 dashboard:
   pdb:
