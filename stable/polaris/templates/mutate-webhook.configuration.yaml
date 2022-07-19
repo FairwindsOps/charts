@@ -1,14 +1,15 @@
-{{- if .Values.webhook.enable -}}
-apiVersion: admissionregistration.k8s.io/v1beta1
-kind: ValidatingWebhookConfiguration
+{{- if and .Values.webhook.enable .Values.webhook.mutate -}}
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
 metadata:
-  name: polaris-webhook
+  name: polaris-mutate-webhook
   {{- if not .Values.webhook.secretName }}
   annotations:
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "polaris.fullname" . }}-cert
   {{- end }}
 webhooks:
 - admissionReviewVersions:
+  - v1
   - v1beta1
   clientConfig:
     {{- if .Values.webhook.caBundle }}
@@ -17,7 +18,7 @@ webhooks:
     service:
       name: {{ include "polaris.fullname" . }}-webhook
       namespace: {{ .Release.Namespace }}
-      path: /validate
+      path: /mutate
       port: 443
   failurePolicy: {{ .Values.webhook.failurePolicy }}
   matchPolicy: {{ .Values.webhook.matchPolicy }}
@@ -27,7 +28,7 @@ webhooks:
   objectSelector:
     {{ .Values.webhook.objectSelector | toYaml | nindent 4 }}
   rules:
-  {{- concat .Values.webhook.rules .Values.webhook.defaultRules | toYaml | nindent 2 }}
+  {{- concat .Values.webhook.mutatingRules .Values.webhook.defaultRules | toYaml | nindent 2 }}
   sideEffects: None
   timeoutSeconds: 10
 {{- end -}}

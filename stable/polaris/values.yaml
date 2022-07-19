@@ -77,8 +77,12 @@ dashboard:
   disallowAnnotationExemptions: false
 
 webhook:
-  # webhook.enable -- Whether to run the Validating Webhook
+  # webhook.enable -- Whether to run the webhook
   enable: false
+  # webhook.validate -- Enables the Validating Webhook, to reject resources with issues
+  validate: true
+  # webhook.mutate -- Enables the Mutating Webhook, to modify resources with issues
+  mutate: false
   # webhook.replicas -- Number of replicas
   replicas: 2
   # webhook.nodeSelector -- Webhook pod nodeSelector
@@ -102,8 +106,10 @@ webhook:
       operator: DoesNotExist
   # webhook.objectSelector -- objectSelector for the ValidatingWebhookConfiguration
   objectSelector: {}
-  # webhook.rules -- An array of additional for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  # webhook.rules -- An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
   rules: []
+  # webhook.mutatingRules -- An array of additional rules for the MutatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  mutatingRules: []
   # webhook.defaultRules -- An array of rules for common types for the ValidatingWebhookConfiguration
   defaultRules:
   - apiGroups:

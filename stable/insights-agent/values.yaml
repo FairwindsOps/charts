@@ -70,7 +70,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "5.0"
+    tag: "6.0"
   resources:
     requests:
       cpu: 100m
@@ -115,14 +115,17 @@ goldilocks:
         cpu: 25m
         memory: 262Mi
       limits:
-        cpu:
-        memory:
+        cpu: 250m
+        memory: 545Mi
   dashboard:
     enabled: false
   resources:
     requests:
       cpu: 100m
       memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
 
 opa:
   enabled: false
