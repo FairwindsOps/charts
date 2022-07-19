@@ -44,6 +44,7 @@ spec:
             command:
               - "./report.sh"
             env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
             - name: FAIRWINDS_INSIGHTS_HOST
               value: {{ .Values.insights.host | quote }}
             - name: FAIRWINDS_ORG
