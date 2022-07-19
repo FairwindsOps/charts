@@ -255,6 +255,11 @@ trivy:
     tag: "0.18"
   serviceAccount:
     annotations:
+  registry:
+    user: ""
+    password: ""
+    passwordFile: ""
+    certDir: ""
   resources:
     requests:
       cpu: 100m

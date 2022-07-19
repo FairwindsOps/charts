@@ -100,6 +100,10 @@ Parameter | Description | Default
 `trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
 `trivy.pullRefReplacements` | Modify references to docker images, in the format `quay.io/foo,docker.io/foo;quay.io/bar,docker.io/bar` | ""
 `trivy.serviceAccount.annotations` | Annotations to add to the Trivy service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing private images | nil
+`trivy.registry.user` | Specify the username for registry authentication | ""
+`trivy.registry.password` | Specify the password for registry authentication | ""
+`trivy.registry.passwordFile` | Specify a file containing the password for registry authentication | ""
+`trivy.registry.certDir` | Specify the cert directory for connecting to the registry | ""
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true

@@ -82,6 +82,14 @@ spec:
             - name: NAMESPACE_BLACKLIST
               value: {{ join "," .Values.trivy.namespaceBlacklist | lower }}
             {{ end }}
+            - name: REGISTRY_USER
+              value: {{ .Values.trivy.registryUser }}
+            - name: REGISTRY_PASSWORD
+              value: {{ .Values.trivy.registryPassword }}
+            - name: REGISTRY_PASSWORD_FILE
+              value: {{ .Values.trivy.registryPasswordFile }}
+            - name: REGISTRY_CERT_DIR
+              value: {{ .Values.trivy.registryCertDir }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}
