@@ -11,6 +11,9 @@ metadata:
   annotations:
     checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
+  {{- if .Values.priorityClassName }}
+  priorityClassName: {{ .Values.priorityClassName }}
+  {{- end }}
   updateStrategy:
     type: RollingUpdate
   selector:
@@ -21,7 +24,6 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        scheduler.alpha.kubernetes.io/critical-pod: ""
       labels:
         app.kubernetes.io/name: {{ include "aws-iam-authenticator.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
