@@ -11,9 +11,6 @@ metadata:
   annotations:
     checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
 spec:
-  {{- if .Values.priorityClassName }}
-  priorityClassName: {{ .Values.priorityClassName }}
-  {{- end }}
   updateStrategy:
     type: RollingUpdate
   selector:
