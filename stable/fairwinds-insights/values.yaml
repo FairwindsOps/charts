@@ -351,6 +351,26 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
+resourcesRecommendationsCronjob:
+  # -- Enable resources recommendations true by default
+  enabled: true
+  # -- Resources for the resources recommendations job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 500m
+      memory: 1024Mi
+  # -- CRON schedules for the resources recommendations job.
+  schedules:
+    - name: resources-recommendations
+      interval: 60min
+      cron: "30 * * * *"
+  securityContext:
+    # -- The user ID to run the resources recommendations job under.
+    runAsUser: 10324
+
 truncateWorkloadMetrics:
   # -- Enable truncating workload metrics false by default
   enabled: false
@@ -431,10 +451,14 @@ timescale:
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-    # -- Username to connect to Timescale with
+  # -- Host for timescale
+  postgresqlHost: timescale
+  # -- Username to connect to Timescale with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_timescale
+  postgresqlDatabase: postgres
+  # -- Password for the Postgres Database
+  password: postgres
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
@@ -444,7 +468,7 @@ timescale:
       port: 5433
   loadBalancer:
     enabled: false
-    # -- Resources section for Timescale
+  # -- Resources section for Timescale
   resources:
     limits:
       cpu: 1
