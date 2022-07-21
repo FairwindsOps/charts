@@ -30,7 +30,9 @@ spec:
     spec:
       # run on the host network (don't depend on CNI)
       hostNetwork: true
-
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
