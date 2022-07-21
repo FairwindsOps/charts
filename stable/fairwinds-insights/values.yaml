@@ -457,6 +457,8 @@ timescale:
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
   postgresqlDatabase: postgres
+  # -- Password for the Postgres Database
+  postgresqlPassword: postgres
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
