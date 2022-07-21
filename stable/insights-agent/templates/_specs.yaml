@@ -54,6 +54,10 @@ nodeSelector:
 tolerations:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- with .Config.securityContext }}
+securityContext:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
 {{- if not .Config.SkipVolumes }}
 volumes:
 - name: output

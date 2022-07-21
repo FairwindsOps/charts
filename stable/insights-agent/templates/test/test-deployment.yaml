@@ -24,7 +24,7 @@ spec:
           env:
           {{ include "proxy-env-spec" . | indent 10 | trim }}
           securityContext:
-            {{- toYaml .Values.test.securityContext | nindent 12 }}
+            {{- toYaml .Values.test.containerSecurityContext | nindent 12 }}
           image: "{{ .Values.test.image.repository }}:{{ .Values.test.image.tag }}"
           imagePullPolicy: {{ .Values.test.image.pullPolicy }}
           ports:
