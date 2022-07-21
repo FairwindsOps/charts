@@ -84,6 +84,7 @@ Parameter | Description | Default
 `{report}.schedule` | Cron expression for running the report | `rand * * * *`
 `{report}.timeout` | Maximum time in seconds to wait for the report |
 `{report}.resources` | CPU/memory requests and limits for the report |
+`{report}.securityContext` | Additional securityContext field in the Pod specification(PodSecurityContext) for the report |
 `{report}.image.repository` | Repository to use for the report image |
 `{report}.image.tag` | Image tag to use for the report |
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
