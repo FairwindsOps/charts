@@ -119,13 +119,13 @@ goldilocks:
         memory: 545Mi
   dashboard:
     enabled: false
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-    limits:
-      cpu: 250m
-      memory: 512Mi
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 250m
+        memory: 512Mi
 
 opa:
   enabled: false
@@ -326,9 +326,6 @@ prometheus:
     image:
       pullPolicy: Always
     resources:
-      limits:
-        cpu: 100m
-        memory: 64Mi
       requests:
         cpu: 10m
         memory: 32Mi
