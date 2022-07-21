@@ -451,10 +451,14 @@ timescale:
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-    # -- Username to connect to Timescale with
+  # -- Host for timescale
+  postgresqlHost: timescale
+  # -- Username to connect to Timescale with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_timescale
+  postgresqlDatabase: postgres
+  # -- Password for the Postgres Database
+  password: postgres
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
@@ -464,7 +468,7 @@ timescale:
       port: 5433
   loadBalancer:
     enabled: false
-    # -- Resources section for Timescale
+  # -- Resources section for Timescale
   resources:
     limits:
       cpu: 1
