@@ -12,6 +12,7 @@ In this version, due to updates for Kubernetes 1.16+, the labelSelector for the 
 |-----|------|---------|-------------|
 | image.repository | string | `"602401143452.dkr.ecr.us-west-2.amazonaws.com/amazon/aws-iam-authenticator"` |  |
 | image.tag | string | `"v0.5.9"` |  |
+| priorityClassName | string | `"system-cluster-critical"` |  |
 | volumes.output.mountPath | string | `"/etc/kubernetes/aws-iam-authenticator/"` |  |
 | volumes.output.hostPath | string | `"/srv/kubernetes/kube-apiserver/aws-iam-authenticator/"` |  |
 | volumes.state.mountPath | string | `"/var/aws-iam-authenticator/"` |  |

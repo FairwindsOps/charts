@@ -21,14 +21,15 @@ spec:
     metadata:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-        scheduler.alpha.kubernetes.io/critical-pod: ""
       labels:
         app.kubernetes.io/name: {{ include "aws-iam-authenticator.name" . }}
         app.kubernetes.io/instance: {{ .Release.Name }}
     spec:
       # run on the host network (don't depend on CNI)
       hostNetwork: true
-
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName }}
+      {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -39,6 +40,10 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 
+      securityContext:
+        runAsUser: 10000
+        runAsGroup: 10000
+        fsGroup: 10000
       # run `aws-iam-authenticator server` with three volumes
       # - config (mounted from the ConfigMap at /etc/aws-iam-authenticator/config.yaml)
       # - state (persisted TLS certificate and keys, mounted from the host)
