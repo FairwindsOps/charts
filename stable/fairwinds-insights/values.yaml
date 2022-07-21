@@ -425,7 +425,7 @@ postgresql:
   # -- Username to connect to Postgres with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
-  postgresqlDatabase: postgres
+  postgresqlDatabase: fairwinds_insights
   service:
     # -- Port of the Postgres Database
     port: 5432
@@ -456,7 +456,7 @@ timescale:
   # -- Username to connect to Timescale with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_timescale
+  postgresqlDatabase: postgres
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
