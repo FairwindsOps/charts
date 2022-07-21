@@ -425,7 +425,7 @@ postgresql:
   # -- Username to connect to Postgres with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_insights
+  postgresqlDatabase: postgres
   service:
     # -- Port of the Postgres Database
     port: 5432
