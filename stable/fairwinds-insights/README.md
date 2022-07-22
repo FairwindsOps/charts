@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.2.4"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.4.8"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -102,6 +102,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
+| resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
+| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"500m","memory":"1024Mi"}}` | Resources for the resources recommendations job. |
+| resourcesRecommendationsCronjob.schedules | list | `[{"cron":"30 * * * *","interval":"60min","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
+| resourcesRecommendationsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the resources recommendations job under. |
 | truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
 | truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
 | truncateWorkloadMetrics.schedules | list | `[]` | CRON schedules for the truncating workload metrics job. |
@@ -130,16 +134,15 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.clusterName | string | `"timescale"` |  |
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
+| timescale.postgresqlHost | string | `"timescale"` | Host for timescale |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
-| timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
+| timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres Database |
+| timescale.password | string | `"postgres"` | Password for the Postgres Database |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
 | timescale.loadBalancer.enabled | bool | `false` |  |
-| timescale.resources.limits.cpu | int | `1` |  |
-| timescale.resources.limits.memory | string | `"1Gi"` |  |
-| timescale.resources.requests.cpu | string | `"75m"` |  |
-| timescale.resources.requests.memory | string | `"256Mi"` |  |
+| timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
