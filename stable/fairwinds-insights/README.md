@@ -77,8 +77,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
 | openApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the Open API server. |
-| openApi.hpa.min | int | `1` | Minimum number of replicas for the Open API server. |
-| openApi.hpa.max | int | `2` | Maximum number of replicas for the Open API server. |
+| openApi.hpa.min | int | `2` | Minimum number of replicas for the Open API server. |
+| openApi.hpa.max | int | `3` | Maximum number of replicas for the Open API server. |
 | openApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the Open API server. |
 | openApi.nodeSelector | object | `{}` | Node Selector for the Open API server. |
