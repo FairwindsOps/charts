@@ -208,9 +208,9 @@ openApi:
     # -- Create a horizontal pod autoscaler for the Open API server.
     enabled: false
     # -- Minimum number of replicas for the Open API server.
-    min: 1
+    min: 2
     # -- Maximum number of replicas for the Open API server.
-    max: 2
+    max: 3
     # -- Scaling metrics
     metrics:
     - type: Resource
