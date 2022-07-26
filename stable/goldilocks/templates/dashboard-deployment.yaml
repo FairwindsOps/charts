@@ -74,11 +74,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: {{ include "goldilocks.basePath" . }}/health
+              path: {{ trimSuffix "/" .Values.dashboard.basePath }}/health
               port: http
           readinessProbe:
             httpGet:
-              path: {{ include "goldilocks.basePath" . }}/health
+              path: {{ trimSuffix "/" .Values.dashboard.basePath }}/health
               port: http
           resources:
             {{- toYaml .Values.dashboard.resources | nindent 12 }}
