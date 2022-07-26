@@ -4,6 +4,9 @@ image:
   # The image tag to use
   tag: v0.5.9
 
+## -- A priority class to assign to the pods
+priorityClassName: "system-cluster-critical"
+
 volumes:
   output:
     mountPath: /etc/kubernetes/aws-iam-authenticator/
