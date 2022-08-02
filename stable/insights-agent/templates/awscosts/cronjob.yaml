@@ -21,6 +21,7 @@ spec:
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             env:
+            {{- if .Values.awscosts.secretName }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -31,6 +32,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.awscosts.secretName }}
                   key: AWS_SECRET_ACCESS_KEY
+            {{- end }}
             - name: AWS_DEFAULT_REGION
               value: {{ .Values.awscosts.region }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
