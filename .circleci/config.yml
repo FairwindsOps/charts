@@ -20,7 +20,7 @@ references:
       command: |
         require_changelog=( insights-agent fairwinds-insights )
         for chart in "${require_changelog[@]}"; do
-          version=$(yq read ./stable/$chart/Chart.yaml 'version')
+          version=$(yq eval '.version' ./stable/$chart/Chart.yaml )
           echo "Checking if CHANGELOG.md is updated for $chart"
           grep "## $version" ./stable/$chart/CHANGELOG.md
         done
