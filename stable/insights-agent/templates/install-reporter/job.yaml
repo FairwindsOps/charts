@@ -17,14 +17,14 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      {{- with $.Values.cronjobs.imagePullSecret }}
+      imagePullSecrets:
+      - name: {{ . }}
+      {{- end }}
       containers:
       - name: start-job-from-cronjob
         image: "{{ .Values.installReporter.image.repository }}:{{ .Values.installReporter.image.tag }}"
         imagePullPolicy: Always
-        {{- with $.Values.cronjobs.imagePullSecret }}
-        imagePullSecrets:
-        - name: {{ . }}
-        {{- end }}
         command: ["curl"]
         args:
           - "--fail"
