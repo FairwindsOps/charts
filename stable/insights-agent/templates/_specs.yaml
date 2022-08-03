@@ -54,6 +54,10 @@ nodeSelector:
 tolerations:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- with $.Values.cronjobs.imagePullSecret }}
+imagePullSecrets:
+  - name: {{ . }}
+{{- end }}
 {{- with .Config.securityContext }}
 securityContext:
   {{- toYaml . | nindent 2 }}
@@ -69,10 +73,6 @@ volumes:
 name: {{ .Label }}
 image: "{{ .Config.image.repository }}:{{ .Config.image.tag }}"
 imagePullPolicy: Always
-{{- with $.Values.cronjobs.imagePullSecret }}
-imagePullSecrets:
-  - name: {{ . }}
-{{- end }}
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
 volumeMounts:
