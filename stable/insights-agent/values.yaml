@@ -15,6 +15,8 @@ global:
     ftp:
     # global.proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
     no_proxy:
+   # global.imagePullSecrets -- Additional pull secrets to attach to all workloads
+  imagePullSecrets: []
 
 rbac:
   disabled: false
@@ -23,7 +25,6 @@ uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.3"
-  imagePullSecret: ""
   sendFailures: true
   resources:
     limits:
@@ -407,8 +408,6 @@ right-sizer:
     repository: quay.io/fairwinds/right-sizer
     tag: 0.3
     pullPolicy: Always
-  # rightsizer.imagePullSecrets -- imagePullSecrets containing private registry credentials.
-  imagePullSecrets: []
 
   # rightsizer.stateconfigmapname -- The name of a ConfigMap where controller
   # state is stored inbetween restarts.
