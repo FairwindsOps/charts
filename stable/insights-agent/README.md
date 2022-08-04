@@ -82,7 +82,6 @@ Parameter | Description | Default
 `cronjobs.tolerations` | Tolerations to use for cronjobs | null
 `cronjobs.runJobsImmediately` | Run each of the reports immediately upon install of the Insights Agent | true
 `cronjobs.dnsPolicy` | Adds pod DNS policy |
-`cronjobs.imagePullSecret` | **deprecated**: use `global.images.imagePullSecrets` instead. Name of a pull secret to attach to all CronJobs |
 `{report}.enabled` | Enable the report type |
 `{report}.schedule` | Cron expression for running the report | `rand * * * *`
 `{report}.timeout` | Maximum time in seconds to wait for the report |
