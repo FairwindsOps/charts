@@ -74,11 +74,11 @@ spec:
               protocol: TCP
           livenessProbe:
             httpGet:
-              path: {{.Values.dashboard.basePath | default "/" }}health
+              path: {{.Values.dashboard.basePath | default "" }}/health
               port: http
           readinessProbe:
             httpGet:
-              path: {{.Values.dashboard.basePath | default "/" }}health
+              path: {{.Values.dashboard.basePath | default "" }}/health
               port: http
           resources:
             {{- toYaml .Values.dashboard.resources | nindent 12 }}
