@@ -59,7 +59,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.replicas | int | `2` | Number of replicas to run. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.service.annotations | object | `{}` | Service annotations |
-| dashboard.service.targetPort | int | `8080` | Service targetport |
+| dashboard.service.targetPort | string | `nil` | Service targetport, defaults to dashboard.port |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
 | dashboard.tolerations | list | `[]` | Dashboard pod tolerations |
 | image.pullPolicy | string | `"Always"` | Image pull policy |

@@ -63,8 +63,8 @@ dashboard:
     type: ClusterIP
     # dashboard.service.annotations -- Service annotations
     annotations: {}
-    # dashboard.service.targetPort -- Service targetport
-    targetPort: 8080
+    # dashboard.service.targetPort -- Service targetport, defaults to dashboard.port
+    targetPort:
   # dashboard.nodeSelector -- Dashboard pod nodeSelector
   nodeSelector: {}
   # dashboard.tolerations -- Dashboard pod tolerations
