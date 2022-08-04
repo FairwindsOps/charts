@@ -24,6 +24,10 @@ spec:
           - name: {{ .Label }}
             image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
             imagePullPolicy: Always
+            {{- with $.Values.global.imagePullSecrets }}
+            imagePullSecrets:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
             {{- with $.Values.cronjobs.imagePullSecret }}
             imagePullSecrets:
                 - name: {{ . }}

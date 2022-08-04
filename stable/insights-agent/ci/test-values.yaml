@@ -4,6 +4,11 @@ insights:
   cluster: us-east-1
   base64token: Zm9v
 
+global:
+  images:
+    imagePullSecrets:
+      - name: fake-docker-registry
+
 uploader:
   resources:
     requests:

@@ -21,6 +21,14 @@ spec:
         component: right-sizer
         app: insights-agent
     spec:
+      {{- with $.Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $.Values.cronjobs.imagePullSecret }}
+      imagePullSecrets:
+          - name: {{ . }}
+      {{- end }}
       {{- with (index .Values "right-sizer" "imagePullSecrets") }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}

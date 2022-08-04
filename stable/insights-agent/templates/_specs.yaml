@@ -54,9 +54,13 @@ nodeSelector:
 tolerations:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- with $.Values.global.imagePullSecrets }}
+imagePullSecrets:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
 {{- with $.Values.cronjobs.imagePullSecret }}
 imagePullSecrets:
-  - name: {{ . }}
+    - name: {{ . }}
 {{- end }}
 {{- with .Config.securityContext }}
 securityContext:

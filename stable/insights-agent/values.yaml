@@ -15,8 +15,9 @@ global:
     ftp:
     # global.proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
     no_proxy:
-   # global.imagePullSecrets -- Additional pull secrets to attach to all workloads
-  imagePullSecrets: []
+  images:
+    # global.imagePullSecrets -- Additional pull secrets to attach to all workloads
+    imagePullSecrets:
 
 rbac:
   disabled: false

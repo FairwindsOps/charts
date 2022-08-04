@@ -8,3 +8,10 @@ helm get notes -n cert-manager cert-manager || helm install \
   --version v1.0.1 \
   --set installCRDs=true \
   --wait
+
+# Fake secret to test pull secrets functionality
+kubectl create secret fake-docker-registry regcred \
+  --docker-server=fairwinds.com \
+  --docker-username=johndoe \
+  --docker-password=totallynotsecret \
+  --docker-email=johndoe@fairwinds.com

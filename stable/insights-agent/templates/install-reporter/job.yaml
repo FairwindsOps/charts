@@ -17,6 +17,10 @@ spec:
   template:
     spec:
       restartPolicy: Never
+      {{- with $.Values.global.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with $.Values.cronjobs.imagePullSecret }}
       imagePullSecrets:
       - name: {{ . }}
