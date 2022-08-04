@@ -23,6 +23,7 @@ uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.3"
+  imagePullSecret: ""
   sendFailures: true
   resources:
     limits:
