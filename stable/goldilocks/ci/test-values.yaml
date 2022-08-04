@@ -29,6 +29,7 @@ controller:
           - "watch"
 
 dashboard:
+  basePath: goldilocks
   ingress:
     enabled: true
     hosts:
