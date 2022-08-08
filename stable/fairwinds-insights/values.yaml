@@ -351,26 +351,6 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
-resourcesRecommendationsCronjob:
-  # -- Enable resources recommendations true by default
-  enabled: true
-  # -- Resources for the resources recommendations job.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 500m
-      memory: 1024Mi
-  # -- CRON schedules for the resources recommendations job.
-  schedules:
-    - name: resources-recommendations
-      interval: 60min
-      cron: "30 * * * *"
-  securityContext:
-    # -- The user ID to run the resources recommendations job under.
-    runAsUser: 10324
-
 truncateWorkloadMetrics:
   # -- Enable truncating workload metrics false by default
   enabled: false

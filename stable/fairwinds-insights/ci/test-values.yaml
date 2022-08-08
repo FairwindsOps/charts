@@ -61,10 +61,6 @@ databaseCleanupCronjob:
   enabled: true
   schedules: []
 
-resourcesRecommendationsCronjob:
-  enabled: true
-  schedules: []
-
 minio:
   persistence:
     enabled: false
