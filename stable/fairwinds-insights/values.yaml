@@ -545,6 +545,7 @@ cronjobExecutor:
       memory: 3Mi
 
 reportjob:
+  enabled: true
   pdb:
     enabled: true
     minReplicas: 1
