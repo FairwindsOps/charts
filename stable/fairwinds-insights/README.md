@@ -170,6 +170,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
 | cronjobExecutor.resources.requests.memory | string | `"3Mi"` |  |
+| reportjob.enabled | bool | `true` |  |
 | reportjob.pdb.enabled | bool | `true` |  |
 | reportjob.pdb.minReplicas | int | `1` |  |
 | reportjob.hpa.enabled | bool | `true` |  |
