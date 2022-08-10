@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.4.8
+  agentChartTargetVersion: 2.6.1
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -208,9 +208,9 @@ openApi:
     # -- Create a horizontal pod autoscaler for the Open API server.
     enabled: false
     # -- Minimum number of replicas for the Open API server.
-    min: 1
+    min: 2
     # -- Maximum number of replicas for the Open API server.
-    max: 2
+    max: 3
     # -- Scaling metrics
     metrics:
     - type: Resource
@@ -451,10 +451,14 @@ timescale:
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-    # -- Username to connect to Timescale with
+  # -- Host for timescale
+  postgresqlHost: timescale
+  # -- Username to connect to Timescale with
   postgresqlUsername: postgres
   # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_timescale
+  postgresqlDatabase: postgres
+  # -- Password for the Postgres Database
+  password: postgres
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
@@ -464,7 +468,7 @@ timescale:
       port: 5433
   loadBalancer:
     enabled: false
-    # -- Resources section for Timescale
+  # -- Resources section for Timescale
   resources:
     limits:
       cpu: 1
@@ -541,6 +545,7 @@ cronjobExecutor:
       memory: 3Mi
 
 reportjob:
+  enabled: true
   pdb:
     enabled: true
     minReplicas: 1

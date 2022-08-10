@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.4.8"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.6.1"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -77,8 +77,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
 | openApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the Open API server. |
-| openApi.hpa.min | int | `1` | Minimum number of replicas for the Open API server. |
-| openApi.hpa.max | int | `2` | Maximum number of replicas for the Open API server. |
+| openApi.hpa.min | int | `2` | Minimum number of replicas for the Open API server. |
+| openApi.hpa.max | int | `3` | Maximum number of replicas for the Open API server. |
 | openApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the Open API server. |
 | openApi.nodeSelector | object | `{}` | Node Selector for the Open API server. |
@@ -134,16 +134,15 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.clusterName | string | `"timescale"` |  |
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
+| timescale.postgresqlHost | string | `"timescale"` | Host for timescale |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
-| timescale.postgresqlDatabase | string | `"fairwinds_timescale"` | Name of the Postgres Database |
+| timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres Database |
+| timescale.password | string | `"postgres"` | Password for the Postgres Database |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
 | timescale.loadBalancer.enabled | bool | `false` |  |
-| timescale.resources.limits.cpu | int | `1` |  |
-| timescale.resources.limits.memory | string | `"1Gi"` |  |
-| timescale.resources.requests.cpu | string | `"75m"` |  |
-| timescale.resources.requests.memory | string | `"256Mi"` |  |
+| timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
@@ -171,6 +170,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
 | cronjobExecutor.resources.requests.memory | string | `"3Mi"` |  |
+| reportjob.enabled | bool | `true` |  |
 | reportjob.pdb.enabled | bool | `true` |  |
 | reportjob.pdb.minReplicas | int | `1` |  |
 | reportjob.hpa.enabled | bool | `true` |  |

@@ -23,6 +23,7 @@ uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.3"
+  imagePullSecret: ""
   sendFailures: true
   resources:
     limits:
@@ -331,9 +332,6 @@ prometheus:
     image:
       pullPolicy: Always
     resources:
-      limits:
-        cpu: 100m
-        memory: 64Mi
       requests:
         cpu: 10m
         memory: 32Mi
@@ -374,7 +372,7 @@ test:
     repository: "python"
     tag: "3.6"
     pullPolicy: "Always"
-  securityContext:
+  containerSecurityContext:
     runAsUser: 1200
     allowPrivilegeEscalation: false
     privileged: false
@@ -397,6 +395,8 @@ awscosts:
     requests:
       cpu: 100m
       memory: 128Mi
+  # awscosts.securityContext  -- Additional securityContext field in the Pod specification(PodSecurityContext) for the cronjob.
+  securityContext: {}
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
   containerSecurityContext: {}
 
@@ -506,7 +506,7 @@ falco:
     fsGroup: 101
     runAsUser: 1200
     runAsNonRoot: true
-  securityContext:
+  containerSecurityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
     runAsNonRoot: true

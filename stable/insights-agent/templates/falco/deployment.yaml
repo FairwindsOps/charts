@@ -60,9 +60,9 @@ spec:
           mountPath: /output
         env:
         {{ include "proxy-env-spec" . | indent 8 | trim }}
-      {{- if .Values.falco.securityContext }}
+      {{- if .Values.falco.containerSecurityContext }}
         securityContext:
-          {{- toYaml .Values.falco.securityContext | nindent 12 }}
+          {{- toYaml .Values.falco.containerSecurityContext | nindent 12 }}
       {{- end }}
         imagePullPolicy: {{ .Values.falco.image.pullPolicy }}
         image: "{{ .Values.falco.image.repository }}:{{ .Values.falco.image.tag }}"

@@ -67,12 +67,14 @@ Parameter | Description | Default
 `global.proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
+`uploader.imagePullSecret` | A pull secret for a private uploader image
 `uploader.image.tag` | The tag to use for the uploader script | 0.2
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
 `uploader.sendFailures` | Send logs of failure to Insights when a job fails. | true
 `uploader.env` | Set extra environment variables for the uploader script | []
 `cronjobs.disableServiceMesh` | Adds annotations to all CronJobs to not inject Linkerd or Istio | true
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
+`cronjobs.imagePullSecret` | A pull secret for cronjob images
 `cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
 `cronjobs.successfulJobsHistoryLimit` | Number of successful jobs to keep in history for each report | 2
 `cronjobs.nodeSelector` | Node selector to use for cronjobs | null
@@ -84,6 +86,7 @@ Parameter | Description | Default
 `{report}.schedule` | Cron expression for running the report | `rand * * * *`
 `{report}.timeout` | Maximum time in seconds to wait for the report |
 `{report}.resources` | CPU/memory requests and limits for the report |
+`{report}.securityContext` | Additional securityContext field in the Pod specification(PodSecurityContext) for the report |
 `{report}.image.repository` | Repository to use for the report image |
 `{report}.image.tag` | Image tag to use for the report |
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
