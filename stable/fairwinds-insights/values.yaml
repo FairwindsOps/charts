@@ -366,7 +366,7 @@ resourcesRecommendationsCronjob:
   schedules:
     - name: resources-recommendations
       interval: 24h
-      cron: "0 0 2 * *"
+      cron: "0 2 * * *"
   securityContext:
     # -- The user ID to run the resources recommendations job under.
     runAsUser: 10324
