@@ -365,8 +365,8 @@ resourcesRecommendationsCronjob:
   # -- CRON schedules for the resources recommendations job.
   schedules:
     - name: resources-recommendations
-      interval: 60min
-      cron: "30 * * * *"
+      interval: 24h
+      cron: "0 2 * * *"
   securityContext:
     # -- The user ID to run the resources recommendations job under.
     runAsUser: 10324
