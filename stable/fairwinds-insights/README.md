@@ -130,7 +130,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
-| encryption.aes.iv | string | `nil` |  |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.replicaCount | int | `1` |  |
 | timescale.clusterName | string | `"timescale"` |  |

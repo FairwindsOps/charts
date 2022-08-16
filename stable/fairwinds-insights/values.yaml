@@ -446,7 +446,6 @@ postgresql:
 
 encryption:
   aes:
-    iv:
     cypherKey:
 
 timescale:
