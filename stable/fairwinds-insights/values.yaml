@@ -446,8 +446,8 @@ postgresql:
 
 encryption:
   aes:
-    iv: ""
-    cypherKey: ""
+    iv:
+    cypherKey:
 
 timescale:
   replicaCount: 1
