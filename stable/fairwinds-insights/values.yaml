@@ -444,6 +444,10 @@ postgresql:
       cpu: 75m
       memory: 256Mi
 
+encryption:
+  aes:
+    cypherKey:
+
 timescale:
   replicaCount: 1
   clusterName: timescale
