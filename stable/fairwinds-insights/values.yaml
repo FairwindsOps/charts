@@ -60,7 +60,7 @@ options:
   # -- Autogenerate keys for session tracking. For testing/demo purposes only
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
-  migrateHealthScore: true
+  migrateHealthScore: false
   # -- Name of the secret where session keys and other secrets are stored
   secretName: fwinsights-secrets
 
