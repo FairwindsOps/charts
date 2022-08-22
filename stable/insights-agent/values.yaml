@@ -256,7 +256,7 @@ trivy:
   insecureSSL: false
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.18"
+    tag: "0.21"
   serviceAccount:
     annotations:
   resources:
