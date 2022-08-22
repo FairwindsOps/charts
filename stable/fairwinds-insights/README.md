@@ -32,7 +32,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.adminEmail | string | `nil` | An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account. |
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
 | options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
-| options.migrateHealthScore | bool | `true` | Run the job to migrate health scores to a new format |
+| options.migrateHealthScore | bool | `false` | Run the job to migrate health scores to a new format |
 | options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
 | options.overprovisioning.enabled | bool | `false` |  |
 | options.overprovisioning.memory | string | `"1Gi"` |  |
