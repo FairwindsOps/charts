@@ -47,7 +47,7 @@ cronjobs:
 cronjobExecutor:
   image:
     repository: curlimages/curl
-    tag: "7.83.1"
+    tag: "7.84.0"
   resources:
     requests:
       cpu: 100m
@@ -71,7 +71,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "6.0"
+    tag: "7.0"
   resources:
     requests:
       cpu: 100m
@@ -84,7 +84,7 @@ kube-hunter:
   logLevel: INFO
   image:
     repository: aquasec/kube-hunter
-    tag: "0.6.4"
+    tag: "0.6.8"
   resources:
     requests:
       cpu: 100m
@@ -365,7 +365,7 @@ test:
   enabled: false
   image:
     repository: "python"
-    tag: "3.6"
+    tag: "3.7-alpine"
     pullPolicy: "Always"
   containerSecurityContext:
     runAsUser: 1200
