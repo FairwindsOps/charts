@@ -47,7 +47,7 @@ cronjobs:
 cronjobExecutor:
   image:
     repository: curlimages/curl
-    tag: "7.83.1"
+    tag: "7.84.0"
   resources:
     requests:
       cpu: 100m
