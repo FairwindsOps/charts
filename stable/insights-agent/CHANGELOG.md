@@ -1,4 +1,7 @@
 # Changelog
+## 2.6.6
+* Update nova version to 3.3
+
 ## 2.6.5
 * Update plugin versions
 
