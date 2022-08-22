@@ -365,7 +365,7 @@ test:
   enabled: false
   image:
     repository: "python"
-    tag: "3.6"
+    tag: "3.7-alpine"
     pullPolicy: "Always"
   containerSecurityContext:
     runAsUser: 1200
