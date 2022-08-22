@@ -271,7 +271,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.3"
+    tag: "v5.10"
   resources:
     requests:
       cpu: 100m
