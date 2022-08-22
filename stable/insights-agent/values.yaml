@@ -84,7 +84,7 @@ kube-hunter:
   logLevel: INFO
   image:
     repository: aquasec/kube-hunter
-    tag: "0.6.4"
+    tag: "0.6.8"
   resources:
     requests:
       cpu: 100m
