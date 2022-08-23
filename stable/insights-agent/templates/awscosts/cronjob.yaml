@@ -1,5 +1,5 @@
 {{- if .Values.awscosts.enabled -}}
-{{- $_ := set . "Label" "awscosts" }}
+{{- $_ := set . "Label" "aws-costs" }}
 {{- $_ := set . "Config" .Values.awscosts }}
 {{- if not (.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
 apiVersion: batch/v1beta1
