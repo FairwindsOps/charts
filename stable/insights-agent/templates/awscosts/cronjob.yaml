@@ -50,11 +50,6 @@ spec:
               - {{ .Values.awscosts.tagvalue }}
               - --workgroup
               - {{ .Values.awscosts.workgroup }}
-            {{- if  (index .Values "awscosts" "containerSecurityContext") }}
-            securityContext:
-            {{- toYaml (index .Values "awscosts" "containerSecurityContext") | nindent 14 }}
-            {{- else }}
             {{ include "security-context" . | indent 12 | trim }}
-            {{- end }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}

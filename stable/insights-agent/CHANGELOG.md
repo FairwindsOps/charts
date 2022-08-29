@@ -1,4 +1,7 @@
 # Changelog
+## 2.6.7
+* Fix for how report-specific securityContexts are handled
+
 ## 2.6.6
 * Update nova version to 3.3
 
