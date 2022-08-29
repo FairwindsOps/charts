@@ -89,6 +89,7 @@ Parameter | Description | Default
 `{report}.securityContext` | Additional securityContext field in the Pod specification(PodSecurityContext) for the report |
 `{report}.image.repository` | Repository to use for the report image |
 `{report}.image.tag` | Image tag to use for the report |
+`{report}.securityContext` | Pod securityContext for the CronJob | {}
 `{report}.containerSecurityContext` | Container securityContext for the CronJob | {}
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
