@@ -51,8 +51,5 @@ spec:
               - --workgroup
               - {{ .Values.awscosts.workgroup }}
             {{ include "security-context" . | indent 12 | trim }}
-            {{- if  (index .Values "awscosts" "containerSecurityContext") }}
-            {{- toYaml (index .Values "awscosts" "containerSecurityContext") | nindent 14 }}
-            {{- end }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}
