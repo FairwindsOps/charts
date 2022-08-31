@@ -5,6 +5,12 @@ All notable changes to this Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this chart adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 5.4.3
+### Added
+RBAC permission to get and list ClusterRoles, ClusterRoleBindings, Roles, and RoleBindings. These permissions are required by new RBAC related checks:
+* https://github.com/FairwindsOps/polaris/pull/820
+* https://github.com/FairwindsOps/polaris/pull/823
+
 ## 4.2.1
 
 ### Added
