@@ -49,7 +49,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.port | int | `8080` | Port that the dashboard will run from. |
 | dashboard.listeningAddress | string | `nil` | Dashboard listerning address. |
 | dashboard.replicas | int | `2` | Number of replicas to run. |
-| dashboard.logLevel | string | `Info` | Set the logging level. |
+| dashboard.logLevel | string | `"Info"` | Set the logging level for the Dashboard command |
 | dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |

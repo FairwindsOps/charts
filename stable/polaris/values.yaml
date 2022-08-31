@@ -35,8 +35,8 @@ dashboard:
   listeningAddress:
   # dashboard.replicas -- Number of replicas to run.
   replicas: 2
-  # Set the logging level for the Dashboard command
-  logLevel: Fatal
+  # dashboard.logLevel -- Set the logging level for the Dashboard command
+  logLevel: Info
   # dashboard.podAdditionalLabels -- Custom additional labels on dashboard pods.
   podAdditionalLabels: {}
   # dashboard.resources -- Requests and limits for the dashboard
