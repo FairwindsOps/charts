@@ -1,4 +1,9 @@
 # Changelog
+## 2.6.8
+Add Polaris RBAC permission to get and list ClusterRoles, ClusterRoleBindings, Roles, and RoleBindings. These permissions are required by new RBAC related Polaris checks:
+* https://github.com/FairwindsOps/polaris/pull/820
+* https://github.com/FairwindsOps/polaris/pull/823
+
 ## 2.6.7
 * Fix for how report-specific securityContexts are handled
 
