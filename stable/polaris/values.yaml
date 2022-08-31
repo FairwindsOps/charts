@@ -75,6 +75,8 @@ dashboard:
   disallowConfigExemptions: false
   # dashboard.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
+  # Additional command line arguments
+  extraArgs: []
 
 webhook:
   # webhook.enable -- Whether to run the webhook
