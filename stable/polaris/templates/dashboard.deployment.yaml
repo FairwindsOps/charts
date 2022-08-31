@@ -66,6 +66,10 @@ spec:
         {{- if .Values.dashboard.disallowAnnotationExemptions }}
         - --disallow-annotation-exemptions
         {{- end }}
+        {{- if .Values.dashboard.logLevel }}
+        - --log-level
+        - {{ .Values.dashboard.logLevel | quote }}
+        {{- end }}
         image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
@@ -112,5 +116,5 @@ spec:
 {{- if .Values.dashboard.affinity }}
       affinity:
 {{ toYaml .Values.dashboard.affinity | indent 8 }}
-{{- end }}      
+{{- end }}
 {{- end -}}
