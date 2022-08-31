@@ -35,6 +35,8 @@ dashboard:
   listeningAddress:
   # dashboard.replicas -- Number of replicas to run.
   replicas: 2
+  # Set the logging level for the Dashboard command
+  logLevel: Fatal
   # dashboard.podAdditionalLabels -- Custom additional labels on dashboard pods.
   podAdditionalLabels: {}
   # dashboard.resources -- Requests and limits for the dashboard
@@ -75,8 +77,6 @@ dashboard:
   disallowConfigExemptions: false
   # dashboard.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
-  # Additional command line arguments
-  extraArgs: []
 
 webhook:
   # webhook.enable -- Whether to run the webhook
