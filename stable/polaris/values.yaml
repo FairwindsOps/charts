@@ -77,6 +77,7 @@ dashboard:
   disallowConfigExemptions: false
   # dashboard.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
+  # dashboard.containerSecurityContext -- securityContext to apply to the dashboard container
   containerSecurityContext:
     allowPrivilegeEscalation: false
     privileged: false
