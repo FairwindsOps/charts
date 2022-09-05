@@ -5,6 +5,11 @@ All notable changes to this Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this chart adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 5.3.0
+
+### Added
+Refactor container securityContext into `values.yaml` for added flexibility (i.e seccomp profiles).
+
 ## 4.2.1
 
 ### Added

@@ -77,6 +77,14 @@ dashboard:
   disallowConfigExemptions: false
   # dashboard.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
 
 webhook:
   # webhook.enable -- Whether to run the webhook
