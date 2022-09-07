@@ -89,14 +89,10 @@ spec:
           periodSeconds: 20
         resources:
           {{- toYaml .Values.dashboard.resources | nindent 10 }}
+        {{- with .Values.dashboard.containerSecurityContext }}
         securityContext:
-          allowPrivilegeEscalation: false
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          capabilities:
-            drop:
-              - ALL
+        {{- toYaml . | nindent 12 }}
+        {{- end }}                 
         {{- with .Values.config }}
         volumeMounts:
         - name: config
