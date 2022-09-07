@@ -35,6 +35,8 @@ dashboard:
   listeningAddress:
   # dashboard.replicas -- Number of replicas to run.
   replicas: 2
+  # dashboard.logLevel -- Set the logging level for the Dashboard command
+  logLevel: Info
   # dashboard.podAdditionalLabels -- Custom additional labels on dashboard pods.
   podAdditionalLabels: {}
   # dashboard.resources -- Requests and limits for the dashboard
@@ -90,6 +92,15 @@ dashboard:
   disallowConfigExemptions: false
   # dashboard.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
+  # dashboard.containerSecurityContext -- securityContext to apply to the dashboard container
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    capabilities:
+      drop:
+        - ALL
 
 webhook:
   # webhook.enable -- Whether to run the webhook

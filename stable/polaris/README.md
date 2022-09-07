@@ -49,6 +49,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.port | int | `8080` | Port that the dashboard will run from. |
 | dashboard.listeningAddress | string | `nil` | Dashboard listerning address. |
 | dashboard.replicas | int | `2` | Number of replicas to run. |
+| dashboard.logLevel | string | `"Info"` | Set the logging level for the Dashboard command |
 | dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.extraContainers | list | `[]` | allows injecting additional containers. |
@@ -67,6 +68,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.disallowExemptions | bool | `false` | Disallow any exemption |
 | dashboard.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
 | dashboard.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
+| dashboard.containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true}` | securityContext to apply to the dashboard container |
 | webhook.enable | bool | `false` | Whether to run the webhook |
 | webhook.validate | bool | `true` | Enables the Validating Webhook, to reject resources with issues |
 | webhook.mutate | bool | `false` | Enables the Mutating Webhook, to modify resources with issues |

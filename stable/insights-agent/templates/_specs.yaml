@@ -154,6 +154,9 @@ initContainers:
 
 {{ define "security-context" }}
 securityContext:
+  {{- if .Config.containerSecurityContext }}
+  {{- toYaml .Config.containerSecurityContext | nindent 2 }}
+  {{- else }}
   readOnlyRootFilesystem: true
   allowPrivilegeEscalation: false
   privileged: false
@@ -162,6 +165,7 @@ securityContext:
   capabilities:
     drop:
       - ALL
+  {{- end }}
 {{- end }}
 
 {{ define "proxy-env-spec" }}

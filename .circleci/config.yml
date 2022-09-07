@@ -13,6 +13,17 @@ references:
         pip install awscli
         echo 'Install needed packages'
         apk --update add bash jq curl yq
+        
+  check_changelog: &check_changelog
+    run:
+      name: Check CHANGELOG
+      command: |
+        require_changelog=( insights-agent )
+        for chart in "${require_changelog[@]}"; do
+          version=$(yq eval '.version' ./stable/$chart/Chart.yaml )
+          echo "Checking if CHANGELOG.md is updated for $chart"
+          grep "## $version" ./stable/$chart/CHANGELOG.md
+        done
 
   install_vault_alpine: &install_vault_alpine
     run:
@@ -66,6 +77,7 @@ jobs:
           command: |
             helm-docs --sort-values-order=file
             git diff --exit-code
+      - *check_changelog
   lint-scripts:
     docker:
       - image: koalaman/shellcheck-alpine:v0.7.0
@@ -96,25 +108,6 @@ jobs:
             git fetch ro master
             ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug
 
-  insights:
-    executor: ci-images
-    steps:
-      - checkout
-      - setup_remote_docker
-      - rok8s11/get_vault_env:
-          vault_path: repo/global/env
-      - run:
-          name: Run Insights Checks
-          command: |
-            if [[ -z $CIRCLE_PR_NUMBER ]]; then
-              curl -L https://insights.fairwinds.com/v0/insights-ci-2.0.0.sh > insights-ci.sh
-              echo "0ee9fd3c580cd008e493568f05607ff32d8866fec53ecd08a0320f86de481317 *insights-ci.sh" | shasum -a 256 --check
-              chmod +x insights-ci.sh
-              ./insights-ci.sh
-            else
-              echo "Skipping Insights tests for forked PR"
-            fi
-
   sync:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.6.0
@@ -137,7 +130,6 @@ workflows:
       - check-helm-docs
       - lint-scripts
       - lint-charts
-      - insights
       - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.19"
           kind_node_image: "kindest/node:v1.19.11@sha256:07db187ae84b4b7de440a73886f008cf903fcf5764ba8106a9fd5243d6f32729"
