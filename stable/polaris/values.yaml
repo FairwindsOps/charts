@@ -47,11 +47,26 @@ dashboard:
     limits:
       cpu: 150m
       memory: 512Mi
+  # dashboard.extraContainers -- allows injecting additional containers.
+  extraContainers: []
+  # extraContainers:
+  #   - name: oauth-proxy
+  #     image: quay.io/oauth2-proxy/oauth2-proxy:v7.3.0
+  #     args:
+  #       - --upstream=http://127.0.0.1:8080
+  #       - --http-address=0.0.0.0:8081
+  #     ports:
+  #     - containerPort: 8081
+  #       name: oauth-proxy
+  #       protocol: TCP
+  #    resources: {}
   service:
     # dashboard.service.type -- Service Type
     type: ClusterIP
     # dashboard.service.annotations -- Service annotations
     annotations: {}
+    # dashboard.service.targetPort -- Service targetport, defaults to dashboard.port
+    targetPort:
   # dashboard.nodeSelector -- Dashboard pod nodeSelector
   nodeSelector: {}
   # dashboard.tolerations -- Dashboard pod tolerations
