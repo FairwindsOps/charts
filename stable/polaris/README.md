@@ -52,8 +52,10 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.logLevel | string | `"Info"` | Set the logging level for the Dashboard command |
 | dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
+| dashboard.extraContainers | list | `[]` | allows injecting additional containers. |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
 | dashboard.service.annotations | object | `{}` | Service annotations |
+| dashboard.service.targetPort | string | `nil` | Service targetport, defaults to dashboard.port |
 | dashboard.nodeSelector | object | `{}` | Dashboard pod nodeSelector |
 | dashboard.tolerations | list | `[]` | Dashboard pod tolerations |
 | dashboard.affinity | object | `{}` | Dashboard pods affinity |
