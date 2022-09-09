@@ -108,7 +108,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | resourcesRecommendationsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the resources recommendations job under. |
 | closeTicketsCronjob.enabled | bool | `false` | Close tickets disabled by default |
 | closeTicketsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1.5Gi"}}` | Resources for the close tickets job. |
-| closeTicketsCronjob.schedules | list | `[{"cron":"0/15 * * * *","interval":"24h","name":"close-tickets"}]` | CRON schedules for the close tickets job. |
+| closeTicketsCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"close-tickets"}]` | CRON schedules for the close tickets job. |
 | closeTicketsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the close tickets job under. |
 | truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
 | truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
