@@ -371,6 +371,26 @@ resourcesRecommendationsCronjob:
     # -- The user ID to run the resources recommendations job under.
     runAsUser: 10324
 
+closeTicketsCronjob:
+  # -- Close tickets disabled by default
+  enabled: false
+  # -- Resources for the close tickets job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1.5Gi
+  # -- CRON schedules for the close tickets job.
+  schedules:
+    - name: close-tickets
+      interval: 24h
+      cron: "0/15 * * * *"
+  securityContext:
+    # -- The user ID to run the close tickets job under.
+    runAsUser: 10324
+
 truncateWorkloadMetrics:
   # -- Enable truncating workload metrics false by default
   enabled: false
