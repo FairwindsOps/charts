@@ -1,5 +1,5 @@
 # Changelog
-## 2.6.10
+## 2.6.11
 * Update `nova` version to `v3.4` 
 * Add new flags to `nova find` command 
 
