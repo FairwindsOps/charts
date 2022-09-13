@@ -1,4 +1,7 @@
 # Changelog
+## 2.6.10
+Update insights-admission dependency - reattempt of 2.6.9
+
 ## 2.6.9
 Update insights-admission dependency (Now uses admission plugin 1.6)
 
