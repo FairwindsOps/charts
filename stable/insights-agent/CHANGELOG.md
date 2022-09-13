@@ -1,4 +1,7 @@
 # Changelog
+## 2.6.9
+Update insights-admission dependency (Now uses admission plugin 1.6)
+
 ## 2.6.8
 Add Polaris RBAC permission to get and list ClusterRoles, ClusterRoleBindings, Roles, and RoleBindings. These permissions are required by new RBAC related Polaris checks:
 * https://github.com/FairwindsOps/polaris/pull/820
