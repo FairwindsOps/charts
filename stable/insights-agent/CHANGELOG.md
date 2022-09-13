@@ -1,4 +1,7 @@
 # Changelog
+## 2.6.10
+Update `nova` version to `v3.4` and add new flags to `find` command 
+
 ## 2.6.9
 Update insights-admission dependency (Now uses admission plugin 1.6)
 
