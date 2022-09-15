@@ -270,7 +270,7 @@ pluto:
   timeout: 300
   targetVersions: ""
   image:
-    repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
+    repository: quay.io/fairwinds/pluto
     tag: "v5.10"
   resources:
     requests:
