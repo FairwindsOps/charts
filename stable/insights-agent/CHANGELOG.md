@@ -1,4 +1,7 @@
 # Changelog
+## 2.6.11
+Update pluto image host from GCR to Quay
+
 ## 2.6.10
 Update insights-admission dependency - reattempt of 2.6.9
 
