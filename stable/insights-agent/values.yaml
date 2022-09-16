@@ -195,7 +195,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.4"
+    tag: "v3.3"
   resources:
     requests:
       cpu: 100m
