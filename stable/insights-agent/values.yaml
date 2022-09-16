@@ -71,7 +71,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "7.0"
+    tag: "7.1"
   resources:
     requests:
       cpu: 100m
@@ -195,7 +195,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.3"
+    tag: "v3.4"
   resources:
     requests:
       cpu: 100m
