@@ -27,8 +27,8 @@ spec:
             command:
               - /nova
               - find
-              - -- helm
-              - -- containers
+              - --helm
+              - --containers
               - --config={{ .Config.configLocation }}
               - -v{{ .Config.logLevel }}
             env:
