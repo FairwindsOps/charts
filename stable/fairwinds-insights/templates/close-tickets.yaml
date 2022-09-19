@@ -1,0 +1,41 @@
+{{- if .Values.closeTicketsCronjob.enabled }}
+{{ range .Values.closeTicketsCronjob.schedules }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: close-tickets-cronjob
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "{{ .cron }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          {{- with $.Values.image.pullSecret }}
+          imagePullSecrets:
+            - name: {{ . }}
+          {{- end }}
+          containers:
+            - name: fairwinds-insights
+              image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
+              command: ["close_tickets"]
+              {{- include "env" $ | indent 14 }}
+              imagePullPolicy: Always
+              resources:
+                {{- toYaml $.Values.closeTicketsCronjob.resources | nindent 16 }}
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: {{ $.Values.closeTicketsCronjob.securityContext.runAsUser }}
+                capabilities:
+                  drop:
+                    - ALL
+{{ end }}
+{{- end }}
