@@ -1,4 +1,8 @@
 # Changelog
+## 2.6.11
+* Update `nova` version to `v3.4` 
+* Use `nova find --helm --containers` to run `nova` - This way, both outdated/deprecated charts and containers will be reported to the output file
+
 ## 2.6.10
 Update insights-admission dependency - reattempt of 2.6.9
 
