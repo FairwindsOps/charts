@@ -64,6 +64,10 @@ resourcesRecommendationsCronjob:
   enabled: true
   schedules: []
 
+closeTicketsCronjob:
+  enabled: true
+  schedules: []
+
 minio:
   persistence:
     enabled: false
