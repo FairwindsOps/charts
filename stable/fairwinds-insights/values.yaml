@@ -372,8 +372,8 @@ resourcesRecommendationsCronjob:
     runAsUser: 10324
 
 closeTicketsCronjob:
-  # -- Close tickets disabled by default
-  enabled: false
+  # -- Close tickets enabled by default
+  enabled: true
   # -- Resources for the close tickets job.
   resources:
     limits:
