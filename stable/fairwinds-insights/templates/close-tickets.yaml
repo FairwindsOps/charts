@@ -40,5 +40,10 @@ spec:
                 capabilities:
                   drop:
                     - ALL
+          volumes:
+            - name: secrets
+              secret:
+                secretName: github-secrets
+                optional: true
 {{ end }}
 {{- end }}
