@@ -29,10 +29,8 @@ spec:
               resources:
                 {{- toYaml $.Values.closeTicketsCronjob.resources | nindent 16 }}
               volumeMounts:
-                - name: secrets
-                  mountPath: /var/run/secrets/github
-                - name: repositories
-                  mountPath: /app/repositories
+              - name: secrets
+                mountPath: /var/run/secrets/github
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
