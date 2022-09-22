@@ -46,8 +46,8 @@ cronjobs:
 
 cronjobExecutor:
   image:
-    repository: curlimages/curl
-    tag: "7.84.0"
+    repository: quay.io/fairwinds/insights-utils
+    tag: "0.0.1"
   resources:
     requests:
       cpu: 100m
