@@ -1,6 +1,6 @@
 # Changelog
 ## 2.6.12
-* Update CronJob Executor to support arm64 architecture
+* Support arm64 architecture (CronJob executor and insights-plugins)
 
 ## 2.6.11
 * Update `nova` version to `v3.4` 
