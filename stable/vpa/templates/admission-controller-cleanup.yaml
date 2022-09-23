@@ -1,4 +1,4 @@
-{{- if and .Values.admissionController.cleanupOnDelete.enabled .Values.admissionController.enabled }}
+{{- if .Values.admissionController.cleanupOnDelete.enabled }}
 apiVersion: v1
 kind: ServiceAccount
 automountServiceAccountToken: {{ .Values.serviceAccount.automountServiceAccountToken }}
