@@ -1,5 +1,5 @@
 # Changelog
-## 2.6.12
+## 2.7.0
 * Support arm64 architecture (CronJob executor and insights-plugins)
 
 ## 2.6.11
