@@ -91,6 +91,11 @@ spec:
               configMapKeyRef:
                 name: {{ include "insights-admission.configmapName" . }}
                 key: host
+          - name: FAIRWINDS_IGNORE_USERNAMES
+            valueFrom:
+              configMapKeyRef:
+                name: {{ include "insights-admission.configmapName" . }}
+                key: ignoreUsernames
           {{ include "proxy-env-spec" . | indent 10 | trim }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
