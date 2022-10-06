@@ -92,7 +92,7 @@ spec:
                 name: {{ include "insights-admission.configmapName" . }}
                 key: host
           - name: FAIRWINDS_IGNORE_USERNAMES
-            value: {{ .Values.ignoreRequestUsernames }}
+            value: "{{ .Values.ignoreRequestUsernames }}"
           {{ include "proxy-env-spec" . | indent 10 | trim }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
