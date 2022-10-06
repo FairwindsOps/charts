@@ -194,7 +194,7 @@ service:
   # service.usePod443 -- Force binding to port 443 on pods. This is useful for GKE private clusters. Requires running as root
   usePod443: false
 
-# ignoreRequestUsernames -- requests from users listed in ignoreRequestUsernames will be ignored by insights admission
+# ignoreRequestUsernames -- Specify a comma-separated list of usernames whos admission-requests will be ignored. This is useful for automation that regularly updates in-cluster resources.
 ignoreRequestUsernames: "system:addon-manager"
 
 # nodeSelector -- nodSelector to add to the controller.
