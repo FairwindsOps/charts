@@ -1,4 +1,7 @@
 # Changelog
+## 2.8.1
+* Add error messages when required values are not set for awscosts
+
 ## 2.7.0
 * Support arm64 architecture (CronJob executor and insights-plugins)
 
