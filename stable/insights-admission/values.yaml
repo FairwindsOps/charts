@@ -194,6 +194,8 @@ service:
   # service.usePod443 -- Force binding to port 443 on pods. This is useful for GKE private clusters. Requires running as root
   usePod443: false
 
+ignoreRequestUsernames: "system:addon-manager"
+
 # nodeSelector -- nodSelector to add to the controller.
 nodeSelector: {}
 
