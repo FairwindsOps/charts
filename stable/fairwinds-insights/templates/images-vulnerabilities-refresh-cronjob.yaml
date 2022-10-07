@@ -1,0 +1,39 @@
+{{ range .Values.imagesVulnerabilitiesRefreshCronjob.schedules }}
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}-images-vulns-refresh-{{ .name }}
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: images-vulns-refresh-cronjob-{{ .name }}
+spec:
+  schedule: "{{ .cron }}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          {{- with $.Values.image.pullSecret }}
+          imagePullSecrets:
+            - name: {{ . }}
+          {{- end }}
+          containers:
+            - name: fairwinds-insights
+              image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
+              command: ["refresh_images_vulns"]
+              {{- include "env" $ | indent 14 }}
+              imagePullPolicy: Always
+              resources:
+                {{- toYaml $.Values.imagesVulnerabilitiesRefreshCronjob.resources | nindent 16 }}
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+{{ end }}

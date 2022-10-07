@@ -272,6 +272,21 @@ samlCronjob:
       interval: 60m
       cron: "0 * * * *"
 
+imagesVulnerabilitiesRefreshCronjob:
+  # -- Resources for the images vulnerabilities mat. view refresh job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  # -- CRON schedules for the images vulnerabilities mat. view refresh job
+  schedules:
+    - name: half-hourly
+      interval: 30m
+      cron: "*/30 * * * *"
+
 alertsCronjob:
   # -- Resources for the Slack/Datadog integrations
   resources:
