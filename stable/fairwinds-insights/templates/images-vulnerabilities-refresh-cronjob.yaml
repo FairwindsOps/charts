@@ -3,10 +3,10 @@
 apiVersion: batch/v1beta1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" $ }}-img-vulns-ref-{{ .name }}
+  name: {{ include "fairwinds-insights.fullname" $ }}-img-vuln-ref-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: img-vulns-ref-cronjob-{{ .name }}
+    app.kubernetes.io/component: img-vuln-ref-cronjob-{{ .name }}
 spec:
   schedule: "{{ .cron }}"
   concurrencyPolicy: Forbid
