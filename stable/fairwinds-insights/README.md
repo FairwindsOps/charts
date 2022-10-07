@@ -89,6 +89,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
 | samlCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the SAML sync job. |
 | samlCronjob.schedules | list | `[{"cron":"0 * * * *","interval":"60m","name":"hourly"}]` | CRON schedules for the SAML sync job |
+| imagesVulnerabilitiesRefreshCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the images vulnerabilities mat. view refresh job. |
+| imagesVulnerabilitiesRefreshCronjob.schedules | list | `[{"cron":"*/30 * * * *","interval":"30m","name":"half-hourly"}]` | CRON schedules for the images vulnerabilities mat. view refresh job |
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
 | alertsCronjob.schedules | list | `[{"cron":"5/10 * * * *","interval":"10m","name":"realtime"},{"cron":"0 16 * * *","interval":"24h","name":"digest"}]` | CRON schedules for the Slack/Datadog integrations |
 | alertsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the alerts job under. |
