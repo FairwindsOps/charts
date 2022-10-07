@@ -1,7 +1,10 @@
 # Changelog
 
+## 2.8.1
+* Update changelog
+
 ## 2.8.0
-* Admission request support to ignore some services account
+* Update admission subchart to 1.4.1
 
 ## 2.7.0
 * Support arm64 architecture (CronJob executor and insights-plugins)
