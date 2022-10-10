@@ -13,7 +13,7 @@ references:
         pip install awscli
         echo 'Install needed packages'
         apk --update add bash jq curl yq
-        
+
   check_changelog: &check_changelog
     run:
       name: Check CHANGELOG
@@ -37,9 +37,10 @@ references:
         mv vault /usr/bin/vault
 
   kind_configuration_helm3: &kind_configuration_helm3
+    kind_version: "0.16.0"
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
-    command_runner_image: quay.io/helmpack/chart-testing:v3.4.0
+    command_runner_image: quay.io/helmpack/chart-testing:v3.7.1
     requires:
       - lint-scripts
       - lint-charts
@@ -97,7 +98,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.4.0
+      - image: quay.io/helmpack/chart-testing:v3.7.1
     steps:
       - checkout
       - *setup_environment
@@ -110,7 +111,7 @@ jobs:
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.6.0
+      - image: quay.io/helmpack/chart-testing:v3.7.1
     steps:
       - checkout
       - *setup_environment
@@ -131,20 +132,26 @@ workflows:
       - lint-scripts
       - lint-charts
       - rok8s11/kubernetes_e2e_tests:
-          name: "End-To-End Kubernetes 1.19"
-          kind_node_image: "kindest/node:v1.19.11@sha256:07db187ae84b4b7de440a73886f008cf903fcf5764ba8106a9fd5243d6f32729"
-          executor:
-            name: ci-images-large
-          <<: *kind_configuration_helm3
-      - rok8s11/kubernetes_e2e_tests:
-          name: "End-To-End Kubernetes 1.20"
-          kind_node_image: "kindest/node:v1.20.7@sha256:cbeaf907fc78ac97ce7b625e4bf0de16e3ea725daf6b04f930bd14c67c671ff9"
-          executor:
-            name: ci-images-large
-          <<: *kind_configuration_helm3
-      - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.21"
-          kind_node_image: "kindest/node:v1.21.1@sha256:69860bda5563ac81e3c0057d654b5253219618a22ec3a346306239bba8cfa1a6"
+          kind_node_image: "kindest/node:v1.21.14@sha256:ad5b7446dd8332439f22a1efdac73670f0da158c00f0a70b45716e7ef3fae20b"
+          executor:
+            name: ci-images-large
+          <<: *kind_configuration_helm3
+      - rok8s11/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.22"
+          kind_node_image: "kindest/node:v1.22.15@sha256:bfd5eaae36849bfb3c1e3b9442f3da17d730718248939d9d547e86bbac5da586"
+          executor:
+            name: ci-images-large
+          <<: *kind_configuration_helm3
+      - rok8s11/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.23"
+          kind_node_image: "kindest/node:v1.23.12@sha256:9402cf1330bbd3a0d097d2033fa489b2abe40d479cc5ef47d0b6a6960613148a"
+          executor:
+            name: ci-images-large
+          <<: *kind_configuration_helm3
+      - rok8s11/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.24"
+          kind_node_image: "kindest/node:v1.24.6@sha256:97e8d00bc37a7598a0b32d1fabd155a96355c49fa0d4d4790aab0f161bf31be1"
           executor:
             name: ci-images-large
           <<: *kind_configuration_helm3
