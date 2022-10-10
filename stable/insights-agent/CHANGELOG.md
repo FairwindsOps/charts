@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.1
+* Update pluto to 5.11
+
 ## 2.8.0
 * Admission request support to ignore some services account
 
