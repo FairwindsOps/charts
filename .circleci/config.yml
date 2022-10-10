@@ -155,6 +155,12 @@ workflows:
           executor:
             name: ci-images-large
           <<: *kind_configuration_helm3
+      - rok8s11/kubernetes_e2e_tests:
+          name: "End-To-End Kubernetes 1.25"
+          kind_node_image: "kindest/node:v1.25.2@sha256:9be91e9e9cdf116809841fc77ebdb8845443c4c72fe5218f3ae9eb57fdb4bace"
+          executor:
+            name: ci-images-large
+          <<: *kind_configuration_helm3
       - sync:
           requires:
             - lint-scripts
