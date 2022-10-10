@@ -2,7 +2,7 @@ apiVersion: v2
 name: github-prometheus-exporter
 description: A Helm chart for Kubernetes
 type: application
-version: 0.1.2
+version: 0.1.3
 appVersion: release-1.0.1
 maintainers:
   - name: sudermanjr
