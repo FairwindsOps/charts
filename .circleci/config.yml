@@ -154,18 +154,12 @@ workflows:
           kind_node_image: "kindest/node:v1.24.6@sha256:97e8d00bc37a7598a0b32d1fabd155a96355c49fa0d4d4790aab0f161bf31be1"
           executor:
             name: ci-images-large
-          kind_config: |
-            kind: Cluster
-            apiVersion: kind.x-k8s.io/v1alpha4
           <<: *kind_configuration_helm3
       - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.25"
           kind_node_image: "kindest/node:v1.25.2@sha256:9be91e9e9cdf116809841fc77ebdb8845443c4c72fe5218f3ae9eb57fdb4bace"
           executor:
             name: ci-images-large
-          kind_config: |
-            kind: Cluster
-            apiVersion: kind.x-k8s.io/v1alpha4
           <<: *kind_configuration_helm3
       - sync:
           requires:
