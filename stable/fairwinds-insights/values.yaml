@@ -68,8 +68,13 @@ options:
   # to wait for cluster-autoscaler with each deployment
   overprovisioning:
     enabled: false
-    memory: 1Gi
-    cpu: 1000m
+    resources:
+      requests:
+        cpu: 1000m
+        memory: 1Gi
+      limits:
+        cpu: 1000m
+        memory: 1Gi
 
 hubspotCronjob:
   resources:
