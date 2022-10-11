@@ -33,10 +33,19 @@ case "$CHANGED" in
     printf "\nServer is up. Running Fleet install for cluster %s\n" "$cluster_name"
     
     helm dependency build ./stable/insights-agent
-    helm upgrade --install insights-agent ./stable/insights-agent -f ./stable/insights-agent/ci/fleet-install-test.yaml \
+    retry=0
+    while ! helm upgrade --install insights-agent ./stable/insights-agent -f ./stable/insights-agent/ci/fleet-install-test.yaml \
       --namespace insights-agent \
       --create-namespace \
-      --set insights.cluster="$cluster_name" 
+      --set insights.cluster="$cluster_name"; do
+        printf "Helm installation of Insights using the fleet install method failed, will retry...\n";
+        sleep 20
+        retry=$(( retry + 1 ))
+        if [ $retry -gt 1 ]; then
+          printf "Unable to install Insights using the fleet install method after $(( retry + 1 )) attempts. Giving up on it.\n"
+          exit 1
+        fi
+    done
 
     kubectl wait --for=condition=complete job/fleet-installer --timeout=120s --namespace insights-agent
     kubectl wait --for=condition=complete job/polaris --timeout=120s --namespace insights-agent
