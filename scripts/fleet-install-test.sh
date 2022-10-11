@@ -42,7 +42,7 @@ case "$CHANGED" in
         sleep 20
         retry=$(( retry + 1 ))
         if [ $retry -gt 1 ]; then
-          printf "Unable to install Insights using the fleet install method after $(( retry + 1 )) attempts. Giving up on it.\n"
+          printf "Unable to install Insights using the fleet install method after %d attempts. Giving up on it.\n" "$(( retry + 1 ))"
           exit 1
         fi
     done
