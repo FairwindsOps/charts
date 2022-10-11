@@ -40,7 +40,7 @@ case "$CHANGED" in
       --set insights.cluster="$cluster_name"; do
         random_number=$(shuf -i 15-60 -n1)
         printf "Helm installation of Insights using the fleet install method failed, will retry in %d seconds...\n" "${random_number}";
-        sleep ${random_number}
+        sleep "${random_number}"
         retry=$(( retry + 1 ))
         if [ $retry -gt 1 ]; then
           printf "Unable to install Insights using the fleet install method after %d attempts. Giving up on it.\n" "${retry}"
