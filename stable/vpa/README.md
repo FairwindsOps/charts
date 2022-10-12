@@ -110,6 +110,7 @@ recommender:
 | admissionController.certGen.image.tag | string | `"v11-alpine"` | An image tag for the admissionController.certGen.image.repository image. Only used if admissionController.generateCertificate is true |
 | admissionController.certGen.image.pullPolicy | string | `"Always"` | The pull policy for the certgen image. Recommend not changing this |
 | admissionController.certGen.env | object | `{}` | Additional environment variables to be added to the certgen container. Format is KEY: Value format |
+| admissionController.certGen.securityContext | object | `{}` | The securityContext block for the certgen pod |
 | admissionController.certGen.resources | object | `{}` | The resources block for the certgen pod |
 | admissionController.certGen.nodeSelector | object | `{}` |  |
 | admissionController.certGen.tolerations | list | `[]` |  |
