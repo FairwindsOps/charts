@@ -136,6 +136,8 @@ admissionController:
       # admissionController.cleanupOnDelete.image.tag -- The image tag to use for the admission controller cleanup image
       tag: v11-alpine
     resources: {}
+    # admissionController.cleanupOnDelete.securityContext -- The securityContext block for the cleanup pod
+    securityContext: {}
     nodeSelector: {}
     tolerations: []
     affinity: {}

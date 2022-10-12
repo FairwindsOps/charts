@@ -118,6 +118,7 @@ recommender:
 | admissionController.cleanupOnDelete.image.repository | string | `"quay.io/reactiveops/ci-images"` | The repository of the post-delete image |
 | admissionController.cleanupOnDelete.image.tag | string | `"v11-alpine"` | The image tag to use for the admission controller cleanup image |
 | admissionController.cleanupOnDelete.resources | object | `{}` |  |
+| admissionController.cleanupOnDelete.securityContext | object | `{}` | The securityContext block for the cleanup pod |
 | admissionController.cleanupOnDelete.nodeSelector | object | `{}` |  |
 | admissionController.cleanupOnDelete.tolerations | list | `[]` |  |
 | admissionController.cleanupOnDelete.affinity | object | `{}` |  |
