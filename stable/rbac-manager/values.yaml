@@ -61,3 +61,17 @@ serviceMonitor:
   namespace: ""
   # serviceMonitor.interval -- How often to scrape the metrics endpoint
   interval: 60s
+
+# securityContext -- SecurityContext to apply on pod level
+securityContext: {}
+
+
+# containerSecurityContext -- SecurityContext to apply on container level
+containerSecurityContext:
+  allowPrivilegeEscalation: false
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL

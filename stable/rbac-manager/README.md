@@ -73,3 +73,5 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | serviceMonitor.annotations | object | `{}` | Annotations to apply to the serviceMonitor and headless service |
 | serviceMonitor.namespace | string | `""` | The namespace to deploy the serviceMonitor into |
 | serviceMonitor.interval | string | `"60s"` | How often to scrape the metrics endpoint |
+| securityContext | object | `{}` | SecurityContext to apply on pod level |
+| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true}` | SecurityContext to apply on container level |
