@@ -1,4 +1,4 @@
 # Changelog
 
-## 0.6.17
+## 0.6.19
 * Introduce CHANGELOG
