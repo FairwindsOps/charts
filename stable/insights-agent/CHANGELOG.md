@@ -1,5 +1,4 @@
 # Changelog
-
 ## 2.8.2
 * Update `quay.io/fairwinds/fw-opa` version to `v2.2`
 
