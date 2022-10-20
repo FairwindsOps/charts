@@ -1,4 +1,8 @@
 # Changelog
+
+## 2.6.12
+* Update `quay.io/fairwinds/fw-opa` version to `v2.2`
+
 ## 2.8.1
 * Add error messages when required values are not set for awscosts
 
