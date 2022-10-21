@@ -89,6 +89,8 @@ Parameter | Description | Default
 `{report}.securityContext` | Additional securityContext field in the Pod specification(PodSecurityContext) for the report |
 `{report}.image.repository` | Repository to use for the report image |
 `{report}.image.tag` | Image tag to use for the report |
+`{report}.securityContext` | Pod securityContext for the CronJob | {}
+`{report}.containerSecurityContext` | Container securityContext for the CronJob | {}
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
 `kube-hunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
@@ -133,7 +135,6 @@ Parameter | Description | Default
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
-`awscosts.containerSecurityContext` | Additional container securityContext items for the cronJob. | {}
 
 ## Breaking Changes
 

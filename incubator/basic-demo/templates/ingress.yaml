@@ -16,7 +16,7 @@ metadata:
   {{- end }}
 spec:
 {{- if .Values.ingress.ingressClassName }}
-  ingressClassName: .Values.ingress.ingressClassName
+  ingressClassName: {{ .Values.ingress.ingressClassName }}
 {{- end }}
 {{- if .Values.ingress.tls }}
   tls:
@@ -35,9 +35,12 @@ spec:
         paths:
   {{- range $ingressPaths }}
           - path: {{ . }}
+            pathType: ImplementationSpecific
             backend:
-              serviceName: {{ $fullName }}
-              servicePort: http
+              service:
+                name: {{ $fullName }}
+                port:
+                  name: http
   {{- end }}
   {{- end }}
 {{- end }}

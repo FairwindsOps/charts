@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.6.1
+  agentChartTargetVersion: 2.8.1
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -60,7 +60,7 @@ options:
   # -- Autogenerate keys for session tracking. For testing/demo purposes only
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
-  migrateHealthScore: true
+  migrateHealthScore: false
   # -- Name of the secret where session keys and other secrets are stored
   secretName: fwinsights-secrets
 
@@ -358,10 +358,10 @@ resourcesRecommendationsCronjob:
   resources:
     limits:
       cpu: 500m
-      memory: 1024Mi
+      memory: 2Gi
     requests:
       cpu: 500m
-      memory: 1024Mi
+      memory: 1.5Gi
   # -- CRON schedules for the resources recommendations job.
   schedules:
     - name: resources-recommendations
@@ -369,6 +369,25 @@ resourcesRecommendationsCronjob:
       cron: "0 2 * * *"
   securityContext:
     # -- The user ID to run the resources recommendations job under.
+    runAsUser: 10324
+
+closeTicketsCronjob:
+  # -- Close tickets enabled by default
+  enabled: true
+  # -- Resources for the close tickets job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 1.5Gi
+  # -- CRON schedules for the close tickets job.
+  schedules:
+    - name: close-tickets
+      cron: "0/15 * * * *"
+  securityContext:
+    # -- The user ID to run the close tickets job under.
     runAsUser: 10324
 
 truncateWorkloadMetrics:
@@ -443,6 +462,10 @@ postgresql:
     requests:
       cpu: 75m
       memory: 256Mi
+
+encryption:
+  aes:
+    cypherKey:
 
 timescale:
   replicaCount: 1
@@ -578,7 +601,7 @@ reportjob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "2.0"
+  insightsCIVersion: "2.1"
   hpa:
     enabled: true
     min: 2

@@ -88,6 +88,7 @@ rules:
 | service.type | string | `"ClusterIP"` | Type of service to create. |
 | service.port | int | `443` | Port to use for the service. |
 | service.usePod443 | bool | `false` | Force binding to port 443 on pods. This is useful for GKE private clusters. Requires running as root |
+| ignoreRequestUsernames | string | `"system:addon-manager"` | Specify a comma-separated list of usernames whos admission-requests will be ignored. This is useful for automation that regularly updates in-cluster resources. |
 | nodeSelector | object | `{}` | nodSelector to add to the controller. |
 | tolerations | list | `[]` | Toleratations to add to the controller. |
 | affinity | object | `{}` | Pod affinity/anti-affinity rules |

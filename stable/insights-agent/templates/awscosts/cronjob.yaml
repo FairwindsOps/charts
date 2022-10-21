@@ -34,25 +34,22 @@ spec:
                   key: AWS_SECRET_ACCESS_KEY
             {{- end }}
             - name: AWS_DEFAULT_REGION
-              value: {{ .Values.awscosts.region }}
+              value: {{ required "You must set awscosts.region, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.region }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./aws-costs.sh"]
             args:
               - --database
-              - {{ .Values.awscosts.database }}
+              - {{ required "You must set awscosts.database, , please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.database }}
               - --table
-              - {{ .Values.awscosts.table }}
+              - {{ required "You must set awscosts.table, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.table }}
               - --catalog
-              - {{ .Values.awscosts.catalog }}
+              - {{ required "You must set awscosts.catalog, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.catalog }}
               - --tagkey
-              - {{ .Values.awscosts.tagkey }}
+              - {{ required "You must set awscosts.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.tagkey }}
               - --tagvalue
-              - {{ .Values.awscosts.tagvalue }}
+              - {{ required "You must set awscosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.tagvalue }}
               - --workgroup
-              - {{ .Values.awscosts.workgroup }}
+              - {{ required "You must set awscosts.workgroup, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.workgroup }}
             {{ include "security-context" . | indent 12 | trim }}
-            {{- if  (index .Values "awscosts" "containerSecurityContext") }}
-            {{- toYaml (index .Values "awscosts" "containerSecurityContext") | nindent 14 }}
-            {{- end }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
   {{- end -}}
