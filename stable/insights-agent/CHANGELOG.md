@@ -1,9 +1,12 @@
 # Changelog
+## 2.8.2
+* Update changelog logic
+
 ## 2.8.1
 * Add error messages when required values are not set for awscosts
 
 ## 2.8.0
-* Admission request support to ignore some services account
+* Update admission subchart to 1.4.1
 
 ## 2.7.0
 * Support arm64 architecture (CronJob executor and insights-plugins)
