@@ -1,4 +1,7 @@
 # Changelog
+## 2.8.2
+* Bump python to 3.12 in test deployment
+
 ## 2.8.1
 * Add error messages when required values are not set for awscosts
 
