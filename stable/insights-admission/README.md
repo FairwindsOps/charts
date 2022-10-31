@@ -95,4 +95,4 @@ rules:
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
 | secretName | string | `""` | If you are providing your own certificate then this is the name of the secret holding the certificate. |
 | clusterDomain | string | `"cluster.local"` | The base domain to use for cluster DNS |
-| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.10-alpine"}}` | Used for chart CI only - deploys a test deployment |
+| test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.12-alpine"}}` | Used for chart CI only - deploys a test deployment |
