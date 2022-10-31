@@ -13,12 +13,12 @@ references:
         pip install awscli
         echo 'Install needed packages'
         apk --update add bash jq curl yq
-        
+
   check_changelog: &check_changelog
     run:
       name: Check CHANGELOG
       command: |
-        require_changelog=( insights-agent )
+        require_changelog=( insights-agent fairwinds-insights insights-admission )
         for chart in "${require_changelog[@]}"; do
           version=$(yq eval '.version' ./stable/$chart/Chart.yaml )
           echo "Checking if CHANGELOG.md is updated for $chart"
