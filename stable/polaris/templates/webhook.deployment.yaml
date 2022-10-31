@@ -106,9 +106,27 @@ spec:
       {{- with .Values.webhook.tolerations }}
 {{ toYaml . | indent 6 }}
       {{- end }}
-{{- if .Values.webhook.affinity }}
       affinity:
+{{- if .Values.webhook.affinity }}
 {{ toYaml .Values.webhook.affinity | indent 8 }}
+{{- else }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                {{- range $key, $value := ( include "polaris.selectors" . | fromYaml ) }}
+                - key: {{ $key }}
+                  operator: In
+                  values:
+                  - {{ $value }}
+                {{- end }}
+                - key: component
+                  operator: In
+                  values:
+                  - webhook
+              topologyKey: kubernetes.io/hostname
 {{- end }}
       volumes:
         {{- with .Values.config }}
