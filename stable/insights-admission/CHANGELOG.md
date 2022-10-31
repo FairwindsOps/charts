@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.4.3
+* Update python in test deployment
+
 ## 1.4.2
 * Add CHANGELOG
 
