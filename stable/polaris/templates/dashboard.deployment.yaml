@@ -92,7 +92,7 @@ spec:
         {{- with .Values.dashboard.containerSecurityContext }}
         securityContext:
         {{- toYaml . | nindent 12 }}
-        {{- end }}                 
+        {{- end }}
         {{- with .Values.config }}
         volumeMounts:
         - name: config
@@ -112,8 +112,26 @@ spec:
       {{- with .Values.dashboard.tolerations }}
 {{ toYaml . | indent 6 }}
       {{- end }}
-{{- if .Values.dashboard.affinity }}
       affinity:
+{{- if .Values.dashboard.affinity }}
 {{ toYaml .Values.dashboard.affinity | indent 8 }}
+{{- else }}
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 50
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                {{- range $key, $value := ( include "polaris.selectors" . | fromYaml ) }}
+                - key: {{ $key }}
+                  operator: In
+                  values:
+                  - {{ $value }}
+                {{- end }}
+                - key: component
+                  operator: In
+                  values:
+                  - dashboard
+              topologyKey: kubernetes.io/hostname
 {{- end }}
 {{- end -}}
