@@ -1,12 +1,13 @@
 # Changelog
+
+## 2.8.3
+* Update pluto to 5.11
+
 ## 2.8.2
 * Update changelog logic
 
 ## 2.8.1
 * Add error messages when required values are not set for awscosts
-
-## 2.8.1
-* Update pluto to 5.11
 
 ## 2.8.0
 * Update admission subchart to 1.4.1
