@@ -1,4 +1,8 @@
 # Changelog
+
+## 2.8.3
+* Update pluto to 5.11
+
 ## 2.8.2
 * Update changelog logic
 
