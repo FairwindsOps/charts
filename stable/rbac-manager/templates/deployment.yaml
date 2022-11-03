@@ -7,6 +7,9 @@ metadata:
     chart: {{ template "rbac-manager.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
+    {{- if .Values.deploymentLabels }}
+    {{ toYaml .Values.deploymentLabels | indent 4 }}
+    {{- end }}
 spec:
   replicas: 1
   selector:
