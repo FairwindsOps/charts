@@ -50,6 +50,9 @@ podAnnotations: {}
 # podLabels -- Labels to apply to the pod
 podLabels: {}
 
+# deploymentLabels -- Labels to apply to the Deployment resource
+deploymentLabels: {}
+
 serviceMonitor:
   # serviceMonitor.enabled -- If true, a ServiceMonitor will be created for Prometheus
   enabled: false
