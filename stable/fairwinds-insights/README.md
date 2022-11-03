@@ -103,7 +103,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
 | resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
-| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1.5Gi"}}` | Resources for the resources recommendations job. |
+| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
 | resourcesRecommendationsCronjob.schedules | list | `[{"cron":"0 2 * * *","interval":"24h","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
 | resourcesRecommendationsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the resources recommendations job under. |
 | closeTicketsCronjob.enabled | bool | `true` | Close tickets enabled by default |

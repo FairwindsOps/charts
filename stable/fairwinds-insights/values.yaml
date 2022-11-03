@@ -357,11 +357,11 @@ resourcesRecommendationsCronjob:
   # -- Resources for the resources recommendations job.
   resources:
     limits:
-      cpu: 500m
-      memory: 2Gi
+      cpu: 1
+      memory: 3Gi
     requests:
-      cpu: 500m
-      memory: 1.5Gi
+      cpu: 1
+      memory: 3Gi
   # -- CRON schedules for the resources recommendations job.
   schedules:
     - name: resources-recommendations
