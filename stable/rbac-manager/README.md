@@ -68,6 +68,7 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | affinity | object | `{}` | Deployment affinity |
 | podAnnotations | object | `{}` | Annotations to apply to the pods |
 | podLabels | object | `{}` | Labels to apply to the pod |
+| deploymentLabels | object | `{}` | Labels to apply to the Deployment resource |
 | serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor will be created for Prometheus |
 | serviceMonitor.additionalLabels | list | `[]` | Additional labels to ServiceMonitor |
 | serviceMonitor.annotations | object | `{}` | Annotations to apply to the serviceMonitor and headless service |
