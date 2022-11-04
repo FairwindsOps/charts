@@ -1,2 +1,5 @@
 extraArgs:
   log-level: DEBUG
+
+deploymentLabels:
+  test: test
