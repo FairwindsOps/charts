@@ -1,32 +1,6 @@
 {
   "additionalProperties": false,
   "definitions": {
-    "loadBalancer": {
-      "additionalProperties": false,
-      "properties": {
-        "annotations": {
-          "additionalProperties": {
-            "type": "string"
-          },
-          "type": "object"
-        },
-        "enabled": {
-          "type": "boolean"
-        },
-        "port": {
-          "maximum": 65535,
-          "minimum": 1000,
-          "type": "integer"
-        },
-        "spec": {
-          "type": [
-            "object",
-            "null"
-          ]
-        }
-      },
-      "type": "object"
-    },
     "percent": {
       "maximum": 100,
       "mimimum": 0,
@@ -169,6 +143,12 @@
             "object",
             "null"
           ]
+        },
+        "resources": {
+          "type": [
+            "object",
+            "null"
+          ]
         }
       },
       "required": [
@@ -231,6 +211,9 @@
       },
       "type": "object"
     },
+    "enabled": {
+      "additionalProperties": true
+    },
     "env": {
       "type": [
         "array",
@@ -277,6 +260,9 @@
       },
       "type": "object"
     },
+    "global": {
+      "additionalProperties": true
+    },
     "image": {
       "additionalProperties": false,
       "properties": {
@@ -298,9 +284,6 @@
         }
       },
       "type": "object"
-    },
-    "loadBalancer": {
-      "$ref": "#/definitions/loadBalancer"
     },
     "nameOverride": {
       "minLength": 1,
@@ -591,10 +574,19 @@
       },
       "type": "object"
     },
+    "podLabels": {
+      "additionalProperties": {
+        "type": "string"
+      },
+      "type": "object"
+    },
     "podManagementPolicy": {
       "type": [
         "string"
       ]
+    },
+    "podMonitor": {
+      "type": "object"
     },
     "postInit": {
       "description": "postInit allows you to configure additional scripts that will be run once\ndirectly after initialization of the database. It takes a list of VolumeProjection,\nevery .sh, .sql, and .sql.gz script will be executed in sorted order and they should\nreturn exitcode 0 on success.\n",
@@ -697,9 +689,6 @@
       "minimum": 0,
       "type": "integer"
     },
-    "replicaLoadBalancer": {
-      "$ref": "#/definitions/loadBalancer"
-    },
     "resources": {
       "additionalProperties": false,
       "properties": {
@@ -765,6 +754,9 @@
     "serviceAccount": {
       "additionalProperties": false,
       "properties": {
+        "annotations": {
+          "type": "object"
+        },
         "create": {
           "type": "boolean"
         },
@@ -775,9 +767,6 @@
           ]
         }
       },
-      "type": "object"
-    },
-    "serviceMonitor": {
       "type": "object"
     },
     "sharedMemory": {
@@ -834,7 +823,6 @@
     "debug",
     "fullWalPrevention",
     "image",
-    "loadBalancer",
     "nameOverride",
     "networkPolicy",
     "nodeSelector",
@@ -842,16 +830,16 @@
     "persistentVolumes",
     "pgBouncer",
     "podAnnotations",
+    "podLabels",
     "podManagementPolicy",
     "prometheus",
     "rbac",
     "readinessProbe",
     "replicaCount",
-    "replicaLoadBalancer",
     "resources",
     "secrets",
     "serviceAccount",
-    "serviceMonitor",
+    "podMonitor",
     "sharedMemory",
     "timescaledbTune",
     "tolerations"

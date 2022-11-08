@@ -20,7 +20,7 @@ image:
   # Image was built from
   # https://github.com/timescale/timescaledb-docker-ha
   repository: timescale/timescaledb-ha
-  tag: pg14.3-ts2.7.0-p0
+  tag: pg14.5-ts2.8.1-p1
   pullPolicy: Always
 
 # By default those secrets are randomly generated.
@@ -111,6 +111,15 @@ backup:
   #     secretKeyRef:
   #       name: pgbackrest-dev-secrets
   #       key: repo1-s3-key-secret
+  resources: {}
+  # If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
 # When creating a *new* deployment, the default is to initialize (using initdb) the database.
 # If however, you want to initialize the database using an existing backup, you can do so by
@@ -318,41 +327,6 @@ service:
     # loadBalancerSourceRanges:
     # - "0.0.0.0/0"
 
-# DEPRECATED(0.10.0): use the `service.primary` values instead.
-loadBalancer:
-  # If not enabled, we still expose the primary using a so called Headless Service
-  # https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
-  enabled: true
-  port: 5432
-  # Read more about the AWS annotations here:
-  # https://kubernetes.io/docs/concepts/cluster-administration/cloud-providers/#aws
-  # https://docs.aws.amazon.com/eks/latest/userguide/load-balancing.html
-  annotations:
-    # Setting idle-timeout to the maximum allowed value, as in general
-    # database connections are long lived
-    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "4000"
-
-    # service.beta.kubernetes.io/aws-load-balancer-type: nlb            # Use an NLB instead of ELB
-    # service.beta.kubernetes.io/aws-load-balancer-internal: 0.0.0.0/0  # Internal Load Balancer
-  # Define extra things that should go in the service spec
-  # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.17/#servicespec-v1-core
-  spec:
-  # loadBalancerSourceRanges:
-  # - "0.0.0.0/0"
-
-replicaLoadBalancer:
-  # If not enabled, we still expose the replica's using a so called Headless Service
-  # https://kubernetes.io/docs/concepts/services-networking/service/#headless-services
-  enabled: false
-  port: 5432
-  annotations:
-    service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout: "4000"
-  # Define extra things that should go in the service spec
-  # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.17/#servicespec-v1-core
-  spec:
-  # loadBalancerSourceRanges:
-  # - "0.0.0.0/0"
-
 readinessProbe:
   enabled: true
   initialDelaySeconds: 5
@@ -473,7 +447,7 @@ pgBouncer:
   # However, for flexibility, we do allow the override of any pg_bouncer setting
   # many of which are vital to the operation of this helm chart.
   # The values we do not suggest altering are set in the template
-  # https://github.com/timescale/timescaledb-kubernetes/blob/master/charts/timescaledb-single/templates/configmap-pgbouncer.yaml#L35-L50
+  # https://github.com/timescale/helm-charts/blob/main/charts/timescaledb-single/templates/configmap-pgbouncer.yaml#L35-L50
   # Only override these settings if you are confident of  what you are doing.
     server_reset_query: DISCARD ALL
     max_client_conn: 500
@@ -513,12 +487,12 @@ networkPolicy:
 nodeSelector: {}
 
 # Prometheus exporter for PostgreSQL server metrics.
-# https://github.com/wrouesnel/postgres_exporter
+# https://github.com/prometheus-community/postgres_exporter
 prometheus:
   enabled: false
   image:
-    repository: wrouesnel/postgres_exporter
-    tag: v0.7.0
+    repository: quay.io/prometheuscommunity/postgres-exporter
+    tag: v0.11.1
     pullPolicy: Always
   # Extra custom environment variables for prometheus.
   # These should be an EnvVar, as this allows you to inject secrets into the environment
@@ -547,14 +521,13 @@ prometheus:
   # - name: exporter-config
   #   mountPath: /var/exporter
 
-serviceMonitor:
-  # Specifies whether ServiceMonitor for Prometheus operator should be created
+podMonitor:
+  # Specifies whether PodMonitor for Prometheus operator should be created
   enabled: false
-  portName: metrics
   path: /metrics
   interval: 10s
   # scrapeTimeout: 30s
-  # Specifies namespace, where ServiceMonitor should be installed
+  # Specifies namespace, where PodMonitor should be installed
   # namespace: monitoring
   # labels:
   #   release: prometheus
@@ -570,6 +543,10 @@ podManagementPolicy: OrderedReady
 # Annotations that are applied to each pod in the stateful set
 # https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
 podAnnotations: {}
+
+# Labels that are applied to each pod in the stateful set
+# https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/
+podLabels: {}
 
 # https://kubernetes.io/docs/concepts/configuration/taint-and-toleration/
 tolerations: []
@@ -611,6 +588,8 @@ serviceAccount:
   # The name of the ServiceAccount to use.
   # If not set and create is true, a name is generated using the fullname template
   name:
+  # A map of annotations to be set on the ServiceAccount
+  annotations: {}
 
 debug:
   # This setting is mainly for during development, debugging or troubleshooting.
