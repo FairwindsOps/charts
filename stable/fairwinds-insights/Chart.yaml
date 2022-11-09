@@ -17,7 +17,7 @@ dependencies:
   repository: https://helm.min.io/
   condition: minio.install
 - name: timescaledb-single
-  version: 0.13.*
+  version: 0.21.*
   repository: https://charts.fairwinds.com/incubator
   condition: timescale.ephemeral
   alias: timescale
