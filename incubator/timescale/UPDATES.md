@@ -1,6 +1,6 @@
 # Updating this Chart
 
-This chart is forked from https://github.com/timescale/timescaledb-kubernetes/tree/master/charts/timescaledb-single
+This chart is forked from https://github.com/timescale/helm-charts/tree/main/charts/timescaledb-single
 
 We have removed a particular Job which creates a Service. This service
 gets orphaned after a `helm uninstall`, making this chart unusable as
@@ -11,8 +11,8 @@ Relevant issue: https://github.com/timescale/timescaledb-kubernetes/issues/357
 To update this chart, run:
 
 ```bash
-git clone github.com/timescale/timescaledb-kubernetes
-cp -r timescaledb-kubernetes/charts/timescaledb-single/* ~/git/charts/incubator/timescale/
+git clone https://github.com/timescale/helm-charts
+cp -r helm-charts/charts/timescaledb-single/* ~/git/charts/incubator/timescale/
 rm incubator/timescale/templates/job-update-patroni.yaml
 git checkout -- incubator/timescale/templates/role-timescaledb.yaml
 helm-docs --sort-values-order=file
