@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.0
+* Update timescale subchart
+
 ## 0.6.24
 * Update application version to 10.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
