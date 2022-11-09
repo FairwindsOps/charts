@@ -30,6 +30,8 @@ spec:
     {{- end }}
     spec:
       serviceAccountName: {{ template "rbac-manager.fullname" . }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
       {{- if .Values.image.imagePullSecrets }}
       imagePullSecrets:
         {{- range .Values.image.imagePullSecrets }}
@@ -63,13 +65,7 @@ spec:
             path: /metrics
             port: 8042
         securityContext:
-          allowPrivilegeEscalation: false
-          privileged: false
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-          capabilities:
-            drop:
-              - ALL
+          {{- toYaml .Values.securityContext | nindent 10 }}
         ports:
           # metrics port
           - name: http-metrics
