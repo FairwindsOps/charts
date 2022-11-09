@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.2
+* Change downstream timescale chart to the official one
+
 ## 0.7.1
 * Update application version to 10.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
