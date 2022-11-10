@@ -476,7 +476,7 @@ timescale:
     # -- Use pdb enabled by default
     enabled: true
     # -- Min timescale pdb replicas
-    minReplicas: 2
+    minReplicas: 1
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- Host for timescale
