@@ -468,10 +468,15 @@ encryption:
     cypherKey:
 
 timescale:
-  replicaCount: 1
+  replicaCount: 2
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
+  pdb:
+    # -- Use pdb enabled by default
+    enabled: true
+    # -- Min timescale pdb replicas
+    minReplicas: 1
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- Host for timescale

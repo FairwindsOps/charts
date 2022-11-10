@@ -1,0 +1,13 @@
+{{- if and .Values.timescale.ephemeral .Values.timescale.pdb.enabled }}
+apiVersion: {{ ternary "policy/v1" "policy/v1beta1" (semverCompare ">=1.21.0-0" .Capabilities.KubeVersion.Version) }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-timescale-pdb
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+spec:
+  minAvailable: {{ .Values.timescale.pdb.minReplicas }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: timescaledb
+{{- end }}
