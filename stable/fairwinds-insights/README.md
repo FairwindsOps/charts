@@ -135,9 +135,11 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | encryption.aes.cypherKey | string | `nil` |  |
-| timescale.replicaCount | int | `1` |  |
+| timescale.replicaCount | int | `2` |  |
 | timescale.clusterName | string | `"timescale"` |  |
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
+| timescale.pdb.enabled | bool | `true` | Use pdb enabled by default |
+| timescale.pdb.minReplicas | int | `1` | Min timescale pdb replicas |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlHost | string | `"timescale"` | Host for timescale |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
