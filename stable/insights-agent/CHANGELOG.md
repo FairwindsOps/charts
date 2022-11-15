@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.4
+* Add `trivy.unsetAWSRegionEnvVars` chart value, to facilitate Trivy authenticating to ECR in a different region. More background can be found at https://github.com/aquasecurity/trivy/issues/1026
+
 ## 2.8.3
 * Update pluto to 5.11
 
