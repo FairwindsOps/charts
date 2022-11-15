@@ -65,6 +65,12 @@ spec:
             - name: NAMESPACE_BLACKLIST
               value: {{ join "," .Values.trivy.namespaceBlacklist | lower }}
             {{ end }}
+            {{ if .Values.trivy.unsetAWSRegionEnvVars }}
+            - name: AWS_DEFAULT_REGION
+              value: ""
+            - name: AWS_REGION
+              value: ""
+            {{ end }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

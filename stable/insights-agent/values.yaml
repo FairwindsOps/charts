@@ -254,6 +254,11 @@ trivy:
   maxScansPerRun: 20
   timeout: 2400
   insecureSSL: false
+  # trivy.unsetAWSRegionEnvVars -- Unset AWS_DEFAULT_REGION and AWS_REGION
+  # environment variables, as a work around to help trivy authenticate to ECR
+  # when the repository is in a different region than the calling cluster node.
+  # Ref: https://github.com/aquasecurity/trivy/issues/1026
+  unsetAWSRegionEnvVars: false
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.22"
