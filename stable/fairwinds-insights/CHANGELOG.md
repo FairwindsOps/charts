@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.3
+* Update application version to 10.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.7.2
 * Added PDB to Timescale DB
 
