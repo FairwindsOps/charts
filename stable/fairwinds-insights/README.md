@@ -64,10 +64,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
 | api.pdb.minReplicas | int | `1` | How many replicas should always exist for the API server. |
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |
-| api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
+| api.hpa.min | int | `3` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
 | api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
-| api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
+| api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"375m","memory":"384Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
 | api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
