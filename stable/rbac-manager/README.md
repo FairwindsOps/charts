@@ -68,6 +68,9 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | affinity | object | `{}` | Deployment affinity |
 | podAnnotations | object | `{}` | Annotations to apply to the pods |
 | podLabels | object | `{}` | Labels to apply to the pod |
+| podSecurityContext | object | `{}` | securityContext to apply to the whole pod |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true}` | securityContext to apply to the rbac-manager container |
+| deploymentLabels | object | `{}` | Labels to apply to the Deployment resource |
 | serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor will be created for Prometheus |
 | serviceMonitor.additionalLabels | list | `[]` | Additional labels to ServiceMonitor |
 | serviceMonitor.annotations | object | `{}` | Annotations to apply to the serviceMonitor and headless service |

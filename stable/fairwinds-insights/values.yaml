@@ -357,11 +357,11 @@ resourcesRecommendationsCronjob:
   # -- Resources for the resources recommendations job.
   resources:
     limits:
-      cpu: 500m
-      memory: 2Gi
+      cpu: 1
+      memory: 3Gi
     requests:
-      cpu: 500m
-      memory: 1.5Gi
+      cpu: 1
+      memory: 3Gi
   # -- CRON schedules for the resources recommendations job.
   schedules:
     - name: resources-recommendations
@@ -468,10 +468,15 @@ encryption:
     cypherKey:
 
 timescale:
-  replicaCount: 1
+  replicaCount: 2
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
+  pdb:
+    # -- Use pdb enabled by default
+    enabled: true
+    # -- Min timescale pdb replicas
+    minReplicas: 1
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- Host for timescale
