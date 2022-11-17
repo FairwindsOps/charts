@@ -157,7 +157,7 @@ api:
     # -- Create a horizontal pod autoscaler for the API server.
     enabled: false
     # -- Minimum number of replicas for the API server.
-    min: 2
+    min: 3
     # -- Maximum number of replicas for the API server.
     max: 4
     # -- Scaling metrics
@@ -180,8 +180,8 @@ api:
       cpu: 1000m
       memory: 1024Mi
     requests:
-      cpu: 250m
-      memory: 256Mi
+      cpu: 375m
+      memory: 384Mi
   # -- Node Selector for the API server.
   nodeSelector: {}
   # -- Tolerations for the API server.
