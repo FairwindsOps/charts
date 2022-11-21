@@ -254,6 +254,8 @@ trivy:
   maxScansPerRun: 20
   timeout: 2400
   insecureSSL: false
+  # trivy.env -- A map of environment variables that will be set for the trivy container.
+  env:
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.22"

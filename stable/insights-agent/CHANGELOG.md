@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.4
+* Add a `trivy.env` chart value to allow passing environment variables to the trivy container, as a map of `name: value`.
+
 ## 2.8.3
 * Update pluto to 5.11
 
