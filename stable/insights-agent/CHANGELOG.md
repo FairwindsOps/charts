@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.9.1
-* Bump trivy to use plugin 0.24 / upstream v0.34.0, and polaris to use v7.2.
+* Bump versions for trivy, polaris, opa, nova, and goldilocks
 
 ## 2.9.0
 * Update Goldilocks to version 4.4.0
