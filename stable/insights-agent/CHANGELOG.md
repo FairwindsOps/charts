@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.8.4
+## 2.9.1
 * Add a `trivy.env` chart value to allow passing environment variables to the trivy container, as a map of `name: value`.
 
 ## 2.8.3
