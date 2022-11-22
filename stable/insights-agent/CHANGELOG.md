@@ -1,4 +1,6 @@
 # Changelog
+## 2.9.0
+* Update Goldilocks to version 4.4.0
 
 ## 2.8.3
 * Update pluto to 5.11
