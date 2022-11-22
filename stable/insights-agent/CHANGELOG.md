@@ -1,13 +1,13 @@
 # Changelog
 
-## 2.9.1
+## 2.9.2
 * Bump versions for trivy, polaris, opa, nova, and goldilocks
-
-## 2.9.0
-* Update Goldilocks to version 4.4.0
 
 ## 2.9.1
 * Add a `trivy.env` chart value to allow passing environment variables to the trivy container, as a map of `name: value`.
+
+## 2.9.0
+* Update Goldilocks to version 4.4.0
 
 ## 2.8.3
 * Update pluto to 5.11
