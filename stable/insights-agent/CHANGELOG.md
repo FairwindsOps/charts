@@ -1,4 +1,6 @@
 # Changelog
+## 2.9.0
+* Update Goldilocks to version 4.4.0
 
 ## 2.8.4
 * Bump python to 3.12 in test deployment
