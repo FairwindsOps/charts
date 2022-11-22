@@ -34,6 +34,10 @@ spec:
               - "./report.sh"
             env:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
+            {{- range $key, $value := .Values.trivy.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
             - name: FAIRWINDS_INSIGHTS_HOST
               value: {{ .Values.insights.host | quote }}
             - name: FAIRWINDS_ORG
