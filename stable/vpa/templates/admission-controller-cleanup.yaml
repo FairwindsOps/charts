@@ -74,6 +74,8 @@ spec:
             echo "Unregistering VPA admission controller webhook"
             kubectl delete -n {{ .Release.Namespace}} mutatingwebhookconfiguration.v1beta1.admissionregistration.k8s.io vpa-webhook-config || true
             kubectl delete -n {{ .Release.Namespace}} secret vpa-tls-certs || true
+        resources:
+          {{- toYaml .Values.admissionController.certGen.resources | nindent 10 }}
       {{- with .Values.admissionController.cleanupOnDelete.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
