@@ -106,7 +106,7 @@ goldilocks:
   timeout: 300
   image:
     repository: quay.io/fairwinds/goldilocks
-    tag: "v4.4.0"
+    tag: "v4.5"
   controller:
     flags:
       on-by-default: true
@@ -135,7 +135,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "2.1"
+    tag: "2.2"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -195,7 +195,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.4"
+    tag: "3.4"
   resources:
     requests:
       cpu: 100m
