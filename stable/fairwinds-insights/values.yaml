@@ -323,10 +323,7 @@ emailCronjob:
       cpu: 80m
       memory: 128Mi
   # -- CRON schedules for the Action Items email job.
-  schedules:
-    - name: weekly-email
-      interval: 168h
-      cron: "0 16 * * 1"
+  schedules: []
   securityContext:
     # -- The user ID to run the email job under.
     runAsUser: 10324
