@@ -96,7 +96,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | aggregateCronjob.schedules | list | `[{"cron":"5 0/2 * * *","interval":"120m","name":"bi-hourly"}]` | CRON schedules for the Workload Metrics aggregation job. |
 | aggregateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the Workload Metrics aggregation job under. |
 | emailCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Action Items email job. |
-| emailCronjob.schedules | list | `[{"cron":"0 16 * * 1","interval":"168h","name":"weekly-email"}]` | CRON schedules for the Action Items email job. |
+| emailCronjob.schedules | list | `[]` | CRON schedules for the Action Items email job. |
 | emailCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the email job under. |
 | databaseCleanupCronjob.enabled | bool | `true` | Enable database cleanup true by default |
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
