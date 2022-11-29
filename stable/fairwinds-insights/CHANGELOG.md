@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.6
+* Add secrets RBAC capabilities (get/create/delete) to repo-scan-job service-account
+
 ## 0.7.5
 * Disable weekly digest emails
 
