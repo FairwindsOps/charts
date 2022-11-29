@@ -35,8 +35,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.migrateHealthScore | bool | `false` | Run the job to migrate health scores to a new format |
 | options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
 | options.overprovisioning.enabled | bool | `false` |  |
-| options.overprovisioning.resources.cpu | string | `"1000m"` | CPU request & limit for overprovisioning pods |
-| options.overprovisioning.resources.memory | string | `"1Gi"` | Memory request & limit for overprovisioning pods |
+| options.overprovisioning.cpu | string | `"1000m"` | CPU request & limit for overprovisioning pods |
+| options.overprovisioning.memory | string | `"1Gi"` | Memory request & limit for overprovisioning pods |
 | hubspotCronjob.resources.limits.cpu | string | `"500m"` |  |
 | hubspotCronjob.resources.limits.memory | string | `"1024Mi"` |  |
 | hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |

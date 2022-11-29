@@ -20,11 +20,11 @@ spec:
         image: k8s.gcr.io/pause
         resources:
           requests:
-            cpu: {{ .Values.options.overprovisioning.resources.cpu }}
-            memory: {{ .Values.options.overprovisioning.resources.memory }}
+            cpu: {{ .Values.options.overprovisioning.cpu }}
+            memory: {{ .Values.options.overprovisioning.memory }}
           limits:
-            cpu: {{ .Values.options.overprovisioning.resources.cpu }}
-            memory: {{ .Values.options.overprovisioning.resources.memory }}
+            cpu: {{ .Values.options.overprovisioning.cpu }}
+            memory: {{ .Values.options.overprovisioning.memory }}
 ---
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
