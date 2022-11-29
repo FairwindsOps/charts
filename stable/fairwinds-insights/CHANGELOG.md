@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.6
+* Update application version to 10.8. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.7.5
 * Disable weekly digest emails
 
