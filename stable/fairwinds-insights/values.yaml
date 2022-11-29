@@ -69,12 +69,9 @@ options:
   overprovisioning:
     enabled: false
     resources:
-      requests:
-        cpu: 1000m
-        memory: 1Gi
-      limits:
-        cpu: 1000m
-        memory: 1Gi
+      # requests should always match limits here, so we don't separate them
+      cpu: 1000m
+      memory: 1Gi
 
 hubspotCronjob:
   resources:
