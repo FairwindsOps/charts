@@ -27,12 +27,12 @@ controller:
           - "get"
           - "list"
           - "watch"
+    extraClusterRoleBindings:
+      - view
 
 dashboard:
   basePath: goldilocks
   ingress:
-    extraClusterRoleBindings:
-      - view
     enabled: true
     hosts:
       - host: goldilocks.example.local
