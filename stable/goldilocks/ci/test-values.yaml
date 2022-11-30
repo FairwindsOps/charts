@@ -27,6 +27,8 @@ controller:
           - "get"
           - "list"
           - "watch"
+    extraClusterRoleBindings:
+      - view
 
 dashboard:
   basePath: goldilocks
