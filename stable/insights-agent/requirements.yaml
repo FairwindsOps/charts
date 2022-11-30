@@ -1,7 +1,7 @@
 dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
-  version: '6.1.*'
+  version: '6.3.*'
   condition: goldilocks.enabled
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts

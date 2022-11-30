@@ -111,6 +111,9 @@ goldilocks:
     flags:
       on-by-default: true
       exclude-namespaces: "kube-system"
+    rbac:
+      extraClusterRoleBindings:
+        - view
     resources:
       requests:
         cpu: 25m
