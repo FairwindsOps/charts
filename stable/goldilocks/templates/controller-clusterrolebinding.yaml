@@ -18,7 +18,7 @@ subjects:
     name: {{ include "goldilocks.fullname" . }}-controller
     namespace: {{ .Release.Namespace }}
 
-    {{- range $.Values.controller.rbac.extraClusterRoleBindings }}
+{{- range $.Values.controller.rbac.extraClusterRoleBindings }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding

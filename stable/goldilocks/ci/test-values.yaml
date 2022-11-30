@@ -31,6 +31,8 @@ controller:
 dashboard:
   basePath: goldilocks
   ingress:
+    extraClusterRoleBindings:
+      - view
     enabled: true
     hosts:
       - host: goldilocks.example.local
