@@ -25,6 +25,9 @@ rules:
 - apiGroups: [""]
   resources: ["events"]
   verbs: ["list", "get"]
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["create", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
