@@ -37,6 +37,8 @@ controller:
     enableArgoproj: true
     # controller.rbac.extraRules -- Extra rbac rules for the controller clusterrole
     extraRules: []
+    # controller.rbac.extraClusterRoleBindings -- A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled
+    extraClusterRoleBindings: []
   serviceAccount:
     # controller.serviceAccount.create -- If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`
     create: true
