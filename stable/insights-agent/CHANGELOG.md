@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.9.3
+* Fix the goldilocks-controller to use the upstream chart supporting V4, and update its RBAC to allow access via the built-in view ClusterRole, matching the CronJob. See also, Goldilocks PR https://github.com/FairwindsOps/charts/pull/1034
+
 ## 2.9.2
 * Bump versions for trivy, polaris, opa, nova, and goldilocks
 
