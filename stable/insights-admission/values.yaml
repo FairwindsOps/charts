@@ -34,28 +34,28 @@ insights:
     suffix: "configmap"
 
 webhookConfig:
-  # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration.
+  # webhookConfig.failurePolicy -- failurePolicy for the ValidatingWebhookConfiguration and MutatingWebhookConfiguration.
   # This also informs whether the admission controller blocks validation requests
   # on errors, such as while executing OPA policies.
   failurePolicy: Ignore
-  # webhookConfig.matchPolicy -- matchPolicy for the ValidatingWebhookConfiguration
+  # webhookConfig.matchPolicy -- matchPolicy for the ValidatingWebhookConfiguration and MutatingWebhookConfiguration
   matchPolicy: Exact
   # webhookConfig.timeoutSeconds -- number of seconds to wait before failing the admission request (max is 30)
   timeoutSeconds: 30
-  # webhookConfig.namespaceSelector -- namespaceSelector for the ValidatingWebhookConfiguration
+  # webhookConfig.namespaceSelector -- namespaceSelector for the ValidatingWebhookConfiguration and MutatingWebhookConfiguration
   namespaceSelector:
     matchExpressions:
     - key: control-plane
       operator: DoesNotExist
-  # -- Annotations to add to the ValidatingWebhookConfiguration
+  # -- Annotations to add to the ValidatingWebhookConfiguration and MutatingWebhookConfiguration
   annotations: {}
-  # webhookConfig.objectSelector -- objectSelector for the ValidatingWebhookConfiguration
+  # webhookConfig.objectSelector -- objectSelector for the ValidatingWebhookConfiguration and MutatingWebhookConfiguration
   objectSelector: {}
-  # webhookConfig.rules -- An array of additional rules for the ValidatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
+  # webhookConfig.rules -- An array of additional rules for the ValidatingWebhookConfiguration and MutatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope.
   # Rules specified here may also be granted to the Insights OPA plugin,
   # see also the insights-agent chart values for opa.
   rules: []
-  # webhookConfig.defaultRules -- An array of rules for commons types for the ValidatingWebhookConfiguration
+  # webhookConfig.defaultRules -- An array of rules for commons types for the ValidatingWebhookConfiguration and MutatingWebhookConfiguration
   defaultRules:
   - apiGroups:
     - apps
@@ -97,6 +97,9 @@ webhookConfig:
   # webhookConfig.rulesAutoRBAC -- Automatically add RBAC rules allowing get and list operations for the APIGroups and Resources supplied in rules.
   # This *does not* impact RBAC rules added for `defaultRules`.
   rulesAutoRBAC: true
+  mutating:
+    # webhookConfig.mutating.enable -- Enable the mutating webhook, which uses settings defined in webhookConfig values.
+    enable: false
 
 pluto:
   # pluto.targetVersions -- Pluto target versions specified as key=value[,key=value...].
