@@ -11,14 +11,6 @@ TimescaleDB HA Deployment.
 
 **Homepage:** <https://github.com/timescale/helm-charts>
 
-## Maintainers
-
-## Maintainers
-
-| Name | Email | Url |
-| ---- | ------ | --- |
-| TimescaleDB | <support@timescale.com> |  |
-
 ## Source Code
 
 * <https://github.com/timescale/helm-charts>
