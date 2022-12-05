@@ -2,7 +2,7 @@ apiVersion: v2
 name: oom-event-generator
 description: A Helm chart to install kubernetes-oom-event-generator
 type: application
-version: 0.2.0
+version: 0.2.1
 appVersion: 1.2.0
 maintainers:
   - name: denraf
