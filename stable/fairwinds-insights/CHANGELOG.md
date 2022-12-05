@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.8
+* Add resource limits for overprovisioning deployment
+
 ## 0.7.7
 * Add secrets RBAC capabilities (get/create/delete) to repo-scan-job service-account
 
