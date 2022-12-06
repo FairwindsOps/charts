@@ -1,0 +1,13 @@
+# Basic Kubernetes Demo
+
+Runs a frontend that shows which pods it is connecting to.  Good for scaling demos.
+
+Credit for the app goes to [ehazlett](https://github.com/ehazlett/docker-demo)
+
+## A Note on Chart Version 0.3.0+
+
+Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprecations-in-1-16/) of various `extensions/v1beta1` API's, the 0.3.0 version of this chart will only work on kubernetes 1.14.0+
+
+## Values
+
+{{ template "chart.valuesSection" . }}
