@@ -1,6 +1,10 @@
 # config -- The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration). If not provided then the [default](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml) config from Polaris is used.
 config: null
 
+# configUrl -- Use a config from an accessible URL source.  NOTE: `config` & `configUrl` are mutually exclusive.  Setting `configURL` will take precedence over `config`.  Only one may be used.
+# configUrl: https://example.com/config.yaml
+configUrl: null
+
 image:
   # image.repository -- Image repo
   repository: quay.io/fairwinds/polaris
