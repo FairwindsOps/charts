@@ -1,8 +1,5 @@
 # Changelog
 
-## 2.9.4
-* Bumped workload version for saving Ingresses information
-
 ## 2.9.3
 * Fix the goldilocks-controller to use the upstream chart supporting V4, and update its RBAC to allow access via the built-in view ClusterRole, matching the CronJob. See also, Goldilocks PR https://github.com/FairwindsOps/charts/pull/1034
 
