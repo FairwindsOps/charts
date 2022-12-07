@@ -41,9 +41,14 @@ spec:
       - command:
         - polaris
         - dashboard
+        {{- if .Values.configUrl }}
+        - --config
+        - {{ .Values.configUrl | quote }}
+        {{- else }}
         {{- with .Values.config }}
         - --config
         - /opt/app/config.yaml
+        {{- end }}
         {{- end }}
         {{- with .Values.dashboard.basePath }}
         - --base-path
@@ -93,12 +98,14 @@ spec:
         securityContext:
         {{- toYaml . | nindent 12 }}
         {{- end }}                 
+        {{- if not .Values.configUrl }}
         {{- with .Values.config }}
         volumeMounts:
         - name: config
           mountPath: /opt/app/config.yaml
           subPath: config.yaml
           readOnly: true
+        {{- end }}
         {{- end }}
       {{- with .Values.dashboard.extraContainers }}
       {{- toYaml . | nindent 6 }}
