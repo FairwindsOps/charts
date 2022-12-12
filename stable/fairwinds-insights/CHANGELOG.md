@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.9
+* Update application version to 10.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.7.8
 * Add resource limits for overprovisioning deployment
 
