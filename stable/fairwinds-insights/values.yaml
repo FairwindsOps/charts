@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.6.11
+  agentChartTargetVersion: 2.8.1
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -68,8 +68,9 @@ options:
   # to wait for cluster-autoscaler with each deployment
   overprovisioning:
     enabled: false
-    memory: 1Gi
+    # requests should always match limits here, so we don't separate them
     cpu: 1000m
+    memory: 1Gi
 
 hubspotCronjob:
   resources:
@@ -323,10 +324,7 @@ emailCronjob:
       cpu: 80m
       memory: 128Mi
   # -- CRON schedules for the Action Items email job.
-  schedules:
-    - name: weekly-email
-      interval: 168h
-      cron: "0 16 * * 1"
+  schedules: []
   securityContext:
     # -- The user ID to run the email job under.
     runAsUser: 10324
@@ -357,11 +355,11 @@ resourcesRecommendationsCronjob:
   # -- Resources for the resources recommendations job.
   resources:
     limits:
-      cpu: 500m
-      memory: 2Gi
+      cpu: 1
+      memory: 3Gi
     requests:
-      cpu: 500m
-      memory: 1.5Gi
+      cpu: 1
+      memory: 3Gi
   # -- CRON schedules for the resources recommendations job.
   schedules:
     - name: resources-recommendations
@@ -468,10 +466,15 @@ encryption:
     cypherKey:
 
 timescale:
-  replicaCount: 1
+  replicaCount: 2
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
+  pdb:
+    # -- Use pdb enabled by default
+    enabled: true
+    # -- Min timescale pdb replicas
+    minReplicas: 1
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- Host for timescale

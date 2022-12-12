@@ -1,6 +1,9 @@
 #! /bin/sh
 
 set -eo pipefail
+# Get the OS and architecture, defaulting to linux/amd64
+kubectl_os=$(uname -s | awk '{print tolower($0)}' || echo linux)
+kubectl_arch=$(uname -m | awk '{print tolower($0)}' |sed -e 's/aarch/arm/' -e 's/x86_/amd/' || echo amd64)
 
 mkdir /tmp/bin
 export PATH=$PATH:/tmp/bin
@@ -14,9 +17,6 @@ cd /tmp/bin
 
 old_kubectl_version='v1.19.6'
 default_kubectl_version=$(curl -fsSL https://dl.k8s.io/release/stable.txt)
-echo "Downloading jq . . ."
-curl -fsSLo jq https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 && chmod +x jq
-
 version_pattern='v[0-9]+\.[0-9]+.[0-9]+)'
 kubectl_version=""
 
@@ -44,10 +44,10 @@ if [ "${kubectl_version}" == "" ] ; then
   kubectl_version="${default_kubectl_version}"
 fi
 
-echo Downloading kubectl version ${kubectl_version}
-curl -fsSLo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/linux/amd64/kubectl" && chmod +x kubectl
+echo Downloading kubectl version ${kubectl_version} for ${kubectl_os}/${kubectl_arch}
+curl -fsSLo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/${kubectl_os}/${kubectl_arch}/kubectl" && chmod +x kubectl
 echo Downloading kubectl checksum
-curl -fsSLO https://dl.k8s.io/${kubectl_version}/bin/linux/amd64/kubectl.sha256 >kubectl.sha256 >/tmp/bin/kubectl.sha256
+curl -fsSLO https://dl.k8s.io/${kubectl_version}/bin/${kubectl_os}/${kubectl_arch}/kubectl.sha256 >kubectl.sha256 >/tmp/bin/kubectl.sha256
 # THe busybox version of sha256sum wants two spaces between the checksum and filename.
 sed -i -e 's/$/  kubectl/'  /tmp/bin/kubectl.sha256
 echo Verifying kubectl checksum

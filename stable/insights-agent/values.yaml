@@ -22,7 +22,7 @@ rbac:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.3"
+    tag: "0.4"
   imagePullSecret: ""
   sendFailures: true
   resources:
@@ -46,8 +46,8 @@ cronjobs:
 
 cronjobExecutor:
   image:
-    repository: curlimages/curl
-    tag: "7.84.0"
+    repository: quay.io/fairwinds/insights-utils
+    tag: "0.0"
   resources:
     requests:
       cpu: 100m
@@ -56,7 +56,7 @@ cronjobExecutor:
 installReporter:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.3"
+    tag: "0.4"
   resources:
     requests:
       cpu: 100m
@@ -71,7 +71,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "7.0"
+    tag: "7.2"
   resources:
     requests:
       cpu: 100m
@@ -106,11 +106,14 @@ goldilocks:
   timeout: 300
   image:
     repository: quay.io/fairwinds/goldilocks
-    tag: "v2.2.0"
+    tag: "v4.5"
   controller:
     flags:
       on-by-default: true
       exclude-namespaces: "kube-system"
+    rbac:
+      extraClusterRoleBindings:
+        - view
     resources:
       requests:
         cpu: 25m
@@ -135,7 +138,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "2.0"
+    tag: "2.2"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -182,7 +185,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.2"
+    tag: "2.4"
   resources:
     requests:
       cpu: 100m
@@ -215,7 +218,7 @@ rbac-reporter:
   timeout: 300
   image:
     repository: quay.io/fairwinds/rbac-reporter
-    tag: "1.2"
+    tag: "1.3"
   resources:
     requests:
       cpu: 100m
@@ -229,11 +232,11 @@ kube-bench:
   timeout: 600
   image:
     repository: quay.io/fairwinds/fw-kube-bench
-    tag: 0.3
+    tag: 0.4
   aggregator:
     image:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
-      tag: 0.2
+      tag: 0.3
     resources:
       requests:
         cpu: 100m
@@ -254,9 +257,11 @@ trivy:
   maxScansPerRun: 20
   timeout: 2400
   insecureSSL: false
+  # trivy.env -- A map of environment variables that will be set for the trivy container.
+  env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.21"
+    tag: "0.24"
   serviceAccount:
     annotations:
   resources:
@@ -271,7 +276,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.10"
+    tag: "v5.11"
   resources:
     requests:
       cpu: 100m
@@ -285,7 +290,7 @@ prometheus-metrics:
   address: "http://prometheus-server"
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.0"
+    tag: "1.1"
   resources:
     requests:
       cpu: 100m
@@ -383,7 +388,7 @@ awscosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "1.0"
+    tag: "1.1"
   serviceAccount:
     annotations:
   resources:
@@ -402,7 +407,7 @@ right-sizer:
   # This image is for the controller, the agent only runs the Insights uploader.
   image:
     repository: quay.io/fairwinds/right-sizer
-    tag: 0.3
+    tag: 0.4
     pullPolicy: Always
   # rightsizer.imagePullSecrets -- imagePullSecrets containing private registry credentials.
   imagePullSecrets: []
@@ -495,7 +500,7 @@ falco:
     port: 3031
   image:
     repository: quay.io/fairwinds/falco-agent
-    tag: "0.1"
+    tag: "0.2"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101

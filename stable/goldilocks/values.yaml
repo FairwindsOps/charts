@@ -17,7 +17,7 @@ image:
   # image.repository -- Repository for the goldilocks image
   repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
   # image.tag -- The goldilocks image tag to use
-  tag: v4.4.0
+  tag: v4.5.1
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
@@ -37,6 +37,8 @@ controller:
     enableArgoproj: true
     # controller.rbac.extraRules -- Extra rbac rules for the controller clusterrole
     extraRules: []
+    # controller.rbac.extraClusterRoleBindings -- A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled
+    extraClusterRoleBindings: []
   serviceAccount:
     # controller.serviceAccount.create -- If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`
     create: true
