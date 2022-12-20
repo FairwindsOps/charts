@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.7.12
+Changing mio for mio operator
+
 ## 0.7.11
 * Update application version to 10.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
