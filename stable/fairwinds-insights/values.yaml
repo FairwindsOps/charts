@@ -433,6 +433,8 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  image:
+    tag: test
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
