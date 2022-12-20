@@ -44,6 +44,11 @@ env:
   value: {{ randAlphaNum 10 }}
 - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
   value: {{ .Values.options.agentChartTargetVersion }}
+# General Server
+{{- with .Values.options.authRateLimit }}
+- name: AUTH_RATE_LIMIT
+  value: {{ . | quote }}
+{{- end }}
 # Database
 - name: POSTGRES_DB
   value: {{ .Values.postgresql.auth.database }}
@@ -52,7 +57,7 @@ env:
 - name: POSTGRES_PORT
   value: {{ .Values.postgresql.primary.service.port | quote }}
 - name: POSTGRES_SSL_MODE
-  value: {{ .Values.postgresql.tls.enabled | default true }}
+  value: "required"
 - name: POSTGRES_HOST
   value: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
 {{- if .Values.postgresql.readOnly }}
@@ -65,7 +70,7 @@ env:
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.postgresql.existingSecret }}
+      name: {{ .Values.postgresql.auth.existingSecret }}
       key: postgresql-password
 {{- end }}
 # Timescale Database
