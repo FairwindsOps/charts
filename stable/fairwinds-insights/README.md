@@ -127,13 +127,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
 | postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
-| postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
-| postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |
-| postgresql.auth | object | `{"database":"fairwinds_insights","username":"postgres"}` | Username to connect to Postgres with |
-| postgresql.service.port | int | `5432` | Port of the Postgres Database |
-| postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
-| postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
-| postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| postgresql.tls | object | `{"enabled":true}` | TLS mode for connecting to the database |
+| postgresql.auth.username | string | `"postgres"` |  |
+| postgresql.auth.database | string | `"fairwinds_insights"` |  |
+| postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
+| postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
+| postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
+| postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.replicaCount | int | `2` |  |
 | timescale.clusterName | string | `"timescale"` |  |
