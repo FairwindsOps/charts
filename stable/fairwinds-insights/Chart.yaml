@@ -15,7 +15,7 @@ dependencies:
 - name: minio-operator
   version: v4.5.5
   repository: https://operator.min.io/
-  condition: minio-operator.install
+  condition: minio.install
 - name: timescaledb-single
   version: 0.21.*
   repository: https://charts.fairwinds.com/incubator
