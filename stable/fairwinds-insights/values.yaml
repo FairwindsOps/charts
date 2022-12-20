@@ -434,7 +434,7 @@ ingress:
 
 postgresql:
   image:
-    tag: "14.1.0-debian-10-r88"
+    tag: "14.2.0-debian-10-r94"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
