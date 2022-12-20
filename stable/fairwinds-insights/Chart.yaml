@@ -21,3 +21,4 @@ dependencies:
   version: 4.*
   repository: https://operator.min.io/
   condition: minio.install
+  alias: minio
