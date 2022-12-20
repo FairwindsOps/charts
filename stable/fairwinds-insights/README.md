@@ -127,7 +127,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
 | postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
-| postgresql.tls | object | `{"enabled":true}` | TLS mode for connecting to the database |
+| postgresql.tls | object | `{"enabled":false}` | TLS mode for connecting to the database |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
 | postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
