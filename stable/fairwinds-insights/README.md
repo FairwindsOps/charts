@@ -125,9 +125,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
-| postgresql.image.registry | string | `"fake"` |  |
-| postgresql.image.repository | string | `"fake"` |  |
-| postgresql.image.tag | string | `"fake"` |  |
+| postgresql.image.tag | string | `"14.2"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |
