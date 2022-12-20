@@ -9,15 +9,15 @@ maintainers:
 - name: ivanfetch-fw
 dependencies:
 - name: postgresql
-  version: 10.*
+  version: 10.15.1
   repository: https://charts.bitnami.com/bitnami
   condition: postgresql.ephemeral
-- name: minio-operator
-  version: 4.*
-  repository: https://operator.min.io/
-  condition: minio.install
 - name: timescaledb-single
   version: 0.21.*
   repository: https://charts.fairwinds.com/incubator
   condition: timescale.ephemeral
   alias: timescale
+- name: minio-operator
+  version: 4.*
+  repository: https://operator.min.io/
+  condition: minio.install
