@@ -12,10 +12,10 @@ dependencies:
   version: 10.15.1
   repository: https://charts.bitnami.com/bitnami
   condition: postgresql.ephemeral
-- name: minio
+- name: minio-operator
   version: v4.5.5
   repository: https://operator.min.io/
-  condition: minio.install
+  condition: minio-operator.install
 - name: timescaledb-single
   version: 0.21.*
   repository: https://charts.fairwinds.com/incubator
