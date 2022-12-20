@@ -434,6 +434,8 @@ ingress:
 
 postgresql:
   image:
+    registry: "fake"
+    repository: "fake"
     tag: "fake"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
