@@ -12,6 +12,8 @@ dependencies:
   version: 12.1.6
   repository: https://charts.bitnami.com/bitnami
   condition: postgresql.ephemeral
+  tags:
+    - xyz
 - name: minio
   version: 8.0.10
   repository: https://helm.min.io/
