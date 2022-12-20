@@ -129,8 +129,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |
-| postgresql.postgresqlUsername | string | `"postgres"` | Username to connect to Postgres with |
-| postgresql.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
+| postgresql.auth | object | `{"database":"fairwinds_insights","username":"postgres"}` | Username to connect to Postgres with |
 | postgresql.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
