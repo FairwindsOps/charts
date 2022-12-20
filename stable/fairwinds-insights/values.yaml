@@ -434,9 +434,7 @@ ingress:
 
 postgresql:
   image:
-    registry: "fake"
-    repository: "fake"
-    tag: "fake"
+    tag: "14.2"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
