@@ -555,6 +555,7 @@ minio:
     enabled: false
   replicas: 1
   drivesPerNode: 1
+  mode: standalone
 migrateHealthScoreJob:
   resources:
     limits:
