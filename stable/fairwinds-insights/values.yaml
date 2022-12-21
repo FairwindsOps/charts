@@ -552,7 +552,7 @@ minio:
   nameOverride: fw-minio
   persistence:
     # -- Create a persistent volume for Minio
-    enabled: true
+    enabled: false
   replicas: 1
   drivesPerNode: 1
 migrateHealthScoreJob:
