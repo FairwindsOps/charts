@@ -81,4 +81,3 @@ minio:
     enabled: false
   replicas: 1
   drivesPerNode: 1
- 
