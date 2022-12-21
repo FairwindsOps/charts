@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.7.12
+## 0.8.0
 * Bumping postgres to bitnami 12.1.6 
 
 ## 0.7.11
