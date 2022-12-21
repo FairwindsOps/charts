@@ -92,7 +92,10 @@ env:
       key: PATRONI_SUPERUSER_PASSWORD
 {{- else }}
 - name: TIMESCALE_PASSWORD
-  value:  {{ .Values.timescale.password }}
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.auth.existingSecret }}
+      key: timescale-password
 {{- end }}
 {{- with .Values.options.insightsSAASHost }}
 - name: INSIGHTS_SAAS_HOST
