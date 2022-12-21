@@ -437,6 +437,8 @@ postgresql:
     tag: "14.2.0-debian-10-r94"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
+  # -- SSL mode for connecting to the database
+  sslMode: require  
   # -- TLS mode for connecting to the database
   tls:
     enabled: true

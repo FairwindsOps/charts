@@ -57,7 +57,7 @@ env:
 - name: POSTGRES_PORT
   value: {{ .Values.postgresql.primary.service.port | quote }}
 - name: POSTGRES_SSL_MODE
-  value: "required"
+  value: {{ .Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST
   value: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
 {{- if .Values.postgresql.readOnly }}
