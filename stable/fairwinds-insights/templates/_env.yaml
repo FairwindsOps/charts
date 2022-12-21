@@ -71,7 +71,7 @@ env:
   valueFrom:
     secretKeyRef:
       name: {{ .Values.postgresql.auth.existingSecret }}
-      key: postgres-password
+      key: postgresql-password
 {{- end }}
 # Timescale Database
 - name: TIMESCALE_DB
