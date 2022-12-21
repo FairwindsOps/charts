@@ -449,7 +449,7 @@ postgresql:
     username: postgres
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
-    secretKeys: 
+    secretKeys:
       adminPasswordKey: postgresql-password
   primary:
     service:
