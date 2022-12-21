@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.0
+* BUmp insights-admission to chart 1.5.* (to use app 1.9)
+
 ## 2.9.4
 * Bumped workload version for saving Ingresses information
 
