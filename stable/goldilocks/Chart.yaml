@@ -19,6 +19,6 @@ dependencies:
   repository: https://charts.fairwinds.com/stable
   condition: vpa.enabled
 - name: metrics-server
-  version: 5.11.4
+  version: 6.2.4
   repository: https://charts.bitnami.com/bitnami
   condition: metrics-server.enabled
