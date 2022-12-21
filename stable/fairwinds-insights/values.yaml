@@ -443,7 +443,7 @@ postgresql:
   tls:
     enabled: true
     certificatesSecret: fwinsights-postgresql-ca
-    certKeyFilename: fwinsights-postgresql
+    certFilename: "tls.crt"
   auth:
     username: postgres
     database: fairwinds_insights
