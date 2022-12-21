@@ -18,8 +18,8 @@ deployments:
     pod-foo: pod-bar
 
 postgresql:
-  sslMode: "disable"
-  password: "changeme"
+  auth:
+    password: "changeme"
 
 dashboard:
   pdb:
