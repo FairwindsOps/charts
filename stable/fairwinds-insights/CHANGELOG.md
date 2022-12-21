@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.8.2
+* Upgrading minio
+
 ## 0.8.1
 * Bug fix for timescale secret
 ## 0.8.0
