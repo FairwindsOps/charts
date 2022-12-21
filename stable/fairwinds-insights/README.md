@@ -168,7 +168,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.buckets | list | `[{"name":"reports","policy":"none"}]` | Create the following buckets for the newly installed Minio |
 | minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
-| minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
+| minio.persistence.enabled | bool | `false` | Create a persistent volume for Minio |
 | minio.replicas | int | `1` |  |
 | minio.drivesPerNode | int | `1` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
