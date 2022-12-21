@@ -433,34 +433,39 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  image:
+    tag: "14.2.0-debian-10-r94"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-  # -- Secret name to use for Postgres Password
-  existingSecret: fwinsights-postgresql
-  # -- Username to connect to Postgres with
-  postgresqlUsername: postgres
-  # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_insights
-  service:
-    # -- Port of the Postgres Database
-    port: 5432
-  persistence:
-    # -- Create Persistent Volume with Postgres
+  # -- TLS mode for connecting to the database
+  tls:
     enabled: true
-  replication:
-    # -- Replicate Postgres data
-    enabled: false
-  # -- Resources section for Postgres
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 75m
-      memory: 256Mi
-
+    certificatesSecret: fwinsights-postgresql-ca
+    certFilename: tls.crt
+    certKeyFilename: tls.key
+  auth:
+    username: postgres
+    database: fairwinds_insights
+    existingSecret: fwinsights-postgresql
+    secretKeys:
+      adminPasswordKey: postgresql-password
+  primary:
+    service:
+      # -- Port of the Postgres Database
+      port: 5432
+    persistence:
+      # -- Create Persistent Volume with Postgres
+      enabled: true
+    # -- Resources section for Postgres
+    resources:
+      limits:
+        cpu: 1
+        memory: 1Gi
+      requests:
+        cpu: 75m
+        memory: 256Mi
 encryption:
   aes:
     cypherKey:
