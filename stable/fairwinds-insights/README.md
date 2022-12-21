@@ -132,6 +132,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
 | postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
+| postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |

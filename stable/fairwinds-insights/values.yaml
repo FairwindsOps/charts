@@ -449,6 +449,8 @@ postgresql:
     username: postgres
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
+    secretKeys: 
+      adminPasswordKey: postgresql-password
   primary:
     service:
       # -- Port of the Postgres Database
