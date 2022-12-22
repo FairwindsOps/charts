@@ -558,6 +558,7 @@ minio:
   mode: standalone
   rootUser: ""
   rootPassword: ""
+  existingSecret: "custom"
 migrateHealthScoreJob:
   resources:
     limits:
