@@ -556,8 +556,6 @@ minio:
   replicas: 1
   drivesPerNode: 1
   mode: standalone
-  rootUser: "admin"
-  rootPassword: "MinioP@ss0rd"
 migrateHealthScoreJob:
   resources:
     limits:
