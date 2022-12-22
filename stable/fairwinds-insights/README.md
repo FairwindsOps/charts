@@ -170,7 +170,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
 | minio.persistence.enabled | bool | `false` | Create a persistent volume for Minio |
 | minio.replicas | int | `1` |  |
-| minio.drivesPerNode | int | `1` |  |
 | minio.mode | string | `"standalone"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |

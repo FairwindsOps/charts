@@ -554,7 +554,6 @@ minio:
     # -- Create a persistent volume for Minio
     enabled: false
   replicas: 1
-  drivesPerNode: 1
   mode: standalone
 migrateHealthScoreJob:
   resources:

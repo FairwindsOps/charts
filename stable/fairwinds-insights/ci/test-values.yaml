@@ -66,18 +66,3 @@ resourcesRecommendationsCronjob:
 
 closeTicketsCronjob:
   schedules: []
-
-minio:
-  install: true
-  buckets:
-  - name: reports
-    policy: none
-  resources:
-    requests:
-      cpu: 50m
-      memory: 256Mi
-  nameOverride: fw-minio
-  persistence:
-    enabled: false
-  replicas: 1
-  drivesPerNode: 1
