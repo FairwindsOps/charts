@@ -173,7 +173,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.drivesPerNode | int | `1` |  |
 | minio.mode | string | `"standalone"` |  |
 | minio.rootUser | string | `"minio"` |  |
-| minio.rootPassword | string | `"minio"` |  |
+| minio.rootPassword | string | `"M1n1oP@sswod"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
