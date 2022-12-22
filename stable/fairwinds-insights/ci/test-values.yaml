@@ -66,3 +66,7 @@ resourcesRecommendationsCronjob:
 
 closeTicketsCronjob:
   schedules: []
+
+minio:
+  persistence:
+    enabled: false
