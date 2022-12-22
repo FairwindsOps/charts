@@ -1,7 +1,11 @@
 # Changelog
 
-## 0.7.12
-Changing mio for mio operator
+## 0.8.2
+* Upgrading minio to new charts repo
+## 0.8.1
+* Bug fix for timescale secret
+## 0.8.0
+* BREAKING: Bumping postgres to bitnami chart 12.1.6, and postgres version 14. See README for changes to `postgresql` Helm values, or view the [full options](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) in the downstream chart.
 
 ## 0.7.11
 * Update application version to 10.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
