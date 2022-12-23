@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.8.1
+  agentChartTargetVersion: 2.9.4
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -433,34 +433,39 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  image:
+    tag: "14.2.0-debian-10-r94"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
   sslMode: require
-  # -- Secret name to use for Postgres Password
-  existingSecret: fwinsights-postgresql
-  # -- Username to connect to Postgres with
-  postgresqlUsername: postgres
-  # -- Name of the Postgres Database
-  postgresqlDatabase: fairwinds_insights
-  service:
-    # -- Port of the Postgres Database
-    port: 5432
-  persistence:
-    # -- Create Persistent Volume with Postgres
+  # -- TLS mode for connecting to the database
+  tls:
     enabled: true
-  replication:
-    # -- Replicate Postgres data
-    enabled: false
-  # -- Resources section for Postgres
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 75m
-      memory: 256Mi
-
+    certificatesSecret: fwinsights-postgresql-ca
+    certFilename: tls.crt
+    certKeyFilename: tls.key
+  auth:
+    username: postgres
+    database: fairwinds_insights
+    existingSecret: fwinsights-postgresql
+    secretKeys:
+      adminPasswordKey: postgresql-password
+  primary:
+    service:
+      # -- Port of the Postgres Database
+      port: 5432
+    persistence:
+      # -- Create Persistent Volume with Postgres
+      enabled: true
+    # -- Resources section for Postgres
+    resources:
+      limits:
+        cpu: 1
+        memory: 1Gi
+      requests:
+        cpu: 75m
+        memory: 256Mi
 encryption:
   aes:
     cypherKey:
@@ -548,7 +553,8 @@ minio:
   persistence:
     # -- Create a persistent volume for Minio
     enabled: true
-
+  replicas: 1
+  mode: standalone
 migrateHealthScoreJob:
   resources:
     limits:
