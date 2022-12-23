@@ -125,12 +125,12 @@ env:
   valueFrom:
     secretKeyRef:
       name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
-      key: accesskey                
+      key: rootUser                
 - name: MINIO_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
       name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
-      key: secretkey
+      key: rootPassword
 {{ else if eq .Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
   value: {{ .Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}
