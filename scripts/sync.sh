@@ -24,7 +24,7 @@ readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io
 readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
-readonly MINIO_REPO_URL=https://helm.min.io/
+readonly MINIO_REPO_URL=https://charts.min.io/
 readonly BITNAMI_REPO_URL=https://charts.bitnami.com/bitnami
 readonly FALCO_REPO_URL=https://falcosecurity.github.io/charts
 

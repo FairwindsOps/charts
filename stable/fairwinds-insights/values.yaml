@@ -553,7 +553,8 @@ minio:
   persistence:
     # -- Create a persistent volume for Minio
     enabled: true
-
+  replicas: 1
+  mode: standalone
 migrateHealthScoreJob:
   resources:
     limits:
