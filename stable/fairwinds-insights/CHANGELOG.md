@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.0
+* BREAKING: Upgrading minio to new charts
+
 ## 0.8.1
 * Bug fix for timescale secret
 ## 0.8.0

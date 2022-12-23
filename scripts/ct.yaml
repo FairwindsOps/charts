@@ -8,6 +8,6 @@ chart-repos:
   - "fairwinds-stable=https://charts.fairwinds.com/stable"
   - "fairwinds-incubator=https://charts.fairwinds.com/incubator"
   - "bitnami=https://charts.bitnami.com/bitnami"
-  - "minio=https://helm.min.io/"
+  - "minio=https://charts.min.io/"
   - "prometheus-community=https://prometheus-community.github.io/helm-charts"
   - "falcosecurity=https://falcosecurity.github.io/charts"
