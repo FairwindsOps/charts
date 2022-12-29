@@ -5,8 +5,8 @@ description: |
 
   This will inject vault tokens and address variables into circle builds on a schedule
 type: application
-version: 2.1.0
-appVersion: "v1.5.0"
+version: 2.1.1
+appVersion: "v1.5.1"
 maintainers:
-  - name: lucasreed
+  - name: transient1
   - name: sudermanjr
