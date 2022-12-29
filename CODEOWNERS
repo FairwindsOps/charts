@@ -20,13 +20,13 @@
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @sudermanjr
-/stable/polaris/ @rbren @makoscafee
+/stable/polaris/ @rbren
 /stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @sudermanjr
 /stable/goldilocks/ @sudermanjr
-/stable/fairwinds-insights/ @rbren @makoscafee @ivanfetch-fw
-/stable/insights-admission/ @rbren @makoscafee @ivanfetch-fw
-/stable/insights-agent/ @rbren @makoscafee @ivanfetch-fw
-/stable/helm-release-pruner/ @rbren @makoscafee
+/stable/fairwinds-insights/ @rbren @ivanfetch-fw
+/stable/insights-admission/ @rbren @ivanfetch-fw
+/stable/insights-agent/ @rbren @ivanfetch-fw
+/stable/helm-release-pruner/ @rbren
 /stable/vpa/ @sudermanjr
 
