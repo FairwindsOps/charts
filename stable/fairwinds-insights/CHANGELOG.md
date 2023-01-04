@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9.2
+* Update application version to 11.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.9.1
+* Update application version to 10.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.9.0
 * BREAKING: Upgrading minio to new charts
 
