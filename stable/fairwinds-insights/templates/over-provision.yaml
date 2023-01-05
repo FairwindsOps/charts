@@ -22,6 +22,9 @@ spec:
           requests:
             cpu: {{ .Values.options.overprovisioning.cpu }}
             memory: {{ .Values.options.overprovisioning.memory }}
+          limits:
+            cpu: {{ .Values.options.overprovisioning.cpu }}
+            memory: {{ .Values.options.overprovisioning.memory }}
 ---
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass

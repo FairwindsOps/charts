@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.10.0
+* BUmp insights-admission to chart 1.5.* (to use app 1.9)
+* Bump nova to 3.5
+
+## 2.9.4
+* Bumped workload version for saving Ingresses information
+
+## 2.9.3
+* Fix the goldilocks-controller to use the upstream chart supporting V4, and update its RBAC to allow access via the built-in view ClusterRole, matching the CronJob. See also, Goldilocks PR https://github.com/FairwindsOps/charts/pull/1034
+
+## 2.9.2
+* Bump versions for trivy, polaris, opa, nova, and goldilocks
+
+## 2.9.1
+* Add a `trivy.env` chart value to allow passing environment variables to the trivy container, as a map of `name: value`.
+
+## 2.9.0
+* Update Goldilocks to version 4.4.0
+
 ## 2.8.3
 * Update pluto to 5.11
 

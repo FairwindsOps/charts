@@ -53,7 +53,7 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.repository | string | `"quay.io/reactiveops/rbac-manager"` | The image to run for rbac manager |
-| image.tag | string | `"v1.4.0"` | The tag of the image to run |
+| image.tag | string | `"v1.4.2"` | The tag of the image to run |
 | image.digest | string | `""` | The digest of the image to run |
 | image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.imagePullSecrets | list | `[]` |  |
@@ -68,6 +68,8 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | affinity | object | `{}` | Deployment affinity |
 | podAnnotations | object | `{}` | Annotations to apply to the pods |
 | podLabels | object | `{}` | Labels to apply to the pod |
+| podSecurityContext | object | `{}` | securityContext to apply to the whole pod |
+| securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true}` | securityContext to apply to the rbac-manager container |
 | deploymentLabels | object | `{}` | Labels to apply to the Deployment resource |
 | serviceMonitor.enabled | bool | `false` | If true, a ServiceMonitor will be created for Prometheus |
 | serviceMonitor.additionalLabels | list | `[]` | Additional labels to ServiceMonitor |

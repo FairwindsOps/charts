@@ -2,7 +2,7 @@ image:
   # image.repository -- The image to run for rbac manager
   repository: quay.io/reactiveops/rbac-manager
   # image.tag -- The tag of the image to run
-  tag: v1.4.0
+  tag: v1.4.2
   # image.digest -- The digest of the image to run
   digest: ""
   # image.pullPolicy -- The image pullPolicy. Recommend not changing this
@@ -49,6 +49,18 @@ affinity: {}
 podAnnotations: {}
 # podLabels -- Labels to apply to the pod
 podLabels: {}
+
+# podSecurityContext -- securityContext to apply to the whole pod
+podSecurityContext: {}
+# securityContext -- securityContext to apply to the rbac-manager container
+securityContext:
+  allowPrivilegeEscalation: false
+  privileged: false
+  readOnlyRootFilesystem: true
+  runAsNonRoot: true
+  capabilities:
+    drop:
+      - ALL
 
 # deploymentLabels -- Labels to apply to the Deployment resource
 deploymentLabels: {}

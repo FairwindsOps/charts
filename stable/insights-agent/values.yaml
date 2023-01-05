@@ -71,7 +71,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "7.1"
+    tag: "7.2"
   resources:
     requests:
       cpu: 100m
@@ -106,11 +106,14 @@ goldilocks:
   timeout: 300
   image:
     repository: quay.io/fairwinds/goldilocks
-    tag: "v2.2.0"
+    tag: "v4.5"
   controller:
     flags:
       on-by-default: true
       exclude-namespaces: "kube-system"
+    rbac:
+      extraClusterRoleBindings:
+        - view
     resources:
       requests:
         cpu: 25m
@@ -135,7 +138,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "2.1"
+    tag: "2.2"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -182,7 +185,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.3"
+    tag: "2.4"
   resources:
     requests:
       cpu: 100m
@@ -195,7 +198,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.4"
+    tag: "v3.5"
   resources:
     requests:
       cpu: 100m
@@ -254,9 +257,11 @@ trivy:
   maxScansPerRun: 20
   timeout: 2400
   insecureSSL: false
+  # trivy.env -- A map of environment variables that will be set for the trivy container.
+  env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.22"
+    tag: "0.24"
   serviceAccount:
     annotations:
   resources:
