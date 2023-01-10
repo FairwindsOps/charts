@@ -1,16 +1,20 @@
 {{- if not .Values.configUrl }}
-{{- with .Values.config }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "polaris.fullname" $ }}
-  {{- if $.Values.templateOnly }}
-  namespace: {{ $.Release.Namespace }}
+  name: {{ include "polaris.fullname" . }}
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
   {{- end }}
   labels:
-    {{- include "polaris.labels" $ | nindent 4 }}
+    {{- include "polaris.labels" . | nindent 4 }}
 data:
   config.yaml: |
-    {{- toYaml . | nindent 4 }}
-{{- end }}
+    {{- range $key, $value := .Values.config }}
+    {{ $key }}:
+    {{- toYaml $value | nindent 6 }}
+    {{- if and (eq $key "exemptions") ($.Values.additionalExemptions) }}
+    {{- toYaml $.Values.additionalExemptions | nindent 6 }}
+    {{- end }}
+    {{- end }}
 {{- end }}
