@@ -1,22 +1,23 @@
+<div align="center">
+<a href="https://github.com/FairwindsOps/goldilocks"><img src="logo.svg" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
+<br>
+</div>
+
 # timescaledb-single
 
-![Version: 0.13.3](https://img.shields.io/badge/Version-0.13.3-informational?style=flat-square) ![AppVersion: 0.13.1](https://img.shields.io/badge/AppVersion-0.13.1-informational?style=flat-square)
+![Version: 0.21.0](https://img.shields.io/badge/Version-0.21.0-informational?style=flat-square) ![AppVersion: 0.21.0](https://img.shields.io/badge/AppVersion-0.21.0-informational?style=flat-square)
 
 TimescaleDB HA Deployment.
 
-**Homepage:** <https://github.com/timescale/timescaledb-kubernetes>
-
-## Maintainers
-
-| Name | Email | Url |
-| ---- | ------ | --- |
-| TimescaleDB | support@timescale.com |  |
+**Homepage:** <https://github.com/timescale/helm-charts>
 
 ## Source Code
 
-* <https://github.com/timescale/timescaledb-kubernetes>
+* <https://github.com/timescale/helm-charts>
 * <https://github.com/timescale/timescaledb-docker-ha>
 * <https://github.com/zalando/patroni>
+
+## Values
 
 ## Values
 
@@ -27,7 +28,7 @@ TimescaleDB HA Deployment.
 | clusterName | string | `nil` |  |
 | version | string | `nil` |  |
 | image.repository | string | `"timescale/timescaledb-ha"` |  |
-| image.tag | string | `"pg14.3-ts2.7.0-p0"` |  |
+| image.tag | string | `"pg14.5-ts2.8.1-p1"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | secrets.credentials.PATRONI_SUPERUSER_PASSWORD | string | `""` |  |
 | secrets.credentials.PATRONI_REPLICATION_PASSWORD | string | `""` |  |
@@ -62,6 +63,7 @@ TimescaleDB HA Deployment.
 | backup.jobs[1].schedule | string | `"12 02 * * 1-6"` |  |
 | backup.envFrom | string | `nil` |  |
 | backup.env | string | `nil` |  |
+| backup.resources | object | `{}` |  |
 | bootstrapFromBackup.enabled | bool | `false` |  |
 | bootstrapFromBackup.repo1-path | string | `nil` |  |
 | bootstrapFromBackup.secretName | string | `"pgbackrest-bootstrap"` |  |
@@ -154,14 +156,6 @@ TimescaleDB HA Deployment.
 | service.replica.labels | object | `{}` |  |
 | service.replica.annotations | object | `{}` |  |
 | service.replica.spec | object | `{}` |  |
-| loadBalancer.enabled | bool | `true` |  |
-| loadBalancer.port | int | `5432` |  |
-| loadBalancer.annotations."service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout" | string | `"4000"` |  |
-| loadBalancer.spec | string | `nil` |  |
-| replicaLoadBalancer.enabled | bool | `false` |  |
-| replicaLoadBalancer.port | int | `5432` |  |
-| replicaLoadBalancer.annotations."service.beta.kubernetes.io/aws-load-balancer-connection-idle-timeout" | string | `"4000"` |  |
-| replicaLoadBalancer.spec | string | `nil` |  |
 | readinessProbe.enabled | bool | `true` |  |
 | readinessProbe.initialDelaySeconds | int | `5` |  |
 | readinessProbe.periodSeconds | int | `30` |  |
@@ -210,25 +204,24 @@ TimescaleDB HA Deployment.
 | networkPolicy.ingress | string | `nil` |  |
 | nodeSelector | object | `{}` |  |
 | prometheus.enabled | bool | `false` |  |
-| prometheus.image.repository | string | `"wrouesnel/postgres_exporter"` |  |
-| prometheus.image.tag | string | `"v0.7.0"` |  |
+| prometheus.image.repository | string | `"quay.io/prometheuscommunity/postgres-exporter"` |  |
+| prometheus.image.tag | string | `"v0.11.1"` |  |
 | prometheus.image.pullPolicy | string | `"Always"` |  |
 | prometheus.env | string | `nil` |  |
 | prometheus.volumes | string | `nil` |  |
 | prometheus.volumeMounts | string | `nil` |  |
-| serviceMonitor.enabled | bool | `false` |  |
-| serviceMonitor.portName | string | `"metrics"` |  |
-| serviceMonitor.path | string | `"/metrics"` |  |
-| serviceMonitor.interval | string | `"10s"` |  |
+| podMonitor.enabled | bool | `false` |  |
+| podMonitor.path | string | `"/metrics"` |  |
+| podMonitor.interval | string | `"10s"` |  |
 | podManagementPolicy | string | `"OrderedReady"` |  |
 | podAnnotations | object | `{}` |  |
+| podLabels | object | `{}` |  |
 | tolerations | list | `[]` |  |
 | affinityTemplate | string | `"podAntiAffinity:\n  preferredDuringSchedulingIgnoredDuringExecution:\n  - weight: 100\n    podAffinityTerm:\n      topologyKey: \"kubernetes.io/hostname\"\n      labelSelector:\n        matchLabels:\n          app: {{ template \"timescaledb.fullname\" . }}\n          release: {{ .Release.Name | quote }}\n          cluster-name: {{ template \"clusterName\" . }}\n  - weight: 50\n    podAffinityTerm:\n      topologyKey: failure-domain.beta.kubernetes.io/zone\n      labelSelector:\n        matchLabels:\n          app: {{ template \"timescaledb.fullname\" . }}\n          release: {{ .Release.Name | quote }}\n          cluster-name: {{ template \"clusterName\" . }}\n"` |  |
 | affinity | object | `{}` |  |
 | rbac.create | bool | `true` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `nil` |  |
+| serviceAccount.annotations | object | `{}` |  |
 | debug.execStartPre | string | `nil` |  |
-
-----------------------------------------------
-Autogenerated from chart metadata using [helm-docs v1.5.0](https://github.com/norwoodj/helm-docs/releases/v1.5.0)
+| serviceMonitor.enabled | bool | `false` |  |

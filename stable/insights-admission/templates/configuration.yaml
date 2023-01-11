@@ -39,3 +39,48 @@ webhooks:
   {{- concat .Values.webhookConfig.rules .Values.webhookConfig.defaultRules | toYaml | nindent 2 }}
   sideEffects: None
   timeoutSeconds: {{ .Values.webhookConfig.timeoutSeconds }}
+
+{{- if .Values.webhookConfig.mutating.enable }}
+---
+{{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
+apiVersion: admissionregistration.k8s.io/v1
+{{- else }}
+apiVersion: admissionregistration.k8s.io/v1beta1
+{{- end }}
+kind: MutatingWebhookConfiguration
+metadata:
+  name: {{ include "insights-admission.fullname" . }}
+  annotations:
+    {{- if not .Values.secretName }}
+    cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "insights-admission.fullname" . }}-cert
+    {{- end }}
+    {{- with .Values.webhookConfig.annotations }}
+      {{- toYaml . | nindent 4 }}
+    {{- end }}
+webhooks:
+- admissionReviewVersions:
+{{- if .Capabilities.APIVersions.Has "admissionregistration.k8s.io/v1" }}
+  - v1
+{{- end }}
+  - v1beta1
+  clientConfig:
+    {{- if .Values.caBundle }}
+    caBundle: {{ .Values.caBundle | quote }}
+    {{- end }}
+    service:
+      name: {{ include "insights-admission.fullname" . }}
+      namespace: {{ .Release.Namespace }}
+      path: /mutate
+      port: 443
+  failurePolicy: {{ .Values.webhookConfig.failurePolicy }}
+  matchPolicy: {{ .Values.webhookConfig.matchPolicy }}
+  name: insights.fairwinds.com
+  namespaceSelector:
+    {{ .Values.webhookConfig.namespaceSelector | toYaml | nindent 4 }}
+  objectSelector:
+    {{ .Values.webhookConfig.objectSelector | toYaml | nindent 4 }}
+  rules:
+  {{- concat .Values.webhookConfig.rules .Values.webhookConfig.defaultRules | toYaml | nindent 2 }}
+  sideEffects: None
+  timeoutSeconds: {{ .Values.webhookConfig.timeoutSeconds }}
+{{- end }}

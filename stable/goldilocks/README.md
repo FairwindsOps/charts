@@ -61,7 +61,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
 | metrics-server.apiService.create | bool | `true` |  |
 | image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v4.5.0"` | The goldilocks image tag to use |
+| image.tag | string | `"v4.5.1"` | The goldilocks image tag to use |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | imagePullSecrets | list | `[]` | A list of image pull secret names to use |
 | nameOverride | string | `""` |  |
@@ -70,6 +70,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
 | controller.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
 | controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
+| controller.rbac.extraClusterRoleBindings | list | `[]` | A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled |
 | controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
 | controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
 | controller.flags | object | `{}` | A map of additional flags to pass to the controller |

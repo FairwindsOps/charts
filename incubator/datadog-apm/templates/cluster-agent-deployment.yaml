@@ -218,18 +218,19 @@ spec:
       tolerations:
 {{ toYaml .Values.clusterAgent.tolerations | indent 8 }}
       {{- end }}
-      affinity:
-        podAntiAffinity:
-            preferredDuringSchedulingIgnoredDuringExecution:
-              - weight: 100
-                podAffinityTerm:
-                  labelSelector:
-                    matchExpressions:
-                      - key: app
-                        operator: In
-                        values:
-                          - {{ template "datadog-apm.fullname" . }}-cluster-agent
-                  topologyKey: "kubernetes.io/zone"
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: "topology.kubernetes.io/zone"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: {{ template "datadog-apm.fullname" . }}-cluster-agent
+        - maxSkew: 1
+          topologyKey: "kubernetes.io/hostname"
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: {{ template "datadog-apm.fullname" . }}-cluster-agent
       nodeSelector:
         {{ template "label.os" . }}: {{ .Values.targetSystem }}
       {{- if .Values.clusterAgent.nodeSelector }}
