@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.6.11"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.9.4"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -35,8 +35,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.migrateHealthScore | bool | `false` | Run the job to migrate health scores to a new format |
 | options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
 | options.overprovisioning.enabled | bool | `false` |  |
-| options.overprovisioning.memory | string | `"1Gi"` |  |
 | options.overprovisioning.cpu | string | `"1000m"` |  |
+| options.overprovisioning.memory | string | `"1Gi"` |  |
 | hubspotCronjob.resources.limits.cpu | string | `"500m"` |  |
 | hubspotCronjob.resources.limits.memory | string | `"1024Mi"` |  |
 | hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |
@@ -96,14 +96,14 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | aggregateCronjob.schedules | list | `[{"cron":"5 0/2 * * *","interval":"120m","name":"bi-hourly"}]` | CRON schedules for the Workload Metrics aggregation job. |
 | aggregateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the Workload Metrics aggregation job under. |
 | emailCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Action Items email job. |
-| emailCronjob.schedules | list | `[{"cron":"0 16 * * 1","interval":"168h","name":"weekly-email"}]` | CRON schedules for the Action Items email job. |
+| emailCronjob.schedules | list | `[]` | CRON schedules for the Action Items email job. |
 | emailCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the email job under. |
 | databaseCleanupCronjob.enabled | bool | `true` | Enable database cleanup true by default |
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
 | resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
-| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1.5Gi"}}` | Resources for the resources recommendations job. |
+| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
 | resourcesRecommendationsCronjob.schedules | list | `[{"cron":"0 2 * * *","interval":"24h","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
 | resourcesRecommendationsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the resources recommendations job under. |
 | closeTicketsCronjob.enabled | bool | `true` | Close tickets enabled by default |
@@ -125,19 +125,23 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
+| postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
-| postgresql.existingSecret | string | `"fwinsights-postgresql"` | Secret name to use for Postgres Password |
-| postgresql.postgresqlUsername | string | `"postgres"` | Username to connect to Postgres with |
-| postgresql.postgresqlDatabase | string | `"fairwinds_insights"` | Name of the Postgres Database |
-| postgresql.service.port | int | `5432` | Port of the Postgres Database |
-| postgresql.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
-| postgresql.replication.enabled | bool | `false` | Replicate Postgres data |
-| postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
+| postgresql.auth.username | string | `"postgres"` |  |
+| postgresql.auth.database | string | `"fairwinds_insights"` |  |
+| postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
+| postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
+| postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
+| postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
+| postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | encryption.aes.cypherKey | string | `nil` |  |
-| timescale.replicaCount | int | `1` |  |
+| timescale.replicaCount | int | `2` |  |
 | timescale.clusterName | string | `"timescale"` |  |
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
+| timescale.pdb.enabled | bool | `true` | Use pdb enabled by default |
+| timescale.pdb.minReplicas | int | `1` | Min timescale pdb replicas |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlHost | string | `"timescale"` | Host for timescale |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
@@ -165,6 +169,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
 | minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
+| minio.replicas | int | `1` |  |
+| minio.mode | string | `"standalone"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
