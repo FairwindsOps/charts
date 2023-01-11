@@ -129,6 +129,10 @@ spec:
           {{- end }}
         resources:
             {{- toYaml .Values.admissionController.certGen.resources | nindent 10 }}
+      {{- with .Values.admissionController.certGen.securityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.admissionController.certGen.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
