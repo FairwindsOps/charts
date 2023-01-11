@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.9.2
+* Update application version to 11.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.9.1
+* Update application version to 10.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.9.0
+* BREAKING: Upgrading minio to new charts
+
+## 0.8.1
+* Bug fix for timescale secret
+## 0.8.0
+* BREAKING: Bumping postgres to bitnami chart 12.1.6, and postgres version 14. See README for changes to `postgresql` Helm values, or view the [full options](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) in the downstream chart.
+
+## 0.7.11
+* Update application version to 10.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.7.10
+* Update default version of Insights Agent to 2.9.4
+
 ## 0.7.9
 * Update application version to 10.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
