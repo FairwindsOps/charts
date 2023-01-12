@@ -99,9 +99,13 @@ spec:
       priorityClassName: {{ .Values.webhook.priorityClassName | quote }}
       {{- end }}
       nodeSelector:
-      {{- with .Values.webhook.nodeSelector }}
+      {{- if .Values.dashboard.nodeSelector }}
+      {{- with .Values.dashboard.nodeSelector }}
 {{ toYaml . | indent 8 }}
-        {{- end }}
+      {{- end }}
+      {{- else }}
+        kubernetes.io/os: linux
+      {{- end }}
       tolerations:
       {{- with .Values.webhook.tolerations }}
 {{ toYaml . | indent 6 }}
