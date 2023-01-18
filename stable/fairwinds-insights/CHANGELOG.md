@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.5
+* Fixed Timescale pod and service name
+
 ## 0.9.4
 * Bumped Timescale charts to 0.30.0
 
