@@ -4,13 +4,13 @@
 replicaCount: 3
 
 # To prevent very long names, we override the name, otherwise it would default to
-# timescaledb-single (the name of the chart)
-nameOverride: timescaledb
+# timescaledb-single (the name of the chart). This field is always truncated to 63 characters.
+fullnameOverride: "{{ .Release.Name }}"
 
 # The default Patroni name of the cluster ("scope") is derived from the name of the release,
 # but you can override this behaviour here
 # https://patroni.readthedocs.io/en/latest/SETTINGS.html#global-universal
-clusterName:
+clusterName: ""
 
 # The major PostgreSQL version to use, defaults to the default version of the Docker image
 # However, in pg_upgrade scenarios, you may need to specify an explicit version
@@ -378,20 +378,6 @@ persistentVolumes:
     #   size: 5Gi
     #   storageClass: gp2
 
-# EXPERIMENTAL, please do *not* enable on production environments
-# if enabled, fullWalPrevention will switch the default transaction mode from read write
-# to read only if thresholds are breached.
-fullWalPrevention:
-  enabled: false
-  checkFrequency: 30
-  # To prevent the default transaction mode from switching constantly, we have separate
-  # thresholds for switching to read-only and read-write
-  thresholds:
-    readOnlyFreePercent: 5
-    readOnlyFreeMB: 64
-    readWriteFreePercent: 8
-    readWriteFreeMB: 128
-
 resources: {}
   # If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
@@ -508,6 +494,10 @@ prometheus:
   # Additional volumes for prometheus, e.g., to support additional queries.
   # These should be a Volume, as this allows you to inject any kind of Volume
   # https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.16/#volume-v1-core
+
+  # Extra custom CLI arguments for postgres_exporter.
+  args: []
+  # - --collector.database=disabled
   volumes:
   # - name: exporter-config
   #   configMap:
@@ -533,7 +523,7 @@ podMonitor:
   #   release: prometheus
   # honorLabels: true
   # metricRelabelings: []
-  # targetLabels:
+  # podTargetLabels:
   #   - foo
 
 # For new deployments, we would advise Parallel here, however as that change breaks previous
@@ -552,26 +542,10 @@ podLabels: {}
 tolerations: []
 
 # https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
-affinityTemplate: |
-  podAntiAffinity:
-    preferredDuringSchedulingIgnoredDuringExecution:
-    - weight: 100
-      podAffinityTerm:
-        topologyKey: "kubernetes.io/hostname"
-        labelSelector:
-          matchLabels:
-            app: {{ template "timescaledb.fullname" . }}
-            release: {{ .Release.Name | quote }}
-            cluster-name: {{ template "clusterName" . }}
-    - weight: 50
-      podAffinityTerm:
-        topologyKey: failure-domain.beta.kubernetes.io/zone
-        labelSelector:
-          matchLabels:
-            app: {{ template "timescaledb.fullname" . }}
-            release: {{ .Release.Name | quote }}
-            cluster-name: {{ template "clusterName" . }}
 affinity: {}
+
+# https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#topologyspreadconstraints
+topologySpreadConstraints: []
 
 ## Use an alternate scheduler, e.g. "stork".
 ## ref: https://kubernetes.io/docs/tasks/administer-cluster/configure-multiple-schedulers/
@@ -596,6 +570,3 @@ debug:
   # This command will be executed *before* the main container starts. In the
   # example below, we can mimick a slow restore by sleeping for 5 minutes before starting
   execStartPre:  # sleep 300
-
-serviceMonitor:
-  enabled: false
