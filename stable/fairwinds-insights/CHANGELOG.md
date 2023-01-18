@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.4
+* Bumped Timescale charts to 0.30.0
+
 ## 0.9.3
 * Update application version to 11.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
