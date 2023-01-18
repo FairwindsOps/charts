@@ -570,7 +570,3 @@ debug:
   # This command will be executed *before* the main container starts. In the
   # example below, we can mimick a slow restore by sleeping for 5 minutes before starting
   execStartPre:  # sleep 300
-
-serviceMonitor:
-  # serviceMonitor.enabled
-  enabled: false
