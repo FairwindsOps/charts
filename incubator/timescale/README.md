@@ -24,11 +24,11 @@ TimescaleDB HA Deployment.
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | replicaCount | int | `3` |  |
-| nameOverride | string | `"timescaledb"` |  |
-| clusterName | string | `nil` |  |
+| fullnameOverride | string | `"{{ .Release.Name }}"` |  |
+| clusterName | string | `""` |  |
 | version | string | `nil` |  |
 | image.repository | string | `"timescale/timescaledb-ha"` |  |
-| image.tag | string | `"pg14.5-ts2.8.1-p1"` |  |
+| image.tag | string | `"pg14.6-ts2.9.1-p1"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | secrets.credentials.PATRONI_SUPERUSER_PASSWORD | string | `""` |  |
 | secrets.credentials.PATRONI_REPLICATION_PASSWORD | string | `""` |  |
@@ -175,12 +175,6 @@ TimescaleDB HA Deployment.
 | persistentVolumes.wal.mountPath | string | `"/var/lib/postgresql/wal"` |  |
 | persistentVolumes.wal.annotations | object | `{}` |  |
 | persistentVolumes.wal.accessModes[0] | string | `"ReadWriteOnce"` |  |
-| fullWalPrevention.enabled | bool | `false` |  |
-| fullWalPrevention.checkFrequency | int | `30` |  |
-| fullWalPrevention.thresholds.readOnlyFreePercent | int | `5` |  |
-| fullWalPrevention.thresholds.readOnlyFreeMB | int | `64` |  |
-| fullWalPrevention.thresholds.readWriteFreePercent | int | `8` |  |
-| fullWalPrevention.thresholds.readWriteFreeMB | int | `128` |  |
 | resources | object | `{}` |  |
 | sharedMemory.useMount | bool | `false` |  |
 | timescaledbTune.enabled | bool | `true` |  |
@@ -208,6 +202,7 @@ TimescaleDB HA Deployment.
 | prometheus.image.tag | string | `"v0.11.1"` |  |
 | prometheus.image.pullPolicy | string | `"Always"` |  |
 | prometheus.env | string | `nil` |  |
+| prometheus.args | list | `[]` |  |
 | prometheus.volumes | string | `nil` |  |
 | prometheus.volumeMounts | string | `nil` |  |
 | podMonitor.enabled | bool | `false` |  |
@@ -217,11 +212,10 @@ TimescaleDB HA Deployment.
 | podAnnotations | object | `{}` |  |
 | podLabels | object | `{}` |  |
 | tolerations | list | `[]` |  |
-| affinityTemplate | string | `"podAntiAffinity:\n  preferredDuringSchedulingIgnoredDuringExecution:\n  - weight: 100\n    podAffinityTerm:\n      topologyKey: \"kubernetes.io/hostname\"\n      labelSelector:\n        matchLabels:\n          app: {{ template \"timescaledb.fullname\" . }}\n          release: {{ .Release.Name | quote }}\n          cluster-name: {{ template \"clusterName\" . }}\n  - weight: 50\n    podAffinityTerm:\n      topologyKey: failure-domain.beta.kubernetes.io/zone\n      labelSelector:\n        matchLabels:\n          app: {{ template \"timescaledb.fullname\" . }}\n          release: {{ .Release.Name | quote }}\n          cluster-name: {{ template \"clusterName\" . }}\n"` |  |
 | affinity | object | `{}` |  |
+| topologySpreadConstraints | list | `[]` |  |
 | rbac.create | bool | `true` |  |
 | serviceAccount.create | bool | `true` |  |
 | serviceAccount.name | string | `nil` |  |
 | serviceAccount.annotations | object | `{}` |  |
 | debug.execStartPre | string | `nil` |  |
-| serviceMonitor.enabled | bool | `false` |  |
