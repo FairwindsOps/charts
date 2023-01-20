@@ -1,7 +1,10 @@
 # Changelog
 
+## 2.10.1
+* Add `jq` to download-kubectl.sh
+
 ## 2.10.0
-* BUmp insights-admission to chart 1.5.* (to use app 1.9)
+* Bump insights-admission to chart 1.5.* (to use app 1.9)
 * Bump nova to 3.5
 
 ## 2.9.4
