@@ -5,7 +5,7 @@ set -eo pipefail
 kubectl_os=$(uname -s | awk '{print tolower($0)}' || echo linux)
 kubectl_arch=$(uname -m | awk '{print tolower($0)}' |sed -e 's/aarch/arm/' -e 's/x86_/amd/' || echo amd64)
 
-sudo apt-get install -y jq
+apt-get install -y jq
 
 mkdir /tmp/bin
 export PATH=$PATH:/tmp/bin
