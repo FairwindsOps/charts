@@ -1,7 +1,11 @@
 # Changelog
 
+## 2.10.2
+* Revert v2.10.1
+
 ## 2.10.1
 * Update Goldilocks, Nova, Pluto, and Polaris
+
 
 ## 2.10.0
 * BUmp insights-admission to chart 1.5.* (to use app 1.9)
