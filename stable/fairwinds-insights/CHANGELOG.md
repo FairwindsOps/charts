@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.6
+* Update application version to 11.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.9.5
 * Fixed Timescale pod and service name
 
