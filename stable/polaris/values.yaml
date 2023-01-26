@@ -135,7 +135,7 @@ webhook:
   tolerations: []
   # webhook.affinity -- Webhook pods affinity
   affinity: {}
-  # dashboard.topologySpreadConstraints -- Dashboard pods topologySpreadConstraints
+  # webhook.topologySpreadConstraints -- Webhook pods topologySpreadConstraints
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: topology.kubernetes.io/zone
