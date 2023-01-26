@@ -112,7 +112,7 @@ spec:
 {{- end }}
 {{- if .Values.webhook.topologySpreadConstraints }}
       topologySpreadConstraints:
-{{ toYaml .Values.webhook.topologySpreadConstraints | indent 8 }}
+{{ toYaml .Values.webhook.topologySpreadConstraints | indent 6 }}
       {{- end }}
       volumes:
         {{- with .Values.config }}

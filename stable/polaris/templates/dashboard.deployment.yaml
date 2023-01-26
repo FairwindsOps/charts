@@ -121,7 +121,7 @@ spec:
       {{- end }}
 {{- if .Values.dashboard.topologySpreadConstraints }}
       topologySpreadConstraints:
-{{ toYaml .Values.dashboard.topologySpreadConstraints | indent 8 }}
+{{ toYaml .Values.dashboard.topologySpreadConstraints | indent 6 }}
       {{- end }}
 {{- if .Values.dashboard.affinity }}
       affinity:
