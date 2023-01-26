@@ -77,6 +77,20 @@ dashboard:
   tolerations: []
   # dashboard.affinity -- Dashboard pods affinity
   affinity: {}
+  # dashboard.topologySpreadConstraints -- Dashboard pods topologySpreadConstraints
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          component: dashboard
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          component: dashboard
   ingress:
     # dashboard.ingress.enabled -- Whether to enable ingress to the dashboard
     enabled: false
@@ -121,6 +135,20 @@ webhook:
   tolerations: []
   # webhook.affinity -- Webhook pods affinity
   affinity: {}
+  # dashboard.topologySpreadConstraints -- Dashboard pods topologySpreadConstraints
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          component: webhook
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          component: webhook
   # webhook.caBundle -- CA Bundle to use for Validating Webhook instead of cert-manager
   caBundle: null
   # webhook.secretName -- Name of the secret containing a TLS certificate to use if cert-manager is not used.
