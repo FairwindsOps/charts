@@ -471,6 +471,7 @@ encryption:
     cypherKey:
 
 timescale:
+  fullnameOverride: timescale
   replicaCount: 2
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
