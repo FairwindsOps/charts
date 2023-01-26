@@ -22,4 +22,8 @@ spec:
     {{- include "polaris.selectors" . | nindent 4 }}
     component: dashboard
   type: {{ .Values.dashboard.service.type }}
+{{- if .Values.dashboard.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges:
+{{ toYaml .Values.dashboard.service.loadBalancerSourceRanges | nindent 4 }}
+{{- end }}
 {{- end -}}
