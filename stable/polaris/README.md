@@ -58,6 +58,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
 | dashboard.service.annotations | object | `{}` | Service annotations |
 | dashboard.service.targetPort | string | `nil` | Service targetport, defaults to dashboard.port |
+| dashboard.service.loadBalancerSourceRanges | list | `[]` | List of allowed CIDR values |
 | dashboard.nodeSelector | object | `{}` | Dashboard pod nodeSelector |
 | dashboard.tolerations | list | `[]` | Dashboard pod tolerations |
 | dashboard.affinity | object | `{}` | Dashboard pods affinity |
