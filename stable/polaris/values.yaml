@@ -71,6 +71,8 @@ dashboard:
     annotations: {}
     # dashboard.service.targetPort -- Service targetport, defaults to dashboard.port
     targetPort:
+    # dashboard.service.loadBalancerSourceRanges -- List of allowed CIDR values
+    loadBalancerSourceRanges: []
   # dashboard.nodeSelector -- Dashboard pod nodeSelector
   nodeSelector: {}
   # dashboard.tolerations -- Dashboard pod tolerations
