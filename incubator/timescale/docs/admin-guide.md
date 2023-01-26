@@ -22,7 +22,6 @@ The following table lists the configurable parameters of the TimescaleDB Helm ch
 |       Parameter                   |           Description                       |                         Default                     |
 |-----------------------------------|---------------------------------------------|-----------------------------------------------------|
 | `affinity`                        | Affinity settings. Overrides `affinityTemplate` if set. | `{}`                                    |
-| `affinityTemplate`                | A template string to use to generate the affinity settings | Anti-affinity preferred on hostname and (availability) zone |
 | `backup.enabled`                  | Schedule backups to occur                   | `false`                                             |
 | `backup.jobs`                     | A list of backup schedules and types        | 1 full weekly backup, 1 incremental daily backup    |
 | `backup.pgBackRest:archive-get`   | [pgBackRest global:archive-get configuration](https://pgbackrest.org/user-guide.html#quickstart/configure-stanza)  | empty |
@@ -49,7 +48,6 @@ The following table lists the configurable parameters of the TimescaleDB Helm ch
 | `service.replica.labels`      | Labels to add to the replica service            | `{}`                                 |
 | `service.replica.annotations` | Annotations to add to the replica service       | `{}`                                 |
 | `service.replica.spec`        | The service type to use for the replica service | `{}`                                 |
-| `nameOverride`                    | Override the name of the chart              | `timescaledb`                                       |
 | `networkPolicy.enabled`           | If enabled, creates a NetworkPolicy for controlling network access | `false`                      |
 | `networkPolicy.ingress`           | A list of Ingress rules to extend the base NetworkPolicy | `nil`                                  |
 | `networkPolicy.prometheusApp`     | Name of Prometheus app to allow it to scrape exporters | `prometheus`
@@ -78,7 +76,7 @@ The following table lists the configurable parameters of the TimescaleDB Helm ch
 | `podMonitor.namespace`        | Setting this will cause deploying podMonitor in a different namespace than TimescaleDB. | `nil` |
 | `podMonitor.labels`           | Additional labels that can be set on podMonitor object. | `nil` |
 | `podMonitor.metricRelabelings` | Additional prometheus metric relabelings. | `nil` |
-| `podMonitor.targetLabels`     | List of additional kubernetes labels that need to be transferred from Service object into metrics. | `nil` |
+| `podMonitor.podTargetLabels`  | List of additional kubernetes labels that need to be transferred from Pod object into metrics. | `nil` |
 | `prometheus.enabled`              | If enabled, run a [postgres\_exporter](https://github.com/prometheus-community/postgres_exporter) sidecar | `false` |
 | `prometheus.image.pullPolicy`     | The pull policy for the postgres\_exporter  | `IfNotPresent`                                      |
 | `prometheus.image.repository`     | The postgres\_exporter docker repo          | `quay.io/prometheuscommunity/postgres_exporter`     |
@@ -304,10 +302,12 @@ bootstrapFromBackup:
   secretName: pgbackrest-bootstrap # optional
 ```
 
+**Note**: Once the data has been restored from backup, you may mark `bootstrapFromBackup` as disabled and enable `backup` in helm value file and update the release inorder to setup the backup for restored release.
+
 Restoring a different deployment using an existing deployment is possible, but can be dangerous,
 as at this point you may be having 2 deployments pointing to the same S3 bucket/path.
 Therefore, `bootstrapFromBackup.repo1-path` is required to be set.
-
+ 
 If there are any other changes to be made, for example the bucket itself, you can create a secret containing that
 information, for example:
 
