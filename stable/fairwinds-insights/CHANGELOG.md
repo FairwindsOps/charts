@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.9.8
+* Update application version to 11.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.9.7
 * Bump CI to 4.2, for auto-scan.
 
