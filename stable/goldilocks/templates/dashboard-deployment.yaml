@@ -41,11 +41,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.dashboard.serviceAccount.create }}
-      serviceAccountName: {{ include "goldilocks.fullname" . }}-dashboard
-      {{- else }}
-      serviceAccountName: {{ .Values.dashboard.serviceAccount.name }}
-      {{- end }}
+      serviceAccountName: {{ template "dashboard.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.dashboard.podSecurityContext | nindent 8 }}
       containers:
