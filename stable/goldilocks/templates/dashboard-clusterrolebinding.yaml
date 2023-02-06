@@ -15,6 +15,6 @@ roleRef:
   name: {{ include "goldilocks.fullname" . }}-dashboard
 subjects:
   - kind: ServiceAccount
-    name: {{ include "goldilocks.fullname" . }}-dashboard
+    name: {{ template "dashboard.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 {{- end }}
