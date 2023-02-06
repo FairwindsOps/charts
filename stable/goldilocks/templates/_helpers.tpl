@@ -30,3 +30,25 @@ Create chart name and version as used by the chart label.
 {{- define "goldilocks.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+Create the name of the service account for controller to use
+*/}}
+{{- define "controller.serviceAccountName" -}}
+{{- if .Values.controller.serviceAccount.create -}}
+    {{ default (printf "%s-controller" (include "goldilocks.fullname" .)) .Values.controller.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.controller.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Create the name of the service account for dashboard to use
+*/}}
+{{- define "dashboard.serviceAccountName" -}}
+{{- if .Values.dashboard.serviceAccount.create -}}
+    {{ default (printf "%s-dashboard" (include "goldilocks.fullname" .)) .Values.dashboard.serviceAccount.name }}
+{{- else -}}
+    {{ default "default" .Values.dashboard.serviceAccount.name }}
+{{- end -}}
+{{- end -}}
