@@ -2,6 +2,6 @@ apiVersion: v1
 appVersion: "1.0"
 description: A Helm chart to install custom iptables rules based on https://github.com/bowei/k8s-custom-iptables/blob/master/run.sh
 name: custom-iptables
-version: 0.2.1
+version: 0.2.2
 maintainers:
   - name: sudermanjr

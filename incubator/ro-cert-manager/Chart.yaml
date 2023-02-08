@@ -1,6 +1,6 @@
 name: ro-cert-manager
 apiVersion: v1
-version: v3.0.1
+version: v3.0.2
 appVersion: v0.8.1
 description: Install cert-manager and setup CA cluster-issuers
 maintainers:

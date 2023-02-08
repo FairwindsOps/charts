@@ -1,6 +1,6 @@
 name: letsencrypt-setup
 apiVersion: v1
-version: v2.2.2
+version: v2.2.3
 appVersion: v0.11.1
 description: Setup clusterIssuers for cert-manager
 maintainers:
