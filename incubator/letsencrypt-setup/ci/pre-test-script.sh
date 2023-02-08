@@ -16,6 +16,5 @@
 
 SCRIPT_PATH="$(cd "$(dirname "$0")" || return ; pwd -P)"
 APP_VERSION=$(grep -E "^appVersion:" "$SCRIPT_PATH"/../Chart.yaml | awk '{print $2}')
-APP_VERSION_MINI=$(echo "$APP_VERSION" | awk -F"." '{print $1"."$2}'|sed 's/^v//g')
 
-kubectl --validate=false apply -f https://github.com/cert-manager/cert-manager/releases/download/"${APP_VERSION_MINI}"/cert-manager.yaml
+kubectl --validate=false apply -f https://github.com/cert-manager/cert-manager/releases/download/"${APP_VERSION}"/cert-manager.yaml
