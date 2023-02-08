@@ -145,11 +145,17 @@ workflows:
               apiServer:
                 certSANs:
                 - e2e-control-plane
+                - 127.0.0.1
+                - localhost
               etcd:
                 serverCertSANs:
                 - e2e-control-plane
+                - 127.0.0.1
+                - localhost
                 peerCertSANs:
                 - e2e-control-plane
+                - 127.0.0.1
+                - localhost
             nodes:
             - role: control-plane
             - role: worker
