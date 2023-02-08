@@ -133,6 +133,26 @@ workflows:
       - rok8s11/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.23"
           kind_version: 0.17.0
+          kind_config: |
+            kind: Cluster
+            apiVersion: kind.x-k8s.io/v1alpha4
+            kubeadmConfigPatches:
+            - |
+              apiVersion: kubeadm.k8s.io/v1beta3
+              kind: ClusterConfiguration
+              metadata:
+                name: config
+              apiServer:
+                certSANs:
+                - e2e-control-plane
+              etcd:
+                serverCertSANs:
+                - e2e-control-plane
+                peerCertSANs:
+                - e2e-control-plane
+            nodes:
+            - role: control-plane
+            - role: worker
           kind_node_image: "kindest/node:v1.23.13@sha256:ef453bb7c79f0e3caba88d2067d4196f427794086a7d0df8df4f019d5e336b61"
           executor:
             name: ci-images-large
