@@ -3,7 +3,7 @@ set -eo pipefail
 
 folders=( ./stable ./incubator )
 for d in "${folders[@]}"; do
-  for chart in "${d}/*" ; do
+  for chart in ${d}/* ; do
       if [ ! -d "${chart}" ]; then
         continue
       fi
