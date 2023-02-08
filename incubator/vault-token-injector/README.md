@@ -1,4 +1,4 @@
-![Version: 2.1.2](https://img.shields.io/badge/Version-2.1.2-informational?style=flat-square)
+![Version: 2.1.1](https://img.shields.io/badge/Version-2.1.1-informational?style=flat-square)
 
 # Vault Token Injector Chart
 

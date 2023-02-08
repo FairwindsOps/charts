@@ -1,11 +1,11 @@
 apiVersion: v2
 name: clamav
 description: |
-  A Helm chart to install ClamAV on a cluster. This chart will run a single deployment
-  as the clamd server with a configurable number of replicas. Then, a daemonset that
-  mounts the host file system scans using clamdscan and the remote server.
+    A Helm chart to install ClamAV on a cluster. This chart will run a single deployment
+    as the clamd server with a configurable number of replicas. Then, a daemonset that
+    mounts the host file system scans using clamdscan and the remote server.
 type: application
-version: 0.0.4
+version: 0.0.3
 appVersion: v0.0.3
 maintainers:
   - name: sudermanjr
