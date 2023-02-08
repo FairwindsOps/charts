@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rok8s11: fairwinds/rok8s-scripts@11
+  rok8s11: fairwinds/rok8s-scripts@dev:rb/kind-config-option
 
 references:
   setup_environment: &setup_environment
