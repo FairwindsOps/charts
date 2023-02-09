@@ -1,4 +1,8 @@
 # Changelog
+
+## 2.10.4
+* Update polaris, pluto, nova, goldilocks
+
 ## 2.10.3
 * Update testing versions
 
