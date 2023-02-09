@@ -105,7 +105,7 @@ goldilocks:
   schedule: "rand * * * *"
   timeout: 300
   image:
-    repository: quay.io/fairwinds/goldilocks
+    repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
     tag: "v4.6"
   controller:
     flags:
