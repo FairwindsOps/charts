@@ -1,6 +1,6 @@
 ---
 {{- if and .Values.admissionController.podDisruptionBudget (gt (int .Values.admissionController.replicaCount) 1) }}
-apiVersion: policy/v1beta1
+apiVersion: {{ ternary "policy/v1" "policy/v1beta1" (semverCompare ">=1.21.0-0" .Capabilities.KubeVersion.Version) }}
 kind: PodDisruptionBudget
 metadata:
   name: "{{ template "vpa.fullname" . }}-admission-controller-pdb"

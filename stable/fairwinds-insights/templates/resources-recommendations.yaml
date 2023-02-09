@@ -1,7 +1,7 @@
 {{- if .Values.resourcesRecommendationsCronjob.enabled }}
 {{ range .Values.resourcesRecommendationsCronjob.schedules }}
 ---
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}

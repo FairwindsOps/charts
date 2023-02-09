@@ -1,4 +1,6 @@
 # Changelog
+## 2.10.3
+* Update testing versions
 
 ## 2.10.2
 * Revert v2.10.1
