@@ -35,6 +35,8 @@ uploader:
   env:
 
 cronjobs:
+  # -- If set, will override the cronjob apiVersion for all cronjobs
+  apiVersion: ""
   disableServiceMesh: true
   backoffLimit: 1
   failedJobsHistoryLimit: 2

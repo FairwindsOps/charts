@@ -12,10 +12,14 @@
 {{- end }}
 
 {{ define "cronjob" }}
+{{- if .Values.cronjobs.apiVersion }}
+apiVersion: {{ .Values.cronjobs.apiVersion }}
+{{- else }}
 {{- if not (.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
 apiVersion: batch/v1beta1
 {{- else }}
 apiVersion: batch/v1
+{{- end }}
 {{- end }}
 kind: CronJob
 metadata:
