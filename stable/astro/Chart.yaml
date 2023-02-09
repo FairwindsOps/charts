@@ -1,5 +1,5 @@
 name: astro
-version: 1.0.9
+version: 1.0.10
 apiVersion: v1
 appVersion: "1.5.3"
 description: Emit datadog monitors based on kubernetes state.
