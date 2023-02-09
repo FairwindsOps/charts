@@ -1,4 +1,6 @@
 # Changelog
+## 2.10.5
+* Update goldilocks repo
 
 ## 2.10.4
 * Update polaris, pluto, nova, goldilocks
