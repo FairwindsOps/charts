@@ -1,23 +1,23 @@
 apiVersion: v2
-appVersion: "11.2"
+appVersion: "11.5"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 0.9.7
+version: 0.9.11
 maintainers:
-- name: rbren
-- name: mhoss019
-- name: ivanfetch-fw
+  - name: rbren
+  - name: mhoss019
+  - name: ivanfetch-fw
 dependencies:
-- name: postgresql
-  version: 12.1.6
-  repository: https://charts.bitnami.com/bitnami
-  condition: postgresql.ephemeral
-- name: minio
-  version: 5.0.3
-  repository: https://charts.min.io/
-  condition: minio.install
-- name: timescaledb-single
-  version: 0.30.*
-  repository: https://charts.fairwinds.com/incubator
-  condition: timescale.ephemeral
-  alias: timescale
+  - name: postgresql
+    version: 12.1.6
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.ephemeral
+  - name: minio
+    version: 5.0.3
+    repository: https://charts.min.io/
+    condition: minio.install
+  - name: timescaledb-single
+    version: 0.30.*
+    repository: https://charts.fairwinds.com/incubator
+    condition: timescale.ephemeral
+    alias: timescale
