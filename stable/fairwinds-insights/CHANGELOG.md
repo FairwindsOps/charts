@@ -1,4 +1,6 @@
 # Changelog
+## 0.9.11
+* Update testing versions
 
 ## 0.9.10
 * Update application version to 11.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)

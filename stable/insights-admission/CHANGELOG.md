@@ -1,4 +1,6 @@
 # Changelog
+## 1.5.1
+* Update testing versions
 
 ## 1.5.0
 * Bump insights-admission to version 1.9
