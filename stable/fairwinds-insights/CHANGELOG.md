@@ -1,4 +1,7 @@
 # Changelog
+## 0.10.0
+* Change default timescale options to better support the default installation
+
 ## 0.9.11
 * Update testing versions
 
