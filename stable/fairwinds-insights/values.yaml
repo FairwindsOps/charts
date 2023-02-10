@@ -405,6 +405,23 @@ truncateWorkloadMetrics:
     # -- The user ID to run the truncating workload metrics job under.
     runAsUser: 10324
 
+actionItemsFiltersRefresherCronJob:
+  # -- Resources for the action-items filters refresher job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 40m
+      memory: 32Mi
+  # -- CRON schedules for the action-items filters refresher job.
+  schedules:
+    - name: every-15-min
+      cron: "0/15 * * * *"
+  securityContext:
+    # -- The user ID to run the action-items filters refresher job under.
+    runAsUser: 10324
+
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
