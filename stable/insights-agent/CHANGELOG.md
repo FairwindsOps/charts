@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.6
+* Fix CronJob version override for aws-costs and falco
+
 ## 2.10.5
 * Allow overriding cronjob apiVersion and update goldilocks repository
 
