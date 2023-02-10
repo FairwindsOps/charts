@@ -1,4 +1,11 @@
 # Changelog
+
+## 2.10.5
+* Allow overriding cronjob apiVersion and update goldilocks repository
+
+## 2.10.4
+* Update polaris, pluto, nova, goldilocks
+
 ## 2.10.3
 * Update testing versions
 
