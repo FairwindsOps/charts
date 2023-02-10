@@ -93,7 +93,7 @@ spec:
                 key: host
           - name: FAIRWINDS_IGNORE_USERNAMES
             value: {{ .Values.ignoreRequestUsernames }}
-            {{ include "proxy-env-spec" . | indent 10 | trim }}
+          {{ include "proxy-env-spec" . | indent 10 | trim }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
