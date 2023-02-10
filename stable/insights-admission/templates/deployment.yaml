@@ -104,9 +104,9 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- if .Values.dashboard.topologySpreadConstraints }}
+      {{- if .Values.topologySpreadConstraints }}
       topologySpreadConstraints:
-        {{ toYaml .Values.dashboard.topologySpreadConstraints | indent 8 }}
+        {{ toYaml .Values.topologySpreadConstraints | indent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
