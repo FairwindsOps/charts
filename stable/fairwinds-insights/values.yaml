@@ -503,12 +503,6 @@ timescale:
   # -- Database tuning for timescale
   timescaledbTune:
     enabled: false
-  # -- Timescale persistent volume options
-  persistentVolumes:
-    data:
-      enabled: false
-    wal:
-      enabled: false
   # -- Timescale patroni options
   patroni:
     log:
