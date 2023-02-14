@@ -412,8 +412,8 @@ actionItemsFiltersRefresherCronJob:
       cpu: 250m
       memory: 512Mi
     requests:
-      cpu: 40m
-      memory: 32Mi
+      cpu: 250m
+      memory: 512Mi
   # -- CRON schedules for the action-items filters refresher job.
   schedules:
     - name: every-15-min
