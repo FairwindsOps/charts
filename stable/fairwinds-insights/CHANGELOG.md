@@ -3,6 +3,9 @@
 ## 0.10.0
 * Add `actionItemsFiltersRefresherCronJob` to `stable/fairwinds-insights`.
 
+## 0.9.12
+* Update application version to 11.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.9.11
 * Update testing versions
 
