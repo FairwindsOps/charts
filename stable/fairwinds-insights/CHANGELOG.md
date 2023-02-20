@@ -1,7 +1,11 @@
 # Changelog
 
+## 0.10.0
+* Add `actionItemsFiltersRefresherCronJob` to `stable/fairwinds-insights`.
+
 ## 0.9.12
 * Update application version to 11.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.9.11
 * Update testing versions
 
@@ -40,6 +44,7 @@
 
 ## 0.8.1
 * Bug fix for timescale secret
+
 ## 0.8.0
 * BREAKING: Bumping postgres to bitnami chart 12.1.6, and postgres version 14. See README for changes to `postgresql` Helm values, or view the [full options](https://github.com/bitnami/charts/tree/main/bitnami/postgresql) in the downstream chart.
 
