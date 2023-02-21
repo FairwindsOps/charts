@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.1
+* Updated self hosted agent version to 2.10
+
 ## 0.10.0
 * Add `actionItemsFiltersRefresherCronJob` to `stable/fairwinds-insights`.
 
