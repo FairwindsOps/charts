@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.11.0
+* Add `automatedPullRequest` support to `stable/fairwinds-insights`.
+
 ## 0.10.1
 * Updated self hosted agent version to 2.10
 

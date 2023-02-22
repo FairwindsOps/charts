@@ -205,6 +205,27 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| automatedPullRequest.enabled | bool | `true` |  |
+| automatedPullRequest.hpa.enabled | bool | `true` |  |
+| automatedPullRequest.hpa.min | int | `1` |  |
+| automatedPullRequest.hpa.max | int | `3` |  |
+| automatedPullRequest.hpa.metrics[0].type | string | `"Resource"` |  |
+| automatedPullRequest.hpa.metrics[0].resource.name | string | `"cpu"` |  |
+| automatedPullRequest.hpa.metrics[0].resource.target.type | string | `"Utilization"` |  |
+| automatedPullRequest.hpa.metrics[0].resource.target.averageUtilization | int | `75` |  |
+| automatedPullRequest.hpa.metrics[1].type | string | `"Resource"` |  |
+| automatedPullRequest.hpa.metrics[1].resource.name | string | `"memory"` |  |
+| automatedPullRequest.hpa.metrics[1].resource.target.type | string | `"Utilization"` |  |
+| automatedPullRequest.hpa.metrics[1].resource.target.averageUtilization | int | `75` |  |
+| automatedPullRequest.resources.limits.cpu | string | `"500m"` |  |
+| automatedPullRequest.resources.limits.memory | string | `"1024Mi"` |  |
+| automatedPullRequest.resources.requests.cpu | string | `"250m"` |  |
+| automatedPullRequest.resources.requests.memory | string | `"512Mi"` |  |
+| automatedPullRequest.nodeSelector | object | `{}` |  |
+| automatedPullRequest.tolerations | list | `[]` |  |
+| automatedPullRequest.cloneDir.sizeLimit | string | `"2Gi"` |  |
+| automatedPullRequest.git.email | string | `"bot@fairwinds.com"` |  |
+| automatedPullRequest.git.username | string | `"Fairwinds Insights"` |  |
 | repoScanJob.enabled | bool | `false` |  |
 | repoScanJob.insightsCIVersion | string | `"4.2"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
