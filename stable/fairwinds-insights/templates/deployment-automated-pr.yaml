@@ -1,0 +1,72 @@
+{{- if .Values.automatedPullRequest.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-automated-pr
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: automated-pr
+    {{- if .Values.deployments.additionalLabels }}
+    {{ toYaml .Values.deployments.additionalLabels | nindent 4 }}
+    {{- end }}
+  annotations:
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
+spec:
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: automated-pr
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: automated-pr
+        {{- if .Values.deployments.additionalPodLabels }}
+        {{ toYaml .Values.deployments.additionalPodLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      containers:
+        - name: fairwinds-insights
+          image: "{{ .Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"
+          imagePullPolicy: Always
+          command: ["automated_pull_requests_processor"]
+          {{- include "env" . | indent 10 }}
+          volumeMounts:
+            - name: secrets
+              mountPath: /var/run/secrets/github
+            - name: clone-dir
+              mountPath: /tmp/clone_dir
+          resources:
+            {{- toYaml .Values.automatedPullRequest.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 10324
+            capabilities:
+              drop:
+                - ALL
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: secrets
+          secret:
+            secretName: github-secrets
+            optional: true
+        - name: clone-dir
+          emptyDir:
+            sizeLimit: {{ .Values.automatedPullRequest.cloneDir.sizeLimit }}
+    {{- with .Values.automatedPullRequest.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}
