@@ -1,11 +1,11 @@
-{{- if .Values.automatedPullRequest.enabled }}
+{{- if .Values.automatedPullRequestJob.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-automated-pr
+  name: {{ include "fairwinds-insights.fullname" . }}-automated-pr-job
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
-    app.kubernetes.io/component: automated-pr
+    app.kubernetes.io/component: automated-pr-job
     {{- if .Values.deployments.additionalLabels }}
     {{ toYaml .Values.deployments.additionalLabels | nindent 4 }}
     {{- end }}
@@ -16,12 +16,12 @@ spec:
   selector:
     matchLabels:
       {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
-      app.kubernetes.io/component: automated-pr
+      app.kubernetes.io/component: automated-pr-job
   template:
     metadata:
       labels:
         {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
-        app.kubernetes.io/component: automated-pr
+        app.kubernetes.io/component: automated-pr-job
         {{- if .Values.deployments.additionalPodLabels }}
         {{ toYaml .Values.deployments.additionalPodLabels | nindent 8 }}
         {{- end }}
@@ -35,15 +35,13 @@ spec:
         - name: fairwinds-insights
           image: "{{ .Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"
           imagePullPolicy: Always
-          command: ["automated_pull_requests_processor"]
+          command: ["automated_pull_requests_job"]
           {{- include "env" . | indent 10 }}
           volumeMounts:
             - name: secrets
               mountPath: /var/run/secrets/github
-            - name: clone-dir
-              mountPath: /tmp/clone_dir
           resources:
-            {{- toYaml .Values.automatedPullRequest.resources | nindent 12 }}
+            {{- toYaml .Values.automatedPullRequestJob.resources | nindent 12 }}
           securityContext:
             readOnlyRootFilesystem: true
             allowPrivilegeEscalation: false
@@ -62,10 +60,7 @@ spec:
           secret:
             secretName: github-secrets
             optional: true
-        - name: clone-dir
-          emptyDir:
-            sizeLimit: {{ .Values.automatedPullRequest.cloneDir.sizeLimit }}
-    {{- with .Values.automatedPullRequest.tolerations }}
+    {{- with .Values.automatedPullRequestJob.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
     {{- end }}

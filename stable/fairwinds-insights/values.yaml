@@ -626,39 +626,34 @@ reportjob:
   nodeSelector: {}
   tolerations: []
 
-automatedPullRequest:
+automatedPullRequestJob:
   enabled: true
   hpa:
     enabled: true
-    min: 1
-    max: 3
+    min: 2
+    max: 4
     metrics:
       - type: Resource
         resource:
           name: cpu
           target:
             type: Utilization
-            averageUtilization: 75
+            averageUtilization: 80
       - type: Resource
         resource:
           name: memory
           target:
             type: Utilization
-            averageUtilization: 75
+            averageUtilization: 80
   resources:
     limits:
       cpu: 500m
       memory: 1024Mi
     requests:
-      cpu: 250m
-      memory: 512Mi
+      cpu: 80m
+      memory: 128Mi
   nodeSelector: {}
   tolerations: []
-  cloneDir:
-    sizeLimit: 2Gi
-  git:
-    email: bot@fairwinds.com
-    username: Fairwinds Insights
 
 repoScanJob:
   enabled: false

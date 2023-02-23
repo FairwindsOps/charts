@@ -175,9 +175,7 @@ env:
 - name: INSIGHTS_CI_IMAGE_VERSION
   value: {{ .Values.repoScanJob.insightsCIVersion | quote }}
 
-# automated-pull-request-processor specific
-- name: GIT_EMAIL
-  value: {{ .Values.automatedPullRequest.git.email | quote }}
-- name: GIT_USERNAME
-  value: {{ .Values.automatedPullRequest.git.username | quote }}
+# tag used for the fixer container 
+- name: CRON_JOB_IMAGE_TAG
+  value: {{ .Values.cronjobImage.tag | quote }}
 {{ end }}

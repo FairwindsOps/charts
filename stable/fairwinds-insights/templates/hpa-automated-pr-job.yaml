@@ -1,0 +1,18 @@
+{{- if .Values.automatedPullRequestJob.hpa.enabled }}
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-automated-pr-job-hpa
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: automated-pr-job
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "fairwinds-insights.fullname" . }}-automated-pr-job
+  minReplicas: {{ .Values.automatedPullRequestJob.hpa.min }}
+  maxReplicas: {{ .Values.automatedPullRequestJob.hpa.max }}
+  metrics:
+  {{- toYaml .Values.automatedPullRequestJob.hpa.metrics | nindent 4 }}
+{{- end }}

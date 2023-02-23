@@ -1,7 +1,7 @@
 # Changelog
 
 ## 0.11.0
-* Add `automatedPullRequest` support to `stable/fairwinds-insights`.
+* Add `automatedPullRequestJob` support to `stable/fairwinds-insights`.
 
 ## 0.10.2
 * Update application version to 11.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
