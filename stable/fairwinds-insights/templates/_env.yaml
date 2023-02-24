@@ -177,5 +177,5 @@ env:
 
 # tag used for the fixer container 
 - name: CRON_JOB_IMAGE_TAG
-  value: {{ .Values.cronjobImage.tag | quote }}
+  value: {{ include "fairwinds-insights.cronjobImageTag" . | quote }}
 {{ end }}
