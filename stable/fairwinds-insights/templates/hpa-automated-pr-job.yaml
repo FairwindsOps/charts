@@ -1,4 +1,4 @@
-{{- if .Values.automatedPullRequestJob.hpa.enabled }}
+{{- if and .Values.automatedPullRequestJob.enabled .Values.automatedPullRequestJob.hpa.enabled }}
 apiVersion: autoscaling/v2beta2
 kind: HorizontalPodAutoscaler
 metadata:
