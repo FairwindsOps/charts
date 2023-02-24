@@ -16,7 +16,7 @@ See the [Gemini README](https://github.com/FairwindsOps/gemini) for more informa
 ## Installation
 ```bash
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install gemini fairwinds-stable/gemini --namespace gemini
+helm install gemini fairwinds-stable/gemini --namespace gemini --create-namespace
 ```
 ## Requirements
 
