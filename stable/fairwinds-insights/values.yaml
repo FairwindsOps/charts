@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.9.4
+  agentChartTargetVersion: 2.10.6
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -403,6 +403,23 @@ truncateWorkloadMetrics:
   schedules: []
   securityContext:
     # -- The user ID to run the truncating workload metrics job under.
+    runAsUser: 10324
+
+actionItemsFiltersRefresherCronJob:
+  # -- Resources for the action-items filters refresher job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+  # -- CRON schedules for the action-items filters refresher job.
+  schedules:
+    - name: every-15-min
+      cron: "0/15 * * * *"
+  securityContext:
+    # -- The user ID to run the action-items filters refresher job under.
     runAsUser: 10324
 
 service:
