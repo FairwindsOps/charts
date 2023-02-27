@@ -174,4 +174,8 @@ env:
   value: {{ .Release.Namespace }}
 - name: INSIGHTS_CI_IMAGE_VERSION
   value: {{ .Values.repoScanJob.insightsCIVersion | quote }}
+
+# tag used for the fixer container 
+- name: CRON_JOB_IMAGE_TAG
+  value: {{ include "fairwinds-insights.cronjobImageTag" . | quote }}
 {{ end }}
