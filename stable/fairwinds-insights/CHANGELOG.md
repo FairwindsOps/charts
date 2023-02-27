@@ -1,9 +1,10 @@
 # Changelog
-## 0.11.0
-* Change default timescale options to better support the default installation
+
+## 0.12.0
+* Add `automatedPullRequestJob` support to `stable/fairwinds-insights`.
 
 ## 0.11.0
-* Add `automatedPullRequestJob` support to `stable/fairwinds-insights`.
+* Change default timescale options to better support the default installation
 
 ## 0.10.2
 * Update application version to 11.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
