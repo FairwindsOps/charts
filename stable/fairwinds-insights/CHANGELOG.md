@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.1
+* fix service-account ref. for automated-pr-jobs deployment
+
 ## 0.12.0
 * Add `automatedPullRequestJob` support to `stable/fairwinds-insights`.
 
