@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.3
+* Update application version to 11.8. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.12.2
 * Adds `CRON_JOB_IMAGE_REPOSITORY` to `stable/fairwinds-insights` deployments environment variables
 
