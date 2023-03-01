@@ -68,7 +68,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
 | controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
-| controller.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
+| controller.rbac.enableArgoproj | bool | `false` | If set to true, the clusterrole will give access to argoproj.io resources |
 | controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
 | controller.rbac.extraClusterRoleBindings | list | `[]` | A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled |
 | controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
@@ -97,7 +97,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
 | dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
-| dashboard.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
+| dashboard.rbac.enableArgoproj | bool | `false` | If set to true, the clusterrole will give access to argoproj.io resources |
 | dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
 | dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
 | dashboard.deployment.annotations | object | `{}` | Extra annotations for the dashboard deployment |

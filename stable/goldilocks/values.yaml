@@ -34,7 +34,7 @@ controller:
     # controller.rbac.create -- If set to true, rbac resources will be created for the controller
     create: true
     # controller.rbac.enableArgoproj -- If set to true, the clusterrole will give access to argoproj.io resources
-    enableArgoproj: true
+    enableArgoproj: false
     # controller.rbac.extraRules -- Extra rbac rules for the controller clusterrole
     extraRules: []
     # controller.rbac.extraClusterRoleBindings -- A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled
@@ -114,7 +114,7 @@ dashboard:
     # dashboard.rbac.create -- If set to true, rbac resources will be created for the dashboard
     create: true
     # dashboard.rbac.enableArgoproj -- If set to true, the clusterrole will give access to argoproj.io resources
-    enableArgoproj: true
+    enableArgoproj: false
   serviceAccount:
     # dashboard.serviceAccount.create -- If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name`
     create: true
