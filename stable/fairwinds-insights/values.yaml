@@ -637,7 +637,7 @@ reportjob:
   tolerations: []
 
 automatedPullRequestJob:
-  enabled: enable
+  enabled: true
   hpa:
     enabled: true
     min: 2
