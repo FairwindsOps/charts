@@ -637,7 +637,7 @@ reportjob:
   tolerations: []
 
 automatedPullRequestJob:
-  enabled: false
+  enabled: enable
   hpa:
     enabled: true
     min: 2
@@ -667,7 +667,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "4.2"
+  insightsCIVersion: "5.0"
   hpa:
     enabled: true
     min: 2
