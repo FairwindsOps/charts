@@ -206,6 +206,20 @@ nodeSelector: {}
 # tolerations -- Toleratations to add to the controller.
 tolerations: []
 
+# topologySpreadConstraints -- TopologySpreadConstraints to add to the controller.
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        component: controller
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        component: controller
 # affinity -- Pod affinity/anti-affinity rules
 affinity: {}
 
