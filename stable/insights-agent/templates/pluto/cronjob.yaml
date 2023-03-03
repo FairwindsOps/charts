@@ -17,7 +17,7 @@ spec:
             args:
             - -c
             - |
-              /pluto detect-helm -ojson --target-versions {{ $.Values.pluto.targetVersions | default (printf "k8s=v%s.%s.0" .Capabilities.KubeVersion.Major (trimSuffix "+" .Capabilities.KubeVersion.Minor)) }} > /output/pluto-tmp.json
+              /pluto detect-all-in-cluster -ojson --target-versions {{ $.Values.pluto.targetVersions | default (printf "k8s=v%s.%s.0" .Capabilities.KubeVersion.Major (trimSuffix "+" .Capabilities.KubeVersion.Minor)) }} > /output/pluto-tmp.json
               cat /output/pluto-tmp.json
               mv /output/pluto-tmp.json /output/pluto.json
             env:

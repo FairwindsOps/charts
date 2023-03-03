@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.12.0
+* Update pluto, and detect in-cluster resources using the `last-applied-configuration` annotation.
+
 ## 2.11.0
 * Bumped AWS costs plugin for new Days parameter
 
