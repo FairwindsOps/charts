@@ -53,6 +53,19 @@ spec:
                 return
             server = HTTPServer(('', 8080), FileHandler)
             server.serve_forever()
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              component: test
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              component: test
 ---
 apiVersion: v1
 kind: Service
