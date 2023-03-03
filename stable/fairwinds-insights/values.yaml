@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.9.4
+  agentChartTargetVersion: 2.10.6
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -405,6 +405,23 @@ truncateWorkloadMetrics:
     # -- The user ID to run the truncating workload metrics job under.
     runAsUser: 10324
 
+actionItemsFiltersRefresherCronJob:
+  # -- Resources for the action-items filters refresher job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 250m
+      memory: 512Mi
+  # -- CRON schedules for the action-items filters refresher job.
+  schedules:
+    - name: every-15-min
+      cron: "0/15 * * * *"
+  securityContext:
+    # -- The user ID to run the action-items filters refresher job under.
+    runAsUser: 10324
+
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
@@ -472,7 +489,7 @@ encryption:
 
 timescale:
   fullnameOverride: timescale
-  replicaCount: 2
+  replicaCount: 1
   clusterName: timescale
   # -- Use the ephemeral Timescale chart by default
   ephemeral: true
@@ -500,6 +517,16 @@ timescale:
       port: 5433
   loadBalancer:
     enabled: false
+  # -- Database tuning for timescale
+  timescaledbTune:
+    enabled: false
+  # -- Timescale patroni options
+  patroni:
+    log:
+      level: DEBUG
+    postgresql:
+      create_replica_methods: []
+      pgbackrest: {}
   # -- Resources section for Timescale
   resources:
     limits:
@@ -599,6 +626,35 @@ reportjob:
           target:
             type: Utilization
             averageUtilization: 75
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  nodeSelector: {}
+  tolerations: []
+
+automatedPullRequestJob:
+  enabled: false
+  hpa:
+    enabled: true
+    min: 2
+    max: 4
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 80
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 80
   resources:
     limits:
       cpu: 500m
