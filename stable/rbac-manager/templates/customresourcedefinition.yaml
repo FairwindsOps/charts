@@ -89,6 +89,8 @@ spec:
                     items:
                       type: object
                       properties:
+                        automountServiceAccountToken:
+                          type: boolean
                         imagePullSecrets:
                           type: array
                           items:

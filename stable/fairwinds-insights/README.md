@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.9.4"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.10.6"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -114,6 +114,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
 | truncateWorkloadMetrics.schedules | list | `[]` | CRON schedules for the truncating workload metrics job. |
 | truncateWorkloadMetrics.securityContext.runAsUser | int | `10324` | The user ID to run the truncating workload metrics job under. |
+| actionItemsFiltersRefresherCronJob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Resources for the action-items filters refresher job. |
+| actionItemsFiltersRefresherCronJob.schedules | list | `[{"cron":"0/15 * * * *","name":"every-15-min"}]` | CRON schedules for the action-items filters refresher job. |
+| actionItemsFiltersRefresherCronJob.securityContext.runAsUser | int | `10324` | The user ID to run the action-items filters refresher job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | service.annotations | string | `nil` | Annotations for the services |
@@ -138,7 +141,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
-| timescale.replicaCount | int | `2` |  |
+| timescale.replicaCount | int | `1` |  |
 | timescale.clusterName | string | `"timescale"` |  |
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.pdb.enabled | bool | `true` | Use pdb enabled by default |
@@ -152,6 +155,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
 | timescale.loadBalancer.enabled | bool | `false` |  |
+| timescale.timescaledbTune | object | `{"enabled":false}` | Database tuning for timescale |
+| timescale.patroni | object | `{"log":{"level":"DEBUG"},"postgresql":{"create_replica_methods":[],"pgbackrest":{}}}` | Timescale patroni options |
 | timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
@@ -202,6 +207,24 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| automatedPullRequestJob.enabled | bool | `false` |  |
+| automatedPullRequestJob.hpa.enabled | bool | `true` |  |
+| automatedPullRequestJob.hpa.min | int | `2` |  |
+| automatedPullRequestJob.hpa.max | int | `4` |  |
+| automatedPullRequestJob.hpa.metrics[0].type | string | `"Resource"` |  |
+| automatedPullRequestJob.hpa.metrics[0].resource.name | string | `"cpu"` |  |
+| automatedPullRequestJob.hpa.metrics[0].resource.target.type | string | `"Utilization"` |  |
+| automatedPullRequestJob.hpa.metrics[0].resource.target.averageUtilization | int | `80` |  |
+| automatedPullRequestJob.hpa.metrics[1].type | string | `"Resource"` |  |
+| automatedPullRequestJob.hpa.metrics[1].resource.name | string | `"memory"` |  |
+| automatedPullRequestJob.hpa.metrics[1].resource.target.type | string | `"Utilization"` |  |
+| automatedPullRequestJob.hpa.metrics[1].resource.target.averageUtilization | int | `80` |  |
+| automatedPullRequestJob.resources.limits.cpu | string | `"500m"` |  |
+| automatedPullRequestJob.resources.limits.memory | string | `"1024Mi"` |  |
+| automatedPullRequestJob.resources.requests.cpu | string | `"80m"` |  |
+| automatedPullRequestJob.resources.requests.memory | string | `"128Mi"` |  |
+| automatedPullRequestJob.nodeSelector | object | `{}` |  |
+| automatedPullRequestJob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
 | repoScanJob.insightsCIVersion | string | `"4.2"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
