@@ -207,7 +207,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
-| automatedPullRequestJob.enabled | bool | `false` |  |
+| automatedPullRequestJob.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.min | int | `2` |  |
 | automatedPullRequestJob.hpa.max | int | `4` |  |
@@ -226,7 +226,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | automatedPullRequestJob.nodeSelector | object | `{}` |  |
 | automatedPullRequestJob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"4.2"` |  |
+| repoScanJob.insightsCIVersion | string | `"5.0"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |
