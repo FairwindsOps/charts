@@ -15,7 +15,7 @@ roleRef:
   name: {{ include "goldilocks.fullname" . }}-controller
 subjects:
   - kind: ServiceAccount
-    name: {{ include "goldilocks.fullname" . }}-controller
+    name: {{ template "controller.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
 
 {{- range $.Values.controller.rbac.extraClusterRoleBindings }}

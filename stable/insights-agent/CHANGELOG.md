@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.11.0
+* Bumped AWS costs plugin for new Days parameter
+
+## 2.10.6
+* Fix CronJob version override for aws-costs and falco
+
+## 2.10.5
+* Allow overriding cronjob apiVersion and update goldilocks repository
+
+## 2.10.4
+* Update polaris, pluto, nova, goldilocks
+
+## 2.10.3
+* Update testing versions
+
 ## 2.10.2
 * Revert v2.10.1
 

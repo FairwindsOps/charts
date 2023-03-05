@@ -1,12 +1,12 @@
-{{ range .Values.samlCronjob.schedules }}
+{{- range .Values.actionItemsFiltersRefresherCronJob.schedules }}
 ---
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" $ }}-saml-{{ .name }}
+  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: saml-cronjob-{{ .name }}
+    app.kubernetes.io/component: action-items-filters-refresher-{{ .name }}
 spec:
   schedule: "{{ .cron }}"
   concurrencyPolicy: Forbid
@@ -22,11 +22,11 @@ spec:
           containers:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
-              command: ["refresh_saml_metadata"]
+              command: ["action_items_filters_refresher"]
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.samlCronjob.resources | nindent 16 }}
+                {{- toYaml $.Values.actionItemsFiltersRefresherCronJob.resources | nindent 16 }}
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
@@ -36,4 +36,4 @@ spec:
                 capabilities:
                   drop:
                     - ALL
-  {{ end }}
+{{- end }}

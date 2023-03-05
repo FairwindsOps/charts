@@ -35,6 +35,8 @@ uploader:
   env:
 
 cronjobs:
+  # -- If set, will override the cronjob apiVersion for all cronjobs
+  apiVersion: ""
   disableServiceMesh: true
   backoffLimit: 1
   failedJobsHistoryLimit: 2
@@ -71,7 +73,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "7.2"
+    tag: "7.3"
   resources:
     requests:
       cpu: 100m
@@ -105,8 +107,8 @@ goldilocks:
   schedule: "rand * * * *"
   timeout: 300
   image:
-    repository: quay.io/fairwinds/goldilocks
-    tag: "v4.5"
+    repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
+    tag: "v4.6"
   controller:
     flags:
       on-by-default: true
@@ -198,7 +200,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.5"
+    tag: "v3.6"
   resources:
     requests:
       cpu: 100m
@@ -276,7 +278,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.11"
+    tag: "v5.13"
   resources:
     requests:
       cpu: 100m
@@ -388,7 +390,7 @@ awscosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "1.1"
+    tag: "1.2"
   serviceAccount:
     annotations:
   resources:
