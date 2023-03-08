@@ -1,4 +1,7 @@
 # Changelog
+## 1.5.2
+* Add default topologySpreadConstraints
+
 ## 1.5.1
 * Update testing versions
 
