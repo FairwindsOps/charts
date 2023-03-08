@@ -62,6 +62,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.nodeSelector | object | `{}` | Dashboard pod nodeSelector |
 | dashboard.tolerations | list | `[]` | Dashboard pod tolerations |
 | dashboard.affinity | object | `{}` | Dashboard pods affinity |
+| dashboard.topologySpreadConstraints | list | `[{"labelSelector":{"matchLabels":{"component":"dashboard"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"component":"dashboard"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | Dashboard pods topologySpreadConstraints |
 | dashboard.ingress.enabled | bool | `false` | Whether to enable ingress to the dashboard |
 | dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.hosts | list | `[]` | Web ingress hostnames |
@@ -79,6 +80,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
 | webhook.tolerations | list | `[]` | Webhook pod tolerations |
 | webhook.affinity | object | `{}` | Webhook pods affinity |
+| webhook.topologySpreadConstraints | list | `[{"labelSelector":{"matchLabels":{"component":"webhook"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"component":"webhook"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | Webhook pods topologySpreadConstraints |
 | webhook.caBundle | string | `nil` | CA Bundle to use for Validating Webhook instead of cert-manager |
 | webhook.secretName | string | `nil` | Name of the secret containing a TLS certificate to use if cert-manager is not used. |
 | webhook.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
