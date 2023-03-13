@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.7
+* Update application version to 11.11. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.12.6
 * Update application version to 11.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
