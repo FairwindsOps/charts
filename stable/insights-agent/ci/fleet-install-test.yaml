@@ -1,6 +1,6 @@
 fleetInstall: true
 insights:
-  host: https://be-main.k8s.insights.fairwinds.com
+  host: https://stable-main.k8s.insights.fairwinds.com
   organization: acme-co
   tokenSecretName: insights-token
   apiToken: thisisanadmintoken
