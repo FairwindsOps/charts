@@ -33,6 +33,7 @@ spec:
               - -v{{ .Config.logLevel }}
             env:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
+            {{ include "ssl-cert-file-env-spec" . | indent 12 }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
           volumes:
@@ -43,4 +44,5 @@ spec:
                 name: {{ include "insights-agent.fullname" $ }}-nova-config
             - name: tmp
               emptyDir: {}
-{{- end -}}
+            {{ include "ssl-cert-file-volume-spec" . | indent 12 }}
+                {{- end -}}

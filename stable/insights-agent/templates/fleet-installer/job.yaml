@@ -24,6 +24,10 @@ spec:
           - |
             {{ .Files.Get "download-kubectl.sh" | nindent 12 }}
           
+            {{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
+            export SSL_CERT_FILE='/ssl-cert-file/ca.crt'
+            echo "Using SSL certificate file ${SSL_CERT_FILE} from here on..."
+            {{- end }}
             echo "Checking if cluster already exists..."
             CLUSTER_FILE="/tmp/cluster.json"
             SECRET_NAME="{{ required "You must specify insights.tokenSecretName for a fleet install" .Values.insights.tokenSecretName }}"
@@ -57,6 +61,7 @@ spec:
         volumeMounts:
         - name: tmp
           mountPath: /tmp
+        {{ include "ssl-cert-file-volumemount-spec" . | indent 8 }}
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
@@ -69,4 +74,5 @@ spec:
       volumes:
       - name: tmp
         emptyDir: {}
-{{- end -}}
+      {{ include "ssl-cert-file-volume-spec" . | indent 6 }}
+          {{- end -}}
