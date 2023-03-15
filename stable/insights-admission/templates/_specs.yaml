@@ -25,3 +25,29 @@
   value: {{ .Values.global.proxy.no_proxy }}
 {{- end }}
 {{- end }}
+
+{{ define "ssl-cert-file-volume-spec" }}
+{{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
+- name: sslcertfile
+  secret:
+    secretName: {{ .Values.global.sslCertFile.secretName }}
+    items:
+    - key: {{ .Values.global.sslCertFile.secretKey }}
+      path: ca.crt
+{{- end }}
+{{- end }}
+
+{{ define "ssl-cert-file-volumemount-spec" }}
+{{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
+- name: sslcertfile
+  mountPath: /ssl-cert-file
+{{- end }}
+{{- end }}
+
+{{ define "ssl-cert-file-env-spec" }}
+{{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
+- name: SSL_CERT_FILE
+  value: /ssl-cert-file/ca.crt
+  {{- end }}
+  {{- end }}
+
