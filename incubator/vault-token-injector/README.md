@@ -1,4 +1,4 @@
-![Version: 2.2.0](https://img.shields.io/badge/Version-2.2.0-informational?style=flat-square)
+![Version: 2.3.0](https://img.shields.io/badge/Version-2.3.0-informational?style=flat-square)
 
 # Vault Token Injector Chart
 
@@ -30,7 +30,8 @@ Chart version 2.0.0 introduced a metrics endpoint by default.
 | metrics.serviceMonitor.scrapeTimeout | string | `"30s"` |  |
 | metrics.serviceMonitor.labels | object | `{}` |  |
 | logLevel | int | `1` | The klog log level (1-10). WARNING: Log level 10 will print secrets to logs |
-| image.repository | string | `"quay.io/fairwinds/vault-token-injector"` | The image repository to pullt he vault-token-injector image from |
+| probes.liveness.enabled | bool | `false` |  |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/vault-token-injector"` | The image repository to pull the vault-token-injector image from |
 | image.pullPolicy | string | `"Always"` | This is recommended to be set as Always |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | A list of imagePullSecrets to use |
