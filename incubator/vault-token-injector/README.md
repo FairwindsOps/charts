@@ -31,7 +31,7 @@ Chart version 2.0.0 introduced a metrics endpoint by default.
 | metrics.serviceMonitor.labels | object | `{}` |  |
 | logLevel | int | `1` | The klog log level (1-10). WARNING: Log level 10 will print secrets to logs |
 | probes.liveness.enabled | bool | `false` |  |
-| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/vault-token-injector"` | The image repository to pullt he vault-token-injector image from |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/vault-token-injector"` | The image repository to pull the vault-token-injector image from |
 | image.pullPolicy | string | `"Always"` | This is recommended to be set as Always |
 | image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion. |
 | imagePullSecrets | list | `[]` | A list of imagePullSecrets to use |
