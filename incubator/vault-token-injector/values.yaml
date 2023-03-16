@@ -44,7 +44,7 @@ probes:
 
 image:
   # -- The image repository to pullt he vault-token-injector image from
-  repository: quay.io/fairwinds/vault-token-injector
+  repository: us-docker.pkg.dev/fairwinds-ops/oss/vault-token-injector
   # -- This is recommended to be set as Always
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
