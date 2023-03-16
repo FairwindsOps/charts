@@ -61,10 +61,12 @@ spec:
           - name: "VAULT_TOKEN_FILE"
             value: {{ .Values.vaultTokenFile | quote }}
           {{- end }}
+          {{- if .Values.probes.liveness.enabled }}
           livenessProbe:
             httpGet:
               path: /health
               port: metrics
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

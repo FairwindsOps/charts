@@ -38,9 +38,13 @@ metrics:
 # -- The klog log level (1-10). WARNING: Log level 10 will print secrets to logs
 logLevel: 1
 
+probes:
+  liveness:
+    enabled: false
+
 image:
-  # -- The image repository to pullt he vault-token-injector image from
-  repository: quay.io/fairwinds/vault-token-injector
+  # -- The image repository to pull the vault-token-injector image from
+  repository: us-docker.pkg.dev/fairwinds-ops/oss/vault-token-injector
   # -- This is recommended to be set as Always
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.
