@@ -1,5 +1,38 @@
 # Changelog
 
+## 0.12.7
+* Update application version to 11.11. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.6
+* Update application version to 11.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.5
+* Update application version to 11.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.4
+* Enable `automatedPullRequestJob` by default and update `repoScanJob.insightsCIVersion` to `5.0` which contains manifests `filename` fix 
+
+## 0.12.3
+* Update application version to 11.8. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.2
+* Adds `CRON_JOB_IMAGE_REPOSITORY` to `stable/fairwinds-insights` deployments environment variables
+
+## 0.12.1
+* Fix service-account ref. for automated-pr-jobs deployment
+
+## 0.12.0
+* Add `automatedPullRequestJob` support to `stable/fairwinds-insights`.
+
+## 0.11.0
+* Change default timescale options to better support the default installation
+
+## 0.10.2
+* Update application version to 11.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.10.1
+* Updated self hosted agent version to 2.10
+
 ## 0.10.0
 * Add `actionItemsFiltersRefresherCronJob` to `stable/fairwinds-insights`.
 
