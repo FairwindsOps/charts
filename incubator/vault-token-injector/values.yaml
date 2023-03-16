@@ -43,7 +43,7 @@ probes:
     enabled: false
 
 image:
-  # -- The image repository to pullt he vault-token-injector image from
+  # -- The image repository to pull the vault-token-injector image from
   repository: us-docker.pkg.dev/fairwinds-ops/oss/vault-token-injector
   # -- This is recommended to be set as Always
   pullPolicy: Always
