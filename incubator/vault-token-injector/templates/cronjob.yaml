@@ -1,0 +1,82 @@
+{{- if .Values.cronjob.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  labels:
+    {{- include "vault-token-injector.labels" . | nindent 4 }}
+  name: {{ include "vault-token-injector.fullname" . }}
+spec:
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: {{ .Values.cronjob.failedJobsHistoryLimit }}
+  jobTemplate:
+    spec:
+      activeDeadlineSeconds: {{ .Values.cronjob.activeDeadlineSeconds }}
+      backoffLimit: {{ .Values.cronjob.backoffLimit }}
+      template:
+        metadata:
+          annotations:
+          {{- with .Values.podAnnotations }}
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+            checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+          labels:
+            {{- include "vault-token-injector.selectorLabels" . | nindent 12 }}
+        spec:
+          restartPolicy: {{ .Values.cronjob.restartPolicy }}
+          {{- with .Values.imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          serviceAccountName: {{ include "vault-token-injector.serviceAccountName" . }}
+          securityContext:
+            {{- toYaml .Values.podSecurityContext | nindent 12 }}
+          containers:
+            - name: {{ .Chart.Name }}
+              securityContext:
+                {{- toYaml .Values.securityContext | nindent 16 }}
+              image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+              imagePullPolicy: {{ .Values.image.pullPolicy }}
+              resources:
+                {{- toYaml .Values.resources | nindent 16 }}
+              args:
+                - -c
+                - /config/config.yaml
+                - -v{{ .Values.logLevel }}
+                - --run-once
+              volumeMounts:
+              - name: config
+                mountPath: /config
+              envFrom:
+              - secretRef:
+                  {{- if .Values.existingSecret }}
+                  name: {{ .Values.existingSecret }}
+                  {{- else }}
+                  name: {{ include "vault-token-injector.fullname" . }}
+                  {{- end }}
+              env:
+              - name: "VAULT_ADDR"
+                value: {{ .Values.vaultAddress | quote }}
+              {{- if .Values.vaultTokenFile }}
+              - name: "VAULT_TOKEN_FILE"
+                value: {{ .Values.vaultTokenFile | quote }}
+              {{- end }}
+          {{- with .Values.nodeSelector }}
+          nodeSelector:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.affinity }}
+          affinity:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.tolerations }}
+          tolerations:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumes:
+          - name: config
+            configMap:
+              name: {{ include "vault-token-injector.fullname" . }}
+  schedule: {{ .Values.cronjob.schedule }}
+  successfulJobsHistoryLimit: {{ .Values.cronjob.successfulJobsHistoryLimit }}
+  suspend: false
+{{- end }}
