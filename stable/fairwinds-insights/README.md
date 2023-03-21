@@ -141,7 +141,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
-| timescale.replicaCount | int | `2` |  |
+| timescale.replicaCount | int | `1` |  |
 | timescale.clusterName | string | `"timescale"` |  |
 | timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
 | timescale.pdb.enabled | bool | `true` | Use pdb enabled by default |
@@ -155,6 +155,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
 | timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
 | timescale.loadBalancer.enabled | bool | `false` |  |
+| timescale.timescaledbTune | object | `{"enabled":false}` | Database tuning for timescale |
+| timescale.patroni | object | `{"log":{"level":"DEBUG"},"postgresql":{"create_replica_methods":[],"pgbackrest":{}}}` | Timescale patroni options |
 | timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
@@ -205,8 +207,26 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| automatedPullRequestJob.enabled | bool | `true` |  |
+| automatedPullRequestJob.hpa.enabled | bool | `true` |  |
+| automatedPullRequestJob.hpa.min | int | `2` |  |
+| automatedPullRequestJob.hpa.max | int | `4` |  |
+| automatedPullRequestJob.hpa.metrics[0].type | string | `"Resource"` |  |
+| automatedPullRequestJob.hpa.metrics[0].resource.name | string | `"cpu"` |  |
+| automatedPullRequestJob.hpa.metrics[0].resource.target.type | string | `"Utilization"` |  |
+| automatedPullRequestJob.hpa.metrics[0].resource.target.averageUtilization | int | `80` |  |
+| automatedPullRequestJob.hpa.metrics[1].type | string | `"Resource"` |  |
+| automatedPullRequestJob.hpa.metrics[1].resource.name | string | `"memory"` |  |
+| automatedPullRequestJob.hpa.metrics[1].resource.target.type | string | `"Utilization"` |  |
+| automatedPullRequestJob.hpa.metrics[1].resource.target.averageUtilization | int | `80` |  |
+| automatedPullRequestJob.resources.limits.cpu | string | `"500m"` |  |
+| automatedPullRequestJob.resources.limits.memory | string | `"1024Mi"` |  |
+| automatedPullRequestJob.resources.requests.cpu | string | `"80m"` |  |
+| automatedPullRequestJob.resources.requests.memory | string | `"128Mi"` |  |
+| automatedPullRequestJob.nodeSelector | object | `{}` |  |
+| automatedPullRequestJob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"4.2"` |  |
+| repoScanJob.insightsCIVersion | string | `"5.0"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |

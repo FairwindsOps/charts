@@ -12,9 +12,9 @@ case "$CHANGED" in
   *insights-agent*)
     printf "The changed charts include insights-agent. Running fleet install test\n"
 
-    # We use the be-main server to do the test. This is not ideal but will suffice for now
+    # We use the stable-main server to do the test. This is a server that gets deployed once every night
     # Here we check to make sure that the server is up
-    URL="https://be-main.k8s.insights.fairwinds.com" 
+    URL="https://stable-main.k8s.insights.fairwinds.com" 
     retry=0
     while ! curl -k --no-progress-meter $URL; do
       printf "Server is not up yet. Waiting for it to start...\n";
