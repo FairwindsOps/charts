@@ -12,10 +12,6 @@ metadata:
   name: {{ include "insights-agent.fullname" . }}-fleet-installer
   labels:
     app: insights-agent
-  annotations:
-    "helm.sh/hook-weight": "2"
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 rules:
 - apiGroups: [""]
   resources: ["secrets"]
@@ -27,10 +23,6 @@ metadata:
   name: {{ include "insights-agent.fullname" . }}-fleet-installer
   labels:
     app: insights-agent
-  annotations:
-    "helm.sh/hook-weight": "3"
-    "helm.sh/hook": pre-install,pre-upgrade
-    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
