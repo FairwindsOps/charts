@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.12.0
+* Run fleet installer as part of normal setup instead of as a pre-install/pre-upgrade hook
+
 ## 2.11.1
 * Changed the backend for the fleet installer test
 
