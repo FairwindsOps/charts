@@ -48,6 +48,6 @@
 {{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
 - name: SSL_CERT_FILE
   value: /ssl-cert-file/ca.crt
-  {{- end }}
-  {{- end }}
+{{- end }}
+{{- end }}
 
