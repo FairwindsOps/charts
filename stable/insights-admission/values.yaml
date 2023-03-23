@@ -10,9 +10,9 @@ global:
     no_proxy:
   sslCertFile: {}
     # global.sslCertFile.secretName -- The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API.
-    #secretName:
+    # secretName:
     # global.sslCertFile.secretKey -- The key, within global.sslCertFile.secretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API.
-    #secretKey:
+    # secretKey:
 
 insights:
   # insights.organization -- The name of your Organization from Fairwinds Insights
