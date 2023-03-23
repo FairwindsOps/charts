@@ -24,7 +24,7 @@ spec:
           - |
             {{ .Files.Get "download-kubectl.sh" | nindent 12 }}
           
-            {{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
+            {{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
             export SSL_CERT_FILE='/ssl-cert-file/ca.crt'
             echo "Using SSL certificate file ${SSL_CERT_FILE} from here on..."
             {{- end }}
