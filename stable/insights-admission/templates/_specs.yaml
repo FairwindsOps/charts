@@ -27,25 +27,25 @@
 {{- end }}
 
 {{ define "ssl-cert-file-volume-spec" }}
-{{- if and ((.Values.global.sslCertFile.secretName)) ((.Values.global.sslCertFile.secretKey)) }}
+{{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
 - name: sslcertfile
   secret:
-    secretName: {{ .Values.global.sslCertFile.secretName }}
+    secretName: {{ .Values.global.sslCertFileSecretName }}
     items:
-    - key: {{ .Values.global.sslCertFile.secretKey }}
+    - key: {{ .Values.global.sslCertFileSecretKey }}
       path: ca.crt
 {{- end }}
 {{- end }}
 
 {{ define "ssl-cert-file-volumemount-spec" }}
-{{- if and ((.Values.global.sslCertFile.secretName)) ((.Values.global.sslCertFile.secretKey)) }}
+{{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
 - name: sslcertfile
   mountPath: /ssl-cert-file
 {{- end }}
 {{- end }}
 
 {{ define "ssl-cert-file-env-spec" }}
-{{- if and ((.Values.global.sslCertFile.secretName)) ((.Values.global.sslCertFile.secretKey)) }}
+{{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
 - name: SSL_CERT_FILE
   value: /ssl-cert-file/ca.crt
 {{- end }}

@@ -41,8 +41,8 @@ rules:
 | global.proxy.https | string | `nil` | Annotations used to access the proxy servers(https). |
 | global.proxy.ftp | string | `nil` | Annotations used to access the proxy servers(ftp). |
 | global.proxy.no_proxy | string | `nil` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy. |
-| global.sslCertFile.secretName | string | `nil` | The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API. |
-| global.sslCertFile.secretKey | string | `nil` | The key, within global.sslCertFile.secretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API. |
+| global.sslCertFileSecretName | string | `nil` | The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API. |
+| global.sslCertFileSecretKey | string | `nil` | The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API. |
 | insights.organization | string | `""` | The name of your Organization from Fairwinds Insights |
 | insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
 | insights.host | string | `"https://insights.fairwinds.com"` | Override the hostname for Fairwinds Insights |
