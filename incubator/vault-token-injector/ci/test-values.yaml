@@ -1,3 +1,8 @@
 testing: true
 metrics:
   enabled: true
+cronjob:
+  enabled: true
+deployment:
+  probes:
+    enabled: false
