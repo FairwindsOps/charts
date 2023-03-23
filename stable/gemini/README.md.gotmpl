@@ -16,10 +16,21 @@ See the [Gemini README](https://github.com/FairwindsOps/gemini) for more informa
 ## Installation
 ```bash
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
-helm install gemini fairwinds-stable/gemini --namespace gemini
+helm install gemini fairwinds-stable/gemini --namespace gemini --create-namespace
 ```
 ## Requirements
 
 Your cluster must support the [VolumeSnapshot API](https://kubernetes.io/docs/concepts/storage/volume-snapshots/)
+
+## Upgrading to V2
+Version 2.0 of Gemini updates the CRD from `v1beta1` to `v1`. There are no substantial
+changes, but `v1` adds better support for PersistentVolumeClaims on Kubernetes 1.25.
+
+If you want to keep the v1beta1 CRD available, you can run:
+```
+kubectl apply -f https://raw.githubusercontent.com/FairwindsOps/gemini/main/pkg/types/snapshotgroup/v1beta1/crd-with-beta1.yaml
+```
+before upgrading, and add `--skip-crds` when running `helm install`.
+
 
 {{ template "chart.valuesSection" . }}

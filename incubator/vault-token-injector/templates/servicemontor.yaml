@@ -1,11 +1,11 @@
-{{- if .Values.metrics.serviceMonitor.enabled }}
+{{- if .Values.deployment.metrics.serviceMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ include "vault-token-injector.fullname" . }}
   labels:
     {{- include "vault-token-injector.labels" . | nindent 4 }}
-    {{- with .Values.metrics.serviceMonitor.labels }}
+    {{- with .Values.deployment.metrics.serviceMonitor.labels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
 spec:
@@ -19,6 +19,6 @@ spec:
   endpoints:
   - targetPort: 4329
     path: /metrics
-    interval: {{ .Values.metrics.serviceMonitor.interval }}
-    scrapeTimeout: {{ .Values.metrics.serviceMonitor.scrapeTimeout }}
+    interval: {{ .Values.deployment.metrics.serviceMonitor.interval }}
+    scrapeTimeout: {{ .Values.deployment.metrics.serviceMonitor.scrapeTimeout }}
 {{- end }}
