@@ -48,16 +48,12 @@
   {{- toYaml . | nindent 2 }}
   {{- end }}
   {{ include "proxy-env-spec" . | indent 2 | trim }}
-  {{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
   {{ include "ssl-cert-file-env-spec" . | indent 2 | trim }}
-  {{- end }}
 
   volumeMounts:
   - name: output
     mountPath: /output
-{{- if and .Values.global.sslCertFile.secretName .Values.global.sslCertFile.secretKey }}
 {{ include "ssl-cert-file-volumemount-spec" . | indent 2 }}
-{{- end }}
   resources:
     {{- toYaml .Values.uploader.resources | nindent 4 }}
   securityContext:
