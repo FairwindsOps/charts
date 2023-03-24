@@ -78,7 +78,7 @@ updater:
     # maxUnavailable: 1
   image:
     # updater.image.repository -- The location of the updater image
-    repository: k8s.gcr.io/autoscaling/vpa-updater
+    repository: registry.k8s.io/autoscaling/vpa-updater
     # updater.image.pullPolicy -- The pull policy for the updater image. Recommend not changing this
     pullPolicy: Always
     # updater.image.tag -- Overrides the image tag whose default is the chart appVersion
