@@ -65,6 +65,8 @@ Parameter | Description | Default
 `global.proxy.https` | Annotations used to access the proxy servers(https) | ""
 `global.proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
 `global.proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
+`global.sslCertFileSecretName` | The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API. | ""
+`global.sslCertFileSecretKey` | The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API. | ""
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.imagePullSecret` | A pull secret for a private uploader image
