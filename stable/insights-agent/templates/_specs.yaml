@@ -62,11 +62,14 @@ tolerations:
 securityContext:
   {{- toYaml . | nindent 2 }}
 {{- end }}
-{{- if not .Config.SkipVolumes }}
+{{- if or (not .Config.SkipVolumes) (and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey) }}
 volumes:
+{{- end }}
+{{- if not .Config.SkipVolumes }}
 - name: output
   emptyDir: {}
 {{- end }}
+{{ include "ssl-cert-file-volume-spec" . | trim }}
 {{- end }}
 
 {{ define "container-spec" }}
@@ -79,9 +82,14 @@ imagePullSecrets:
 {{- end }}
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
+{{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
+env:
+{{ include "ssl-cert-file-env-spec" . | trim }}
+{{- end }}
 volumeMounts:
 - name: output
   mountPath: /output
+{{ include "ssl-cert-file-volumemount-spec" . }}
 {{- end }}
 
 {{ define "get-config-container" }}
@@ -140,9 +148,11 @@ initContainers:
   {{- with .Values.uploader.env }}
   {{- toYaml . | nindent 2 }}
   {{- end }}
+  {{ include "ssl-cert-file-env-spec" . | indent 2 }}
   volumeMounts:
   - name: output
     mountPath: /output
+{{ include "ssl-cert-file-volumemount-spec" . | indent 2 }}
   resources:
     {{- toYaml .Values.uploader.resources | nindent 4 }}
   securityContext:
@@ -198,3 +208,28 @@ securityContext:
   value: {{ .Values.global.proxy.no_proxy }}
 {{- end }}
 {{- end }}
+{{ define "ssl-cert-file-volume-spec" }}
+{{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
+- name: sslcertfile
+  secret:
+    secretName: {{ .Values.global.sslCertFileSecretName }}
+    items:
+    - key: {{ .Values.global.sslCertFileSecretKey }}
+      path: ca.crt
+{{- end }}
+{{- end }}
+
+{{ define "ssl-cert-file-volumemount-spec" }}
+{{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
+- name: sslcertfile
+  mountPath: /ssl-cert-file
+{{- end }}
+{{- end }}
+
+{{ define "ssl-cert-file-env-spec" }}
+{{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
+- name: SSL_CERT_FILE
+  value: /ssl-cert-file/ca.crt
+  {{- end }}
+  {{- end }}
+
