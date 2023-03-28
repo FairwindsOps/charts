@@ -28,6 +28,7 @@ spec:
               mountPath: /output
             - name: tmp
               mountPath: /tmp
+            {{ include "ssl-cert-file-volumemount-spec" . | indent 12 }}
             command: ["sh"]
             args:
                 - -c
