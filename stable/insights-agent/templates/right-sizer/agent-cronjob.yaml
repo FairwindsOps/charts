@@ -21,6 +21,7 @@ spec:
               items:
               - key: report
                 path: right-sizer.json
+          {{ include "ssl-cert-file-volume-spec" . | indent 10 }}
           containers:
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.12.0
+* Add the ability to use a custom SSL certificate to validate communication with a self-hosted Insights API.
+
 ## 2.11.1
 * Changed the backend for the fleet installer test
 
