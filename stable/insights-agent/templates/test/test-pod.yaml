@@ -8,6 +8,9 @@ metadata:
     component: test-job
   annotations:
     "helm.sh/hook": post-install,post-upgrade
+    {{- if .Values.global.podAnnotations }}
+    {{ toYaml .Values.global.podAnnotations | indent 4 }}
+    {{- end }}
 spec:
   serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
   restartPolicy: Never

@@ -11,6 +11,11 @@
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
   jobTemplate:
+    {{- if .Values.global.podAnnotations }}
+    metadata:
+      annotations:
+        {{ toYaml .Values.global.podAnnotations | indent 8 }}
+    {{- end }}
     spec:
       {{ include "job-spec" . | nindent 6 | trim }}
       template:

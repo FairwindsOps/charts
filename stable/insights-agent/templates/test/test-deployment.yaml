@@ -18,6 +18,10 @@ spec:
       labels:
         component: test
         app: insights-agent
+      {{- if .Values.global.podAnnotations }}
+      annotations:
+        {{ toYaml .Values.global.podAnnotations | indent 8 }}
+      {{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
