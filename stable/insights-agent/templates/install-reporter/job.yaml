@@ -40,6 +40,7 @@ spec:
           mountPath: /opt/app/values.json
           subPath: values.json
           readOnly: true
+{{ include "ssl-cert-file-volumemount-spec" . | indent 8 }}
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
@@ -50,17 +51,19 @@ spec:
             drop:
               - ALL
         env:
-        - name: FAIRWINDS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              {{ if .Values.insights.tokenSecretName -}}
+          - name: FAIRWINDS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                {{ if .Values.insights.tokenSecretName -}}
               name: {{ .Values.insights.tokenSecretName }}
-              {{ else -}}
+                {{ else -}}
               name: {{ include "insights-agent.fullname" . }}-token
-              {{ end -}}
+                {{ end -}}
               key: token
         {{ include "proxy-env-spec" . | indent 8 | trim }}
+        {{ include "ssl-cert-file-env-spec" . | indent 10 }}
       volumes:
       - name: values
         configMap:
           name: {{ include "insights-agent.fullname" $ }}-values
+{{ include "ssl-cert-file-volume-spec" . | indent 6 }}
