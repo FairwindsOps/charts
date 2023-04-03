@@ -9,11 +9,6 @@ spec:
       {{ include "job-spec" . | nindent 6 | trim }}
       template:
         {{ include "job-spec-metadata" . | nindent 8 | trim }}
-        {{- if .Values.global.podAnnotations }}
-        metadata:
-          annotations:
-            {{ toYaml .Values.global.podAnnotations | indent 12 }}
-        {{- end }}
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           {{ if .Values.polaris.config }}

@@ -11,11 +11,7 @@ spec:
   ttlSecondsAfterFinished: 3000
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
-    {{- if .Values.global.podAnnotations }}
-    metadata:
-      annotations:
-        {{ toYaml .Values.global.podAnnotations | indent 8 }}
-    {{- end }}
+    {{ include "job-spec-metadata" . | nindent 8 | trim }}
     spec:
       restartPolicy: Never
       serviceAccountName: {{ include "insights-agent.fullname" . }}-fleet-installer
