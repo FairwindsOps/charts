@@ -110,6 +110,10 @@ spec:
       affinity:
 {{ toYaml .Values.webhook.affinity | indent 8 }}
 {{- end }}
+{{- if .Values.webhook.topologySpreadConstraints }}
+      topologySpreadConstraints:
+{{ toYaml .Values.webhook.topologySpreadConstraints | indent 6 }}
+      {{- end }}
       volumes:
         {{- with .Values.config }}
         - name: config

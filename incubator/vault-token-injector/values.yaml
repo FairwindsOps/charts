@@ -1,5 +1,38 @@
-# -- We currently only support a single instance
-replicaCount: 1
+deployment:
+  # -- If true, will be run as a deployment. Technically both cronjob and deployment can be enabled at the same time, but why?
+  enabled: true
+  # -- We currently only recommend a single instance
+  replicaCount: 1
+  probes:
+    liveness:
+      # -- If true, a liveness probe will be set on the deployment pods. This probe fails if any errors are encountered.
+      enabled: false
+  metrics:
+    # -- If true, a prometheus endpoint will be enabled on port 4329
+    enabled: true
+    service:
+      enabled: true
+    serviceMonitor:
+      enabled: false
+      interval: 60s
+      scrapeTimeout: 30s
+      labels: {}
+
+cronjob:
+  # -- If true, will be run as a cronjob. Technically both cronjob and deployment can be enabled at the same time, but why?
+  enabled: false
+  # -- The schedule for the cronjob
+  schedule: '7 * * * *'
+  # -- The number of failed jobs to keep around
+  failedJobsHistoryLimit: 1
+  # -- The amount of time to allow the job to run
+  activeDeadlineSeconds: 120
+  # -- the cronjob backoffLimit
+  backoffLimit: 1
+  # -- The number of successful jobs to keep around
+  successfulJobsHistoryLimit: 1
+  # -- restartPolicy
+  restartPolicy: OnFailure
 
 # -- A token for interacting with CircleCI
 circleToken: replaceme
@@ -24,23 +57,12 @@ config:
     vault_role: some-vault-role
     env_variable: VAULT_TOKEN
 
-metrics:
-  # -- If true, a prometheus endpoint will be enabled on port 4329
-  enabled: true
-  service:
-    enabled: true
-  serviceMonitor:
-    enabled: false
-    interval: 60s
-    scrapeTimeout: 30s
-    labels: {}
-
 # -- The klog log level (1-10). WARNING: Log level 10 will print secrets to logs
 logLevel: 1
 
 image:
-  # -- The image repository to pullt he vault-token-injector image from
-  repository: quay.io/fairwinds/vault-token-injector
+  # -- The image repository to pull the vault-token-injector image from
+  repository: us-docker.pkg.dev/fairwinds-ops/oss/vault-token-injector
   # -- This is recommended to be set as Always
   pullPolicy: Always
   # -- Overrides the image tag whose default is the chart appVersion.

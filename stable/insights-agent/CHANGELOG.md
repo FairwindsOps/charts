@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.13.0
+* Run fleet installer as part of normal setup instead of as a pre-install/pre-upgrade hook
+
+This is a **breaking change** for users of fleet-installer on Kubernetes 1.21 and earlier.
+Now, the fleet-installer Job uses a `ttl` to remove itself instead of a helm-hook. `ttl` is
+only available as of 1.22.
+
+## 2.12.0
+* Add the ability to use a custom SSL certificate to validate communication with a self-hosted Insights API.
+
+## 2.11.1
+* Changed the backend for the fleet installer test
+
 ## 2.11.0
 * Bumped AWS costs plugin for new Days parameter
 

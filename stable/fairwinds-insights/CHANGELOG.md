@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.12.10
+* Update application version to 12.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.9
+* Update application version to 11.13. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.8
+* Update application version to 11.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.7
+* Update application version to 11.11. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.6
+* Update application version to 11.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.5
+* Update application version to 11.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.12.4
 * Enable `automatedPullRequestJob` by default and update `repoScanJob.insightsCIVersion` to `5.0` which contains manifests `filename` fix 
 

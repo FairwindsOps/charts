@@ -26,6 +26,7 @@ volumes:
   hostPath:
     path: "/usr/bin"
     type: Directory
+{{ include "ssl-cert-file-volume-spec" . }}
 containers:
 - image: "{{ (index .Values "kube-bench" "image" "repository") }}:{{ (index .Values "kube-bench" "image" "tag") }}"
   imagePullPolicy: Always

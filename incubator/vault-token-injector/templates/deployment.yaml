@@ -1,3 +1,4 @@
+{{- if .Values.deployment.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -38,8 +39,8 @@ spec:
             - -c
             - /config/config.yaml
             - -v{{ .Values.logLevel }}
-            - --enable-metrics={{ .Values.metrics.enabled }}
-          {{- if .Values.metrics.enabled }}
+            - --enable-metrics={{ .Values.deployment.metrics.enabled }}
+          {{- if .Values.deployment.metrics.enabled }}
           ports:
           - containerPort: 4329
             name: metrics
@@ -61,10 +62,12 @@ spec:
           - name: "VAULT_TOKEN_FILE"
             value: {{ .Values.vaultTokenFile | quote }}
           {{- end }}
+          {{- if .Values.deployment.probes.liveness.enabled }}
           livenessProbe:
             httpGet:
               path: /health
               port: metrics
+          {{- end }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -81,3 +84,4 @@ spec:
       - name: config
         configMap:
           name: {{ include "vault-token-injector.fullname" . }}
+{{- end }}
