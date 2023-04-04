@@ -25,10 +25,10 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/component: daemonset
-    {{- if .Values.global.podAnnotations }}
+      {{- if .Values.customJobAnnotations }}
       annotations:
-        {{ toYaml .Values.global.podAnnotations | indent 8 }}
-    {{- end }}
+        {{- toYaml .Values.customJobAnnotations | nindent 8 }}
+      {{- end }}
     spec:
       {{- include "kubebench.container.spec" . | nindent 6}}
 {{- end -}}

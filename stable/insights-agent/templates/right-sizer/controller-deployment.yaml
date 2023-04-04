@@ -20,9 +20,9 @@ spec:
       labels:
         component: right-sizer
         app: insights-agent
-      {{- if .Values.global.podAnnotations }}
+      {{- if .Values.customJobAnnotations }}
       annotations:
-        {{ toYaml .Values.global.podAnnotations | indent 8 }}
+        {{- toYaml .Values.customJobAnnotations | nindent 8 }}
       {{- end }}
     spec:
       {{- with (index .Values "right-sizer" "imagePullSecrets") }}

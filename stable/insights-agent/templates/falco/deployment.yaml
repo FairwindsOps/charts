@@ -9,10 +9,6 @@ kind: Deployment
 {{- end }}
 metadata:
   {{- include "metadata" . }}
-  {{- if .Values.global.podAnnotations }}
-    annotations:
-      {{ toYaml .Values.global.podAnnotations | indent 6 }}
-    {{- end }}
 spec:
   selector:
     matchLabels:

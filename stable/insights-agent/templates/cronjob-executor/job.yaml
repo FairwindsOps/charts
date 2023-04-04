@@ -11,7 +11,10 @@ spec:
   ttlSecondsAfterFinished: 3600
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
-    {{ include "job-spec-metadata" . | nindent 8 | trim }}
+    {{- if .Values.customJobAnnotations }}
+    annotations:
+      {{- toYaml .Values.customJobAnnotations | nindent 6 }}
+    {{- end }}
     spec:
       restartPolicy: Never
       serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
