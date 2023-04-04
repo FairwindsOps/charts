@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.13.1
+* Add customWorkloadAnnotations for additional workload annotations
+
 ## 2.12.0
 * Add the ability to use a custom SSL certificate to validate communication with a self-hosted Insights API.
 
