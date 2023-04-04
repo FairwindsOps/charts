@@ -61,6 +61,7 @@ spec:
           - name: secret
             mountPath: /opt/cert/
             readOnly: true
+{{ include "ssl-cert-file-volumemount-spec" . | indent 10 }}
           env:
           # This is always specified as pluto is enabled in Insights settings.
           - name: PLUTO_TARGET_VERSIONS
@@ -94,6 +95,7 @@ spec:
           - name: FAIRWINDS_IGNORE_USERNAMES
             value: {{ .Values.ignoreRequestUsernames }}
           {{ include "proxy-env-spec" . | indent 10 | trim }}
+          {{ include "ssl-cert-file-env-spec" . | indent 10 }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
@@ -103,6 +105,10 @@ spec:
       {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{ toYaml .Values.topologySpreadConstraints | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
       tolerations:
@@ -115,4 +121,5 @@ spec:
           secretName: {{ . }}
           {{- else }}
           secretName: {{ include "insights-admission.fullname" . }}
+{{ include "ssl-cert-file-volume-spec" . | indent 6 }}
           {{- end }}

@@ -16,6 +16,10 @@ global:
     # global.proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
     no_proxy:
 
+  # global.sslCertFileSecretName -- The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API.
+  sslCertFileSecretName:
+  # global.sslCertFileSecretKey -- The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API.
+  sslCertFileSecretKey:
 rbac:
   disabled: false
 

@@ -41,6 +41,8 @@ rules:
 | global.proxy.https | string | `nil` | Annotations used to access the proxy servers(https). |
 | global.proxy.ftp | string | `nil` | Annotations used to access the proxy servers(ftp). |
 | global.proxy.no_proxy | string | `nil` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy. |
+| global.sslCertFileSecretName | string | `nil` | The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API. |
+| global.sslCertFileSecretKey | string | `nil` | The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API. |
 | insights.organization | string | `""` | The name of your Organization from Fairwinds Insights |
 | insights.cluster | string | `""` | The name of your cluster from Fairwinds Insights |
 | insights.host | string | `"https://insights.fairwinds.com"` | Override the hostname for Fairwinds Insights |
@@ -92,6 +94,7 @@ rules:
 | ignoreRequestUsernames | string | `"system:addon-manager"` | Specify a comma-separated list of usernames whos admission-requests will be ignored. This is useful for automation that regularly updates in-cluster resources. |
 | nodeSelector | object | `{}` | nodSelector to add to the controller. |
 | tolerations | list | `[]` | Toleratations to add to the controller. |
+| topologySpreadConstraints | list | `[{"labelSelector":{"matchLabels":{"component":"controller"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"component":"controller"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | TopologySpreadConstraints to add to the controller. |
 | affinity | object | `{}` | Pod affinity/anti-affinity rules |
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
 | secretName | string | `""` | If you are providing your own certificate then this is the name of the secret holding the certificate. |

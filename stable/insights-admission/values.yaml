@@ -8,6 +8,10 @@ global:
     ftp:
     # global.proxy.no_proxy -- Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy.
     no_proxy:
+  # global.sslCertFileSecretName -- The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API.
+  sslCertFileSecretName:
+  # global.sslCertFileSecretKey -- The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API.
+  sslCertFileSecretKey:
 
 insights:
   # insights.organization -- The name of your Organization from Fairwinds Insights
@@ -206,6 +210,20 @@ nodeSelector: {}
 # tolerations -- Toleratations to add to the controller.
 tolerations: []
 
+# topologySpreadConstraints -- TopologySpreadConstraints to add to the controller.
+topologySpreadConstraints:
+  - maxSkew: 1
+    topologyKey: topology.kubernetes.io/zone
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        component: controller
+  - maxSkew: 1
+    topologyKey: kubernetes.io/hostname
+    whenUnsatisfiable: ScheduleAnyway
+    labelSelector:
+      matchLabels:
+        component: controller
 # affinity -- Pod affinity/anti-affinity rules
 affinity: {}
 
