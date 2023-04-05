@@ -22,8 +22,7 @@ global:
   sslCertFileSecretKey:
 
   # customWorkloadAnnotations -- Annotations to apply to all workloads. (excluding Falco, uses metadata)
-  customWorkloadAnnotations:
-    ad.datadoghq.com/metrics-server.tags: '{"team": "fairwinds"}'
+  customWorkloadAnnotations: {}
 rbac:
   disabled: false
 
