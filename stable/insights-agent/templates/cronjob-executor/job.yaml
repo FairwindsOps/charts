@@ -11,9 +11,10 @@ spec:
   ttlSecondsAfterFinished: 3600
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
-    {{- if .Values.customJobAnnotations }}
-    annotations:
-      {{- toYaml .Values.customJobAnnotations | nindent 6 }}
+    {{- with .Values.global.customWorkloadAnnotations }}
+    metadata:
+      annotations:
+        {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
       restartPolicy: Never

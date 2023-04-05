@@ -18,9 +18,9 @@ spec:
       labels:
         component: test
         app: insights-agent
-      {{- if .Values.customJobAnnotations }}
+      {{- with .Values.global.customWorkloadAnnotations }}
       annotations:
-        {{- toYaml .Values.customJobAnnotations | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
       containers:

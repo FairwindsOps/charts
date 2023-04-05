@@ -20,9 +20,9 @@ spec:
           labels:
             app: {{ template "helm-release-pruner.name" . }}
             release: {{ .Release.Name }}
-          {{- if .Values.podAnnotations }}
+          {{- with .Values.podAnnotations }}
           annotations:
-            {{ toYaml .Values.podAnnotations | indent 12 }}
+            {{- toYaml . | nindent 12 }}
           {{- end }}
         spec:
           {{- if .Values.job.serviceAccount.create }}
