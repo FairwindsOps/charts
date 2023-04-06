@@ -1,4 +1,6 @@
 # Changelog
+## 2.14.0
+* Update versions for polaris, goldilocks, pluto, prometheus, trivy, and uploader
 
 ## 2.13.1
 * Add customWorkloadAnnotations for additional workload annotations
