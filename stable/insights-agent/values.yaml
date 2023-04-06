@@ -20,6 +20,9 @@ global:
   sslCertFileSecretName:
   # global.sslCertFileSecretKey -- The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API.
   sslCertFileSecretKey:
+
+  # customWorkloadAnnotations -- Annotations to apply to all workloads. (excluding Falco, uses metadata)
+  customWorkloadAnnotations: {}
 rbac:
   disabled: false
 
