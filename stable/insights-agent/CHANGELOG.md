@@ -1,4 +1,7 @@
 # Changelog
+## 2.14.1
+* Update Goldilocks chart version to 6.5.*
+
 ## 2.14.0
 * Update versions for polaris, goldilocks, pluto, prometheus, trivy, and uploader
 
