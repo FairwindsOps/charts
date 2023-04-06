@@ -8,6 +8,11 @@ spec:
   ttlSecondsAfterFinished: 3000
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
+    {{- with .Values.global.customWorkloadAnnotations }}
+    metadata:
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     spec:
       restartPolicy: Never
       serviceAccountName: {{ include "insights-agent.fullname" . }}-fleet-installer

@@ -1,4 +1,6 @@
 # Changelog
+## 2.14.2
+* Add customWorkloadAnnotations for additional workload annotations
 ## 2.14.1
 * Update Goldilocks chart version to 6.5.*
 

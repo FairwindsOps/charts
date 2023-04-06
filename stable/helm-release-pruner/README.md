@@ -43,6 +43,7 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | image.repository | string | `"quay.io/fairwinds/helm-release-pruner"` | Repo for image that the job runs on |
 | image.tag | string | `"v3.2.1"` | The image tag to use |
 | image.pullPolicy | string | `"Always"` | The image pull policy. We do not recommend changing this |
+| podAnnotations | object | `{}` |  |
 | job.backoffLimit | int | `3` | The backoff limit for the job |
 | job.restartPolicy | string | `"Never"` |  |
 | job.schedule | string | `"0 */4 * * *"` | The schedule for the cronjob to run on |
