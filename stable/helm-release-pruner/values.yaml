@@ -8,6 +8,8 @@ image:
   # image.pullPolicy -- The image pull policy. We do not recommend changing this
   pullPolicy: Always
 
+podAnnotations: {}
+
 job:
   # job.backoffLimit -- The backoff limit for the job
   backoffLimit: 3

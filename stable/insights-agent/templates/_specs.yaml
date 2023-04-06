@@ -45,6 +45,9 @@ activeDeadlineSeconds: {{ mul .Config.timeout .Values.cronjobs.backoffLimit }}
 metadata:
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+    {{- if .Values.global.customWorkloadAnnotations }}
+    {{- toYaml .Values.global.customWorkloadAnnotations | nindent 4 }}
+    {{- end }}
 {{- end }}
 
 {{ define "job-template-spec" }}
