@@ -1,4 +1,7 @@
 # Changelog
+## 2.15.0
+* Update pluto, and detect in-cluster resources using the `last-applied-configuration` annotation.
+
 ## 2.14.2
 * Add customWorkloadAnnotations for additional workload annotations
 ## 2.14.1
