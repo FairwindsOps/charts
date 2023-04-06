@@ -1,4 +1,7 @@
 # Changelog
+## 2.14.2
+* Adding annotation to all cuddlefissh related workloads
+
 ## 2.14.1
 * Add customWorkloadAnnotations for additional workload annotations
 
