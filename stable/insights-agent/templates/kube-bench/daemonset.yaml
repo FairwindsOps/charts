@@ -25,6 +25,10 @@ spec:
         app.kubernetes.io/instance: {{ .Release.Name }}
         app.kubernetes.io/managed-by: {{ .Release.Service }}
         app.kubernetes.io/component: daemonset
+          {{- with .Values.global.customWorkloadAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       {{- include "kubebench.container.spec" . | nindent 6}}
 {{- end -}}
