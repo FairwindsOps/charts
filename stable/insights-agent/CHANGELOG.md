@@ -1,4 +1,6 @@
 # Changelog
+## 2.14.0
+* Update versions for polaris, goldilocks, pluto, prometheus, trivy, and uploader
 
 ## 2.13.0
 * Run fleet installer as part of normal setup instead of as a pre-install/pre-upgrade hook
