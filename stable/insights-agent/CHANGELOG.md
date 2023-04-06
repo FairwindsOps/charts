@@ -1,8 +1,12 @@
 # Changelog
-
-
-## 2.13.1
+## 2.15.0
 * Update pluto, and detect in-cluster resources using the `last-applied-configuration` annotation.
+
+## 2.14.1
+* Update Goldilocks chart version to 6.5.*
+
+## 2.14.0
+* Update versions for polaris, goldilocks, pluto, prometheus, trivy, and uploader
 
 ## 2.13.0
 * Run fleet installer as part of normal setup instead of as a pre-install/pre-upgrade hook
