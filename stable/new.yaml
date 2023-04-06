@@ -1,0 +1,5953 @@
+---
+# Source: insights-agent/charts/insights-admission/templates/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: insightsagent-insights-agent-admission
+  labels:
+    helm.sh/chart: insights-admission-1.6.0
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "1.9"
+    app.kubernetes.io/managed-by: Helm
+  namespace: insights-agent-3f6s40oruj
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: insights-agent
+      app.kubernetes.io/instance: insightsagent
+  minAvailable: 1
+---
+# Source: insights-agent/charts/insights-admission/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent
+  labels:
+    helm.sh/chart: insights-admission-1.6.0
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "1.9"
+    app.kubernetes.io/managed-by: Helm
+---
+# Source: insights-agent/charts/prometheus/charts/kube-state-metrics/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:    
+    helm.sh/chart: kube-state-metrics-4.7.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "2.4.1"
+  name: insightsagent-kube-state-metrics
+  namespace: insights-agent-3f6s40oruj
+imagePullSecrets:
+  []
+---
+# Source: insights-agent/charts/prometheus/templates/server/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: insightsagent
+    chart: prometheus-15.8.7
+    heritage: Helm
+  name: prometheus-server
+  namespace: insights-agent-3f6s40oruj
+  annotations:
+    {}
+---
+# Source: insights-agent/templates/cronjob-executor/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-cronjob-executor
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/kube-bench/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-kube-bench
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/kube-hunter/service-account.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-kube-hunter
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/nova/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-nova
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/opa/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-opa
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/pluto/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-pluto
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/polaris/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-polaris
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/prometheus-metrics/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-prometheus-metrics
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/trivy/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-trivy
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/workloads/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: insightsagent-insights-agent-workloads
+  labels:
+    app: insights-agent
+---
+# Source: insights-agent/templates/token-secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: insightsagent-insights-agent-token
+data:
+  token: "Zm9v"
+---
+# Source: insights-agent/charts/prometheus/templates/server/cm.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: insightsagent
+    chart: prometheus-15.8.7
+    heritage: Helm
+  name: prometheus-server
+  namespace: insights-agent-3f6s40oruj
+data:
+  alerting_rules.yml: |
+    {}
+  alerts: |
+    {}
+  prometheus.yml: |
+    global:
+      evaluation_interval: 1m
+      scrape_interval: 1m
+      scrape_timeout: 10s
+    rule_files:
+    - /etc/config/recording_rules.yml
+    - /etc/config/alerting_rules.yml
+    - /etc/config/rules
+    - /etc/config/alerts
+    scrape_configs:
+    - job_name: prometheus
+      static_configs:
+      - targets:
+        - localhost:9090
+    - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      job_name: kubernetes-apiservers
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        regex: default;kubernetes;https
+        source_labels:
+        - __meta_kubernetes_namespace
+        - __meta_kubernetes_service_name
+        - __meta_kubernetes_endpoint_port_name
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+    - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      job_name: kubernetes-nodes
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - replacement: kubernetes.default.svc:443
+        target_label: __address__
+      - regex: (.+)
+        replacement: /api/v1/nodes/$1/proxy/metrics
+        source_labels:
+        - __meta_kubernetes_node_name
+        target_label: __metrics_path__
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+    - bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      job_name: kubernetes-nodes-cadvisor
+      kubernetes_sd_configs:
+      - role: node
+      relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - replacement: kubernetes.default.svc:443
+        target_label: __address__
+      - regex: (.+)
+        replacement: /api/v1/nodes/$1/proxy/metrics/cadvisor
+        source_labels:
+        - __meta_kubernetes_node_name
+        target_label: __metrics_path__
+      scheme: https
+      tls_config:
+        ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+        insecure_skip_verify: true
+    - honor_labels: true
+      job_name: kubernetes-service-endpoints
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape
+      - action: drop
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        - __address__
+        - __meta_kubernetes_service_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: node
+    - honor_labels: true
+      job_name: kubernetes-service-endpoints-slow
+      kubernetes_sd_configs:
+      - role: endpoints
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        - __address__
+        - __meta_kubernetes_service_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_service_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_node_name
+        target_label: node
+      scrape_interval: 5m
+      scrape_timeout: 30s
+    - honor_labels: true
+      job_name: prometheus-pushgateway
+      kubernetes_sd_configs:
+      - role: service
+      relabel_configs:
+      - action: keep
+        regex: pushgateway
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_probe
+    - honor_labels: true
+      job_name: kubernetes-services
+      kubernetes_sd_configs:
+      - role: service
+      metrics_path: /probe
+      params:
+        module:
+        - http_2xx
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_service_annotation_prometheus_io_probe
+      - source_labels:
+        - __address__
+        target_label: __param_target
+      - replacement: blackbox
+        target_label: __address__
+      - source_labels:
+        - __param_target
+        target_label: instance
+      - action: labelmap
+        regex: __meta_kubernetes_service_label_(.+)
+      - source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - source_labels:
+        - __meta_kubernetes_service_name
+        target_label: service
+    - honor_labels: true
+      job_name: kubernetes-pods
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape
+      - action: drop
+        regex: true
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        - __address__
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - action: drop
+        regex: Pending|Succeeded|Failed|Completed
+        source_labels:
+        - __meta_kubernetes_pod_phase
+    - honor_labels: true
+      job_name: kubernetes-pods-slow
+      kubernetes_sd_configs:
+      - role: pod
+      relabel_configs:
+      - action: keep
+        regex: true
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scrape_slow
+      - action: replace
+        regex: (https?)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_scheme
+        target_label: __scheme__
+      - action: replace
+        regex: (.+)
+        source_labels:
+        - __meta_kubernetes_pod_annotation_prometheus_io_path
+        target_label: __metrics_path__
+      - action: replace
+        regex: ([^:]+)(?::\d+)?;(\d+)
+        replacement: $1:$2
+        source_labels:
+        - __address__
+        - __meta_kubernetes_pod_annotation_prometheus_io_port
+        target_label: __address__
+      - action: labelmap
+        regex: __meta_kubernetes_pod_annotation_prometheus_io_param_(.+)
+        replacement: __param_$1
+      - action: labelmap
+        regex: __meta_kubernetes_pod_label_(.+)
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_namespace
+        target_label: namespace
+      - action: replace
+        source_labels:
+        - __meta_kubernetes_pod_name
+        target_label: pod
+      - action: drop
+        regex: Pending|Succeeded|Failed|Completed
+        source_labels:
+        - __meta_kubernetes_pod_phase
+      scrape_interval: 5m
+      scrape_timeout: 30s
+  recording_rules.yml: |
+    {}
+  rules: |
+    {}
+---
+# Source: insights-agent/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: insightsagent-insights-agent-configmap
+data:
+  host: "http://insights-agent-test:8080"
+  cluster: "us-east-1"
+  organization: "acme-co"
+---
+# Source: insights-agent/templates/install-reporter/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: insightsagent-insights-agent-values
+  labels:
+    app: insights-agent
+  annotations:
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+data:
+  values.json: |
+    
+    
+    
+    {
+      "values": {
+        "admission": {
+          "enabled": true
+        },
+        "awscosts": {
+          "awsAccessKeyId": "someAccessID",
+          "awsSecretAccessKey": "someAccessKey",
+          "catalog": "AwsDataCatalog",
+          "containerSecurityContext": {},
+          "database": "athena_cur_database",
+          "enabled": false,
+          "image": {
+            "repository": "quay.io/fairwinds/aws-costs",
+            "tag": "1.2"
+          },
+          "region": "us-east-1",
+          "resources": {
+            "requests": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "secretName": "awscosts-secret",
+          "securityContext": {},
+          "serviceAccount": {
+            "annotations": null
+          },
+          "table": "fairwinds_insights_cur_report",
+          "tagkey": "kubernetes_cluster",
+          "tagvalue": "staging.internal.reactiveops.com",
+          "timeout": 300,
+          "workgroup": "cur_athena_workgroup"
+        },
+        "cronjobExecutor": {
+          "image": {
+            "repository": "quay.io/fairwinds/insights-utils",
+            "tag": "0.0"
+          },
+          "resources": {
+            "requests": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          }
+        },
+        "cronjobs": {
+          "apiVersion": "",
+          "backoffLimit": 1,
+          "disableServiceMesh": true,
+          "failedJobsHistoryLimit": 2,
+          "nodeSelector": null,
+          "runJobsImmediately": true,
+          "successfulJobsHistoryLimit": 2
+        },
+        "falco": {
+          "containerSecurityContext": {
+            "allowPrivilegeEscalation": false,
+            "capabilities": {
+              "drop": [
+                "ALL"
+              ]
+            },
+            "readOnlyRootFilesystem": true,
+            "runAsNonRoot": true,
+            "runAsUser": 1200
+          },
+          "enabled": false,
+          "image": {
+            "pullPolicy": "Always",
+            "repository": "quay.io/fairwinds/falco-agent",
+            "tag": "0.2"
+          },
+          "installFalco": false,
+          "persistence": {
+            "accessModes": [
+              "ReadWriteOnce"
+            ],
+            "annotations": {},
+            "enabled": true,
+            "size": "1Gi",
+            "storageClass": ""
+          },
+          "podSecurityContext": {
+            "fsGroup": 101,
+            "runAsNonRoot": true,
+            "runAsUser": 1200
+          },
+          "resources": {
+            "limits": {
+              "cpu": "250m",
+              "memory": "512Mi"
+            },
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "service": {
+            "port": 3031
+          },
+          "statefulset": true,
+          "timeout": 300,
+          "tolerations": []
+        },
+        "falcosecurity": {
+          "affinity": {},
+          "auditLog": {
+            "dynamicBackend": {
+              "enabled": false,
+              "url": ""
+            },
+            "enabled": false
+          },
+          "certs": {
+            "ca": {
+              "crt": ""
+            },
+            "existingSecret": "",
+            "server": {
+              "crt": "",
+              "key": ""
+            }
+          },
+          "containerd": {
+            "enabled": true,
+            "socket": "/run/containerd/containerd.sock"
+          },
+          "customRules": {},
+          "daemonset": {
+            "env": {},
+            "podAnnotations": {},
+            "updateStrategy": {
+              "type": "RollingUpdate"
+            }
+          },
+          "docker": {
+            "enabled": true,
+            "socket": "/var/run/docker.sock"
+          },
+          "ebpf": {
+            "enabled": false,
+            "path": null,
+            "settings": {
+              "hostNetwork": true
+            }
+          },
+          "extraArgs": [],
+          "extraInitContainers": [],
+          "extraVolumeMounts": [],
+          "extraVolumes": [],
+          "fakeEventGenerator": {
+            "args": [
+              "run",
+              "--loop",
+              "^syscall"
+            ],
+            "enabled": false,
+            "replicas": 1
+          },
+          "falco": {
+            "bufferedOutputs": false,
+            "fileOutput": {
+              "enabled": false,
+              "filename": "./events.txt",
+              "keepAlive": false
+            },
+            "grpc": {
+              "certChain": "/etc/falco/certs/server.crt",
+              "enabled": false,
+              "listenPort": 5060,
+              "privateKey": "/etc/falco/certs/server.key",
+              "rootCerts": "/etc/falco/certs/ca.crt",
+              "threadiness": 0,
+              "unixSocketPath": "unix:///var/run/falco/falco.sock"
+            },
+            "grpcOutput": {
+              "enabled": false
+            },
+            "httpOutput": {
+              "enabled": false,
+              "url": "http://some.url",
+              "userAgent": "falcosecurity/falco"
+            },
+            "jsonIncludeOutputProperty": true,
+            "jsonIncludeTagsProperty": true,
+            "jsonOutput": true,
+            "livenessProbe": {
+              "initialDelaySeconds": 60,
+              "periodSeconds": 15,
+              "timeoutSeconds": 5
+            },
+            "loadPlugins": [],
+            "logLevel": "info",
+            "logStderr": true,
+            "logSyslog": true,
+            "metadataDownload": {
+              "chunkWaitUs": 1000,
+              "maxMb": 100,
+              "watchFreqSec": 1
+            },
+            "output_timeout": 2000,
+            "outputs": {
+              "maxBurst": 1000,
+              "rate": 1
+            },
+            "plugins": [
+              {
+                "init_config": "",
+                "library_path": "libcloudtrail.so",
+                "name": "cloudtrail",
+                "open_params": ""
+              },
+              {
+                "init_config": "",
+                "library_path": "libjson.so",
+                "name": "json"
+              }
+            ],
+            "priority": "debug",
+            "programOutput": {
+              "enabled": false,
+              "keepAlive": false,
+              "program": "mail -s \"Falco Notification\" someone@example.com"
+            },
+            "readinessProbe": {
+              "initialDelaySeconds": 30,
+              "periodSeconds": 15,
+              "timeoutSeconds": 5
+            },
+            "rulesFile": [
+              "/etc/falco/falco_rules.yaml",
+              "/etc/falco/falco_rules.local.yaml",
+              "/etc/falco/k8s_audit_rules.yaml",
+              "/etc/falco/rules.d"
+            ],
+            "stdoutOutput": {
+              "enabled": true
+            },
+            "syscallEventDrops": {
+              "actions": [
+                "log",
+                "alert"
+              ],
+              "maxBurst": 1,
+              "rate": 0.03333,
+              "threshold": 0.1
+            },
+            "syscallEventTimeouts": {
+              "maxConsecutives": 1000
+            },
+            "syslogOutput": {
+              "enabled": true
+            },
+            "timeFormatISO8601": false,
+            "webserver": {
+              "enabled": true,
+              "k8sAuditEndpoint": "/k8s-audit",
+              "k8sHealthzEndpoint": "/healthz",
+              "listenPort": 8765,
+              "nodePort": false,
+              "sslCertificate": "/etc/falco/certs/server.pem",
+              "sslEnabled": false
+            }
+          },
+          "falcosidekick": {
+            "affinity": {},
+            "config": {
+              "alertmanager": {
+                "checkcert": true,
+                "hostport": "",
+                "minimumpriority": "",
+                "mutualtls": false
+              },
+              "aws": {
+                "accesskeyid": "",
+                "cloudwatchlogs": {
+                  "loggroup": "",
+                  "logstream": "",
+                  "minimumpriority": ""
+                },
+                "lambda": {
+                  "functionname": "",
+                  "minimumpriority": ""
+                },
+                "region": "",
+                "rolearn": "",
+                "s3": {
+                  "bucket": "",
+                  "minimumpriority": "",
+                  "prefix": ""
+                },
+                "secretaccesskey": "",
+                "sns": {
+                  "minimumpriority": "",
+                  "rawjson": false,
+                  "topicarn": ""
+                },
+                "sqs": {
+                  "minimumpriority": "",
+                  "url": ""
+                }
+              },
+              "azure": {
+                "eventHub": {
+                  "minimumpriority": "",
+                  "name": "",
+                  "namespace": ""
+                },
+                "podIdentityClientID": "",
+                "podIdentityName": "",
+                "resourceGroupName": "",
+                "subscriptionID": ""
+              },
+              "cloudevents": {
+                "address": "",
+                "extension": "",
+                "minimumpriority": ""
+              },
+              "customfields": "",
+              "datadog": {
+                "apikey": "",
+                "host": "",
+                "minimumpriority": ""
+              },
+              "debug": false,
+              "discord": {
+                "icon": "",
+                "minimumpriority": "",
+                "webhookurl": ""
+              },
+              "dogstatsd": {
+                "forwarder": "",
+                "namespace": "falcosidekick.",
+                "tags": ""
+              },
+              "elasticsearch": {
+                "checkcert": true,
+                "hostport": "",
+                "index": "falco",
+                "minimumpriority": "",
+                "mutualtls": false,
+                "password": "",
+                "type": "event",
+                "username": ""
+              },
+              "existingSecret": "",
+              "extraEnv": [],
+              "fission": {
+                "checkcert": true,
+                "function": "",
+                "minimumpriority": "",
+                "mutualtls": false,
+                "routernamespace": "fission",
+                "routerport": 80,
+                "routerservice": "router"
+              },
+              "gcp": {
+                "cloudfunctions": {
+                  "minimumpriority": "",
+                  "name": ""
+                },
+                "cloudrun": {
+                  "endpoint": "",
+                  "jwt": "",
+                  "minimumpriority": ""
+                },
+                "credentials": "",
+                "pubsub": {
+                  "minimumpriority": "",
+                  "projectid": "",
+                  "topic": ""
+                },
+                "storage": {
+                  "bucket": "",
+                  "minimumpriority": "debug",
+                  "prefix": ""
+                }
+              },
+              "googlechat": {
+                "messageformat": "",
+                "minimumpriority": "",
+                "outputformat": "all",
+                "webhookurl": ""
+              },
+              "grafana": {
+                "allfieldsastags": false,
+                "apikey": "",
+                "checkcert": true,
+                "dashboardid": "",
+                "hostport": "",
+                "minimumpriority": "",
+                "mutualtls": false,
+                "panelid": ""
+              },
+              "influxdb": {
+                "checkcert": true,
+                "database": "falco",
+                "hostport": "",
+                "minimumpriority": "",
+                "mutualtls": false,
+                "password": "",
+                "user": ""
+              },
+              "kafka": {
+                "hostport": "",
+                "messageformat": "",
+                "minimumpriority": "",
+                "partition": "0",
+                "topic": ""
+              },
+              "kafkarest": {
+                "address": "",
+                "checkcert": true,
+                "minimumpriority": "",
+                "mutualtls": false,
+                "version": 2
+              },
+              "kubeless": {
+                "checkcert": true,
+                "function": "",
+                "minimumpriority": "",
+                "mutualtls": false,
+                "namespace": "",
+                "port": 8080
+              },
+              "loki": {
+                "checkcert": true,
+                "hostport": "",
+                "minimumpriority": "",
+                "mutualtls": false
+              },
+              "mattermost": {
+                "checkcert": true,
+                "footer": "",
+                "icon": "",
+                "messageformat": "",
+                "minimumpriority": "",
+                "mutualtls": false,
+                "outputformat": "all",
+                "username": "",
+                "webhookurl": ""
+              },
+              "mutualtlsfilespath": "/etc/certs",
+              "nats": {
+                "checkcert": true,
+                "hostport": "",
+                "minimumpriority": "",
+                "mutualtls": false
+              },
+              "openfaas": {
+                "checkcert": true,
+                "functionname": "",
+                "functionnamespace": "openfaas-fn",
+                "gatewaynamespace": "openfaas",
+                "gatewayport": 8080,
+                "gatewayservice": "gateway",
+                "minimumpriority": "",
+                "mutualtls": false
+              },
+              "opsgenie": {
+                "apikey": "",
+                "checkcert": true,
+                "minimumpriority": "",
+                "mutualtls": false,
+                "region": ""
+              },
+              "pagerduty": {
+                "minimumpriority": "",
+                "routingkey": ""
+              },
+              "rabbitmq": {
+                "minimumpriority": "debug",
+                "queue": "",
+                "url": ""
+              },
+              "rocketchat": {
+                "checkcert": true,
+                "icon": "",
+                "messageformat": "",
+                "minimumpriority": "",
+                "mutualtls": false,
+                "outputformat": "all",
+                "username": "",
+                "webhookurl": ""
+              },
+              "slack": {
+                "footer": "",
+                "icon": "",
+                "messageformat": "",
+                "minimumpriority": "",
+                "outputformat": "all",
+                "username": "",
+                "webhookurl": ""
+              },
+              "smtp": {
+                "from": "",
+                "hostport": "",
+                "minimumpriority": "",
+                "outputformat": "html",
+                "password": "",
+                "to": "",
+                "user": ""
+              },
+              "stan": {
+                "checkcert": true,
+                "clientid": "",
+                "clusterid": "",
+                "hostport": "",
+                "minimumpriority": "",
+                "mutualtls": false
+              },
+              "statsd": {
+                "forwarder": "",
+                "namespace": "falcosidekick."
+              },
+              "teams": {
+                "activityimage": "",
+                "minimumpriority": "",
+                "outputformat": "all",
+                "webhookurl": ""
+              },
+              "wavefront": {
+                "batchsize": 10000,
+                "endpointhost": "",
+                "endpointmetricport": 2878,
+                "endpointtoken": "",
+                "endpointtype": "",
+                "flushintervalseconds": 1,
+                "metricname": "falco.alert",
+                "minimumpriority": "debug"
+              },
+              "webhook": {
+                "address": "http://falco-agent:3031/data",
+                "checkcert": true,
+                "customHeaders": "",
+                "minimumpriority": "",
+                "mutualtls": false
+              },
+              "yandex": {
+                "accesskeyid": "",
+                "region": "",
+                "s3": {
+                  "bucket": "",
+                  "endpoint": "",
+                  "minimumpriority": "",
+                  "prefix": ""
+                },
+                "secretaccesskey": ""
+              }
+            },
+            "enabled": true,
+            "extraVolumeMounts": [],
+            "extraVolumes": [],
+            "fullfqdn": true,
+            "fullnameOverride": "",
+            "global": {
+              "customWorkloadAnnotations": {},
+              "proxy": {
+                "ftp": null,
+                "http": null,
+                "https": null,
+                "no_proxy": null
+              },
+              "sslCertFileSecretKey": null,
+              "sslCertFileSecretName": null
+            },
+            "image": {
+              "pullPolicy": "IfNotPresent",
+              "registry": "docker.io",
+              "repository": "falcosecurity/falcosidekick",
+              "tag": "2.24.0"
+            },
+            "imagePullSecrets": [],
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [
+                {
+                  "host": "falcosidekick.local",
+                  "paths": [
+                    {
+                      "path": "/"
+                    }
+                  ]
+                }
+              ],
+              "tls": []
+            },
+            "nameOverride": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podSecurityContext": {
+              "fsGroup": 1234,
+              "runAsUser": 1234
+            },
+            "podSecurityPolicy": {
+              "create": false
+            },
+            "priorityClassName": "",
+            "replicaCount": 2,
+            "resources": {},
+            "service": {
+              "annotations": {},
+              "port": 2801,
+              "type": "ClusterIP"
+            },
+            "tolerations": [],
+            "webui": {
+              "affinity": {},
+              "darkmode": false,
+              "enabled": true,
+              "image": {
+                "pullPolicy": "IfNotPresent",
+                "registry": "docker.io",
+                "repository": "falcosecurity/falcosidekick-ui",
+                "tag": "v1.1.0"
+              },
+              "imagePullSecrets": [],
+              "ingress": {
+                "annotations": {},
+                "enabled": false,
+                "hosts": [
+                  {
+                    "host": "falcosidekick-ui.local",
+                    "paths": [
+                      {
+                        "path": "/ui"
+                      },
+                      {
+                        "path": "/events"
+                      },
+                      {
+                        "path": "/healthz"
+                      },
+                      {
+                        "path": "/ws"
+                      }
+                    ]
+                  }
+                ],
+                "tls": []
+              },
+              "nodeSelector": {},
+              "podAnnotations": {},
+              "podSecurityContext": {
+                "fsGroup": 1234,
+                "runAsUser": 1234
+              },
+              "podSecurityPolicy": {
+                "create": false
+              },
+              "priorityClassName": "",
+              "resources": {},
+              "retention": 200,
+              "service": {
+                "nodePort": 30282,
+                "port": 2802,
+                "type": "ClusterIP"
+              },
+              "tolerations": []
+            }
+          },
+          "fullnameOverride": "insights-agent",
+          "global": {
+            "customWorkloadAnnotations": {},
+            "proxy": {
+              "ftp": null,
+              "http": null,
+              "https": null,
+              "no_proxy": null
+            },
+            "sslCertFileSecretKey": null,
+            "sslCertFileSecretName": null
+          },
+          "image": {
+            "pullPolicy": "IfNotPresent",
+            "pullSecrets": [],
+            "registry": "docker.io",
+            "repository": "falcosecurity/falco",
+            "tag": "0.31.0"
+          },
+          "kubernetesSupport": {
+            "apiAuth": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+            "apiUrl": "https://$(KUBERNETES_SERVICE_HOST)",
+            "enableNodeFilter": true,
+            "enabled": true
+          },
+          "nodeSelector": {},
+          "podLabels": {},
+          "podSecurityPolicy": {
+            "create": false
+          },
+          "priorityClassName": null,
+          "proxy": {
+            "httpProxy": null,
+            "httpsProxy": null,
+            "noProxy": null
+          },
+          "rbac": {
+            "create": true
+          },
+          "resources": {
+            "limits": {
+              "cpu": "1000m",
+              "memory": "1024Mi"
+            },
+            "requests": {
+              "cpu": "100m",
+              "memory": "512Mi"
+            }
+          },
+          "scc": {
+            "create": true
+          },
+          "serviceAccount": {
+            "annotations": {},
+            "create": true,
+            "name": null
+          },
+          "timezone": null,
+          "tolerations": [
+            {
+              "effect": "NoSchedule",
+              "key": "node-role.kubernetes.io/master"
+            }
+          ]
+        },
+        "global": {
+          "customWorkloadAnnotations": {},
+          "proxy": {
+            "ftp": null,
+            "http": null,
+            "https": null,
+            "no_proxy": null
+          },
+          "sslCertFileSecretKey": null,
+          "sslCertFileSecretName": null
+        },
+        "goldilocks": {
+          "controller": {
+            "affinity": {},
+            "deployment": {
+              "additionalLabels": {},
+              "annotations": {},
+              "extraVolumeMounts": [],
+              "extraVolumes": [],
+              "podAnnotations": {}
+            },
+            "enabled": true,
+            "flags": {
+              "exclude-namespaces": "kube-system",
+              "on-by-default": true
+            },
+            "logVerbosity": "2",
+            "nodeSelector": {},
+            "podSecurityContext": {},
+            "rbac": {
+              "create": true,
+              "enableArgoproj": true,
+              "extraClusterRoleBindings": [
+                "view"
+              ],
+              "extraRules": []
+            },
+            "resources": {
+              "limits": {
+                "cpu": "250m",
+                "memory": "545Mi"
+              },
+              "requests": {
+                "cpu": "25m",
+                "memory": "262Mi"
+              }
+            },
+            "securityContext": {
+              "allowPrivilegeEscalation": false,
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              },
+              "readOnlyRootFilesystem": true,
+              "runAsNonRoot": true,
+              "runAsUser": 10324
+            },
+            "serviceAccount": {
+              "create": true,
+              "name": null
+            },
+            "tolerations": [],
+            "topologySpreadConstraints": []
+          },
+          "dashboard": {
+            "affinity": {},
+            "basePath": null,
+            "deployment": {
+              "additionalLabels": {},
+              "annotations": {},
+              "extraVolumeMounts": [],
+              "extraVolumes": [],
+              "podAnnotations": {}
+            },
+            "enabled": false,
+            "excludeContainers": "linkerd-proxy,istio-proxy",
+            "flags": {},
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "hosts": [
+                {
+                  "host": "chart-example.local",
+                  "paths": [
+                    {
+                      "path": "/",
+                      "type": "ImplementationSpecific"
+                    }
+                  ]
+                }
+              ],
+              "ingressClassName": null,
+              "tls": []
+            },
+            "logVerbosity": "2",
+            "nodeSelector": {},
+            "podSecurityContext": {},
+            "rbac": {
+              "create": true,
+              "enableArgoproj": true
+            },
+            "replicaCount": 2,
+            "resources": {
+              "limits": {
+                "cpu": "25m",
+                "memory": "32Mi"
+              },
+              "requests": {
+                "cpu": "25m",
+                "memory": "32Mi"
+              }
+            },
+            "securityContext": {
+              "allowPrivilegeEscalation": false,
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              },
+              "readOnlyRootFilesystem": true,
+              "runAsNonRoot": true,
+              "runAsUser": 10324
+            },
+            "service": {
+              "annotations": {},
+              "port": 80,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "create": true,
+              "name": null
+            },
+            "tolerations": [],
+            "topologySpreadConstraints": []
+          },
+          "enabled": false,
+          "image": {
+            "pullPolicy": "Always",
+            "repository": "us-docker.pkg.dev/fairwinds-ops/oss/goldilocks",
+            "tag": "v4.6"
+          },
+          "resources": {
+            "limits": {
+              "cpu": "250m",
+              "memory": "512Mi"
+            },
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "timeout": 300,
+          "vpa": {
+            "admissionController": {
+              "affinity": {},
+              "certGen": {
+                "env": {},
+                "image": {
+                  "pullPolicy": "Always",
+                  "repository": "quay.io/reactiveops/ci-images",
+                  "tag": "v11-alpine"
+                },
+                "resources": {}
+              },
+              "cleanupOnDelete": {
+                "enabled": true,
+                "image": {
+                  "repository": "quay.io/reactiveops/ci-images",
+                  "tag": "v11-alpine"
+                }
+              },
+              "enabled": false,
+              "generateCertificate": true,
+              "image": {
+                "pullPolicy": "Always",
+                "repository": "k8s.gcr.io/autoscaling/vpa-admission-controller",
+                "tag": ""
+              },
+              "nodeSelector": {},
+              "podAnnotations": {},
+              "podDisruptionBudget": {},
+              "podLabels": {},
+              "podSecurityContext": {
+                "runAsNonRoot": true,
+                "runAsUser": 65534
+              },
+              "replicaCount": 1,
+              "resources": {
+                "limits": {
+                  "cpu": "200m",
+                  "memory": "500Mi"
+                },
+                "requests": {
+                  "cpu": "50m",
+                  "memory": "200Mi"
+                }
+              },
+              "securityContext": {},
+              "tlsSecretKeys": [],
+              "tolerations": []
+            },
+            "enabled": true,
+            "fullnameOverride": "",
+            "global": {
+              "customWorkloadAnnotations": {},
+              "proxy": {
+                "ftp": null,
+                "http": null,
+                "https": null,
+                "no_proxy": null
+              },
+              "sslCertFileSecretKey": null,
+              "sslCertFileSecretName": null
+            },
+            "imagePullSecrets": [],
+            "nameOverride": "",
+            "podLabels": {},
+            "priorityClassName": "",
+            "rbac": {
+              "create": true
+            },
+            "recommender": {
+              "affinity": {},
+              "enabled": true,
+              "extraArgs": {
+                "pod-recommendation-min-cpu-millicores": 15,
+                "pod-recommendation-min-memory-mb": 100,
+                "v": "4"
+              },
+              "image": {
+                "pullPolicy": "Always",
+                "repository": "k8s.gcr.io/autoscaling/vpa-recommender",
+                "tag": ""
+              },
+              "nodeSelector": {},
+              "podAnnotations": {},
+              "podDisruptionBudget": {},
+              "podLabels": {},
+              "podSecurityContext": {
+                "runAsNonRoot": true,
+                "runAsUser": 65534
+              },
+              "replicaCount": 1,
+              "resources": {
+                "limits": {
+                  "cpu": "200m",
+                  "memory": "1000Mi"
+                },
+                "requests": {
+                  "cpu": "50m",
+                  "memory": "500Mi"
+                }
+              },
+              "securityContext": {
+                "allowPrivilegeEscalation": false,
+                "capabilities": {
+                  "drop": [
+                    "ALL"
+                  ]
+                },
+                "readOnlyRootFilesystem": true,
+                "runAsUser": 65534
+              },
+              "tolerations": []
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "automountServiceAccountToken": true,
+              "create": true,
+              "name": ""
+            },
+            "updater": {
+              "affinity": {},
+              "enabled": false,
+              "extraArgs": {},
+              "image": {
+                "pullPolicy": "Always",
+                "repository": "k8s.gcr.io/autoscaling/vpa-updater",
+                "tag": ""
+              },
+              "nodeSelector": {},
+              "podAnnotations": {},
+              "podDisruptionBudget": {},
+              "podLabels": {},
+              "podSecurityContext": {
+                "runAsNonRoot": true,
+                "runAsUser": 65534
+              },
+              "replicaCount": 1,
+              "resources": {
+                "limits": {
+                  "cpu": "200m",
+                  "memory": "1000Mi"
+                },
+                "requests": {
+                  "cpu": "50m",
+                  "memory": "500Mi"
+                }
+              },
+              "securityContext": {},
+              "tolerations": []
+            }
+          }
+        },
+        "insights-admission": {
+          "affinity": {},
+          "autoscaling": {
+            "enabled": false,
+            "maxReplicas": 5,
+            "minReplicas": 2,
+            "targetCPUUtilizationPercentage": 80
+          },
+          "caBundle": "",
+          "clusterDomain": "cluster.local",
+          "fullnameOverride": "",
+          "global": {
+            "customWorkloadAnnotations": {},
+            "proxy": {}
+          },
+          "ignoreRequestUsernames": "system:addon-manager",
+          "image": {
+            "pullPolicy": "Always",
+            "repository": "quay.io/fairwinds/insights-admission-controller",
+            "tag": ""
+          },
+          "imagePullSecrets": [],
+          "insights": {
+            "base64token": "",
+            "cluster": "",
+            "configmap": {
+              "create": false,
+              "nameOverride": null,
+              "suffix": "configmap"
+            },
+            "host": "https://insights.fairwinds.com",
+            "organization": "",
+            "secret": {
+              "create": false,
+              "nameOverride": null,
+              "suffix": "token"
+            }
+          },
+          "nameOverride": "insights-agent",
+          "nodeSelector": {},
+          "pdb": {
+            "enabled": true,
+            "minAvailable": 1
+          },
+          "pluto": {
+            "targetVersions": ""
+          },
+          "podAnnotations": {},
+          "podSecurityContext": {},
+          "replicaCount": 2,
+          "resources": {
+            "limits": {
+              "cpu": 1,
+              "memory": "2Gi"
+            },
+            "requests": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          },
+          "secretName": "",
+          "securityContext": {
+            "allowPrivilegeEscalation": false,
+            "capabilities": {
+              "drop": [
+                "ALL"
+              ]
+            },
+            "readOnlyRootFilesystem": true,
+            "runAsNonRoot": true,
+            "runAsUser": 15000
+          },
+          "service": {
+            "port": 443,
+            "type": "ClusterIP",
+            "usePod443": false
+          },
+          "serviceAccount": {
+            "annotations": {},
+            "create": true,
+            "name": "",
+            "rbac": {
+              "additionalAccess": null,
+              "grantRole": "view",
+              "viewSecrets": false
+            }
+          },
+          "test": {
+            "enabled": false,
+            "image": {
+              "repository": "python",
+              "tag": "3.10-alpine"
+            }
+          },
+          "tolerations": [],
+          "topologySpreadConstraints": [
+            {
+              "labelSelector": {
+                "matchLabels": {
+                  "component": "controller"
+                }
+              },
+              "maxSkew": 1,
+              "topologyKey": "topology.kubernetes.io/zone",
+              "whenUnsatisfiable": "ScheduleAnyway"
+            },
+            {
+              "labelSelector": {
+                "matchLabels": {
+                  "component": "controller"
+                }
+              },
+              "maxSkew": 1,
+              "topologyKey": "kubernetes.io/hostname",
+              "whenUnsatisfiable": "ScheduleAnyway"
+            }
+          ],
+          "webhookConfig": {
+            "annotations": {},
+            "defaultRules": [
+              {
+                "apiGroups": [
+                  "apps"
+                ],
+                "apiVersions": [
+                  "v1",
+                  "v1beta1",
+                  "v1beta2"
+                ],
+                "operations": [
+                  "CREATE",
+                  "UPDATE"
+                ],
+                "resources": [
+                  "daemonsets",
+                  "deployments",
+                  "statefulsets"
+                ],
+                "scope": "Namespaced"
+              },
+              {
+                "apiGroups": [
+                  "batch"
+                ],
+                "apiVersions": [
+                  "v1",
+                  "v1beta1"
+                ],
+                "operations": [
+                  "CREATE",
+                  "UPDATE"
+                ],
+                "resources": [
+                  "jobs",
+                  "cronjobs"
+                ],
+                "scope": "Namespaced"
+              },
+              {
+                "apiGroups": [
+                  ""
+                ],
+                "apiVersions": [
+                  "v1"
+                ],
+                "operations": [
+                  "CREATE",
+                  "UPDATE"
+                ],
+                "resources": [
+                  "pods",
+                  "replicationcontrollers"
+                ],
+                "scope": "Namespaced"
+              }
+            ],
+            "failurePolicy": "Ignore",
+            "matchPolicy": "Exact",
+            "mutating": {
+              "enable": false
+            },
+            "namespaceSelector": {
+              "matchExpressions": [
+                {
+                  "key": "control-plane",
+                  "operator": "DoesNotExist"
+                }
+              ]
+            },
+            "objectSelector": {},
+            "rules": [],
+            "rulesAutoRBAC": true,
+            "timeoutSeconds": 30
+          }
+        },
+        "installReporter": {
+          "additionalAnnotations": {
+            "argocd.argoproj.io/hook": "PostSync",
+            "argocd.argoproj.io/hook-delete-policy": "HookSucceeded"
+          },
+          "image": {
+            "repository": "quay.io/fairwinds/insights-uploader",
+            "tag": "0.4"
+          },
+          "resources": {
+            "requests": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          }
+        },
+        "kube-bench": {
+          "SkipVolumes": true,
+          "aggregator": {
+            "image": {
+              "repository": "quay.io/fairwinds/fw-kube-bench-aggregator",
+              "tag": 0.3
+            },
+            "resources": {
+              "requests": {
+                "cpu": "100m",
+                "memory": "128Mi"
+              }
+            }
+          },
+          "enabled": true,
+          "hourInterval": 2,
+          "image": {
+            "repository": "quay.io/fairwinds/fw-kube-bench",
+            "tag": 0.4
+          },
+          "mode": "cronjob",
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "timeout": 600
+        },
+        "kube-hunter": {
+          "enabled": true,
+          "image": {
+            "repository": "aquasec/kube-hunter",
+            "tag": "0.6.8"
+          },
+          "logLevel": "INFO",
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "timeout": 300
+        },
+        "nova": {
+          "SkipVolumes": true,
+          "config": {
+            "context": "",
+            "desired-versions": {},
+            "include-all": true,
+            "output-file": "/output/nova.json",
+            "wide": true
+          },
+          "configLocation": "/config/nova.yaml",
+          "enabled": true,
+          "image": {
+            "repository": "quay.io/fairwinds/nova",
+            "tag": "v3.6"
+          },
+          "logLevel": 3,
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "timeout": 300
+        },
+        "opa": {
+          "additionalAccess": null,
+          "admissionRulesAsTargetResources": true,
+          "defaultTargetResources": [
+            {
+              "apiGroups": [
+                "apps"
+              ],
+              "resources": [
+                "daemonsets",
+                "deployments",
+                "statefulsets"
+              ]
+            },
+            {
+              "apiGroups": [
+                "batch"
+              ],
+              "resources": [
+                "jobs",
+                "cronjobs"
+              ]
+            },
+            {
+              "apiGroups": [
+                ""
+              ],
+              "resources": [
+                "pods",
+                "replicationcontrollers"
+              ]
+            }
+          ],
+          "enabled": true,
+          "image": {
+            "repository": "quay.io/fairwinds/fw-opa",
+            "tag": "2.2"
+          },
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "role": "view",
+          "schedule": "rand * * * *",
+          "targetResources": [],
+          "targetResourcesAutoRBAC": true,
+          "timeout": 300
+        },
+        "pluto": {
+          "enabled": true,
+          "image": {
+            "repository": "us-docker.pkg.dev/fairwinds-ops/oss/pluto",
+            "tag": "v5.13"
+          },
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "targetVersions": "",
+          "timeout": 300
+        },
+        "polaris": {
+          "enabled": true,
+          "image": {
+            "repository": "quay.io/fairwinds/polaris",
+            "tag": "7.3"
+          },
+          "rbac": {
+            "disabled": false
+          },
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "timeout": 300
+        },
+        "prometheus": {
+          "alertmanager": {
+            "affinity": {},
+            "baseURL": "http://localhost:9093",
+            "clusterPeers": [],
+            "configFileName": "alertmanager.yml",
+            "configFromSecret": "",
+            "configMapOverrideName": "",
+            "deploymentAnnotations": {},
+            "dnsConfig": {},
+            "emptyDir": {
+              "sizeLimit": ""
+            },
+            "enabled": false,
+            "extraArgs": {},
+            "extraConfigmapMounts": [],
+            "extraEnv": {},
+            "extraInitContainers": [],
+            "extraSecretMounts": [],
+            "image": {
+              "pullPolicy": "IfNotPresent",
+              "repository": "quay.io/prometheus/alertmanager",
+              "tag": "v0.23.0"
+            },
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "extraLabels": {},
+              "extraPaths": [],
+              "hosts": [],
+              "path": "/",
+              "pathType": "Prefix",
+              "tls": []
+            },
+            "name": "alertmanager",
+            "nodeSelector": {},
+            "persistentVolume": {
+              "accessModes": [
+                "ReadWriteOnce"
+              ],
+              "annotations": {},
+              "enabled": true,
+              "existingClaim": "",
+              "mountPath": "/data",
+              "size": "2Gi",
+              "subPath": ""
+            },
+            "podAnnotations": {},
+            "podDisruptionBudget": {
+              "enabled": false,
+              "maxUnavailable": 1
+            },
+            "podLabels": {},
+            "podSecurityPolicy": {
+              "annotations": {}
+            },
+            "prefixURL": "",
+            "priorityClassName": "",
+            "probeHeaders": [],
+            "replicaCount": 1,
+            "resources": {},
+            "securityContext": {
+              "fsGroup": 65534,
+              "runAsGroup": 65534,
+              "runAsNonRoot": true,
+              "runAsUser": 65534
+            },
+            "service": {
+              "annotations": {},
+              "clusterIP": "",
+              "externalIPs": [],
+              "labels": {},
+              "loadBalancerIP": "",
+              "loadBalancerSourceRanges": [],
+              "servicePort": 80,
+              "sessionAffinity": "None",
+              "type": "ClusterIP"
+            },
+            "statefulSet": {
+              "annotations": {},
+              "enabled": false,
+              "headless": {
+                "annotations": {},
+                "enableMeshPeer": false,
+                "labels": {},
+                "servicePort": 80
+              },
+              "labels": {},
+              "podManagementPolicy": "OrderedReady"
+            },
+            "tolerations": [],
+            "useClusterRole": true,
+            "useExistingRole": false
+          },
+          "alertmanagerFiles": {
+            "alertmanager.yml": {
+              "global": {},
+              "receivers": [
+                {
+                  "name": "default-receiver"
+                }
+              ],
+              "route": {
+                "group_interval": "5m",
+                "group_wait": "10s",
+                "receiver": "default-receiver",
+                "repeat_interval": "3h"
+              }
+            }
+          },
+          "configmapReload": {
+            "alertmanager": {
+              "enabled": true,
+              "extraArgs": {},
+              "extraConfigmapMounts": [],
+              "extraVolumeDirs": [],
+              "image": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "jimmidyson/configmap-reload",
+                "tag": "v0.5.0"
+              },
+              "name": "configmap-reload",
+              "resources": {}
+            },
+            "prometheus": {
+              "enabled": false,
+              "extraArgs": {},
+              "extraConfigmapMounts": [],
+              "extraVolumeDirs": [],
+              "image": {
+                "pullPolicy": "IfNotPresent",
+                "repository": "jimmidyson/configmap-reload",
+                "tag": "v0.5.0"
+              },
+              "name": "configmap-reload",
+              "resources": {}
+            }
+          },
+          "global": {
+            "customWorkloadAnnotations": {},
+            "proxy": {},
+            "sslCertFileSecretKey": null,
+            "sslCertFileSecretName": null
+          },
+          "kube-state-metrics": {
+            "affinity": {},
+            "autosharding": {
+              "enabled": false
+            },
+            "collectors": [
+              "certificatesigningrequests",
+              "configmaps",
+              "cronjobs",
+              "daemonsets",
+              "deployments",
+              "endpoints",
+              "horizontalpodautoscalers",
+              "ingresses",
+              "jobs",
+              "limitranges",
+              "mutatingwebhookconfigurations",
+              "namespaces",
+              "networkpolicies",
+              "nodes",
+              "persistentvolumeclaims",
+              "persistentvolumes",
+              "poddisruptionbudgets",
+              "pods",
+              "replicasets",
+              "replicationcontrollers",
+              "resourcequotas",
+              "secrets",
+              "services",
+              "statefulsets",
+              "storageclasses",
+              "validatingwebhookconfigurations",
+              "volumeattachments"
+            ],
+            "containerSecurityContext": {
+              "allowPrivilegeEscalation": false,
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              },
+              "readOnlyRootFilesystem": true
+            },
+            "customLabels": {},
+            "extraArgs": [],
+            "global": {
+              "customWorkloadAnnotations": {},
+              "proxy": {},
+              "sslCertFileSecretKey": null,
+              "sslCertFileSecretName": null
+            },
+            "hostNetwork": false,
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "k8s.gcr.io/kube-state-metrics/kube-state-metrics",
+              "tag": "v2.4.1"
+            },
+            "imagePullSecrets": [],
+            "kubeTargetVersionOverride": "",
+            "kubeconfig": {
+              "enabled": false
+            },
+            "metricAllowlist": [],
+            "metricAnnotationsAllowList": [],
+            "metricDenylist": [],
+            "metricLabelsAllowlist": [],
+            "namespaceOverride": "",
+            "namespaces": "",
+            "namespacesDenylist": "",
+            "nodeSelector": {},
+            "podAnnotations": {},
+            "podDisruptionBudget": {},
+            "podSecurityPolicy": {
+              "additionalVolumes": [],
+              "annotations": {},
+              "enabled": false
+            },
+            "prometheus": {
+              "monitor": {
+                "additionalLabels": {},
+                "enabled": false,
+                "honorLabels": false,
+                "interval": "",
+                "jobLabel": "",
+                "metricRelabelings": [],
+                "namespace": "",
+                "proxyUrl": "",
+                "relabelings": [],
+                "scrapeTimeout": "",
+                "selectorOverride": {}
+              }
+            },
+            "prometheusScrape": true,
+            "rbac": {
+              "create": true,
+              "useClusterRole": true
+            },
+            "releaseLabel": false,
+            "replicas": 1,
+            "resources": {
+              "requests": {
+                "cpu": "10m",
+                "memory": "32Mi"
+              }
+            },
+            "securityContext": {
+              "enabled": true,
+              "fsGroup": 65534,
+              "runAsGroup": 65534,
+              "runAsUser": 65534
+            },
+            "selfMonitor": {
+              "enabled": false
+            },
+            "service": {
+              "annotations": {},
+              "clusterIP": "",
+              "loadBalancerIP": "",
+              "nodePort": 0,
+              "port": 8080,
+              "type": "ClusterIP"
+            },
+            "serviceAccount": {
+              "annotations": {},
+              "create": true,
+              "imagePullSecrets": []
+            },
+            "tolerations": []
+          },
+          "kubeStateMetrics": {
+            "enabled": true
+          },
+          "networkPolicy": {
+            "enabled": false
+          },
+          "nodeExporter": {
+            "container": {
+              "securityContext": {
+                "allowPrivilegeEscalation": false
+              }
+            },
+            "dnsConfig": {},
+            "enabled": false,
+            "extraArgs": {},
+            "extraConfigmapMounts": [],
+            "extraHostPathMounts": [],
+            "extraInitContainers": [],
+            "hostNetwork": true,
+            "hostPID": true,
+            "hostRootfs": true,
+            "image": {
+              "pullPolicy": "IfNotPresent",
+              "repository": "quay.io/prometheus/node-exporter",
+              "tag": "v1.3.0"
+            },
+            "name": "node-exporter",
+            "nodeSelector": {},
+            "pod": {
+              "labels": {}
+            },
+            "podAnnotations": {},
+            "podDisruptionBudget": {
+              "enabled": false,
+              "maxUnavailable": 1
+            },
+            "podSecurityPolicy": {
+              "annotations": {}
+            },
+            "priorityClassName": "",
+            "resources": {},
+            "securityContext": {
+              "fsGroup": 65534,
+              "runAsGroup": 65534,
+              "runAsNonRoot": true,
+              "runAsUser": 65534
+            },
+            "service": {
+              "annotations": {
+                "prometheus.io/scrape": "true"
+              },
+              "clusterIP": "",
+              "externalIPs": [],
+              "hostPort": 9100,
+              "labels": {},
+              "loadBalancerIP": "",
+              "loadBalancerSourceRanges": [],
+              "servicePort": 9100,
+              "type": "ClusterIP"
+            },
+            "tolerations": [],
+            "updateStrategy": {
+              "type": "RollingUpdate"
+            }
+          },
+          "podSecurityPolicy": {
+            "enabled": false
+          },
+          "pushgateway": {
+            "deploymentAnnotations": {},
+            "dnsConfig": {},
+            "enabled": false,
+            "extraArgs": {},
+            "extraInitContainers": [],
+            "image": {
+              "pullPolicy": "IfNotPresent",
+              "repository": "prom/pushgateway",
+              "tag": "v1.4.2"
+            },
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "extraPaths": [],
+              "hosts": [],
+              "path": "/",
+              "pathType": "Prefix",
+              "tls": []
+            },
+            "name": "pushgateway",
+            "nodeSelector": {},
+            "persistentVolume": {
+              "accessModes": [
+                "ReadWriteOnce"
+              ],
+              "annotations": {},
+              "enabled": false,
+              "existingClaim": "",
+              "mountPath": "/data",
+              "size": "2Gi",
+              "subPath": ""
+            },
+            "podAnnotations": {},
+            "podDisruptionBudget": {
+              "enabled": false,
+              "maxUnavailable": 1
+            },
+            "podLabels": {},
+            "podSecurityPolicy": {
+              "annotations": {}
+            },
+            "priorityClassName": "",
+            "replicaCount": 1,
+            "resources": {},
+            "securityContext": {
+              "runAsNonRoot": true,
+              "runAsUser": 65534
+            },
+            "service": {
+              "annotations": {
+                "prometheus.io/probe": "pushgateway"
+              },
+              "clusterIP": "",
+              "externalIPs": [],
+              "labels": {},
+              "loadBalancerIP": "",
+              "loadBalancerSourceRanges": [],
+              "servicePort": 9091,
+              "type": "ClusterIP"
+            },
+            "tolerations": [],
+            "verticalAutoscaler": {
+              "enabled": false
+            }
+          },
+          "rbac": {
+            "create": true
+          },
+          "ruleFiles": {},
+          "server": {
+            "affinity": {},
+            "alertmanagers": [],
+            "baseURL": "",
+            "configMapOverrideName": "",
+            "configPath": "/etc/config/prometheus.yml",
+            "containerSecurityContext": {
+              "allowPrivilegeEscalation": false,
+              "capabilities": {
+                "drop": [
+                  "ALL"
+                ]
+              },
+              "readOnlyRootFilesystem": true
+            },
+            "defaultFlagsOverride": [],
+            "deploymentAnnotations": {},
+            "dnsConfig": {},
+            "dnsPolicy": "ClusterFirst",
+            "emptyDir": {
+              "sizeLimit": ""
+            },
+            "enableServiceLinks": true,
+            "enabled": true,
+            "env": [],
+            "extraArgs": {},
+            "extraConfigmapMounts": [],
+            "extraFlags": [
+              "web.enable-lifecycle"
+            ],
+            "extraHostPathMounts": [],
+            "extraInitContainers": [],
+            "extraObjects": [],
+            "extraSecretMounts": [],
+            "extraVolumeMounts": [],
+            "extraVolumes": [],
+            "fullnameOverride": "prometheus-server",
+            "global": {
+              "evaluation_interval": "1m",
+              "scrape_interval": "1m",
+              "scrape_timeout": "10s"
+            },
+            "hostAliases": [],
+            "hostNetwork": false,
+            "image": {
+              "pullPolicy": "Always",
+              "repository": "quay.io/prometheus/prometheus",
+              "tag": "v2.34.0"
+            },
+            "ingress": {
+              "annotations": {},
+              "enabled": false,
+              "extraLabels": {},
+              "extraPaths": [],
+              "hosts": [],
+              "path": "/",
+              "pathType": "Prefix",
+              "tls": []
+            },
+            "livenessProbeFailureThreshold": 3,
+            "livenessProbeInitialDelay": 30,
+            "livenessProbePeriodSeconds": 15,
+            "livenessProbeSuccessThreshold": 1,
+            "livenessProbeTimeout": 10,
+            "name": "server",
+            "nodeSelector": {},
+            "persistentVolume": {
+              "accessModes": [
+                "ReadWriteOnce"
+              ],
+              "annotations": {},
+              "enabled": false,
+              "existingClaim": "",
+              "mountPath": "/data",
+              "size": "8Gi",
+              "subPath": ""
+            },
+            "podAnnotations": {},
+            "podDisruptionBudget": {
+              "enabled": false,
+              "maxUnavailable": 1
+            },
+            "podLabels": {},
+            "podSecurityPolicy": {
+              "annotations": {}
+            },
+            "prefixURL": "",
+            "priorityClassName": "",
+            "probeHeaders": [],
+            "probeScheme": "HTTP",
+            "readinessProbeFailureThreshold": 3,
+            "readinessProbeInitialDelay": 30,
+            "readinessProbePeriodSeconds": 5,
+            "readinessProbeSuccessThreshold": 1,
+            "readinessProbeTimeout": 4,
+            "remoteRead": [],
+            "remoteWrite": [],
+            "replicaCount": 1,
+            "resources": {
+              "limits": {
+                "cpu": "500m",
+                "memory": "3Gi"
+              },
+              "requests": {
+                "cpu": "250m",
+                "memory": "512Mi"
+              }
+            },
+            "retention": "1d",
+            "securityContext": {
+              "fsGroup": 65534,
+              "runAsGroup": 65534,
+              "runAsNonRoot": true,
+              "runAsUser": 65534
+            },
+            "service": {
+              "annotations": {},
+              "clusterIP": "",
+              "enabled": true,
+              "externalIPs": [],
+              "gRPC": {
+                "enabled": false,
+                "servicePort": 10901
+              },
+              "labels": {},
+              "loadBalancerIP": "",
+              "loadBalancerSourceRanges": [],
+              "servicePort": 80,
+              "sessionAffinity": "None",
+              "statefulsetReplica": {
+                "enabled": false,
+                "replica": 0
+              },
+              "type": "ClusterIP"
+            },
+            "sidecarContainers": {},
+            "sidecarTemplateValues": {},
+            "startupProbe": {
+              "enabled": false,
+              "failureThreshold": 30,
+              "periodSeconds": 5,
+              "timeoutSeconds": 10
+            },
+            "statefulSet": {
+              "annotations": {},
+              "enabled": false,
+              "headless": {
+                "annotations": {},
+                "gRPC": {
+                  "enabled": false,
+                  "servicePort": 10901
+                },
+                "labels": {},
+                "servicePort": 80
+              },
+              "labels": {},
+              "podManagementPolicy": "OrderedReady"
+            },
+            "storagePath": "",
+            "tcpSocketProbeEnabled": false,
+            "terminationGracePeriodSeconds": 300,
+            "tolerations": [],
+            "verticalAutoscaler": {
+              "enabled": false
+            }
+          },
+          "serverFiles": {
+            "alerting_rules.yml": {},
+            "alerts": {},
+            "prometheus.yml": {
+              "rule_files": [
+                "/etc/config/recording_rules.yml",
+                "/etc/config/alerting_rules.yml",
+                "/etc/config/rules",
+                "/etc/config/alerts"
+              ],
+              "scrape_configs": [
+                {
+                  "job_name": "prometheus",
+                  "static_configs": [
+                    {
+                      "targets": [
+                        "localhost:9090"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                  "job_name": "kubernetes-apiservers",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "endpoints"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "keep",
+                      "regex": "default;kubernetes;https",
+                      "source_labels": [
+                        "__meta_kubernetes_namespace",
+                        "__meta_kubernetes_service_name",
+                        "__meta_kubernetes_endpoint_port_name"
+                      ]
+                    }
+                  ],
+                  "scheme": "https",
+                  "tls_config": {
+                    "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                    "insecure_skip_verify": true
+                  }
+                },
+                {
+                  "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                  "job_name": "kubernetes-nodes",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "node"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_node_label_(.+)"
+                    },
+                    {
+                      "replacement": "kubernetes.default.svc:443",
+                      "target_label": "__address__"
+                    },
+                    {
+                      "regex": "(.+)",
+                      "replacement": "/api/v1/nodes/$1/proxy/metrics",
+                      "source_labels": [
+                        "__meta_kubernetes_node_name"
+                      ],
+                      "target_label": "__metrics_path__"
+                    }
+                  ],
+                  "scheme": "https",
+                  "tls_config": {
+                    "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                    "insecure_skip_verify": true
+                  }
+                },
+                {
+                  "bearer_token_file": "/var/run/secrets/kubernetes.io/serviceaccount/token",
+                  "job_name": "kubernetes-nodes-cadvisor",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "node"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_node_label_(.+)"
+                    },
+                    {
+                      "replacement": "kubernetes.default.svc:443",
+                      "target_label": "__address__"
+                    },
+                    {
+                      "regex": "(.+)",
+                      "replacement": "/api/v1/nodes/$1/proxy/metrics/cadvisor",
+                      "source_labels": [
+                        "__meta_kubernetes_node_name"
+                      ],
+                      "target_label": "__metrics_path__"
+                    }
+                  ],
+                  "scheme": "https",
+                  "tls_config": {
+                    "ca_file": "/var/run/secrets/kubernetes.io/serviceaccount/ca.crt",
+                    "insecure_skip_verify": true
+                  }
+                },
+                {
+                  "honor_labels": true,
+                  "job_name": "kubernetes-service-endpoints",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "endpoints"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "keep",
+                      "regex": true,
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_scrape"
+                      ]
+                    },
+                    {
+                      "action": "drop",
+                      "regex": true,
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_scrape_slow"
+                      ]
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(https?)",
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_scheme"
+                      ],
+                      "target_label": "__scheme__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(.+)",
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_path"
+                      ],
+                      "target_label": "__metrics_path__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                      "replacement": "$1:$2",
+                      "source_labels": [
+                        "__address__",
+                        "__meta_kubernetes_service_annotation_prometheus_io_port"
+                      ],
+                      "target_label": "__address__"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_service_annotation_prometheus_io_param_(.+)",
+                      "replacement": "__param_$1"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_service_label_(.+)"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_namespace"
+                      ],
+                      "target_label": "namespace"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_service_name"
+                      ],
+                      "target_label": "service"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_node_name"
+                      ],
+                      "target_label": "node"
+                    }
+                  ]
+                },
+                {
+                  "honor_labels": true,
+                  "job_name": "kubernetes-service-endpoints-slow",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "endpoints"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "keep",
+                      "regex": true,
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_scrape_slow"
+                      ]
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(https?)",
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_scheme"
+                      ],
+                      "target_label": "__scheme__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(.+)",
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_path"
+                      ],
+                      "target_label": "__metrics_path__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                      "replacement": "$1:$2",
+                      "source_labels": [
+                        "__address__",
+                        "__meta_kubernetes_service_annotation_prometheus_io_port"
+                      ],
+                      "target_label": "__address__"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_service_annotation_prometheus_io_param_(.+)",
+                      "replacement": "__param_$1"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_service_label_(.+)"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_namespace"
+                      ],
+                      "target_label": "namespace"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_service_name"
+                      ],
+                      "target_label": "service"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_node_name"
+                      ],
+                      "target_label": "node"
+                    }
+                  ],
+                  "scrape_interval": "5m",
+                  "scrape_timeout": "30s"
+                },
+                {
+                  "honor_labels": true,
+                  "job_name": "prometheus-pushgateway",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "service"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "keep",
+                      "regex": "pushgateway",
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_probe"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "honor_labels": true,
+                  "job_name": "kubernetes-services",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "service"
+                    }
+                  ],
+                  "metrics_path": "/probe",
+                  "params": {
+                    "module": [
+                      "http_2xx"
+                    ]
+                  },
+                  "relabel_configs": [
+                    {
+                      "action": "keep",
+                      "regex": true,
+                      "source_labels": [
+                        "__meta_kubernetes_service_annotation_prometheus_io_probe"
+                      ]
+                    },
+                    {
+                      "source_labels": [
+                        "__address__"
+                      ],
+                      "target_label": "__param_target"
+                    },
+                    {
+                      "replacement": "blackbox",
+                      "target_label": "__address__"
+                    },
+                    {
+                      "source_labels": [
+                        "__param_target"
+                      ],
+                      "target_label": "instance"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_service_label_(.+)"
+                    },
+                    {
+                      "source_labels": [
+                        "__meta_kubernetes_namespace"
+                      ],
+                      "target_label": "namespace"
+                    },
+                    {
+                      "source_labels": [
+                        "__meta_kubernetes_service_name"
+                      ],
+                      "target_label": "service"
+                    }
+                  ]
+                },
+                {
+                  "honor_labels": true,
+                  "job_name": "kubernetes-pods",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "pod"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "keep",
+                      "regex": true,
+                      "source_labels": [
+                        "__meta_kubernetes_pod_annotation_prometheus_io_scrape"
+                      ]
+                    },
+                    {
+                      "action": "drop",
+                      "regex": true,
+                      "source_labels": [
+                        "__meta_kubernetes_pod_annotation_prometheus_io_scrape_slow"
+                      ]
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(https?)",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_annotation_prometheus_io_scheme"
+                      ],
+                      "target_label": "__scheme__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(.+)",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_annotation_prometheus_io_path"
+                      ],
+                      "target_label": "__metrics_path__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                      "replacement": "$1:$2",
+                      "source_labels": [
+                        "__address__",
+                        "__meta_kubernetes_pod_annotation_prometheus_io_port"
+                      ],
+                      "target_label": "__address__"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_pod_annotation_prometheus_io_param_(.+)",
+                      "replacement": "__param_$1"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_pod_label_(.+)"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_namespace"
+                      ],
+                      "target_label": "namespace"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_name"
+                      ],
+                      "target_label": "pod"
+                    },
+                    {
+                      "action": "drop",
+                      "regex": "Pending|Succeeded|Failed|Completed",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_phase"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "honor_labels": true,
+                  "job_name": "kubernetes-pods-slow",
+                  "kubernetes_sd_configs": [
+                    {
+                      "role": "pod"
+                    }
+                  ],
+                  "relabel_configs": [
+                    {
+                      "action": "keep",
+                      "regex": true,
+                      "source_labels": [
+                        "__meta_kubernetes_pod_annotation_prometheus_io_scrape_slow"
+                      ]
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(https?)",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_annotation_prometheus_io_scheme"
+                      ],
+                      "target_label": "__scheme__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "(.+)",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_annotation_prometheus_io_path"
+                      ],
+                      "target_label": "__metrics_path__"
+                    },
+                    {
+                      "action": "replace",
+                      "regex": "([^:]+)(?::\\d+)?;(\\d+)",
+                      "replacement": "$1:$2",
+                      "source_labels": [
+                        "__address__",
+                        "__meta_kubernetes_pod_annotation_prometheus_io_port"
+                      ],
+                      "target_label": "__address__"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_pod_annotation_prometheus_io_param_(.+)",
+                      "replacement": "__param_$1"
+                    },
+                    {
+                      "action": "labelmap",
+                      "regex": "__meta_kubernetes_pod_label_(.+)"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_namespace"
+                      ],
+                      "target_label": "namespace"
+                    },
+                    {
+                      "action": "replace",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_name"
+                      ],
+                      "target_label": "pod"
+                    },
+                    {
+                      "action": "drop",
+                      "regex": "Pending|Succeeded|Failed|Completed",
+                      "source_labels": [
+                        "__meta_kubernetes_pod_phase"
+                      ]
+                    }
+                  ],
+                  "scrape_interval": "5m",
+                  "scrape_timeout": "30s"
+                }
+              ]
+            },
+            "recording_rules.yml": {},
+            "rules": {}
+          },
+          "serviceAccounts": {
+            "alertmanager": {
+              "annotations": {},
+              "create": true
+            },
+            "nodeExporter": {
+              "annotations": {},
+              "create": true
+            },
+            "pushgateway": {
+              "annotations": {},
+              "create": true
+            },
+            "server": {
+              "annotations": {},
+              "create": true
+            }
+          }
+        },
+        "prometheus-metrics": {
+          "address": "http://prometheus-server",
+          "enabled": true,
+          "image": {
+            "repository": "quay.io/fairwinds/prometheus-collector",
+            "tag": "1.0"
+          },
+          "installPrometheusServer": true,
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "0/10 * * * *",
+          "timeout": 300
+        },
+        "rbac": {
+          "disabled": false
+        },
+        "rbac-reporter": {
+          "enabled": false,
+          "image": {
+            "repository": "quay.io/fairwinds/rbac-reporter",
+            "tag": "1.3"
+          },
+          "resources": {
+            "requests": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "timeout": 300
+        },
+        "right-sizer": {
+          "SkipVolumes": true,
+          "containerSecurityContext": {
+            "allowPrivilegeEscalation": false,
+            "capabilities": {
+              "drop": [
+                "ALL"
+              ]
+            },
+            "readOnlyRootFilesystem": true,
+            "runAsNonRoot": true,
+            "runAsUser": 1200
+          },
+          "deploymentAnnotations": {},
+          "enabled": false,
+          "extraArgs": [],
+          "image": {
+            "pullPolicy": "Always",
+            "repository": "quay.io/fairwinds/right-sizer",
+            "tag": 0.4
+          },
+          "imagePullSecrets": [],
+          "namespaces": [],
+          "rbac": {
+            "additionalAccess": []
+          },
+          "resetOOMsWindow": "24h",
+          "resources": {
+            "requests": {
+              "cpu": "100m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "serviceAccountName": "insights-agent-right-sizer-controller",
+          "stateconfigmapname": "insights-agent-right-sizer-controller-state",
+          "timeout": 300,
+          "updateMemoryLimits": {
+            "enabled": false,
+            "increment": 1.2,
+            "max": 2,
+            "minOOMs": 2,
+            "namespaces": []
+          }
+        },
+        "test": {
+          "containerSecurityContext": {
+            "allowPrivilegeEscalation": false,
+            "capabilities": {
+              "drop": [
+                "ALL"
+              ]
+            },
+            "privileged": false,
+            "readOnlyRootFilesystem": true,
+            "runAsNonRoot": true,
+            "runAsUser": 1200
+          },
+          "enabled": true,
+          "image": {
+            "pullPolicy": "Always",
+            "repository": "python",
+            "tag": "3.7-alpine"
+          }
+        },
+        "trivy": {
+          "containerSecurityContext": {
+            "allowPrivilegeEscalation": false,
+            "capabilities": {
+              "drop": [
+                "ALL"
+              ]
+            },
+            "privileged": false,
+            "readOnlyRootFilesystem": false,
+            "runAsNonRoot": true,
+            "runAsUser": 10324
+          },
+          "enabled": true,
+          "env": null,
+          "ignoreUnfixed": false,
+          "image": {
+            "repository": "quay.io/fairwinds/fw-trivy",
+            "tag": "0.24"
+          },
+          "insecureSSL": false,
+          "maxConcurrentScans": 1,
+          "maxScansPerRun": 2,
+          "namespaceBlacklist": [],
+          "privateImages": {
+            "dockerConfigSecret": ""
+          },
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "securityContext": {
+            "fsGroup": 10324
+          },
+          "serviceAccount": {
+            "annotations": null
+          },
+          "timeout": 2400
+        },
+        "uploader": {
+          "env": [
+            {
+              "name": "foo",
+              "value": "bar"
+            }
+          ],
+          "image": {
+            "repository": "quay.io/fairwinds/insights-uploader",
+            "tag": "0.4"
+          },
+          "imagePullSecret": "",
+          "resources": {
+            "limits": {
+              "cpu": "250m",
+              "memory": "512Mi"
+            },
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "sendFailures": true
+        },
+        "workloads": {
+          "enabled": true,
+          "image": {
+            "repository": "quay.io/fairwinds/workloads",
+            "tag": "2.4"
+          },
+          "resources": {
+            "requests": {
+              "cpu": "50m",
+              "memory": "128Mi"
+            }
+          },
+          "schedule": "rand * * * *",
+          "timeout": 300
+        }
+      },
+      "version": "2.13.1"
+    }
+---
+# Source: insights-agent/templates/nova/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: insightsagent-insights-agent-nova-config
+data:
+  nova.yaml: |
+    context: ""
+    desired-versions: {}
+    include-all: true
+    output-file: /output/nova.json
+    wide: true
+---
+# Source: insights-agent/charts/insights-admission/templates/serviceaccount.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: insightsagent-insights-agent-defrules
+  labels:
+    helm.sh/chart: insights-admission-1.6.0
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "1.9"
+    app.kubernetes.io/managed-by: Helm
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  - deployments
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  - cronjobs
+  verbs:
+  - get
+  - list
+  - watch
+
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - replicationcontrollers
+  verbs:
+  - get
+  - list
+  - watch
+---
+# Source: insights-agent/charts/prometheus/charts/kube-state-metrics/templates/role.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:    
+    helm.sh/chart: kube-state-metrics-4.7.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "2.4.1"
+  name: insightsagent-kube-state-metrics
+rules:
+
+- apiGroups: ["certificates.k8s.io"]
+  resources:
+  - certificatesigningrequests
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - configmaps
+  verbs: ["list", "watch"]
+
+- apiGroups: ["batch"]
+  resources:
+  - cronjobs
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "apps"]
+  resources:
+  - daemonsets
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "apps"]
+  resources:
+  - deployments
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - endpoints
+  verbs: ["list", "watch"]
+
+- apiGroups: ["autoscaling"]
+  resources:
+  - horizontalpodautoscalers
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "networking.k8s.io"]
+  resources:
+  - ingresses
+  verbs: ["list", "watch"]
+
+- apiGroups: ["batch"]
+  resources:
+  - jobs
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - limitranges
+  verbs: ["list", "watch"]
+
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources:
+    - mutatingwebhookconfigurations
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - namespaces
+  verbs: ["list", "watch"]
+
+- apiGroups: ["networking.k8s.io"]
+  resources:
+  - networkpolicies
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - nodes
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - persistentvolumeclaims
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - persistentvolumes
+  verbs: ["list", "watch"]
+
+- apiGroups: ["policy"]
+  resources:
+    - poddisruptionbudgets
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - pods
+  verbs: ["list", "watch"]
+
+- apiGroups: ["extensions", "apps"]
+  resources:
+  - replicasets
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - replicationcontrollers
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - resourcequotas
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - secrets
+  verbs: ["list", "watch"]
+
+- apiGroups: [""]
+  resources:
+  - services
+  verbs: ["list", "watch"]
+
+- apiGroups: ["apps"]
+  resources:
+  - statefulsets
+  verbs: ["list", "watch"]
+
+- apiGroups: ["storage.k8s.io"]
+  resources:
+    - storageclasses
+  verbs: ["list", "watch"]
+
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources:
+    - validatingwebhookconfigurations
+  verbs: ["list", "watch"]
+
+- apiGroups: ["storage.k8s.io"]
+  resources:
+    - volumeattachments
+  verbs: ["list", "watch"]
+---
+# Source: insights-agent/charts/prometheus/templates/server/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: insightsagent
+    chart: prometheus-15.8.7
+    heritage: Helm
+  name: prometheus-server
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - nodes
+      - nodes/proxy
+      - nodes/metrics
+      - services
+      - endpoints
+      - pods
+      - ingresses
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "extensions"
+      - "networking.k8s.io"
+    resources:
+      - ingresses/status
+      - ingresses
+    verbs:
+      - get
+      - list
+      - watch
+  - nonResourceURLs:
+      - "/metrics"
+    verbs:
+      - get
+---
+# Source: insights-agent/templates/nova/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: insightsagent-insights-agent-view-secrets
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - get
+  - list
+  - watch
+---
+# Source: insights-agent/templates/opa/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: insightsagent-insights-agent-opa-defaulttargetresources
+  labels:
+    app: insights-agent
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - daemonsets
+  - deployments
+  - statefulsets
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  - cronjobs
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  - replicationcontrollers
+  verbs:
+  - get
+  - list
+  - watch
+---
+# Source: insights-agent/templates/pluto/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: insightsagent-insights-agent-pluto
+  labels:
+    app: insights-agent
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+      - secrets
+      - configmaps
+    verbs:
+      - get
+      - list
+      - watch
+---
+# Source: insights-agent/templates/polaris/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: insightsagent-insights-agent-polaris
+  labels:
+    app: insights-agent
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - 'nodes'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'rbac.authorization.k8s.io'
+    resources:
+      - 'clusterroles'
+      - 'clusterrolebindings'
+      - 'roles'
+      - 'rolebindings'
+    verbs:
+      - 'get'
+      - 'list'
+---
+# Source: insights-agent/templates/workloads/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: insightsagent-insights-agent-workloads
+  labels:
+    app: insights-agent
+rules:
+  - apiGroups:
+      - ''
+    resources:
+      - 'nodes'
+    verbs:
+      - 'get'
+      - 'list'
+---
+# Source: insights-agent/charts/insights-admission/templates/serviceaccount.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-defrules
+  labels:
+    helm.sh/chart: insights-admission-1.6.0
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "1.9"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: insightsagent-insights-agent-defrules
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/charts/insights-admission/templates/serviceaccount.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-additional-role
+  labels:
+    helm.sh/chart: insights-admission-1.6.0
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "1.9"
+    app.kubernetes.io/managed-by: Helm
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- kind: ServiceAccount
+  name: insightsagent-insights-agent
+  namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/charts/prometheus/charts/kube-state-metrics/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:    
+    helm.sh/chart: kube-state-metrics-4.7.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "2.4.1"
+  name: insightsagent-kube-state-metrics
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: insightsagent-kube-state-metrics
+subjects:
+- kind: ServiceAccount
+  name: insightsagent-kube-state-metrics
+  namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/charts/prometheus/templates/server/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: insightsagent
+    chart: prometheus-15.8.7
+    heritage: Helm
+  name: prometheus-server
+subjects:
+  - kind: ServiceAccount
+    name: prometheus-server
+    namespace: insights-agent-3f6s40oruj
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus-server
+---
+# Source: insights-agent/templates/nova/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-nova-view
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-nova
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/nova/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-secrets-viewer
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: insightsagent-insights-agent-view-secrets
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-nova
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/opa/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-opa-defaulttargetresources
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: insightsagent-insights-agent-opa-defaulttargetresources
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-opa
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/opa/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-opa-role
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-opa
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/pluto/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-pluto-view
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-pluto
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/pluto/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-pluto
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: insightsagent-insights-agent-pluto
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-pluto
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/polaris/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-polaris
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: insightsagent-insights-agent-polaris
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-polaris
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/polaris/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-polaris-view
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-polaris
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/prometheus-metrics/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-prometheus-metrics-view
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-prometheus-metrics
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/trivy/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-trivy
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-trivy
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/workloads/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-workloads
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: insightsagent-insights-agent-workloads
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-workloads
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/workloads/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: insightsagent-insights-agent-workloads-view
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: insightsagent-insights-agent-workloads
+    namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/cronjob-executor/rbac.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: insightsagent-insights-agent-cronjob-executor
+  labels:
+    app: insights-agent
+rules:
+- apiGroups: [""]
+  resources: ["cronjobs"]
+  verbs: ["get", "list"]
+- apiGroups: ["batch"]
+  resources: ["cronjobs"]
+  verbs: ["get", "list"]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["create", "delete"]
+---
+# Source: insights-agent/templates/rbac.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: insightsagent-insights-agent-get-logs
+  labels:
+    app: insights-agent
+rules:
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get"]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get"]
+---
+# Source: insights-agent/templates/cronjob-executor/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: insightsagent-insights-agent-cronjob-executor
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: insightsagent-insights-agent-cronjob-executor
+subjects:
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-cronjob-executor
+  namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: insightsagent-insights-agent-get-logs
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: insightsagent-insights-agent-get-logs
+subjects:
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-cronjob-executor
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-opa
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-pluto
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-kube-bench
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-kube-hunter
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-polaris
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-release-watcher
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-trivy
+  namespace: insights-agent-3f6s40oruj
+- kind: ServiceAccount
+  name: insightsagent-insights-agent-workloads
+  namespace: insights-agent-3f6s40oruj
+---
+# Source: insights-agent/charts/insights-admission/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: insightsagent-insights-agent
+  labels:
+    component: controller
+    helm.sh/chart: insights-admission-1.6.0
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "1.9"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: https
+      protocol: TCP
+      name: https
+  selector:
+    component: controller
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+---
+# Source: insights-agent/charts/prometheus/charts/kube-state-metrics/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: insightsagent-kube-state-metrics
+  namespace: insights-agent-3f6s40oruj
+  labels:    
+    helm.sh/chart: kube-state-metrics-4.7.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "2.4.1"
+  annotations:
+    prometheus.io/scrape: 'true'
+spec:
+  type: "ClusterIP"
+  ports:
+  - name: "http"
+    protocol: TCP
+    port: 8080
+    targetPort: 8080
+  
+  selector:    
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: insightsagent
+---
+# Source: insights-agent/charts/prometheus/templates/server/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: insightsagent
+    chart: prometheus-15.8.7
+    heritage: Helm
+  name: prometheus-server
+  namespace: insights-agent-3f6s40oruj
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 9090
+  selector:
+    component: "server"
+    app: prometheus
+    release: insightsagent
+  sessionAffinity: None
+  type: "ClusterIP"
+---
+# Source: insights-agent/charts/insights-admission/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insightsagent-insights-agent-admission
+  labels:
+    helm.sh/chart: insights-admission-1.6.0
+    app.kubernetes.io/name: insights-agent
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "1.9"
+    app.kubernetes.io/managed-by: Helm
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      component: controller
+      app.kubernetes.io/name: insights-agent
+      app.kubernetes.io/instance: insightsagent
+  template:
+    metadata:
+      labels:
+        component: controller
+        app.kubernetes.io/name: insights-agent
+        app.kubernetes.io/instance: insightsagent
+    spec:
+      serviceAccountName: insightsagent-insights-agent
+      securityContext:
+        {}
+      containers:
+        - name: insights-admission
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 15000
+          image: "quay.io/fairwinds/insights-admission-controller:1.9"
+          imagePullPolicy: Always
+          ports:
+          - name: https
+            containerPort: 8443
+            protocol: TCP
+          - name: health
+            containerPort: 8081
+            protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: health
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: health
+          volumeMounts:
+          - name: secret
+            mountPath: /opt/cert/
+            readOnly: true
+          
+          env:
+          # This is always specified as pluto is enabled in Insights settings.
+          - name: PLUTO_TARGET_VERSIONS
+            value: k8s=v1.24.0
+          - name: WEBHOOK_FAILURE_POLICY
+            value: Ignore
+          - name: FAIRWINDS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: insightsagent-insights-agent-token
+                key: token
+          - name: FAIRWINDS_ORGANIZATION
+            valueFrom:
+              configMapKeyRef:
+                name: insightsagent-insights-agent-configmap
+                key: organization
+          - name: FAIRWINDS_CLUSTER
+            valueFrom:
+              configMapKeyRef:
+                name: insightsagent-insights-agent-configmap
+                key: cluster
+          - name: FAIRWINDS_HOSTNAME
+            valueFrom:
+              configMapKeyRef:
+                name: insightsagent-insights-agent-configmap
+                key: host
+          - name: FAIRWINDS_IGNORE_USERNAMES
+            value: system:addon-manager
+          
+                    
+          resources:
+            limits:
+              cpu: 1
+              memory: 2Gi
+            requests:
+              cpu: 100m
+              memory: 128Mi
+      topologySpreadConstraints:
+        
+        - labelSelector:
+            matchLabels:
+              component: controller
+          maxSkew: 1
+          topologyKey: topology.kubernetes.io/zone
+          whenUnsatisfiable: ScheduleAnyway
+        - labelSelector:
+            matchLabels:
+              component: controller
+          maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+      volumes:
+      - name: secret
+        secret:
+          secretName: insightsagent-insights-agent
+---
+# Source: insights-agent/charts/prometheus/charts/kube-state-metrics/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insightsagent-kube-state-metrics
+  namespace: insights-agent-3f6s40oruj
+  labels:    
+    helm.sh/chart: kube-state-metrics-4.7.0
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: metrics
+    app.kubernetes.io/part-of: kube-state-metrics
+    app.kubernetes.io/name: kube-state-metrics
+    app.kubernetes.io/instance: insightsagent
+    app.kubernetes.io/version: "2.4.1"
+spec:
+  selector:
+    matchLabels:      
+      app.kubernetes.io/name: kube-state-metrics
+      app.kubernetes.io/instance: insightsagent
+  replicas: 1
+  template:
+    metadata:
+      labels:        
+        helm.sh/chart: kube-state-metrics-4.7.0
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: metrics
+        app.kubernetes.io/part-of: kube-state-metrics
+        app.kubernetes.io/name: kube-state-metrics
+        app.kubernetes.io/instance: insightsagent
+        app.kubernetes.io/version: "2.4.1"
+    spec:
+      hostNetwork: false
+      serviceAccountName: insightsagent-kube-state-metrics
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsUser: 65534
+      containers:
+      - name: kube-state-metrics
+        args:
+        - --port=8080
+        - --resources=certificatesigningrequests,configmaps,cronjobs,daemonsets,deployments,endpoints,horizontalpodautoscalers,ingresses,jobs,limitranges,mutatingwebhookconfigurations,namespaces,networkpolicies,nodes,persistentvolumeclaims,persistentvolumes,poddisruptionbudgets,pods,replicasets,replicationcontrollers,resourcequotas,secrets,services,statefulsets,storageclasses,validatingwebhookconfigurations,volumeattachments
+        - --telemetry-port=8081
+        imagePullPolicy: Always
+        image: "k8s.gcr.io/kube-state-metrics/kube-state-metrics:v2.4.1"
+        ports:
+        - containerPort: 8080
+          name: "http"
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 5
+          timeoutSeconds: 5
+        resources:
+          requests:
+            cpu: 10m
+            memory: 32Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          readOnlyRootFilesystem: true
+---
+# Source: insights-agent/charts/prometheus/templates/server/deploy.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    component: "server"
+    app: prometheus
+    release: insightsagent
+    chart: prometheus-15.8.7
+    heritage: Helm
+  name: prometheus-server
+  namespace: insights-agent-3f6s40oruj
+spec:
+  selector:
+    matchLabels:
+      component: "server"
+      app: prometheus
+      release: insightsagent
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        component: "server"
+        app: prometheus
+        release: insightsagent
+        chart: prometheus-15.8.7
+        heritage: Helm
+    spec:
+      enableServiceLinks: true
+      serviceAccountName: prometheus-server
+      containers:
+
+        - name: prometheus-server
+          image: "quay.io/prometheus/prometheus:v2.34.0"
+          imagePullPolicy: "Always"
+          args:
+            - --storage.tsdb.retention.time=1d
+            - --config.file=/etc/config/prometheus.yml
+            - --storage.tsdb.path=/data
+            - --web.console.libraries=/etc/prometheus/console_libraries
+            - --web.console.templates=/etc/prometheus/consoles
+            - --web.enable-lifecycle
+          ports:
+            - containerPort: 9090
+          readinessProbe:
+            httpGet:
+              path: /-/ready
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            timeoutSeconds: 4
+            failureThreshold: 3
+            successThreshold: 1
+          livenessProbe:
+            httpGet:
+              path: /-/healthy
+              port: 9090
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 15
+            timeoutSeconds: 10
+            failureThreshold: 3
+            successThreshold: 1
+          resources:
+            limits:
+              cpu: 500m
+              memory: 3Gi
+            requests:
+              cpu: 250m
+              memory: 512Mi
+          volumeMounts:
+            - name: config-volume
+              mountPath: /etc/config
+            - name: storage-volume
+              mountPath: /data
+              subPath: ""
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+      hostNetwork: false
+      dnsPolicy: ClusterFirst
+      securityContext:
+        fsGroup: 65534
+        runAsGroup: 65534
+        runAsNonRoot: true
+        runAsUser: 65534
+      terminationGracePeriodSeconds: 300
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-server
+        - name: storage-volume
+          emptyDir:
+            {}
+---
+# Source: insights-agent/templates/install-reporter/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: insightsagent-insights-agent-install-reporter
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  ttlSecondsAfterFinished: 300
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: start-job-from-cronjob
+        image: "quay.io/fairwinds/insights-uploader:0.4"
+        imagePullPolicy: Always
+        command: ["curl"]
+        args:
+          - "--fail"
+          - "-X"
+          - "POST"
+          - "http://insights-agent-test:8080/v0/organizations/acme-co/clusters/us-east-1/data/installation"
+          - "-H"
+          - "Content-Type: application/json"
+          - "-H"
+          - "Authorization: Bearer $(FAIRWINDS_TOKEN)"
+          - "-d"
+          - "@/opt/app/values.json"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        volumeMounts:
+        - name: values
+          mountPath: /opt/app/values.json
+          subPath: values.json
+          readOnly: true
+        
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+        env:
+          - name: FAIRWINDS_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: insightsagent-insights-agent-token
+                key: token
+        
+                  
+      volumes:
+      - name: values
+        configMap:
+          name: insightsagent-insights-agent-values
+---
+# Source: insights-agent/templates/kube-bench/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: kube-bench
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+    polaris.fairwinds.com/hostPIDSet-exempt: "true"
+    polaris.fairwinds.com/runAsRootAllowed-exempt: "true"
+spec:
+  schedule: "50 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 600
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-kube-bench
+          volumes:
+                    
+          hostPID: true
+          volumes:
+          - name: output
+            emptyDir: {}
+          - name: tmp
+            emptyDir: {}
+          - name: var-lib
+            hostPath:
+              path: "/var/lib"
+              type: Directory
+          - name: etc-systemd
+            hostPath:
+              path: "/etc/systemd"
+              type: Directory
+          - name: etc-kubernetes
+            hostPath:
+              path: "/etc/kubernetes"
+              type: Directory
+          - name: usr-bin
+            hostPath:
+              path: "/usr/bin"
+              type: Directory
+          
+          containers:
+          - image: "quay.io/fairwinds/fw-kube-bench:0.4"
+            imagePullPolicy: Always
+            name: kube-bench
+            env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            
+            - name: RUN_ONCE
+              value: "true"
+            - name: INTERVAL_HOURS
+              value: "2"
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: tmp
+              mountPath: /tmp
+            - name: var-lib # for /var/lib/kubelet and /var/lib/etcd
+              mountPath: /var/lib
+              readOnly: true
+            - name: etc-systemd
+              mountPath: /etc/systemd
+              readOnly: true
+            - name: etc-kubernetes
+              mountPath: /etc/kubernetes
+              readOnly: true
+              # /usr/local/mount-from-host/bin is mounted to access kubectl / kubelet, for auto-detecting the Kubernetes version.
+              # You can omit this mount if you specify --version as part of the command.
+            - name: usr-bin
+              mountPath: /usr/local/mount-from-host/bin
+              readOnly: true
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: false
+              capabilities:
+                drop:
+                  - ALL
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - kube-bench
+            - --timeout
+            - "600"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "0.4"
+            - --file
+            - /output/kube-bench.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/templates/kube-hunter/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: kube-hunter
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+    polaris.fairwinds.com/insecureCapabilities-exempt: "true"
+spec:
+  schedule: "0 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-kube-hunter
+          volumes:
+          - name: output
+            emptyDir: {}
+          - name: tmp
+            emptyDir: {}
+          hostPID: true
+          containers:
+          - name: kube-hunter
+            image: "aquasec/kube-hunter:0.6.8"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: tmp
+              mountPath: /tmp
+            command:
+              - /bin/sh
+              - -c
+              - |
+                kube-hunter \
+                  --pod \
+                  --log INFO \
+                  --report json \
+                  --statistics \
+                > /output/kube-hunter-tmp.json \
+                && mv /output/kube-hunter-tmp.json /output/kube-hunter.json
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+            env:
+            
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - kube-hunter
+            - --timeout
+            - "300"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "0.6.8"
+            - --file
+            - /output/kube-hunter.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/templates/nova/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: nova
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+spec:
+  schedule: "7 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-nova
+          containers:
+          - name: nova
+            image: "quay.io/fairwinds/nova:v3.6"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: config
+              mountPath: /config
+            - name: tmp
+              mountPath: /tmp
+            command:
+              - /nova
+              - find
+              - --helm
+              - --containers
+              - --config=/config/nova.yaml
+              - -v3
+            env:
+            
+                        
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - nova
+            - --timeout
+            - "300"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "v3.6"
+            - --file
+            - /output/nova.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+          volumes:
+            - name: output
+              emptyDir: {}
+            - name: config
+              configMap:
+                name: insightsagent-insights-agent-nova-config
+            - name: tmp
+              emptyDir: {}
+---
+# Source: insights-agent/templates/opa/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: opa
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+spec:
+  schedule: "2 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-opa
+          volumes:
+          - name: output
+            emptyDir: {}
+          containers:
+          - name: opa
+            image: "quay.io/fairwinds/fw-opa:2.2"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            command:
+            - "fw-opa"
+            - "--target-resource"
+            - "apps/daemonsets,deployments,statefulsets"
+            - "--target-resource"
+            - "batch/jobs,cronjobs"
+            - "--target-resource"
+            - "/pods,replicationcontrollers"
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_INSIGHTS_HOST
+              value: http://insights-agent-test:8080
+            - name: FAIRWINDS_ORG
+              value: "acme-co"
+            - name: FAIRWINDS_CLUSTER
+              value: "us-east-1"
+            
+            
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - opa
+            - --timeout
+            - "300"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "2.2"
+            - --file
+            - /output/opa.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/templates/pluto/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: pluto
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+spec:
+  schedule: "23 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-pluto
+          volumes:
+          - name: output
+            emptyDir: {}
+          containers:
+          - name: pluto
+            image: "us-docker.pkg.dev/fairwinds-ops/oss/pluto:v5.13"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            command: ["/bin/sh"]
+            args:
+            - -c
+            - |
+              /pluto detect-helm -ojson --target-versions k8s=v1.24.0 > /output/pluto-tmp.json
+              cat /output/pluto-tmp.json
+              mv /output/pluto-tmp.json /output/pluto.json
+            env:
+            
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - pluto
+            - --timeout
+            - "300"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "v5.13"
+            - --file
+            - /output/pluto.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/templates/polaris/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: polaris
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+spec:
+  schedule: "52 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-polaris
+          volumes:
+          - name: output
+            emptyDir: {}
+          
+          initContainers:
+          - name: insights-config-downloader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./download.sh
+            - --datatype
+            - polaris
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --file
+            - /output/polaris-config.yaml
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: foo
+              value: bar
+              
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+          containers:
+          - name: polaris
+            image: "quay.io/fairwinds/polaris:7.3"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            command:
+            - "sh"
+            - "-c"
+            - |
+              CONFIG=""
+              if [ -f '/output/polaris-config.yaml' ]
+              then
+                CONFIG='--config /output/polaris-config.yaml'
+              fi
+              if [ -f '/opt/app/config.yaml' ]
+              then
+                CONFIG='--config /opt/app/config.yaml'
+              fi
+              polaris audit --output-file /output/polaris.json --format json --display-name us-east-1  $CONFIG
+            env:
+            
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - polaris
+            - --timeout
+            - "300"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "7.3"
+            - --file
+            - /output/polaris.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/templates/prometheus-metrics/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: prometheus-metrics
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+spec:
+  schedule: "0/10 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-prometheus-metrics
+          volumes:
+          - name: output
+            emptyDir: {}
+          containers:
+          - name: prometheus-metrics
+            image: "quay.io/fairwinds/prometheus-collector:1.0"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            command:
+            - prometheus-collector
+            env:
+            - name: PROMETHEUS_ADDRESS
+              value: "http://prometheus-server"
+            
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - prometheus-metrics
+            - --timeout
+            - "300"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "1.0"
+            - --file
+            - /output/prometheus-metrics.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/templates/trivy/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: trivy
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+spec:
+  schedule: "4 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 2400
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-trivy
+          securityContext:
+            fsGroup: 10324
+          volumes:
+          - name: output
+            emptyDir: {}
+          - name: tmp
+            emptyDir: {}
+          - name: vartmp
+            emptyDir: {}
+          
+          containers:
+          - name: trivy
+            image: "quay.io/fairwinds/fw-trivy:0.24"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            - name: vartmp
+              mountPath: /var/tmp
+            - name: tmp
+              mountPath: /tmp
+            
+            command:
+              - "./report.sh"
+            env:
+            
+                        
+            - name: FAIRWINDS_INSIGHTS_HOST
+              value: "http://insights-agent-test:8080"
+            - name: FAIRWINDS_ORG
+              value: "acme-co"
+            - name: FAIRWINDS_CLUSTER
+              value: "us-east-1"
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            
+            - name: TRIVY_CACHE_DIR
+              value: /var/tmp
+            - name: MAX_SCANS
+              value: "2"
+            - name: IGNORE_UNFIXED
+              value: "false"
+            - name: MAX_CONCURRENT_SCANS
+              value: "1"
+            
+            securityContext:
+              allowPrivilegeEscalation: false
+              capabilities:
+                drop:
+                - ALL
+              privileged: false
+              readOnlyRootFilesystem: false
+              runAsNonRoot: true
+              runAsUser: 10324
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - trivy
+            - --timeout
+            - "2400"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "0.24"
+            - --file
+            - /output/trivy.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/templates/workloads/cronjob.yaml
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: workloads
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+spec:
+  schedule: "3 * * * *"
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: 300
+      template:
+        metadata:
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: insightsagent-insights-agent-workloads
+          volumes:
+          - name: output
+            emptyDir: {}
+          containers:
+          - name: workloads
+            image: "quay.io/fairwinds/workloads:2.4"
+            imagePullPolicy: Always
+            resources:
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            command: ["workload", "--output-file", "/output/workloads.json"]
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL
+            env:
+            
+          - name: insights-uploader
+            image: "quay.io/fairwinds/insights-uploader:0.4"
+            imagePullPolicy: Always
+            command:
+            - ./uploader.sh
+            - --datatype
+            - workloads
+            - --timeout
+            - "300"
+            - --organization
+            - "acme-co"
+            - --cluster
+            - "us-east-1"
+            - --host
+            - "http://insights-agent-test:8080"
+            - --version
+            - "2.4"
+            - --file
+            - /output/workloads.json
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: insightsagent-insights-agent-token
+                  key: token
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: 2.13.1
+            - name: SEND_FAILURES
+              value: "true"
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: foo
+              value: bar
+            
+            
+          
+            volumeMounts:
+            - name: output
+              mountPath: /output
+            
+            resources:
+              limits:
+                cpu: 250m
+                memory: 512Mi
+              requests:
+                cpu: 50m
+                memory: 128Mi
+            securityContext:
+              runAsNonRoot: true
+              runAsUser: 1000
+              allowPrivilegeEscalation: false
+              readOnlyRootFilesystem: true
+              privileged: false
+              capabilities:
+                drop:
+                  - ALL
+---
+# Source: insights-agent/charts/insights-admission/templates/cert.yaml
+apiVersion: cert-manager.io/v1alpha1
+kind: Certificate
+metadata:
+  name: insightsagent-insights-agent-cert
+spec:
+  commonName: insightsagent-insights-agent.insights-agent-3f6s40oruj.svc
+  dnsNames:
+  - insightsagent-insights-agent.insights-agent-3f6s40oruj.svc
+  - insightsagent-insights-agent.insights-agent-3f6s40oruj.svc.cluster.local
+  isCA: true
+  issuerRef:
+    kind: Issuer
+    name: insightsagent-insights-agent-selfsigned
+  secretName: insightsagent-insights-agent
+---
+# Source: insights-agent/charts/insights-admission/templates/cert.yaml
+apiVersion: cert-manager.io/v1alpha1
+kind: Issuer
+metadata:
+  name: insightsagent-insights-agent-selfsigned
+spec:
+  selfSigned: {}
+---
+# Source: insights-agent/charts/insights-admission/templates/configuration.yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: insightsagent-insights-agent
+  annotations:
+    cert-manager.io/inject-ca-from: insights-agent-3f6s40oruj/insightsagent-insights-agent-cert
+webhooks:
+- admissionReviewVersions:
+  - v1
+  - v1beta1
+  clientConfig:
+    service:
+      name: insightsagent-insights-agent
+      namespace: insights-agent-3f6s40oruj
+      path: /validate
+      port: 443
+  failurePolicy: Ignore
+  matchPolicy: Exact
+  name: insights.fairwinds.com
+  namespaceSelector:
+    
+    matchExpressions:
+    - key: control-plane
+      operator: DoesNotExist
+  objectSelector:
+    
+    {}
+  rules:
+  - apiGroups:
+    - apps
+    apiVersions:
+    - v1
+    - v1beta1
+    - v1beta2
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - daemonsets
+    - deployments
+    - statefulsets
+    scope: Namespaced
+  - apiGroups:
+    - batch
+    apiVersions:
+    - v1
+    - v1beta1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - jobs
+    - cronjobs
+    scope: Namespaced
+  - apiGroups:
+    - ""
+    apiVersions:
+    - v1
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - pods
+    - replicationcontrollers
+    scope: Namespaced
+  sideEffects: None
+  timeoutSeconds: 30
+---
+# Source: insights-agent/templates/test/test-deployment.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: insights-agent-test
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+  labels:
+    component: test
+    app: insights-agent
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8080
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    component: test
+    app: insights-agent
+---
+# Source: insights-agent/templates/test/test-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+  name: insightsagent-insights-agent
+  labels:
+    app: insights-agent
+    component: test-job
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+spec:
+  serviceAccountName: insightsagent-insights-agent-cronjob-executor
+  restartPolicy: Never
+  containers:
+    - name: test
+      image: 'quay.io/fairwinds/insights-utils:0.0'
+      imagePullPolicy: Always
+      command: ["sh"]
+      args:
+        - -c
+        - |
+          
+          #! /bin/sh
+          
+          set -eo pipefail
+          # Get the OS and architecture, defaulting to linux/amd64
+          kubectl_os=$(uname -s | awk '{print tolower($0)}' || echo linux)
+          kubectl_arch=$(uname -m | awk '{print tolower($0)}' |sed -e 's/aarch/arm/' -e 's/x86_/amd/' || echo amd64)
+          
+          mkdir /tmp/bin
+          export PATH=$PATH:/tmp/bin
+          export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+          export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+          export CACERT=${SERVICEACCOUNT}/ca.crt
+          cd /tmp/bin
+          
+          # Download kubectl to match the cluster version,
+          # using kubectl 1.19 for clusters <= 1.19.
+          
+          old_kubectl_version='v1.19.6'
+          default_kubectl_version=$(curl -fsSL https://dl.k8s.io/release/stable.txt)
+          version_pattern='v[0-9]+\.[0-9]+.[0-9]+)'
+          kubectl_version=""
+          
+          echo "Getting the Kubernetes version from the API. . ."
+          if kube_version_info=$(curl -kfsSL --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" https://kubernetes.default.svc/version?timeout=32s); then
+            echo "Found Kubernetes version info: $kube_version_info"
+            git_version=$(echo "${kube_version_info}" | jq -r .gitVersion | cut -d- -f1)
+            echo "Git version is ${git_version}"
+            kube_minor_version=$(echo "${kube_version_info}" | jq -r .minor)
+            echo "Minor version is ${kube_minor_version}"
+            if echo "${git_version}" | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
+              kubectl_version="${git_version}"
+            fi
+            if [ "$kube_minor_version" -lt 19 ] ; then
+              echo "Cluster version earlier than 1.19. Using kubectl version ${old_kubectl_version}"
+              kubectl_version="${old_kubectl_version}"
+            fi
+          else
+            echo "Was unable to connect to the Kubernetes API to find the current version. Will fall back to kubectl $default_kubectl_version"
+            kubectl_version="${default_kubectl_version}"
+          fi
+          
+          if [ "${kubectl_version}" == "" ] ; then
+            echo "Unable to find cluster version. Using kubectl version ${default_kubectl_version}"
+            kubectl_version="${default_kubectl_version}"
+          fi
+          
+          echo Downloading kubectl version ${kubectl_version} for ${kubectl_os}/${kubectl_arch}
+          curl -fsSLo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/${kubectl_os}/${kubectl_arch}/kubectl" && chmod +x kubectl
+          echo Downloading kubectl checksum
+          curl -fsSLO https://dl.k8s.io/${kubectl_version}/bin/${kubectl_os}/${kubectl_arch}/kubectl.sha256 >kubectl.sha256 >/tmp/bin/kubectl.sha256
+          # THe busybox version of sha256sum wants two spaces between the checksum and filename.
+          sed -i -e 's/$/  kubectl/'  /tmp/bin/kubectl.sha256
+          echo Verifying kubectl checksum
+          sha256sum -c /tmp/bin/kubectl.sha256
+          
+          
+          sleep 15
+          #kubectl wait --for=condition=complete job/falco --timeout=240s
+          kubectl wait --for=condition=complete job/nova --timeout=240s
+          kubectl wait --for=condition=complete job/opa --timeout=240s
+          kubectl wait --for=condition=complete job/pluto --timeout=240s
+          kubectl wait --for=condition=complete job/polaris --timeout=240s
+          kubectl wait --for=condition=complete job/prometheus-metrics --timeout=300s
+          kubectl wait --for=condition=complete job/trivy --timeout=240s
+          kubectl wait --for=condition=complete job/workloads --timeout=240s
+          kubectl wait --for=condition=complete job/kube-bench --timeout=240s
+          kubectl wait --for=condition=complete job/kube-hunter --timeout=240s
+          kubectl get jobs
+      resources:
+        limits:
+          cpu: 1
+          memory: 1Gi
+        requests:
+          cpu: 50m
+          memory: 128Mi
+      volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      securityContext:
+        runAsUser: 1000
+        allowPrivilegeEscalation: false
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+  volumes:
+    - name: tmp
+      emptyDir: {}
+---
+# Source: insights-agent/templates/test/test-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insightsagent-insights-agent-test
+  annotations:
+    helm.sh/hook: pre-install,pre-upgrade
+  labels:
+    component: test
+    app: insights-agent
+spec:
+  selector:
+    matchLabels:
+      component: test
+      app: insights-agent
+  template:
+    metadata:
+      labels:
+        component: test
+        app: insights-agent
+    spec:
+      containers:
+        - name: insights-agent
+          env:
+          
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+              - ALL
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1200
+          image: "python:3.7-alpine"
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          command:
+          - "python"
+          - "-c"
+          - |
+            from http.server import BaseHTTPRequestHandler, HTTPServer
+            class FileHandler(BaseHTTPRequestHandler):
+              def do_GET(self):
+                print(self.path)
+                content = "{}".encode(encoding="utf-8")
+                if "trivy" in self.path or "polaris" in self.path:
+                  self.send_response(404, "Not Found")
+                else:
+                  self.send_response(200, "success")
+                self.send_header("Content-type", "application/json")
+                self.send_header("Content-length", len(content))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+              def do_POST(self):
+                print(self.path)
+                content = '{"Success": true}'.encode(encoding="utf-8")
+                self.send_response(200, "success")
+                self.send_header("Content-type", "application/json")
+                self.send_header("Content-length", len(content))
+                self.end_headers()
+                self.wfile.write(content)
+                return
+            server = HTTPServer(('', 8080), FileHandler)
+            server.serve_forever()
+---
+# Source: insights-agent/templates/cronjob-executor/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: cronjob-executor
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+    linkerd.io/inject: disabled
+    sidecar.istio.io/inject: "false"
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: insightsagent-insights-agent-cronjob-executor
+      containers:
+      - name: start-job-from-cronjob
+        image: "quay.io/fairwinds/insights-utils:0.0"
+        imagePullPolicy: Always
+        command: ["sh"]
+        args:
+          - -c
+          - |
+            
+            #! /bin/sh
+            
+            set -eo pipefail
+            # Get the OS and architecture, defaulting to linux/amd64
+            kubectl_os=$(uname -s | awk '{print tolower($0)}' || echo linux)
+            kubectl_arch=$(uname -m | awk '{print tolower($0)}' |sed -e 's/aarch/arm/' -e 's/x86_/amd/' || echo amd64)
+            
+            mkdir /tmp/bin
+            export PATH=$PATH:/tmp/bin
+            export SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+            export TOKEN=$(cat ${SERVICEACCOUNT}/token)
+            export CACERT=${SERVICEACCOUNT}/ca.crt
+            cd /tmp/bin
+            
+            # Download kubectl to match the cluster version,
+            # using kubectl 1.19 for clusters <= 1.19.
+            
+            old_kubectl_version='v1.19.6'
+            default_kubectl_version=$(curl -fsSL https://dl.k8s.io/release/stable.txt)
+            version_pattern='v[0-9]+\.[0-9]+.[0-9]+)'
+            kubectl_version=""
+            
+            echo "Getting the Kubernetes version from the API. . ."
+            if kube_version_info=$(curl -kfsSL --cacert ${CACERT} --header "Authorization: Bearer ${TOKEN}" https://kubernetes.default.svc/version?timeout=32s); then
+              echo "Found Kubernetes version info: $kube_version_info"
+              git_version=$(echo "${kube_version_info}" | jq -r .gitVersion | cut -d- -f1)
+              echo "Git version is ${git_version}"
+              kube_minor_version=$(echo "${kube_version_info}" | jq -r .minor)
+              echo "Minor version is ${kube_minor_version}"
+              if echo "${git_version}" | grep "^v[0-9]\+\.[0-9]\+\.[0-9]\+$"; then
+                kubectl_version="${git_version}"
+              fi
+              if [ "$kube_minor_version" -lt 19 ] ; then
+                echo "Cluster version earlier than 1.19. Using kubectl version ${old_kubectl_version}"
+                kubectl_version="${old_kubectl_version}"
+              fi
+            else
+              echo "Was unable to connect to the Kubernetes API to find the current version. Will fall back to kubectl $default_kubectl_version"
+              kubectl_version="${default_kubectl_version}"
+            fi
+            
+            if [ "${kubectl_version}" == "" ] ; then
+              echo "Unable to find cluster version. Using kubectl version ${default_kubectl_version}"
+              kubectl_version="${default_kubectl_version}"
+            fi
+            
+            echo Downloading kubectl version ${kubectl_version} for ${kubectl_os}/${kubectl_arch}
+            curl -fsSLo kubectl "https://dl.k8s.io/release/${kubectl_version}/bin/${kubectl_os}/${kubectl_arch}/kubectl" && chmod +x kubectl
+            echo Downloading kubectl checksum
+            curl -fsSLO https://dl.k8s.io/${kubectl_version}/bin/${kubectl_os}/${kubectl_arch}/kubectl.sha256 >kubectl.sha256 >/tmp/bin/kubectl.sha256
+            # THe busybox version of sha256sum wants two spaces between the checksum and filename.
+            sed -i -e 's/$/  kubectl/'  /tmp/bin/kubectl.sha256
+            echo Verifying kubectl checksum
+            sha256sum -c /tmp/bin/kubectl.sha256
+            
+            
+
+            # Can't use -o name because it appends cronjob.batch to the beginning
+            echo "Cleaning up old jobs. . ."
+            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ sh -c "kubectl delete job ~job~ || echo 'Does Not Exist'"
+            echo "Creating jobs. . ."
+            kubectl get cj --selector=app=insights-agent -o custom-columns=NAME:.metadata.name --no-headers | xargs -I~job~ kubectl create job ~job~ --from=CronJob/~job~
+
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+        env:
+          
+        volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+      volumes:
+      - name: tmp
+        emptyDir: {}

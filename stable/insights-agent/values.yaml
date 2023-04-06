@@ -1,9 +1,9 @@
 insights:
   host: https://insights.fairwinds.com
-  organization: "test1"
-  cluster: "test2"
-  base64token: "test3"
-  tokenSecretName: "test4"
+  organization: ""
+  cluster: ""
+  base64token: ""
+  tokenSecretName: ""
 
 global:
   proxy:
