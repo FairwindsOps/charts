@@ -21,6 +21,8 @@ subjects:
     name: {{ include "insights-agent.fullname" . }}-pluto
     namespace: {{ .Release.Namespace }}
 ---
+# This ClusterRole aims to grant Pluto access to resources that are not yet
+# part of the built-in view ClusterRole in earlier versions of Kubernetes.
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
@@ -34,6 +36,140 @@ rules:
       - namespaces
       - secrets
       - configmaps
+      - componentstatuses
+      - nodes
+      - podtemplates
+      - persistentvolumes
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "cert-manager.io"
+    resources:
+      - clusterissuers
+      - issuers
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "flowcontrol.apiserver.k8s.io"
+    resources:
+      - flowschemas
+      - prioritylevelconfigurations
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "discovery.k8s.io"
+    resources:
+      - endpointslices
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "node.k8s.io"
+    resources:
+      - runtimeclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "coordination.k8s.io"
+    resources:
+      - leases
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "scheduling.k8s.io"
+    resources:
+      - priorityclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "apiextensions.k8s.io"
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "admissionregistration.k8s.io"
+    resources:
+      - mutatingwebhookconfigurations
+      - validatingwebhookconfigurations
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "storage.k8s.io"
+    resources:
+      - csistoragecapacities
+      - csidrivers
+      - volumeattachments
+      - storageclasses
+      - csinodes
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "rbac.authorization.k8s.io"
+    resources:
+      - clusterrolebindings
+      - clusterroles
+      - rolebindings
+      - roles
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "policy"
+    resources:
+      - podsecuritypolicies
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "apiregistration.k8s.io"
+    resources:
+      - apiservices
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "events.k8s.io"
+    resources:
+      - events
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "networking.k8s.io"
+    resources:
+      - ingressclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - "certificates.k8s.io"
+    resources:
+      - certificatesigningrequests
     verbs:
       - get
       - list
