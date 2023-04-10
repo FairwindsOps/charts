@@ -71,5 +71,6 @@ spec:
               value: {{ join "," .Values.trivy.namespaceBlacklist | lower }}
             {{ end }}
             {{ include "security-context" . | indent 12 | trim }}
+            {{ include "ssl-cert-file-env-spec" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
