@@ -41,6 +41,7 @@ spec:
               polaris audit --output-file /output/polaris.json --format json --display-name {{ .Values.insights.cluster }} {{ .Values.polaris.extraArgs }} $CONFIG
             env:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
+            {{ include "ssl-cert-file-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
