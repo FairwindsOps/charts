@@ -56,15 +56,15 @@ spec:
             drop:
               - ALL
         env:
-          - name: FAIRWINDS_TOKEN
-            valueFrom:
-              secretKeyRef:
-                {{ if .Values.insights.tokenSecretName -}}
-              name: {{ .Values.insights.tokenSecretName }}
-                {{ else -}}
-              name: {{ include "insights-agent.fullname" . }}-token
-                {{ end -}}
-              key: token
+        - name: FAIRWINDS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+            name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+            name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+            key: token
         {{ include "proxy-env-spec" . | indent 8 | trim }}
         {{ include "ssl-cert-file-env-spec" . | indent 8 }}
       volumes:
