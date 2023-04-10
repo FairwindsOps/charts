@@ -1,4 +1,7 @@
 # Changelog
+## 2.15.1
+* Fix env vars for install-reporter
+
 ## 2.15.0
 * Update pluto, and detect in-cluster resources using the `last-applied-configuration` annotation.
 
