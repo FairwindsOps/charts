@@ -15,6 +15,11 @@ spec:
   ttlSecondsAfterFinished: 300
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
+    {{- with .Values.global.customWorkloadAnnotations }}
+    metadata:
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     spec:
       restartPolicy: Never
       containers:
@@ -51,17 +56,17 @@ spec:
             drop:
               - ALL
         env:
-          - name: FAIRWINDS_TOKEN
-            valueFrom:
-              secretKeyRef:
-                {{ if .Values.insights.tokenSecretName -}}
-              name: {{ .Values.insights.tokenSecretName }}
-                {{ else -}}
-              name: {{ include "insights-agent.fullname" . }}-token
-                {{ end -}}
-              key: token
+        - name: FAIRWINDS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+            name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+            name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+            key: token
         {{ include "proxy-env-spec" . | indent 8 | trim }}
-        {{ include "ssl-cert-file-env-spec" . | indent 10 }}
+        {{ include "ssl-cert-file-env-spec" . | indent 8 }}
       volumes:
       - name: values
         configMap:

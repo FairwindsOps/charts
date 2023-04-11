@@ -20,6 +20,10 @@ spec:
       labels:
         component: right-sizer
         app: insights-agent
+      {{- with .Values.global.customWorkloadAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       {{- with (index .Values "right-sizer" "imagePullSecrets") }}
       imagePullSecrets:

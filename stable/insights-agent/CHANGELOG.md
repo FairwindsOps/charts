@@ -1,4 +1,24 @@
 # Changelog
+## 2.15.1
+* Fix env vars for install-reporter
+
+## 2.15.0
+* Update pluto, and detect in-cluster resources using the `last-applied-configuration` annotation.
+
+## 2.14.2
+* Add customWorkloadAnnotations for additional workload annotations
+## 2.14.1
+* Update Goldilocks chart version to 6.5.*
+
+## 2.14.0
+* Update versions for polaris, goldilocks, pluto, prometheus, trivy, and uploader
+
+## 2.13.0
+* Run fleet installer as part of normal setup instead of as a pre-install/pre-upgrade hook
+
+This is a **breaking change** for users of fleet-installer on Kubernetes 1.21 and earlier.
+Now, the fleet-installer Job uses a `ttl` to remove itself instead of a helm-hook. `ttl` is
+only available as of 1.22.
 
 ## 2.12.0
 * Add the ability to use a custom SSL certificate to validate communication with a self-hosted Insights API.

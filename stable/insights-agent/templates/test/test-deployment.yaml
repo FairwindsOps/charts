@@ -18,6 +18,10 @@ spec:
       labels:
         component: test
         app: insights-agent
+      {{- with .Values.global.customWorkloadAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

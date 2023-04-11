@@ -4,13 +4,15 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   {{- include "metadata" . }}
-    "helm.sh/hook-weight": "10"
-    "helm.sh/hook": "pre-install,pre-upgrade"
-    # "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
 spec:
   ttlSecondsAfterFinished: 3000
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
+    {{- with .Values.global.customWorkloadAnnotations }}
+    metadata:
+      annotations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
     spec:
       restartPolicy: Never
       serviceAccountName: {{ include "insights-agent.fullname" . }}-fleet-installer
