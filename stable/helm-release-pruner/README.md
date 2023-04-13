@@ -57,6 +57,8 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | job.resources.limits.memory | string | `"32Mi"` |  |
 | job.resources.requests.cpu | string | `"25m"` |  |
 | job.resources.requests.memory | string | `"32M"` |  |
+| job.nodeSelector | object | `{}` | The job nodeSelector |
+| job.tolerations | list | `[]` | The job tolerations |
 | pruneProfiles | list | `[]` | Filters to use to find purge candidates. See example usage in values.yaml for details |
 | rbac_manager.enabled | bool | `false` | If true, creates an RbacDefinition to manage access |
 | rbac_manager.namespaceLabel | string | `""` | Label to match namespaces to grant access to |
