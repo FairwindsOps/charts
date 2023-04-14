@@ -181,3 +181,7 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+tests:
+   # tests.securityContext -- The security context for the containers run as helm hook tests
+   securityContext: {}

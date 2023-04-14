@@ -137,3 +137,4 @@ recommender:
 | admissionController.nodeSelector | object | `{}` |  |
 | admissionController.tolerations | list | `[]` |  |
 | admissionController.affinity | object | `{}` |  |
+| tests.securityContext | object | `{}` | The security context for the containers running as helm hook tests |
