@@ -1,4 +1,6 @@
 # Changelog
+## 2.15.2
+* Fix syntax errors around use of imagePullSecrets as part of Containers section of PodSpec.
 ## 2.15.1
 * Fix env vars for install-reporter
 
