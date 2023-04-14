@@ -258,6 +258,8 @@ kube-bench:
 trivy:
   enabled: false
   namespaceBlacklist: []
+  namespaceBlocklist: []
+  namespaceAllowlist: []
   ignoreUnfixed: false
   schedule: "rand * * * *"
   privateImages:
@@ -270,7 +272,7 @@ trivy:
   env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.25"
+    tag: "0.26"
   serviceAccount:
     annotations:
   resources:
