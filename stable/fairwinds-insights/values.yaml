@@ -349,6 +349,26 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
+cloudCostsUpdateCronjob:
+  # -- Enable cloud costs update, true by default
+  enabled: true
+  # -- Resources for the cloud costs update job
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  # -- CRON schedules for the cloud costs update job.
+  schedules:
+    - name: cloud-costs-update
+      interval: 24h
+      cron: "0 0 * * *"
+  securityContext:
+    # -- The user ID to run the cloud costs update job under.
+    runAsUser: 10324
+
 resourcesRecommendationsCronjob:
   # -- Enable resources recommendations true by default
   enabled: true

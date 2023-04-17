@@ -1,0 +1,41 @@
+{{- if .Values.cloudCostsUpdateCronjob.enabled }}
+{{ range .Values.cloudCostsUpdateCronjob.schedules }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: cloud-costs-update-cronjob
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "{{ .cron }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          {{- with $.Values.image.pullSecret }}
+          imagePullSecrets:
+            - name: {{ . }}
+          {{- end }}
+          containers:
+            - name: fairwinds-insights
+              image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
+              command: ["cloud_costs_update"]
+              {{- include "env" $ | indent 14 }}
+              imagePullPolicy: Always
+              resources:
+                {{- toYaml $.Values.cloudCostsUpdateCronjob.resources | nindent 16 }}
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: {{ $.Values.cloudCostsUpdateCronjob.securityContext.runAsUser }}
+                capabilities:
+                  drop:
+                    - ALL
+{{ end }}
+{{- end }}
