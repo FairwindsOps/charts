@@ -461,6 +461,8 @@ right-sizer:
       memory: 128Mi
   # rightsizer.deploymentAnnotations -- Annotations to add to the right-sizer controller deployment.
   deploymentAnnotations: {}
+  # rightsizer.workloadAnnotations -- Annotations to add to the right-sizer controller deployment's worload.
+  workloadAnnotations: {}
   # rightsizer.extraArgs -- Additional command-line flags for the controller.
   extraArgs: []
     # - "-v2"
