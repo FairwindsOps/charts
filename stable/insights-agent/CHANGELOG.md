@@ -1,4 +1,10 @@
 # Changelog
+## 2.16.1
+* Add workload annotion for right-sizer
+
+## 2.16.0
+* Add namespace allowlist to trivy
+
 ## 2.15.1
 * Fix env vars for install-reporter
 
