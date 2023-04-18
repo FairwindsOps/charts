@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "goldilocks.fullname" . }}-dashboard
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/name: {{ include "goldilocks.name" . }}
     helm.sh/chart: {{ include "goldilocks.chart" . }}
