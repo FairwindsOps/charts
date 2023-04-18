@@ -1,4 +1,7 @@
 # Changelog
+## 2.16.1
+* Add workload annotion for right-sizer
+
 ## 2.16.0
 * Add namespace allowlist to trivy
 
