@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "vpa.fullname" . }}-updater
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: updater
     {{- include "vpa.labels" . | nindent 4 }}
