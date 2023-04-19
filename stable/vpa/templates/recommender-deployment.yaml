@@ -3,6 +3,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "vpa.fullname" . }}-recommender
+  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: recommender
     {{- include "vpa.labels" . | nindent 4 }}

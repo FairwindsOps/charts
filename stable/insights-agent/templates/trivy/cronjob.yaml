@@ -66,10 +66,15 @@ spec:
               value: {{ .Values.trivy.ignoreUnfixed | quote }}
             - name: MAX_CONCURRENT_SCANS
               value: {{ .Values.trivy.maxConcurrentScans | quote }}
-            {{ if .Values.trivy.namespaceBlacklist }}
-            - name: NAMESPACE_BLACKLIST
+            {{- if .Values.trivy.namespaceBlocklist }}
+            - name: NAMESPACE_BLOCKLIST
+              value: {{ join "," ( concat .Values.trivy.namespaceBlacklist .Values.trivy.namespaceBlocklist ) | lower }}
+            {{- else }}
+            - name: NAMESPACE_BLOCKLIST
               value: {{ join "," .Values.trivy.namespaceBlacklist | lower }}
-            {{ end }}
+            {{- end }}
+            - name: NAMESPACE_ALLOWLIST
+              value: {{ join "," .Values.trivy.namespaceAllowlist | lower }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
