@@ -53,6 +53,10 @@ spec:
     {{- if .Values.falco.priorityClassName }}
       priorityClassName: {{ .Values.falco.priorityClassName }}
     {{- end }}
+    {{- with .Values.falco.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 6 }}
+     {{- end }}
       containers:
       - name: falco-agent
         volumeMounts:

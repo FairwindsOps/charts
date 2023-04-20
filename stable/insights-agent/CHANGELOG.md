@@ -1,4 +1,7 @@
 # Changelog
+## 2.16.2
+* Fix syntax errors around use of imagePullSecrets as part of Containers section of PodSpec to permit use of insights-agent with private container repos
+
 ## 2.16.1
 * Add workload annotion for right-sizer
 
