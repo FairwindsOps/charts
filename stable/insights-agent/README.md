@@ -94,6 +94,10 @@ Parameter | Description | Default
 `{report}.image.tag` | Image tag to use for the report |
 `{report}.securityContext` | Pod securityContext for the CronJob | {}
 `{report}.containerSecurityContext` | Container securityContext for the CronJob | {}
+`{report}.labels` | labels for the CronJob | {}
+`{report}.annotations` | annotations for the CronJob | {}
+`{report}.jobLabels` | labels for the Jobs created by the CronJob | {}
+`{report}.jobAnnotations` | annotations for the Jobs created by the CronJob | {}
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
 `kube-hunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
