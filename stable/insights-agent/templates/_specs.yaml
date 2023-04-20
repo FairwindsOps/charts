@@ -65,6 +65,10 @@ tolerations:
 securityContext:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- with $.Values.cronjobs.imagePullSecret }}
+imagePullSecrets:
+- name: {{ . }}
+{{- end }}
 {{- if or (not .Config.SkipVolumes) (and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey) }}
 volumes:
 {{- end }}
@@ -79,10 +83,6 @@ volumes:
 name: {{ .Label }}
 image: "{{ .Config.image.repository }}:{{ .Config.image.tag }}"
 imagePullPolicy: Always
-{{- with $.Values.cronjobs.imagePullSecret }}
-imagePullSecrets:
-  - name: {{ . }}
-{{- end }}
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
 {{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}
