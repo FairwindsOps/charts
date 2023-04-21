@@ -1,4 +1,7 @@
 # Changelog
+## 2.17.1
+* Fix an issue with readonly filesystem when awscosts with IRSA is used
+
 ## 2.17.0
 * Allow custom labels and annotations for each report
 
