@@ -17,10 +17,6 @@ spec:
           - name: {{ .Label }}
             image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
             imagePullPolicy: Always
-            {{- with $.Values.cronjobs.imagePullSecret }}
-            imagePullSecrets:
-                - name: {{ . }}
-            {{- end }}
             resources:
               {{- toYaml .Config.resources | nindent 14 }}
             volumeMounts:

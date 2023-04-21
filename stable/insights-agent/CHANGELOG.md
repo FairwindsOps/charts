@@ -1,4 +1,16 @@
 # Changelog
+## 2.17.0
+* Allow custom labels and annotations for each report
+
+## 2.16.2
+* Fix syntax errors around use of imagePullSecrets as part of Containers section of PodSpec to permit use of insights-agent with private container repos
+
+## 2.16.1
+* Add workload annotion for right-sizer
+
+## 2.16.0
+* Add namespace allowlist to trivy
+
 ## 2.15.1
 * Fix env vars for install-reporter
 

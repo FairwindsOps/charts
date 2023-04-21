@@ -39,6 +39,10 @@ job:
     requests:
       cpu: 25m
       memory: 32M
+  # job.nodeSelector -- The job nodeSelector
+  nodeSelector: {}
+  # job.tolerations -- The job tolerations
+  tolerations: []
 
 # pruneProfiles -- Filters to use to find purge candidates. See example usage in values.yaml for details
 pruneProfiles: []

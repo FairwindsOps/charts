@@ -2,10 +2,6 @@
 - name: insights-uploader
   image: "{{ .Values.uploader.image.repository }}:{{ .Values.uploader.image.tag }}"
   imagePullPolicy: Always
-  {{- with $.Values.uploader.imagePullSecret }}
-  imagePullSecrets:
-  - name: {{ . }}
-  {{- end }}
   command:
   - ./uploader.sh
   - --datatype

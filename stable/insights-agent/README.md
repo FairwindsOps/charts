@@ -94,6 +94,10 @@ Parameter | Description | Default
 `{report}.image.tag` | Image tag to use for the report |
 `{report}.securityContext` | Pod securityContext for the CronJob | {}
 `{report}.containerSecurityContext` | Container securityContext for the CronJob | {}
+`{report}.labels` | labels for the CronJob | {}
+`{report}.annotations` | annotations for the CronJob | {}
+`{report}.jobLabels` | labels for the Jobs created by the CronJob | {}
+`{report}.jobAnnotations` | annotations for the Jobs created by the CronJob | {}
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
 `kube-hunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
@@ -105,7 +109,8 @@ Parameter | Description | Default
 `trivy.privateImages.dockerConfigSecret` | Name of a secret containing a docker `config.json` | ""
 `trivy.maxConcurrentScans` | Maximum number of scans to run concurrently | 1
 `trivy.maxScansPerRun` | Maximum number of images to scan on a single run | 20
-`trivy.namespaceBlacklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlacklist="{kube-system,default}"` | nil
+`trivy.namespaceAllowlist` | Specifies which namespaces to scan, takes an array of namespaces for example: `--set trivy.namespaceAllowlist="{kube-system,default}"` | []
+`trivy.namespaceBlocklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlocklist="{kube-system,default}"` | []
 `trivy.serviceAccount.annotations` | Annotations to add to the Trivy service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing private images | nil
 `trivy.env` | A map of environment variables that will be set for the trivy container. | `nil`
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
