@@ -2,9 +2,15 @@
   name: {{ .Label }}
   labels:
     app: insights-agent
+  {{- with .Config.labels }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   annotations:
     polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
     polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+  {{- with .Config.annotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- if .Values.cronjobs.disableServiceMesh }}
     linkerd.io/inject: disabled
     sidecar.istio.io/inject: "false"
@@ -43,11 +49,18 @@ activeDeadlineSeconds: {{ mul .Config.timeout .Values.cronjobs.backoffLimit }}
 
 {{ define "job-spec-metadata" }}
 metadata:
+  {{- with .Config.jobLabels }}
+  labels:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
-    {{- if .Values.global.customWorkloadAnnotations }}
+  {{- with .Config.jobAnnotations }}
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- if .Values.global.customWorkloadAnnotations }}
     {{- toYaml .Values.global.customWorkloadAnnotations | nindent 4 }}
-    {{- end }}
+  {{- end }}
 {{- end }}
 
 {{ define "job-template-spec" }}
@@ -65,6 +78,10 @@ tolerations:
 securityContext:
   {{- toYaml . | nindent 2 }}
 {{- end }}
+{{- with $.Values.cronjobs.imagePullSecret }}
+imagePullSecrets:
+- name: {{ . }}
+{{- end }}
 {{- if or (not .Config.SkipVolumes) (and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey) }}
 volumes:
 {{- end }}
@@ -79,10 +96,6 @@ volumes:
 name: {{ .Label }}
 image: "{{ .Config.image.repository }}:{{ .Config.image.tag }}"
 imagePullPolicy: Always
-{{- with $.Values.cronjobs.imagePullSecret }}
-imagePullSecrets:
-  - name: {{ . }}
-{{- end }}
 resources:
   {{- toYaml .Config.resources | nindent 2 }}
 {{- if and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey }}

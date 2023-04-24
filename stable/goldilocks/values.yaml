@@ -61,10 +61,10 @@ controller:
   resources:
     limits:
       cpu: 25m
-      memory: 32Mi
+      memory: 256Mi
     requests:
       cpu: 25m
-      memory: 32Mi
+      memory: 256Mi
   # controller.podSecurityContext -- Defines the podSecurityContext for the controller pod
   podSecurityContext: {}
   # controller.securityContext -- The container securityContext for the controller container
@@ -158,10 +158,10 @@ dashboard:
   resources:
     limits:
       cpu: 25m
-      memory: 32Mi
+      memory: 256Mi
     requests:
       cpu: 25m
-      memory: 32Mi
+      memory: 256Mi
   # dashboard.podSecurityContext -- Defines the podSecurityContext for the dashboard pod
   podSecurityContext: {}
   # dashboard.securityContext -- The container securityContext for the dashboard container
