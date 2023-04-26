@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.15
+* Update application version to 12.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.12.14
 * Update application version to 12.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
