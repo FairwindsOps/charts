@@ -273,7 +273,7 @@ trivy:
   env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.26"
+    tag: "0.26.1"
   serviceAccount:
     annotations:
   resources:

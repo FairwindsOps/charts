@@ -1,4 +1,7 @@
 # Changelog
+## 2.18.1
+* Upgrade trivy image to 0.26.1
+
 ## 2.18.0
 * Update prometheus subchart to latest minor version
 
