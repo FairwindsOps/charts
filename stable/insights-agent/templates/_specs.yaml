@@ -82,14 +82,12 @@ securityContext:
 imagePullSecrets:
 - name: {{ . }}
 {{- end }}
-{{- if or (not .Config.SkipVolumes) (and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey) }}
-volumes:
-{{- end }}
 {{- if not .Config.SkipVolumes }}
+volumes:
 - name: output
   emptyDir: {}
-{{- end }}
 {{ include "ssl-cert-file-volume-spec" . | trim }}
+{{- end }}
 {{- end }}
 
 {{ define "container-spec" }}
