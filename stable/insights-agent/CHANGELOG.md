@@ -1,4 +1,7 @@
 # Changelog
+## 2.17.1
+* Fix duplicate key issue when using Kustomize/Flux
+
 ## 2.17.0
 * Allow custom labels and annotations for each report
 
