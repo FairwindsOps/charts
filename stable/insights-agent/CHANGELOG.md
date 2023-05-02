@@ -1,5 +1,8 @@
 # Changelog
 ## 2.17.1
+* Fix issue with kube-bench volumes
+
+## 2.17.1
 * Fix duplicate key issue when using Kustomize/Flux
 
 ## 2.17.0
