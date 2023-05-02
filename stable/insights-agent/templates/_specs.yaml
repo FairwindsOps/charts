@@ -86,7 +86,9 @@ imagePullSecrets:
 volumes:
 - name: output
   emptyDir: {}
-{{ include "ssl-cert-file-volume-spec" . | trim }}
+{{-   if (and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey) }}
+{{       include "ssl-cert-file-volume-spec" . | trim }}
+{{-   end }}
 {{- end }}
 {{- end }}
 
