@@ -1,4 +1,7 @@
 # Changelog
+## 2.17.2
+* Update registry for kube-state-metrics
+
 ## 2.17.1
 * Fix duplicate key issue when using Kustomize/Flux
 
