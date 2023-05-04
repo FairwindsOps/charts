@@ -1,4 +1,7 @@
 # Changelog
+## 2.17.3
+* Move duplicate volumes statement in kube-bench inside the if statement
+
 ## 2.17.2
 * Fix issue with kube-bench volumes
 
