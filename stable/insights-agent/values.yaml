@@ -342,8 +342,8 @@ prometheus:
   kube-state-metrics:
     image:
       pullPolicy: Always
-      registry: registry.k8s.io
-      repository: kube-state-metrics/kube-state-metrics
+      registry: ""
+      repository: registry.k8s.io/kube-state-metrics/kube-state-metrics
       tag: "v2.4.1"  # TODO: remove this once we update to the latest p8s chart
     resources:
       requests:
