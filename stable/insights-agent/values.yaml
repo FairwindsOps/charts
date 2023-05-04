@@ -239,6 +239,7 @@ kube-bench:
   mode: "cronjob"
   hourInterval: 2
   timeout: 600
+  SkipVolumes: true
   image:
     repository: quay.io/fairwinds/fw-kube-bench
     tag: 0.4
