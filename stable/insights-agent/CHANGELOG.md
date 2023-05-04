@@ -1,6 +1,9 @@
 # Changelog
-## 2.17.3
+## 2.17.4
 * Update registry for kube-state-metrics
+
+## 2.17.3
+* Move duplicate volumes statement in kube-bench inside the if statement
 
 ## 2.17.2
 * Fix issue with kube-bench volumes
