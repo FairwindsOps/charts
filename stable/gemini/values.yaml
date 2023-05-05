@@ -23,3 +23,10 @@ resources:
   limits:
     memory: 512Mi
     cpu: 200m
+
+topologySpreadConstraints: []
+tolerations: []
+nodeSelector: {}
+affinity: []
+additionalPodLabels: {}
+additionalPodAnnotations: {}
