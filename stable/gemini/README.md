@@ -43,8 +43,8 @@ before upgrading, and add `--skip-crds` when running `helm install`.
 | rbac.serviceAccountName | string | `nil` |  |
 | verbosity | int | `5` | How verbose the controller logs should be |
 | resources | object | `{"limits":{"cpu":"200m","memory":"512Mi"},"requests":{"cpu":"25m","memory":"64Mi"}}` | The resources block for the controller pods |
-| tolerations | list of objects | `nil` | Taint tolerations for nodes |
-| nodeSelector | object | `nil` | Select nodes to deploy which matches the following labels |
-| affinity | list of objects | `nil` | Pod affinity and pod anti-affinity allow you to specify rules about how pods should be placed relative to other pods. |
-| additionalpodLabels | object | `nil` | Additional labels added on pod |
-| additionalPodAnnotations| object | `nil` | Additional annotations added on pod |
+| tolerations | list | `[]` | Taint tolerations for nodes |
+| nodeSelector | object | `{}` | Select nodes to deploy which matches the following labels |
+| affinity | object | `{}` | Pod affinity and pod anti-affinity allow you to specify rules about how pods should be placed relative to other pods. |
+| additionalpodLabels | object | `{}` | Additional labels added on pod |
+| additionalPodAnnotations | object | `{}` | Additional annotations added on pod |
