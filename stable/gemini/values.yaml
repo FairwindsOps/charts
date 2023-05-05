@@ -25,7 +25,11 @@ resources:
     cpu: 200m
 
 # Taint tolerations for nodes
-tolerations: []
+tolerations:
+  # - key: "dedicated"
+  #   operator: "Equal"
+  #   value: "app"
+  #   effect: "NoSchedule"
 
 # Select nodes to deploy which matches the following labels
 nodeSelector:
