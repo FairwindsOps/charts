@@ -24,18 +24,18 @@ resources:
     memory: 512Mi
     cpu: 200m
 
-# Taint tolerations for nodes
+# tolerations -- Taint tolerations for nodes
 tolerations:
   # - key: "dedicated"
   #   operator: "Equal"
   #   value: "app"
   #   effect: "NoSchedule"
 
-# Select nodes to deploy which matches the following labels
+# nodeSelector -- Select nodes to deploy which matches the following labels
 nodeSelector:
   # cloud.google.com/gke-nodepool: default-pool
 
-# Pod affinity and pod anti-affinity allow you to specify rules about how pods should be placed relative to other pods.
+# affinity -- Pod affinity and pod anti-affinity allow you to specify rules about how pods should be placed relative to other pods.
 affinity:
 #  nodeAffinity:
 #    requiredDuringSchedulingIgnoredDuringExecution:
@@ -46,10 +46,10 @@ affinity:
 #          values:
 #          - ssd
 
-# Additional label added on pod which is used in Service's Label Selector
+# additionalpodLabels -- Additional labels added on pod
 additionalpodLabels:
   # env: prod
 
-# Additional Pod Annotations added on pod created by this Deployment
+# additionalPodAnnotations -- Additional annotations added on pod
 additionalPodAnnotations:
   # key: value
