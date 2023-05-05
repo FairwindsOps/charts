@@ -16,7 +16,7 @@ spec:
 {{- if .Values.additionalPodLabels }}
 {{ toYaml .Values.additionalPodLabels | indent 8 }}
 {{- end }}
-{{- if or .Values.additionalPodAnnotations .Values.deployment.fluentdConfigAnnotations }}
+{{- if .Values.additionalPodAnnotations }}
       annotations:
 {{- end }}
 {{- with .Values.additionalPodAnnotations }}
