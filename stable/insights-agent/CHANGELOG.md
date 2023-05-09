@@ -1,6 +1,6 @@
 # Changelog
 ## 2.18.0
-* Update prometheus subchart to latest version
+* Update prometheus subchart to latest minor version
 
 ## 2.17.4
 * Update registry for kube-state-metrics
