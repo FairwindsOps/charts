@@ -5,6 +5,10 @@ config: null
 # configUrl: https://example.com/config.yaml
 configUrl: null
 
+# additionExemptions -- List of additional exemptions to append to the exemptions given in `config`
+additionExemptions: null
+
+
 image:
   # image.repository -- Image repo
   repository: quay.io/fairwinds/polaris
