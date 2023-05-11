@@ -23,3 +23,33 @@ resources:
   limits:
     memory: 512Mi
     cpu: 200m
+
+# tolerations -- Taint tolerations for nodes
+tolerations: []
+  # - key: "dedicated"
+  #   operator: "Equal"
+  #   value: "app"
+  #   effect: "NoSchedule"
+
+# nodeSelector -- Select nodes to deploy which matches the following labels
+nodeSelector: {}
+  # cloud.google.com/gke-nodepool: default-pool
+
+# affinity -- Pod affinity and pod anti-affinity allow you to specify rules about how pods should be placed relative to other pods.
+affinity: {}
+#  nodeAffinity:
+#    requiredDuringSchedulingIgnoredDuringExecution:
+#      nodeSelectorTerms:
+#      - matchExpressions:
+#        - key: disktype
+#          operator: In
+#          values:
+#          - ssd
+
+# additionalPodLabels -- Additional labels added on pod
+additionalPodLabels: {}
+  # env: prod
+
+# additionalPodAnnotations -- Additional annotations added on pod
+additionalPodAnnotations: {}
+  # key: value
