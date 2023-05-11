@@ -47,7 +47,7 @@ affinity: {}
 #          - ssd
 
 # additionalpodLabels -- Additional labels added on pod
-additionalpodLabels: {}
+additionalPodLabels: {}
   # env: prod
 
 # additionalPodAnnotations -- Additional annotations added on pod
