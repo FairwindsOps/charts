@@ -1,0 +1,66 @@
+# Based upon https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml
+nameOverride: polaris
+
+config:
+  checks:
+    # reliability
+    deploymentMissingReplicas: warning
+    priorityClassNotSet: ignore
+    tagNotSpecified: danger
+    pullPolicyNotAlways: warning
+    readinessProbeMissing: warning
+    livenessProbeMissing: warning
+    metadataAndNameMismatched: ignore
+    pdbDisruptionsIsZero: warning
+    missingPodDisruptionBudget: ignore
+    topologySpreadConstraint: warning
+
+    # efficiency
+    cpuRequestsMissing: warning
+    cpuLimitsMissing: warning
+    memoryRequestsMissing: warning
+    memoryLimitsMissing: warning
+    # security
+    automountServiceAccountToken: ignore
+    hostIPCSet: danger
+    hostPIDSet: danger
+    linuxHardening: warning
+    missingNetworkPolicy: ignore
+    notReadOnlyRootFilesystem: warning
+    privilegeEscalationAllowed: danger
+    runAsRootAllowed: danger
+    runAsPrivileged: danger
+    dangerousCapabilities: danger
+    insecureCapabilities: warning
+    hostNetworkSet: danger
+    hostPortSet: warning
+    tlsSettingsMissing: warning
+    # These are initially warning and will later be promoted to danger.
+    sensitiveContainerEnvVar: warning
+    sensitiveConfigmapContent: warning
+    clusterrolePodExecAttach: warning
+    rolePodExecAttach: warning
+    clusterrolebindingPodExecAttach: warning
+    rolebindingClusterRolePodExecAttach: warning
+    rolebindingRolePodExecAttach: warning
+    clusterrolebindingClusterAdmin: warning
+    rolebindingClusterAdminClusterRole: warning
+    rolebindingClusterAdminRole: warning
+
+  mutations:
+    - pullPolicyNotAlways
+
+  exemptions:
+    - namespace: kube-system
+      controllerNames:
+        - coredns
+      rules:
+        - automountServiceAccountToken
+        - missingNetworkPolicy
+
+additionalExemptions:
+  - namespace: foo
+    containerName:
+      - bar
+    rules:
+      - privilegeEscalationAllowed

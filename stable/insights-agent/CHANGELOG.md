@@ -1,4 +1,28 @@
 # Changelog
+## 2.18.0
+* Update prometheus subchart to latest minor version
+
+## 2.17.4
+* Update registry for kube-state-metrics
+
+## 2.17.3
+* Move duplicate volumes statement in kube-bench inside the if statement
+
+## 2.17.2
+* Fix issue with kube-bench volumes
+
+## 2.17.1
+* Fix duplicate key issue when using Kustomize/Flux
+
+## 2.17.0
+* Allow custom labels and annotations for each report
+
+## 2.16.2
+* Fix syntax errors around use of imagePullSecrets as part of Containers section of PodSpec to permit use of insights-agent with private container repos
+
+## 2.16.1
+* Add workload annotion for right-sizer
+
 ## 2.16.0
 * Add namespace allowlist to trivy
 

@@ -5,7 +5,7 @@ dependencies:
   condition: goldilocks.enabled
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: '15.8.7'
+  version: '15.9.1'  # TODO: when updating this, remove the pinned version for kube-state-metrics in values.yaml
   condition: prometheus-metrics.installPrometheusServer
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable

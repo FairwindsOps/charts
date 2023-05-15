@@ -22,6 +22,14 @@ goldilocks:
 
 opa:
   enabled: true
+  labels:
+    foo: bar
+  annotations:
+    beez: baz
+  jobLabels:
+    bagel: everything
+  jobAnnotations:
+    flip: flop
   resources:
     requests:
       cpu: 50m

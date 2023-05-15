@@ -13,6 +13,15 @@ spec:
     metadata:
       labels:
         app: gemini
+{{- if .Values.additionalPodLabels }}
+{{ toYaml .Values.additionalPodLabels | indent 8 }}
+{{- end }}
+{{- if .Values.additionalPodAnnotations }}
+      annotations:
+{{- end }}
+{{- with .Values.additionalPodAnnotations }}
+{{ toYaml . | indent 8 }}
+{{- end }}
     spec:
       {{- if .Values.rbac.create }}
       serviceAccountName: {{ include "gemini.fullname" . }}-controller
@@ -39,3 +48,15 @@ spec:
           capabilities:
             drop:
               - ALL
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 -}}
+      {{- end }}
+      {{- if .Values.affinity }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 -}}
+      {{- end }}
