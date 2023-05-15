@@ -15,7 +15,7 @@ spec:
   containers:
     - name: test
       securityContext:
-      {{- toYaml .Values.tests.securityContext | nindent 6 }}
+      {{- toYaml .Values.tests.securityContext | nindent 8 }}
       image: quay.io/reactiveops/ci-images:v11-alpine
       command: ['kubectl']
       args:
@@ -40,7 +40,7 @@ spec:
   containers:
     - name: test
       securityContext:
-      {{- toYaml .Values.tests.securityContext | nindent 6 }}
+      {{- toYaml .Values.tests.securityContext | nindent 8 }}
       image: quay.io/reactiveops/ci-images:v11-alpine
       command: ['kubectl']
       args:

@@ -23,11 +23,3 @@ admissionController:
 podLabels:
   app: test
   foo: bar
-tests:
-  securityContext:
-    runAsUser: 1984
-    runAsGroup: 1984
-    allowPrivilegeEscalation: false
-    capabilities:
-      drop:
-        - "ALL"
