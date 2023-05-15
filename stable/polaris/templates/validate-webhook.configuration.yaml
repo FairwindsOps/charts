@@ -5,8 +5,12 @@ metadata:
   name: polaris-validate-webhook
   {{- if not .Values.webhook.secretName }}
   annotations:
+    {{- if not .Values.webhook.secretName }}
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "polaris.fullname" . }}-cert
-  {{- end }}
+    {{- end }}
+    {{- range $key, $value := .Values.webhooks.service.annotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 webhooks:
 - admissionReviewVersions:
   - v1
