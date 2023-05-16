@@ -1,4 +1,3 @@
-testMode: true
 recommender:
   enabled: true
   podLabels:
