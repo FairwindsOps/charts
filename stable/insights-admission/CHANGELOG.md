@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.2
+* Update HPA apiVersion to autoscaling/v2
+
 ## 1.6.1
 * Add an apiVersion override for cert-manager apiVersions
 
