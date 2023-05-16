@@ -10,32 +10,38 @@ Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprec
 
 ## Values
 
-| Parameter | Description | Default | Required |
-| --------- | ----------- | ------- | -------- |
-| `affinity` | Pod Affinity  | `{}` | no |
-| `demo.metadata` | Flavor text on demo app page  | `ehazlett/docker-demo - Chart by ReactiveOps` | |
-| `demo.refreshInterval` | How often the demo frontend should refresh (ms)  | `500` | yes |
-| `demo.title` | Title on the demo app page | `Kuberneteseckoner Demo` | no |
-| `hpa.max` | Maximum replicas  | `20` | yes |
-| `hpa.min` | Minimum replicas  | `3` | yes |
-| `hpa.cpuTarget` | CPU scaling target if not using custom metrics | `60` | no |
-| `hpa.customMetric.enabled` | Enable scaling on custom metrics | `false` | no |
-| `hpa.customMetric.metric` | Custom metric to scale on | `cpu` | yes |
-| `hpa.customMetric.target` | HPA custom metric target  | `30m` | yes |
-| `image.pullPolicy` | Pull Policy  | `Always` | yes |
-| `image.repository` | Image Repository  | `quay.io/fairwinds/docker-demo` | yes |
-| `image.tag` | Image Tag  | `latest` | yes |
-| `ingress.annotations` | Annotations on Ingress  | `{}` | no |
-| `ingress.enabled` | Whether or not to enable the ingress  | `False` | no |
-| `ingress.hosts` | Hostnames of ingress  | `chart-example.local` | no |
-| `ingress.paths` | Ingress Paths  | `[]` | no |
-| `ingress.tls` | Ingress TLS Block  | `[]` | no |
-| `nodeSelector` |  | `{}` | no |
-| `resources.limits.cpu` |  | `100m` | yes |
-| `resources.limits.memory` |  | `128Mi` | yes |
-| `resources.requests.cpu` |  | `100m` | yes |
-| `resources.requests.memory` |  | `128Mi` | yes |
-| `service.port` |  | `80` | no |
-| `service.type` |  | `ClusterIP` | yes |
-| `tolerations` |  | `[]` | no |
-| `linkerd.serviceProfile` | Install a linkerd2 serviceprofile with the app | `false` | no |
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| demo.refreshInterval | int | `500` |  |
+| demo.title | string | `"Kubernetes Demo"` |  |
+| demo.metadata | string | `""` |  |
+| hpa.enabled | bool | `true` |  |
+| hpa.min | int | `3` |  |
+| hpa.max | int | `20` |  |
+| hpa.cpuTarget | int | `60` |  |
+| vpa.enabled | bool | `false` |  |
+| vpa.updateMode | string | `"Off"` |  |
+| pdb.enabled | bool | `true` |  |
+| pdb.maxUnavailable | int | `1` |  |
+| image.repository | string | `"quay.io/fairwinds/docker-demo"` |  |
+| image.tag | string | `"1.3.0"` |  |
+| image.pullPolicy | string | `"Always"` |  |
+| nameOverride | string | `""` |  |
+| fullnameOverride | string | `""` |  |
+| service.type | string | `"ClusterIP"` |  |
+| service.port | int | `80` |  |
+| ingress.enabled | bool | `false` |  |
+| ingress.ingressClassName | string | `""` |  |
+| ingress.annotations | object | `{}` |  |
+| ingress.paths | list | `[]` |  |
+| ingress.hosts[0] | string | `"chart-example.local"` |  |
+| ingress.tls | list | `[]` |  |
+| resources.limits.cpu | string | `"70m"` |  |
+| resources.limits.memory | string | `"131072k"` |  |
+| resources.requests.cpu | string | `"10m"` |  |
+| resources.requests.memory | string | `"131072k"` |  |
+| nodeSelector | object | `{}` |  |
+| tolerations | list | `[]` |  |
+| affinity | object | `{}` |  |
+| linkerd.serviceProfile | bool | `false` |  |
+| linkerd.enableRetry | bool | `true` |  |

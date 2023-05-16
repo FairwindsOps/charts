@@ -8,10 +8,6 @@ hpa:
   min: 3
   max: 20
   cpuTarget: 60
-  customMetric:
-    enabled: false
-    metric: somecustommetricname
-    target: 30
 
 vpa:
   enabled: false
