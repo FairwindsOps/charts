@@ -96,6 +96,8 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.disallowExemptions | bool | `false` | Disallow any exemption |
 | webhook.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
 | webhook.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
+| webhook.mutatingConfigurationAnnotations | object | `{}` |  |
+| webhook.validatingConfigurationAnnotations | object | `{}` |  |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
 | audit.cleanup | bool | `false` | Whether to delete the namespace once the audit is finished. |
 | audit.outputURL | string | `""` | A URL which will receive a POST request with audit results. |
