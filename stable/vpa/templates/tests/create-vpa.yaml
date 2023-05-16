@@ -14,8 +14,10 @@ spec:
   serviceAccountName: {{ include "vpa.fullname" . }}-test
   containers:
     - name: test
+      {{- if .Values.tests }}
       securityContext:
       {{- toYaml .Values.tests.securityContext | nindent 8 }}
+      {{- end }}
       image: quay.io/reactiveops/ci-images:v11-alpine
       command: ['bash']
       args:
