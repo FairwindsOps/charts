@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.12.21
+* Update application version to 12.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.20
+* Update application version to 12.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.19
+* Update application version to 12.8. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.18
+* Updated self hosted agent version to 2.17
+
+## 0.12.17
+* Update application version to 12.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.16
+* Update application version to 12.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.12.15
+* Update application version to 12.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.12.14
 * Update application version to 12.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 

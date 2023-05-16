@@ -2,9 +2,8 @@ apiVersion: v2
 name: insights-admission
 description: A Validating Webhook Admission Controller that utilizes Fairwinds Insights.
 type: application
-version: 1.6.0
+version: 1.6.2
 appVersion: "1.9"
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insights-admission/icon.png
 maintainers:
   - name: rbren
-  - name: makoscafee

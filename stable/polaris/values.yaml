@@ -5,6 +5,10 @@ config: null
 # configUrl: https://example.com/config.yaml
 configUrl: null
 
+# additionExemptions -- List of additional exemptions to append to the exemptions given in `config`
+additionExemptions: null
+
+
 image:
   # image.repository -- Image repo
   repository: quay.io/fairwinds/polaris
@@ -227,6 +231,8 @@ webhook:
   disallowConfigExemptions: false
   # webhook.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
+  mutatingConfigurationAnnotations: {}
+  validatingConfigurationAnnotations: {}
 
 audit:
   # audit.enable -- Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others.
