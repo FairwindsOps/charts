@@ -12,7 +12,6 @@ spec:
   maxReplicas: {{ .Values.hpa.max }}
   metrics:
   - type: Resource
-    name: cpu
     resource:
       name: cpu
       target:
