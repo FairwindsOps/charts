@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.3
+* Patch bump for updating chart CI
+
 ## 1.6.2
 * Update HPA apiVersion to autoscaling/v2
 

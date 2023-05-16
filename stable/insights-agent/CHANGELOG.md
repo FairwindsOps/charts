@@ -1,4 +1,8 @@
 # Changelog
+
+## 2.18.1
+* Patch bump for updating charts CI
+
 ## 2.18.0
 * Update prometheus subchart to latest minor version
 

@@ -26,34 +26,6 @@ setup_cluster () {
     kind create cluster --name="$TEST_CLUSTER_NAME" --wait=120s > /dev/null
 }
 
-init_helm() {
-    if helm version --short --client | grep v2 ; then
-        echo "Helm 2 Detected"
-        kubectl create ns tiller-system
-        kubectl -n tiller-system create sa tiller
-        kubectl create clusterrolebinding tiller \
-          --clusterrole cluster-admin \
-          --serviceaccount=tiller-system:tiller
-        helm init --wait --upgrade --service-account tiller --tiller-namespace tiller-system
-    fi
-}
-
-install_hostpath_provisioner() {
-    # https://github.com/helm/chart-testing/blob/master/examples/kind/test/e2e-kind.sh
-    # kind doesn't support Dynamic PVC provisioning yet, this one of ways to get it working
-    # https://github.com/rimusz/charts/tree/master/stable/hostpath-provisioner
-
-    # delete the default storage class
-    kubectl delete storageclass standard
-
-    echo "Install Hostpath Provisioner..."
-    helm repo add rimusz https://charts.rimusz.net
-    helm repo update
-    helm upgrade --install hostpath-provisioner --namespace kube-system rimusz/hostpath-provisioner
-    echo
-}
-
-
 teardown () {
     printf "Deleting kind cluster %s and exec container\n" "$TEST_CLUSTER_NAME"
     kind delete cluster --name="$TEST_CLUSTER_NAME"
@@ -69,12 +41,9 @@ run_tests () {
     ct install --config scripts/ct.yaml --debug --upgrade --helm-extra-args "--timeout 600s"
 }
 
-
 if [ "$OPERATION" = "setup" ]; then
     printf "Running setup.\n"
     setup_cluster
-    init_helm
-    install_hostpath_provisioner
     printf "e2e testing environment is ready.\n"
 elif [ "$OPERATION" = "teardown" ] ; then
     printf "Running teardown.\n"

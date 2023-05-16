@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.22
+* Patch bump for charts CI update
+
 ## 0.12.21
 * Update application version to 12.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
