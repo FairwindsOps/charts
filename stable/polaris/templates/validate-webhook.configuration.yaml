@@ -3,10 +3,13 @@ apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
   name: polaris-validate-webhook
-  {{- if not .Values.webhook.secretName }}
   annotations:
+    {{- if not .Values.webhook.secretName }}
     cert-manager.io/inject-ca-from: {{ .Release.Namespace }}/{{ include "polaris.fullname" . }}-cert
-  {{- end }}
+    {{- end }}
+    {{- range $key, $value := .Values.webhooks.validatingConfigurationAnnotations }}
+    {{ $key }}: {{ $value | quote }}
+    {{- end }}
 webhooks:
 - admissionReviewVersions:
   - v1

@@ -80,8 +80,7 @@ recommender:
 | recommender.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
 | recommender.podAnnotations | object | `{}` | Annotations to add to the recommender pod |
 | recommender.podLabels | object | `{}` | Labels to add to the recommender pod |
-| recommender.podSecurityContext.runAsNonRoot | bool | `true` |  |
-| recommender.podSecurityContext.runAsUser | int | `65534` |  |
+| recommender.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the recommender pod |
 | recommender.securityContext | object | `{}` | The security context for the containers inside the recommender pod |
 | recommender.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
 | recommender.nodeSelector | object | `{}` |  |
@@ -96,8 +95,7 @@ recommender:
 | updater.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
 | updater.podAnnotations | object | `{}` | Annotations to add to the updater pod |
 | updater.podLabels | object | `{}` | Labels to add to the updater pod |
-| updater.podSecurityContext.runAsNonRoot | bool | `true` |  |
-| updater.podSecurityContext.runAsUser | int | `65534` |  |
+| updater.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the updater pod |
 | updater.securityContext | object | `{}` | The security context for the containers inside the updater pod |
 | updater.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
 | updater.nodeSelector | object | `{}` |  |
@@ -129,8 +127,7 @@ recommender:
 | admissionController.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
 | admissionController.podAnnotations | object | `{}` | Annotations to add to the admission controller pod |
 | admissionController.podLabels | object | `{}` | Labels to add to the admission controller pod |
-| admissionController.podSecurityContext.runAsNonRoot | bool | `true` |  |
-| admissionController.podSecurityContext.runAsUser | int | `65534` |  |
+| admissionController.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the admission controller pod |
 | admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
 | admissionController.resources | object | `{"limits":{"cpu":"200m","memory":"500Mi"},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
 | admissionController.tlsSecretKeys | list | `[]` | The keys in the vpa-tls-certs secret to map in to the admission controller |
