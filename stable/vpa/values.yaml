@@ -181,3 +181,14 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+tests:
+  # tests.securityContext -- The security context for the containers run as helm hook tests
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
