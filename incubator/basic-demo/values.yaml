@@ -19,7 +19,7 @@ pdb:
 
 image:
   repository: quay.io/fairwinds/docker-demo
-  tag: 1.3.0
+  tag: 1.4.0
   pullPolicy: Always
 
 nameOverride: ""
