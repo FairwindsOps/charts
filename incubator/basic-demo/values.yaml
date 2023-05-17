@@ -8,10 +8,6 @@ hpa:
   min: 3
   max: 20
   cpuTarget: 60
-  customMetric:
-    enabled: false
-    metric: somecustommetricname
-    target: 30
 
 vpa:
   enabled: false
@@ -23,7 +19,7 @@ pdb:
 
 image:
   repository: quay.io/fairwinds/docker-demo
-  tag: latest
+  tag: 1.4.0
   pullPolicy: Always
 
 nameOverride: ""
