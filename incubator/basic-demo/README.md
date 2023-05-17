@@ -24,7 +24,7 @@ Due to the [future deprecation](https://kubernetes.io/blog/2019/07/18/api-deprec
 | pdb.enabled | bool | `true` |  |
 | pdb.maxUnavailable | int | `1` |  |
 | image.repository | string | `"quay.io/fairwinds/docker-demo"` |  |
-| image.tag | string | `"1.3.0"` |  |
+| image.tag | string | `"1.4.0"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
