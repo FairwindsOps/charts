@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.6.4
+* Fix HPA metric definition for autoscaling/v2
+
 ## 1.6.3
 * Patch bump for updating chart CI
 
