@@ -11,3 +11,5 @@ webhook:
     test: mutate
   validatingConfigurationAnnotations:
     test: validate
+  certManager:
+    apiVersion: cert-manager.io/v1
