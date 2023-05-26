@@ -81,6 +81,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.tolerations | list | `[]` | Webhook pod tolerations |
 | webhook.affinity | object | `{}` | Webhook pods affinity |
 | webhook.topologySpreadConstraints | list | `[{"labelSelector":{"matchLabels":{"component":"webhook"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"component":"webhook"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | Webhook pods topologySpreadConstraints |
+| webhook.certManager.apiVersion | string | `""` | Allows overriding .Capabilities.APIVersions with a specified version. Useful for GitOps. |
 | webhook.caBundle | string | `nil` | CA Bundle to use for Validating Webhook instead of cert-manager |
 | webhook.secretName | string | `nil` | Name of the secret containing a TLS certificate to use if cert-manager is not used. |
 | webhook.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
