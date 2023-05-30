@@ -1,4 +1,17 @@
 # Changelog
+
+## 1.6.4
+* Fix HPA metric definition for autoscaling/v2
+
+## 1.6.3
+* Patch bump for updating chart CI
+
+## 1.6.2
+* Update HPA apiVersion to autoscaling/v2
+
+## 1.6.1
+* Add an apiVersion override for cert-manager apiVersions
+
 ## 1.6.0
 * Add the ability to use a custom SSL certificate to validate communication with a self-hosted Insights API.
 

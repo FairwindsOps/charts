@@ -49,7 +49,7 @@ recommender:
   podAnnotations: {}
   # recommender.podLabels -- Labels to add to the recommender pod
   podLabels: {}
-  # recommender.podSecurityContetxt -- The security context for the recommender pod
+  # recommender.podSecurityContext -- The security context for the recommender pod
   podSecurityContext:
     runAsNonRoot: true
     runAsUser: 65534
@@ -87,7 +87,7 @@ updater:
   podAnnotations: {}
   # updater.podLabels -- Labels to add to the updater pod
   podLabels: {}
-  # updater.podSecurityContetxt -- The security context for the updater pod
+  # updater.podSecurityContext -- The security context for the updater pod
   podSecurityContext:
     runAsNonRoot: true
     runAsUser: 65534
@@ -156,7 +156,7 @@ admissionController:
   podAnnotations: {}
   # admissionController.podLabels -- Labels to add to the admission controller pod
   podLabels: {}
-  # admissionController.podSecurityContetxt -- The security context for the admission controller pod
+  # admissionController.podSecurityContext -- The security context for the admission controller pod
   podSecurityContext:
     runAsNonRoot: true
     runAsUser: 65534
@@ -181,3 +181,14 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+
+tests:
+  # tests.securityContext -- The security context for the containers run as helm hook tests
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL

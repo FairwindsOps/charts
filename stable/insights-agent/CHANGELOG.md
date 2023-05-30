@@ -1,6 +1,28 @@
 # Changelog
-## 2.17.1
+
+## 2.18.3
 * Fix an issue with readonly filesystem when awscosts with IRSA is used
+
+## 2.18.2
+* Update version of insights-admission to 1.6.4
+
+## 2.18.1
+* Patch bump for updating charts CI
+
+## 2.18.0
+* Update prometheus subchart to latest minor version
+
+## 2.17.4
+* Update registry for kube-state-metrics
+
+## 2.17.3
+* Move duplicate volumes statement in kube-bench inside the if statement
+
+## 2.17.2
+* Fix issue with kube-bench volumes
+
+## 2.17.1
+* Fix duplicate key issue when using Kustomize/Flux
 
 ## 2.17.0
 * Allow custom labels and annotations for each report

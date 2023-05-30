@@ -5,6 +5,10 @@ config: null
 # configUrl: https://example.com/config.yaml
 configUrl: null
 
+# additionExemptions -- List of additional exemptions to append to the exemptions given in `config`
+additionExemptions: null
+
+
 image:
   # image.repository -- Image repo
   repository: quay.io/fairwinds/polaris
@@ -151,6 +155,9 @@ webhook:
     labelSelector:
       matchLabels:
         component: webhook
+  certManager:
+    # -- Allows overriding .Capabilities.APIVersions with a specified version. Useful for GitOps.
+    apiVersion: ""
   # webhook.caBundle -- CA Bundle to use for Validating Webhook instead of cert-manager
   caBundle: null
   # webhook.secretName -- Name of the secret containing a TLS certificate to use if cert-manager is not used.
@@ -227,6 +234,8 @@ webhook:
   disallowConfigExemptions: false
   # webhook.disallowAnnotationExemptions -- Disallow exemptions that are configured via annotations
   disallowAnnotationExemptions: false
+  mutatingConfigurationAnnotations: {}
+  validatingConfigurationAnnotations: {}
 
 audit:
   # audit.enable -- Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others.

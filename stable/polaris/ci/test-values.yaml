@@ -7,3 +7,9 @@ dashboard:
 webhook:
   enabled: true
   mutate: true
+  mutatingConfigurationAnnotations:
+    test: mutate
+  validatingConfigurationAnnotations:
+    test: validate
+  certManager:
+    apiVersion: cert-manager.io/v1

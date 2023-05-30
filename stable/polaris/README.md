@@ -37,6 +37,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 |-----|------|---------|-------------|
 | config | string | `nil` | The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration). If not provided then the [default](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml) config from Polaris is used. |
 | configUrl | string | `nil` | Use a config from an accessible URL source.  NOTE: `config` & `configUrl` are mutually exclusive.  Setting `configURL` will take precedence over `config`.  Only one may be used. configUrl: https://example.com/config.yaml |
+| additionExemptions | string | `nil` | List of additional exemptions to append to the exemptions given in `config` |
 | image.repository | string | `"quay.io/fairwinds/polaris"` | Image repo |
 | image.tag | string | `""` | The Polaris Image tag to use. Defaults to the Chart's AppVersion |
 | image.pullPolicy | string | `"Always"` | Image pull policy |
@@ -80,6 +81,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.tolerations | list | `[]` | Webhook pod tolerations |
 | webhook.affinity | object | `{}` | Webhook pods affinity |
 | webhook.topologySpreadConstraints | list | `[{"labelSelector":{"matchLabels":{"component":"webhook"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"component":"webhook"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | Webhook pods topologySpreadConstraints |
+| webhook.certManager.apiVersion | string | `""` | Allows overriding .Capabilities.APIVersions with a specified version. Useful for GitOps. |
 | webhook.caBundle | string | `nil` | CA Bundle to use for Validating Webhook instead of cert-manager |
 | webhook.secretName | string | `nil` | Name of the secret containing a TLS certificate to use if cert-manager is not used. |
 | webhook.failurePolicy | string | `"Fail"` | failurePolicy for the ValidatingWebhookConfiguration |
@@ -95,6 +97,8 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.disallowExemptions | bool | `false` | Disallow any exemption |
 | webhook.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
 | webhook.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
+| webhook.mutatingConfigurationAnnotations | object | `{}` |  |
+| webhook.validatingConfigurationAnnotations | object | `{}` |  |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
 | audit.cleanup | bool | `false` | Whether to delete the namespace once the audit is finished. |
 | audit.outputURL | string | `""` | A URL which will receive a POST request with audit results. |
