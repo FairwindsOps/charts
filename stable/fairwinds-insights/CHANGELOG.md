@@ -1,6 +1,9 @@
 # Changelog
 
 ## 0.12.24
+* Added cloud costs update job to Insights.
+
+## 0.12.24
 * Update application version to 12.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
 ## 0.12.23
