@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.12.24
+## 0.12.25
 * Added cloud costs update job to Insights.
 
 ## 0.12.24
