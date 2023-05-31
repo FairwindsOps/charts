@@ -51,7 +51,7 @@ spec:
           readOnly: true
 {{ include "ssl-cert-file-volumemount-spec" . | indent 8 }}
         securityContext:
-{{ include "installReporter.securityContext" | indent 10 }}
+{{ include ".Values.installReporter.securityContext" | indent 10 }}
         env:
         - name: FAIRWINDS_TOKEN
           valueFrom:
