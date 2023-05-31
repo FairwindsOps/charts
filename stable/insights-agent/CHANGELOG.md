@@ -1,8 +1,5 @@
 # Changelog
 
-## 2.18.3
-* Updated version of aws costs to 1.3
-
 ## 2.18.2
 * Update version of insights-admission to 1.6.4
 
