@@ -51,14 +51,7 @@ spec:
           readOnly: true
 {{ include "ssl-cert-file-volumemount-spec" . | indent 8 }}
         securityContext:
-          runAsUser: 1000
-          readOnlyRootFilesystem: true
-          allowPrivilegeEscalation: false
-          privileged: false
-          runAsNonRoot: true
-          capabilities:
-            drop:
-              - ALL
+{{ include "installReporter.securityContext" | indent 10 }}
         env:
         - name: FAIRWINDS_TOKEN
           valueFrom:

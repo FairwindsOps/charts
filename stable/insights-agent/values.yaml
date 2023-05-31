@@ -71,6 +71,15 @@ installReporter:
       cpu: 100m
       memory: 128Mi
   additionalAnnotations: {}
+  securityContext:
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
+    capabilities:
+      drop:
+      - ALL
 
 polaris:
   enabled: false
