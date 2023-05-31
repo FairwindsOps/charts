@@ -398,7 +398,7 @@ cloudCostsUpdateCronjob:
       memory: 2Gi
     requests:
       cpu: 500m
-      memory: 1.5Gi
+      memory: 2Gi
   # -- CRON schedules for the cloud costs update job
   schedules:
     - name: cloud-costs-update
