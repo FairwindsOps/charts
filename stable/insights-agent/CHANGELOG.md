@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.18.3
+* Update version of polaris to 8.0
+
 ## 2.18.2
 * Update version of insights-admission to 1.6.4
 
