@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.13.0
+* Added cloud costs update cron job
+
 ## 0.12.24
 * Update application version to 12.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
