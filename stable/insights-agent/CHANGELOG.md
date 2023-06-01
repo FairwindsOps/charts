@@ -1,7 +1,12 @@
 # Changelog
 
-## 2.18.3
+
+## 2.19.1
 * Add configurable values and sensible defaults to install-reporter
+
+## 2.19.0
+* Update version of aws costs to 1.3
+
 ## 2.18.2
 * Update version of insights-admission to 1.6.4
 
