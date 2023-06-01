@@ -7,7 +7,3 @@ dashboard:
 webhook:
   enabled: true
   mutate: true
-  mutatingConfigurationAnnotations:
-    test: mutate
-  validatingConfigurationAnnotations:
-    test: validate

@@ -8,6 +8,9 @@ and this chart adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.ht
 ## 5.9.0
 * Update Polaris version to 8.0
 
+## 5.8.2
+* Fix webhook annotations reference
+
 ## 5.8.1
 * Fix cert manager apiVersion override
 
