@@ -571,6 +571,7 @@ minio:
   buckets:
   - name: reports
     policy: none
+    purge: false
   # -- Resources for Minio
   resources:
     requests:
