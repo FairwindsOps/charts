@@ -1,6 +1,6 @@
 {{- if and .Values.webhook.enable (not .Values.webhook.secretName) -}}
-{{- if .webhook.certManager.apiVersion }}
-apiVersion: .webhook.certManager.apiVersion
+{{- if .Values.webhook.certManager.apiVersion }}
+apiVersion: {{ .Values.webhook.certManager.apiVersion }}
 {{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
 apiVersion: cert-manager.io/v1
 {{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha2" }}
@@ -28,8 +28,8 @@ spec:
     name: {{ include "polaris.fullname" . }}-selfsigned
   secretName: {{ include "polaris.fullname" . }}
 ---
-{{- if .webhook.certManager.apiVersion }}
-apiVersion: .webhook.certManager.apiVersion
+{{- if .Values.webhook.certManager.apiVersion }}
+apiVersion: {{ .Values.webhook.certManager.apiVersion }}
 {{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1" }}
 apiVersion: cert-manager.io/v1
 {{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1alpha2" }}

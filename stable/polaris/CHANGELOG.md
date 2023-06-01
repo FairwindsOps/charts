@@ -5,8 +5,11 @@ All notable changes to this Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this chart adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 5.9.0
+* Update Polaris version to 8.0
+
 ## 5.8.1
-* Patch bump for updating Polaris version to 8.0
+* Fix cert manager apiVersion override
 
 ## 5.7.6
 * Patch bump for updating charts CI
