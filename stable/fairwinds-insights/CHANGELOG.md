@@ -1,4 +1,6 @@
 # Changelog
+## 0.12.25
+* Bump minio subchart to 5.0.10
 
 ## 0.12.24
 * Update application version to 12.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
