@@ -3,6 +3,6 @@ name: vpa
 description: A Helm chart for Kubernetes Vertical Pod Autoscaler
 type: application
 version: 1.7.5
-appVersion: 0.13.0
+appVersion: 0.12.27
 maintainers:
   - name: sudermanjr

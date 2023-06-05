@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.13.0
+## 0.12.27
 * Added cloud costs update cron job
 
 ## 0.12.26
