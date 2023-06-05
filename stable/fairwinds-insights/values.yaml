@@ -401,7 +401,7 @@ cloudCostsUpdateCronjob:
       memory: 2Gi
   # -- CRON schedules for the cloud costs update job
   schedules:
-    - name: cloud-costs-update
+    - name: costs-update
       cron: "15 */3 * * *"
   securityContext:
     # -- The user ID to run the cloud costs update job under.
