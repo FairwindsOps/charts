@@ -388,6 +388,25 @@ closeTicketsCronjob:
     # -- The user ID to run the close tickets job under.
     runAsUser: 10324
 
+cloudCostsUpdateCronjob:
+  # -- Cloud costs update enabled by default
+  enabled: true
+  # -- Resources for the cloud costs update job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 2Gi
+  # -- CRON schedules for the cloud costs update job
+  schedules:
+    - name: costs-update
+      cron: "15 */3 * * *"
+  securityContext:
+    # -- The user ID to run the cloud costs update job under.
+    runAsUser: 10324
+
 truncateWorkloadMetrics:
   # -- Enable truncating workload metrics false by default
   enabled: false
