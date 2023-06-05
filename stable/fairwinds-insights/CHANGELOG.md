@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.12.27
+* Bump auto-scan CI-plugin to 5.1
+
 ## 0.12.26
 * Update application version to 12.13. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
