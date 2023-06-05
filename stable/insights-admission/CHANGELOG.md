@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7.0
+* Bump insights-admission to version 1.10
+
 ## 1.6.4
 * Fix HPA metric definition for autoscaling/v2
 
