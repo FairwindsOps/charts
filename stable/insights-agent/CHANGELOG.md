@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.20.0
-* Update polaris to 8.0
+* Update polaris to 8.0 and admission to 1.7
 
 ## 2.19.0
 * Update version of aws costs to 1.3
