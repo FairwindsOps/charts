@@ -36,7 +36,7 @@ spec:
                 allowPrivilegeEscalation: false
                 privileged: false
                 runAsNonRoot: true
-                runAsUser: {{ .Values.cloudCostsUpdateCronjob.securityContext.runAsUser }}
+                runAsUser: {{ $.Values.cloudCostsUpdateCronjob.securityContext.runAsUser }}
                 capabilities:
                   drop:
                     - ALL
