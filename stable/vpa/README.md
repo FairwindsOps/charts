@@ -11,7 +11,7 @@ There are a few tests included with this chart that can help debug why your inst
 * `crds-available` - Checks for both the _verticalpodautoscalers_ and _verticalpodautoscalercheckpoints_ CRDs
 * `metrics-api-available` - Checks to make sure that the metrics API endpoint is available. If it's not, install [metrics-server](https://github.com/kubernetes-sigs/metrics-server) in your cluster.
 * `create-vpa` - A simple check to make sure that VPA objects can be created in your cluster. Does not check for functionality of that VPA.
-+ `webhook-configuration` - Checks, that both the service and the CA bundle in the MutatingWebhookconfiguration are configured correctly.
++ `webhook-configuration` - Checks that both the service and the CA bundle in the MutatingWebhookconfiguration are configured correctly.
 
 ## Components
 
@@ -46,7 +46,7 @@ All other changes are implemented in a non breaking fashion.
 
 ### MutatingWebhookconfiguration
 
-Previously, the webhook creation was handled by the admission controller itself. This had the downside, that Helm is not in control of the resource and therefore required the cleanupOnDelete job.
+Previously, the webhook creation was handled by the admission controller itself. This had the downside that Helm is not in control of the resource and therefore required the cleanupOnDelete job.
 
 This version disables the *selfRegistration* by the admission controller and creates the MutatingWebhookconfiguration using Helm.
 
@@ -68,7 +68,7 @@ The admission controller is enabled by default.
 
 ## *BREAKING* Upgrading from v0.x.x to v1.x.x
 
-In the previus version, when admissionController.cleanupOnDelete flag passed to true, MutatingWebhookconfiguration and the tls secret for the admission controller is removed. There was no chance to pass any image information to start remove process. Now, it could be passed custom image by version 1.0.0.
+In the previous version, when the admissionController.cleanupOnDelete flag was set to true, MutatingWebhookconfiguration and the tls secret for the admission controller were removed. There was no chance to pass any image information to start remove process. Now, it could be passed custom image by version 1.0.0.
 
 ```yaml
 cleanupOnDelete:
@@ -178,3 +178,5 @@ recommender:
 | tests.image.repository | string | `"bitnami/kubectl"` | An image used for testing containing bash, cat and kubectl |
 | tests.image.tag | string | `""` | An image tag for the tests image |
 | tests.image.pullPolicy | string | `"Always"` | The pull policy for the tests image. |
+| metrics-server | object | `{"enabled":false}` | configuration options for the [metrics server Helm chart](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server). See the projects [README.md](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server#configuration) for all available options |
+| metrics-server.enabled | bool | `false` | Whether or not the metrics server Helm chart should be installed |

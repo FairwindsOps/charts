@@ -13,3 +13,10 @@ sources:
 # CronJobs batch/v1 were introduced in K8s 1.21
 # The VPA admission controller requests them from 0.12.0 forward
 kubeVersion: ">= 1.21.0"
+
+dependencies:
+  - alias: metrics-server
+    condition: metrics-server.enabled
+    name: metrics-server
+    repository: https://kubernetes-sigs.github.io/metrics-server/
+    version: "3.10.0"

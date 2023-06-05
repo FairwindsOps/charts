@@ -203,3 +203,8 @@ tests:
     tag: ""
     # tests.image.pullPolicy -- The pull policy for the tests image.
     pullPolicy: Always
+
+# metrics-server -- configuration options for the [metrics server Helm chart](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server). See the projects [README.md](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server#configuration) for all available options
+metrics-server:
+  # metrics-server.enabled -- Whether or not the metrics server Helm chart should be installed
+  enabled: false

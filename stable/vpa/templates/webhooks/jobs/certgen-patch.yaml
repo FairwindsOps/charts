@@ -10,6 +10,7 @@ metadata:
     app.kubernetes.io/component: admission-certgen
     {{- include "vpa.labels" . | nindent 4 }}
 spec:
+  ttlSecondsAfterFinished: 300
   template:
     metadata:
       name: {{ include "vpa.fullname" . }}-admission-certgen-patch
