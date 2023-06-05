@@ -111,7 +111,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | closeTicketsCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"close-tickets"}]` | CRON schedules for the close tickets job. |
 | closeTicketsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the close tickets job under. |
 | cloudCostsUpdateCronjob.enabled | bool | `true` | Cloud costs update enabled by default |
-| cloudCostsUpdateCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1.5Gi"}}` | Resources for the cloud costs update job. |
+| cloudCostsUpdateCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}}` | Resources for the cloud costs update job. |
 | cloudCostsUpdateCronjob.schedules | list | `[{"cron":"15 */3 * * *","name":"cloud-costs-update"}]` | CRON schedules for the cloud costs update job |
 | cloudCostsUpdateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the cloud costs update job under. |
 | truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
