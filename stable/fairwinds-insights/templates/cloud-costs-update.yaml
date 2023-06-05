@@ -7,7 +7,7 @@ metadata:
   name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: cloud-costs-update-cronjob
+    app.kubernetes.io/component: costs-update-cronjob
 spec:
   concurrencyPolicy: Forbid
   schedule: "{{ .cron }}"
