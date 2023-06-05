@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.14.0
+* Update `repoScanJob.insightsCIVersion` to `5.1` which will add new polaris findings 
+
 ## 0.13.0
 * Added cloud costs update cron job
 
