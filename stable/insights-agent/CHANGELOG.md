@@ -1,8 +1,10 @@
 # Changelog
 
-
-## 2.19.1
+## 2.20.1
 * Add configurable values and sensible defaults to install-reporter
+
+## 2.20.0
+* Update polaris to 8.0 and admission to 1.7
 
 ## 2.19.0
 * Update version of aws costs to 1.3
@@ -87,7 +89,6 @@ only available as of 1.22.
 
 ## 2.10.1
 * Update Goldilocks, Nova, Pluto, and Polaris
-
 
 ## 2.10.0
 * BUmp insights-admission to chart 1.5.* (to use app 1.9)

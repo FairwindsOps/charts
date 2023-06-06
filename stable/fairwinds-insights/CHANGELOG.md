@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.14.0
+* Update `repoScanJob.insightsCIVersion` to `5.1` which will add new polaris findings 
+
+## 0.13.0
+* Added cloud costs update cron job
+
+## 0.12.26
+* Update application version to 12.13. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.12.25
 * Updated self hosted agent version to 2.19
 
