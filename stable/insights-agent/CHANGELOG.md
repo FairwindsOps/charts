@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.20.1
+## 2.21.0
 * Add configurable values and sensible defaults to install-reporter
 
 ## 2.20.0
