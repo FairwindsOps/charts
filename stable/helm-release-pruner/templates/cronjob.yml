@@ -25,11 +25,7 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
         spec:
-          {{- if .Values.job.serviceAccount.create }}
           serviceAccountName: {{ include "helm-release-pruner.fullname" . }}
-          {{- else }}
-          serviceAccountName: {{ .Values.job.serviceAccount.name }}
-          {{- end }}
           restartPolicy: {{ .Values.job.restartPolicy }}
           containers:
           - name: {{ .Chart.Name }}
