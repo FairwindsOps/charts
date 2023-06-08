@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.15.0
+* Add postMigrate option for the database
+
 ## 0.14.0
 * Update `repoScanJob.insightsCIVersion` to `5.1` which will add new polaris findings 
 
