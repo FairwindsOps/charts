@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 2.20.1
+* Fix an issue with readonly filesystem when awscosts with IRSA is used
+
 ## 2.20.0
 * Update polaris to 8.0 and admission to 1.7
 
