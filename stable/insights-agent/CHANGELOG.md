@@ -1,7 +1,14 @@
 # Changelog
 
-## 2.18.3
+
+## 2.20.1
 * Fix an issue with readonly filesystem when awscosts with IRSA is used
+
+## 2.20.0
+* Update polaris to 8.0 and admission to 1.7
+
+## 2.19.0
+* Update version of aws costs to 1.3
 
 ## 2.18.2
 * Update version of insights-admission to 1.6.4
@@ -83,7 +90,6 @@ only available as of 1.22.
 
 ## 2.10.1
 * Update Goldilocks, Nova, Pluto, and Polaris
-
 
 ## 2.10.0
 * BUmp insights-admission to chart 1.5.* (to use app 1.9)

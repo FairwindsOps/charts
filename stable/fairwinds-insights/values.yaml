@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.17.3
+  agentChartTargetVersion: 2.19.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -388,6 +388,25 @@ closeTicketsCronjob:
     # -- The user ID to run the close tickets job under.
     runAsUser: 10324
 
+cloudCostsUpdateCronjob:
+  # -- Cloud costs update enabled by default
+  enabled: true
+  # -- Resources for the cloud costs update job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 2Gi
+    requests:
+      cpu: 500m
+      memory: 2Gi
+  # -- CRON schedules for the cloud costs update job
+  schedules:
+    - name: costs-update
+      cron: "15 */3 * * *"
+  securityContext:
+    # -- The user ID to run the cloud costs update job under.
+    runAsUser: 10324
+
 truncateWorkloadMetrics:
   # -- Enable truncating workload metrics false by default
   enabled: false
@@ -450,6 +469,8 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  # -- Set to `true` to run migrations after the upgrade
+  postMigrate: false
   image:
     tag: "14.2.0-debian-10-r94"
   # -- Use the ephemeral postgresql chart by default
@@ -667,7 +688,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "5.0"
+  insightsCIVersion: "5.1"
   hpa:
     enabled: true
     min: 2

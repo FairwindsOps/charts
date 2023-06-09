@@ -80,7 +80,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "7.4"
+    tag: "8.0"
   resources:
     requests:
       cpu: 100m
@@ -403,7 +403,7 @@ awscosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "1.2"
+    tag: "1.3"
   serviceAccount:
     annotations:
   resources:
