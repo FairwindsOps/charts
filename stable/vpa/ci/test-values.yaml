@@ -1,4 +1,3 @@
-testMode: true
 recommender:
   enabled: true
   podLabels:
@@ -23,3 +22,9 @@ admissionController:
 podLabels:
   app: test
   foo: bar
+metrics-server:
+  enabled: true
+  apiService:
+    insecureSkipTLSVerify: true
+  args:
+    - "--kubelet-insecure-tls"
