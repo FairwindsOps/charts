@@ -71,6 +71,7 @@ installReporter:
       cpu: 100m
       memory: 128Mi
   additionalAnnotations: {}
+  ttlSecondsAfterFinished: 0
   securityContext:
     privileged: false
     allowPrivilegeEscalation: false

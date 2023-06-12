@@ -12,7 +12,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
-  ttlSecondsAfterFinished: 300
+  ttlSecondsAfterFinished: {{ .Values.installReporter.ttlSecondsAfterFinished }}
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
     {{- with .Values.global.customWorkloadAnnotations }}
