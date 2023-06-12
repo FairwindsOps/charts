@@ -2,15 +2,15 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ include "vpa.fullname" . }}-test-metrics-api-available
+  name: {{ include "vpa.fullname" . }}-test-crds-available
   labels:
     {{- include "vpa.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": test
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
-    "helm.sh/hook-weight": "40"
+    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    "helm.sh/hook-weight": "10"
 spec:
-  serviceAccountName: {{ include "vpa.fullname" . }}-test
+  serviceAccountName:  {{ include "vpa.fullname" . }}-test
   containers:
     - name: test
       {{- if .Values.tests.securityContext }}
@@ -24,6 +24,7 @@ spec:
       command: ['kubectl']
       args:
         - get
-        - --raw
-        - "/apis/metrics.k8s.io/v1beta1/nodes"
+        - crd
+        - verticalpodautoscalercheckpoints.autoscaling.k8s.io
+        - verticalpodautoscalers.autoscaling.k8s.io
   restartPolicy: Never
