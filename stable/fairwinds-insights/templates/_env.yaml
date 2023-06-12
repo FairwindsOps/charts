@@ -50,6 +50,23 @@ env:
   value: {{ . | quote }}
 {{- end }}
 # Database
+{{- if and (.Values.hubspotCronjob.readReplica) (eq .Template.Name "fairwinds-insights/templates/hubspot-cronjob.yaml") }}
+- name: POSTGRES_DB
+  value: {{ .Values.hubspotCronjob.readReplica.database }}
+- name: POSTGRES_USER
+  value: {{ .Values.hubspotCronjob.readReplica.username }}
+- name: POSTGRES_PORT
+  value: {{ .Values.hubspotCronjob.readReplica.port | quote }}
+- name: POSTGRES_SSL_MODE
+  value: {{ .Values.hubspotCronjob.readReplica.sslMode | default "require" }}
+- name: POSTGRES_HOST
+  value: {{ .Values.hubspotCronjob.readReplica.host }}
+- name: POSTGRES_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ .Values.postgresql.auth.existingSecret }}
+      key: readreplica-password
+{{- else }}
 - name: POSTGRES_DB
   value: {{ .Values.postgresql.auth.database }}
 - name: POSTGRES_USER
@@ -72,6 +89,7 @@ env:
     secretKeyRef:
       name: {{ .Values.postgresql.auth.existingSecret }}
       key: postgresql-password
+{{- end }}
 {{- end }}
 # Timescale Database
 - name: TIMESCALE_DB

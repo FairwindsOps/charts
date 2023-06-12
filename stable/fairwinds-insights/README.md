@@ -42,6 +42,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |
 | hubspotCronjob.resources.requests.memory | string | `"128Mi"` |  |
 | hubspotCronjob.schedules | list | `[]` |  |
+| hubspotCronjob.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration |
 | benchmarkCronjob.resources.limits.cpu | string | `"500m"` |  |
 | benchmarkCronjob.resources.limits.memory | string | `"1024Mi"` |  |
 | benchmarkCronjob.resources.requests.cpu | string | `"80m"` |  |

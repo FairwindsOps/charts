@@ -81,6 +81,13 @@ hubspotCronjob:
       cpu: 80m
       memory: 128Mi
   schedules: []
+  # -- Optional read replica configuration
+  readReplica:
+    username:
+    database:
+    host:
+    port:
+    sslMode:
 
 benchmarkCronjob:
   resources:
