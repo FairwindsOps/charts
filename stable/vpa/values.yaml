@@ -67,6 +67,7 @@ recommender:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # -- Enables a prometheus operator podMonitor for the recommender
   podMonitor: false
 
 updater:
