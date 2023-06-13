@@ -296,24 +296,6 @@ alertsCronjob:
     # -- The user ID to run the alerts job under.
     runAsUser: 10324
 
-aggregateCronjob:
-  # -- Resources for the Workload Metrics aggregation job.
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 40m
-      memory: 32Mi
-  # -- CRON schedules for the Workload Metrics aggregation job.
-  schedules:
-    - name: bi-hourly
-      interval: 120m
-      cron: "5 0/2 * * *"
-  securityContext:
-    # -- The user ID to run the Workload Metrics aggregation job under.
-    runAsUser: 10324
-
 emailCronjob:
   # -- Resources for the Action Items email job.
   resources:
@@ -407,23 +389,6 @@ cloudCostsUpdateCronjob:
     # -- The user ID to run the cloud costs update job under.
     runAsUser: 10324
 
-truncateWorkloadMetrics:
-  # -- Enable truncating workload metrics false by default
-  enabled: false
-  # -- Resources for the truncating workload metrics job.
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 40m
-      memory: 32Mi
-  # -- CRON schedules for the truncating workload metrics job.
-  schedules: []
-  securityContext:
-    # -- The user ID to run the truncating workload metrics job under.
-    runAsUser: 10324
-
 actionItemsFiltersRefresherCronJob:
   # -- Resources for the action-items filters refresher job.
   resources:
@@ -504,6 +469,13 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
+  # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
+  readReplica:
+    username:
+    database:
+    host:
+    port:
+    sslMode:
 encryption:
   aes:
     cypherKey:

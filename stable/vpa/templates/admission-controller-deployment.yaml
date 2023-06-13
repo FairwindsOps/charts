@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "vpa.fullname" . }}-admission-controller
-  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: admission-controller
     {{- include "vpa.labels" . | nindent 4 }}
@@ -40,10 +39,17 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.admissionController.securityContext | nindent 12 }}
-          image: "{{ .Values.admissionController.image.repository }}:{{ .Values.admissionController.image.tag | default .Chart.AppVersion }}"
+          image: {{ printf "%s:%s" .Values.admissionController.image.repository (.Values.admissionController.image.tag | default .Chart.AppVersion) }}
           imagePullPolicy: {{ .Values.admissionController.image.pullPolicy }}
-          {{- if .Values.admissionController.extraArgs }}
           args:
+            - --register-webhook=false
+            - --webhook-service={{ include "vpa.fullname" . }}-webhook
+          {{- if .Values.admissionController.generateCertificate }}
+            - --client-ca-file=/etc/tls-certs/ca
+            - --tls-cert-file=/etc/tls-certs/cert
+            - --tls-private-key=/etc/tls-certs/key
+          {{- end }}
+          {{- if .Values.admissionController.extraArgs }}
           {{- range $key, $value := .Values.admissionController.extraArgs }}
             - --{{ $key }}={{ $value }}
           {{- end }}
@@ -87,7 +93,7 @@ spec:
       volumes:
         - name: tls-certs
           secret:
-            secretName: vpa-tls-certs
+            secretName: {{ include "vpa.webhook.secret" . }}
             {{- with .Values.admissionController.tlsSecretKeys }}
             items:
               {{- toYaml . | nindent 14 }}
