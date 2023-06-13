@@ -121,13 +121,13 @@ recommender:
 | recommender.image.pullPolicy | string | `"Always"` | The pull policy for the recommender image. Recommend not changing this |
 | recommender.podAnnotations | object | `{}` | Annotations to add to the recommender pod |
 | recommender.podLabels | object | `{}` | Labels to add to the recommender pod |
-| recommender.podMonitor | bool | `false` |  |
 | recommender.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the recommender pod |
 | recommender.securityContext | object | `{}` | The security context for the containers inside the recommender pod |
 | recommender.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
 | recommender.nodeSelector | object | `{}` |  |
 | recommender.tolerations | list | `[]` |  |
 | recommender.affinity | object | `{}` |  |
+| recommender.podMonitor | bool | `false` |  |
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
 | updater.replicaCount | int | `1` |  |
@@ -137,13 +137,13 @@ recommender:
 | updater.image.pullPolicy | string | `"Always"` | The pull policy for the updater image. Recommend not changing this |
 | updater.podAnnotations | object | `{}` | Annotations to add to the updater pod |
 | updater.podLabels | object | `{}` | Labels to add to the updater pod |
-| updater.podMonitor | bool | `false` |  |
 | updater.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the updater pod |
 | updater.securityContext | object | `{}` | The security context for the containers inside the updater pod |
 | updater.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
 | updater.nodeSelector | object | `{}` |  |
 | updater.tolerations | list | `[]` |  |
 | updater.affinity | object | `{}` |  |
+| updater.podMonitor | bool | `false` |  |
 | admissionController.enabled | bool | `true` | If true, will install the admission-controller component of vpa |
 | admissionController.extraArgs | object | `{}` | A key-value map of flags to pass to the admissionController |
 | admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
