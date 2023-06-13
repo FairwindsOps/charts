@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.17.0
+* Add support for read replica to hubspot cronjob
+
 ## 0.16.0
 * Removed old metrics jobs
 
