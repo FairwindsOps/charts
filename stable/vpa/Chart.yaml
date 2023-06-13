@@ -2,7 +2,7 @@ apiVersion: v2
 name: vpa
 description: A Helm chart for Kubernetes Vertical Pod Autoscaler
 type: application
-version: 2.0.0
+version: 2.0.1
 appVersion: 0.13.0
 maintainers:
   - name: sudermanjr
@@ -12,7 +12,7 @@ sources:
   - https://github.com/kubernetes/autoscaler/tree/master/vertical-pod-autoscaler
 # CronJobs batch/v1 were introduced in K8s 1.21
 # The VPA admission controller requests them from 0.12.0 forward
-kubeVersion: ">= 1.21.0"
+kubeVersion: ">= 1.21.0-0"
 
 dependencies:
   - alias: metrics-server
