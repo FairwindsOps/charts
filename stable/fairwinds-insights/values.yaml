@@ -81,13 +81,6 @@ hubspotCronjob:
       cpu: 80m
       memory: 128Mi
   schedules: []
-  # -- Optional read replica configuration
-  readReplica:
-    username:
-    database:
-    host:
-    port:
-    sslMode:
 
 benchmarkCronjob:
   resources:
@@ -476,6 +469,13 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
+  # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
+  readReplica:
+    username:
+    database:
+    host:
+    port:
+    sslMode:
 encryption:
   aes:
     cypherKey:

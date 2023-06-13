@@ -42,7 +42,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |
 | hubspotCronjob.resources.requests.memory | string | `"128Mi"` |  |
 | hubspotCronjob.schedules | list | `[]` |  |
-| hubspotCronjob.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration |
 | benchmarkCronjob.resources.limits.cpu | string | `"500m"` |  |
 | benchmarkCronjob.resources.limits.memory | string | `"1024Mi"` |  |
 | benchmarkCronjob.resources.requests.cpu | string | `"80m"` |  |
@@ -138,6 +137,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
 | timescale.replicaCount | int | `1` |  |
