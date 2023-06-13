@@ -67,6 +67,7 @@ recommender:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  podMonitor: false
 
 updater:
   # updater.enabled -- If true, the updater component will be deployed
@@ -105,6 +106,7 @@ updater:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  podMonitor: false
 
 admissionController:
   # admissionController.enabled -- If true, will install the admission-controller component of vpa
