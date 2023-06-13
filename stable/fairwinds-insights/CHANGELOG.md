@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.16.0
+* Removed old metrics jobs
+
 ## 0.15.2
 * Update application version to 12.15. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
