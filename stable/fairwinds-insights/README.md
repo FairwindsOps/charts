@@ -93,9 +93,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
 | alertsCronjob.schedules | list | `[{"cron":"5/10 * * * *","interval":"10m","name":"realtime"},{"cron":"0 16 * * *","interval":"24h","name":"digest"}]` | CRON schedules for the Slack/Datadog integrations |
 | alertsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the alerts job under. |
-| aggregateCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the Workload Metrics aggregation job. |
-| aggregateCronjob.schedules | list | `[{"cron":"5 0/2 * * *","interval":"120m","name":"bi-hourly"}]` | CRON schedules for the Workload Metrics aggregation job. |
-| aggregateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the Workload Metrics aggregation job under. |
 | emailCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Action Items email job. |
 | emailCronjob.schedules | list | `[]` | CRON schedules for the Action Items email job. |
 | emailCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the email job under. |
@@ -115,10 +112,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cloudCostsUpdateCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}}` | Resources for the cloud costs update job. |
 | cloudCostsUpdateCronjob.schedules | list | `[{"cron":"15 */3 * * *","name":"costs-update"}]` | CRON schedules for the cloud costs update job |
 | cloudCostsUpdateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the cloud costs update job under. |
-| truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
-| truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
-| truncateWorkloadMetrics.schedules | list | `[]` | CRON schedules for the truncating workload metrics job. |
-| truncateWorkloadMetrics.securityContext.runAsUser | int | `10324` | The user ID to run the truncating workload metrics job under. |
 | actionItemsFiltersRefresherCronJob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Resources for the action-items filters refresher job. |
 | actionItemsFiltersRefresherCronJob.schedules | list | `[{"cron":"0/15 * * * *","name":"every-15-min"}]` | CRON schedules for the action-items filters refresher job. |
 | actionItemsFiltersRefresherCronJob.securityContext.runAsUser | int | `10324` | The user ID to run the action-items filters refresher job under. |
