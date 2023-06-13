@@ -121,6 +121,7 @@ recommender:
 | recommender.image.pullPolicy | string | `"Always"` | The pull policy for the recommender image. Recommend not changing this |
 | recommender.podAnnotations | object | `{}` | Annotations to add to the recommender pod |
 | recommender.podLabels | object | `{}` | Labels to add to the recommender pod |
+| recommender.podMonitor | bool | `false` |  |
 | recommender.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the recommender pod |
 | recommender.securityContext | object | `{}` | The security context for the containers inside the recommender pod |
 | recommender.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
@@ -136,6 +137,7 @@ recommender:
 | updater.image.pullPolicy | string | `"Always"` | The pull policy for the updater image. Recommend not changing this |
 | updater.podAnnotations | object | `{}` | Annotations to add to the updater pod |
 | updater.podLabels | object | `{}` | Labels to add to the updater pod |
+| updater.podMonitor | bool | `false` |  |
 | updater.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the updater pod |
 | updater.securityContext | object | `{}` | The security context for the containers inside the updater pod |
 | updater.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
