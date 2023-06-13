@@ -106,6 +106,7 @@ updater:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # -- Enables a prometheus operator podMonitor for the updater
   podMonitor: false
 
 admissionController:
