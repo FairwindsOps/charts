@@ -1,3 +1,4 @@
+{{- if .Values.updater.podMonitor }}
 {{- if and .Values.updater.enabled .Values.updater.podMonitor.enabled }}
 apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
@@ -23,4 +24,5 @@ spec:
     matchLabels:
       app.kubernetes.io/component: updater
       {{- include "vpa.selectorLabels" . | nindent 6 }}
+{{- end }}
 {{- end }}
