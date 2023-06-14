@@ -1,0 +1,50 @@
+{{- if .Values.test.enabled -}}
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "insights-agent.fullname" . }}
+  labels:
+    app: insights-agent
+    component: test-job
+  annotations:
+    "helm.sh/hook": test
+    {{- with .Values.global.customWorkloadAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
+  restartPolicy: Never
+  containers:
+    - name: test
+      image: '{{.Values.cronjobExecutor.image.repository}}:{{.Values.cronjobExecutor.image.tag}}'
+      imagePullPolicy: Always
+      command: ["sh"]
+      args:
+        - -c
+        - |
+          {{ .Files.Get "download-kubectl.sh" | nindent 10 }}
+          sleep 15
+          kubectl delete jobs `kubectl get jobs -o custom-columns=:.metadata.name`
+      resources:
+        limits:
+          cpu: 1
+          memory: 1Gi
+        requests:
+          cpu: 50m
+          memory: 128Mi
+      volumeMounts:
+        - name: tmp
+          mountPath: /tmp
+      securityContext:
+        runAsUser: 1000
+        allowPrivilegeEscalation: false
+        privileged: false
+        readOnlyRootFilesystem: true
+        runAsNonRoot: true
+        capabilities:
+          drop:
+            - ALL
+  volumes:
+    - name: tmp
+      emptyDir: {}
+{{- end -}}
