@@ -24,7 +24,7 @@ spec:
         - |
           {{ .Files.Get "download-kubectl.sh" | nindent 10 }}
           sleep 15
-          kubectl delete jobs `kubectl get jobs -o custom-columns=:.metadata.name`
+          kubectl delete jobs `kubectl get jobs -n {{ Release.Namespace }} -o custom-columns=:.metadata.name`
       resources:
         limits:
           cpu: 1
