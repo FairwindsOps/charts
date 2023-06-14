@@ -34,7 +34,6 @@ spec:
           kubectl wait --for=condition=complete job/workloads --timeout=240s
           kubectl wait --for=condition=complete job/kube-bench --timeout=240s
           kubectl wait --for=condition=complete job/kube-hunter --timeout=240s
-          kubectl wait --for=condition=complete job/install-reporter --timeout=240s
           kubectl get jobs
       resources:
         limits:

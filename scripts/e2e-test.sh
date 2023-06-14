@@ -31,6 +31,11 @@ teardown () {
     kind delete cluster --name="$TEST_CLUSTER_NAME"
 }
 
+# delete_jobs () {
+#     printf "Deleting all deployed jobs...\n"
+#     kubectl delete jobs "kubectl get jobs -o custom-columns=:.metadata.name"
+# }
+
 pre_test_script () {
     printf "Running pre-test scripts if they exist...\n"
     scripts/pre-test-script-runner.sh
@@ -52,6 +57,7 @@ elif [ "$OPERATION" = "teardown" ] ; then
 elif [ "$OPERATION" = "test" ]; then
     printf "Running tests.\n"
     pre_test_script
+    # delete_jobs
     run_tests
 else
     printf "You need to specify teardown, setup, test"
