@@ -1,12 +1,13 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-delete-jobs-job
+  name: {{ include "insights-agent.fullname" . }}-delete-jobs
   labels:
     app: insights-agent
     component: test-job
   annotations:
     "helm.sh/hook": test
+    "helm.sh/hook-weight": "1"
     {{- with .Values.global.customWorkloadAnnotations }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
