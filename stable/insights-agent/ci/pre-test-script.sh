@@ -8,5 +8,3 @@ helm get notes -n cert-manager cert-manager || helm install \
   --version v1.11.0 \
   --set installCRDs=true \
   --wait
-
-kubectl delete jobs 'kubectl get jobs -o custom-columns=:.metadata.name'
