@@ -12,7 +12,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{ if .Values.installReporter.ttlSecondsAfterFinished }}
   ttlSecondsAfterFinished: {{ .Values.installReporter.ttlSecondsAfterFinished }}
+  {{ end -}}
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
     {{- with .Values.global.customWorkloadAnnotations }}
@@ -50,8 +52,10 @@ spec:
           subPath: values.json
           readOnly: true
 {{ include "ssl-cert-file-volumemount-spec" . | indent 8 }}
+        {{ if .Values.installReporter.securityContext }}
         securityContext:
           {{- toYaml .Values.installReporter.securityContext | nindent 10 }}
+        {{ end -}}
         env:
         - name: FAIRWINDS_TOKEN
           valueFrom:

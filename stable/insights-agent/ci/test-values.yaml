@@ -132,7 +132,6 @@ falco:
       cpu: 50m
 
 installReporter:
-  ttlSecondsAfterFinished: 0
   additionalAnnotations:
     "argocd.argoproj.io/hook": PostSync
     "argocd.argoproj.io/hook-delete-policy": HookSucceeded
