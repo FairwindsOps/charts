@@ -1,4 +1,3 @@
-{{- if .Values.test.enabled -}}
 apiVersion: v1
 kind: Pod
 metadata:
@@ -47,4 +46,3 @@ spec:
   volumes:
     - name: tmp
       emptyDir: {}
-{{- end -}}
