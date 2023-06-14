@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.20.2
+* Adds test that deletes existing jobs upon `helm test`
 
 ## 2.20.1
 * Fix an issue with readonly filesystem when awscosts with IRSA is used
