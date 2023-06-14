@@ -130,8 +130,3 @@ falco:
   resources:
     requests:
       cpu: 50m
-
-installReporter:
-  additionalAnnotations:
-    "argocd.argoproj.io/hook": PostSync
-    "argocd.argoproj.io/hook-delete-policy": HookSucceeded
