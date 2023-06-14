@@ -127,6 +127,7 @@ recommender:
 | recommender.nodeSelector | object | `{}` |  |
 | recommender.tolerations | list | `[]` |  |
 | recommender.affinity | object | `{}` |  |
+| recommender.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the recommender |
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
 | updater.replicaCount | int | `1` |  |
@@ -142,6 +143,7 @@ recommender:
 | updater.nodeSelector | object | `{}` |  |
 | updater.tolerations | list | `[]` |  |
 | updater.affinity | object | `{}` |  |
+| updater.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the updater |
 | admissionController.enabled | bool | `true` | If true, will install the admission-controller component of vpa |
 | admissionController.extraArgs | object | `{}` | A key-value map of flags to pass to the admissionController |
 | admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
