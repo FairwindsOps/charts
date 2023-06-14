@@ -67,6 +67,11 @@ recommender:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # -- Enables a prometheus operator podMonitor for the recommender
+  podMonitor:
+    enabled: false
+    annotations: {}
+    labels: {}
 
 updater:
   # updater.enabled -- If true, the updater component will be deployed
@@ -105,6 +110,11 @@ updater:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # -- Enables a prometheus operator podMonitor for the updater
+  podMonitor:
+    enabled: false
+    annotations: {}
+    labels: {}
 
 admissionController:
   # admissionController.enabled -- If true, will install the admission-controller component of vpa
