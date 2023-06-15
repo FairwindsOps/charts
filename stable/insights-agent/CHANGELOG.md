@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.20.3
+* Add configurable values and sensible defaults to install-reporter
+
 ## 2.20.2
 * Adds test that deletes existing jobs upon `helm test`
 
