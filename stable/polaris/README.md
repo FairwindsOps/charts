@@ -68,6 +68,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.ingress.hosts | list | `[]` | Web ingress hostnames |
 | dashboard.ingress.annotations | object | `{}` | Web ingress annotations |
 | dashboard.ingress.tls | list | `[]` | Ingress TLS configuration |
+| dashboard.ingress.defaultBackendEnabled | bool | `false` | DefaultBackend is required by GKE container native load balancer, set to true for this use case |
 | dashboard.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
 | dashboard.disallowExemptions | bool | `false` | Disallow any exemption |
 | dashboard.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
