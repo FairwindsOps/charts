@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.17.1
+* Update application version to 12.16. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.17.0
 * Add support for read replica to hubspot cronjob
 
