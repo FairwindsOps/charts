@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.20.4
+* Update polaris to 8.2
+
 ## 2.20.3
 * Add configurable values and sensible defaults to install-reporter
 
