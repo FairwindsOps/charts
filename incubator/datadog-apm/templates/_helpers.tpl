@@ -109,3 +109,34 @@ Create the name of the service account to use
 {{- default "default" .Values.clusterAgent.serviceAccount.name }}
 {{- end }}
 {{- end }}
+
+{{/*
+Returns env vars correctly quoted and valueFrom respected
+*/}}
+{{- define "additional-env-entries" -}}
+{{- if . -}}
+{{- range . }}
+- name: {{ .name }}
+{{- if .value }}
+  value: {{ .value | quote }}
+{{- else }}
+  valueFrom:
+{{ toYaml .valueFrom | indent 4 }}
+{{- end }}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Returns env vars correctly quoted and valueFrom respected, defined in a dict
+*/}}
+{{- define "additional-env-dict-entries" -}}
+{{- range $key, $value := . }}
+- name: {{ $key }}
+{{- if kindIs "map" $value }}
+{{ toYaml $value | indent 2 }}
+{{- else }}
+  value: {{ $value | quote }}
+{{- end }}
+{{- end }}
+{{- end -}}
