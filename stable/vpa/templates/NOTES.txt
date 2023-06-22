@@ -12,3 +12,9 @@ Components Installed:
 {{- end }}
 
 To verify functionality, you can try running 'helm -n {{ .Release.Namespace}} test {{ .Release.Name }}'
+
+{{- if not (include "vpa.webhook.upgradable" .) }}
+
+Warning: The mutatingwebhookconfiguration '{{ include "vpa.fullname" . }}-webhook-config' is not managed by this Helm release.
+It is highly encouraged in this case, to verify the webhook's configuration by running all Helm tests.
+{{- end }}
