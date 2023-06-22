@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.20.5
+* Update changelog
+
 ## 2.20.4
 * Update polaris to 8.2
 
@@ -14,6 +17,25 @@
 
 ## 2.20.0
 * Update polaris to 8.0 and admission to 1.7
+* New Polaris policies and changes to some default severities:
+    * Includes a newer version of Polaris, which adds the following policies:
+        * priorityClassNotSet
+        * metadataAndNameMismatched
+        * missingPodDisruptionBudget
+        * automountServiceAccountToken
+        * missingNetworkPolicy
+    * Changes the default severity to High or Critical for the following existing Polaris policies:
+        * sensitiveContainerEnvVar
+        * sensitiveConfigmapContent
+        * clusterrolePodExecAttach
+        * rolePodExecAttach
+        * clusterrolebindingPodExecAttach
+        * rolebindingClusterRolePodExecAttach
+        * rolebindingRolePodExecAttach
+        * clusterrolebindingClusterAdmin
+        * rolebindingClusterAdminClusterRole
+        * rolebindingClusterAdminRole
+    * While this provides even more visibility to the state of your Kubernetes health, the Policies that change the default severity to High or Critical may block some Admission Controller requests. If you need to mitigate this impact, Fairwinds recommends creating an Automation Rule that lowers the severity of those policies so it does not trigger blocking behavior. If you need assistance with this, please reach out to support@fairwinds.com.
 
 ## 2.19.0
 * Update version of aws costs to 1.3
