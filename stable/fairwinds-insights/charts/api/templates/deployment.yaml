@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-api
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: api
+    {{- if .Values.global.deployments.additionalLabels }}
+    {{ toYaml .Values.global.deployments.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: api
+        {{- if .Values.global.deployments.additionalPodLabels }}
+        {{ toYaml .Values.global.deployments.additionalPodLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.global.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      containers:
+        - name: fairwinds-insights
+          image: "{{ .Values.global.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"
+          imagePullPolicy: Always
+          command: ["api"]
+          args:
+          - "--port={{ .Values.port }}"
+          ports:
+          - name: http
+            containerPort: {{ .Values.port }}
+            protocol: TCP
+          {{- include "fairwinds-insights.env" . | indent 10 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+          - name: secrets
+            mountPath: /var/run/secrets/github
+          {{- if .Values.global.selfHostedSecret }}
+          - name: self-hosted-secret
+            mountPath: /var/run/secrets/self-hosted
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            capabilities:
+              drop:
+                - ALL
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: secrets
+        secret:
+          secretName: github-secrets
+          optional: true
+      {{- with .Values.selfHostedSecret }}
+      - name: self-hosted-secret
+        secret:
+          secretName: {{ . }}
+      {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

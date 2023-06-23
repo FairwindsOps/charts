@@ -1,76 +1,270 @@
-image:
-  # -- Docker image tag, defaults to the Chart appVersion
-  tag:
+global:
+  image:
+    # -- Docker image tag, defaults to the Chart appVersion
+    tag:
 
-# -- Installation code provided by Fairwinds.
-installationCode:
+  # -- Installation code provided by Fairwinds.
+  installationCode:
 
-# -- Name of secret containing INSTALLATION_CODE
-installationCodeSecret:
+  # -- Name of secret containing INSTALLATION_CODE
+  installationCodeSecret:
 
-# -- Deployments additional labels
-deployments:
-  additionalLabels:
-  additionalPodLabels:
+  # -- Deployments additional labels
+  deployments:
+    additionalLabels:
+    additionalPodLabels:
 
-polaris:
-  # -- Configuration for Polaris
-  config:
+  polaris:
+    # -- Configuration for Polaris
+    config:
 
-dashboardImage:
-  # -- Docker image repository for the front end
-  repository: quay.io/fairwinds/insights-dashboard
-  # -- Overrides tag for the dashboard, defaults to image.tag
-  tag:
-apiImage:
-  # -- Docker image repository for the API server
-  repository: quay.io/fairwinds/insights-api
-  # -- Overrides tag for the API server, defaults to image.tag
-  tag:
-migrationImage:
-  # -- Docker image repository for the database migration job
-  repository: quay.io/fairwinds/insights-db-migration
-  # -- Overrides tag for the migration image, defaults to image.tag
-  tag:
-cronjobImage:
-  # -- Docker image repository for maintenance CronJobs.
-  repository: quay.io/fairwinds/insights-cronjob
-  # -- Overrides tag for the cronjob image, defaults to image.tag
-  tag:
-openApiImage:
-  # -- Docker image repository for the Open API server
-  repository: swaggerapi/swagger-ui
-  # -- Overrides tag for the Open API server, defaults to image.tag
-  tag: v4.1.3  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
+  options:
+    # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
+    agentChartTargetVersion: 2.19.0
+    # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
+    insightsSAASHost: "https://insights.fairwinds.com"
+    # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
+    allowHTTPCookies: false
+    # -- Configuration file to use for the front-end. This generally should not be changed.
+    dashboardConfig: config.self.js
+    # -- An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account.
+    adminEmail:
+    # -- The name of your organization. This will pre-populate Insights with an organization.
+    organizationName:
+    # -- Autogenerate keys for session tracking. For testing/demo purposes only
+    autogenerateKeys: false
+    # -- Run the job to migrate health scores to a new format
+    migrateHealthScore: false
+    # -- Name of the secret where session keys and other secrets are stored
+    secretName: fwinsights-secrets
 
-
-options:
-  # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.19.0
-  # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
-  insightsSAASHost: "https://insights.fairwinds.com"
-  # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
-  allowHTTPCookies: false
-  # -- Configuration file to use for the front-end. This generally should not be changed.
-  dashboardConfig: config.self.js
-  # -- An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account.
-  adminEmail:
-  # -- The name of your organization. This will pre-populate Insights with an organization.
-  organizationName:
-  # -- Autogenerate keys for session tracking. For testing/demo purposes only
-  autogenerateKeys: false
-  # -- Run the job to migrate health scores to a new format
-  migrateHealthScore: false
-  # -- Name of the secret where session keys and other secrets are stored
-  secretName: fwinsights-secrets
-
-  # This adds an empty low-priority pod, so we don't have
-  # to wait for cluster-autoscaler with each deployment
-  overprovisioning:
+  ingress:
+    # -- Enable Ingress
     enabled: false
-    # requests should always match limits here, so we don't separate them
-    cpu: 1000m
-    memory: 1Gi
+    # -- Enable TLS
+    tls: true
+    # -- Hostnames to use for Ingress
+    hostedZones: []
+    # -- Annotations to add to the API and Dashboard ingresses.
+    annotations: {}
+    # -- Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false.
+    starPaths: true
+    # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
+    separate: false
+    # -- Adds additional path ie. Redirect path for ALB
+    extraPaths: {}
+
+  postgresql:
+    # -- Set to `true` to run migrations after the upgrade
+    postMigrate: false
+    image:
+      tag: "14.2.0-debian-10-r94"
+    # -- Use the ephemeral postgresql chart by default
+    ephemeral: true
+    # -- SSL mode for connecting to the database
+    sslMode: require
+    # -- TLS mode for connecting to the database
+    tls:
+      enabled: true
+      certificatesSecret: fwinsights-postgresql-ca
+      certFilename: tls.crt
+      certKeyFilename: tls.key
+    auth:
+      username: postgres
+      database: fairwinds_insights
+      existingSecret: fwinsights-postgresql
+      secretKeys:
+        adminPasswordKey: postgresql-password
+    primary:
+      service:
+        # -- Port of the Postgres Database
+        port: 5432
+      persistence:
+        # -- Create Persistent Volume with Postgres
+        enabled: true
+      # -- Resources section for Postgres
+      resources:
+        limits:
+          cpu: 1
+          memory: 1Gi
+        requests:
+          cpu: 75m
+          memory: 256Mi
+    # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
+    readReplica:
+      username:
+      database:
+      host:
+      port:
+      sslMode:
+    encryption:
+    aes:
+      cypherKey:
+
+  timescale:
+    fullnameOverride: timescale
+    replicaCount: 1
+    clusterName: timescale
+    # -- Use the ephemeral Timescale chart by default
+    ephemeral: true
+    pdb:
+      # -- Use pdb enabled by default
+      enabled: true
+      # -- Min timescale pdb replicas
+      minReplicas: 1
+    # -- SSL mode for connecting to the database
+    sslMode: require
+    # -- Host for timescale
+    postgresqlHost: timescale
+    # -- Username to connect to Timescale with
+    postgresqlUsername: postgres
+    # -- Name of the Postgres Database
+    postgresqlDatabase: postgres
+    # -- Password for the Postgres Database
+    password: postgres
+    secrets:
+      certificateSecretName: fwinsights-timescale-ca
+      credentialsSecretName: fwinsights-timescale
+    service:
+      # -- Port of the Timescale Database
+      primary:
+        port: 5433
+    loadBalancer:
+      enabled: false
+    # -- Database tuning for timescale
+    timescaledbTune:
+      enabled: false
+    # -- Timescale patroni options
+    patroni:
+      log:
+        level: DEBUG
+      postgresql:
+        create_replica_methods: []
+        pgbackrest: {}
+    # -- Resources section for Timescale
+    resources:
+      limits:
+        cpu: 1
+        memory: 1Gi
+      requests:
+        cpu: 75m
+        memory: 256Mi
+
+  service:
+    # -- Port to be used for the API and Dashboard services.
+    port: 80
+    # -- Service type for the API and Dashboard services
+    type: ClusterIP
+    # -- Annotations for the services
+    annotations:
+
+  # -- Prefix to use on hostname. Generally not needed.
+  sanitizedBranch:
+
+  email:
+    # -- How to send emails, valid values include memory, ses, and smtp
+    strategy: memory
+    # -- Email address that emails will come from
+    sender:
+    # -- Email address to send notifications of new user signups.
+    recipient:
+    # -- Host for SMTP strategy
+    smtpHost:
+    # -- Username for SMTP strategy
+    smtpUsername:
+    # -- Port for SMTP strategy
+    smtpPort:
+    # -- Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret.
+    awsRegion:
+
+  reportStorage:
+    # -- How to store report files, valid values include minio, s3, and local
+    strategy: minio
+    # -- Name of the bucket to use for minio or s3
+    bucket: reports
+    # -- AWS region to use for S3
+    region: us-east-1
+    # -- Hostname to use for Minio
+    minioHost:
+    # -- Directory to store files in for local.
+    fixturesDir:
+
+  minio:
+    # -- Install Minio
+    install: true
+    # -- Create the following buckets for the newly installed Minio
+    buckets:
+    - name: reports
+      policy: none
+    # -- Resources for Minio
+    resources:
+      requests:
+        cpu: 50m
+        memory: 256Mi
+    # -- nameOverride to shorten names of Minio resources
+    nameOverride: fw-minio
+    persistence:
+      # -- Create a persistent volume for Minio
+      enabled: true
+    replicas: 1
+    mode: standalone
+  migrateHealthScoreJob:
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+
+  cronjobExecutor:
+    image:
+      repository: bitnami/kubectl
+      tag: "1.22.8"
+    resources:
+      limits:
+        cpu: 100m
+        memory: 64Mi
+      requests:
+        cpu: 1m
+        memory: 3Mi
+
+  dashboardImage:
+    # -- Docker image repository for the front end
+    repository: quay.io/fairwinds/insights-dashboard
+    # -- Overrides tag for the dashboard, defaults to image.tag
+    tag:
+  apiImage:
+    # -- Docker image repository for the API server
+    repository: quay.io/fairwinds/insights-api
+    # -- Overrides tag for the API server, defaults to image.tag
+    tag:
+  migrationImage:
+    # -- Docker image repository for the database migration job
+    repository: quay.io/fairwinds/insights-db-migration
+    # -- Overrides tag for the migration image, defaults to image.tag
+    tag:
+  cronjobImage:
+    # -- Docker image repository for maintenance CronJobs.
+    repository: quay.io/fairwinds/insights-cronjob
+    # -- Overrides tag for the cronjob image, defaults to image.tag
+    tag:
+  openApiImage:
+    # -- Docker image repository for the Open API server
+    repository: swaggerapi/swagger-ui
+    # -- Overrides tag for the Open API server, defaults to image.tag
+    tag: v4.1.3  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
+  
+  selfHostedSecret:
+
+
+  # -- Additional Environment Variables to set on the Fairwinds Insights pods.
+  additionalEnvironmentVariables: {}
+
+  rbac:
+    serviceAccount:
+      # -- Annotations to add to the service account
+      annotations: {}
 
 hubspotCronjob:
   resources:
@@ -91,17 +285,6 @@ benchmarkCronjob:
       cpu: 80m
       memory: 128Mi
   schedules: []
-
-selfHostedSecret:
-
-
-# -- Additional Environment Variables to set on the Fairwinds Insights pods.
-additionalEnvironmentVariables: {}
-
-rbac:
-  serviceAccount:
-    # -- Annotations to add to the service account
-    annotations: {}
 
 dashboard:
   pdb:
@@ -197,7 +380,7 @@ api:
     # -- Service type for Open API server
     type:
 
-openApi:
+open-api:
   # -- Port for the Open API server to listen on.
   port: 8080
   pdb:
@@ -245,7 +428,7 @@ openApi:
     # -- Service type for Open API server
     type:
 
-dbMigration:
+migrate-db:
   # -- Resources for the database migration job.
   resources:
     limits:
@@ -311,7 +494,7 @@ emailCronjob:
     # -- The user ID to run the email job under.
     runAsUser: 10324
 
-databaseCleanupCronjob:
+database-cleanup:
   # -- Enable database cleanup true by default
   enabled: true
   # -- Resources for the database cleanup job.
@@ -331,7 +514,15 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
-resourcesRecommendationsCronjob:
+overprovisioning:
+# -- This adds an empty low-priority pod, so we don't have
+# -- to wait for cluster-autoscaler with each deployment
+  enabled: false
+  # requests should always match limits here, so we don't separate them
+  cpu: 1000m
+  memory: 1Gi
+
+resources-recommendations:
   # -- Enable resources recommendations true by default
   enabled: true
   # -- Resources for the resources recommendations job.
@@ -351,7 +542,7 @@ resourcesRecommendationsCronjob:
     # -- The user ID to run the resources recommendations job under.
     runAsUser: 10324
 
-closeTicketsCronjob:
+close-tickets:
   # -- Close tickets enabled by default
   enabled: true
   # -- Resources for the close tickets job.
@@ -370,7 +561,7 @@ closeTicketsCronjob:
     # -- The user ID to run the close tickets job under.
     runAsUser: 10324
 
-cloudCostsUpdateCronjob:
+cloud-costs-update:
   # -- Cloud costs update enabled by default
   enabled: true
   # -- Resources for the cloud costs update job.
@@ -389,215 +580,7 @@ cloudCostsUpdateCronjob:
     # -- The user ID to run the cloud costs update job under.
     runAsUser: 10324
 
-actionItemsFiltersRefresherCronJob:
-  # -- Resources for the action-items filters refresher job.
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 512Mi
-  # -- CRON schedules for the action-items filters refresher job.
-  schedules:
-    - name: every-15-min
-      cron: "0/15 * * * *"
-  securityContext:
-    # -- The user ID to run the action-items filters refresher job under.
-    runAsUser: 10324
-
-service:
-  # -- Port to be used for the API and Dashboard services.
-  port: 80
-  # -- Service type for the API and Dashboard services
-  type: ClusterIP
-  # -- Annotations for the services
-  annotations:
-
-# -- Prefix to use on hostname. Generally not needed.
-sanitizedBranch:
-
-ingress:
-  # -- Enable Ingress
-  enabled: false
-  # -- Enable TLS
-  tls: true
-  # -- Hostnames to use for Ingress
-  hostedZones: []
-  # -- Annotations to add to the API and Dashboard ingresses.
-  annotations: {}
-  # -- Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false.
-  starPaths: true
-  # -- Create different Ingress objects for the API and dashboard - this allows them to have different annotations
-  separate: false
-  # -- Adds additional path ie. Redirect path for ALB
-  extraPaths: {}
-
-postgresql:
-  # -- Set to `true` to run migrations after the upgrade
-  postMigrate: false
-  image:
-    tag: "14.2.0-debian-10-r94"
-  # -- Use the ephemeral postgresql chart by default
-  ephemeral: true
-  # -- SSL mode for connecting to the database
-  sslMode: require
-  # -- TLS mode for connecting to the database
-  tls:
-    enabled: true
-    certificatesSecret: fwinsights-postgresql-ca
-    certFilename: tls.crt
-    certKeyFilename: tls.key
-  auth:
-    username: postgres
-    database: fairwinds_insights
-    existingSecret: fwinsights-postgresql
-    secretKeys:
-      adminPasswordKey: postgresql-password
-  primary:
-    service:
-      # -- Port of the Postgres Database
-      port: 5432
-    persistence:
-      # -- Create Persistent Volume with Postgres
-      enabled: true
-    # -- Resources section for Postgres
-    resources:
-      limits:
-        cpu: 1
-        memory: 1Gi
-      requests:
-        cpu: 75m
-        memory: 256Mi
-  # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
-  readReplica:
-    username:
-    database:
-    host:
-    port:
-    sslMode:
-encryption:
-  aes:
-    cypherKey:
-
-timescale:
-  fullnameOverride: timescale
-  replicaCount: 1
-  clusterName: timescale
-  # -- Use the ephemeral Timescale chart by default
-  ephemeral: true
-  pdb:
-    # -- Use pdb enabled by default
-    enabled: true
-    # -- Min timescale pdb replicas
-    minReplicas: 1
-  # -- SSL mode for connecting to the database
-  sslMode: require
-  # -- Host for timescale
-  postgresqlHost: timescale
-  # -- Username to connect to Timescale with
-  postgresqlUsername: postgres
-  # -- Name of the Postgres Database
-  postgresqlDatabase: postgres
-  # -- Password for the Postgres Database
-  password: postgres
-  secrets:
-    certificateSecretName: fwinsights-timescale-ca
-    credentialsSecretName: fwinsights-timescale
-  service:
-    # -- Port of the Timescale Database
-    primary:
-      port: 5433
-  loadBalancer:
-    enabled: false
-  # -- Database tuning for timescale
-  timescaledbTune:
-    enabled: false
-  # -- Timescale patroni options
-  patroni:
-    log:
-      level: DEBUG
-    postgresql:
-      create_replica_methods: []
-      pgbackrest: {}
-  # -- Resources section for Timescale
-  resources:
-    limits:
-      cpu: 1
-      memory: 1Gi
-    requests:
-      cpu: 75m
-      memory: 256Mi
-
-email:
-  # -- How to send emails, valid values include memory, ses, and smtp
-  strategy: memory
-  # -- Email address that emails will come from
-  sender:
-  # -- Email address to send notifications of new user signups.
-  recipient:
-  # -- Host for SMTP strategy
-  smtpHost:
-  # -- Username for SMTP strategy
-  smtpUsername:
-  # -- Port for SMTP strategy
-  smtpPort:
-  # -- Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret.
-  awsRegion:
-
-reportStorage:
-  # -- How to store report files, valid values include minio, s3, and local
-  strategy: minio
-  # -- Name of the bucket to use for minio or s3
-  bucket: reports
-  # -- AWS region to use for S3
-  region: us-east-1
-  # -- Hostname to use for Minio
-  minioHost:
-  # -- Directory to store files in for local.
-  fixturesDir:
-
-minio:
-  # -- Install Minio
-  install: true
-  # -- Create the following buckets for the newly installed Minio
-  buckets:
-  - name: reports
-    policy: none
-  # -- Resources for Minio
-  resources:
-    requests:
-      cpu: 50m
-      memory: 256Mi
-  # -- nameOverride to shorten names of Minio resources
-  nameOverride: fw-minio
-  persistence:
-    # -- Create a persistent volume for Minio
-    enabled: true
-  replicas: 1
-  mode: standalone
-migrateHealthScoreJob:
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-
-cronjobExecutor:
-  image:
-    repository: bitnami/kubectl
-    tag: "1.22.8"
-  resources:
-    limits:
-      cpu: 100m
-      memory: 64Mi
-    requests:
-      cpu: 1m
-      memory: 3Mi
-
-reportjob:
+report:
   enabled: true
   pdb:
     enabled: true
@@ -629,7 +612,7 @@ reportjob:
   nodeSelector: {}
   tolerations: []
 
-automatedPullRequestJob:
+automated-pull-request:
   enabled: true
   hpa:
     enabled: true
@@ -658,7 +641,7 @@ automatedPullRequestJob:
   nodeSelector: {}
   tolerations: []
 
-repoScanJob:
+repo-scan:
   enabled: false
   insightsCIVersion: "5.1"
   hpa:

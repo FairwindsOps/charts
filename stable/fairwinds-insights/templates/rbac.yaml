@@ -2,14 +2,14 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ include "fairwinds-insights.fullname" . }}-insights
-  {{ with .Values.rbac.serviceAccount.annotations }}
+  {{ with .Values.global.rbac.serviceAccount.annotations }}
   annotations:
   {{-   range $key, $value := . }}
     {{ $key }}: {{ $value | quote }}
   {{-   end }}
   {{- end }}
 ---
-{{- if .Values.options.insightsSAASHost }}
+{{- if .Values.global.options.insightsSAASHost }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:

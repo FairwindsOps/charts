@@ -1,0 +1,19 @@
+resources:
+  limits:
+    cpu: 250m
+    memory: 512Mi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+# -- CRON schedules for the action-items filters refresher job.
+schedules:
+  - name: every-15-min
+    cron: "0/15 * * * *"
+securityContext:
+  # -- The user ID to run the action-items filters refresher job under.
+  runAsUser: 10324
+image:
+  # -- Docker image repository for maintenance CronJobs.
+  repository: quay.io/fairwinds/insights-cronjob
+  # -- Overrides tag for the cronjob image, defaults to image.tag
+  tag:

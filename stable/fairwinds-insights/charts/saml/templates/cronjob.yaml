@@ -1,0 +1,39 @@
+{{ range .Values.schedules }}
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}-saml-{{ .name }}
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: saml-cronjob-{{ .name }}
+spec:
+  schedule: "{{ .cron }}"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          {{- with $.Values.image.pullSecret }}
+          imagePullSecrets:
+            - name: {{ . }}
+          {{- end }}
+          containers:
+            - name: fairwinds-insights
+              image: "{{ $.Values.global.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
+              command: ["refresh_saml_metadata"]
+              {{- include "fairwinds-insights.env" $ | indent 14 }}
+              imagePullPolicy: Always
+              resources:
+                {{- toYaml $.Values.resources | nindent 16 }}
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+  {{ end }}

@@ -1,3 +1,3 @@
-{{ if gt (len .Values.ingress.hostedZones) 0 }}
-Fairwinds Insights is now running at https://{{ include "fairwinds-insights.sanitizedPrefix" . }}{{ index .Values.ingress.hostedZones 0 }}
+{{ if gt (len .Values.global.ingress.hostedZones) 0 }}
+Fairwinds Insights is now running at https://{{ include "fairwinds-insights.sanitizedPrefix" . }}{{ index .Values.global.ingress.hostedZones 0 }}
 {{ end }}

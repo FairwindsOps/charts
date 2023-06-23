@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-dashboard
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: dashboard
+    {{- if .Values.global.deployments.additionalLabels }}
+    {{ toYaml .Values.global.deployments.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: dashboard
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: dashboard
+        {{- if .Values.global.deployments.additionalPodLabels }}
+        {{ toYaml .Values.global.deployments.additionalPodLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.global.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      containers:
+        - name: fw-insights-dashboard
+          image: "{{ .Values.global.dashboardImage.repository }}:{{ include "fairwinds-insights.dashboardImageTag" . }}"
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args:
+          - -c
+          - |
+            {{ with .Values.global.options.dashboardConfig -}}
+            cd /etc/nginx/html
+            mv -f {{ . }} ./config.js || exit 1
+            {{ end -}}
+            sed -i 's/SERVICE.NAMESPACE.svc/{{ include "fairwinds-insights.fullname" . }}-api.{{.Release.Namespace}}.svc/' /etc/nginx/nginx.conf
+            sed -i 's/SERVICE-OPEN-API.NAMESPACE.svc/{{ include "fairwinds-insights.fullname" . }}-open-api.{{.Release.Namespace}}.svc/' /etc/nginx/nginx.conf
+            nginx -g "daemon off;"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+          {{- include "fairwinds-insights.env" . | indent 10 }}
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: {{ .Values.securityContext.runAsUser }}
+            capabilities:
+              drop:
+                - ALL
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+      - name: tmp
+        emptyDir: {}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
