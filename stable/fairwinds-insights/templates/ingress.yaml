@@ -1,7 +1,7 @@
-{{- if .Values.ingress.enabled }}
+{{- if .Values.global.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
 {{- if not (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
-{{- if not .Values.ingress.separate }}
+{{- if not .Values.global.ingress.separate }}
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -9,25 +9,25 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    {{ with .Values.ingress.annotations }}
+    {{ with .Values.global.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.global.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
       hosts:
-        {{- range .Values.ingress.hostedZones }}
+        {{- range .Values.global.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
         {{- end }}
 {{- end }}
   rules:
-    {{- range .Values.ingress.hostedZones }}
+    {{- range .Values.global.ingress.hostedZones }}
     {{- if $.Values.api.ingress.enabled }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/v0/*" "/v0" }}
             backend:
               serviceName: {{ $fullName }}-api
               servicePort: http
@@ -35,16 +35,16 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with $.Values.ingress.extraPaths }}
+          {{ with $.Values.global.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           {{- if $.Values.openApi.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             backend:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
           {{- end }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/*" "/" }}
             backend:
               serviceName: {{ $fullName }}-dashboard
               servicePort: http
@@ -57,29 +57,29 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    {{ with .Values.ingress.annotations }}
+    {{ with .Values.global.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
-    {{- if .Values.ingress.api }}
-    {{ with .Values.ingress.api.annotations }}
+    {{- if .Values.global.ingress.api }}
+    {{ with .Values.global.ingress.api.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
     {{- end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.global.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
       hosts:
-        {{- range .Values.ingress.hostedZones }}
+        {{- range .Values.global.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
         {{- end }}
 {{- end }}
   rules:
-    {{- range .Values.ingress.hostedZones }}
+    {{- range .Values.global.ingress.hostedZones }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/v0/*" "/v0" }}
             backend:
               serviceName: {{ $fullName }}-api
               servicePort: http
@@ -92,45 +92,45 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    {{ with .Values.ingress.annotations }}
+    {{ with .Values.global.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
-    {{- if .Values.ingress.dashboard }}
-    {{ with .Values.ingress.dashboard.annotations }}
+    {{- if .Values.global.ingress.dashboard }}
+    {{ with .Values.global.ingress.dashboard.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
     {{- end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.global.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
       hosts:
-        {{- range .Values.ingress.hostedZones }}
+        {{- range .Values.global.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
         {{- end }}
 {{- end }}
   rules:
-    {{- range .Values.ingress.hostedZones }}
+    {{- range .Values.global.ingress.hostedZones }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with $.Values.ingress.extraPaths }}
+          {{ with $.Values.global.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           {{- if $.Values.openApi.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             backend:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
           {{- end }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/*" "/" }}
             backend:
               serviceName: {{ $fullName }}-dashboard
               servicePort: http
     {{- end }}
 {{- end }}
 {{- else }}
-{{- if not .Values.ingress.separate }}
+{{- if not .Values.global.ingress.separate }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -138,28 +138,28 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    {{ with .Values.ingress.annotations }}
+    {{ with .Values.global.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.global.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
       hosts:
-        {{- range .Values.ingress.hostedZones }}
+        {{- range .Values.global.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
         {{- end }}
 {{- end }}
   rules:
-    {{- range .Values.ingress.hostedZones }}
+    {{- range .Values.global.ingress.hostedZones }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with $.Values.ingress.extraPaths }}
+          {{ with $.Values.global.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           {{- if $.Values.openApi.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:
               service:
@@ -168,7 +168,7 @@ spec:
                   name: http
           {{- end }}
           {{- if $.Values.api.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/v0/*" "/v0" }}
             pathType: Prefix
             backend:
               service:
@@ -176,7 +176,7 @@ spec:
                 port:
                   name: http
           {{- end }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
               service:
@@ -193,29 +193,29 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    {{ with .Values.ingress.annotations }}
+    {{ with .Values.global.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
-    {{- if .Values.ingress.api }}
-    {{ with .Values.ingress.api.annotations }}
+    {{- if .Values.global.ingress.api }}
+    {{ with .Values.global.ingress.api.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
     {{- end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.global.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
       hosts:
-        {{- range .Values.ingress.hostedZones }}
+        {{- range .Values.global.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
         {{- end }}
 {{- end }}
   rules:
-    {{- range .Values.ingress.hostedZones }}
+    {{- range .Values.global.ingress.hostedZones }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0*" "/v0" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/v0*" "/v0" }}
             pathType: Prefix
             backend:
               service:
@@ -232,33 +232,33 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    {{ with .Values.ingress.annotations }}
+    {{ with .Values.global.ingress.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
-    {{- if .Values.ingress.dashboard }}
-    {{ with .Values.ingress.dashboard.annotations }}
+    {{- if .Values.global.ingress.dashboard }}
+    {{ with .Values.global.ingress.dashboard.annotations }}
     {{- toYaml . | nindent 4 }}
     {{ end }}
     {{- end }}
 spec:
-{{- if .Values.ingress.tls }}
+{{- if .Values.global.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
       hosts:
-        {{- range .Values.ingress.hostedZones }}
+        {{- range .Values.global.ingress.hostedZones }}
         - {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
         {{- end }}
 {{- end }}
   rules:
-    {{- range .Values.ingress.hostedZones }}
+    {{- range .Values.global.ingress.hostedZones }}
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{ with $.Values.ingress.extraPaths }}
+          {{ with $.Values.global.ingress.extraPaths }}
           {{- toYaml . | nindent 10 }}
           {{ end }}
           {{- if $.Values.openApi.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/swagger/*" "/swagger" }}
             pathType: Prefix
             backend:
               service:
@@ -266,7 +266,7 @@ spec:
                 port:
                   name: http
           {{- end }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
+          - path: {{ $.Values.global.ingress.starPaths | ternary "/*" "/" }}
             pathType: Prefix
             backend:
               service:

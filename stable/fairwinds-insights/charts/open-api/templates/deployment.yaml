@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-open-api
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: open-api
+    {{- if .Values.global.deployments.additionalLabels }}
+    {{ toYaml .Values.global.deployments.additionalLabels | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: open-api
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: open-api
+        {{- if .Values.global.deployments.additionalPodLabels }}
+        {{ toYaml .Values.global.deployments.additionalPodLabels | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.global.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: openapi-nginx-conf
+      containers:
+        - name: fairwinds-insights
+          image: {{ .Values.global.openApiImage.repository }}:{{ include "fairwinds-insights.openApiImageTag" . }}
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: {{ .Values.port }}
+            protocol: TCP
+          env:
+          - name: SWAGGER_JSON_URL
+            value: /v0/swagger.yaml
+          volumeMounts:
+          - name: nginx-conf
+            subPath: nginx.conf
+            mountPath: /etc/nginx/nginx.conf
+          - name: nginx-conf
+            subPath: run.sh
+            mountPath: /usr/share/nginx/run.sh
+          livenessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 101
+            capabilities:
+              drop:
+                - ALL
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}

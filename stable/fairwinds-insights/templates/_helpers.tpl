@@ -3,7 +3,7 @@
 Expand the name of the chart.
 */}}
 {{- define "fairwinds-insights.name" -}}
-{{- default .Chart.Name .Values.nameOverride | trunc 52 | trimSuffix "-" -}}
+{{- default .Chart.Name .Values.global.nameOverride | trunc 52 | trimSuffix "-" -}}
 {{- end -}}
 
 {{/*
@@ -12,10 +12,10 @@ We truncate at 52 chars because some Kubernetes name fields are limited to this 
 If release name contains chart name it will be used as a full name.
 */}}
 {{- define "fairwinds-insights.fullname" -}}
-{{- if .Values.fullnameOverride -}}
-{{- .Values.fullnameOverride | trunc 27 | trimSuffix "-" -}}
+{{- if .Values.global.fullnameOverride -}}
+{{- .Values.global.fullnameOverride | trunc 27 | trimSuffix "-" -}}
 {{- else -}}
-{{- $name := default .Chart.Name .Values.nameOverride -}}
+{{- $name := default .Chart.Name .Values.global.nameOverride -}}
 {{- if contains $name .Release.Name -}}
 {{- .Release.Name | trunc 27 | trimSuffix "-" -}}
 {{- else -}}
@@ -32,48 +32,48 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{- define "fairwinds-insights.sanitizedPrefix" -}}
-{{- if .Values.sanitizedBranch -}}
-{{- printf "%s." (.Values.sanitizedBranch | trunc 12 | trimSuffix "-") -}}
+{{- if .Values.global.sanitizedBranch -}}
+{{- printf "%s." (.Values.global.sanitizedBranch | trunc 12 | trimSuffix "-") -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "fairwinds-insights.cronjobImageTag" -}}
-{{- if .Values.cronjobImage.tag -}}
-{{- .Values.cronjobImage.tag -}}
+{{- if .Values.global.cronjobImage.tag -}}
+{{- .Values.global.cronjobImage.tag -}}
 {{- else -}}
-{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- .Values.global.image.tag | default .Chart.AppVersion -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "fairwinds-insights.apiImageTag" -}}
-{{- if .Values.apiImage.tag -}}
-{{- .Values.apiImage.tag -}}
+{{- if .Values.global.apiImage.tag -}}
+{{- .Values.global.apiImage.tag -}}
 {{- else -}}
-{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- .Values.global.image.tag | default .Chart.AppVersion -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "fairwinds-insights.openApiImageTag" -}}
-{{- if .Values.openApiImage.tag -}}
-{{- .Values.openApiImage.tag -}}
+{{- if .Values.global.openApiImage.tag -}}
+{{- .Values.global.openApiImage.tag -}}
 {{- else -}}
-{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- .Values.global.image.tag | default .Chart.AppVersion -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "fairwinds-insights.dashboardImageTag" -}}
-{{- if .Values.dashboardImage.tag -}}
-{{- .Values.dashboardImage.tag -}}
+{{- if .Values.global.dashboardImage.tag -}}
+{{- .Values.global.dashboardImage.tag -}}
 {{- else -}}
-{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- .Values.global.image.tag | default .Chart.AppVersion -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "fairwinds-insights.migrationImageTag" -}}
-{{- if .Values.migrationImage.tag -}}
-{{- .Values.migrationImage.tag -}}
+{{- if .Values.global.migrationImage.tag -}}
+{{- .Values.global.migrationImage.tag -}}
 {{- else -}}
-{{- .Values.image.tag | default .Chart.AppVersion -}}
+{{- .Values.global.image.tag | default .Chart.AppVersion -}}
 {{- end -}}
 {{- end -}}
 
@@ -84,8 +84,8 @@ Common labels
 helm.sh/chart: {{ include "fairwinds-insights.chart" . }}
 {{ include "fairwinds-insights.selectorLabels" . }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-{{ if .Values.rok8sCIRef }}
-app.kubernetes.io/rok8sCIRef: {{ .Values.rok8sCIRef }}
+{{ if .Values.global.rok8sCIRef }}
+app.kubernetes.io/rok8sCIRef: {{ .Values.global.rok8sCIRef }}
 {{ end }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}

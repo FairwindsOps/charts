@@ -1,0 +1,4091 @@
+---
+# Source: fairwinds-insights/charts/report/templates/pdb.yaml
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: jslivka-reportjob-pdb
+  labels:
+    helm.sh/chart: report-0.1.0
+    app.kubernetes.io/name: report
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: reportjob
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: report
+      app.kubernetes.io/instance: jslivka
+      app.kubernetes.io/component: reportjob
+---
+# Source: fairwinds-insights/charts/automated-pull-request/templates/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jslivka-automated-pr-job
+  labels:
+    app: jslivka-automated-pr-job
+---
+# Source: fairwinds-insights/charts/minio/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "minio-sa"
+  namespace: "insights-agent"
+---
+# Source: fairwinds-insights/charts/timescale/templates/serviceaccount-timescaledb.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jslivka
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: rbac
+---
+# Source: fairwinds-insights/templates/cronjob-executor.rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jslivka-cronjob-executor
+  labels:
+    app: fairwinds-insights
+---
+# Source: fairwinds-insights/templates/rbac.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: jslivka-insights
+---
+# Source: fairwinds-insights/charts/minio/templates/secrets.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+  name: jslivka-minio
+  namespace: "insights-agent"
+  labels:
+    app: minio
+    chart: minio-5.0.3
+    release: jslivka
+    heritage: Helm
+type: Opaque
+data:
+  rootUser: "SFJMR2xkZklFdlpHQ1U1TWRtWXE="
+  rootPassword: "elMxcHIwZXdsOG5hd21QUzJmYjAyRDFjMVQwb012UkxZdHphNkpWTQ=="
+---
+# Source: fairwinds-insights/templates/secret.yaml
+apiVersion: v1
+data:
+    postgresql-password: THRmV2hyT0VROUxhNXk3TW5kckdQTVFFOGFJUmlmWmo=
+kind: Secret
+metadata:
+    name: fwinsights-postgresql
+type: Opaque
+---
+# Source: fairwinds-insights/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+    name: fwinsights-timescale
+type: Opaque
+stringData:
+    PATRONI_SUPERUSER_PASSWORD: postgres
+    PATRONI_REPLICATION_PASSWORD: postgres
+    PATRONI_admin_PASSWORD: postgres
+---
+# Source: fairwinds-insights/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+    name: fwinsights-timescale-ca
+type: kubernetes.io/tls
+stringData:
+    tls.crt: "-----BEGIN CERTIFICATE-----\nMIIDEzCCAfugAwIBAgIQSeoM8EltZZV1MURVYm/NlzANBgkqhkiG9w0BAQsFADAU\nMRIwEAYDVQQDEwl0aW1lc2NhbGUwHhcNMjMwNjIzMjE0NDQxWhcNMjgwNjIyMjE0\nNDQxWjAUMRIwEAYDVQQDEwl0aW1lc2NhbGUwggEiMA0GCSqGSIb3DQEBAQUAA4IB\nDwAwggEKAoIBAQDIg5nF4+drWv1TdMHCs9Kr09/8NuihDOum7GG7JpDiuw5FTp77\npE3s2njQTLnEMsWmrRLJYZeAejj63BFPgB4uZZ08bQZ2bcn2kOpY+qmbfPZzdS0H\nLguvj6ZwILarOBWX9zHTjPVt6EaTYMzRHXQ3q6IVsi0DoP3uW2v4rdHK9rZRyO+W\nHaA7/0Gh0MCd3n2HKfOer2UJW/qk/UYtHhCOBIKpi+EladHRBU2vf8NaWgbzfJqB\nGSamRlJVPqYoVMvBznWuEi8dHzQOSId/RdNU0UsVIF/VlgwJB3eMTH7eU0qh0Rnu\nL6lKmT3hr0LHlfAs3o3ryQq9wIr5MT6VlUepAgMBAAGjYTBfMA4GA1UdDwEB/wQE\nAwICpDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYDVR0TAQH/BAUw\nAwEB/zAdBgNVHQ4EFgQUU+bh7xTYuRDYs1NGVhvZgVJh8QkwDQYJKoZIhvcNAQEL\nBQADggEBAEF/JXV4dimtvzukgnaXb4Hi8nL+Oqnh9ZDAuaJrgiZdMGD6b0cUKmdk\n/lGNa5HM2EI8N4617QLUnBM38jMwGhzIhS1/khRMi5jxCDMG6C0q7tVPOrZ74RiY\n5JADfwZwNIw/HRCOoHXmYbwAdfkH+5dYKloB5oaKZaqS7lLKMuOp09FiuZtKRDpG\nMkP9HErwSvgPpfkyukdQo3JMiWO/ywCU00cYcYM2KLH3jwY0jrZiivsFl0vtexvq\nAyqQES+cVtHI1qM0BOOk8UT+XQAKClXj/kJ7v103e2gdQ6feebkgJRi94nkcK1rQ\ntR+NGVkh0sZMHJhBL9pRaZf9Vm8CA3I=\n-----END CERTIFICATE-----\n"
+    tls.key: "-----BEGIN RSA PRIVATE KEY-----\nMIIEpQIBAAKCAQEAyIOZxePna1r9U3TBwrPSq9Pf/DbooQzrpuxhuyaQ4rsORU6e\n+6RN7Np40Ey5xDLFpq0SyWGXgHo4+twRT4AeLmWdPG0Gdm3J9pDqWPqpm3z2c3Ut\nBy4Lr4+mcCC2qzgVl/cx04z1behGk2DM0R10N6uiFbItA6D97ltr+K3Ryva2Ucjv\nlh2gO/9BodDAnd59hynznq9lCVv6pP1GLR4QjgSCqYvhJWnR0QVNr3/DWloG83ya\ngRkmpkZSVT6mKFTLwc51rhIvHR80DkiHf0XTVNFLFSBf1ZYMCQd3jEx+3lNKodEZ\n7i+pSpk94a9Cx5XwLN6N68kKvcCK+TE+lZVHqQIDAQABAoIBAQCjFu8nFxSurCZq\nEAhdThfnbIC9Swfxnmm5roBbUaX81HpqAuWq9dvv707e1dku7MD4rcMfCwLIHCFm\nYUKvMBzcTggTEvZzsx7XLs19q/vyHTTzefYy5c/ZbvTINMN/BjICFaxwTjF9wLRO\nwSg2Wkeh1DcUgIS+c962VaO/c9m0w37sA4omBYNbS1ACy2YUQa0HCHMza4tyxrhF\nIdnLp0AXDEkzTVvm6HfaoGHv+lI8XUDqfG1EIdBiHcfqP5+8ilw814mOiE9gykhi\n8sbapEbvCcTp8auu2XFdFy7655S1vlTF9Svf7LJF0IROg2mVF41PhlUs/W72xtvV\n6Ta/XzsBAoGBAPIujVPmEjNAjaUHCV6BFbMr6VhLbyHWC1z93e2Pj1ei/JrTRuXa\now29rCggPifbS9wQv85T8ta02QUUW4/M3KIBPD/IGO74BdJso6DBWATXrJLuoGqz\naiq00Uq7lqpcveQiINzvAVCo1rCBYZeQQyae0gXoaqfbMqu07zWklhlJAoGBANP0\nbMpRWEFPCKaH7UanMe5szavD1C+/opI2vzkzFbCOL6e3Hg+NgsqwMFYz8bJc3lF/\n3GUNpQBIksG4UbHpQTB5jpBA0cAAtQCdLU8kfxOCdNwYFGutWoHT4UjqId2HU8ad\nm8ymdy+BUxWen2XunLOSv1/8tZ1/xXfkj+QGsxthAoGBAJcP4InXtbyQZInupLJ1\nFEMJfejcTLqvV7EujTK0XHYOrUApz0xqn1Bf4jW5Puv/hwcCz5F0ncG9Vq0rcJ12\n7JyE5r7mIl9VB9SkfUA1uaBzoyqXfCpyNSPkW7Qg5K7pYG0fuJ322zwjxJ6eZXBz\nxN8fK+QRgA2p1aZzGs68FgA5AoGBAJdr85zGaGqf7+opCZaEM+PFz1l62cgS/C3A\n9vQCTuiHa/xBkjRCQMJVBPNQwMdQGXPYCLgY+1wsfMvwxkx3+56J+RONe0vUNXtu\nzsPPqwlhFeN3QH98pUBDApt4ySDeYTdvubKG6ncByT2UyQOlaEXR/O6yN32Bnq18\nmF+reaGBAoGAZJWp6W/t/ZzXzjBd8Xcpss5WAXaxadc34m1ZFy3E6x8+FSeBMzX4\nz5EEMK21hBUVDZG3EvDK7ZkcIDc32kDZUUNtle469qO2trvGRGeEYpbzkFOVZlKc\nYiJTCpJxoMvuuOHhQQWuOCypiwAu/EPDJ6BOBNn2PQ0uslaePe/1pGs=\n-----END RSA PRIVATE KEY-----\n"
+---
+# Source: fairwinds-insights/templates/secret.yaml
+apiVersion: v1
+kind: Secret
+metadata:
+    name: fwinsights-postgresql-ca
+type: kubernetes.io/tls
+stringData:
+    tls.crt: "-----BEGIN CERTIFICATE-----\nMIIDEzCCAfugAwIBAgIQDxjGPwy6UsPBvRJTh5t2JjANBgkqhkiG9w0BAQsFADAU\nMRIwEAYDVQQDEwl0aW1lc2NhbGUwHhcNMjMwNjIzMjE0NDQxWhcNMjgwNjIyMjE0\nNDQxWjAUMRIwEAYDVQQDEwl0aW1lc2NhbGUwggEiMA0GCSqGSIb3DQEBAQUAA4IB\nDwAwggEKAoIBAQCwzQxORM228P6aaQlPsHy4vJEUfruv3JikQC1znNPtckNZRTpM\nU3PlcoH6DlTSeJJ3lBowy5HI9ZnCUWudtZcx51Jm4r9TyFzvLxZlJnZgPiMqUWV6\ntb/N9KAT7WD8IIEXiTnJJ1Hu96vLzHL/TYYOXnAhqesnnWNca8RnyDfHcre3AJie\nor/jvehwolc9AhatAC9JrqBdqLNYZPjAVSAwiW5n5jfF68SHaJCALBPfOXJsDMru\neAz7fxO1etzKsDplz44D08qd6cubHYtEuh8rsRmNyOsEDMRnDKoH8QB7cTtJ8TlJ\nOrWlvF3zYy1KKyTz9Z7/fmhwgl1VRLrhoWY7AgMBAAGjYTBfMA4GA1UdDwEB/wQE\nAwICpDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYDVR0TAQH/BAUw\nAwEB/zAdBgNVHQ4EFgQUrhBMi0GyGU5fhQ6a7dLqIWhP+vMwDQYJKoZIhvcNAQEL\nBQADggEBAJgclBlLuVJ9R3OmtMxz7wurfmjC6vNEfx6JvBS0bBkY2uZz1aop20AO\nVUbksD/OF5vmYokae069NiVpm5Kmc+3pYeSmZj8uKqDiJ1Q5RKef3ohS9g9e+EBP\ncWquVEzaEWrMxupQXomREsc4r4NGAgqdRjmCLbgaNO/p+fOo3RcsIc2gF+gIq7XK\ndatwqvCN6c+Ps7CvrMMjjRwkT28afMFKrBFGp+ow5soHuTaP0QAPaBhZYZ6HJWA2\nkDlaN0qFOfOYHUcxgUZ+uVFWdfsJ0F+0HfWMShIumzVcr6tR6F8ZQu+v5RWWV1Rf\n4rebFmTxHv3fkoCfFxvbuRR4T/6ry4I=\n-----END CERTIFICATE-----\n"
+    tls.key: "-----BEGIN RSA PRIVATE KEY-----\nMIIEpAIBAAKCAQEAsM0MTkTNtvD+mmkJT7B8uLyRFH67r9yYpEAtc5zT7XJDWUU6\nTFNz5XKB+g5U0niSd5QaMMuRyPWZwlFrnbWXMedSZuK/U8hc7y8WZSZ2YD4jKlFl\nerW/zfSgE+1g/CCBF4k5ySdR7very8xy/02GDl5wIanrJ51jXGvEZ8g3x3K3twCY\nnqK/473ocKJXPQIWrQAvSa6gXaizWGT4wFUgMIluZ+Y3xevEh2iQgCwT3zlybAzK\n7ngM+38TtXrcyrA6Zc+OA9PKnenLmx2LRLofK7EZjcjrBAzEZwyqB/EAe3E7SfE5\nSTq1pbxd82MtSisk8/We/35ocIJdVUS64aFmOwIDAQABAoIBADzUD2vOWEic2bwe\nb0mvmvmkRvYaNFDpQMsiGYExb+i961YHb2tbOwCySO3TiHNxcFMb7XbkUyAk/+XP\nRYtZMs/EmqEzWkhlIzRXqwjaFtg+CLNClfuGFJuzkm/IuBmGxWNnny4KDTJ+m+je\nSqJz9a9z5nhuka1rhQgDO+vJAwfnaUn8bbVmzueUvWCapuDz2nllANBVS0kDa5pE\nP9XnEUB+LMQsqNQtzbcQxPmS9cSbIc+Zy7Xu7TMZenNLmv3dGkIRSVEMuCNRMZW+\ngW+5k0XBjgLgtXUSyjjkn2buz0uPRNbCOg174aMjYPRdZrb2Gh6GnvwO5MqYgFb/\n9coBXWECgYEA55rUQ8TM6nPBaU+OC3DYfsPIBvbtA4pGwMwtPbA4H4bZ54C/bHbm\n7idmzX1wGoKHJhd/QZBB0RiBTddOEoXGI/ks21xkizrgS9wOZyNbXjlI7zmxVF+z\nHu/t9elnxAcO5ZkY2QXGXmQ9Qyo3ZcNmE20ZW3OKaAg0+VENtbztaEUCgYEAw2xy\nLpdjbowObKFfx8hoUSQ358ZEIy4iis1vKFm+AXCbQgc+Qw50lI9YgKJGcxPAQiBg\nW3USGBPH/CEL+Z6bP0LcECKqaKsA581otRE2wVFb0LinXbe9P2xTEBaQQAP0bYKf\nx9tMNGOLru4Q55WzqZymnMz3COILDXZtpPqovH8CgYEAlnf+w/CN+RwvYg3viPtN\njD4CLJQsNAqYIRYFpnhgXgsscr0woHU3Xy52GbcPKAn5aAQIBz6DpCc5iqsA7APB\nUQnH3NRP9izQIDjdmqBb8gFhoxpmXRy3sLfMb+GuKqszQHOQsx6PXC/fpU0+JH0o\nSiKtQL72AtSiJgBE2ffefckCgYB9vXFaeR4JKyS80LiIG3LDgsJV50RAPpcLKFO1\nasjOtF2xhmeRTePFEtanLcKWmMbDxYE6V4Fk7JVorPq/ikXp1mMyHpv27NCQVaJh\nnsnUaTzid21455hlDpYDbAE0r1a+f6W/OmM18jcWPyexWqlXIOwzR85LcOYbq2+x\nD3cykQKBgQCVrW8BC/tyUbmGhn8OTdy6IhSCXv0qIU4PF8j6d6wHZDAKJ1mWhWC+\n8yO315OYzswgqhsLf5CjLCc0nBYhRqit8SY2Bi1AHO24TWiAOliYwpuo8SWPCX4h\nHgX/CaLsN3itLUHeiUc8pWZDUXuAyeVEMKWoB1RVDELCEAmO/ggDug==\n-----END RSA PRIVATE KEY-----\n"
+---
+# Source: fairwinds-insights/charts/minio/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jslivka-minio
+  namespace: "insights-agent"
+  labels:
+    app: minio
+    chart: minio-5.0.3
+    release: jslivka
+    heritage: Helm
+data:
+  initialize: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkBucketExists ($bucket)
+    # Check if the bucket exists, by using the exit code of `mc ls`
+    checkBucketExists() {
+      BUCKET=$1
+      CMD=$(${MC} ls myminio/$BUCKET > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createBucket ($bucket, $policy, $purge)
+    # Ensure bucket exists, purging if asked to
+    createBucket() {
+      BUCKET=$1
+      POLICY=$2
+      PURGE=$3
+      VERSIONING=$4
+      OBJECTLOCKING=$5
+    
+      # Purge the bucket, if set & exists
+      # Since PURGE is user input, check explicitly for `true`
+      if [ $PURGE = true ]; then
+        if checkBucketExists $BUCKET ; then
+          echo "Purging bucket '$BUCKET'."
+          set +e ; # don't exit if this fails
+          ${MC} rm -r --force myminio/$BUCKET
+          set -e ; # reset `e` as active
+        else
+          echo "Bucket '$BUCKET' does not exist, skipping purge."
+        fi
+      fi
+    
+    # Create the bucket if it does not exist and set objectlocking if enabled (NOTE: versioning will be not changed if OBJECTLOCKING is set because it enables versioning to the Buckets created)
+    if ! checkBucketExists $BUCKET ; then
+        if [ ! -z $OBJECTLOCKING ] ; then
+          if [ $OBJECTLOCKING = true ] ; then
+              echo "Creating bucket with OBJECTLOCKING '$BUCKET'"
+              ${MC} mb --with-lock myminio/$BUCKET
+          elif [ $OBJECTLOCKING = false ] ; then
+                echo "Creating bucket '$BUCKET'"
+                ${MC} mb myminio/$BUCKET
+          fi
+      elif [ -z $OBJECTLOCKING ] ; then
+            echo "Creating bucket '$BUCKET'"
+            ${MC} mb myminio/$BUCKET
+      else
+        echo "Bucket '$BUCKET' already exists."  
+      fi
+      fi
+    
+    
+      # set versioning for bucket if objectlocking is disabled or not set
+      if [ -z $OBJECTLOCKING ] ; then
+      if [ ! -z $VERSIONING ] ; then
+        if [ $VERSIONING = true ] ; then
+            echo "Enabling versioning for '$BUCKET'"
+            ${MC} version enable myminio/$BUCKET
+        elif [ $VERSIONING = false ] ; then
+            echo "Suspending versioning for '$BUCKET'"
+            ${MC} version suspend myminio/$BUCKET
+        fi
+        fi
+      else
+          echo "Bucket '$BUCKET' versioning unchanged."
+      fi
+    
+    
+      # At this point, the bucket should exist, skip checking for existence
+      # Set policy on the bucket
+      echo "Setting policy of bucket '$BUCKET' to '$POLICY'."
+      ${MC} anonymous set $POLICY myminio/$BUCKET
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+    
+  add-user: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # AccessKey and secretkey credentials file are added to prevent shell execution errors caused by special characters.
+    # Special characters for example : ',",<,>,{,}
+    MINIO_ACCESSKEY_SECRETKEY_TMP="/tmp/accessKey_and_secretKey_tmp"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkUserExists ()
+    # Check if the user exists, by using the exit code of `mc admin user info`
+    checkUserExists() {
+      CMD=$(${MC} admin user info myminio $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createUser ($policy)
+    createUser() {
+      POLICY=$1
+      #check accessKey_and_secretKey_tmp file
+      if [[ ! -f $MINIO_ACCESSKEY_SECRETKEY_TMP ]];then
+        echo "credentials file does not exist"
+        return 1
+      fi
+      if [[ $(cat $MINIO_ACCESSKEY_SECRETKEY_TMP|wc -l) -ne 2 ]];then
+        echo "credentials file is invalid"
+        rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+        return 1
+      fi
+      USER=$(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP)
+      # Create the user if it does not exist
+      if ! checkUserExists ; then
+        echo "Creating user '$USER'"
+        cat $MINIO_ACCESSKEY_SECRETKEY_TMP | ${MC} admin user add myminio
+      else
+        echo "User '$USER' already exists."
+      fi
+      #clean up credentials files.
+      rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+    
+      # set policy for user
+      if [ ! -z $POLICY -a $POLICY != " " ] ; then
+          echo "Adding policy '$POLICY' for '$USER'"
+          ${MC} admin policy set myminio $POLICY user=$USER
+      else
+          echo "User '$USER' has no policy attached."
+      fi
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+    
+    # Create the users
+    echo console > $MINIO_ACCESSKEY_SECRETKEY_TMP
+    echo console123 >> $MINIO_ACCESSKEY_SECRETKEY_TMP
+    createUser consoleAdmin
+    
+  add-policy: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkPolicyExists ($policy)
+    # Check if the policy exists, by using the exit code of `mc admin policy info`
+    checkPolicyExists() {
+      POLICY=$1
+      CMD=$(${MC} admin policy info myminio $POLICY > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createPolicy($name, $filename)
+    createPolicy () {
+      NAME=$1
+      FILENAME=$2
+    
+      # Create the name if it does not exist
+      echo "Checking policy: $NAME (in /config/$FILENAME.json)"
+      if ! checkPolicyExists $NAME ; then
+        echo "Creating policy '$NAME'"
+      else
+        echo "Policy '$NAME' already exists."
+      fi
+      ${MC} admin policy add myminio $NAME /config/$FILENAME.json
+    
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+  add-svcacct: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # AccessKey and secretkey credentials file are added to prevent shell execution errors caused by special characters.
+    # Special characters for example : ',",<,>,{,}
+    MINIO_ACCESSKEY_SECRETKEY_TMP="/tmp/accessKey_and_secretKey_svcacct_tmp"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 2 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # checkSvcacctExists ()
+    # Check if the svcacct exists, by using the exit code of `mc admin user svcacct info`
+    checkSvcacctExists() {
+      CMD=$(${MC} admin user svcacct info myminio $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) > /dev/null 2>&1)
+      return $?
+    }
+    
+    # createSvcacct ($user)
+    createSvcacct () {
+      USER=$1
+      FILENAME=$2
+      #check accessKey_and_secretKey_tmp file
+      if [[ ! -f $MINIO_ACCESSKEY_SECRETKEY_TMP ]];then
+        echo "credentials file does not exist"
+        return 1
+      fi
+      if [[ $(cat $MINIO_ACCESSKEY_SECRETKEY_TMP|wc -l) -ne 2 ]];then
+        echo "credentials file is invalid"
+        rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+        return 1
+      fi
+      SVCACCT=$(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP)
+      # Create the svcacct if it does not exist
+      if ! checkSvcacctExists ; then
+        echo "Creating svcacct '$SVCACCT'"
+        # Check if policy file is define
+        if [ -z $FILENAME ]; then
+          ${MC} admin user svcacct add --access-key $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) --secret-key $(tail -n1 $MINIO_ACCESSKEY_SECRETKEY_TMP) myminio $USER
+        else
+          ${MC} admin user svcacct add --access-key $(head -1 $MINIO_ACCESSKEY_SECRETKEY_TMP) --secret-key $(tail -n1 $MINIO_ACCESSKEY_SECRETKEY_TMP) --policy /config/$FILENAME.json myminio $USER
+        fi
+      else
+        echo "Svcacct '$SVCACCT' already exists."
+      fi
+      #clean up credentials files.
+      rm -f $MINIO_ACCESSKEY_SECRETKEY_TMP
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+    
+    
+    
+  custom-command: |-
+    #!/bin/sh
+    set -e ; # Have script exit in the event of a failed command.
+    MC_CONFIG_DIR="/etc/minio/mc/"
+    MC="/usr/bin/mc --insecure --config-dir ${MC_CONFIG_DIR}"
+    
+    # connectToMinio
+    # Use a check-sleep-check loop to wait for MinIO service to be available
+    connectToMinio() {
+      SCHEME=$1
+      ATTEMPTS=0 ; LIMIT=29 ; # Allow 30 attempts
+      set -e ; # fail if we can't read the keys.
+      ACCESS=$(cat /config/rootUser) ; SECRET=$(cat /config/rootPassword) ;
+      set +e ; # The connections to minio are allowed to fail.
+      echo "Connecting to MinIO server: $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT" ;
+      MC_COMMAND="${MC} alias set myminio $SCHEME://$MINIO_ENDPOINT:$MINIO_PORT $ACCESS $SECRET" ;
+      $MC_COMMAND ;
+      STATUS=$? ;
+      until [ $STATUS = 0 ]
+      do
+        ATTEMPTS=`expr $ATTEMPTS + 1` ;
+        echo \"Failed attempts: $ATTEMPTS\" ;
+        if [ $ATTEMPTS -gt $LIMIT ]; then
+          exit 1 ;
+        fi ;
+        sleep 2 ; # 1 second intervals between attempts
+        $MC_COMMAND ;
+        STATUS=$? ;
+      done ;
+      set -e ; # reset `e` as active
+      return 0
+    }
+    
+    # runCommand ($@)
+    # Run custom mc command
+    runCommand() {
+      ${MC} "$@"
+      return $?
+    }
+    
+    # Try connecting to MinIO instance
+    scheme=http
+    connectToMinio $scheme
+---
+# Source: fairwinds-insights/charts/open-api/templates/nginx-conf.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: openapi-nginx-conf
+data:
+  # Copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/run.sh
+  # and a sed command was replaced, since we can't edit mounted files
+  run.sh: |
+    #! /bin/sh
+
+    set -e
+    BASE_URL=${BASE_URL:-/}
+    NGINX_ROOT=/usr/share/nginx/html
+    INDEX_FILE=$NGINX_ROOT/index.html
+    NGINX_CONF=/etc/nginx/nginx.conf
+
+    node /usr/share/nginx/configurator $INDEX_FILE
+
+    replace_in_index () {
+      if [ "$1" != "**None**" ]; then
+        sed -i "s|/\*||g" $INDEX_FILE
+        sed -i "s|\*/||g" $INDEX_FILE
+        sed -i "s|$1|$2|g" $INDEX_FILE
+      fi
+    }
+
+    replace_or_delete_in_index () {
+      if [ -z "$2" ]; then
+        sed -i "/$1/d" $INDEX_FILE
+      else
+        replace_in_index $1 $2
+      fi
+    }
+
+    replace_in_index myApiKeyXXXX123456789 $API_KEY
+
+    if [ "$SWAGGER_JSON_URL" ]; then
+      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$SWAGGER_JSON_URL|g" $INDEX_FILE
+      sed -i "s|http://example.com/api|$SWAGGER_JSON_URL|g" $INDEX_FILE
+    fi
+
+    if [[ -f "$SWAGGER_JSON" ]]; then
+      cp -s "$SWAGGER_JSON" "$NGINX_ROOT"
+      REL_PATH="./$(basename $SWAGGER_JSON)"
+
+      if [[ -z "$SWAGGER_ROOT" ]]; then
+        SWAGGER_ROOT="$(dirname $SWAGGER_JSON)"
+      fi
+
+      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$REL_PATH|g" $INDEX_FILE
+      sed -i "s|http://example.com/api|$REL_PATH|g" $INDEX_FILE
+    fi
+
+    find $NGINX_ROOT -type f -regex ".*\.\(html\|js\|css\)" -exec sh -c "gzip < {} > {}.gz" \;
+
+    exec nginx -g 'daemon off;'
+
+  # This is copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/nginx.conf
+  # A /health path is added and BASE_URL is manually set
+  nginx.conf: |
+    worker_processes      1;
+
+    events {
+      worker_connections  1024;
+    }
+
+    http {
+      include             mime.types;
+      default_type        application/octet-stream;
+
+      sendfile on;
+
+      keepalive_timeout   65;
+
+      gzip on;
+      gzip_static on;
+      gzip_disable "msie6";
+
+      gzip_vary on;
+      gzip_types text/plain text/css application/javascript;
+
+      map $request_method $access_control_max_age {
+        OPTIONS 1728000; # 20 days
+      }
+      server_tokens off; # Hide Nginx version
+
+      server {
+        listen            8080;
+        server_name       localhost;
+        index             index.html index.htm;
+
+        location /swagger {
+          absolute_redirect off;
+          alias            /usr/share/nginx/html/;
+          expires 1d;
+
+          location ~* \.(?:json|yml|yaml)$ {
+            #SWAGGER_ROOT
+            expires -1;
+
+            include cors.conf;
+          }
+
+          include cors.conf;
+        }
+
+        location /health {
+          return 200 'OK';
+        }
+        # This is a hack to prevent nginx from running sed on this file, which causes a crash
+        # listen  [::]:80;
+      }
+    }
+---
+# Source: fairwinds-insights/charts/timescale/templates/configmap-patroni.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jslivka-patroni
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: patroni
+data:
+  patroni.yaml: |
+    bootstrap:
+      dcs:
+        loop_wait: 10
+        maximum_lag_on_failover: 33554432
+        postgresql:
+          parameters:
+            archive_command: /etc/timescaledb/scripts/pgbackrest_archive.sh %p
+            archive_mode: "on"
+            archive_timeout: 1800s
+            autovacuum_analyze_scale_factor: 0.02
+            autovacuum_max_workers: 10
+            autovacuum_naptime: 5s
+            autovacuum_vacuum_cost_limit: 500
+            autovacuum_vacuum_scale_factor: 0.05
+            hot_standby: "on"
+            log_autovacuum_min_duration: 1min
+            log_checkpoints: "on"
+            log_connections: "on"
+            log_disconnections: "on"
+            log_line_prefix: '%t [%p]: [%c-%l] %u@%d,app=%a [%e] '
+            log_lock_waits: "on"
+            log_min_duration_statement: 1s
+            log_statement: ddl
+            max_connections: 100
+            max_prepared_transactions: 150
+            shared_preload_libraries: timescaledb,pg_stat_statements
+            ssl: "on"
+            ssl_cert_file: /etc/certificate/tls.crt
+            ssl_key_file: /etc/certificate/tls.key
+            tcp_keepalives_idle: 900
+            tcp_keepalives_interval: 100
+            temp_file_limit: 1GB
+            timescaledb.passfile: ../.pgpass
+            unix_socket_directories: /var/run/postgresql
+            unix_socket_permissions: "0750"
+            wal_level: hot_standby
+            wal_log_hints: "on"
+          use_pg_rewind: true
+          use_slots: true
+        retry_timeout: 10
+        ttl: 30
+      method: restore_or_initdb
+      post_init: /etc/timescaledb/scripts/post_init.sh
+      restore_or_initdb:
+        command: |
+          /etc/timescaledb/scripts/restore_or_initdb.sh --encoding=UTF8 --locale=C.UTF-8
+        keep_existing_recovery_conf: true
+    kubernetes:
+      role_label: role
+      scope_label: cluster-name
+      use_endpoints: true
+    log:
+      level: WARNING
+    postgresql:
+      authentication:
+        replication:
+          username: standby
+        superuser:
+          username: postgres
+      basebackup:
+      - waldir: /var/lib/postgresql/wal/pg_wal
+      callbacks:
+        on_reload: /etc/timescaledb/scripts/patroni_callback.sh
+        on_restart: /etc/timescaledb/scripts/patroni_callback.sh
+        on_role_change: /etc/timescaledb/scripts/patroni_callback.sh
+        on_start: /etc/timescaledb/scripts/patroni_callback.sh
+        on_stop: /etc/timescaledb/scripts/patroni_callback.sh
+      create_replica_methods:
+      - pgbackrest
+      - basebackup
+      listen: 0.0.0.0:5432
+      pg_hba:
+      - local     all             postgres                              peer
+      - local     all             all                                   md5
+      - hostnossl all,replication all                all                reject
+      - hostssl   all             all                127.0.0.1/32       md5
+      - hostssl   all             all                ::1/128            md5
+      - hostssl   replication     standby            all                md5
+      - hostssl   all             all                all                md5
+      pgbackrest:
+        command: /etc/timescaledb/scripts/pgbackrest_restore.sh
+        keep_data: true
+        no_master: true
+        no_params: true
+      recovery_conf:
+        restore_command: /etc/timescaledb/scripts/pgbackrest_archive_get.sh %f "%p"
+      use_unix_socket: true
+    restapi:
+      listen: 0.0.0.0:8008
+...
+---
+# Source: fairwinds-insights/charts/timescale/templates/configmap-pgbackrest.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jslivka-pgbackrest
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: pgbackrest
+data:
+  pgbackrest.conf: |
+    [global]
+    compress-level=3
+    compress-type=lz4
+    process-max=4
+    repo1-cipher-type=none
+    repo1-path=/insights-agent/jslivka/
+    repo1-retention-diff=2
+    repo1-retention-full=2
+    repo1-s3-endpoint=s3.amazonaws.com
+    repo1-s3-region=us-east-2
+    repo1-type=s3
+    spool-path=/var/run/postgresql
+    start-fast=y
+
+    [poddb]
+    pg1-port=5432
+    pg1-host-user=postgres
+    pg1-path=/var/lib/postgresql/data
+    pg1-socket-path=/var/run/postgresql
+
+    link-all=y
+
+    [global:archive-push]
+
+    [global:archive-get]
+...
+---
+# Source: fairwinds-insights/charts/timescale/templates/configmap-scripts.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: jslivka-scripts
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: scripts
+data:
+  tstune.sh: |-
+    #!/bin/sh
+    
+    set -eu
+    
+    # Exit if required variable is not set externally
+    : "$TSTUNE_FILE"
+    : "$WAL_VOLUME_SIZE"
+    : "$DATA_VOLUME_SIZE"
+    : "$RESOURCES_CPU_REQUESTS"
+    : "$RESOURCES_MEMORY_REQUESTS"
+    : "$RESOURCES_CPU_LIMIT"
+    : "$RESOURCES_MEMORY_LIMIT"
+    
+    # Figure out how many cores are available
+    CPUS="$RESOURCES_CPU_REQUESTS"
+    if [ "$RESOURCES_CPU_REQUESTS" -eq 0 ]; then
+        CPUS="${RESOURCES_CPU_LIMIT}"
+    fi
+    # Figure out how much memory is available
+    MEMORY="$RESOURCES_MEMORY_REQUESTS"
+    if [ "$RESOURCES_MEMORY_REQUESTS" -eq 0 ]; then
+        MEMORY="${RESOURCES_MEMORY_LIMIT}"
+    fi
+    
+    # Ensure tstune config file exists
+    touch "${TSTUNE_FILE}"
+    
+    # Ensure tstune-generated config is included in postgresql.conf
+    if [ -f "${PGDATA}/postgresql.base.conf" ] && ! grep "include_if_exists = '${TSTUNE_FILE}'" postgresql.base.conf -qxF; then
+        echo "include_if_exists = '${TSTUNE_FILE}'" >> "${PGDATA}/postgresql.base.conf"
+    fi
+    
+    # If there is a dedicated WAL Volume, we want to set max_wal_size to 60% of that volume
+    # If there isn't a dedicated WAL Volume, we set it to 20% of the data volume
+    if [ "${WAL_VOLUME_SIZE}" = "0" ]; then
+        WALMAX="${DATA_VOLUME_SIZE}"
+        WALPERCENT=20
+    else
+        WALMAX="${WAL_VOLUME_SIZE}"
+        WALPERCENT=60
+    fi
+    
+    WALMAX=$(numfmt --from=auto "${WALMAX}")
+    
+    # Wal segments are 16MB in size, in this way we get a "nice" number of the nearest
+    # 16MB
+    # walmax / 100 * walpercent / 16MB # below is a refactored with increased precision
+    WALMAX=$(( WALMAX * WALPERCENT * 16 / 16777216 / 100  ))
+    WALMIN=$(( WALMAX / 2 ))
+    
+    echo "max_wal_size=${WALMAX}MB" >> "${TSTUNE_FILE}"
+    echo "min_wal_size=${WALMIN}MB" >> "${TSTUNE_FILE}"
+    
+    # Run tstune
+    timescaledb-tune -quiet -conf-path "${TSTUNE_FILE}" -cpus "${CPUS}" -memory "${MEMORY}MB" -yes "$@"
+    
+  pgbackrest_archive.sh: |-
+    #!/bin/sh
+    
+    # If no backup is configured, archive_command would normally fail. A failing archive_command on a cluster
+    # is going to cause WAL to be kept around forever, meaning we'll fill up Volumes we have quite quickly.
+    #
+    # Therefore, if the backup is disabled, we always return exitcode 0 when archiving
+    
+    log() {
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - archive - $1"
+    }
+    
+    [ -z "$1" ] && log "Usage: $0 <WALFILE or DIRECTORY>" && exit 1
+    
+    : "${ENV_FILE:=${HOME}/.pgbackrest_environment}"
+    if [ -f "${ENV_FILE}" ]; then
+        echo "Sourcing ${ENV_FILE}"
+        . "${ENV_FILE}"
+    fi
+    
+    # PGBACKREST_BACKUP_ENABLED variable is passed in StatefulSet template
+    [ "${PGBACKREST_BACKUP_ENABLED}" = "true" ] || exit 0
+    
+    exec pgbackrest --stanza=poddb archive-push "$@"
+    
+  pgbackrest_archive_get.sh: |-
+    #!/bin/sh
+    # PGBACKREST_BACKUP_ENABLED variable is passed in StatefulSet template
+    [ "${PGBACKREST_BACKUP_ENABLED}" = "true" ] || exit 1
+    
+    : "${ENV_FILE:=${HOME}/.pgbackrest_environment}"
+    if [ -f "${ENV_FILE}" ]; then
+    echo "Sourcing ${ENV_FILE}"
+    . "${ENV_FILE}"
+    fi
+    
+    exec pgbackrest --stanza=poddb archive-get "${1}" "${2}"
+    
+  pgbackrest_bootstrap.sh: |-
+    #!/bin/sh
+    set -e
+    
+    log() {
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - bootstrap - $1"
+    }
+    
+    terminate() {
+        log "Stopping"
+        exit 1
+    }
+    # If we don't catch these signals, and we're still waiting for PostgreSQL
+    # to be ready, we will not respond at all to a regular shutdown request,
+    # therefore, we explicitly terminate if we receive these signals.
+    trap terminate TERM QUIT
+    
+    while ! pg_isready -q; do
+        log "Waiting for PostgreSQL to become available"
+        sleep 3
+    done
+    
+    # We'll be lazy; we wait for another while to allow the database to promote
+    # to primary if it's the only one running
+    sleep 10
+    
+    # If we are the primary, we want to create/validate the backup stanza
+    if [ "$(psql -c "SELECT pg_is_in_recovery()::text" -AtXq)" = "false" ]; then
+        pgbackrest check || {
+            log "Creating pgBackrest stanza"
+            pgbackrest --stanza=poddb stanza-create --log-level-stderr=info || exit 1
+            log "Creating initial backup"
+            pgbackrest --type=full backup || exit 1
+        }
+    fi
+    
+    log "Starting pgBackrest api to listen for backup requests"
+    exec python3 /scripts/pgbackrest-rest.py --stanza=poddb --loglevel=debug
+    
+  pgbackrest_restore.sh: |
+    #!/bin/sh
+    # PGBACKREST_BACKUP_ENABLED variable is passed in StatefulSet template
+    [ "${PGBACKREST_BACKUP_ENABLED}" = "true" ] || exit 1
+    
+    : "${ENV_FILE:=${HOME}/.pod_environment}"
+    if [ -f "${ENV_FILE}" ]; then
+    echo "Sourcing ${ENV_FILE}"
+    . "${ENV_FILE}"
+    fi
+    
+    # PGDATA and WALDIR are set in the StatefulSet template and are sourced from the ENV_FILE
+    # PGDATA=
+    # WALDIR=
+    
+    # A missing PGDATA points to Patroni removing a botched PGDATA, or manual
+    # intervention. In this scenario, we need to recreate the DATA and WALDIRs
+    # to keep pgBackRest happy
+    [ -d "${PGDATA}" ] || install -o postgres -g postgres -d -m 0700 "${PGDATA}"
+    [ -d "${WALDIR}" ] || install -o postgres -g postgres -d -m 0700 "${WALDIR}"
+    
+    exec pgbackrest --force --delta --log-level-console=detail restore
+    
+  restore_or_initdb.sh: |
+    #!/bin/sh
+    
+    : "${ENV_FILE:=${HOME}/.pod_environment}"
+    if [ -f "${ENV_FILE}" ]; then
+        echo "Sourcing ${ENV_FILE}"
+        . "${ENV_FILE}"
+    fi
+    
+    log() {
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - restore_or_initdb - $1"
+    }
+    
+    # PGDATA and WALDIR are set in the StatefulSet template and are sourced from the ENV_FILE
+    # PGDATA=
+    # WALDIR=
+    
+    # A missing PGDATA points to Patroni removing a botched PGDATA, or manual
+    # intervention. In this scenario, we need to recreate the DATA and WALDIRs
+    # to keep pgBackRest happy
+    [ -d "${PGDATA}" ] || install -o postgres -g postgres -d -m 0700 "${PGDATA}"
+    [ -d "${WALDIR}" ] || install -o postgres -g postgres -d -m 0700 "${WALDIR}"
+    
+    if [ "${BOOTSTRAP_FROM_BACKUP}" = "1" ]; then
+        log "Attempting restore from backup"
+        # we want to override the environment with the environment
+        # shellcheck disable=SC2046
+        export $(env -i envdir /etc/pgbackrest/bootstrap env) > /dev/null
+        # PGBACKREST_REPO1_PATH is set in the StatefulSet template and sourced from the ENV_FILE
+    
+        if [ -z "${PGBACKREST_REPO1_PATH}" ]; then
+            log "Unconfigured repository path"
+            cat << "__EOT__"
+    
+    TimescaleDB Single Helm Chart error:
+    
+    You should configure the bootstrapFromBackup in your Helm Chart section by explicitly setting
+    the repo1-path to point to the backups.
+    
+    For more information, consult the admin guide:
+    https://github.com/timescale/helm-charts/blob/main/charts/timescaledb-single/docs/admin-guide.md#bootstrap-from-backup
+    
+    __EOT__
+    
+            exit 1
+        fi
+    
+        log "Listing available backup information"
+        pgbackrest info
+        EXITCODE=$?
+        if [ ${EXITCODE} -ne 0 ]; then
+            exit $EXITCODE
+        fi
+    
+        pgbackrest --log-level-console=detail restore
+        EXITCODE=$?
+        if [ ${EXITCODE} -eq 0 ]; then
+            log "pgBackRest restore finished succesfully, starting instance in recovery"
+            # We want to ensure we do not overwrite a current backup repository with archives, therefore
+            # we block archiving from succeeding until Patroni can takeover
+            touch "${PGDATA}/recovery.signal"
+            pg_ctl -D "${PGDATA}" start -o '--archive-command=/bin/false'
+    
+            while ! pg_isready -q; do
+                log "Waiting for PostgreSQL to become available"
+                sleep 3
+            done
+    
+            # It is not trivial to figure out to what point we should restore, pgBackRest
+            # should be fetching WAL segments until the WAL is exhausted. We'll ask pgBackRest
+            # what the Maximum Wal is that it currently has; as soon as we see that, we can consider
+            # the restore to be done
+            while true; do
+                MAX_BACKUP_WAL="$(pgbackrest info --output=json | python3 -c "import json,sys;obj=json.load(sys.stdin); print(obj[0]['archive'][0]['max']);")"
+                log "Testing whether WAL file ${MAX_BACKUP_WAL} has been restored ..."
+                [ -f "${PGDATA}/pg_wal/${MAX_BACKUP_WAL}" ] && break
+                sleep 30;
+            done
+    
+            # At this point we know the final WAL archive has been restored, we should be done.
+            log "The WAL file ${MAX_BACKUP_WAL} has been successully restored, shutting down instance"
+            pg_ctl -D "${PGDATA}" promote
+            pg_ctl -D "${PGDATA}" stop -m fast
+            log "Handing over control to Patroni ..."
+        else
+            log "Bootstrap from backup failed"
+            exit 1
+        fi
+    else
+        # Patroni attaches --scope and --datadir to the arguments, we need to strip them off as
+        # initdb has no business with these parameters
+        initdb_args=""
+        for value in "$@"
+        do
+            case $value in
+                "--scope"*)
+                    ;;
+                "--datadir"*)
+                    ;;
+                *)
+                    initdb_args="${initdb_args} $value"
+                    ;;
+            esac
+        done
+    
+        log "Invoking initdb"
+        # shellcheck disable=SC2086
+        initdb --auth-local=peer --auth-host=md5 --pgdata="${PGDATA}" --waldir="${WALDIR}" ${initdb_args}
+    fi
+    
+    echo "include_if_exists = '${TSTUNE_FILE}'" >> "${PGDATA}/postgresql.conf"
+    
+  post_init.sh: |-
+    #!/bin/sh
+    : "${ENV_FILE:=${HOME}/.pod_environment}"
+    if [ -f "${ENV_FILE}" ]; then
+        echo "Sourcing ${ENV_FILE}"
+        . "${ENV_FILE}"
+    fi
+    
+    log() {
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - post_init - $1"
+    }
+    
+    log "Creating extension TimescaleDB in template1 and postgres databases"
+    psql -d "$URL" <<__SQL__
+        \connect template1
+        -- As we're still only initializing, we cannot have synchronous_commit enabled just yet.
+        SET synchronous_commit to 'off';
+        CREATE EXTENSION timescaledb;
+    
+        \connect postgres
+        SET synchronous_commit to 'off';
+        CREATE EXTENSION timescaledb;
+    __SQL__
+    
+    # POSTGRES_TABLESPACES is a comma-separated list of tablespaces to create
+    # variable is passed in StatefulSet template
+    : "${POSTGRES_TABLESPACES:=""}"
+    for tablespace in $POSTGRES_TABLESPACES
+    do
+        log "Creating tablespace ${tablespace}"
+        tablespacedir="${PGDATA}/tablespaces/${tablespace}/data"
+        psql -d "$URL" --set tablespace="${tablespace}" --set directory="${tablespacedir}" --set ON_ERROR_STOP=1 <<__SQL__
+        SET synchronous_commit to 'off';
+        CREATE TABLESPACE :"tablespace" LOCATION :'directory';
+    __SQL__
+    done
+    
+    # This directory may contain user defined post init steps
+    for file in /etc/timescaledb/post_init.d/*
+    do
+        [ -d "$file" ] && continue
+        [ ! -r "$file" ] && continue
+    
+        case "$file" in
+        *.sh)
+            if [ -x "$file" ]; then
+            log "Call post init script [ $file ]"
+            "$file" "$@"
+            EXITCODE=$?
+            else
+            log "Source post init script [ $file ]"
+            . "$file"
+            EXITCODE=$?
+            fi
+            ;;
+        *.sql)
+            log "Apply post init sql [ $file ]"
+            # Disable synchronous_commit since we're initializing
+            PGOPTIONS="-c synchronous_commit=local" psql -d "$URL" -f "$file"
+            EXITCODE=$?
+            ;;
+        *.sql.gz)
+            log "Decompress and apply post init sql [ $file ]"
+            gunzip -c "$file" | PGOPTIONS="-c synchronous_commit=local" psql -d "$URL"
+            EXITCODE=$?
+            ;;
+        *)
+            log "Ignore unknown post init file type [ $file ]"
+            EXITCODE=0
+            ;;
+        esac
+        EXITCODE=$?
+        if [ "$EXITCODE" != "0" ]
+        then
+            log "ERROR: post init script $file exited with exitcode $EXITCODE"
+            exit $EXITCODE
+        fi
+    done
+    
+    # We exit 0 this script, otherwise the database initialization fails.
+    exit 0
+    
+  patroni_callback.sh: |-
+    #!/bin/sh
+    set -e
+    
+    : "${ENV_FILE:=${HOME}/.pod_environment}"
+    if [ -f "${ENV_FILE}" ]; then
+        echo "Sourcing ${ENV_FILE}"
+        . "${ENV_FILE}"
+    fi
+    
+    for suffix in "$1" all
+    do
+        CALLBACK="/etc/timescaledb/callbacks/${suffix}"
+        if [ -f "${CALLBACK}" ]
+        then
+        "${CALLBACK}" "$@"
+        fi
+    done
+    
+  lifecycle_preStop.sql: |-
+    -- Doing a checkpoint (at the primary and the current instance) before starting
+    -- the shutdown process will speed up the CHECKPOINT that is part of the shutdown
+    -- process and the recovery after the pod is rescheduled.
+    --
+    -- We issue the CHECKPOINT at the primary always because:
+    --
+    -- > Restartpoints can't be performed more frequently than checkpoints in the
+    -- > master because restartpoints can only be performed at checkpoint records.
+    -- https://www.postgresql.org/docs/current/wal-configuration.html
+    --
+    -- While we're doing these preStop CHECKPOINTs we can still serve read/write
+    -- queries to clients, whereas as soon as we initiate the shutdown, we terminate
+    -- connections.
+    --
+    -- This therefore reduces downtime for the clients, at the cost of increasing (slightly)
+    -- the time to stop the pod, and reducing write performance on the primary.
+    --
+    -- To further reduce downtime for clients, we will issue a switchover iff we are currently
+    -- running as the primary. This again should be relatively fast, as we've just issued and
+    -- waited for the CHECKPOINT to complete.
+    --
+    -- This is quite a lot of logic and work in a preStop command; however, if the preStop command
+    -- fails for whatever reason, the normal Pod shutdown will commence, so it is only able to
+    -- improve stuff without being able to break stuff.
+    -- (The $(hostname) inside the switchover call safeguards that we never accidentally
+    -- switchover the wrong primary).
+    
+    \pset pager off
+    \set ON_ERROR_STOP true
+    \set hostname `hostname`
+    \set dsn_fmt 'user=postgres host=%s application_name=lifecycle:preStop@%s connect_timeout=5 options=''-c log_min_duration_statement=0'''
+    
+    SELECT
+        pg_is_in_recovery() AS in_recovery,
+        format(:'dsn_fmt', patroni_scope,                       :'hostname') AS primary_dsn,
+        format(:'dsn_fmt', '/var/run/postgresql', :'hostname') AS local_dsn
+    FROM
+        current_setting('cluster_name') AS cs(patroni_scope)
+    \gset
+    
+    \timing on
+    \set ECHO queries
+    
+    -- There should be a CHECKPOINT at the primary
+    \if :in_recovery
+        \connect :"primary_dsn"
+        CHECKPOINT;
+    \endif
+    
+    -- There should also be a CHECKPOINT locally,
+    -- for the primary, this may mean we do a double checkpoint,
+    -- but the second one would be cheap anyway, so we leave that as is
+    \connect :"local_dsn"
+    SELECT 'Issuing checkpoint';
+    CHECKPOINT;
+    
+    \if :in_recovery
+        SELECT 'We are a replica: Successfully invoked checkpoints at the primary and locally.';
+    \else
+        SELECT 'We are a primary: Successfully invoked checkpoints, now issuing a switchover.';
+        \! curl -s http://localhost:8008/switchover -XPOST -d '{"leader": "$(hostname)"}'
+    \endif
+    
+...
+---
+# Source: fairwinds-insights/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: jslivka-view-kubesystem
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - namespaces
+  resourceNames:
+  - kube-system
+  verbs:
+  - get
+---
+# Source: fairwinds-insights/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: jslivka-view-kubesystem
+subjects:
+- kind: ServiceAccount
+  name: jslivka-insights
+  namespace: insights-agent
+roleRef:
+  kind: ClusterRole
+  name: jslivka-view-kubesystem
+  apiGroup: rbac.authorization.k8s.io
+---
+# Source: fairwinds-insights/charts/automated-pull-request/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: jslivka-automated-pr-job
+  labels:
+    app: jslivka-automated-pr-job
+rules:
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["get", "create", "delete"]
+- apiGroups: [""]
+  resources: ["pods/log"]
+  verbs: ["get"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["list", "get"]
+- apiGroups: [""]
+  resources: ["secrets", "configmaps"]
+  verbs: ["create", "delete"]
+---
+# Source: fairwinds-insights/charts/timescale/templates/role-timescaledb.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: jslivka
+  labels:
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+rules:
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+  # delete is required only for 'patronictl remove'
+  - delete
+- apiGroups: [""]
+  resources:
+  - endpoints
+  - endpoints/restricted
+  verbs:
+  - create
+  - get
+  - patch
+  - update
+  # the following three privileges are necessary only when using endpoints
+  - list
+  - watch
+  # delete is required only for for 'patronictl remove'
+  - delete
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs:
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+# Source: fairwinds-insights/templates/cronjob-executor.rbac.yaml
+kind: Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: jslivka-cronjob-executor
+  labels:
+    app: fairwinds-insights
+rules:
+- apiGroups: [""]
+  resources: ["cronjobs"]
+  verbs: ["get", "list"]
+- apiGroups: ["batch"]
+  resources: ["cronjobs"]
+  verbs: ["get", "list"]
+- apiGroups: ["batch"]
+  resources: ["jobs"]
+  verbs: ["create", "delete"]
+---
+# Source: fairwinds-insights/charts/automated-pull-request/templates/rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jslivka-automated-pr-job
+  labels:
+    app: jslivka-automated-pr-job
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jslivka-automated-pr-job
+subjects:
+- kind: ServiceAccount
+  name: jslivka-automated-pr-job
+  namespace: insights-agent
+---
+# Source: fairwinds-insights/charts/timescale/templates/rolebinding-timescaledb.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jslivka
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: rbac
+subjects:
+  - kind: ServiceAccount
+    name: jslivka
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jslivka
+---
+# Source: fairwinds-insights/templates/cronjob-executor.rbac.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: jslivka-cronjob-executor
+  labels:
+    app: fairwinds-insights
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: jslivka-cronjob-executor
+subjects:
+- kind: ServiceAccount
+  name: jslivka-cronjob-executor
+  namespace: insights-agent
+---
+# Source: fairwinds-insights/charts/api/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-api
+  labels:
+    helm.sh/chart: api-0.1.0
+    app.kubernetes.io/name: api
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: api
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/component: api
+---
+# Source: fairwinds-insights/charts/dashboard/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-dashboard
+  labels:
+    helm.sh/chart: dashboard-0.1.0
+    app.kubernetes.io/name: dashboard
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: dashboard
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: dashboard
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/component: dashboard
+---
+# Source: fairwinds-insights/charts/minio/templates/console-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-minio-console
+  namespace: "insights-agent"
+  labels:
+    app: minio
+    chart: minio-5.0.3
+    release: jslivka
+    heritage: Helm
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9001
+      protocol: TCP
+      targetPort: 9001
+  selector:
+    app: minio
+    release: jslivka
+---
+# Source: fairwinds-insights/charts/minio/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-minio
+  namespace: "insights-agent"
+  labels:
+    app: minio
+    chart: minio-5.0.3
+    release: jslivka
+    heritage: Helm
+    monitoring: "true"
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: minio
+    release: jslivka
+---
+# Source: fairwinds-insights/charts/minio/templates/statefulset.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-minio-svc
+  namespace: "insights-agent"
+  labels:
+    app: minio
+    chart: minio-5.0.3
+    release: "jslivka"
+    heritage: "Helm"
+spec:
+  publishNotReadyAddresses: true
+  clusterIP: None
+  ports:
+    - name: http
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
+  selector:
+    app: minio
+    release: jslivka
+---
+# Source: fairwinds-insights/charts/open-api/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-open-api
+  labels:
+    helm.sh/chart: open-api-0.1.0
+    app.kubernetes.io/name: open-api
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: open-api
+spec:
+  type: ClusterIP
+  ports:
+    - port: 80
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: open-api
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/component: open-api
+---
+# Source: fairwinds-insights/charts/postgresql/templates/primary/svc-headless.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-postgresql-hl
+  namespace: "insights-agent"
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-12.1.6
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+    # Use this annotation in addition to the actual publishNotReadyAddresses
+    # field below because the annotation will stop being respected soon but the
+    # field is broken in some versions of Kubernetes:
+    # https://github.com/kubernetes/kubernetes/issues/58662
+    service.alpha.kubernetes.io/tolerate-unready-endpoints: "true"
+spec:
+  type: ClusterIP
+  clusterIP: None
+  # We want all pods in the StatefulSet to have their addresses published for
+  # the sake of the other Postgresql pods even before they're ready, since they
+  # have to be able to talk to each other in order to become ready.
+  publishNotReadyAddresses: true
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/component: primary
+---
+# Source: fairwinds-insights/charts/postgresql/templates/primary/svc.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-postgresql
+  namespace: "insights-agent"
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-12.1.6
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  type: ClusterIP
+  sessionAffinity: None
+  ports:
+    - name: tcp-postgresql
+      port: 5432
+      targetPort: tcp-postgresql
+      nodePort: null
+  selector:
+    app.kubernetes.io/name: postgresql
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/component: primary
+---
+# Source: fairwinds-insights/charts/timescale/templates/svc-timescaledb-config.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-config
+  namespace: insights-agent
+  labels:
+    component: patroni
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: patroni
+spec:
+  selector:
+    app: jslivka
+    cluster-name: jslivka
+  type: ClusterIP
+  clusterIP: None
+  ports:
+  - name: patroni
+    port: 8008
+    protocol: TCP
+---
+# Source: fairwinds-insights/charts/timescale/templates/svc-timescaledb-replica.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka-replica
+  namespace: insights-agent
+  labels:
+    component: postgres
+    role: replica
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: postgres
+spec:
+  selector:
+    app: jslivka
+    cluster-name: jslivka
+    role: replica
+  type: ClusterIP
+  ports:
+  - name: postgresql
+    # This always defaults to 5432
+    port: 5432
+    targetPort: postgresql
+    protocol: TCP
+---
+# Source: fairwinds-insights/charts/timescale/templates/svc-timescaledb.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: jslivka
+  namespace: insights-agent
+  labels:
+    role: master
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: timescaledb
+spec:
+  selector:
+    app: jslivka
+    cluster-name: jslivka
+    role: master
+  type: ClusterIP
+  ports:
+  - name: postgresql
+    # This always defaults to 5432
+    port: 5432
+    targetPort: postgresql
+    protocol: TCP
+---
+# Source: fairwinds-insights/charts/api/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jslivka-api
+  labels:
+    helm.sh/chart: api-0.1.0
+    app.kubernetes.io/name: api
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: api
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: api
+      app.kubernetes.io/instance: jslivka
+      app.kubernetes.io/component: api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: api
+        app.kubernetes.io/instance: jslivka
+        app.kubernetes.io/component: api
+    spec:
+      serviceAccountName: jslivka-insights
+      containers:
+        - name: fairwinds-insights
+          image: "quay.io/fairwinds/insights-api:1.16.0"
+          imagePullPolicy: Always
+          command: ["api"]
+          args:
+          - "--port=8080"
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP          
+          # Required values
+          envFrom:
+          - secretRef:
+              name: fwinsights-secrets
+          env:
+          - name: FAIRWINDS_HOST
+          - name: CACHE_BUST_TOKEN
+            value: FNnRbnukyq
+          - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+            value: 2.19.0
+          # General Server
+          # Database
+          - name: POSTGRES_DB
+            value: fairwinds_insights
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_SSL_MODE
+            value: require
+          - name: POSTGRES_HOST
+            value: jslivka-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-postgresql
+                key: postgresql-password
+          # Timescale Database
+          - name: TIMESCALE_DB
+            value: postgres
+          - name: TIMESCALE_USER
+            value: postgres
+          - name: TIMESCALE_PORT
+            value: "5433"
+          - name: TIMESCALE_SSL_MODE
+            value: require
+          - name: TIMESCALE_HOST
+            value: timescale
+          - name: TIMESCALE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-timescale
+                key: PATRONI_SUPERUSER_PASSWORD
+          - name: INSIGHTS_SAAS_HOST
+            value: "https://insights.fairwinds.com"
+          
+          # Report Storage
+          - name: REPORT_STORAGE_STRATEGY
+            value: minio
+          
+          - name: MINIO_HOST
+            value: jslivka-fw-minio:9000
+          - name: MINIO_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootUser                
+          - name: MINIO_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootPassword
+          - name: REPORT_STORAGE_REGION
+            value: us-east-1
+          - name: REPORT_STORAGE_BUCKET
+            value: "reports"
+          
+          # Email
+          - name: EMAIL_STRATEGY
+            value: memory
+          - name: EMAIL_SENDER
+            value: 
+          - name: EMAIL_RECIPIENT
+            value: 
+          # Third-party integrations
+          
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+          - name: secrets
+            mountPath: /var/run/secrets/github
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 10324
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: secrets
+        secret:
+          secretName: github-secrets
+          optional: true
+---
+# Source: fairwinds-insights/charts/automated-pull-request/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jslivka-automated-pr-job
+  labels:
+    helm.sh/chart: automated-pull-request-0.1.0
+    app.kubernetes.io/name: automated-pull-request
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: automated-pr-job
+  annotations:
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: automated-pull-request
+      app.kubernetes.io/instance: jslivka
+      app.kubernetes.io/component: automated-pr-job
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: automated-pull-request
+        app.kubernetes.io/instance: jslivka
+        app.kubernetes.io/component: automated-pr-job
+    spec:
+      serviceAccountName: jslivka-automated-pr-job
+      containers:
+        - name: fairwinds-insights
+          image: "quay.io/fairwinds/insights-api:1.16.0"
+          imagePullPolicy: Always
+          command: ["automated_pull_requests_job"]          
+          # Required values
+          envFrom:
+          - secretRef:
+              name: fwinsights-secrets
+          env:
+          - name: FAIRWINDS_HOST
+          - name: CACHE_BUST_TOKEN
+            value: SSWziRjbEL
+          - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+            value: 2.19.0
+          # General Server
+          # Database
+          - name: POSTGRES_DB
+            value: fairwinds_insights
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_SSL_MODE
+            value: require
+          - name: POSTGRES_HOST
+            value: jslivka-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-postgresql
+                key: postgresql-password
+          # Timescale Database
+          - name: TIMESCALE_DB
+            value: postgres
+          - name: TIMESCALE_USER
+            value: postgres
+          - name: TIMESCALE_PORT
+            value: "5433"
+          - name: TIMESCALE_SSL_MODE
+            value: require
+          - name: TIMESCALE_HOST
+            value: timescale
+          - name: TIMESCALE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-timescale
+                key: PATRONI_SUPERUSER_PASSWORD
+          - name: INSIGHTS_SAAS_HOST
+            value: "https://insights.fairwinds.com"
+          
+          # Report Storage
+          - name: REPORT_STORAGE_STRATEGY
+            value: minio
+          
+          - name: MINIO_HOST
+            value: jslivka-fw-minio:9000
+          - name: MINIO_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootUser                
+          - name: MINIO_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootPassword
+          - name: REPORT_STORAGE_REGION
+            value: us-east-1
+          - name: REPORT_STORAGE_BUCKET
+            value: "reports"
+          
+          # Email
+          - name: EMAIL_STRATEGY
+            value: memory
+          - name: EMAIL_SENDER
+            value: 
+          - name: EMAIL_RECIPIENT
+            value: 
+          # Third-party integrations
+          
+          volumeMounts:
+            - name: secrets
+              mountPath: /var/run/secrets/github
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1024Mi
+            requests:
+              cpu: 80m
+              memory: 128Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 10324
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: secrets
+          secret:
+            secretName: github-secrets
+            optional: true
+---
+# Source: fairwinds-insights/charts/dashboard/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jslivka-dashboard
+  labels:
+    helm.sh/chart: dashboard-0.1.0
+    app.kubernetes.io/name: dashboard
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: dashboard
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dashboard
+      app.kubernetes.io/instance: jslivka
+      app.kubernetes.io/component: dashboard
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: dashboard
+        app.kubernetes.io/instance: jslivka
+        app.kubernetes.io/component: dashboard
+    spec:
+      containers:
+        - name: fw-insights-dashboard
+          image: "quay.io/fairwinds/insights-dashboard:1.16.0"
+          imagePullPolicy: Always
+          command: ["/bin/sh"]
+          args:
+          - -c
+          - |
+            cd /etc/nginx/html
+            mv -f config.self.js ./config.js || exit 1
+            sed -i 's/SERVICE.NAMESPACE.svc/jslivka-api.insights-agent.svc/' /etc/nginx/nginx.conf
+            sed -i 's/SERVICE-OPEN-API.NAMESPACE.svc/jslivka-open-api.insights-agent.svc/' /etc/nginx/nginx.conf
+            nginx -g "daemon off;"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP          
+          # Required values
+          envFrom:
+          - secretRef:
+              name: fwinsights-secrets
+          env:
+          - name: FAIRWINDS_HOST
+          - name: CACHE_BUST_TOKEN
+            value: 0KRBd37udp
+          - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+            value: 2.19.0
+          # General Server
+          # Database
+          - name: POSTGRES_DB
+            value: fairwinds_insights
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_SSL_MODE
+            value: require
+          - name: POSTGRES_HOST
+            value: jslivka-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-postgresql
+                key: postgresql-password
+          # Timescale Database
+          - name: TIMESCALE_DB
+            value: postgres
+          - name: TIMESCALE_USER
+            value: postgres
+          - name: TIMESCALE_PORT
+            value: "5433"
+          - name: TIMESCALE_SSL_MODE
+            value: require
+          - name: TIMESCALE_HOST
+            value: timescale
+          - name: TIMESCALE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-timescale
+                key: PATRONI_SUPERUSER_PASSWORD
+          - name: INSIGHTS_SAAS_HOST
+            value: "https://insights.fairwinds.com"
+          
+          # Report Storage
+          - name: REPORT_STORAGE_STRATEGY
+            value: minio
+          
+          - name: MINIO_HOST
+            value: jslivka-fw-minio:9000
+          - name: MINIO_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootUser                
+          - name: MINIO_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootPassword
+          - name: REPORT_STORAGE_REGION
+            value: us-east-1
+          - name: REPORT_STORAGE_BUCKET
+            value: "reports"
+          
+          # Email
+          - name: EMAIL_STRATEGY
+            value: memory
+          - name: EMAIL_SENDER
+            value: 
+          - name: EMAIL_RECIPIENT
+            value: 
+          # Third-party integrations
+          
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          volumeMounts:
+          - name: tmp
+            mountPath: /tmp
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          securityContext:
+            readOnlyRootFilesystem: false
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 101
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+      - name: tmp
+        emptyDir: {}
+---
+# Source: fairwinds-insights/charts/open-api/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jslivka-open-api
+  labels:
+    helm.sh/chart: open-api-0.1.0
+    app.kubernetes.io/name: open-api
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: open-api
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: open-api
+      app.kubernetes.io/instance: jslivka
+      app.kubernetes.io/component: open-api
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: open-api
+        app.kubernetes.io/instance: jslivka
+        app.kubernetes.io/component: open-api
+    spec:
+      serviceAccountName: jslivka-insights
+      volumes:
+      - name: nginx-conf
+        configMap:
+          name: openapi-nginx-conf
+      containers:
+        - name: fairwinds-insights
+          image: swaggerapi/swagger-ui:v4.1.3
+          imagePullPolicy: Always
+          ports:
+          - name: http
+            containerPort: 8080
+            protocol: TCP
+          env:
+          - name: SWAGGER_JSON_URL
+            value: /v0/swagger.yaml
+          volumeMounts:
+          - name: nginx-conf
+            subPath: nginx.conf
+            mountPath: /etc/nginx/nginx.conf
+          - name: nginx-conf
+            subPath: run.sh
+            mountPath: /usr/share/nginx/run.sh
+          livenessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /swagger
+              port: http
+          resources:
+            limits:
+              cpu: 256m
+              memory: 256Mi
+            requests:
+              cpu: 100m
+              memory: 100Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 101
+            capabilities:
+              drop:
+                - ALL
+---
+# Source: fairwinds-insights/charts/report/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jslivka-reportjob
+  labels:
+    helm.sh/chart: report-0.1.0
+    app.kubernetes.io/name: report
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: reportjob
+  annotations:
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
+
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: report
+      app.kubernetes.io/instance: jslivka
+      app.kubernetes.io/component: reportjob
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: report
+        app.kubernetes.io/instance: jslivka
+        app.kubernetes.io/component: reportjob
+    spec:
+      serviceAccountName: jslivka-insights
+      containers:
+        - name: fairwinds-insights
+          image: "quay.io/fairwinds/insights-api:1.16.0"
+          imagePullPolicy: Always
+          command: ["report_job"]          
+          # Required values
+          envFrom:
+          - secretRef:
+              name: fwinsights-secrets
+          env:
+          - name: FAIRWINDS_HOST
+          - name: CACHE_BUST_TOKEN
+            value: IDheky0Rz5
+          - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+            value: 2.19.0
+          # General Server
+          # Database
+          - name: POSTGRES_DB
+            value: fairwinds_insights
+          - name: POSTGRES_USER
+            value: postgres
+          - name: POSTGRES_PORT
+            value: "5432"
+          - name: POSTGRES_SSL_MODE
+            value: require
+          - name: POSTGRES_HOST
+            value: jslivka-postgresql
+          - name: POSTGRES_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-postgresql
+                key: postgresql-password
+          # Timescale Database
+          - name: TIMESCALE_DB
+            value: postgres
+          - name: TIMESCALE_USER
+            value: postgres
+          - name: TIMESCALE_PORT
+            value: "5433"
+          - name: TIMESCALE_SSL_MODE
+            value: require
+          - name: TIMESCALE_HOST
+            value: timescale
+          - name: TIMESCALE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: fwinsights-timescale
+                key: PATRONI_SUPERUSER_PASSWORD
+          - name: INSIGHTS_SAAS_HOST
+            value: "https://insights.fairwinds.com"
+          
+          # Report Storage
+          - name: REPORT_STORAGE_STRATEGY
+            value: minio
+          
+          - name: MINIO_HOST
+            value: jslivka-fw-minio:9000
+          - name: MINIO_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootUser                
+          - name: MINIO_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: jslivka-fw-minio
+                key: rootPassword
+          - name: REPORT_STORAGE_REGION
+            value: us-east-1
+          - name: REPORT_STORAGE_BUCKET
+            value: "reports"
+          
+          # Email
+          - name: EMAIL_STRATEGY
+            value: memory
+          - name: EMAIL_SENDER
+            value: 
+          - name: EMAIL_RECIPIENT
+            value: 
+          # Third-party integrations
+          
+          volumeMounts:
+            - name: secrets
+              mountPath: /var/run/secrets/github
+          resources:
+            limits:
+              cpu: 500m
+              memory: 1024Mi
+            requests:
+              cpu: 80m
+              memory: 128Mi
+          securityContext:
+            readOnlyRootFilesystem: true
+            allowPrivilegeEscalation: false
+            privileged: false
+            runAsNonRoot: true
+            runAsUser: 10324
+            capabilities:
+              drop:
+                - ALL
+      volumes:
+        - name: secrets
+          secret:
+            secretName: github-secrets
+            optional: true
+---
+# Source: fairwinds-insights/charts/automated-pull-request/templates/hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: jslivka-automated-pr-job-hpa
+  labels:
+    helm.sh/chart: automated-pull-request-0.1.0
+    app.kubernetes.io/name: automated-pull-request
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: automated-pr-job
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: jslivka-automated-pr-job
+  minReplicas: 2
+  maxReplicas: 4
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 80
+          type: Utilization
+      type: Resource
+    - resource:
+        name: memory
+        target:
+          averageUtilization: 80
+          type: Utilization
+      type: Resource
+---
+# Source: fairwinds-insights/charts/report/templates/hpa.yaml
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: jslivka-reportjob-hpa
+  labels:
+    helm.sh/chart: report-0.1.0
+    app.kubernetes.io/name: report
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: reportjob
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: jslivka-reportjob
+  minReplicas: 2
+  maxReplicas: 6
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 75
+          type: Utilization
+      type: Resource
+    - resource:
+        name: memory
+        target:
+          averageUtilization: 75
+          type: Utilization
+      type: Resource
+---
+# Source: fairwinds-insights/charts/minio/templates/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jslivka-minio
+  namespace: "insights-agent"
+  labels:
+    app: minio
+    chart: minio-5.0.3
+    release: jslivka
+    heritage: Helm
+spec:
+  updateStrategy:
+    type: RollingUpdate
+  podManagementPolicy: "Parallel"
+  serviceName: jslivka-minio-svc
+  replicas: 16
+  selector:
+    matchLabels:
+      app: minio
+      release: jslivka
+  template:
+    metadata:
+      name: jslivka-minio
+      labels:
+        app: minio
+        release: jslivka
+      annotations:
+        checksum/secrets: 0fb7dfe234412175efab12e498667288520e6110934f83e1dd44b4ea1ed8cb78
+        checksum/config: cfb32a996d90409a1cc7d8dbb837f12e4f46f82f3f70842217d5844c61d0f8ec
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+        fsGroupChangePolicy: OnRootMismatch
+
+      serviceAccountName: minio-sa
+      containers:
+        - name: minio
+          image: quay.io/minio/minio:RELEASE.2022-12-12T19-27-27Z
+          imagePullPolicy: IfNotPresent
+
+          command: [ "/bin/sh",
+            "-ce",
+            "/usr/bin/docker-entrypoint.sh minio server  http://jslivka-minio-{0...15}.jslivka-minio-svc.insights-agent.svc.cluster.local/export -S /etc/minio/certs/ --address :9000 --console-address :9001" ]
+          volumeMounts:
+            - name: export
+              mountPath: /export            
+          ports:
+            - name: http
+              containerPort: 9000
+            - name: http-console
+              containerPort: 9001
+          env:
+            - name: MINIO_ROOT_USER
+              valueFrom:
+                secretKeyRef:
+                  name: jslivka-minio
+                  key: rootUser
+            - name: MINIO_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: jslivka-minio
+                  key: rootPassword
+            - name: MINIO_PROMETHEUS_AUTH_TYPE
+              value: "public"
+          resources:
+            requests:
+              memory: 16Gi      
+      volumes:
+        - name: minio-user
+          secret:
+            secretName: jslivka-minio        
+  volumeClaimTemplates:
+    - metadata:
+        name: export
+      spec:
+        accessModes: [ "ReadWriteOnce" ]
+        resources:
+          requests:
+            storage: 500Gi
+---
+# Source: fairwinds-insights/charts/postgresql/templates/primary/statefulset.yaml
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jslivka-postgresql
+  namespace: "insights-agent"
+  labels:
+    app.kubernetes.io/name: postgresql
+    helm.sh/chart: postgresql-12.1.6
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/component: primary
+  annotations:
+spec:
+  replicas: 1
+  serviceName: jslivka-postgresql-hl
+  updateStrategy:
+    rollingUpdate: {}
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: postgresql
+      app.kubernetes.io/instance: jslivka
+      app.kubernetes.io/component: primary
+  template:
+    metadata:
+      name: jslivka-postgresql
+      labels:
+        app.kubernetes.io/name: postgresql
+        helm.sh/chart: postgresql-12.1.6
+        app.kubernetes.io/instance: jslivka
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/component: primary
+      annotations:
+    spec:
+      serviceAccountName: default
+      
+      affinity:
+        podAffinity:
+          
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - podAffinityTerm:
+                labelSelector:
+                  matchLabels:
+                    app.kubernetes.io/name: postgresql
+                    app.kubernetes.io/instance: jslivka
+                    app.kubernetes.io/component: primary
+                topologyKey: kubernetes.io/hostname
+              weight: 1
+        nodeAffinity:
+          
+      securityContext:
+        fsGroup: 1001
+      hostNetwork: false
+      hostIPC: false
+      initContainers:
+      containers:
+        - name: postgresql
+          image: docker.io/bitnami/postgresql:15.1.0-debian-11-r12
+          imagePullPolicy: "IfNotPresent"
+          securityContext:
+            runAsUser: 1001
+          env:
+            - name: BITNAMI_DEBUG
+              value: "false"
+            - name: POSTGRESQL_PORT_NUMBER
+              value: "5432"
+            - name: POSTGRESQL_VOLUME_DIR
+              value: "/bitnami/postgresql"
+            - name: PGDATA
+              value: "/bitnami/postgresql/data"
+            # Authentication
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fwinsights-postgresql
+                  key: postgresql-password
+            - name: POSTGRES_DB
+              value: "fairwinds_insights"
+            # Replication
+            # Initdb
+            # Standby
+            # LDAP
+            - name: POSTGRESQL_ENABLE_LDAP
+              value: "no"
+            # TLS
+            - name: POSTGRESQL_ENABLE_TLS
+              value: "no"
+            # Audit
+            - name: POSTGRESQL_LOG_HOSTNAME
+              value: "false"
+            - name: POSTGRESQL_LOG_CONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_LOG_DISCONNECTIONS
+              value: "false"
+            - name: POSTGRESQL_PGAUDIT_LOG_CATALOG
+              value: "off"
+            # Others
+            - name: POSTGRESQL_CLIENT_MIN_MESSAGES
+              value: "error"
+            - name: POSTGRESQL_SHARED_PRELOAD_LIBRARIES
+              value: "pgaudit"
+          ports:
+            - name: tcp-postgresql
+              containerPort: 5432
+          livenessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - exec pg_isready -U "postgres" -d "dbname=fairwinds_insights" -h 127.0.0.1 -p 5432
+          readinessProbe:
+            failureThreshold: 6
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 5
+            exec:
+              command:
+                - /bin/sh
+                - -c
+                - -e
+                
+                - |
+                  exec pg_isready -U "postgres" -d "dbname=fairwinds_insights" -h 127.0.0.1 -p 5432
+                  [ -f /opt/bitnami/postgresql/tmp/.initialized ] || [ -f /bitnami/postgresql/.initialized ]
+          resources:
+            limits: {}
+            requests:
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+            - name: dshm
+              mountPath: /dev/shm
+            - name: data
+              mountPath: /bitnami/postgresql
+      volumes:
+        - name: dshm
+          emptyDir:
+            medium: Memory
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes:
+          - "ReadWriteOnce"
+        resources:
+          requests:
+            storage: "8Gi"
+---
+# Source: fairwinds-insights/charts/timescale/templates/statefulset-timescaledb.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: jslivka
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: timescaledb
+spec:
+  serviceName: jslivka
+  replicas: 3
+  podManagementPolicy: OrderedReady
+  updateStrategy:
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: jslivka
+      release: jslivka
+  template:
+    metadata:
+      name: jslivka
+      labels:
+        
+        app: jslivka
+        chart: timescale-0.30.0
+        release: jslivka
+        heritage: Helm
+        cluster-name: jslivka
+        app.kubernetes.io/name: "jslivka"
+        app.kubernetes.io/version: 0.30.0
+        app.kubernetes.io/component: timescaledb
+    spec:
+      serviceAccountName: jslivka
+      securityContext:
+        # The postgres user inside the TimescaleDB image has uid=1000.
+        # This configuration ensures the permissions of the mounts are suitable
+        fsGroup: 1000
+        runAsGroup: 1000
+        runAsNonRoot: true
+        runAsUser: 1000
+      initContainers:
+      - name: tstune
+        securityContext:
+          allowPrivilegeEscalation: false
+        image: "timescale/timescaledb-ha:pg14.6-ts2.9.1-p1"
+        env:
+        - name: TSTUNE_FILE
+          value: /var/run/postgresql/timescaledb.conf
+        - name: WAL_VOLUME_SIZE
+          value: 1Gi
+        - name: DATA_VOLUME_SIZE
+          value: 2Gi
+        - name: RESOURCES_CPU_REQUESTS
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: requests.cpu
+              divisor: "1"
+        - name: RESOURCES_MEMORY_REQUESTS
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: requests.memory
+              divisor: 1Mi
+        - name: RESOURCES_CPU_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: limits.cpu
+              divisor: "1"
+        - name: RESOURCES_MEMORY_LIMIT
+          valueFrom:
+            resourceFieldRef:
+              containerName: timescaledb
+              resource: limits.memory
+              divisor: 1Mi
+        # Command below will run the timescaledb-tune utility and configure min/max wal size based on PVCs size
+        command:
+          - sh
+          - "-c"
+          - '/etc/timescaledb/scripts/tstune.sh '
+        volumeMounts:
+        - name: socket-directory
+          mountPath: /var/run/postgresql
+        - name: timescaledb-scripts
+          mountPath: /etc/timescaledb/scripts
+          readOnly: true
+        resources:
+          
+          {}
+      # Issuing the final checkpoints on a busy database may take considerable time.
+      # Unfinished checkpoints will require more time during startup, so the tradeoff
+      # here is time spent in shutdown/time spent in startup.
+      # We choose shutdown here, especially as during the largest part of the shutdown
+      # we can still serve clients.
+      terminationGracePeriodSeconds: 600
+      containers:
+      - name: timescaledb
+        securityContext:
+          allowPrivilegeEscalation: false
+        image: "timescale/timescaledb-ha:pg14.6-ts2.9.1-p1"
+        imagePullPolicy: Always
+        lifecycle:
+          preStop:
+            exec:
+              command:
+              - psql
+              - -X
+              - --file
+              - "/etc/timescaledb/scripts/lifecycle_preStop.sql"
+        # When reusing an already existing volume it sometimes happens that the permissions
+        # of the PGDATA and/or wal directory are incorrect. To guard against this, we always correctly
+        # set the permissons of these directories before we hand over to Patroni.
+        # We also create all the tablespaces that are defined, to ensure a smooth restore/recovery on a
+        # pristine set of Volumes.
+        # As PostgreSQL requires to have full control over the permissions of the tablespace directories,
+        # we create a subdirectory "data" in every tablespace mountpoint. The full path of every tablespace
+        # therefore always ends on "/data".
+        # By creating a .pgpass file in the $HOME directory, we expose the superuser password
+        # to processes that may not have it in their environment (like the preStop lifecycle hook).
+        # To ensure Patroni will not mingle with this file, we give Patroni its own pgpass file.
+        # As these files are in the $HOME directory, they are only available to *this* container,
+        # and they are ephemeral.
+        command:
+          - /bin/bash
+          - "-c"
+          - |
+            
+            install -o postgres -g postgres -d -m 0700 "/var/lib/postgresql/data" "/var/lib/postgresql/wal/pg_wal" || exit 1
+            TABLESPACES=""
+            for tablespace in ; do
+              install -o postgres -g postgres -d -m 0700 "/var/lib/postgresql/tablespaces/${tablespace}/data"
+            done
+
+            # Environment variables can be read by regular users of PostgreSQL. Especially in a Kubernetes
+            # context it is likely that some secrets are part of those variables.
+            # To ensure we expose as little as possible to the underlying PostgreSQL instance, we have a list
+            # of allowed environment variable patterns to retain.
+            #
+            # We need the KUBERNETES_ environment variables for the native Kubernetes support of Patroni to work.
+            #
+            # NB: Patroni will remove all PATRONI_.* environment variables before starting PostgreSQL
+
+            # We store the current environment, as initscripts, callbacks, archive_commands etc. may require
+            # to have the environment available to them
+            set -o posix
+            export -p > "${HOME}/.pod_environment"
+            export -p | grep PGBACKREST > "${HOME}/.pgbackrest_environment"
+
+            for UNKNOWNVAR in $(env | awk -F '=' '!/^(PATRONI_.*|HOME|PGDATA|PGHOST|LC_.*|LANG|PATH|KUBERNETES_SERVICE_.*|AWS_ROLE_ARN|AWS_WEB_IDENTITY_TOKEN_FILE)=/ {print $1}')
+            do
+                unset "${UNKNOWNVAR}"
+            done
+
+            touch /var/run/postgresql/timescaledb.conf
+            touch /var/run/postgresql/wal_status
+
+            echo "*:*:*:postgres:${PATRONI_SUPERUSER_PASSWORD}" >> ${HOME}/.pgpass
+            chmod 0600 ${HOME}/.pgpass
+
+            export PATRONI_POSTGRESQL_PGPASS="${HOME}/.pgpass.patroni"
+
+            exec patroni /etc/timescaledb/patroni.yaml
+        env:
+        # We use mixed case environment variables for Patroni User management,
+        # as the variable themselves are documented to be PATRONI_<username>_OPTIONS.
+        # Where possible, we want to have lowercase usernames in PostgreSQL as more complex postgres usernames
+        # requiring quoting to be done in certain contexts, which many tools do not do correctly, or even at all.
+        # https://patroni.readthedocs.io/en/latest/ENVIRONMENT.html#bootstrap-configuration
+        - name: PATRONI_admin_OPTIONS
+          value: createrole,createdb
+        - name: PATRONI_REPLICATION_USERNAME
+          value: standby
+        # To specify the PostgreSQL and Rest API connect addresses we need
+        # the PATRONI_KUBERNETES_POD_IP to be available as a bash variable, so we can compose an
+        # IP:PORT address later on
+        - name: PATRONI_KUBERNETES_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: PATRONI_POSTGRESQL_CONNECT_ADDRESS
+          value: "$(PATRONI_KUBERNETES_POD_IP):5432"
+        - name: PATRONI_RESTAPI_CONNECT_ADDRESS
+          value: "$(PATRONI_KUBERNETES_POD_IP):8008"
+        - name: PATRONI_KUBERNETES_PORTS
+          value: '[{"name": "postgresql", "port": 5432}]'
+        - name: PATRONI_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: PATRONI_POSTGRESQL_DATA_DIR
+          value: "/var/lib/postgresql/data"
+        - name: PATRONI_KUBERNETES_NAMESPACE
+          value: insights-agent
+        - name: PATRONI_KUBERNETES_LABELS
+          value: "{app: jslivka, cluster-name: jslivka, release: jslivka}"
+        - name: PATRONI_SCOPE
+          value: jslivka
+        - name: PGBACKREST_CONFIG
+          value: /etc/pgbackrest/pgbackrest.conf
+        # PGDATA and PGHOST are not required to let Patroni/PostgreSQL run correctly,
+        # but for interactive sessions, callbacks and PostgreSQL tools they should be correct.
+        - name: PGDATA
+          value: "$(PATRONI_POSTGRESQL_DATA_DIR)"
+        - name: PGHOST
+          value: "/var/run/postgresql"
+        - name: WALDIR
+          value: "/var/lib/postgresql/wal/pg_wal"
+        - name: BOOTSTRAP_FROM_BACKUP
+          value: "0"
+        - name: PGBACKREST_BACKUP_ENABLED
+          value: "false"
+        - name: TSTUNE_FILE
+          value: /var/run/postgresql/timescaledb.conf
+          # pgBackRest is also called using the archive_command if the backup is enabled.
+          # this script will also need access to the environment variables specified for
+          # the backup. This can be removed once we do not directly invoke pgBackRest
+          # from inside the TimescaleDB container anymore
+        envFrom:
+        - secretRef:
+            name: "fwinsights-timescale"
+            optional: false
+        - secretRef:
+            name: "jslivka-pgbackrest"
+            optional: true
+        ports:
+        - containerPort: 8008
+          name: patroni
+        - containerPort: 5432
+          name: postgresql
+        readinessProbe:
+          exec:
+            command:
+              - pg_isready
+              - -h
+              - /var/run/postgresql
+          initialDelaySeconds: 5
+          periodSeconds: 30
+          timeoutSeconds: 5
+          successThreshold: 1
+          failureThreshold: 6
+        volumeMounts:
+        - name: storage-volume
+          mountPath: "/var/lib/postgresql"
+          subPath: ""
+        - name: wal-volume
+          mountPath: "/var/lib/postgresql/wal"
+          subPath: ""
+        - mountPath: /etc/timescaledb/patroni.yaml
+          subPath: patroni.yaml
+          name: patroni-config
+          readOnly: true
+        - mountPath: /etc/timescaledb/scripts
+          name: timescaledb-scripts
+          readOnly: true
+        - mountPath: "/etc/timescaledb/post_init.d"
+          name: post-init
+          readOnly: true
+        - mountPath: /etc/certificate
+          name: certificate
+          readOnly: true
+        - name: socket-directory
+          mountPath: /var/run/postgresql
+        
+        - mountPath: /etc/pgbackrest
+          name: pgbackrest
+          readOnly: true
+        - mountPath: /etc/pgbackrest/bootstrap
+          name: pgbackrest-bootstrap
+          readOnly: true
+        resources:
+          
+          {}
+      volumes:
+      - name: socket-directory
+        emptyDir: {}
+      - name: patroni-config
+        configMap:
+          name: jslivka-patroni
+      - name: timescaledb-scripts
+        configMap:
+          name: jslivka-scripts
+          defaultMode: 488 # 0750 permissions
+      
+      - name: post-init
+        projected:
+          defaultMode: 0750
+          sources:
+            
+            - configMap:
+                name: custom-init-scripts
+                optional: true
+            - secret:
+                name: custom-secret-scripts
+                optional: true
+      - name: pgbouncer
+        configMap:
+          name: jslivka-pgbouncer
+          defaultMode: 416 # 0640 permissions
+          optional: true
+      - name: pgbackrest
+        configMap:
+          name: jslivka-pgbackrest
+          defaultMode: 416 # 0640 permissions
+          optional: true
+      - name: certificate
+        secret:
+          secretName: "fwinsights-timescale-ca"
+          defaultMode: 416 # 0640 permissions
+      - name: pgbackrest-bootstrap
+        secret:
+          secretName: pgbackrest-bootstrap
+          optional: True
+  volumeClaimTemplates:
+    - metadata:
+        name: storage-volume
+        annotations:
+        labels:
+          app: jslivka
+          release: jslivka
+          heritage: Helm
+          cluster-name: jslivka
+          purpose: data-directory
+      spec:
+        accessModes:
+          
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: "2Gi"
+    - metadata:
+        name: wal-volume
+        annotations:
+        labels:
+          app: jslivka
+          release: jslivka
+          heritage: Helm
+          cluster-name: jslivka
+          purpose: wal-directory
+      spec:
+        accessModes:
+          
+        - ReadWriteOnce
+        resources:
+          requests:
+            storage: "1Gi"
+---
+# Source: fairwinds-insights/charts/action-items-filters-refresher/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jslivka-cronjob-every-15-min
+  labels:
+    helm.sh/chart: action-items-filters-refresher-0.1.0
+    app.kubernetes.io/name: action-items-filters-refresher
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: action-items-filters-refresher-every-15-min
+spec:
+  schedule: "0/15 * * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:"
+              command: ["action_items_filters_refresher"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: 0cNSVLiQ5y
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.19.0
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: jslivka-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              # Timescale Database
+              - name: TIMESCALE_DB
+                value: postgres
+              - name: TIMESCALE_USER
+                value: postgres
+              - name: TIMESCALE_PORT
+                value: "5433"
+              - name: TIMESCALE_SSL_MODE
+                value: require
+              - name: TIMESCALE_HOST
+                value: timescale
+              - name: TIMESCALE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-timescale
+                    key: PATRONI_SUPERUSER_PASSWORD
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: jslivka-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootUser                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootPassword
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 250m
+                  memory: 512Mi
+                requests:
+                  cpu: 250m
+                  memory: 512Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/charts/close-tickets/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jslivka-cronjob-close-tickets
+  labels:
+    helm.sh/chart: close-tickets-0.1.0
+    app.kubernetes.io/name: close-tickets
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: close-tickets-cronjob
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:1.16.0"
+              command: ["close_tickets"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: TmKVdvQQux
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.19.0
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: jslivka-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              # Timescale Database
+              - name: TIMESCALE_DB
+                value: postgres
+              - name: TIMESCALE_USER
+                value: postgres
+              - name: TIMESCALE_PORT
+                value: "5433"
+              - name: TIMESCALE_SSL_MODE
+                value: require
+              - name: TIMESCALE_HOST
+                value: timescale
+              - name: TIMESCALE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-timescale
+                    key: PATRONI_SUPERUSER_PASSWORD
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: jslivka-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootUser                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootPassword
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 2Gi
+                requests:
+                  cpu: 500m
+                  memory: 1.5Gi
+              volumeMounts:
+              - name: secrets
+                mountPath: /var/run/secrets/github
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+          volumes:
+            - name: secrets
+              secret:
+                secretName: github-secrets
+                optional: true
+---
+# Source: fairwinds-insights/charts/cloud-costs-update/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jslivka-cronjob-costs-update
+  labels:
+    helm.sh/chart: cloud-costs-update-0.1.0
+    app.kubernetes.io/name: cloud-costs-update
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: costs-update-cronjob
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "15 */3 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:1.16.0"
+              command: ["cloud_costs_update"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: vAcMgRLMHb
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.19.0
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: jslivka-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              # Timescale Database
+              - name: TIMESCALE_DB
+                value: postgres
+              - name: TIMESCALE_USER
+                value: postgres
+              - name: TIMESCALE_PORT
+                value: "5433"
+              - name: TIMESCALE_SSL_MODE
+                value: require
+              - name: TIMESCALE_HOST
+                value: timescale
+              - name: TIMESCALE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-timescale
+                    key: PATRONI_SUPERUSER_PASSWORD
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: jslivka-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootUser                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootPassword
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 2Gi
+                requests:
+                  cpu: 500m
+                  memory: 2Gi
+              volumeMounts:
+              - name: secrets
+                mountPath: /var/run/secrets/github
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+          volumes:
+            - name: secrets
+              secret:
+                secretName: github-secrets
+                optional: true
+---
+# Source: fairwinds-insights/charts/database-cleanup/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jslivka-cronjob-database-cleanup
+  labels:
+    helm.sh/chart: database-cleanup-0.1.0
+    app.kubernetes.io/name: database-cleanup
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: database-cleanup-cronjob
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 0 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:1.16.0"
+              command: ["database_cleanup"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: NZHW2AokYc
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.19.0
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: jslivka-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              # Timescale Database
+              - name: TIMESCALE_DB
+                value: postgres
+              - name: TIMESCALE_USER
+                value: postgres
+              - name: TIMESCALE_PORT
+                value: "5433"
+              - name: TIMESCALE_SSL_MODE
+                value: require
+              - name: TIMESCALE_HOST
+                value: timescale
+              - name: TIMESCALE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-timescale
+                    key: PATRONI_SUPERUSER_PASSWORD
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: jslivka-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootUser                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootPassword
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 500m
+                  memory: 1024Mi
+                requests:
+                  cpu: 80m
+                  memory: 128Mi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/charts/migrate-health-score/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jslivka-migrate-scores
+  labels:
+    helm.sh/chart: migrate-health-score-0.1.0
+    app.kubernetes.io/name: migrate-health-score
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: migrate-scores
+spec:
+  schedule: "0 0 1 1 0"
+  concurrencyPolicy: Forbid
+  suspend: true
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+          - name: migrate-scores
+            image: "quay.io/fairwinds/insights-cronjob:1.16.0"
+            command: ["health_score"]
+            imagePullPolicy: Always
+            resources:
+                null
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 10324
+              capabilities:
+                drop:
+                  - ALL            
+            # Required values
+            envFrom:
+            - secretRef:
+                name: fwinsights-secrets
+            env:
+            - name: FAIRWINDS_HOST
+            - name: CACHE_BUST_TOKEN
+              value: iNd8NflejX
+            - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+              value: 2.19.0
+            # General Server
+            # Database
+            - name: POSTGRES_DB
+              value: fairwinds_insights
+            - name: POSTGRES_USER
+              value: postgres
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_SSL_MODE
+              value: require
+            - name: POSTGRES_HOST
+              value: jslivka-postgresql
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fwinsights-postgresql
+                  key: postgresql-password
+            # Timescale Database
+            - name: TIMESCALE_DB
+              value: postgres
+            - name: TIMESCALE_USER
+              value: postgres
+            - name: TIMESCALE_PORT
+              value: "5433"
+            - name: TIMESCALE_SSL_MODE
+              value: require
+            - name: TIMESCALE_HOST
+              value: timescale
+            - name: TIMESCALE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: fwinsights-timescale
+                  key: PATRONI_SUPERUSER_PASSWORD
+            - name: INSIGHTS_SAAS_HOST
+              value: "https://insights.fairwinds.com"
+            
+            # Report Storage
+            - name: REPORT_STORAGE_STRATEGY
+              value: minio
+            
+            - name: MINIO_HOST
+              value: jslivka-fw-minio:9000
+            - name: MINIO_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: jslivka-fw-minio
+                  key: rootUser                
+            - name: MINIO_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jslivka-fw-minio
+                  key: rootPassword
+            - name: REPORT_STORAGE_REGION
+              value: us-east-1
+            - name: REPORT_STORAGE_BUCKET
+              value: "reports"
+            
+            # Email
+            - name: EMAIL_STRATEGY
+              value: memory
+            - name: EMAIL_SENDER
+              value: 
+            - name: EMAIL_RECIPIENT
+              value: 
+            # Third-party integrations
+---
+# Source: fairwinds-insights/charts/resources-recommendations/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jslivka-cronjob-resources-recommendations
+  labels:
+    helm.sh/chart: resources-recommendations-0.1.0
+    app.kubernetes.io/name: resources-recommendations
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: recommendations-cronjob
+spec:
+  concurrencyPolicy: Forbid
+  schedule: "0 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: fairwinds-insights
+              image: "quay.io/fairwinds/insights-cronjob:1.16.0"
+              command: ["resources_recommendations"]              
+              # Required values
+              envFrom:
+              - secretRef:
+                  name: fwinsights-secrets
+              env:
+              - name: FAIRWINDS_HOST
+              - name: CACHE_BUST_TOKEN
+                value: bgJL7oUl32
+              - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+                value: 2.19.0
+              # General Server
+              # Database
+              - name: POSTGRES_DB
+                value: fairwinds_insights
+              - name: POSTGRES_USER
+                value: postgres
+              - name: POSTGRES_PORT
+                value: "5432"
+              - name: POSTGRES_SSL_MODE
+                value: require
+              - name: POSTGRES_HOST
+                value: jslivka-postgresql
+              - name: POSTGRES_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-postgresql
+                    key: postgresql-password
+              # Timescale Database
+              - name: TIMESCALE_DB
+                value: postgres
+              - name: TIMESCALE_USER
+                value: postgres
+              - name: TIMESCALE_PORT
+                value: "5433"
+              - name: TIMESCALE_SSL_MODE
+                value: require
+              - name: TIMESCALE_HOST
+                value: timescale
+              - name: TIMESCALE_PASSWORD
+                valueFrom:
+                  secretKeyRef:
+                    name: fwinsights-timescale
+                    key: PATRONI_SUPERUSER_PASSWORD
+              - name: INSIGHTS_SAAS_HOST
+                value: "https://insights.fairwinds.com"
+              
+              # Report Storage
+              - name: REPORT_STORAGE_STRATEGY
+                value: minio
+              
+              - name: MINIO_HOST
+                value: jslivka-fw-minio:9000
+              - name: MINIO_ACCESS_KEY_ID
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootUser                
+              - name: MINIO_SECRET_ACCESS_KEY
+                valueFrom:
+                  secretKeyRef:
+                    name: jslivka-fw-minio
+                    key: rootPassword
+              - name: REPORT_STORAGE_REGION
+                value: us-east-1
+              - name: REPORT_STORAGE_BUCKET
+                value: "reports"
+              
+              # Email
+              - name: EMAIL_STRATEGY
+                value: memory
+              - name: EMAIL_SENDER
+                value: 
+              - name: EMAIL_RECIPIENT
+                value: 
+              # Third-party integrations
+              
+              imagePullPolicy: Always
+              resources:
+                limits:
+                  cpu: 1
+                  memory: 3Gi
+                requests:
+                  cpu: 1
+                  memory: 3Gi
+              securityContext:
+                readOnlyRootFilesystem: true
+                allowPrivilegeEscalation: false
+                privileged: false
+                runAsNonRoot: true
+                runAsUser: 10324
+                capabilities:
+                  drop:
+                    - ALL
+---
+# Source: fairwinds-insights/charts/timescale/templates/configmap-pgbackrest.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+---
+# Source: fairwinds-insights/charts/timescale/templates/configmap-pgbouncer.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+---
+# Source: fairwinds-insights/charts/timescale/templates/pgbackrest.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+---
+# Source: fairwinds-insights/charts/timescale/templates/svc-prometheus.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+#
+# This service is only created if Prometheus is enabled.
+---
+# Source: fairwinds-insights/charts/timescale/templates/secret-certificate.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "fwinsights-timescale-ca"
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: certificates
+  annotations:
+    "helm.sh/hook": pre-install,post-delete
+    "helm.sh/hook-weight": "0"
+type: kubernetes.io/tls
+stringData:
+  tls.crt: "-----BEGIN CERTIFICATE-----\nMIIDEDCCAfigAwIBAgIRAM0ocgyQYc6TMyjFxvpDjHQwDQYJKoZIhvcNAQELBQAw\nEjEQMA4GA1UEAxMHanNsaXZrYTAeFw0yMzA2MjMyMTQ0NDFaFw0yODA2MjIyMTQ0\nNDFaMBIxEDAOBgNVBAMTB2pzbGl2a2EwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAw\nggEKAoIBAQDWdPSr2XidR/Bd4lj0fHNptCWRjs7Yf5/B/SZuKO6Dmonv+h/ImX5G\n7t3SgezcJ1Ku5Ng1y18X0O8N4nOKWvY4JiB9jGUpd4tJ6B/x48O4zzUxztHVlfyY\ndqNdxcjya5vz9JTO515NGh1EdgeLdzhs5Zsoa0T37PgudXvx2WKQDgX6eo6LzHK8\nzIqI58iWNjCtsgMibTkkD9JRf2kNvjwi+/XDuX5dmFm4lg0KMNxYSeGO2TUck044\nGzEUWD4Qqv1kNAQlRPiyyqJGWQflVq4ZpQScK8m+5cHnWNxtqYevy/gIAY+H9SHw\nl1duYKHAf2idh4232zHXPV89qXgUtc27AgMBAAGjYTBfMA4GA1UdDwEB/wQEAwIC\npDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwDwYDVR0TAQH/BAUwAwEB\n/zAdBgNVHQ4EFgQUJUZwPB5PrsqSLBi3hKQfs/p4rFAwDQYJKoZIhvcNAQELBQAD\nggEBADejC69u6jcXbOwotQZlnyLf4AN75r5YylF5OO/kE3A3dttHnNlPUAGX4U2o\nx/HnMe81aJD+cHz26jMeqdBG7iDG2dWIw3/o50Hc2lXxTUl87BR8r4XbCpdWzV0/\nH9EzrBPdHSadn7BqhnqZd44KRyrWD/V2YUjve7LhkIq3gJXFCwJAQ7gGoSiezwyr\nd4QpKPYCAm+06m+U6rPP10ReacJNAiVOkOOTOhH9fT4KNtyQsJgU1IQXxhqdJFPT\n3EsmhCCFhmXBURVOywGnUgweRd1ufJTZO3mC2UCXinRmu4kyFOMohcaOW9GXUhc4\nUtta0yfTnW3iBqy7bXuYgXPSJWw=\n-----END CERTIFICATE-----\n"
+  tls.key: "-----BEGIN RSA PRIVATE KEY-----\nMIIEowIBAAKCAQEA1nT0q9l4nUfwXeJY9HxzabQlkY7O2H+fwf0mbijug5qJ7/of\nyJl+Ru7d0oHs3CdSruTYNctfF9DvDeJzilr2OCYgfYxlKXeLSegf8ePDuM81Mc7R\n1ZX8mHajXcXI8mub8/SUzudeTRodRHYHi3c4bOWbKGtE9+z4LnV78dlikA4F+nqO\ni8xyvMyKiOfIljYwrbIDIm05JA/SUX9pDb48Ivv1w7l+XZhZuJYNCjDcWEnhjtk1\nHJNOOBsxFFg+EKr9ZDQEJUT4ssqiRlkH5VauGaUEnCvJvuXB51jcbamHr8v4CAGP\nh/Uh8JdXbmChwH9onYeNt9sx1z1fPal4FLXNuwIDAQABAoIBAEJb6EWwwkCwvPDg\nFDR6ud+wbZuPu/OD8jQ9mAGoSr2QOTR3ihQxYsCiMyNrLpak2FHj3/8tUdx1uzLp\nqmTaZqvTKGSQ59Cf/Aq/d/sKRkrOWyBxZb6YbZPjygM/K0HQCG7BdLZdI3HqLbo8\nZ3NBTcVseslUAABTZCxEEDky0evOygjiusemskW6d7/psQqo0NB4xm8olgVt0Joj\nfzTIAFH8Rs39tMp3a+vBf79GtKvTxrFcpK5uTD7e2OAjI5ghWEaw6tUgd8jidMxd\nmBEIC+6z6AS2zlY7tuKM8Z1TFnJ1FB03Mqhzp4RUJeAQHTlJX6HB2Tkm2KEsps8/\nS2ERoBECgYEA7PGkD/ifAue1gQO8r7nRbRi+4c7mfg7GzFAlcD+CzvcVJ7U7TC/3\ntJZa6ZGwCehEs2NGoiqDYiEAyLWj9lRreEzWHxyhWp4YQ538rEmHBFFUXMsplbN3\n4iugPvsz4ctBh6SqmasN2O3GugB4gWDoukfRDmxsTQpw5AP/RbxzL3kCgYEA57RW\nI41DdDHkO4s8IJhNVzb1Fovals1H1h+Y2OBRzq27F0wNoahd8rfLK74BMfF4/393\ne4o34YWckDLSyG68+JY8B+AJcWaCWjqaiacYc/uLfIVxtaQdVP5KA9YNoUcz2DDN\nYwN3LDqNuyF04Rjs09a5GRdydNncZnkMUHX21dMCgYBUf+iOeY/brV6hX//Oe2og\nig6o4Ox6UDK9cmennD6+KIe23X8EMKcaE/TgD0DEh7zYbLMn6hloyXRKH90VYA3j\nnSNPfRpeAruMga82khJAi/CWFy4BYTuDwSMo0tUx1RbNlP/yRXpuvn18n+ZZ3YGh\nzTLU/f2xi+OurW5AJHC/oQKBgQCFvlV+XfsSpf3M1PjXA7KY5hMgeYeqRkHx+fkb\nLphqCWQV9YNkza+0+5wd2qYL8wtZx3TrbYQF/D68CWob4bfYcbejABHTUE1r0aoE\nTNxTjl4ceVaCd4Gq3sFQZ40ki9oEL19OiOCQOhg3bP9vMxj4yle7gQpDIsISsEqI\nYx8gmwKBgAPqvGBWAo0lG/a2JjGUbxhSUXfT1O4u5O274U7tAnki2sCAbAnkSiOu\nFVf6HXdVTZyARNL/vZnu74gIAtowI0BjbPOFoPDfrTllztQkl4lN/kSosHLwXNEm\ni2LPGqp+IpYaiz9CB9eipsBqXvmxsvwUZHcjJApEha8Ov3BjYIZk\n-----END RSA PRIVATE KEY-----\n"
+...
+---
+# Source: fairwinds-insights/charts/timescale/templates/secret-patroni.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "fwinsights-timescale"
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: patroni
+  annotations:
+    "helm.sh/hook": pre-install,post-delete
+    "helm.sh/hook-weight": "0"
+    "helm.sh/resource-policy": keep
+type: Opaque
+stringData:
+  PATRONI_SUPERUSER_PASSWORD: "JwYDEMGvuhOYaj20"
+  PATRONI_REPLICATION_PASSWORD: "lsVCp1Ml07IB06t7"
+  PATRONI_admin_PASSWORD: "9XnFtPJ2WTnuNiOf"
+...
+---
+# Source: fairwinds-insights/charts/timescale/templates/secret-pgbackrest.yaml
+# This file and its contents are licensed under the Apache License 2.0.
+# Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: "jslivka-pgbackrest"
+  namespace: insights-agent
+  labels:
+    
+    app: jslivka
+    chart: timescale-0.30.0
+    release: jslivka
+    heritage: Helm
+    cluster-name: jslivka
+    app.kubernetes.io/name: "jslivka"
+    app.kubernetes.io/version: 0.30.0
+    app.kubernetes.io/component: pgbackrest
+  annotations:
+    "helm.sh/hook": pre-install,post-delete
+    "helm.sh/hook-weight": "0"
+    "helm.sh/resource-policy": keep
+type: Opaque
+stringData:
+  PGBACKREST_REPO1_S3_BUCKET: ""
+  PGBACKREST_REPO1_S3_ENDPOINT: s3.amazonaws.com
+  PGBACKREST_REPO1_S3_KEY: ""
+  PGBACKREST_REPO1_S3_KEY_SECRET: ""
+  PGBACKREST_REPO1_S3_REGION: ""
+...
+---
+# Source: fairwinds-insights/charts/migrate-db/templates/job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-database
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook": "post-install,post-upgrade"
+  labels:
+    helm.sh/chart: migrate-db-0.1.0
+    app.kubernetes.io/name: migrate-db
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: migrate-db
+spec:
+  backoffLimit: 5
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: fwinsights-db-migration
+        image: "quay.io/fairwinds/insights-db-migration:1.16.0"
+        imagePullPolicy: Always
+        resources:
+          limits:
+            cpu: 1
+            memory: 1024Mi
+          requests:
+            cpu: 80m
+            memory: 128Mi        
+        # Required values
+        envFrom:
+        - secretRef:
+            name: fwinsights-secrets
+        env:
+        - name: FAIRWINDS_HOST
+        - name: CACHE_BUST_TOKEN
+          value: UC5xTcesfC
+        - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
+          value: 2.19.0
+        # General Server
+        # Database
+        - name: POSTGRES_DB
+          value: fairwinds_insights
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_SSL_MODE
+          value: require
+        - name: POSTGRES_HOST
+          value: jslivka-postgresql
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: fwinsights-postgresql
+              key: postgresql-password
+        # Timescale Database
+        - name: TIMESCALE_DB
+          value: postgres
+        - name: TIMESCALE_USER
+          value: postgres
+        - name: TIMESCALE_PORT
+          value: "5433"
+        - name: TIMESCALE_SSL_MODE
+          value: require
+        - name: TIMESCALE_HOST
+          value: timescale
+        - name: TIMESCALE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: fwinsights-timescale
+              key: PATRONI_SUPERUSER_PASSWORD
+        - name: INSIGHTS_SAAS_HOST
+          value: "https://insights.fairwinds.com"
+        
+        # Report Storage
+        - name: REPORT_STORAGE_STRATEGY
+          value: minio
+        
+        - name: MINIO_HOST
+          value: jslivka-fw-minio:9000
+        - name: MINIO_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: jslivka-fw-minio
+              key: rootUser                
+        - name: MINIO_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: jslivka-fw-minio
+              key: rootPassword
+        - name: REPORT_STORAGE_REGION
+          value: us-east-1
+        - name: REPORT_STORAGE_BUCKET
+          value: "reports"
+        
+        # Email
+        - name: EMAIL_STRATEGY
+          value: memory
+        - name: EMAIL_SENDER
+          value: 
+        - name: EMAIL_RECIPIENT
+          value: 
+        # Third-party integrations
+        
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: false
+          runAsUser: 10324
+          capabilities:
+            drop:
+              - ALL
+        volumeMounts:
+        - name: polaris-config
+          mountPath: /tmp/
+      volumes:
+      - name: polaris-config
+        configMap:
+          name: polaris-config
+          optional: true
+          items:
+          - key: polaris-config.json
+            path: polaris-config.json
+---
+# Source: fairwinds-insights/charts/migrate-health-score/templates/cronjob.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jslivka-start-migrate-scores
+  labels:
+    helm.sh/chart: migrate-health-score-0.1.0
+    app.kubernetes.io/name: migrate-health-score
+    app.kubernetes.io/instance: jslivka
+    app.kubernetes.io/managed-by: Helm
+    
+    app.kubernetes.io/version: "1.16.0"
+    app.kubernetes.io/component: migrate-scores
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  ttlSecondsAfterFinished: 30
+  backoffLimit: 1
+  template:
+    spec:
+      restartPolicy: Never
+      serviceAccountName: jslivka-cronjob-executor
+      containers:
+      - name: start-job-from-cronjob
+        image: "bitnami/kubectl:1.22.8"
+        imagePullPolicy: Always
+        command: ["sh"]
+        args:
+          - -c
+          - |
+            # Can't use -o name because it appends cronjob.batch to the beginning
+            kubectl delete job jslivka-migrate-scores
+            kubectl create job jslivka-migrate-scores --from=cj/jslivka-migrate-scores
+        resources:
+          limits:
+            cpu: 100m
+            memory: 64Mi
+          requests:
+            cpu: 1m
+            memory: 3Mi
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+---
+# Source: fairwinds-insights/charts/minio/templates/post-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: jslivka-minio-post-job
+  namespace: "insights-agent"
+  labels:
+    app: minio-post-job
+    chart: minio-5.0.3
+    release: jslivka
+    heritage: Helm
+  annotations:
+    "helm.sh/hook": post-install,post-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+spec:
+  template:
+    metadata:
+      labels:
+        app: minio-job
+        release: jslivka
+    spec:
+      restartPolicy: OnFailure
+      
+      volumes:
+        - name: minio-configuration
+          projected:
+            sources:
+              - configMap:
+                  name: jslivka-minio
+              - secret:
+                  name: jslivka-minio
+      containers:
+        - name: minio-make-user
+          image: "quay.io/minio/mc:RELEASE.2022-12-13T00-23-28Z"
+          imagePullPolicy: IfNotPresent
+          command: [ "/bin/sh", "/config/add-user" ]
+          env:
+            - name: MINIO_ENDPOINT
+              value: jslivka-minio
+            - name: MINIO_PORT
+              value: "9000"
+          volumeMounts:
+            - name: minio-configuration
+              mountPath: /config
+          resources:
+            requests:
+              memory: 128Mi

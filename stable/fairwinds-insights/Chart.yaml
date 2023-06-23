@@ -2,7 +2,7 @@ apiVersion: v2
 appVersion: "12.16"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 0.17.1
+version: 0.18.1
 maintainers:
   - name: rbren
   - name: mhoss019
@@ -21,3 +21,52 @@ dependencies:
     repository: https://charts.fairwinds.com/incubator
     condition: timescale.ephemeral
     alias: timescale
+  - name: action-items-filters-refresher
+    version: 0.1.0
+  - name: alerts
+    version: 0.1.0
+  - name: api
+    version: 0.1.0
+  - name: automated-pull-request
+    version: 0.1.0
+    condition: automated-pull-request.enabled
+  - name: benchmark
+    version: 0.1.0
+  - name: close-tickets
+    version: 0.1.0
+    condition: close-tickets.enabled
+  - name: cloud-costs-update
+    version: 0.1.0
+    condition: cloud-costs-update.enabled
+  - name: dashboard
+    version: 0.1.0
+  - name: database-cleanup
+    version: 0.1.0
+    condition: database-cleanup.enabled
+  - name: email
+    version: 0.1.0
+  - name: hubspot
+    version: 0.1.0
+  - name: migrate-db
+    version: 0.1.0
+  - name: migrate-health-score
+    version: 0.1.0
+    condition: migrate-health-score.enabled
+  - name: open-api
+    version: 0.1.0
+  - name: overprovisioning
+    version: 0.1.0
+    condition: overprovisioning.enabled
+  - name: repo-scan
+    version: 0.1.0
+    condition: repo-scan.enabled
+  - name: report
+    version: 0.1.0
+    condition: report.enabled
+  - name: resources-recommendations
+    version: 0.1.0
+    condition: resources-recommendations.enabled
+  - name: saml
+    version: 0.1.0
+  - name: trial-end-downgrade
+    version: 0.1.0
