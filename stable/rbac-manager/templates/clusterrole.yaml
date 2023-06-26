@@ -41,3 +41,9 @@ rules:
       - get
       - list
       - watch
+  - apiGroups:
+      - rbacmanager.reactiveops.io
+    resources:
+      - rbacdefinitions/finalizers
+    verbs:
+      - "*"
