@@ -1,0 +1,27 @@
+{{- if .Values.pluto.enabled -}}
+{{- $_ := set . "Label" "gonogo" }}
+{{- $_ := set . "Config" .Values.gonogo }}
+{{- include "cronjob" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            command: ["/bin/sh"]
+            args:
+            - -c
+            - |
+              /gonogo check > /output/gonogo-tmp.json
+              cat /output/gonogo-tmp.json
+              mv /output/gonogo-tmp.json /output/gonogo.json
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+{{- end -}}

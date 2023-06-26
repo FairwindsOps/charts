@@ -1,9 +1,9 @@
 insights:
   host: https://insights.fairwinds.com
-  organization: ""
-  cluster: ""
-  base64token: ""
-  tokenSecretName: ""
+  organization: "test"
+  cluster: "test"
+  base64token: "token"
+  tokenSecretName: "token"
 
 global:
   proxy:
@@ -149,6 +149,15 @@ goldilocks:
     limits:
       cpu: 250m
       memory: 512Mi
+
+gonogo:
+  enabled: false
+  schedule: "rand * * * *"
+  image:
+    repository: us-docker.pkg.dev/fairwinds-ops/oss/gonogo
+    tag: "0.2.6"
+  rbac:
+    disabled: false
 
 opa:
   enabled: false
