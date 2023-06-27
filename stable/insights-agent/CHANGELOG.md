@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.20.7
+* Add default runAsGroup for cronjob templates
 ## 2.20.6
 * Add default runAsGroups for right-sizer and cronjob-executor
 ## 2.20.5
