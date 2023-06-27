@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.20.6
+* Add default runAsGroups for right-sizer and cronjob-executor
 ## 2.20.5
 * Update trivy plugin to [v0.27](https://github.com/FairwindsOps/insights-plugins/blob/main/plugins/trivy/CHANGELOG.md#0270)
 

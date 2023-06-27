@@ -487,6 +487,7 @@ right-sizer:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
     runAsUser: 1200
+    runAsGroup: 1200
     capabilities:
       drop:
         - ALL
