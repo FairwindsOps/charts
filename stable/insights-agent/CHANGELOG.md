@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.20.5
+* Update trivy plugin to [v0.27](https://github.com/FairwindsOps/insights-plugins/blob/main/plugins/trivy/CHANGELOG.md#0270)
+
 ## 2.20.4
 * Update polaris to 8.2
 
