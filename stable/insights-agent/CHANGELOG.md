@@ -1,5 +1,9 @@
 # Changelog
 
+
+## 2.21.1
+* Add default runAsGroup for cronjob templates
+
 ## 2.21.0
 * Update admission controller to 1.8.0
 
