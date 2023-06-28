@@ -108,6 +108,8 @@ dashboard:
     annotations: {}
     # dashboard.ingress.tls -- Ingress TLS configuration
     tls: []
+    # dashboard.ingress.defaultBackendEnabled -- DefaultBackend is required by GKE container native load balancer, set to true for this use case
+    defaultBackendEnabled: false
   # dashboard.priorityClassName -- Priority Class name to be used in deployment if provided.
   priorityClassName:
   # dashboard.disallowExemptions -- Disallow any exemption

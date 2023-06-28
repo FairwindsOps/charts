@@ -20,6 +20,13 @@ spec:
 {{- if and (.Values.dashboard.ingress.ingressClassName) (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
   ingressClassName: {{ .Values.dashboard.ingress.ingressClassName }}
 {{- end }}
+{{- if .Values.dashboard.ingress.defaultBackendEnabled }}
+  defaultBackend:
+    service:
+      name: {{ $serviceName }}
+      port:
+        number: 80
+{{- end }}
   rules:
   {{- range .Values.dashboard.ingress.hosts }}
   - host: {{ . }}
