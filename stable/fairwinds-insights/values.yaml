@@ -508,6 +508,8 @@ timescale:
     # -- Port of the Timescale Database
     primary:
       port: 5433
+      extendedConfiguration: |
+        shared_preload_libraries = 'pg_partman'
   loadBalancer:
     enabled: false
   # -- Database tuning for timescale
