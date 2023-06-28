@@ -1,4 +1,6 @@
 # Changelog
+## 0.18.0
+* Bump minio subchart to 5.0.10
 
 ## 0.17.3
 * Bumped Timescale charts to 0.30.1
