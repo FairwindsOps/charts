@@ -1,7 +1,16 @@
 # Changelog
 
-## 2.20.6
+## 2.21.2
 * Update changelog
+
+## 2.21.1
+* Add default runAsGroup for cronjob templates
+
+## 2.21.0
+* Update admission controller to 1.8.0
+
+## 2.20.6
+* Add default runAsGroups for right-sizer and cronjob-executor
 
 ## 2.20.5
 * Update trivy plugin to [v0.27](https://github.com/FairwindsOps/insights-plugins/blob/main/plugins/trivy/CHANGELOG.md#0270)
