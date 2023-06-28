@@ -170,7 +170,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportStorage.minioHost | string | `nil` | Hostname to use for Minio |
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
 | minio.install | bool | `true` | Install Minio |
-| minio.buckets | list | `[{"name":"reports","policy":"none"}]` | Create the following buckets for the newly installed Minio |
+| minio.buckets | list | `[{"name":"reports","policy":"none","purge":false}]` | Create the following buckets for the newly installed Minio |
 | minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
 | minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
