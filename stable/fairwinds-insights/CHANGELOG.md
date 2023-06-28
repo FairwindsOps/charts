@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.18.0
+## 0.19.0
 * Bump postgres to 14.8.0 and added partman
 
 ## 0.18.0
