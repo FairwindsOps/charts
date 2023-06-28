@@ -9,7 +9,7 @@ maintainers:
   - name: ivanfetch-fw
 dependencies:
   - name: postgresql
-    version: 14.8.0
+    version: 12.1.6
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.ephemeral
   - name: minio
