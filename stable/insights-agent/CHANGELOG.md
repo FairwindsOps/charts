@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.21.3
+* set default runAsGroup for uploader container
 ## 2.21.2
 * Update changelog
 
