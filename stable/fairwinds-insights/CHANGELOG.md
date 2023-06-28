@@ -1,4 +1,8 @@
 # Changelog
+
+## 0.18.0
+* Bump postgres to 14.8.0 and added partman
+
 ## 0.18.0
 * Bump minio subchart to 5.0.10
 
