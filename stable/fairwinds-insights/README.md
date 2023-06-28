@@ -152,7 +152,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.password | string | `"postgres"` | Password for the Postgres Database |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
-| timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
+| timescale.service.primary | object | `{"extendedConfiguration":"shared_preload_libraries = 'pg_partman'\n","port":5433}` | Port of the Timescale Database |
 | timescale.loadBalancer.enabled | bool | `false` |  |
 | timescale.timescaledbTune | object | `{"enabled":false}` | Database tuning for timescale |
 | timescale.patroni | object | `{"log":{"level":"DEBUG"},"postgresql":{"create_replica_methods":[],"pgbackrest":{}}}` | Timescale patroni options |
