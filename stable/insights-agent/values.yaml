@@ -71,6 +71,16 @@ installReporter:
       cpu: 100m
       memory: 128Mi
   additionalAnnotations: {}
+  securityContext:
+    privileged: false
+    allowPrivilegeEscalation: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1000
+    runAsGroup: 3000
+    capabilities:
+      drop:
+      - ALL
 
 polaris:
   enabled: false
@@ -80,7 +90,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "7.4"
+    tag: "8.2"
   resources:
     requests:
       cpu: 100m
@@ -273,7 +283,7 @@ trivy:
   env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.26"
+    tag: "0.27"
   serviceAccount:
     annotations:
   resources:
@@ -477,6 +487,7 @@ right-sizer:
     allowPrivilegeEscalation: false
     runAsNonRoot: true
     runAsUser: 1200
+    runAsGroup: 1200
     capabilities:
       drop:
         - ALL

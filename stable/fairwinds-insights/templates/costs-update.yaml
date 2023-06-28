@@ -1,5 +1,5 @@
-{{- if .Values.truncateWorkloadMetrics.enabled }}
-{{ range .Values.truncateWorkloadMetrics.schedules }}
+{{- if .Values.cloudCostsUpdateCronjob.enabled }}
+{{ range .Values.cloudCostsUpdateCronjob.schedules }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -7,7 +7,7 @@ metadata:
   name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: action-items-cronjob-{{ .name }}
+    app.kubernetes.io/component: costs-update-cronjob
 spec:
   concurrencyPolicy: Forbid
   schedule: "{{ .cron }}"
@@ -23,19 +23,27 @@ spec:
           containers:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
-              command: ["truncate_workload_metrics"]
+              command: ["cloud_costs_update"]
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.truncateWorkloadMetrics.resources | nindent 16 }}
+                {{- toYaml $.Values.cloudCostsUpdateCronjob.resources | nindent 16 }}
+              volumeMounts:
+              - name: secrets
+                mountPath: /var/run/secrets/github
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
                 privileged: false
                 runAsNonRoot: true
-                runAsUser: {{ $.Values.truncateWorkloadMetrics.securityContext.runAsUser }}
+                runAsUser: {{ $.Values.cloudCostsUpdateCronjob.securityContext.runAsUser }}
                 capabilities:
                   drop:
                     - ALL
+          volumes:
+            - name: secrets
+              secret:
+                secretName: github-secrets
+                optional: true
 {{ end }}
 {{- end }}

@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.17.3"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.19.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -92,9 +92,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
 | alertsCronjob.schedules | list | `[{"cron":"5/10 * * * *","interval":"10m","name":"realtime"},{"cron":"0 16 * * *","interval":"24h","name":"digest"}]` | CRON schedules for the Slack/Datadog integrations |
 | alertsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the alerts job under. |
-| aggregateCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the Workload Metrics aggregation job. |
-| aggregateCronjob.schedules | list | `[{"cron":"5 0/2 * * *","interval":"120m","name":"bi-hourly"}]` | CRON schedules for the Workload Metrics aggregation job. |
-| aggregateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the Workload Metrics aggregation job under. |
 | emailCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Action Items email job. |
 | emailCronjob.schedules | list | `[]` | CRON schedules for the Action Items email job. |
 | emailCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the email job under. |
@@ -110,10 +107,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | closeTicketsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1.5Gi"}}` | Resources for the close tickets job. |
 | closeTicketsCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"close-tickets"}]` | CRON schedules for the close tickets job. |
 | closeTicketsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the close tickets job under. |
-| truncateWorkloadMetrics.enabled | bool | `false` | Enable truncating workload metrics false by default |
-| truncateWorkloadMetrics.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"40m","memory":"32Mi"}}` | Resources for the truncating workload metrics job. |
-| truncateWorkloadMetrics.schedules | list | `[]` | CRON schedules for the truncating workload metrics job. |
-| truncateWorkloadMetrics.securityContext.runAsUser | int | `10324` | The user ID to run the truncating workload metrics job under. |
+| cloudCostsUpdateCronjob.enabled | bool | `true` | Cloud costs update enabled by default |
+| cloudCostsUpdateCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}}` | Resources for the cloud costs update job. |
+| cloudCostsUpdateCronjob.schedules | list | `[{"cron":"15 */3 * * *","name":"costs-update"}]` | CRON schedules for the cloud costs update job |
+| cloudCostsUpdateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the cloud costs update job under. |
 | actionItemsFiltersRefresherCronJob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Resources for the action-items filters refresher job. |
 | actionItemsFiltersRefresherCronJob.schedules | list | `[{"cron":"0/15 * * * *","name":"every-15-min"}]` | CRON schedules for the action-items filters refresher job. |
 | actionItemsFiltersRefresherCronJob.securityContext.runAsUser | int | `10324` | The user ID to run the action-items filters refresher job under. |
@@ -128,6 +125,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
+| postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
 | postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
@@ -139,6 +137,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
 | timescale.replicaCount | int | `1` |  |
@@ -226,7 +225,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | automatedPullRequestJob.nodeSelector | object | `{}` |  |
 | automatedPullRequestJob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"5.0"` |  |
+| repoScanJob.insightsCIVersion | string | `"5.1"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |

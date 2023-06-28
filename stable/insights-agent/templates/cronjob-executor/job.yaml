@@ -48,6 +48,7 @@ spec:
           mountPath: /tmp
         securityContext:
           runAsUser: 1000
+          runAsGroup: 1000
           readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
           privileged: false

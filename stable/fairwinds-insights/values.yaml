@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.17.3
+  agentChartTargetVersion: 2.19.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -296,24 +296,6 @@ alertsCronjob:
     # -- The user ID to run the alerts job under.
     runAsUser: 10324
 
-aggregateCronjob:
-  # -- Resources for the Workload Metrics aggregation job.
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 40m
-      memory: 32Mi
-  # -- CRON schedules for the Workload Metrics aggregation job.
-  schedules:
-    - name: bi-hourly
-      interval: 120m
-      cron: "5 0/2 * * *"
-  securityContext:
-    # -- The user ID to run the Workload Metrics aggregation job under.
-    runAsUser: 10324
-
 emailCronjob:
   # -- Resources for the Action Items email job.
   resources:
@@ -388,21 +370,23 @@ closeTicketsCronjob:
     # -- The user ID to run the close tickets job under.
     runAsUser: 10324
 
-truncateWorkloadMetrics:
-  # -- Enable truncating workload metrics false by default
-  enabled: false
-  # -- Resources for the truncating workload metrics job.
+cloudCostsUpdateCronjob:
+  # -- Cloud costs update enabled by default
+  enabled: true
+  # -- Resources for the cloud costs update job.
   resources:
     limits:
-      cpu: 250m
-      memory: 512Mi
+      cpu: 500m
+      memory: 2Gi
     requests:
-      cpu: 40m
-      memory: 32Mi
-  # -- CRON schedules for the truncating workload metrics job.
-  schedules: []
+      cpu: 500m
+      memory: 2Gi
+  # -- CRON schedules for the cloud costs update job
+  schedules:
+    - name: costs-update
+      cron: "15 */3 * * *"
   securityContext:
-    # -- The user ID to run the truncating workload metrics job under.
+    # -- The user ID to run the cloud costs update job under.
     runAsUser: 10324
 
 actionItemsFiltersRefresherCronJob:
@@ -450,6 +434,8 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  # -- Set to `true` to run migrations after the upgrade
+  postMigrate: false
   image:
     tag: "14.2.0-debian-10-r94"
   # -- Use the ephemeral postgresql chart by default
@@ -483,6 +469,13 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
+  # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
+  readReplica:
+    username:
+    database:
+    host:
+    port:
+    sslMode:
 encryption:
   aes:
     cypherKey:
@@ -668,7 +661,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "5.0"
+  insightsCIVersion: "5.1"
   hpa:
     enabled: true
     min: 2

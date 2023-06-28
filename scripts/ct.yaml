@@ -11,3 +11,4 @@ chart-repos:
   - "minio=https://charts.min.io/"
   - "prometheus-community=https://prometheus-community.github.io/helm-charts"
   - "falcosecurity=https://falcosecurity.github.io/charts"
+  - "metrics-server=https://kubernetes-sigs.github.io/metrics-server"

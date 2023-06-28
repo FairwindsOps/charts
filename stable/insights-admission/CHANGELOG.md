@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.8.0
+* Bump insights-admission to version 1.11
+* See [changelog](https://github.com/FairwindsOps/insights-plugins/blob/main/plugins/admission/CHANGELOG.md) for details on new polaris checks and severities, which may block deployments
+
+## 1.7.0
+* Bump insights-admission to version 1.10
+
 ## 1.6.4
 * Fix HPA metric definition for autoscaling/v2
 

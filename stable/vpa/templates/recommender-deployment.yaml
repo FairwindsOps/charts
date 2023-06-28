@@ -3,7 +3,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "vpa.fullname" . }}-recommender
-  namespace: {{ .Release.Namespace }}
   labels:
     app.kubernetes.io/component: recommender
     {{- include "vpa.labels" . | nindent 4 }}
@@ -40,7 +39,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.recommender.securityContext | nindent 12 }}
-          image: "{{ .Values.recommender.image.repository }}:{{ .Values.recommender.image.tag | default .Chart.AppVersion }}"
+          image: {{ printf "%s:%s" .Values.recommender.image.repository (.Values.recommender.image.tag | default .Chart.AppVersion) }}
           imagePullPolicy: {{ .Values.recommender.image.pullPolicy }}
           {{- if .Values.recommender.extraArgs }}
           args:

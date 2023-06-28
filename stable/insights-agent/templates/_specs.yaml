@@ -174,6 +174,7 @@ initContainers:
   securityContext:
     runAsNonRoot: true
     runAsUser: 1000
+    runAsGroup: 1000
     allowPrivilegeEscalation: false
     readOnlyRootFilesystem: true
     privileged: false
@@ -192,6 +193,7 @@ securityContext:
   privileged: false
   runAsNonRoot: true
   runAsUser: 10324
+  runAsGroup: 10324
   capabilities:
     drop:
       - ALL

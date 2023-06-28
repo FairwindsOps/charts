@@ -1,5 +1,54 @@
 # Changelog
 
+## 2.21.2
+* Update changelog
+
+## 2.21.1
+* Add default runAsGroup for cronjob templates
+
+## 2.21.0
+* Update admission controller to 1.8.0
+
+## 2.20.6
+* Add default runAsGroups for right-sizer and cronjob-executor
+
+## 2.20.5
+* Update trivy plugin to [v0.27](https://github.com/FairwindsOps/insights-plugins/blob/main/plugins/trivy/CHANGELOG.md#0270)
+
+## 2.20.4
+* Update polaris to 8.2
+
+## 2.20.3
+* Add configurable values and sensible defaults to install-reporter
+
+## 2.20.2
+* Adds test that deletes existing jobs upon `helm test`
+
+## 2.20.1
+* Fix an issue with readonly filesystem when awscosts with IRSA is used
+
+## 2.20.0
+* Update polaris to 8.0 and admission to 1.7
+* New Polaris policies and changes to some default severities:
+    * Includes a newer version of Polaris, which adds the following policies:
+        * priorityClassNotSet
+        * metadataAndNameMismatched
+        * missingPodDisruptionBudget
+        * automountServiceAccountToken
+        * missingNetworkPolicy
+    * Changes the default severity to High or Critical for the following existing Polaris policies:
+        * sensitiveContainerEnvVar
+        * sensitiveConfigmapContent
+        * clusterrolePodExecAttach
+        * rolePodExecAttach
+        * clusterrolebindingPodExecAttach
+        * rolebindingClusterRolePodExecAttach
+        * rolebindingRolePodExecAttach
+        * clusterrolebindingClusterAdmin
+        * rolebindingClusterAdminClusterRole
+        * rolebindingClusterAdminRole
+    * While this provides even more visibility to the state of your Kubernetes health, the Policies that change the default severity to High or Critical may block some Admission Controller requests. If you need to mitigate this impact, Fairwinds recommends creating an Automation Rule that lowers the severity of those policies so it does not trigger blocking behavior. If you need assistance with this, please reach out to support@fairwinds.com.
+
 ## 2.19.0
 * Update version of aws costs to 1.3
 
@@ -83,7 +132,6 @@ only available as of 1.22.
 
 ## 2.10.1
 * Update Goldilocks, Nova, Pluto, and Polaris
-
 
 ## 2.10.0
 * BUmp insights-admission to chart 1.5.* (to use app 1.9)
