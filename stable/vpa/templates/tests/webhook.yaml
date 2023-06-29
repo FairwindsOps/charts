@@ -1,3 +1,4 @@
+{{- if .Values.admissionController.enabled }}
 ---
 apiVersion: v1
 kind: Pod
@@ -71,3 +72,4 @@ spec:
           fi
           exit 1;
   restartPolicy: Never
+{{- end }}
