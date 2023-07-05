@@ -1,7 +1,9 @@
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: allow-all
+  name: {{ include "insights-agent.fullname" . }}-allow-all
+  labels:
+    app.kubernetes.io/name: {{ include "insights-agent.fullname" . }}-allow-all
 spec:
   podSelector:
     matchLabels:

@@ -47,7 +47,6 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 Selector labels
 */}}
 {{- define "insights-admission.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "insights-admission.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 

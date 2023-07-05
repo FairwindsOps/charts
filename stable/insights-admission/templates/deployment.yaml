@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: {{ include "insights-admission.fullname" . }}-admission
   labels:
+    app: insights-admission
+    app.kubernetes.io/name: {{ include "insights-admission.fullname" . }}-admission
     {{- include "insights-admission.labels" . | nindent 4 }}
 spec:
 {{- if not .Values.autoscaling.enabled }}
@@ -19,6 +21,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
       labels:
+        app: insights-admission
         component: controller
         {{- include "insights-admission.selectorLabels" . | nindent 8 }}
     spec:
@@ -27,6 +30,8 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "insights-admission.serviceAccountName" . }}
+      automountServiceAccountToken: false
+      priorityClassName: insights-admission-priority
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:

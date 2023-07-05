@@ -1,10 +1,10 @@
 apiVersion: scheduling.k8s.io/v1
 kind: PriorityClass
 metadata:
-  name: insights-agent-low
+  name: {{ include "insights-agent.fullname" . }}-low
   labels:
     app: insights-agent
-    app.kubernetes.io/name: insights-agent-low
+    app.kubernetes.io/name: {{ include "insights-agent.fullname" . }}-low
 value: {{ .Values.global.priority.low }}
 globalDefault: false
 description: "This priority class should be used for Fairwinds Insights agent pods only."

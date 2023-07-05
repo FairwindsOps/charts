@@ -210,6 +210,9 @@ nodeSelector: {}
 # tolerations -- Toleratations to add to the controller.
 tolerations: []
 
+# priority -- Priority value for the PriorityClass of the controller. We recommend setting this higher than the global default
+priority: 100
+
 # topologySpreadConstraints -- TopologySpreadConstraints to add to the controller.
 topologySpreadConstraints:
   - maxSkew: 1
