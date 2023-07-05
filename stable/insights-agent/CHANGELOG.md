@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.23.2
+* Fix some polaris findings
+
 ## 2.23.1
 * Bumped `workloads` plugin version to `2.5` which exports controllers `PodLabels` and `PodAnnotations`
 
@@ -20,6 +23,7 @@
 
 ## 2.21.4
 * Update insights-admission to 1.8.1
+
 ## 2.21.3
 * set default runAsGroup for uploader container
 ## 2.21.2
