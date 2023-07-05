@@ -13,7 +13,7 @@ spec:
       template:
         {{ include "job-spec-metadata" . | nindent 8 | trim }}
         spec:
-          {{ include "job-template-spec" . | indent 10 | trim }}
+          {{ include "job-pod-spec" . | indent 10 | trim }}
           volumes:
           - name:       output
             configMap:

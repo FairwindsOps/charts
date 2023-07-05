@@ -16,7 +16,7 @@ spec:
       template:
         {{ include "job-spec-metadata" . | nindent 8 | trim }}
         spec:
-          {{ include "job-template-spec" . | indent 10 | trim }}
+          {{ include "job-pod-spec" . | indent 10 | trim }}
           {{- if or (eq (index .Values "kube-bench" "mode") "daemonsetMaster") (eq (index .Values "kube-bench" "mode") "daemonset") }}
           volumes:
           {{ include "ssl-cert-file-volume-spec" . | indent 10 }}

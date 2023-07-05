@@ -67,7 +67,7 @@ metadata:
   {{- end }}
 {{- end }}
 
-{{ define "job-template-spec" }}
+{{ define "job-pod-spec" }}
 restartPolicy: Never
 serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
 {{- with .Values.cronjobs.nodeSelector }}
