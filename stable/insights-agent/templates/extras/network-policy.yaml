@@ -1,0 +1,12 @@
+kind: NetworkPolicy
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: allow-all
+spec:
+  podSelector:
+    matchLabels:
+      app: insights-agent
+  egress:
+  - {}
+  ingress:
+  - {}
