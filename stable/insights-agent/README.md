@@ -61,6 +61,8 @@ Parameter | Description | Default
 `insights.host` | The location of the Insights server | https://insights.fairwinds.com
 `rbac.disabled` | Don't use any of the built-in RBAC | `false`
 `fleetInstall` | See Fleet Installation docs | `false`
+`global.priority.low` | PriorityClass value for low-priority pods | ""
+`global.priority.high` | PriorityClass value for high-priority pods | ""
 `global.proxy.http` | Annotations used to access the proxy servers(http) | ""
 `global.proxy.https` | Annotations used to access the proxy servers(https) | ""
 `global.proxy.ftp` | Annotations used to access the proxy servers(ftp) | ""
