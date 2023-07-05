@@ -5,6 +5,6 @@ metadata:
   labels:
     app: insights-admission
     app.kubernetes.io/name: {{ include "insights-admission.fullname" . }}-priority
-value: {{ .Values.priority }}
+value: {{ default 0 .Values.priority }}
 globalDefault: false
 description: "This priority class should be used for Fairwinds Insights admission controller pods only."
