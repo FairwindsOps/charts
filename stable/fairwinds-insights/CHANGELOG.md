@@ -1,4 +1,7 @@
 # Changelog
+## 0.18.1
+* Updated self hosted agent version to 2.21
+
 ## 0.18.0
 * Bump minio subchart to 5.0.10
 
