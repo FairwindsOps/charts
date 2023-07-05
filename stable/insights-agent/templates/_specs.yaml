@@ -69,7 +69,7 @@ metadata:
 
 {{ define "pod-boilerplate" }}
 restartPolicy: Never
-priorityClassName: insights-agent-low
+priorityClassName: {{ include "insights-agent.fullname" . }}-low
 automountServiceAccountToken: false
 {{- end }}
 
