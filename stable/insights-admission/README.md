@@ -94,6 +94,7 @@ rules:
 | ignoreRequestUsernames | string | `"system:addon-manager"` | Specify a comma-separated list of usernames whos admission-requests will be ignored. This is useful for automation that regularly updates in-cluster resources. |
 | nodeSelector | object | `{}` | nodSelector to add to the controller. |
 | tolerations | list | `[]` | Toleratations to add to the controller. |
+| priority | int | `100` | Priority value for the PriorityClass of the controller. We recommend setting this higher than the global default |
 | topologySpreadConstraints | list | `[{"labelSelector":{"matchLabels":{"component":"controller"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"component":"controller"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]` | TopologySpreadConstraints to add to the controller. |
 | affinity | object | `{}` | Pod affinity/anti-affinity rules |
 | caBundle | string | `""` | If you are providing your own certificate then this is the Certificate Authority for that certificate |
