@@ -4,6 +4,7 @@ metadata:
   name: {{ include "insights-agent.fullname" $ }}-install-reporter
   labels:
     app: insights-agent
+    app.kubernetes.io/name: {{ include "insights-agent.fullname" $ }}-install-reporter
   annotations:
     polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
     polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
@@ -15,13 +16,15 @@ spec:
   ttlSecondsAfterFinished: 300
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
-    {{- with .Values.global.customWorkloadAnnotations }}
     metadata:
+      labels:
+        app: insights-agent
+    {{- with .Values.global.customWorkloadAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
-      restartPolicy: Never
+      {{ include "pod-boilerplate" . | nindent 6 | trim }}
       {{- with .Values.installReporter.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 6 }}
@@ -49,7 +52,7 @@ spec:
           mountPath: /opt/app/values.json
           subPath: values.json
           readOnly: true
-{{ include "ssl-cert-file-volumemount-spec" . | indent 8 }}
+        {{ include "ssl-cert-file-volumemount-spec" . | nindent 8 }}
         securityContext:
           {{- toYaml .Values.installReporter.securityContext | nindent 10 }}
         env:

@@ -5,7 +5,18 @@ metadata:
   labels:
     app: insights-agent
     app.kubernetes.io/name: insights-agent-low
-value: -1
+value: {{ .Values.global.priority.low }}
+globalDefault: false
+description: "This priority class should be used for Fairwinds Insights agent pods only."
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: insights-agent-high
+  labels:
+    app: insights-agent
+    app.kubernetes.io/name: insights-agent-high
+value: {{ .Values.global.priority.high }}
 globalDefault: false
 description: "This priority class should be used for Fairwinds Insights agent pods only."
 

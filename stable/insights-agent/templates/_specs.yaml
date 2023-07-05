@@ -67,15 +67,19 @@ metadata:
   {{- end }}
 {{- end }}
 
-{{ define "job-pod-spec" }}
+{{ define "pod-boilerplate" }}
 restartPolicy: Never
+priorityClassName: insights-agent-low
+automountServiceAccountToken: false
+{{- end }}
+
+{{ define "job-pod-spec" }}
+{{ include "pod-boilerplate" . }}
 serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
 {{- with .Values.cronjobs.nodeSelector }}
 nodeSelector:
   {{- toYaml . | nindent 2 }}
 {{- end }}
-priorityClassName: insights-agent-low
-automountServiceAccountToken: false
 {{- with .Values.cronjobs.tolerations }}
 tolerations:
   {{- toYaml . | nindent 2 }}

@@ -11,13 +11,15 @@ spec:
   ttlSecondsAfterFinished: 3600
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
-    {{- with .Values.global.customWorkloadAnnotations }}
     metadata:
+      labels:
+        app: insights-agent
+    {{- with .Values.global.customWorkloadAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
-      restartPolicy: Never
+      {{ include "pod-boilerplate" . | nindent 6 | trim }}
       serviceAccountName: {{ include "insights-agent.fullname" . }}-cronjob-executor
       {{- with .Values.cronjobExecutor.imagePullSecrets }}
       imagePullSecrets:

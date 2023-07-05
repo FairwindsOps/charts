@@ -6,6 +6,9 @@ insights:
   tokenSecretName: ""
 
 global:
+  priority:
+    low: -1
+    high: 1
   proxy:
     # global.proxy.http -- Annotations used to access the proxy servers(http).
     http:
