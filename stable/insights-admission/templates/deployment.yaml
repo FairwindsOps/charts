@@ -31,7 +31,7 @@ spec:
       {{- end }}
       serviceAccountName: {{ include "insights-admission.serviceAccountName" . }}
       automountServiceAccountToken: false
-      priorityClassName: insights-admission-priority
+      priorityClassName: {{ include "insights-admission.fullname" . }}-priority
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
       containers:
