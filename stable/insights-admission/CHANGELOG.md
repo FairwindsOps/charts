@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.8.4
+## 2.0.0
 * Fix some polaris findings
 
 ## 1.8.3
