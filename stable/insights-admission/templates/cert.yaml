@@ -23,6 +23,8 @@ spec:
     kind: Issuer
     name: {{ include "insights-admission.fullname" . }}-selfsigned
   secretName: {{ include "insights-admission.fullname" . }}
+  duration: 2160h
+  renewBefore: 360h
 ---
 {{- if .Values.certManagerApiVersion }}
 apiVersion: {{ .Values.certManagerApiVersion }}
