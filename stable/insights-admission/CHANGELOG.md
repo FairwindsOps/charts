@@ -1,5 +1,7 @@
 # Changelog
 
+## 1.8.1
+* Add explicit default cert duration.
 ## 1.8.0
 * Bump insights-admission to version 1.11
 * See [changelog](https://github.com/FairwindsOps/insights-plugins/blob/main/plugins/admission/CHANGELOG.md) for details on new polaris checks and severities, which may block deployments
