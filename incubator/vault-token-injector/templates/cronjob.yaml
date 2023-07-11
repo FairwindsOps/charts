@@ -76,7 +76,7 @@ spec:
           - name: config
             configMap:
               name: {{ include "vault-token-injector.fullname" . }}
-  schedule: {{ .Values.cronjob.schedule }}
+  schedule: {{ .Values.cronjob.schedule | quote }}
   successfulJobsHistoryLimit: {{ .Values.cronjob.successfulJobsHistoryLimit }}
   suspend: false
 {{- end }}
