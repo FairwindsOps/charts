@@ -3,6 +3,7 @@ metrics:
   enabled: true
 cronjob:
   enabled: true
+  schedule: '*/30 * * * *'
 deployment:
   probes:
     enabled: false
