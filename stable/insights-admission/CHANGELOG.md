@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.2
+* Fix cert duration to not trigger ArgoCD out-of-sync
+
 ## 1.8.1
 * Add explicit default cert duration.
 ## 1.8.0
