@@ -17,7 +17,7 @@ image:
   # image.repository -- Repository for the goldilocks image
   repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
   # image.tag -- The goldilocks image tag to use
-  tag: v4.8.3
+  tag: v4.9.0
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 
