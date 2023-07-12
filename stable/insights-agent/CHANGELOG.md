@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.21.5
+* Update insights-admission to 1.8.2
+
 ## 2.21.4
 * Update insights-admission to 1.8.1
 ## 2.21.3
