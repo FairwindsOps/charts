@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.21.6
-* Update Polaris to 8.4.0
+* Update Polaris to 8.4
 
 ## 2.21.5
 * Update insights-admission to 1.8.2
