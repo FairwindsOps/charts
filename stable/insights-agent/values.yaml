@@ -575,3 +575,14 @@ falcosecurity:
         minimumpriority: ""
         mutualtls: false
         checkcert: true
+
+kyverno:
+  enabled: true
+  schedule: "rand * * * *"
+  image:
+    repository: quay.io/fairwinds/kyverno
+    tag: "0.1"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi

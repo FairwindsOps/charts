@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.22.0
+* Add Kyverno plugin
+
 ## 2.21.6
 * Update Polaris to 8.4
 

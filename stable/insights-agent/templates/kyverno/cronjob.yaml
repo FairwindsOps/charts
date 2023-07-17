@@ -1,0 +1,36 @@
+{{- if and .Values.kyverno .Values.kyverno.enabled -}}
+{{- $_ := set . "Label" "kyverno" }}
+{{- $_ := set . "Config" .Values.kyverno }}
+{{- include "cronjob" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            env:
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{ if .Values.insights.tokenSecretName -}}
+                  name: {{ .Values.insights.tokenSecretName }}
+                  {{ else -}}
+                  name: {{ include "insights-agent.fullname" . }}-token
+                  {{ end -}}
+                  key: token
+            - name: FAIRWINDS_INSIGHTS_HOST
+              value: {{ .Values.insights.host }}
+            - name: FAIRWINDS_ORG
+              value: {{ .Values.insights.organization | quote  }}
+            - name: FAIRWINDS_CLUSTER
+              value: {{ .Values.insights.cluster | quote }}
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+{{ include "ssl-cert-file-env-spec" . | indent 12 }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+{{- end -}}
