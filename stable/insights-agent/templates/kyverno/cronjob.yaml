@@ -13,24 +13,7 @@ spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
-            env:
-            - name: FAIRWINDS_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  {{ if .Values.insights.tokenSecretName -}}
-                  name: {{ .Values.insights.tokenSecretName }}
-                  {{ else -}}
-                  name: {{ include "insights-agent.fullname" . }}-token
-                  {{ end -}}
-                  key: token
-            - name: FAIRWINDS_INSIGHTS_HOST
-              value: {{ .Values.insights.host }}
-            - name: FAIRWINDS_ORG
-              value: {{ .Values.insights.organization | quote  }}
-            - name: FAIRWINDS_CLUSTER
-              value: {{ .Values.insights.cluster | quote }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
-{{ include "ssl-cert-file-env-spec" . | indent 12 }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
