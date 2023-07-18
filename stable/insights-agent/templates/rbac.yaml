@@ -43,6 +43,11 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-opa
   namespace: {{ .Release.Namespace }}
 {{- end }}
+{{- if .Values.kyverno.enabled }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-kyverno
+  namespace: {{ .Release.Namespace }}
+{{- end }}
 {{- if .Values.prometheus.enabled }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-prometheus
