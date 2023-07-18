@@ -577,7 +577,7 @@ falcosecurity:
         checkcert: true
 
 kyverno:
-  enabled: true
+  enabled: false
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/kyverno
