@@ -16,6 +16,8 @@ rules:
 - apiGroups:
   - '*'
   resources:
+  - customresourcedefinitions
+  - namespaces
   - policyreports
   - policyreports/status
   - clusterpolicyreports
