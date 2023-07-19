@@ -1,4 +1,6 @@
 # Changelog
+## 0.18.4
+* Update HPAs from v2beta2 to v2
 
 ## 0.18.3
 * Update application version to 13.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
