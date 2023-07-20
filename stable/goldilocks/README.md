@@ -23,6 +23,10 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Major Version Upgrade Notes
 
+## Upgrading from v6.x.x to v7.x.x
+
+In this change, the VPA helm chart was upgraded to the latest version, including a major bump. We recommend you to check [the VPA Helm chart changelog](https://github.com/FairwindsOps/charts/tree/master/stable/vpa#breaking-upgrading-from--v17x-to-200) to ensure a smooth upgrade.
+
 ## *BREAKING* Upgrading from v4.x.x to v5.x.x
 
 The new chart version includes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) configuration for the `networking.k8s.io/v1` Kubernetes API.
