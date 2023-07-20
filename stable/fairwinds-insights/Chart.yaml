@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: "13.1"
+appVersion: "13.2"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 0.18.3
+version: 0.18.4
 maintainers:
   - name: rbren
   - name: mhoss019
