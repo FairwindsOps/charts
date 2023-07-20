@@ -56,6 +56,26 @@ recommender:
     runAsUser: 65534
   # recommender.securityContext -- The security context for the containers inside the recommender pod
   securityContext: {}
+  # recommender.livenessProbe -- The liveness probe definition inside the recommender pod
+  livenessProbe:
+    failureThreshold: 6
+    httpGet:
+      path: /health-check
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 3
+  # recommender.readinessProbe -- The readiness probe definition inside the recommender pod
+  readinessProbe:
+    failureThreshold: 120
+    httpGet:
+      path: /health-check
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 3
   # recommender.resources -- The resources block for the recommender pod
   resources:
     limits:
@@ -99,6 +119,26 @@ updater:
     runAsUser: 65534
   # updater.securityContext -- The security context for the containers inside the updater pod
   securityContext: {}
+  # updater.livenessProbe -- The liveness probe definition inside the updater pod
+  livenessProbe:
+    failureThreshold: 6
+    httpGet:
+      path: /health-check
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 3
+  # updater.readinessProbe -- The readiness probe definition inside the updater pod
+  readinessProbe:
+    failureThreshold: 120
+    httpGet:
+      path: /health-check
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 3
   # updater.resources -- The resources block for the updater pod
   resources:
     limits:
@@ -176,6 +216,26 @@ admissionController:
     runAsUser: 65534
   # admissionController.securityContext -- The security context for the containers inside the admission controller pod
   securityContext: {}
+  # admissionController.livenessProbe -- The liveness probe definition inside the admission controller pod
+  livenessProbe:
+    failureThreshold: 6
+    httpGet:
+      path: /health-check
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 3
+  # admissionController.readinessProbe -- The readiness probe definition inside the admission controller pod
+  readinessProbe:
+    failureThreshold: 120
+    httpGet:
+      path: /health-check
+      port: metrics
+      scheme: HTTP
+    periodSeconds: 5
+    successThreshold: 1
+    timeoutSeconds: 3
   # admissionController.resources -- The resources block for the admission controller pod
   resources:
     limits:
