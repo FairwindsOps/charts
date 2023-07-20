@@ -58,24 +58,14 @@ spec:
             - name: tls-certs
               mountPath: "/etc/tls-certs"
               readOnly: true
+          {{- if .Values.admissionController.livenessProbe }}
           livenessProbe:
-            failureThreshold: 6
-            httpGet:
-              path: /health-check
-              port: metrics
-              scheme: HTTP
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 3
+            {{- toYaml .Values.admissionController.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.admissionController.readinessProbe }}
           readinessProbe:
-            failureThreshold: 120
-            httpGet:
-              path: /health-check
-              port: metrics
-              scheme: HTTP
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 3
+            {{- toYaml .Values.admissionController.readinessProbe | nindent 12 }}
+          {{- end }}
           ports:
             - name: http
               containerPort: 8000
