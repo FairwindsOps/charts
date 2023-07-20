@@ -131,6 +131,12 @@ falco:
     requests:
       cpu: 50m
 
+kyverno:
+  enabled: true
+  resources:
+    requests:
+      cpu: 50m
+
 installReporter:
   additionalAnnotations:
     "argocd.argoproj.io/hook": PostSync

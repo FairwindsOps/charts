@@ -1,0 +1,19 @@
+{{- if and .Values.kyverno .Values.kyverno.enabled -}}
+{{- $_ := set . "Label" "kyverno" }}
+{{- $_ := set . "Config" .Values.kyverno }}
+{{- include "cronjob" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+{{- end -}}
