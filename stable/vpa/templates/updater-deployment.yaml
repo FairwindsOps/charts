@@ -52,24 +52,14 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
+          {{- if .Values.updater.livenessProbe }}
           livenessProbe:
-            failureThreshold: 6
-            httpGet:
-              path: /health-check
-              port: metrics
-              scheme: HTTP
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 3
+            {{- toYaml .Values.updater.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.updater.readinessProbe }}
           readinessProbe:
-            failureThreshold: 120
-            httpGet:
-              path: /health-check
-              port: metrics
-              scheme: HTTP
-            periodSeconds: 5
-            successThreshold: 1
-            timeoutSeconds: 3
+            {{- toYaml .Values.updater.readinessProbe | nindent 12 }}
+          {{- end }}
           ports:
             - name: metrics
               containerPort: 8943
