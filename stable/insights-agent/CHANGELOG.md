@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.22.1
+* Set kubeVersion in the chart manifest
+
 ## 2.22.0
 * Add Kyverno plugin
 
