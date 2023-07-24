@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8.3
+* Set kubeVersion in chart manifest
+
 ## 1.8.2
 * Fix cert duration to not trigger ArgoCD out-of-sync
 
