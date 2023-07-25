@@ -9,6 +9,10 @@ metadata:
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
     component: dashboard
+  {{- with .Values.dashboard.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{.Values.dashboard.replicas}}
   selector:
@@ -97,7 +101,7 @@ spec:
         {{- with .Values.dashboard.containerSecurityContext }}
         securityContext:
         {{- toYaml . | nindent 12 }}
-        {{- end }}                 
+        {{- end }}
         {{- if not .Values.configUrl }}
         {{- with .Values.config }}
         volumeMounts:

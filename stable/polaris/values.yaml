@@ -47,6 +47,8 @@ dashboard:
   logLevel: Info
   # dashboard.podAdditionalLabels -- Custom additional labels on dashboard pods.
   podAdditionalLabels: {}
+  # dashboard.deploymentAnnotations -- Custom additional annotations on dashboard Deployment.
+  deploymentAnnotations: {}
   # dashboard.resources -- Requests and limits for the dashboard
   resources:
     requests:
@@ -220,6 +222,8 @@ webhook:
     scope: Namespaced
   # webhook.podAdditionalLabels -- Custom additional labels on webhook pods.
   podAdditionalLabels: {}
+  # webhook.deploymentAnnotations -- Custom additional annotations on webhook Deployment.
+  deploymentAnnotations: {}
   # webhook.resources -- Requests and limits for the webhook.
   resources:
     requests:
