@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.18.6
+* Update application version to 13.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.18.5
 * Set kubeVersion in chart manifest
 
