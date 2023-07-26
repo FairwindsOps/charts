@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.23.0
+* Add labels for insights-agent
+
 ## 2.22.1
 * Set kubeVersion in the chart manifest
 
