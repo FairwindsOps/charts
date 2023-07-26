@@ -3,10 +3,10 @@ name: vault-token-injector
 description: |
   A Helm chart for Fairwinds vault-token-injector
 
-  This will inject vault tokens and address variables into circle builds on a schedule
+  This will inject vault tokens and address variables into circle builds, terraform cloud workspaces, or spacelift stacks on a schedule
 type: application
-version: 3.0.2
-appVersion: "v1.8.3"
+version: 3.1.0
+appVersion: "v1.9.1"
 maintainers:
   - name: transient1
   - name: sudermanjr
