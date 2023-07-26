@@ -1,10 +1,10 @@
-![Version: 3.0.2](https://img.shields.io/badge/Version-3.0.2-informational?style=flat-square)
+![Version: 3.1.0](https://img.shields.io/badge/Version-3.1.0-informational?style=flat-square)
 
 # Vault Token Injector Chart
 
 A Helm chart for Fairwinds vault-token-injector
 
-This will inject vault tokens and address variables into circle builds on a schedule
+This will inject vault tokens and address variables into circle builds, terraform cloud workspaces, or spacelift stacks on a schedule
 
 ## Upgrading
 
