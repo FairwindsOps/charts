@@ -30,7 +30,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       serviceAccountName: {{ include "insights-admission.serviceAccountName" . }}
-      automountServiceAccountToken: false
+      automountServiceAccountToken: true # Can't mount secret without this
       priorityClassName: {{ include "insights-admission.fullname" . }}-priority
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
