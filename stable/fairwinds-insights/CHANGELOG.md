@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.18.7
+* Start testing on 1.26 and 1.27
+
 ## 0.18.6
 * Update application version to 13.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 

@@ -1,7 +1,10 @@
 # Changelog
 
-## 2.23.2
+## 2.23.3
 * Fix some polaris findings
+
+## 2.23.2
+* Start testing on 1.26 and 1.27
 
 ## 2.23.1
 * Bumped `workloads` plugin version to `2.5` which exports controllers `PodLabels` and `PodAnnotations`
