@@ -49,10 +49,12 @@ activeDeadlineSeconds: {{ mul .Config.timeout .Values.cronjobs.backoffLimit }}
 
 {{ define "job-spec-metadata" }}
 metadata:
-  {{- with .Config.jobLabels }}
   labels:
+    {{- with .Config.jobLabels }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
+    app.kubernetes.io/name: {{ .Label }}
+    app.kubernetes.io/part-of: {{ include "insights-agent.fullname" . }}
   annotations:
     cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
   {{- with .Config.jobAnnotations }}
