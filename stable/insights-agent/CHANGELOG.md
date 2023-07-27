@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.23.1
-* Bumped workload version to `2.5` which exports controllers `PodLabels` and `PodAnnotations`
+* Bumped `workloads` plugin version to `2.5` which exports controllers `PodLabels` and `PodAnnotations`
 
 ## 2.23.0
 * Add labels for insights-agent
