@@ -18,6 +18,8 @@ rules:
   resources:
   - customresourcedefinitions
   - namespaces
+  - policies
+  - clusterpolicies
   - policyreports
   - policyreports/status
   - clusterpolicyreports
