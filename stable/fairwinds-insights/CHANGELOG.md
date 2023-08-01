@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.18.9
+* Update application version to 13.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.8
+* Updated self hosted agent version to 2.23
+
+## 0.18.7
+* Start testing on 1.26 and 1.27
+
 ## 0.18.6
 * Update application version to 13.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
@@ -14,6 +23,7 @@
 
 ## 0.18.2
 * Update application version to 13.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.18.1
 * Updated self hosted agent version to 2.21
 
