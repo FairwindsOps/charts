@@ -115,6 +115,7 @@ recommender:
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
+| recommender.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | recommender.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | recommender.image.repository | string | `"registry.k8s.io/autoscaling/vpa-recommender"` | The location of the recommender image |
 | recommender.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
@@ -133,6 +134,7 @@ recommender:
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
 | updater.replicaCount | int | `1` |  |
+| updater.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | updater.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | updater.image.repository | string | `"registry.k8s.io/autoscaling/vpa-updater"` | The location of the updater image |
 | updater.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
@@ -167,6 +169,7 @@ recommender:
 | admissionController.mutatingWebhookConfiguration.objectSelector | object | `{}` | The objectSelector can filter object on e.g. labels |
 | admissionController.mutatingWebhookConfiguration.timeoutSeconds | int | `30` |  |
 | admissionController.replicaCount | int | `1` |  |
+| admissionController.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | admissionController.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
 | admissionController.image.repository | string | `"registry.k8s.io/autoscaling/vpa-admission-controller"` | The location of the vpa admission controller image |
 | admissionController.image.tag | string | `""` | Overrides the image tag whose default is the chart appVersion |
