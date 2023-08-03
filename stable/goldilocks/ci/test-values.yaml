@@ -35,7 +35,7 @@ controller:
       whenUnsatisfiable: ScheduleAnyway
       labelSelector:
         matchLabels:
-          app: controller
+          app.kubernetes.io/component: controller
 
 dashboard:
   basePath: goldilocks
@@ -53,7 +53,7 @@ dashboard:
       whenUnsatisfiable: ScheduleAnyway
       labelSelector:
         matchLabels:
-          app: dashboard
+          app.kubernetes.io/component: dashboard
   deployment:
     additionalLabels:
       test: value
