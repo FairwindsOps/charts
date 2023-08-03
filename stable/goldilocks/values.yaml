@@ -30,6 +30,8 @@ fullnameOverride: ""
 controller:
   # controller.enabled -- Whether or not to install the controller deployment
   enabled: true
+  # controller.revisionHistoryLimit -- Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+  revisionHistoryLimit: 10
   rbac:
     # controller.rbac.create -- If set to true, rbac resources will be created for the controller
     create: true
@@ -95,6 +97,8 @@ dashboard:
   basePath: null
   # dashboard.enabled -- If true, the dashboard component will be installed
   enabled: true
+  # dashboard.revisionHistoryLimit -- Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+  revisionHistoryLimit: 10
   # dashboard.replicaCount -- Number of dashboard pods to run
   replicaCount: 2
   service:
