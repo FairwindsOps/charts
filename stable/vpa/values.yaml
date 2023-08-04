@@ -36,6 +36,8 @@ recommender:
     pod-recommendation-min-cpu-millicores: 15
     pod-recommendation-min-memory-mb: 100
   replicaCount: 1
+  # recommender.revisionHistoryLimit -- The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+  revisionHistoryLimit: 10
   # recommender.podDisruptionBudget -- This is the setting for the pod disruption budget
   podDisruptionBudget: {}
     # maxUnavailable: 1
@@ -99,6 +101,8 @@ updater:
   # updater.extraArgs -- A key-value map of flags to pass to the updater
   extraArgs: {}
   replicaCount: 1
+  # updater.revisionHistoryLimit -- The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+  revisionHistoryLimit: 10
   # updater.podDisruptionBudget -- This is the setting for the pod disruption budget
   podDisruptionBudget: {}
     # maxUnavailable: 1
@@ -196,6 +200,8 @@ admissionController:
     timeoutSeconds: 30
 
   replicaCount: 1
+  # admissionController.revisionHistoryLimit -- The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+  revisionHistoryLimit: 10
   # admissionController.podDisruptionBudget -- This is the setting for the pod disruption budget
   podDisruptionBudget: {}
     # maxUnavailable: 1

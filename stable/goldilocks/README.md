@@ -71,6 +71,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
+| controller.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
 | controller.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
 | controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
@@ -93,6 +94,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.deployment.podAnnotations | object | `{}` | Extra annotations for the controller pod |
 | dashboard.basePath | string | `nil` | Path on which the dashboard is served. Defaults to `/` |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
+| dashboard.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
 | dashboard.service.port | int | `80` | The port to run the dashboard service on |
