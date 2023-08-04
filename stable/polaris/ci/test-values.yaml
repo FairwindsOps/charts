@@ -4,6 +4,8 @@ dashboard:
     ingressClassName: ingress
     hosts:
     - foo.com
+  deploymentAnnotations:
+    foo: bar
 webhook:
   enabled: true
   mutate: true
@@ -13,3 +15,5 @@ webhook:
     test: validate
   certManager:
     apiVersion: cert-manager.io/v1
+  deploymentAnnotations:
+    foo: bar
