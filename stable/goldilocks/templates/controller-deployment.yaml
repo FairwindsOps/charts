@@ -20,7 +20,7 @@ metadata:
 spec:
   replicas: 1
   {{- if .Values.controller.revisionHistoryLimit }}
-  revisionHistoryLimit: {{ .Values.controller.revisionHistory }}
+  revisionHistoryLimit: {{ .Values.controller.revisionHistoryLimit }}
   {{- end }}
   selector:
     matchLabels:
