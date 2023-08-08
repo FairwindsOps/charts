@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.23.2
+  agentChartTargetVersion: 2.19.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -437,9 +437,7 @@ postgresql:
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
-    registry: quay.io
-    repository: fairwinds/postgres-partman
-    tag: "14.4"
+    tag: "14.2.0-debian-10-r94"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
@@ -453,6 +451,7 @@ postgresql:
   auth:
     username: postgres
     database: fairwinds_insights
+    password: postgres
     existingSecret: fwinsights-postgresql
     secretKeys:
       adminPasswordKey: postgresql-password
@@ -464,6 +463,8 @@ postgresql:
       # -- Create Persistent Volume with Postgres
       enabled: true
     # -- Resources section for Postgres
+    extendedConfiguration: |
+      shared_preload_libraries = 'pg_partman_bgw'
     resources:
       limits:
         cpu: 1
@@ -471,6 +472,10 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
+    lifecycleHooks:
+      postStart:
+        exec:
+          command: ["/bin/sh", "-c", "sudo apt -y install postgresql-14 libpq-dev"]
   # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
   readReplica:
     username:

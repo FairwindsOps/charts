@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.23.2"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.19.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -126,19 +126,25 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
-| postgresql.image.registry | string | `"quay.io"` |  |
-| postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
-| postgresql.image.tag | string | `"14.4"` |  |
+| postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
+| postgresql.auth.password | string | `"postgres"` |  |
 | postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
 | postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
-| postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| postgresql.primary.extendedConfiguration | string | `"shared_preload_libraries = 'pg_partman_bgw'\n"` | Resources section for Postgres |
+| postgresql.primary.resources.limits.cpu | int | `1` |  |
+| postgresql.primary.resources.limits.memory | string | `"1Gi"` |  |
+| postgresql.primary.resources.requests.cpu | string | `"75m"` |  |
+| postgresql.primary.resources.requests.memory | string | `"256Mi"` |  |
+| postgresql.primary.lifecycleHooks.postStart.exec.command[0] | string | `"/bin/sh"` |  |
+| postgresql.primary.lifecycleHooks.postStart.exec.command[1] | string | `"-c"` |  |
+| postgresql.primary.lifecycleHooks.postStart.exec.command[2] | string | `"sudo apt -y install postgresql-14 libpq-dev"` |  |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
