@@ -144,7 +144,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.resources.requests.memory | string | `"256Mi"` |  |
 | postgresql.primary.lifecycleHooks.postStart.exec.command[0] | string | `"/bin/sh"` |  |
 | postgresql.primary.lifecycleHooks.postStart.exec.command[1] | string | `"-c"` |  |
-| postgresql.primary.lifecycleHooks.postStart.exec.command[2] | string | `"sudo apt -y install postgresql-14 libpq-dev"` |  |
+| postgresql.primary.lifecycleHooks.postStart.exec.command[2] | string | `"apt -y install postgresql-14 libpq-dev"` |  |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
