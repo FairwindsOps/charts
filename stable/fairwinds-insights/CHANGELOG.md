@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.18.10
+## 0.18.11
 * Updated postgres with partman
 
 ## 0.18.9
