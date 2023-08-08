@@ -481,7 +481,7 @@ postgresql:
   securityContext:
     enabled: true
     fsGroup: 70
-    runAsUser: 70    
+    runAsUser: 70
 encryption:
   aes:
     cypherKey:
