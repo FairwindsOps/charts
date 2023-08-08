@@ -141,7 +141,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | postgresql.primary.podSecurityContext.enabled | bool | `true` |  |
 | postgresql.primary.podSecurityContext.fsGroup | int | `70` |  |
-| postgresql.primary.podSecurityContext.runAsUser | int | `70` |  |
+| postgresql.primary.containerSecurityContext.enabled | bool | `true` |  |
+| postgresql.primary.containerSecurityContext.fsGroup | int | `70` |  |
+| postgresql.primary.containerSecurityContext.runAsUser | int | `70` |  |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
