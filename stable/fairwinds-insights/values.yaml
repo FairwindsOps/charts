@@ -476,7 +476,6 @@ postgresql:
       fsGroup: 70
     containerSecurityContext:
       enabled: true
-      fsGroup: 70
       runAsUser: 70
   # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
   readReplica:
