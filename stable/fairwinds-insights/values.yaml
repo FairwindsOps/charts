@@ -475,7 +475,7 @@ postgresql:
     lifecycleHooks:
       postStart:
         exec:
-          command: ["/bin/sh", "-c", "sudo apt -y install postgresql-14 libpq-dev"]
+          command: ["/bin/sh", "-c", "apt -y install postgresql-14 libpq-dev"]
   # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
   readReplica:
     username:
