@@ -438,7 +438,7 @@ postgresql:
   postMigrate: false
   image:
     repository: quay.io/fairwinds/postgres-partman
-    tag: 0.1
+    tag: 14.4
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
