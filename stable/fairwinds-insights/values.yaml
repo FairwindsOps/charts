@@ -437,7 +437,8 @@ postgresql:
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
-    repository: quay.io/fairwinds/postgres-partman
+    registry: quay.io
+    repository: fairwinds/postgres-partman
     tag: "14.4"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
