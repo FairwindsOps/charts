@@ -463,8 +463,6 @@ postgresql:
       # -- Create Persistent Volume with Postgres
       enabled: true
     # -- Resources section for Postgres
-    extendedConfiguration: |
-      shared_preload_libraries = 'pg_partman_bgw'
     resources:
       limits:
         cpu: 1

@@ -137,11 +137,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
-| postgresql.primary.extendedConfiguration | string | `"shared_preload_libraries = 'pg_partman_bgw'\n"` | Resources section for Postgres |
-| postgresql.primary.resources.limits.cpu | int | `1` |  |
-| postgresql.primary.resources.limits.memory | string | `"1Gi"` |  |
-| postgresql.primary.resources.requests.cpu | string | `"75m"` |  |
-| postgresql.primary.resources.requests.memory | string | `"256Mi"` |  |
+| postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | postgresql.primary.lifecycleHooks.postStart.exec.command[0] | string | `"/bin/sh"` |  |
 | postgresql.primary.lifecycleHooks.postStart.exec.command[1] | string | `"-c"` |  |
 | postgresql.primary.lifecycleHooks.postStart.exec.command[2] | string | `"apt -y install postgresql-14 libpq-dev"` |  |
