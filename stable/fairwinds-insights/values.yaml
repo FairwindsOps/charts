@@ -437,7 +437,8 @@ postgresql:
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
-    repository: quay.io/fairwinds/insights-postgres-partman
+    repository: quay.io/fairwinds/postgres-partman
+    tag: 0.1
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
