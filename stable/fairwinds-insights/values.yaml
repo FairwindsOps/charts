@@ -478,6 +478,10 @@ postgresql:
     host:
     port:
     sslMode:
+  securityContext:
+    enabled: true
+    fsGroup: 70
+    runAsUser: 70    
 encryption:
   aes:
     cypherKey:
