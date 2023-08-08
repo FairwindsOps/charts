@@ -9,6 +9,10 @@ metadata:
   labels:
     {{- include "polaris.labels" . | nindent 4 }}
     component: webhook
+  {{- with .Values.webhook.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
 spec:
   replicas: {{ .Values.webhook.replicas }}
   selector:
