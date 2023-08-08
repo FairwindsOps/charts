@@ -437,7 +437,9 @@ postgresql:
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
-    tag: "14.2.0-debian-10-r94"
+    registry: quay.io
+    repository: fairwinds/postgres-partman
+    tag: "14.4"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
@@ -469,10 +471,6 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
-    lifecycleHooks:
-      postStart:
-        exec:
-          command: ["/bin/sh", "-c", "apt -y install postgresql-14 libpq-dev"]
   # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
   readReplica:
     username:

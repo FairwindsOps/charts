@@ -126,7 +126,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
-| postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
+| postgresql.image.registry | string | `"quay.io"` |  |
+| postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
+| postgresql.image.tag | string | `"14.4"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
@@ -137,9 +139,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
-| postgresql.primary.lifecycleHooks.postStart.exec.command[0] | string | `"/bin/sh"` |  |
-| postgresql.primary.lifecycleHooks.postStart.exec.command[1] | string | `"-c"` |  |
-| postgresql.primary.lifecycleHooks.postStart.exec.command[2] | string | `"apt -y install postgresql-14 libpq-dev"` |  |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
