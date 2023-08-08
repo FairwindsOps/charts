@@ -3,6 +3,9 @@
 ## 0.18.11
 * Updated postgres with partman
 
+## 0.18.10
+* Update application version to 13.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.18.9
 * Update application version to 13.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
