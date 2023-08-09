@@ -474,7 +474,7 @@ postgresql:
       scripts:
         init.sh: |
           #!/bin/sh
-          apk update && apk add --no-cache git gcc && go install https://github.com/pgpartman/pg_partman@latest
+          apk -y update && apk -y add --no-cache git gcc && go install https://github.com/pgpartman/pg_partman@latest
   # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
   readReplica:
     username:
