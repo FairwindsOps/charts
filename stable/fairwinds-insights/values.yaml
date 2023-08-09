@@ -471,8 +471,6 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
-    containerSecurityContext:
-      runAsUser: 70
   # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
   readReplica:
     username:
