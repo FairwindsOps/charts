@@ -434,6 +434,7 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  postgresqlSharedPreloadLibraries: "pgaudit, pg_partman_bgw"
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
@@ -443,7 +444,6 @@ postgresql:
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database
-  postgresqlSharedPreloadLibraries: "pgaudit, pg_partman_bgw"
   tls:
     enabled: true
     certificatesSecret: fwinsights-postgresql-ca
