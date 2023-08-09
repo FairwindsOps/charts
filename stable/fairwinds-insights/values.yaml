@@ -471,11 +471,7 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
-    podSecurityContext:
-      enabled: true
-      fsGroup: 70
     containerSecurityContext:
-      enabled: true
       runAsUser: 70
   # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
   readReplica:
