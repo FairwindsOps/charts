@@ -126,7 +126,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
-| postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
+| postgresql.image.registry | string | `"quay.io"` |  |
+| postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
+| postgresql.image.tag | string | `"14.4"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
