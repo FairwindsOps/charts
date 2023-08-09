@@ -138,7 +138,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
-| postgresql.primary.initdb.scripts."init.sh" | string | `"#!/bin/sh\napk -y update && apk -y add --no-cache git gcc && go install https://github.com/pgpartman/pg_partman@latest\n"` |  |
+| postgresql.primary.initdb.scripts."init.sh" | string | `"#!/bin/sh\napk -y update && apk -y add --no-cache git gcc && git clone https://github.com/pgpartman/pg_partman\n"` |  |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
