@@ -437,7 +437,9 @@ postgresql:
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
-    tag: "14.2.0-debian-10-r94"
+    registry: quay.io
+    repository: fairwinds/postgres-partman
+    tag: "14.4"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
