@@ -129,7 +129,11 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
-| postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
+| postgresql.postgresqlSharedPreloadLibraries | string | `"pgaudit, pg_partman_bgw"` | TLS mode for connecting to the database |
+| postgresql.tls.enabled | bool | `true` |  |
+| postgresql.tls.certificatesSecret | string | `"fwinsights-postgresql-ca"` |  |
+| postgresql.tls.certFilename | string | `"tls.crt"` |  |
+| postgresql.tls.certKeyFilename | string | `"tls.key"` |  |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
 | postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
