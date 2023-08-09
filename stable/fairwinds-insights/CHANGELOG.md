@@ -1,5 +1,7 @@
 # Changelog
 
+## 0.18.11
+* Partman
 ## 0.18.10
 * Update application version to 13.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
