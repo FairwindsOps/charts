@@ -29,7 +29,7 @@ rbac:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.5"
+    tag: "0.5.1"
   imagePullSecret: ""
   sendFailures: true
   resources:
@@ -204,7 +204,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.4"
+    tag: "2.5"
   resources:
     requests:
       cpu: 100m
@@ -575,3 +575,15 @@ falcosecurity:
         minimumpriority: ""
         mutualtls: false
         checkcert: true
+
+kyverno:
+  enabled: false
+  schedule: "rand * * * *"
+  image:
+    repository: quay.io/fairwinds/kyverno
+    tag: "0.1"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  timeout: 300

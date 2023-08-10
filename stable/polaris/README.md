@@ -37,7 +37,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 |-----|------|---------|-------------|
 | config | string | `nil` | The [polaris configuration](https://github.com/FairwindsOps/polaris#configuration). If not provided then the [default](https://github.com/FairwindsOps/polaris/blob/master/examples/config.yaml) config from Polaris is used. |
 | configUrl | string | `nil` | Use a config from an accessible URL source.  NOTE: `config` & `configUrl` are mutually exclusive.  Setting `configURL` will take precedence over `config`.  Only one may be used. configUrl: https://example.com/config.yaml |
-| additionExemptions | string | `nil` | List of additional exemptions to append to the exemptions given in `config` |
+| additionalExemptions | string | `nil` | List of additional exemptions to append to the exemptions given in `config` |
 | image.repository | string | `"quay.io/fairwinds/polaris"` | Image repo |
 | image.tag | string | `""` | The Polaris Image tag to use. Defaults to the Chart's AppVersion |
 | image.pullPolicy | string | `"Always"` | Image pull policy |
@@ -53,6 +53,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.replicas | int | `2` | Number of replicas to run. |
 | dashboard.logLevel | string | `"Info"` | Set the logging level for the Dashboard command |
 | dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
+| dashboard.deploymentAnnotations | object | `{}` | Custom additional annotations on dashboard Deployment. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.extraContainers | list | `[]` | allows injecting additional containers. |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
@@ -93,6 +94,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.mutatingRules | list | `[]` | An array of additional rules for the MutatingWebhookConfiguration. Each requires a set of apiGroups, apiVersions, operations, resources, and a scope. |
 | webhook.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for common types for the ValidatingWebhookConfiguration |
 | webhook.podAdditionalLabels | object | `{}` | Custom additional labels on webhook pods. |
+| webhook.deploymentAnnotations | object | `{}` | Custom additional annotations on webhook Deployment. |
 | webhook.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
 | webhook.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
 | webhook.disallowExemptions | bool | `false` | Disallow any exemption |

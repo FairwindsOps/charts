@@ -23,6 +23,10 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Major Version Upgrade Notes
 
+## Upgrading from v6.x.x to v7.x.x
+
+In this change, the VPA helm chart was upgraded to the latest version, including a major bump. We recommend you to check [the VPA Helm chart changelog](https://github.com/FairwindsOps/charts/tree/master/stable/vpa#breaking-upgrading-from--v17x-to-200) to ensure a smooth upgrade.
+
 ## *BREAKING* Upgrading from v4.x.x to v5.x.x
 
 The new chart version includes [Ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) configuration for the `networking.k8s.io/v1` Kubernetes API.
@@ -67,6 +71,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
+| controller.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
 | controller.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
 | controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
@@ -89,6 +94,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.deployment.podAnnotations | object | `{}` | Extra annotations for the controller pod |
 | dashboard.basePath | string | `nil` | Path on which the dashboard is served. Defaults to `/` |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
+| dashboard.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
 | dashboard.service.port | int | `80` | The port to run the dashboard service on |

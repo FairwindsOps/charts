@@ -2,11 +2,36 @@
 ## 0.18.4
 * Update HPAs from v2beta2 to v2
 
+## 0.18.11
+* Updated postgres with partman
+
+## 0.18.10
+* Update application version to 13.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.9
+* Update application version to 13.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.8
+* Updated self hosted agent version to 2.23
+
+## 0.18.7
+* Start testing on 1.26 and 1.27
+
+## 0.18.6
+* Update application version to 13.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.5
+* Set kubeVersion in chart manifest
+
+## 0.18.4
+* Update application version to 13.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.18.3
 * Update application version to 13.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
 ## 0.18.2
 * Update application version to 13.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.18.1
 * Updated self hosted agent version to 2.21
 

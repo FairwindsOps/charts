@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.23.2
+* Start testing on 1.26 and 1.27
+
+## 2.23.1
+* Bumped `workloads` plugin version to `2.5` which exports controllers `PodLabels` and `PodAnnotations`
+
+## 2.23.0
+* Add labels for insights-agent
+
+## 2.22.1
+* Set kubeVersion in the chart manifest
+
+## 2.22.0
+* Add Kyverno plugin
+
 ## 2.21.6
 * Update Polaris to 8.4
 
@@ -90,7 +105,7 @@
 * Fix syntax errors around use of imagePullSecrets as part of Containers section of PodSpec to permit use of insights-agent with private container repos
 
 ## 2.16.1
-* Add workload annotion for right-sizer
+* Add workload annotation for right-sizer
 
 ## 2.16.0
 * Add namespace allowlist to trivy
