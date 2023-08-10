@@ -1,5 +1,5 @@
 # Changelog
-## 0.18.4
+## 0.18.12
 * Update HPAs from v2beta2 to v2
 
 ## 0.18.11
