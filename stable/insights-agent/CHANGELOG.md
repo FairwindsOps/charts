@@ -2,6 +2,9 @@
 ## 2.23.3
 * Add get/list/watch perms for policy and clusterpolicy to kyverno rbac template
 
+## 2.23.3
+* Bumped `trivy` plugin version to `0.28`
+
 ## 2.23.2
 * Start testing on 1.26 and 1.27
 
