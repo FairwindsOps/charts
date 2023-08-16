@@ -528,7 +528,7 @@ falco:
     port: 3031
   image:
     repository: quay.io/fairwinds/falco-agent
-    tag: "0.2"
+    tag: "0.3"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
