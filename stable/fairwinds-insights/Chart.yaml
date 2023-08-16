@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: "13.6"
+appVersion: "13.7"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 0.18.12
+version: 0.18.13
 kubeVersion: ">= 1.22.0-0"
 maintainers:
   - name: rbren
