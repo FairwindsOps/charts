@@ -30,6 +30,8 @@ serviceAccount:
 recommender:
   # recommender.enabled -- If true, the vpa recommender component will be installed.
   enabled: true
+  # recommender.annotations -- Annotations to add to the recommender deployment
+  annotations: {}
   # recommender.extraArgs -- A set of key-value flags to be passed to the recommender
   extraArgs:
     v: "4"
@@ -98,6 +100,8 @@ recommender:
 updater:
   # updater.enabled -- If true, the updater component will be deployed
   enabled: true
+  # updater.annotations -- Annotations to add to the updater deployment
+  annotations: {}
   # updater.extraArgs -- A key-value map of flags to pass to the updater
   extraArgs: {}
   replicaCount: 1
@@ -163,6 +167,8 @@ updater:
 admissionController:
   # admissionController.enabled -- If true, will install the admission-controller component of vpa
   enabled: true
+  # admissionController.annotations -- Annotations to add to the admission controller deployment
+  annotations: {}
   # admissionController.extraArgs -- A key-value map of flags to pass to the admissionController
   extraArgs: {}
   # admissionController.generateCertificate -- If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook
