@@ -1,4 +1,8 @@
 # Changelog
+
+## 2.23.5
+* Bumped `falco` plugin version to `0.3`
+
 ## 2.23.4
 * Add get/list/watch perms for policy and clusterpolicy to kyverno rbac template
 
