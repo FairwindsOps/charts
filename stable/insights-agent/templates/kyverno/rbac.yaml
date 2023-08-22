@@ -14,20 +14,29 @@ metadata:
     app: insights-agent
 rules:
 - apiGroups:
-  - '*'
+  - kyverno.io
   resources:
-  - customresourcedefinitions
-  - namespaces
-  - policies
-  - clusterpolicies
-  - policyreports
-  - policyreports/status
-  - clusterpolicyreports
-  - clusterpolicyreports/status
+  - '*'
   verbs:
   - get
   - list
   - watch
+- apiGroups:
+    - ""
+  resources:
+    - namespaces
+  verbs:
+    - get
+    - list
+    - watch
+- apiGroups:
+      - "apiextensions.k8s.io"
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - get
+      - list
+      - watch
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
