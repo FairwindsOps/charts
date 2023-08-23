@@ -1,4 +1,7 @@
 # Changelog
+
+## 2.23.7
+* Added install-reporter serviceAccount
 ## 2.23.6
 * Updated kyverno rbac
 ## 2.23.5
