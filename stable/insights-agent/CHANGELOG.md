@@ -1,5 +1,6 @@
 # Changelog
-
+## 2.23.6
+* Updated kyverno rbac
 ## 2.23.5
 * Bumped `falco` plugin version to `0.3`
 
