@@ -16,7 +16,12 @@ rules:
 - apiGroups:
   - kyverno.io
   resources:
-  - '*'
+  - policies
+  - clusterpolicies
+  - policyreports
+  - policyreports/status
+  - clusterpolicyreports
+  - clusterpolicyreports/status
   verbs:
   - get
   - list
@@ -40,7 +45,8 @@ rules:
 - apiGroups:
     - wgpolicyk8s.io
   resources:
-    - '*'
+    - clusterpolicyreports
+    - policyreports
   verbs:
     - get
     - list
