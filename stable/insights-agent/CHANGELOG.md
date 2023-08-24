@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.23.8
+* Add mountTmp flag to Kyverno job and default to true
+
+## 2.23.7
+* Added install-reporter serviceAccount
+## 2.23.6
+* Updated kyverno rbac
 ## 2.23.5
 * Bumped `falco` plugin version to `0.3`
 
