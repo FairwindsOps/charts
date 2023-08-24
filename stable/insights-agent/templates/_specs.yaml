@@ -88,6 +88,10 @@ imagePullSecrets:
 volumes:
 - name: output
   emptyDir: {}
+{{ if .Config.mountTmp }}
+- name: tmp
+  emptyDir: {}
+{{- end }}
 {{-   if (and .Values.global.sslCertFileSecretName .Values.global.sslCertFileSecretKey) }}
 {{       include "ssl-cert-file-volume-spec" . | trim }}
 {{-   end }}
@@ -107,6 +111,10 @@ env:
 volumeMounts:
 - name: output
   mountPath: /output
+{{- if .Config.mountTmp }}
+- name: tmp
+  mountPath: /tmp
+{{- end }}
 {{ include "ssl-cert-file-volumemount-spec" . }}
 {{- end }}
 

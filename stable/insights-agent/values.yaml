@@ -587,3 +587,4 @@ kyverno:
       cpu: 100m
       memory: 128Mi
   timeout: 300
+  mountTmp: true
