@@ -1,15 +1,21 @@
 recommender:
   enabled: true
+  annotations:
+    foo: bar
   podLabels:
     app: test
     foo: bar
 updater:
   enabled: true
+  annotations:
+    foo: bar
   podLabels:
     app: test
     foo: bar
 admissionController:
   enabled: true
+  annotations:
+    foo: bar
   extraArgs:
     v: "4"
   generateCertificate: true

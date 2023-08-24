@@ -113,6 +113,7 @@ recommender:
 | serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |
 | serviceAccount.automountServiceAccountToken | bool | `true` | Automount API credentials for the Service Account |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
+| recommender.annotations | object | `{}` | Annotations to add to the recommender deployment |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
 | recommender.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
@@ -132,6 +133,7 @@ recommender:
 | recommender.affinity | object | `{}` |  |
 | recommender.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the recommender |
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
+| updater.annotations | object | `{}` | Annotations to add to the updater deployment |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
 | updater.replicaCount | int | `1` |  |
 | updater.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
@@ -151,6 +153,7 @@ recommender:
 | updater.affinity | object | `{}` |  |
 | updater.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the updater |
 | admissionController.enabled | bool | `true` | If true, will install the admission-controller component of vpa |
+| admissionController.annotations | object | `{}` | Annotations to add to the admission controller deployment |
 | admissionController.extraArgs | object | `{}` | A key-value map of flags to pass to the admissionController |
 | admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
 | admissionController.secretName | string | `"{{ include \"vpa.fullname\" . }}-tls-secret"` | Name for the TLS secret created for the webhook. Default {{ .Release.Name }}-tls-secret |

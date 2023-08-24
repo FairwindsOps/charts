@@ -2,6 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  {{- if .Values.recommender.annotations }}
+  annotations:
+  {{ toYaml .Values.recommender.annotations | indent 4 }}
+  {{- end }}
   name: {{ include "vpa.fullname" . }}-recommender
   labels:
     app.kubernetes.io/component: recommender
