@@ -21,6 +21,7 @@ spec:
         {{- toYaml . | nindent 8 }}
     {{- end }}
     spec:
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-install-reporter
       restartPolicy: Never
       {{- with .Values.installReporter.imagePullSecrets }}
       imagePullSecrets:
