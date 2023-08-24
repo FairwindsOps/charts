@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.23.8
+* Add mountTmp flag to Kyverno job and default to true
+
 ## 2.23.7
 * Added install-reporter serviceAccount
 ## 2.23.6
