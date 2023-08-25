@@ -4,7 +4,7 @@ kind: Deployment
 metadata:
   {{- if .Values.updater.annotations }}
   annotations:
-  {{ toYaml .Values.updater.annotations | indent 4 }}
+  {{- .Values.updater.annotations | toYaml | nindent 4 }}
   {{- end }}
   name: {{ include "vpa.fullname" . }}-updater
   labels:

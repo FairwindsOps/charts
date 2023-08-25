@@ -2,6 +2,7 @@ recommender:
   enabled: true
   annotations:
     foo: bar
+    "foo.io/deploy-repo": "https://gitlab.com/foo/myrepo"
   podLabels:
     app: test
     foo: bar
@@ -9,6 +10,7 @@ updater:
   enabled: true
   annotations:
     foo: bar
+    "foo.io/deploy-repo": "https://gitlab.com/foo/myrepo"
   podLabels:
     app: test
     foo: bar
@@ -16,6 +18,7 @@ admissionController:
   enabled: true
   annotations:
     foo: bar
+    "foo.io/deploy-repo": "https://gitlab.com/foo/myrepo"
   extraArgs:
     v: "4"
   generateCertificate: true
