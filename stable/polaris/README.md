@@ -79,6 +79,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.validate | bool | `true` | Enables the Validating Webhook, to reject resources with issues |
 | webhook.mutate | bool | `false` | Enables the Mutating Webhook, to modify resources with issues |
 | webhook.replicas | int | `2` | Number of replicas |
+| webhook.logLevel | string | `"info"` | Set the logging level for the Webhook command |
 | webhook.nodeSelector | object | `{}` | Webhook pod nodeSelector |
 | webhook.tolerations | list | `[]` | Webhook pod tolerations |
 | webhook.affinity | object | `{}` | Webhook pods affinity |

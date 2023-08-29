@@ -52,6 +52,9 @@ spec:
             {{- end }}
             - --validate={{ .Values.webhook.validate }}
             - --mutate={{ .Values.webhook.mutate }}
+            {{- if .Values.webhook.logLevel }}
+            - --log-level={{ .Values.webhook.logLevel }}
+            {{- end }}
           image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
           imagePullPolicy: '{{.Values.image.pullPolicy}}'
           ports:
