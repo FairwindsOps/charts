@@ -139,6 +139,8 @@ webhook:
   mutate: false
   # webhook.replicas -- Number of replicas
   replicas: 2
+  # webhook.logLevel -- Set the logging level for the Webhook command
+  logLevel: info
   # webhook.nodeSelector -- Webhook pod nodeSelector
   nodeSelector: {}
   # webhook.tolerations -- Webhook pod tolerations
