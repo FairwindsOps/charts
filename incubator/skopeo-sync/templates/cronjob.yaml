@@ -3,7 +3,7 @@
 ---
 {{- end }}
 {{- if not ($.Capabilities.APIVersions.Has "batch/v1/CronJob") }}
-apiVersion: batch/v1beta1
+apiVersion: batch/v1
 {{- else }}
 apiVersion: batch/v1
 {{- end }}
