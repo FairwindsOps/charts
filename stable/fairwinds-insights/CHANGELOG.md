@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.18.15
+* Update application version to 13.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.18.14
 * Update application version to 13.8. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
