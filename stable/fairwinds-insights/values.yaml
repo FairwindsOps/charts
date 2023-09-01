@@ -331,6 +331,26 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
+actionItemsStatisticsCronjob:
+  # -- Enable action items statistics true by default
+  enabled: true
+  # -- Resources for the action items statistics job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  # -- CRON schedules for the database cleanup job.
+  schedules:
+    - name: database-cleanup
+      interval: hourly
+      cron: "40 * * * *"
+  securityContext:
+    # -- The user ID to run the database cleanup job under.
+    runAsUser: 10324
+
 resourcesRecommendationsCronjob:
   # -- Enable resources recommendations true by default
   enabled: true
