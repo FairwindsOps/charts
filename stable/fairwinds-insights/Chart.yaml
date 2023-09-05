@@ -7,7 +7,6 @@ kubeVersion: ">= 1.22.0-0"
 maintainers:
   - name: rbren
   - name: mhoss019
-  - name: ivanfetch-fw
 dependencies:
   - name: postgresql
     version: 12.1.6
