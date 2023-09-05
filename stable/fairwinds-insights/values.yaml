@@ -332,9 +332,7 @@ databaseCleanupCronjob:
     runAsUser: 10324
 
 actionItemsStatisticsCronjob:
-  # -- Enable action items statistics true by default
   enabled: true
-  # -- Resources for the action items statistics job.
   resources:
     limits:
       cpu: 500m
@@ -342,13 +340,11 @@ actionItemsStatisticsCronjob:
     requests:
       cpu: 80m
       memory: 128Mi
-  # -- CRON schedules for the action items statistics job.
   schedules:
     - name: action-items-statistics
-      interval: hourly
-      cron: "40 * * * *"
+      interval: 24h
+      cron: "0 0 * * *"
   securityContext:
-    # -- The user ID to run the action items statistics job under.
     runAsUser: 10324
 
 resourcesRecommendationsCronjob:
