@@ -99,7 +99,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
-| actionItemsStatisticsCronjob.enabled | bool | `true` | Enable action items statistics true by default |
+| actionItemsStatisticsCronjob.enabled | bool | `false` | Enable action items statistics true by default |
 | actionItemsStatisticsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the action items statistics job. |
 | actionItemsStatisticsCronjob.schedules | list | `[{"cron":"40 * * * *","interval":"hourly","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
