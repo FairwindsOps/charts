@@ -104,7 +104,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | actionItemsStatisticsCronjob.resources.limits.memory | string | `"1024Mi"` |  |
 | actionItemsStatisticsCronjob.resources.requests.cpu | string | `"80m"` |  |
 | actionItemsStatisticsCronjob.resources.requests.memory | string | `"128Mi"` |  |
-| actionItemsStatisticsCronjob.schedules[0].name | string | `"database-cleanup"` |  |
+| actionItemsStatisticsCronjob.schedules[0].name | string | `"action-items-statistics"` |  |
 | actionItemsStatisticsCronjob.schedules[0].interval | string | `"24h"` |  |
 | actionItemsStatisticsCronjob.schedules[0].cron | string | `"0 0 * * *"` |  |
 | actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` |  |
