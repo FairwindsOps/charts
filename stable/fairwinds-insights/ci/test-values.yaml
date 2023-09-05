@@ -58,7 +58,7 @@ databaseCleanupCronjob:
   schedules: []
 
 actionItemsStatisticsCronjob:
-  enabled: false
+  enabled: true
   schedules: []
 
 resourcesRecommendationsCronjob:

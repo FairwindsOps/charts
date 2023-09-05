@@ -333,7 +333,7 @@ databaseCleanupCronjob:
 
 actionItemsStatisticsCronjob:
   # -- Enable action items statistics true by default
-  enabled: false
+  enabled: true
   # -- Resources for the action items statistics job.
   resources:
     limits:
