@@ -342,13 +342,13 @@ actionItemsStatisticsCronjob:
     requests:
       cpu: 80m
       memory: 128Mi
-  # -- CRON schedules for the database cleanup job.
+  # -- CRON schedules for the action items statistics job.
   schedules:
-    - name: database-cleanup
+    - name: action-items-statistics
       interval: hourly
       cron: "40 * * * *"
   securityContext:
-    # -- The user ID to run the database cleanup job under.
+    # -- The user ID to run the action items statistics job under.
     runAsUser: 10324
 
 resourcesRecommendationsCronjob:

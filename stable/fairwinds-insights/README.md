@@ -101,8 +101,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
 | actionItemsStatisticsCronjob.enabled | bool | `false` | Enable action items statistics true by default |
 | actionItemsStatisticsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the action items statistics job. |
-| actionItemsStatisticsCronjob.schedules | list | `[{"cron":"40 * * * *","interval":"hourly","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
-| actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
+| actionItemsStatisticsCronjob.schedules | list | `[{"cron":"40 * * * *","interval":"hourly","name":"action-items-statistics"}]` | CRON schedules for the action items statistics job. |
+| actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the action items statistics job under. |
 | resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
 | resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
 | resourcesRecommendationsCronjob.schedules | list | `[{"cron":"0 2 * * *","interval":"24h","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
