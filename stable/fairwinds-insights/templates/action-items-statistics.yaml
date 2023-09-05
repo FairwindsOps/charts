@@ -26,7 +26,7 @@ spec:
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.actionItemsStatisticsCronJob.resources | nindent 16 }}
+                {{- toYaml $.Values.actionItemsStatisticsCronjob.resources | nindent 16 }}
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
