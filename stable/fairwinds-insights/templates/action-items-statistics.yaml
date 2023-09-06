@@ -1,5 +1,5 @@
-{{- if .Values.databaseCleanupCronjob.enabled }}
-{{ range .Values.databaseCleanupCronjob.schedules }}
+{{- if  and .Values.actionItemsStatisticsCronjob .Values.actionItemsStatisticsCronjob.enabled }}
+{{ range .Values.actionItemsStatisticsCronjob.schedules }}
 ---
 apiVersion: batch/v1
 kind: CronJob
@@ -27,13 +27,13 @@ spec:
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.databaseCleanupCronjob.resources | nindent 16 }}
+                {{- toYaml $.Values.actionItemsStatisticsCronjob.resources | nindent 16 }}
               securityContext:
                 readOnlyRootFilesystem: true
                 allowPrivilegeEscalation: false
                 privileged: false
                 runAsNonRoot: true
-                runAsUser: {{ $.Values.databaseCleanupCronjob.securityContext.runAsUser }}
+                runAsUser: {{ $.Values.actionItemsStatisticsCronjob.securityContext.runAsUser }}
                 capabilities:
                   drop:
                     - ALL
