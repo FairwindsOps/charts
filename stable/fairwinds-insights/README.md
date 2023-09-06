@@ -99,6 +99,15 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
+| actionItemsStatisticsCronjob.enabled | bool | `true` |  |
+| actionItemsStatisticsCronjob.resources.limits.cpu | string | `"500m"` |  |
+| actionItemsStatisticsCronjob.resources.limits.memory | string | `"1024Mi"` |  |
+| actionItemsStatisticsCronjob.resources.requests.cpu | string | `"80m"` |  |
+| actionItemsStatisticsCronjob.resources.requests.memory | string | `"128Mi"` |  |
+| actionItemsStatisticsCronjob.schedules[0].name | string | `"action-items-statistics"` |  |
+| actionItemsStatisticsCronjob.schedules[0].interval | string | `"24h"` |  |
+| actionItemsStatisticsCronjob.schedules[0].cron | string | `"0 0 * * *"` |  |
+| actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` |  |
 | resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
 | resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
 | resourcesRecommendationsCronjob.schedules | list | `[{"cron":"0 2 * * *","interval":"24h","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
