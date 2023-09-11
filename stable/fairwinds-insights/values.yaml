@@ -342,8 +342,8 @@ actionItemsStatisticsCronjob:
       memory: 128Mi
   schedules:
     - name: action-items-statistics
-      interval: 24h
-      cron: "0 0 * * *"
+      interval: 60m
+      cron: "15 * * * *"
   securityContext:
     runAsUser: 10324
 
