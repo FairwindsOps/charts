@@ -105,8 +105,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | actionItemsStatisticsCronjob.resources.requests.cpu | string | `"80m"` |  |
 | actionItemsStatisticsCronjob.resources.requests.memory | string | `"128Mi"` |  |
 | actionItemsStatisticsCronjob.schedules[0].name | string | `"action-items-statistics"` |  |
-| actionItemsStatisticsCronjob.schedules[0].interval | string | `"24h"` |  |
-| actionItemsStatisticsCronjob.schedules[0].cron | string | `"0 0 * * *"` |  |
+| actionItemsStatisticsCronjob.schedules[0].interval | string | `"60m"` |  |
+| actionItemsStatisticsCronjob.schedules[0].cron | string | `"15 * * * *"` |  |
 | actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` |  |
 | resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
 | resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
