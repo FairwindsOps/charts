@@ -1,7 +1,14 @@
 # Changelog
 
+## 0.19.2
+* Update application version to 13.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.19.1
+* Fixed Action Items Statistics schedule
+
 ## 0.19.0
 * Added job for Action Items Statistics
+
 ## 0.18.15
 * Update application version to 13.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
