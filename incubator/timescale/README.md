@@ -28,7 +28,7 @@ TimescaleDB HA Deployment.
 | clusterName | string | `""` |  |
 | version | string | `nil` |  |
 | image.repository | string | `"timescale/timescaledb-ha"` |  |
-| image.tag | string | `"pg14.9-ts2.11.2"` |  |
+| image.tag | string | `"pg14.8-ts2.11.0-all"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | secrets.credentials.PATRONI_SUPERUSER_PASSWORD | string | `""` |  |
 | secrets.credentials.PATRONI_REPLICATION_PASSWORD | string | `""` |  |
