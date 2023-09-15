@@ -157,7 +157,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "2.2"
+    tag: "2.3"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -204,7 +204,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.5"
+    tag: "2.6"
   resources:
     requests:
       cpu: 100m
@@ -432,7 +432,7 @@ right-sizer:
   # This image is for the controller, the agent only runs the Insights uploader.
   image:
     repository: quay.io/fairwinds/right-sizer
-    tag: 0.4
+    tag: 0.5
     pullPolicy: Always
   # rightsizer.imagePullSecrets -- imagePullSecrets containing private registry credentials.
   imagePullSecrets: []
