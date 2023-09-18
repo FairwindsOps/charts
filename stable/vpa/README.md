@@ -107,7 +107,14 @@ recommender:
 | nameOverride | string | `""` | A template override for the name |
 | fullnameOverride | string | `""` | A template override for the fullname |
 | podLabels | object | `{}` | Labels to add to all pods |
-| rbac.create | bool | `true` | If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components. Temporary rbac resources will still be created, to ensure a functioning installation process |
+| rbac.create | bool | `true` | If true, then rbac resources (ClusterRoles and ClusterRoleBindings) will be created for the selected components. Temporary rbac resources will still be created, to ensure a functioning installation process |
+| rbac.clusterRoles | object | `{"vpaActor":[],"vpaCheckpointActor":[],"vpaEvictioner":[],"vpaMetricsReader":[],"vpaStatusReader":[],"vpaTargetReader":[]}` | Extra rbac rules for Clusterroles |
+| rbac.clusterRoles.vpaActor | list | `[]` | Extra rbac rules for the vpa-actor ClusterRole |
+| rbac.clusterRoles.vpaCheckpointActor | list | `[]` | Extra rbac rules for the vpa-checkpoint-actor ClusterRole |
+| rbac.clusterRoles.vpaEvictioner | list | `[]` | Extra rbac rules for the vpa-evictioner ClusterRole |
+| rbac.clusterRoles.vpaMetricsReader | list | `[]` | Extra rbac rules for the vpa-metrics-reader ClusterRole |
+| rbac.clusterRoles.vpaTargetReader | list | `[]` | Extra rbac rules for the vpa-target-reader ClusterRole |
+| rbac.clusterRoles.vpaStatusReader | list | `[]` | Extra rbac rules for the vpa-status-reader ClusterRole |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created for each component |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service accounts for each component |
 | serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |

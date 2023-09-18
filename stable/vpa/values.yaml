@@ -13,9 +13,23 @@ fullnameOverride: ""
 # podLabels -- Labels to add to all pods
 podLabels: {}
 rbac:
-  # rbac.create -- If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components.
+  # rbac.create -- If true, then rbac resources (ClusterRoles and ClusterRoleBindings) will be created for the selected components.
   # Temporary rbac resources will still be created, to ensure a functioning installation process
   create: true
+  # rbac.clusterRoles -- Extra rbac rules for Clusterroles
+  clusterRoles:
+    # rbac.clusterRoles.vpaActor -- Extra rbac rules for the vpa-actor ClusterRole
+    vpaActor: []
+    # rbac.clusterRoles.vpaCheckpointActor -- Extra rbac rules for the vpa-checkpoint-actor ClusterRole
+    vpaCheckpointActor: []
+    # rbac.clusterRoles.vpaEvictioner -- Extra rbac rules for the vpa-evictioner ClusterRole
+    vpaEvictioner: []
+    # rbac.clusterRoles.vpaMetricsReader -- Extra rbac rules for the vpa-metrics-reader ClusterRole
+    vpaMetricsReader: []
+    # rbac.clusterRoles.vpaTargetReader -- Extra rbac rules for the vpa-target-reader ClusterRole
+    vpaTargetReader: []
+    # rbac.clusterRoles.vpaStatusReader -- Extra rbac rules for the vpa-status-reader ClusterRole
+    vpaStatusReader: []
 
 serviceAccount:
   # serviceAccount.create -- Specifies whether a service account should be created for each component
