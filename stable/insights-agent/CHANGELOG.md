@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.24.1
+* bump `insights-admission` to version '1.9.*' in requirements.yaml 
+
 ## 2.24.0
 * Bumped `opa` plugin version to `2.3`
 * Bumped `right-sizer` plugin version to `0.5`
