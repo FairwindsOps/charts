@@ -25,6 +25,32 @@ The admissionController is the only one that poses a stability consideration bec
 
 For more details, please see the values below, and the vertical pod autosclaer documentation.
 
+## *BREAKING* Upgrading from <= v2.5.1 to 3.0.0
+
+### ClusterRole rules
+
+Previously, ClusterRoles were created by default from templates and could not be extended with custom rules. Since `3.0.0` version it is possible.
+
+You can define it as follows:
+
+```yaml
+rbac:
+  clusterRoles:
+    vpaActor:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+    vpaCheckpointActor: []
+    vpaEvictioner: []
+    vpaMetricsReader: []
+    vpaTargetReader: []
+    vpaStatusReader: []
+
+```
+
 ## *BREAKING* Upgrading from <= v1.7.x to 2.0.0
 
 ### Certificate generation
