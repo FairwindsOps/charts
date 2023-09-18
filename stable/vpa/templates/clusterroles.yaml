@@ -12,8 +12,8 @@ rules:
     verbs:
       - get
       - list
-  {{- if .Values.rbac.clusterRoles.vpaMetricsReader -}}
-  {{ toYaml .Values.rbac.clusterRoles.vpaMetricsReader | nindent 2 }}
+  {{- if .Values.rbac.extraRules.vpaMetricsReader -}}
+  {{ toYaml .Values.rbac.extraRules.vpaMetricsReader | nindent 2 }}
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -58,8 +58,8 @@ rules:
       - list
       - watch
       - patch
-  {{- if .Values.rbac.clusterRoles.vpaActor -}}
-  {{ toYaml .Values.rbac.clusterRoles.vpaActor | nindent 2 }}
+  {{- if .Values.rbac.extraRules.vpaActor -}}
+  {{ toYaml .Values.rbac.extraRules.vpaActor | nindent 2 }}
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -96,8 +96,8 @@ rules:
     verbs:
       - get
       - list
-  {{- if .Values.rbac.clusterRoles.vpaCheckpointActor -}}
-  {{ toYaml .Values.rbac.clusterRoles.vpaCheckpointActor | nindent 2 }}
+  {{- if .Values.rbac.extraRules.vpaCheckpointActor -}}
+  {{ toYaml .Values.rbac.extraRules.vpaCheckpointActor | nindent 2 }}
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -118,8 +118,8 @@ rules:
       - pods/eviction
     verbs:
       - create
-  {{- if .Values.rbac.clusterRoles.vpaEvictioner -}}
-  {{ toYaml .Values.rbac.clusterRoles.vpaEvictioner | nindent 2 }}
+  {{- if .Values.rbac.extraRules.vpaEvictioner -}}
+  {{ toYaml .Values.rbac.extraRules.vpaEvictioner | nindent 2 }}
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -162,8 +162,8 @@ rules:
       - get
       - list
       - watch
-  {{- if .Values.rbac.clusterRoles.vpaTargetReader -}}
-  {{ toYaml .Values.rbac.clusterRoles.vpaTargetReader | nindent 2 }}
+  {{- if .Values.rbac.extraRules.vpaTargetReader -}}
+  {{ toYaml .Values.rbac.extraRules.vpaTargetReader | nindent 2 }}
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -179,7 +179,7 @@ rules:
       - get
       - list
       - watch
-  {{- if .Values.rbac.clusterRoles.vpaStatusReader -}}
-  {{ toYaml .Values.rbac.clusterRoles.vpaStatusReader | nindent 2 }}
+  {{- if .Values.rbac.extraRules.vpaStatusReader -}}
+  {{ toYaml .Values.rbac.extraRules.vpaStatusReader | nindent 2 }}
   {{- end }}
 {{- end }}
