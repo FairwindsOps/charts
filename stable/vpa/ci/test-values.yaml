@@ -1,3 +1,59 @@
+rbac:
+  clusterRoles:
+    vpaActor:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+          - list
+          - watch
+    vpaCheckpointActor:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+          - list
+          - watch
+    vpaEvictioner:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+          - list
+          - watch
+    vpaMetricsReader:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+          - list
+          - watch
+    vpaTargetReader:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+          - list
+          - watch
+    vpaStatusReader:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+          - list
+          - watch
 recommender:
   enabled: true
   annotations:
