@@ -12,6 +12,9 @@ rules:
     verbs:
       - get
       - list
+  {{- if .Values.rbac.extraRules.vpaMetricsReader -}}
+  {{ toYaml .Values.rbac.extraRules.vpaMetricsReader | nindent 2 }}
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -55,6 +58,9 @@ rules:
       - list
       - watch
       - patch
+  {{- if .Values.rbac.extraRules.vpaActor -}}
+  {{ toYaml .Values.rbac.extraRules.vpaActor | nindent 2 }}
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -90,6 +96,9 @@ rules:
     verbs:
       - get
       - list
+  {{- if .Values.rbac.extraRules.vpaCheckpointActor -}}
+  {{ toYaml .Values.rbac.extraRules.vpaCheckpointActor | nindent 2 }}
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -109,6 +118,9 @@ rules:
       - pods/eviction
     verbs:
       - create
+  {{- if .Values.rbac.extraRules.vpaEvictioner -}}
+  {{ toYaml .Values.rbac.extraRules.vpaEvictioner | nindent 2 }}
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -150,6 +162,9 @@ rules:
       - get
       - list
       - watch
+  {{- if .Values.rbac.extraRules.vpaTargetReader -}}
+  {{ toYaml .Values.rbac.extraRules.vpaTargetReader | nindent 2 }}
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -164,4 +179,7 @@ rules:
       - get
       - list
       - watch
+  {{- if .Values.rbac.extraRules.vpaStatusReader -}}
+  {{ toYaml .Values.rbac.extraRules.vpaStatusReader | nindent 2 }}
+  {{- end }}
 {{- end }}
