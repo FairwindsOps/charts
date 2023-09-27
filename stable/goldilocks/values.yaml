@@ -60,13 +60,11 @@ controller:
   # controller.topologySpreadConstraints -- Topology spread constraints for the controller pods
   topologySpreadConstraints: []
   # controller.resources -- The resources block for the controller pods
-  resources: {}
-    # limits:
-    #   cpu: 25m
-    #   memory: 256Mi
-    # requests:
-    #   cpu: 25m
-    #   memory: 256Mi
+  resources:
+    limits: {}
+    requests:
+      cpu: 25m
+      memory: 256Mi
   # controller.podSecurityContext -- Defines the podSecurityContext for the controller pod
   podSecurityContext: {}
   # controller.securityContext -- The container securityContext for the controller container
@@ -159,13 +157,11 @@ dashboard:
     #      - chart-example.local
 
   # dashboard.resources -- A resources block for the dashboard.
-  resources: {}
-    # limits:
-    #   cpu: 25m
-    #   memory: 256Mi
-    # requests:
-    #   cpu: 25m
-    #   memory: 256Mi
+  resources:
+    limits: {}
+    requests:
+      cpu: 25m
+      memory: 256Mi
   # dashboard.podSecurityContext -- Defines the podSecurityContext for the dashboard pod
   podSecurityContext: {}
   # dashboard.securityContext -- The container securityContext for the dashboard container
