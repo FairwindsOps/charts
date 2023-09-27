@@ -84,7 +84,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.tolerations | list | `[]` | Tolerations for the controller pod |
 | controller.affinity | object | `{}` | Affinity for the controller pods |
 | controller.topologySpreadConstraints | list | `[]` | Topology spread constraints for the controller pods |
-| controller.resources | object | `{"limits":{"cpu":"25m","memory":"256Mi"},"requests":{"cpu":"25m","memory":"256Mi"}}` | The resources block for the controller pods |
+| controller.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | The resources block for the controller pods |
 | controller.podSecurityContext | object | `{}` | Defines the podSecurityContext for the controller pod |
 | controller.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the controller container |
 | controller.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the controller container |
@@ -118,7 +118,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | dashboard.ingress.hosts[0].paths[0].type | string | `"ImplementationSpecific"` |  |
 | dashboard.ingress.tls | list | `[]` |  |
-| dashboard.resources | object | `{"limits":{"cpu":"25m","memory":"256Mi"},"requests":{"cpu":"25m","memory":"256Mi"}}` | A resources block for the dashboard. |
+| dashboard.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | A resources block for the dashboard. |
 | dashboard.podSecurityContext | object | `{}` | Defines the podSecurityContext for the dashboard pod |
 | dashboard.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the dashboard container |
 | dashboard.nodeSelector | object | `{}` |  |
