@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.19.5
+* Updated self hosted agent version to 2.24
+
 ## 0.19.4
 * Update application version to 13.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
