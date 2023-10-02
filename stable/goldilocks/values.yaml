@@ -18,6 +18,8 @@ image:
   repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
   # image.tag -- The goldilocks image tag to use
   tag: v4.10.0
+  # image.hash -- SHA-256 hash of goldilocks image
+  hash: sha256:09aa7abe9624615678137cbb948d35f7c636e64011102afdf609be5406883fcb
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
   pullPolicy: Always
 

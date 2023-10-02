@@ -50,7 +50,7 @@ spec:
         {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}{{ if .Values.image.hash }}@{{ .Values.image.hash }}{{ end }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /goldilocks
