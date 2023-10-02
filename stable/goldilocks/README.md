@@ -66,6 +66,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | metrics-server.apiService.create | bool | `true` |  |
 | image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/goldilocks"` | Repository for the goldilocks image |
 | image.tag | string | `"v4.10.0"` | The goldilocks image tag to use |
+| image.hash | string | `"sha256:09aa7abe9624615678137cbb948d35f7c636e64011102afdf609be5406883fcb"` | SHA-256 hash of goldilocks image |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | imagePullSecrets | list | `[]` | A list of image pull secret names to use |
 | nameOverride | string | `""` |  |
