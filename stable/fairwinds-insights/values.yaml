@@ -706,3 +706,20 @@ repoScanJob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+
+slackChannelsLocalRefresherCronjob:
+  enabled: true
+  # -- Resources for the slack channels local refresher cron-job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 150m
+      memory: 256Mi
+  # -- CRON schedules for the slack channels local refresher cron-job.
+  schedules:
+    - name: default-schedule
+      cron: "0/15 * * * *"
+  securityContext:
+    runAsUser: 10324
