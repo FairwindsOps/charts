@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.24.2
+* Add gitops tip to readme
 ## 2.24.1
 * bump `insights-admission` to version '1.9.*' in requirements.yaml 
 
