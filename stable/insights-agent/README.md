@@ -24,6 +24,9 @@ In order to avoid every report consuming resources at once, you can stagger the 
 by setting the minute of the cron schedule to a random number. For example,
 to run at a random minute every hour, your cron expression can be `rand * * * *`.
 
+### Gitops Tooling and Cronjobs
+If using continous devlivery tooling to deploy insights, you should explicitly set `.Values.cronjobs.apiVersion` to ensure compatible apiVersions are used for your cluster. This is handled automatically when deploying with helm. 
+
 ## Reports
 There are several different report types which can be enabled and configured:
 * `polaris`
