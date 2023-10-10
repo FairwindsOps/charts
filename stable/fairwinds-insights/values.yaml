@@ -100,7 +100,6 @@ cronjobs:
 
   action-items-statistics:
     command: action_items_statistics
-    interval: 60m
     schedule: "15 * * * *"
     resources:
       limits:
