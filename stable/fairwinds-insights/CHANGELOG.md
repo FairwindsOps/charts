@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.20.0
+* Add `slackChannelsLocalRefresherCronjob` to `stable/fairwinds-insights`.
+
 ## 0.19.8
 * Update application version to 14.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
