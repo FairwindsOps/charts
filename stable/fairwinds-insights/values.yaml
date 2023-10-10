@@ -647,6 +647,7 @@ reportjob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+  terminationGracePeriodSeconds: 600
 
 automatedPullRequestJob:
   enabled: true
