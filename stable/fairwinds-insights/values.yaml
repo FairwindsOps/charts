@@ -75,14 +75,14 @@ options:
 
 cronjobOptions:
   securityContext:
-    readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
-    privileged: false
-    runAsNonRoot: true
-    runAsUser: 10324
     capabilities:
       drop:
         - ALL
+    privileged: false
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 10324
 
 cronjobs:
   action-item-filters-refresh:
