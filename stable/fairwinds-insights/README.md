@@ -254,3 +254,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.resources.requests.memory | string | `"128Mi"` |  |
 | repoScanJob.nodeSelector | object | `{}` |  |
 | repoScanJob.tolerations | list | `[]` |  |
+| slackChannelsLocalRefresherCronjob.enabled | bool | `true` |  |
+| slackChannelsLocalRefresherCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"150m","memory":"256Mi"}}` | Resources for the slack channels local refresher cron-job. |
+| slackChannelsLocalRefresherCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"default-schedule"}]` | CRON schedules for the slack channels local refresher cron-job. |
+| slackChannelsLocalRefresherCronjob.securityContext.runAsUser | int | `10324` |  |
