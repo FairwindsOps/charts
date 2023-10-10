@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.0
+* Refactor logic for creating and modifying CronJobs
+
 ## 0.20.0
 * Add `slackChannelsLocalRefresherCronjob` to `stable/fairwinds-insights`.
 
