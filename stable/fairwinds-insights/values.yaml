@@ -633,4 +633,3 @@ repoScanJob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
-
