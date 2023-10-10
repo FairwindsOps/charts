@@ -72,17 +72,80 @@ options:
     cpu: 1000m
     memory: 1Gi
 
-hubspotCronjob:
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  schedules: []
 
-benchmarkCronjob:
+cronjobOptions:
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
+
+cronjobs:
+  hubspot:
+    command: 'hubspot_sync'
+    schedule: ''
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+  benchmark:
+    command: benchmark
+    schedule: ''
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+  actionItemFiltersRefresh:
+    command: 'action_items_filters_refresher'
+    # -- Schedule for the action-items filters refresher job.
+    schedule: "0/15 * * * *"
+    # -- Resources for the action-items filters refresher job.
+    resources:
+      limits:
+        cpu: 250m
+        memory: 512Mi
+      requests:
+        cpu: 250m
+        memory: 512Mi
+  alertsRealtime:
+    command: 'notifications_digest'
+    # -- Schedule for realtime alerts job
+    schedule: "5/10 * * * *"
+    interval: 10m
+    # -- Resources for the realtime alerts job
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+  notificationsDigest:
+    command: 'notifications_digest'
+    # -- Schedule for digest notifications job
+    schedule: "0 16 * * *"
+    interval: 24h
+    # -- Resources for digest notifications job
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+
+emailCronjob:
+  # -- Resources for the Action Items email job.
   resources:
     limits:
       cpu: 500m
@@ -90,10 +153,15 @@ benchmarkCronjob:
     requests:
       cpu: 80m
       memory: 128Mi
+  # -- CRON schedules for the Action Items email job.
   schedules: []
+  securityContext:
+    # -- The user ID to run the email job under.
+    runAsUser: 10324
+
+
 
 selfHostedSecret:
-
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables: {}
@@ -273,44 +341,6 @@ samlCronjob:
       interval: 60m
       cron: "0 * * * *"
 
-alertsCronjob:
-  # -- Resources for the Slack/Datadog integrations
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  # -- CRON schedules for the Slack/Datadog integrations
-  schedules:
-    - name: realtime
-      interval: 10m
-      # On the 5 minutes but the realtime job strips down to the nearest 10 minute
-      # This way there can be slight variation in when the job runs without duplicate or missed entries
-      cron: "5/10 * * * *"
-    - name: digest
-      interval: 24h
-      cron: "0 16 * * *"
-  securityContext:
-    # -- The user ID to run the alerts job under.
-    runAsUser: 10324
-
-emailCronjob:
-  # -- Resources for the Action Items email job.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  # -- CRON schedules for the Action Items email job.
-  schedules: []
-  securityContext:
-    # -- The user ID to run the email job under.
-    runAsUser: 10324
-
 databaseCleanupCronjob:
   # -- Enable database cleanup true by default
   enabled: true
@@ -403,23 +433,6 @@ cloudCostsUpdateCronjob:
       cron: "15 */3 * * *"
   securityContext:
     # -- The user ID to run the cloud costs update job under.
-    runAsUser: 10324
-
-actionItemsFiltersRefresherCronJob:
-  # -- Resources for the action-items filters refresher job.
-  resources:
-    limits:
-      cpu: 250m
-      memory: 512Mi
-    requests:
-      cpu: 250m
-      memory: 512Mi
-  # -- CRON schedules for the action-items filters refresher job.
-  schedules:
-    - name: every-15-min
-      cron: "0/15 * * * *"
-  securityContext:
-    # -- The user ID to run the action-items filters refresher job under.
     runAsUser: 10324
 
 service:

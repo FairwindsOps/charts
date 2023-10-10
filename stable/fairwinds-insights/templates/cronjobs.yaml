@@ -1,14 +1,14 @@
-{{ range .Values.alertsCronjob.schedules }}
----
+{{ range $name, $options := .Values.cronjobs }}
+{{ if $options.schedule }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
+  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ $name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: alerts-cronjob-{{ .name }}
+    app.kubernetes.io/component: cronjob-{{ $name }}
 spec:
-  schedule: "{{ .cron }}"
+  schedule: "{{ $options.schedule }}"
   concurrencyPolicy: Forbid
   jobTemplate:
     spec:
@@ -22,20 +22,16 @@ spec:
           containers:
             - name: fairwinds-insights
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
-              command: ["notifications_digest"]
+              command: ["{{ $options.command }}"]
               args:
-                - --interval={{ .interval }}
+              {{ with $options.interval }}
+                - --interval={{ . }}
+              {{ end }}
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.alertsCronjob.resources | nindent 16 }}
+                {{- toYaml $options.resources | nindent 16 }}
               securityContext:
-                readOnlyRootFilesystem: true
-                allowPrivilegeEscalation: false
-                privileged: false
-                runAsNonRoot: true
-                runAsUser: {{ $.Values.alertsCronjob.securityContext.runAsUser }}
-                capabilities:
-                  drop:
-                    - ALL
+                {{- toYaml $.Values.cronjobOptions.securityContext | nindent 16 }}
+{{ end }}
 {{ end }}
