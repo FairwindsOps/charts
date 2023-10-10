@@ -32,6 +32,7 @@ spec:
         - name: {{ . }}
       {{- end }}
       serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      terminationGracePeriodSeconds: {{ .Values.reportjob.terminationGracePeriodSeconds }}
       containers:
         - name: fairwinds-insights
           image: "{{ .Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"

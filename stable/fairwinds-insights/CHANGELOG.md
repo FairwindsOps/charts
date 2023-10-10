@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.21.0
+* Add `terminationGracePeriodSeconds` to insights report job deployment spec
+
 ## 0.20.0
 * Add `slackChannelsLocalRefresherCronjob` to `stable/fairwinds-insights`.
 
