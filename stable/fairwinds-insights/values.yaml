@@ -75,14 +75,14 @@ options:
 
 cronjobOptions:
   securityContext:
+    readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    runAsUser: 10324
     capabilities:
       drop:
         - ALL
-    privileged: false
-    readOnlyRootFilesystem: true
-    runAsNonRoot: true
-    runAsUser: 10324
 
 cronjobs:
   action-item-filters-refresh:
@@ -136,6 +136,7 @@ cronjobs:
 
   close-tickets:
     command: close_tickets
+    includeGitHubSecret: true
     # -- Resources for the close tickets job.
     resources:
       limits:
@@ -149,6 +150,9 @@ cronjobs:
 
   costs-update:
     command: cloud_costs_update
+    includeGitHubSecret: true
+    # -- Schedule for the cloud costs update job
+    schedule: "15 */3 * * *"
     # -- Resources for the cloud costs update job.
     resources:
       limits:
@@ -157,8 +161,6 @@ cronjobs:
       requests:
         cpu: 500m
         memory: 2Gi
-    # -- Schedule for the cloud costs update job
-    schedule: "15 */3 * * *"
 
   database-cleanup:
     command: database_cleanup
@@ -171,7 +173,6 @@ cronjobs:
         memory: 128Mi
     # -- Schedule for the database cleanup job.
     schedule: "0 0 * * *"
-    interval: 24h
 
   email:
     command: email_digest
@@ -223,7 +224,6 @@ cronjobs:
         memory: 3Gi
     # -- Schedule for the resources recommendations job.
     schedule: "0 2 * * *"
-    interval: 24h
 
   saml:
     command: refresh_saml_metadata

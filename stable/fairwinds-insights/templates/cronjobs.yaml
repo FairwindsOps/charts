@@ -31,7 +31,19 @@ spec:
               imagePullPolicy: Always
               resources:
                 {{- toYaml $options.resources | nindent 16 }}
+              {{- if $options.includeGitHubSecret }}
+              volumeMounts:
+              - name: secrets
+                mountPath: /var/run/secrets/github
+              {{- end }}
               securityContext:
                 {{- toYaml $.Values.cronjobOptions.securityContext | nindent 16 }}
+          {{- if $options.includeGitHubSecret }}
+          volumes:
+            - name: secrets
+              secret:
+                secretName: github-secrets
+                optional: true
+          {{- end }}
 {{ end }}
 {{ end }}
