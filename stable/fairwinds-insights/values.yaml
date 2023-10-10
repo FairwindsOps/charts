@@ -85,27 +85,7 @@ cronjobOptions:
         - ALL
 
 cronjobs:
-  hubspot:
-    command: 'hubspot_sync'
-    schedule: ''
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
-  benchmark:
-    command: benchmark
-    schedule: ''
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
-  actionItemFiltersRefresh:
+  action-item-filters-refresh:
     command: 'action_items_filters_refresher'
     # -- Schedule for the action-items filters refresher job.
     schedule: "0/15 * * * *"
@@ -117,7 +97,20 @@ cronjobs:
       requests:
         cpu: 250m
         memory: 512Mi
-  alertsRealtime:
+
+  action-items-statistics:
+    command: action_items_statistics
+    interval: 60m
+    schedule: "15 * * * *"
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+
+  alerts-realtime:
     command: 'notifications_digest'
     # -- Schedule for realtime alerts job
     schedule: "5/10 * * * *"
@@ -130,7 +123,81 @@ cronjobs:
       requests:
         cpu: 80m
         memory: 128Mi
-  notificationsDigest:
+
+  benchmark:
+    command: benchmark
+    schedule: ''
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+
+  close-tickets:
+    command: close_tickets
+    # -- Resources for the close tickets job.
+    resources:
+      limits:
+        cpu: 500m
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 1.5Gi
+    # -- Schedules for the close tickets job.
+    schedules: "0/15 * * * *"
+
+  costs-update:
+    # -- Resources for the cloud costs update job.
+    resources:
+      limits:
+        cpu: 500m
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 2Gi
+    # -- CRON schedules for the cloud costs update job
+    schedule: "15 */3 * * *"
+
+  database-cleanup:
+    command: database_cleanup
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+    # -- Schedules for the database cleanup job.
+    schedule: "0 0 * * *"
+    interval: 24h
+
+  email:
+    command: email_digest
+    # -- Resources for the Action Items email job.
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+    # -- CRON schedules for the Action Items email job.
+    schedule: ''
+
+  hubspot:
+    command: 'hubspot_sync'
+    schedule: ''
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+
+  notifications-digest:
     command: 'notifications_digest'
     # -- Schedule for digest notifications job
     schedule: "0 16 * * *"
@@ -144,21 +211,33 @@ cronjobs:
         cpu: 80m
         memory: 128Mi
 
-emailCronjob:
-  # -- Resources for the Action Items email job.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  # -- CRON schedules for the Action Items email job.
-  schedules: []
-  securityContext:
-    # -- The user ID to run the email job under.
-    runAsUser: 10324
+  resources-recommendations:
+    command: resources_recommendations
+    # -- Resources for the resources recommendations job.
+    resources:
+      limits:
+        cpu: 1
+        memory: 3Gi
+      requests:
+        cpu: 1
+        memory: 3Gi
+    # -- Schedule for the resources recommendations job.
+    schedules: "0 2 * * *"
+    interval: 24h
 
+  saml:
+    command: refresh_saml_metadata
+    # -- Resources for the SAML sync job.
+    resources:
+      limits:
+        cpu: 500m
+        memory: 1024Mi
+      requests:
+        cpu: 80m
+        memory: 128Mi
+    # -- CRON schedules for the SAML sync job
+    schedule: "0 * * * *"
+    interval: 60m
 
 
 selfHostedSecret:
@@ -324,115 +403,6 @@ dbMigration:
       memory: 128Mi
   securityContext:
     # -- The user ID to run the database migration job under.
-    runAsUser: 10324
-
-samlCronjob:
-  # -- Resources for the SAML sync job.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  # -- CRON schedules for the SAML sync job
-  schedules:
-    - name: hourly
-      interval: 60m
-      cron: "0 * * * *"
-
-databaseCleanupCronjob:
-  # -- Enable database cleanup true by default
-  enabled: true
-  # -- Resources for the database cleanup job.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  # -- CRON schedules for the database cleanup job.
-  schedules:
-    - name: database-cleanup
-      interval: 24h
-      cron: "0 0 * * *"
-  securityContext:
-    # -- The user ID to run the database cleanup job under.
-    runAsUser: 10324
-
-actionItemsStatisticsCronjob:
-  enabled: true
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  schedules:
-    - name: action-items-statistics
-      interval: 60m
-      cron: "15 * * * *"
-  securityContext:
-    runAsUser: 10324
-
-resourcesRecommendationsCronjob:
-  # -- Enable resources recommendations true by default
-  enabled: true
-  # -- Resources for the resources recommendations job.
-  resources:
-    limits:
-      cpu: 1
-      memory: 3Gi
-    requests:
-      cpu: 1
-      memory: 3Gi
-  # -- CRON schedules for the resources recommendations job.
-  schedules:
-    - name: resources-recommendations
-      interval: 24h
-      cron: "0 2 * * *"
-  securityContext:
-    # -- The user ID to run the resources recommendations job under.
-    runAsUser: 10324
-
-closeTicketsCronjob:
-  # -- Close tickets enabled by default
-  enabled: true
-  # -- Resources for the close tickets job.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 2Gi
-    requests:
-      cpu: 500m
-      memory: 1.5Gi
-  # -- CRON schedules for the close tickets job.
-  schedules:
-    - name: close-tickets
-      cron: "0/15 * * * *"
-  securityContext:
-    # -- The user ID to run the close tickets job under.
-    runAsUser: 10324
-
-cloudCostsUpdateCronjob:
-  # -- Cloud costs update enabled by default
-  enabled: true
-  # -- Resources for the cloud costs update job.
-  resources:
-    limits:
-      cpu: 500m
-      memory: 2Gi
-    requests:
-      cpu: 500m
-      memory: 2Gi
-  # -- CRON schedules for the cloud costs update job
-  schedules:
-    - name: costs-update
-      cron: "15 */3 * * *"
-  securityContext:
-    # -- The user ID to run the cloud costs update job under.
     runAsUser: 10324
 
 service:
