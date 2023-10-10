@@ -94,33 +94,32 @@ cronjobOptions:
       memory: 512Mi
 
 cronjobs:
+  # -- Options for the action-items filters refresher job.
   action-item-filters-refresh:
     command: 'action_items_filters_refresher'
-    # -- Schedule for the action-items filters refresher job.
     schedule: "0/15 * * * *"
 
+  # -- Options for the action item stats job
   action-items-statistics:
     command: action_items_statistics
-    # -- Schedule for the action item stats job
     schedule: "15 * * * *"
 
+  # -- Options for the realtime alerts job
   alerts-realtime:
     command: 'notifications_digest'
     interval: 10m
-    # -- Schedule for the realtime alerts job
     schedule: "5/10 * * * *"
 
+  # -- Options for the benchmark job
   benchmark:
     command: benchmark
-    # -- Schedule for the benchmark job
     schedule: ''
 
+  # -- Options for the close tickets job.
   close-tickets:
     command: close_tickets
     includeGitHubSecret: true
-    # -- Schedule for the close tickets job.
     schedule: "0/15 * * * *"
-    # -- Resources for the close tickets job.
     resources:
       limits:
         cpu: 500m
@@ -129,12 +128,11 @@ cronjobs:
         cpu: 500m
         memory: 2Gi
 
+  # -- Options for the cloud costs update job
   costs-update:
     command: cloud_costs_update
     includeGitHubSecret: true
-    # -- Schedule for the cloud costs update job
     schedule: "15 */3 * * *"
-    # -- Resources for the cloud costs update job.
     resources:
       requests:
         cpu: 500m
@@ -143,32 +141,31 @@ cronjobs:
         cpu: 500m
         memory: 2Gi
 
+  # -- Options for the database cleanup job.
   database-cleanup:
     command: database_cleanup
-    # -- Schedule for the database cleanup job.
     schedule: "0 0 * * *"
 
+  # -- Options for the email digest job.
   email:
     command: email_digest
-    # -- Schedule for the email digest job.
     schedule: ''
 
+  # -- Options for the hubspot job.
   hubspot:
     command: 'hubspot_sync'
-    # -- Schedule for the hubspot job.
     schedule: ''
 
+  # -- Options for digest notifications job
   notifications-digest:
     command: 'notifications_digest'
-    # -- Schedule for digest notifications job
     schedule: "0 16 * * *"
     interval: 24h
 
+  # -- Options for the resources recommendations job
   resources-recommendations:
     command: resources_recommendations
-    # -- Schedule for the resources recommendations job.
     schedule: "0 2 * * *"
-    # -- Resources for the resources recommendations job.
     resources:
       requests:
         cpu: 1
@@ -177,14 +174,14 @@ cronjobs:
         cpu: 1
         memory: 3Gi
 
+  # -- Options for the SAML sync job
   saml:
     command: refresh_saml_metadata
-    # -- CRON schedules for the SAML sync job
     schedule: "0 * * * *"
 
+  # -- Options for the slack channels job.
   slack-channels:
     command: slack_channels_local_refresher
-    # -- Schedule for the slack channels job.
     schedule: "0/15 * * * *"
 
 selfHostedSecret:
