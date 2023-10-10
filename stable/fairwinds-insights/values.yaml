@@ -144,8 +144,8 @@ cronjobs:
       requests:
         cpu: 500m
         memory: 1.5Gi
-    # -- Schedules for the close tickets job.
-    schedules: "0/15 * * * *"
+    # -- Schedule for the close tickets job.
+    schedule: "0/15 * * * *"
 
   costs-update:
     command: cloud_costs_update
@@ -157,7 +157,7 @@ cronjobs:
       requests:
         cpu: 500m
         memory: 2Gi
-    # -- CRON schedules for the cloud costs update job
+    # -- Schedule for the cloud costs update job
     schedule: "15 */3 * * *"
 
   database-cleanup:
@@ -169,7 +169,7 @@ cronjobs:
       requests:
         cpu: 80m
         memory: 128Mi
-    # -- Schedules for the database cleanup job.
+    # -- Schedule for the database cleanup job.
     schedule: "0 0 * * *"
     interval: 24h
 
@@ -222,7 +222,7 @@ cronjobs:
         cpu: 1
         memory: 3Gi
     # -- Schedule for the resources recommendations job.
-    schedules: "0 2 * * *"
+    schedule: "0 2 * * *"
     interval: 24h
 
   saml:
@@ -239,6 +239,7 @@ cronjobs:
     schedule: "0 * * * *"
 
   slack-channels:
+    command: slack_channels_local_refresher
     # -- Resources for the slack channels local refresher cron-job.
     resources:
       limits:
