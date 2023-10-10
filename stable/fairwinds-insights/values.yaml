@@ -149,6 +149,7 @@ cronjobs:
     schedules: "0/15 * * * *"
 
   costs-update:
+    command: cloud_costs_update
     # -- Resources for the cloud costs update job.
     resources:
       limits:
@@ -237,7 +238,6 @@ cronjobs:
         memory: 128Mi
     # -- CRON schedules for the SAML sync job
     schedule: "0 * * * *"
-    interval: 60m
 
 
 selfHostedSecret:
