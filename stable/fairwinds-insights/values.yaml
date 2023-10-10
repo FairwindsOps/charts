@@ -74,6 +74,7 @@ options:
 
 
 cronjobOptions:
+  # -- Default security context for cronjobs
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
@@ -83,60 +84,42 @@ cronjobOptions:
     capabilities:
       drop:
         - ALL
+  # -- Default resources for cronjobs
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
 
 cronjobs:
   action-item-filters-refresh:
     command: 'action_items_filters_refresher'
     # -- Schedule for the action-items filters refresher job.
     schedule: "0/15 * * * *"
-    # -- Resources for the action-items filters refresher job.
-    resources:
-      limits:
-        cpu: 250m
-        memory: 512Mi
-      requests:
-        cpu: 250m
-        memory: 512Mi
 
   action-items-statistics:
     command: action_items_statistics
+    # -- Schedule for the action item stats job
     schedule: "15 * * * *"
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
 
   alerts-realtime:
     command: 'notifications_digest'
-    # -- Schedule for realtime alerts job
-    schedule: "5/10 * * * *"
     interval: 10m
-    # -- Resources for the realtime alerts job
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
+    # -- Schedule for the realtime alerts job
+    schedule: "5/10 * * * *"
 
   benchmark:
     command: benchmark
+    # -- Schedule for the benchmark job
     schedule: ''
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
 
   close-tickets:
     command: close_tickets
     includeGitHubSecret: true
+    # -- Schedule for the close tickets job.
+    schedule: "0/15 * * * *"
     # -- Resources for the close tickets job.
     resources:
       limits:
@@ -144,9 +127,7 @@ cronjobs:
         memory: 2Gi
       requests:
         cpu: 500m
-        memory: 1.5Gi
-    # -- Schedule for the close tickets job.
-    schedule: "0/15 * * * *"
+        memory: 2Gi
 
   costs-update:
     command: cloud_costs_update
@@ -155,100 +136,55 @@ cronjobs:
     schedule: "15 */3 * * *"
     # -- Resources for the cloud costs update job.
     resources:
-      limits:
+      requests:
         cpu: 500m
         memory: 2Gi
-      requests:
+      limits:
         cpu: 500m
         memory: 2Gi
 
   database-cleanup:
     command: database_cleanup
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
     # -- Schedule for the database cleanup job.
     schedule: "0 0 * * *"
 
   email:
     command: email_digest
-    # -- Resources for the Action Items email job.
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
-    # -- CRON schedules for the Action Items email job.
+    # -- Schedule for the email digest job.
     schedule: ''
 
   hubspot:
     command: 'hubspot_sync'
+    # -- Schedule for the hubspot job.
     schedule: ''
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
 
   notifications-digest:
     command: 'notifications_digest'
     # -- Schedule for digest notifications job
     schedule: "0 16 * * *"
     interval: 24h
-    # -- Resources for digest notifications job
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
 
   resources-recommendations:
     command: resources_recommendations
+    # -- Schedule for the resources recommendations job.
+    schedule: "0 2 * * *"
     # -- Resources for the resources recommendations job.
     resources:
-      limits:
-        cpu: 1
-        memory: 3Gi
       requests:
         cpu: 1
         memory: 3Gi
-    # -- Schedule for the resources recommendations job.
-    schedule: "0 2 * * *"
+      limits:
+        cpu: 1
+        memory: 3Gi
 
   saml:
     command: refresh_saml_metadata
-    # -- Resources for the SAML sync job.
-    resources:
-      limits:
-        cpu: 500m
-        memory: 1024Mi
-      requests:
-        cpu: 80m
-        memory: 128Mi
     # -- CRON schedules for the SAML sync job
     schedule: "0 * * * *"
 
   slack-channels:
     command: slack_channels_local_refresher
-    # -- Resources for the slack channels local refresher cron-job.
-    resources:
-      limits:
-        cpu: 250m
-        memory: 512Mi
-      requests:
-        cpu: 150m
-        memory: 256Mi
-    # -- Schedule for the slack channels local refresher cron-job.
+    # -- Schedule for the slack channels job.
     schedule: "0/15 * * * *"
 
 selfHostedSecret:
