@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.21.1
+* Update application version to 14.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.21.0
 * Add `terminationGracePeriodSeconds` to insights report job deployment spec
 
