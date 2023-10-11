@@ -1,7 +1,11 @@
 # Changelog
 
-## 2.24.2
+## 2.24.3
 * Add gitops tip to readme
+
+## 2.24.2
+* bump `pluto` to version 5.18
+
 ## 2.24.1
 * bump `insights-admission` to version '1.9.*' in requirements.yaml 
 
