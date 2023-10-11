@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.23.2
+## 2.24.2
 * bump `pluto` to version 5.18
 
 ## 2.24.1
