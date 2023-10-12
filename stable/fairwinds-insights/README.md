@@ -109,7 +109,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | actionItemsStatisticsCronjob.schedules[0].cron | string | `"15 * * * *"` |  |
 | actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` |  |
 | resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
-| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
+| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"8Gi"},"requests":{"cpu":1,"memory":"8Gi"}}` | Resources for the resources recommendations job. |
 | resourcesRecommendationsCronjob.schedules | list | `[{"cron":"0 2 * * *","interval":"24h","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
 | resourcesRecommendationsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the resources recommendations job under. |
 | closeTicketsCronjob.enabled | bool | `true` | Close tickets enabled by default |

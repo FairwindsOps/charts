@@ -354,7 +354,7 @@ resourcesRecommendationsCronjob:
   resources:
     limits:
       cpu: 1
-      memory: 4Gi
+      memory: 8Gi
     requests:
       cpu: 1
       memory: 8Gi
