@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.24.2
+* bump `pluto` to version 5.18
+
+## 2.24.1
+* bump `insights-admission` to version '1.9.*' in requirements.yaml 
+
+## 2.24.0
+* Bumped `opa` plugin version to `2.3`
+* Bumped `right-sizer` plugin version to `0.5`
+* Bumped `workloads` plugin version to `2.6`
+
 ## 2.23.8
 * Add mountTmp flag to Kyverno job and default to true
 

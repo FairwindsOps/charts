@@ -25,6 +25,32 @@ The admissionController is the only one that poses a stability consideration bec
 
 For more details, please see the values below, and the vertical pod autosclaer documentation.
 
+## *BREAKING* Upgrading from <= v2.5.1 to 3.0.0
+
+### ClusterRole rules
+
+Previously, ClusterRoles were created by default from templates and could not be extended with custom rules. Since `3.0.0` version it is possible.
+
+You can define it as follows:
+
+```yaml
+rbac:
+  extraRules:
+    vpaActor:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+    vpaCheckpointActor: []
+    vpaEvictioner: []
+    vpaMetricsReader: []
+    vpaTargetReader: []
+    vpaStatusReader: []
+
+```
+
 ## *BREAKING* Upgrading from <= v1.7.x to 2.0.0
 
 ### Certificate generation
@@ -107,7 +133,14 @@ recommender:
 | nameOverride | string | `""` | A template override for the name |
 | fullnameOverride | string | `""` | A template override for the fullname |
 | podLabels | object | `{}` | Labels to add to all pods |
-| rbac.create | bool | `true` | If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components. Temporary rbac resources will still be created, to ensure a functioning installation process |
+| rbac.create | bool | `true` | If true, then rbac resources (ClusterRoles and ClusterRoleBindings) will be created for the selected components. Temporary rbac resources will still be created, to ensure a functioning installation process |
+| rbac.extraRules | object | `{"vpaActor":[],"vpaCheckpointActor":[],"vpaEvictioner":[],"vpaMetricsReader":[],"vpaStatusReader":[],"vpaTargetReader":[]}` | Extra rbac rules for ClusterRoles |
+| rbac.extraRules.vpaActor | list | `[]` | Extra rbac rules for the vpa-actor ClusterRole |
+| rbac.extraRules.vpaCheckpointActor | list | `[]` | Extra rbac rules for the vpa-checkpoint-actor ClusterRole |
+| rbac.extraRules.vpaEvictioner | list | `[]` | Extra rbac rules for the vpa-evictioner ClusterRole |
+| rbac.extraRules.vpaMetricsReader | list | `[]` | Extra rbac rules for the vpa-metrics-reader ClusterRole |
+| rbac.extraRules.vpaTargetReader | list | `[]` | Extra rbac rules for the vpa-target-reader ClusterRole |
+| rbac.extraRules.vpaStatusReader | list | `[]` | Extra rbac rules for the vpa-status-reader ClusterRole |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created for each component |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service accounts for each component |
 | serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |

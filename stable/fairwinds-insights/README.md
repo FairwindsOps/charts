@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.23.2"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.24.1"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -217,6 +217,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| reportjob.terminationGracePeriodSeconds | int | `600` |  |
 | automatedPullRequestJob.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.min | int | `2` |  |
@@ -254,3 +255,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.resources.requests.memory | string | `"128Mi"` |  |
 | repoScanJob.nodeSelector | object | `{}` |  |
 | repoScanJob.tolerations | list | `[]` |  |
+| slackChannelsLocalRefresherCronjob.enabled | bool | `true` |  |
+| slackChannelsLocalRefresherCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"150m","memory":"256Mi"}}` | Resources for the slack channels local refresher cron-job. |
+| slackChannelsLocalRefresherCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"default-schedule"}]` | CRON schedules for the slack channels local refresher cron-job. |
+| slackChannelsLocalRefresherCronjob.securityContext.runAsUser | int | `10324` |  |

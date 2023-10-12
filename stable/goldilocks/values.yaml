@@ -61,9 +61,7 @@ controller:
   topologySpreadConstraints: []
   # controller.resources -- The resources block for the controller pods
   resources:
-    limits:
-      cpu: 25m
-      memory: 256Mi
+    limits: {}
     requests:
       cpu: 25m
       memory: 256Mi
@@ -160,9 +158,7 @@ dashboard:
 
   # dashboard.resources -- A resources block for the dashboard.
   resources:
-    limits:
-      cpu: 25m
-      memory: 256Mi
+    limits: {}
     requests:
       cpu: 25m
       memory: 256Mi

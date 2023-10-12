@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.0
+* Bump insights-admission to version 1.13
+
 ## 1.8.4
 * Start testing on 1.26 and 1.27
 
