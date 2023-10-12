@@ -1,5 +1,32 @@
 # Changelog
 
+## 2.24.2
+* bump `pluto` to version 5.18
+
+## 2.24.1
+* bump `insights-admission` to version '1.9.*' in requirements.yaml 
+
+## 2.24.0
+* Bumped `opa` plugin version to `2.3`
+* Bumped `right-sizer` plugin version to `0.5`
+* Bumped `workloads` plugin version to `2.6`
+
+## 2.23.8
+* Add mountTmp flag to Kyverno job and default to true
+
+## 2.23.7
+* Added install-reporter serviceAccount
+## 2.23.6
+* Updated kyverno rbac
+## 2.23.5
+* Bumped `falco` plugin version to `0.3`
+
+## 2.23.4
+* Add get/list/watch perms for policy and clusterpolicy to kyverno rbac template
+
+## 2.23.3
+* Bumped `trivy` plugin version to `0.28`
+
 ## 2.23.2
 * Start testing on 1.26 and 1.27
 

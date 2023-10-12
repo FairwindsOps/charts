@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.23.2
+  agentChartTargetVersion: 2.24.1
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -331,6 +331,22 @@ databaseCleanupCronjob:
     # -- The user ID to run the database cleanup job under.
     runAsUser: 10324
 
+actionItemsStatisticsCronjob:
+  enabled: true
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1024Mi
+    requests:
+      cpu: 80m
+      memory: 128Mi
+  schedules:
+    - name: action-items-statistics
+      interval: 60m
+      cron: "15 * * * *"
+  securityContext:
+    runAsUser: 10324
+
 resourcesRecommendationsCronjob:
   # -- Enable resources recommendations true by default
   enabled: true
@@ -437,7 +453,9 @@ postgresql:
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
-    tag: "14.2.0-debian-10-r94"
+    registry: quay.io
+    repository: fairwinds/postgres-partman
+    tag: "14.4"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database
@@ -629,6 +647,7 @@ reportjob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+  terminationGracePeriodSeconds: 600
 
 automatedPullRequestJob:
   enabled: true
@@ -688,3 +707,20 @@ repoScanJob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+
+slackChannelsLocalRefresherCronjob:
+  enabled: true
+  # -- Resources for the slack channels local refresher cron-job.
+  resources:
+    limits:
+      cpu: 250m
+      memory: 512Mi
+    requests:
+      cpu: 150m
+      memory: 256Mi
+  # -- CRON schedules for the slack channels local refresher cron-job.
+  schedules:
+    - name: default-schedule
+      cron: "0/15 * * * *"
+  securityContext:
+    runAsUser: 10324

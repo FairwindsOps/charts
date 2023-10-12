@@ -13,9 +13,23 @@ fullnameOverride: ""
 # podLabels -- Labels to add to all pods
 podLabels: {}
 rbac:
-  # rbac.create -- If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components.
+  # rbac.create -- If true, then rbac resources (ClusterRoles and ClusterRoleBindings) will be created for the selected components.
   # Temporary rbac resources will still be created, to ensure a functioning installation process
   create: true
+  # rbac.extraRules -- Extra rbac rules for ClusterRoles
+  extraRules:
+    # rbac.extraRules.vpaActor -- Extra rbac rules for the vpa-actor ClusterRole
+    vpaActor: []
+    # rbac.extraRules.vpaCheckpointActor -- Extra rbac rules for the vpa-checkpoint-actor ClusterRole
+    vpaCheckpointActor: []
+    # rbac.extraRules.vpaEvictioner -- Extra rbac rules for the vpa-evictioner ClusterRole
+    vpaEvictioner: []
+    # rbac.extraRules.vpaMetricsReader -- Extra rbac rules for the vpa-metrics-reader ClusterRole
+    vpaMetricsReader: []
+    # rbac.extraRules.vpaTargetReader -- Extra rbac rules for the vpa-target-reader ClusterRole
+    vpaTargetReader: []
+    # rbac.extraRules.vpaStatusReader -- Extra rbac rules for the vpa-status-reader ClusterRole
+    vpaStatusReader: []
 
 serviceAccount:
   # serviceAccount.create -- Specifies whether a service account should be created for each component
@@ -30,6 +44,8 @@ serviceAccount:
 recommender:
   # recommender.enabled -- If true, the vpa recommender component will be installed.
   enabled: true
+  # recommender.annotations -- Annotations to add to the recommender deployment
+  annotations: {}
   # recommender.extraArgs -- A set of key-value flags to be passed to the recommender
   extraArgs:
     v: "4"
@@ -98,6 +114,8 @@ recommender:
 updater:
   # updater.enabled -- If true, the updater component will be deployed
   enabled: true
+  # updater.annotations -- Annotations to add to the updater deployment
+  annotations: {}
   # updater.extraArgs -- A key-value map of flags to pass to the updater
   extraArgs: {}
   replicaCount: 1
@@ -163,6 +181,8 @@ updater:
 admissionController:
   # admissionController.enabled -- If true, will install the admission-controller component of vpa
   enabled: true
+  # admissionController.annotations -- Annotations to add to the admission controller deployment
+  annotations: {}
   # admissionController.extraArgs -- A key-value map of flags to pass to the admissionController
   extraArgs: {}
   # admissionController.generateCertificate -- If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook

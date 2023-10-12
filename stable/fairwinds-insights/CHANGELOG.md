@@ -1,5 +1,62 @@
 # Changelog
 
+## 0.21.2
+* Update application version to 14.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.21.1
+* Update application version to 14.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.21.0
+* Add `terminationGracePeriodSeconds` to insights report job deployment spec
+
+## 0.20.0
+* Add `slackChannelsLocalRefresherCronjob` to `stable/fairwinds-insights`.
+
+## 0.19.8
+* Update application version to 14.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.19.7
+* Update application version to 14.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.19.6
+* Update application version to 13.13. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.19.5
+* Updated self hosted agent version to 2.24
+
+## 0.19.4
+* Update application version to 13.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.19.3
+* Update application version to 13.11. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.19.2
+* Update application version to 13.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.19.1
+* Fixed Action Items Statistics schedule
+
+## 0.19.0
+* Added job for Action Items Statistics
+
+## 0.18.15
+* Update application version to 13.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.14
+* Update application version to 13.8. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.13
+* Update application version to 13.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.12
+* Update application version to 13.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.18.11
+* Updated postgres with partman
+
+## 0.18.10
+* Update application version to 13.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.18.9
 * Update application version to 13.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 

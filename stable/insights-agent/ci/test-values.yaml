@@ -132,7 +132,7 @@ falco:
       cpu: 50m
 
 kyverno:
-  enabled: true
+  enabled: false
   resources:
     requests:
       cpu: 50m

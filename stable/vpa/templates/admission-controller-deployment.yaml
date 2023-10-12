@@ -2,6 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  {{- if .Values.admissionController.annotations }}
+  annotations:
+  {{- .Values.admissionController.annotations | toYaml | nindent 4 }}
+  {{- end }}
   name: {{ include "vpa.fullname" . }}-admission-controller
   labels:
     app.kubernetes.io/component: admission-controller

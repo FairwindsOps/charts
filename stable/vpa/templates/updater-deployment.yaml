@@ -2,6 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  {{- if .Values.updater.annotations }}
+  annotations:
+  {{- .Values.updater.annotations | toYaml | nindent 4 }}
+  {{- end }}
   name: {{ include "vpa.fullname" . }}-updater
   labels:
     app.kubernetes.io/component: updater

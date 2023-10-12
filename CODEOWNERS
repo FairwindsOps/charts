@@ -24,9 +24,9 @@
 /stable/gemini/ @rbren
 /stable/gke-node-termination-handler/ @sudermanjr
 /stable/goldilocks/ @sudermanjr
-/stable/fairwinds-insights/ @rbren @ivanfetch-fw @mhoss019 @jdesouza @vitorvezani
-/stable/insights-admission/ @rbren @ivanfetch-fw @jdesouza @vitorvezani
-/stable/insights-agent/ @rbren @ivanfetch-fw @jdesouza @vitorvezani
+/stable/fairwinds-insights/ @rbren @mhoss019 @jdesouza @vitorvezani @jslivka
+/stable/insights-admission/ @rbren @jdesouza @vitorvezani @jslivka
+/stable/insights-agent/ @rbren @jdesouza @vitorvezani @jslivka
 /stable/helm-release-pruner/ @rbren
 /stable/vpa/ @sudermanjr
 

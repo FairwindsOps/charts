@@ -2,8 +2,8 @@ apiVersion: v2
 name: vpa
 description: A Helm chart for Kubernetes Vertical Pod Autoscaler
 type: application
-version: 2.3.0
-appVersion: 0.13.0
+version: 3.0.1
+appVersion: 0.14.0
 maintainers:
   - name: sudermanjr
 home: https://github.com/FairwindsOps/charts/tree/master/stable/vpa
@@ -18,4 +18,4 @@ dependencies:
     condition: metrics-server.enabled
     name: metrics-server
     repository: https://kubernetes-sigs.github.io/metrics-server/
-    version: "3.10.0"
+    version: "3.11.0"

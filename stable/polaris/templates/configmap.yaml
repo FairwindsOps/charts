@@ -11,12 +11,17 @@ metadata:
     {{- include "polaris.labels" $ | nindent 4 }}
 data:
   config.yaml: |
+    {{- if kindIs "map" . }}
     {{- range $key, $value := . }}
     {{ $key }}:
     {{- toYaml $value | nindent 6 }}
     {{- if and (eq $key "exemptions") ($.Values.additionalExemptions) }}
     {{- toYaml $.Values.additionalExemptions | nindent 6 }}
     {{- end }}
+    {{- end }}
+    {{- end }}
+    {{- if kindIs "string" . }}
+    {{- . | nindent 4 }}
     {{- end }}
 {{- end }}
 {{- end }}

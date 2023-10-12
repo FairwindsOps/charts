@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"2.23.2"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"2.24.1"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -99,6 +99,15 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
 | databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
 | databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
+| actionItemsStatisticsCronjob.enabled | bool | `true` |  |
+| actionItemsStatisticsCronjob.resources.limits.cpu | string | `"500m"` |  |
+| actionItemsStatisticsCronjob.resources.limits.memory | string | `"1024Mi"` |  |
+| actionItemsStatisticsCronjob.resources.requests.cpu | string | `"80m"` |  |
+| actionItemsStatisticsCronjob.resources.requests.memory | string | `"128Mi"` |  |
+| actionItemsStatisticsCronjob.schedules[0].name | string | `"action-items-statistics"` |  |
+| actionItemsStatisticsCronjob.schedules[0].interval | string | `"60m"` |  |
+| actionItemsStatisticsCronjob.schedules[0].cron | string | `"15 * * * *"` |  |
+| actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` |  |
 | resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
 | resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
 | resourcesRecommendationsCronjob.schedules | list | `[{"cron":"0 2 * * *","interval":"24h","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
@@ -126,7 +135,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
-| postgresql.image.tag | string | `"14.2.0-debian-10-r94"` |  |
+| postgresql.image.registry | string | `"quay.io"` |  |
+| postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
+| postgresql.image.tag | string | `"14.4"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
@@ -206,6 +217,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| reportjob.terminationGracePeriodSeconds | int | `600` |  |
 | automatedPullRequestJob.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.min | int | `2` |  |
@@ -243,3 +255,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.resources.requests.memory | string | `"128Mi"` |  |
 | repoScanJob.nodeSelector | object | `{}` |  |
 | repoScanJob.tolerations | list | `[]` |  |
+| slackChannelsLocalRefresherCronjob.enabled | bool | `true` |  |
+| slackChannelsLocalRefresherCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"150m","memory":"256Mi"}}` | Resources for the slack channels local refresher cron-job. |
+| slackChannelsLocalRefresherCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"default-schedule"}]` | CRON schedules for the slack channels local refresher cron-job. |
+| slackChannelsLocalRefresherCronjob.securityContext.runAsUser | int | `10324` |  |

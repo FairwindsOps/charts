@@ -25,6 +25,32 @@ The admissionController is the only one that poses a stability consideration bec
 
 For more details, please see the values below, and the vertical pod autosclaer documentation.
 
+## *BREAKING* Upgrading from <= v2.5.1 to 3.0.0
+
+### ClusterRole rules
+
+Previously, ClusterRoles were created by default from templates and could not be extended with custom rules. Since `3.0.0` version it is possible.
+
+You can define it as follows:
+
+```yaml
+rbac:
+  extraRules:
+    vpaActor:
+      - apiGroups:
+          - batch
+        resources:
+          - '*'
+        verbs:
+          - get
+    vpaCheckpointActor: []
+    vpaEvictioner: []
+    vpaMetricsReader: []
+    vpaTargetReader: []
+    vpaStatusReader: []
+
+```
+
 ## *BREAKING* Upgrading from <= v1.7.x to 2.0.0
 
 ### Certificate generation
@@ -107,12 +133,20 @@ recommender:
 | nameOverride | string | `""` | A template override for the name |
 | fullnameOverride | string | `""` | A template override for the fullname |
 | podLabels | object | `{}` | Labels to add to all pods |
-| rbac.create | bool | `true` | If true, then rbac resources (clusterroles and clusterrolebindings) will be created for the selected components. Temporary rbac resources will still be created, to ensure a functioning installation process |
+| rbac.create | bool | `true` | If true, then rbac resources (ClusterRoles and ClusterRoleBindings) will be created for the selected components. Temporary rbac resources will still be created, to ensure a functioning installation process |
+| rbac.extraRules | object | `{"vpaActor":[],"vpaCheckpointActor":[],"vpaEvictioner":[],"vpaMetricsReader":[],"vpaStatusReader":[],"vpaTargetReader":[]}` | Extra rbac rules for ClusterRoles |
+| rbac.extraRules.vpaActor | list | `[]` | Extra rbac rules for the vpa-actor ClusterRole |
+| rbac.extraRules.vpaCheckpointActor | list | `[]` | Extra rbac rules for the vpa-checkpoint-actor ClusterRole |
+| rbac.extraRules.vpaEvictioner | list | `[]` | Extra rbac rules for the vpa-evictioner ClusterRole |
+| rbac.extraRules.vpaMetricsReader | list | `[]` | Extra rbac rules for the vpa-metrics-reader ClusterRole |
+| rbac.extraRules.vpaTargetReader | list | `[]` | Extra rbac rules for the vpa-target-reader ClusterRole |
+| rbac.extraRules.vpaStatusReader | list | `[]` | Extra rbac rules for the vpa-status-reader ClusterRole |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created for each component |
 | serviceAccount.annotations | object | `{}` | Annotations to add to the service accounts for each component |
 | serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |
 | serviceAccount.automountServiceAccountToken | bool | `true` | Automount API credentials for the Service Account |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
+| recommender.annotations | object | `{}` | Annotations to add to the recommender deployment |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
 | recommender.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
@@ -132,6 +166,7 @@ recommender:
 | recommender.affinity | object | `{}` |  |
 | recommender.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the recommender |
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
+| updater.annotations | object | `{}` | Annotations to add to the updater deployment |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
 | updater.replicaCount | int | `1` |  |
 | updater.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
@@ -151,6 +186,7 @@ recommender:
 | updater.affinity | object | `{}` |  |
 | updater.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the updater |
 | admissionController.enabled | bool | `true` | If true, will install the admission-controller component of vpa |
+| admissionController.annotations | object | `{}` | Annotations to add to the admission controller deployment |
 | admissionController.extraArgs | object | `{}` | A key-value map of flags to pass to the admissionController |
 | admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
 | admissionController.secretName | string | `"{{ include \"vpa.fullname\" . }}-tls-secret"` | Name for the TLS secret created for the webhook. Default {{ .Release.Name }}-tls-secret |
