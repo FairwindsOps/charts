@@ -29,13 +29,6 @@ controller:
           - "watch"
     extraClusterRoleBindings:
       - view
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: controller
 
 dashboard:
   basePath: goldilocks
@@ -47,13 +40,6 @@ dashboard:
           - path: /
             type: ImplementationSpecific
   replicaCount: 2
-  topologySpreadConstraints:
-    - maxSkew: 2
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: dashboard
   deployment:
     additionalLabels:
       test: value
