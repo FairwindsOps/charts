@@ -354,10 +354,10 @@ resourcesRecommendationsCronjob:
   resources:
     limits:
       cpu: 1
-      memory: 3Gi
+      memory: 4Gi
     requests:
       cpu: 1
-      memory: 3Gi
+      memory: 8Gi
   # -- CRON schedules for the resources recommendations job.
   schedules:
     - name: resources-recommendations
