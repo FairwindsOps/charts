@@ -44,12 +44,14 @@ spec:
               path: /health
               port: http
             timeoutSeconds: 5
+            periodSeconds: 5
             failureThreshold: 12
           readinessProbe:
             httpGet:
               path: /health
               port: http
             timeoutSeconds: 5
+            periodSeconds: 5
             failureThreshold: 6
           volumeMounts:
           - name: tmp
