@@ -66,7 +66,9 @@ controller:
       cpu: 25m
       memory: 256Mi
   # controller.podSecurityContext -- Defines the podSecurityContext for the controller pod
-  podSecurityContext: {}
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
   # controller.securityContext -- The container securityContext for the controller container
   securityContext:
     readOnlyRootFilesystem: true
@@ -163,7 +165,9 @@ dashboard:
       cpu: 25m
       memory: 256Mi
   # dashboard.podSecurityContext -- Defines the podSecurityContext for the dashboard pod
-  podSecurityContext: {}
+  podSecurityContext:
+    seccompProfile:
+      type: RuntimeDefault
   # dashboard.securityContext -- The container securityContext for the dashboard container
   securityContext:
     readOnlyRootFilesystem: true
