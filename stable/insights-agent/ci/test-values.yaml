@@ -110,6 +110,32 @@ prometheus:
 admission:
   enabled: true
 
+insights-admission:
+  webhookConfig:
+    failurePolicy: Ignore
+    rules:
+    - apiGroups:
+      - ""
+      apiVersions:
+      - "v1"
+      operations:
+      - CREATE
+      - UPDATE
+      - DELETE
+      resources:
+      - namespaces
+      scope: Cluster
+    - apiGroups:
+      - apps
+      apiVersions:
+      - "v1"
+      operations:
+      - DELETE
+      resources:
+      - deployments
+      - statefulsets
+      scope: Cluster
+
 awscosts:
   enabled: false
   secretName: awscosts-secret
