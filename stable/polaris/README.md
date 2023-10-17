@@ -75,6 +75,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |
 | dashboard.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
 | dashboard.containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true}` | securityContext to apply to the dashboard container |
+| dashboard.pdb.enable | bool | `true` | If true, enables a PDB for the dashboard |
 | webhook.enable | bool | `false` | Whether to run the webhook |
 | webhook.validate | bool | `true` | Enables the Validating Webhook, to reject resources with issues |
 | webhook.mutate | bool | `false` | Enables the Mutating Webhook, to modify resources with issues |
@@ -103,6 +104,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.disallowAnnotationExemptions | bool | `false` | Disallow exemptions that are configured via annotations |
 | webhook.mutatingConfigurationAnnotations | object | `{}` |  |
 | webhook.validatingConfigurationAnnotations | object | `{}` |  |
+| webhook.pdb.enable | bool | `true` | If true, enables a PDB for the webhook |
 | audit.enable | bool | `false` | Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others. |
 | audit.cleanup | bool | `false` | Whether to delete the namespace once the audit is finished. |
 | audit.outputURL | string | `""` | A URL which will receive a POST request with audit results. |
