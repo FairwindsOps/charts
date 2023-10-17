@@ -1,0 +1,18 @@
+{{- if .Values.dashboard.enable -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "polaris.fullname" . }}-dashboard
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+    component: dashboard
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      {{- include "polaris.selectors" . | nindent 6 }}
+      component: dashboard
+{{- end }}
