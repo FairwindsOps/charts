@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.24.3
+* Fix for adding additional rules for OPA via insights-admission
+
 ## 2.24.2
 * bump `pluto` to version 5.18
 

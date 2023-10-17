@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.21.4
+* Update application version to 14.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+## 0.21.3
+* Refine liveness and readiness probes to make them more robust
+
 ## 0.21.2
 * Update application version to 14.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 

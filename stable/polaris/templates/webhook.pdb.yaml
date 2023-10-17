@@ -1,0 +1,20 @@
+{{- if .Values.webhook.pdb }}
+{{- if and .Values.webhook.enable .Values.webhook.pdb.enable -}}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "polaris.fullname" . }}-webhook
+  {{- if .Values.templateOnly }}
+  namespace: {{ .Release.Namespace }}
+  {{- end }}
+  labels:
+    {{- include "polaris.labels" . | nindent 4 }}
+    component: webhook
+spec:
+  maxUnavailable: 1
+  selector:
+    matchLabels:
+      {{- include "polaris.selectors" . | nindent 6 }}
+      component: webhook
+{{- end }}
+{{- end }}
