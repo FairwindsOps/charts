@@ -129,6 +129,9 @@ dashboard:
     capabilities:
       drop:
         - ALL
+  pdb:
+    # -- If true, enables a PDB for the dashboard
+    enable: true
 
 webhook:
   # webhook.enable -- Whether to run the webhook
@@ -244,6 +247,9 @@ webhook:
   disallowAnnotationExemptions: false
   mutatingConfigurationAnnotations: {}
   validatingConfigurationAnnotations: {}
+  pdb:
+    # -- If true, enables a PDB for the webhook
+    enable: true
 
 audit:
   # audit.enable -- Runs a one-time audit. This is used internally at Fairwinds, and may not be useful for others.
