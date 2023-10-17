@@ -1,4 +1,4 @@
-{{- if .Values.webhook.enable -}}
+{{- if and .Values.webhook.enable .Values.webhook.pdb.enable -}}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
 metadata:
