@@ -1,3 +1,4 @@
+{{- if .Values.webhook.pdb }}
 {{- if and .Values.webhook.enable .Values.webhook.pdb.enable -}}
 apiVersion: policy/v1
 kind: PodDisruptionBudget
@@ -15,4 +16,5 @@ spec:
     matchLabels:
       {{- include "polaris.selectors" . | nindent 6 }}
       component: webhook
+{{- end }}
 {{- end }}
