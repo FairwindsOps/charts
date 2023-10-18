@@ -9,5 +9,13 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
 data:
-  config.yml: {{ toYaml .Values.custom_config.data | indent 4 }}
+  config.yml: |
+{{- range $key, $value := (fromYaml .Values.custom_config.data) }}
+    {{ $key }}:
+{{- if eq $key "cluster_variables" }}
+{{ tpl (toYaml $value) $ | indent 8 }}
+{{- else }}
+{{ toYaml $value | indent 8 }}
+{{- end }}
+{{- end }}
 {{- end }}
