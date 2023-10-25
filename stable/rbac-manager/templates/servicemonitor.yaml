@@ -24,6 +24,10 @@ spec:
   - interval: {{ .Values.serviceMonitor.interval }}
     port: metrics
     path: /metrics
+    {{- with .Values.serviceMonitor.relabelings }}
+    relabelings:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
   selector:
     matchLabels:
       app: {{ template "rbac-manager.name" . }}

@@ -76,3 +76,5 @@ serviceMonitor:
   namespace: ""
   # serviceMonitor.interval -- How often to scrape the metrics endpoint
   interval: 60s
+  # serviceMonitor.relabelings -- RelabelConfigs to apply to samples before scraping
+  relabelings: []
