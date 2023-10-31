@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.21.7
+* Update application version to 14.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 0.21.6
 * Update application version to 14.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
