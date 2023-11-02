@@ -179,6 +179,10 @@ opa:
     resources:
     - pods
     - replicationcontrollers
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
   # opa.admissionRulesAsTargetResources -- If the admission controller is enabled,
   # the APIGroups and Resources found in insights-admission `webhookConfig.rules`
   # will be added as OPA Kubernetes target resources, plus
