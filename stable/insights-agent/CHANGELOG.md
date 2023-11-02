@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.24.4
+* Bumped `polaris` plugin version to `8.5`
+
 ## 2.24.3
 * Fix for adding additional rules for OPA via insights-admission
 
