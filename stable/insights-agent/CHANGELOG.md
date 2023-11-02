@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.24.5
+* Bumped `polaris` plugin version to `8.5`
+
 ## 2.24.4
 * Added ingresses resource to `defaultTargetResources`
 
