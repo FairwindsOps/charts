@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.24.5
+* Bumped `polaris` plugin version to `8.5`
+
+## 2.24.4
+* Added ingresses resource to `defaultTargetResources`
+
 ## 2.24.3
 * Fix for adding additional rules for OPA via insights-admission
 
@@ -7,7 +13,7 @@
 * bump `pluto` to version 5.18
 
 ## 2.24.1
-* bump `insights-admission` to version '1.9.*' in requirements.yaml 
+* bump `insights-admission` to version '1.9.*' in requirements.yaml
 
 ## 2.24.0
 * Bumped `opa` plugin version to `2.3`
@@ -223,7 +229,7 @@ only available as of 1.22.
 * Support arm64 architecture (CronJob executor and insights-plugins)
 
 ## 2.6.11
-* Update `nova` version to `v3.4` 
+* Update `nova` version to `v3.4`
 * Use `nova find --helm --containers` to run `nova` - This way, both outdated/deprecated charts and containers will be reported to the output file
 
 ## 2.6.10
