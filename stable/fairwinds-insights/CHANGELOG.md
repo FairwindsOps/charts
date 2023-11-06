@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.21.8
+* Allow up to 17 chars in the URL prefix
+
 ## 0.21.7
 * Update application version to 14.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
