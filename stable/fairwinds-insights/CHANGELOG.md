@@ -1,7 +1,31 @@
 # Changelog
 
+
 ## 1.0.0
 * Refactor logic for creating and modifying CronJobs
+
+## 0.21.7
+* Update application version to 14.7. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.21.6
+* Update application version to 14.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.21.5
+* Update application version to 14.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.21.4
+* Update application version to 14.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+## 0.21.3
+* Refine liveness and readiness probes to make them more robust
+
+## 0.21.2
+* Update application version to 14.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.21.1
+* Update application version to 14.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 0.21.0
+* Add `terminationGracePeriodSeconds` to insights report job deployment spec
 
 ## 0.20.0
 * Add `slackChannelsLocalRefresherCronjob` to `stable/fairwinds-insights`.

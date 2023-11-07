@@ -87,8 +87,8 @@ metadata:
   name: {{ include "insights-agent.fullname" $ }}-opa-admission-targetresources
   labels:
     app: insights-agent
-{{- range $AdmissionValues.webhookConfig.rules }}
 rules:
+{{- range $AdmissionValues.webhookConfig.rules }}
 - apiGroups:
 {{ toYaml .apiGroups | indent 2 }}
   resources:

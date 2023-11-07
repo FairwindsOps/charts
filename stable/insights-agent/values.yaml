@@ -90,7 +90,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "8.4"
+    tag: "8.5"
   resources:
     requests:
       cpu: 100m
@@ -179,6 +179,10 @@ opa:
     resources:
     - pods
     - replicationcontrollers
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
   # opa.admissionRulesAsTargetResources -- If the admission controller is enabled,
   # the APIGroups and Resources found in insights-admission `webhookConfig.rules`
   # will be added as OPA Kubernetes target resources, plus
@@ -298,7 +302,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.16"
+    tag: "v5.18"
   resources:
     requests:
       cpu: 100m

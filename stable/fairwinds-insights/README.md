@@ -186,6 +186,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| reportjob.terminationGracePeriodSeconds | int | `600` |  |
 | automatedPullRequestJob.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.min | int | `2` |  |
