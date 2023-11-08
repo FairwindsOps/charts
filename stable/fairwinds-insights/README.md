@@ -127,6 +127,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | service.annotations | string | `nil` | Annotations for the services |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
+| sanitizedPrefixMaxLength | int | `12` | Maximum length for hostname prefix. |
 | ingress.enabled | bool | `false` | Enable Ingress |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
