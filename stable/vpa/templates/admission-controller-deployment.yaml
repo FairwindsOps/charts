@@ -87,6 +87,7 @@ spec:
                   fieldPath: metadata.namespace
           resources:
             {{- toYaml .Values.admissionController.resources | nindent 12 }}
+      hostNetwork: {{ .Values.admissionController.useHostNetwork | default false }}
       volumes:
         - name: tls-certs
           secret:

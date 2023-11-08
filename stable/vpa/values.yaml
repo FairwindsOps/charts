@@ -285,6 +285,8 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # admissionController.useHostNetwork -- Whether to use host network, this is required on EKS with custom CNI
+  useHostNetwork: false
 
 tests:
   # tests.securityContext -- The security context for the containers run as helm hook tests
