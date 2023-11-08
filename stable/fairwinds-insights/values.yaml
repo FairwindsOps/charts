@@ -360,6 +360,9 @@ service:
 # -- Prefix to use on hostname. Generally not needed.
 sanitizedBranch:
 
+# -- Maximum length for hostname prefix.
+sanitizedPrefixMaxLength: 12
+
 ingress:
   # -- Enable Ingress
   enabled: false
