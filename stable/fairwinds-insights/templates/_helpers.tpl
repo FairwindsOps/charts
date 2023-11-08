@@ -33,7 +33,7 @@ Create chart name and version as used by the chart label.
 
 {{- define "fairwinds-insights.sanitizedPrefix" -}}
 {{- if .Values.sanitizedBranch -}}
-{{- printf "%s." (.Values.sanitizedBranch | trunc (int .Values.sanitizedPrefixMaxLength) | trimSuffix "-") -}}
+{{- printf "%s." (.Values.sanitizedBranch | trunc (int .Values.sanitizedPrefixMaxLength | default 12) | trimSuffix "-") -}}
 {{- end -}}
 {{- end -}}
 
