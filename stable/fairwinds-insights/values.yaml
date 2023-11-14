@@ -184,6 +184,11 @@ cronjobs:
     command: slack_channels_local_refresher
     schedule: "0/15 * * * *"
 
+  # -- Options for the trial-end job.
+  trial-end:
+    command: trial_end_downgrade
+    schedule: ""
+
 selfHostedSecret:
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
