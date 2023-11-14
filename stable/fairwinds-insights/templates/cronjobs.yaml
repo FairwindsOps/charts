@@ -45,5 +45,6 @@ spec:
                 secretName: github-secrets
                 optional: true
           {{- end }}
+---
 {{ end }}
 {{ end }}
