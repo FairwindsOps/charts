@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.1
+* Fix for multiple CronJobs
+
 ## 1.0.0
 * Refactor logic for creating and modifying CronJobs
 
