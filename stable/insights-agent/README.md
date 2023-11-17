@@ -75,6 +75,7 @@ Parameter | Description | Default
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
 `uploader.sendFailures` | Send logs of failure to Insights when a job fails. | true
 `uploader.env` | Set extra environment variables for the uploader script | []
+`installReporter.ttl` | Set to -1 to prevent install reporter job from cleaning up after itself | 300
 `cronjobs.disableServiceMesh` | Adds annotations to all CronJobs to not inject Linkerd or Istio | true
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.imagePullSecret` | A pull secret for cronjob images
