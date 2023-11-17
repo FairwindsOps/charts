@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.25.0
+* Add TTL option for install-reporter to better support Argo deployment
+
 ## 2.24.5
 * Bumped `polaris` plugin version to `8.5`
 
