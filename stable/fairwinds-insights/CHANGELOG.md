@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.2
+* Update application version to 14.8. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 1.0.1
 * Fix for multiple CronJobs
 
