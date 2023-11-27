@@ -96,9 +96,9 @@ recommender:
     timeoutSeconds: 3
   # recommender.resources -- The resources block for the recommender pod
   resources:
-    limits:
-      cpu: 200m
-      memory: 1000Mi
+    limits: {}
+      # cpu: 200m
+      # memory: 1000Mi
     requests:
       cpu: 50m
       memory: 500Mi
@@ -163,9 +163,9 @@ updater:
     timeoutSeconds: 3
   # updater.resources -- The resources block for the updater pod
   resources:
-    limits:
-      cpu: 200m
-      memory: 1000Mi
+    limits: {}
+      # cpu: 200m
+      # memory: 1000Mi
     requests:
       cpu: 50m
       memory: 500Mi
@@ -264,9 +264,9 @@ admissionController:
     timeoutSeconds: 3
   # admissionController.resources -- The resources block for the admission controller pod
   resources:
-    limits:
-      cpu: 200m
-      memory: 500Mi
+    limits: {}
+      # cpu: 200m
+      # memory: 500Mi
     requests:
       cpu: 50m
       memory: 200Mi
