@@ -59,7 +59,7 @@ spec:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
-              {{- if eq .Values.cloudcosts.tagkey }}
+              {{- if .Values.cloudcosts.tagkey }}
               - --tagkey
               - {{ .Values.cloudcosts.tagkey }}
               {{- end }}
