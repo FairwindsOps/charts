@@ -151,7 +151,7 @@ awscosts:
 
 cloudcosts:
   enabled: false
-  secretName: awscosts-secret
+  secretName: cloudcosts-secret
   awsAccessKeyId: someAccessID
   awsSecretAccessKey: someAccessKey
   gcpAccessKeyId: someAccessID
