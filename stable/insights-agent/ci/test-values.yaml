@@ -155,8 +155,8 @@ cloudcosts:
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
   aws:
-    awsAccessKeyId: someAccessID
-    awsSecretAccessKey: someAccessKey
+    accessKeyId: someAccessID
+    secretAccessKey: someAccessKey
     region: us-east-1
     database: athena_cur_database
     table: fairwinds_insights_cur_report
