@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "insights-agent.fullname" . }}-cloud-costs
+  name: {{ include "insights-agent.fullname" . }}-cloudcosts
   labels:
     app: insights-agent
   {{- with .Values.cloudcosts.serviceAccount.annotations }}
