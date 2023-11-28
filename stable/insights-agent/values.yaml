@@ -432,7 +432,7 @@ awscosts:
 cloudcosts:
   enabled: false
   provider: aws  # aws or gcp
-  schedule: "rand * * * *"
+  schedule: "0/10 * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
