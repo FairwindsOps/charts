@@ -429,13 +429,14 @@ awscosts:
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
   containerSecurityContext: {}
 
-cloud-costs:
+cloudCosts:
   enabled: false
+  provider: aws # aws or gcp
   schedule: "rand * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
-    tag: "0.1"
+    tag: "js-Costs"
   serviceAccount:
     annotations:
   resources:
