@@ -149,7 +149,7 @@ awscosts:
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
 
-cloud-costs:
+cloudCosts:
   enabled: false
   secretName: awscosts-secret
   awsAccessKeyId: someAccessID
