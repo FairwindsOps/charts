@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.25.0
+* Added cloud costs plugin
+
 ## 2.24.5
 * Bumped `polaris` plugin version to `8.5`
 

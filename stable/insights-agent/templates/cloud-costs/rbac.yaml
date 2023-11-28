@@ -1,0 +1,12 @@
+{{- if and .Values.cloudcosts (and .Values.cloudcosts.enabled (not .Values.rbac.disabled)) -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-cloud-costs
+  labels:
+    app: insights-agent
+  {{- with .Values.cloudcosts.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end -}}
