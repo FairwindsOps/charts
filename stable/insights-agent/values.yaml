@@ -434,7 +434,7 @@ cloudcosts:
   secretName: cloudcosts
   tagkey: ""
   provider: aws  # aws or gcp
-  schedule: "0/10 * * * *"
+  schedule: "rand * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
