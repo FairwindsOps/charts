@@ -429,6 +429,22 @@ awscosts:
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
   containerSecurityContext: {}
 
+cloud-costs:
+  enabled: false
+  schedule: "rand * * * *"
+  timeout: 300
+  image:
+    repository: quay.io/fairwinds/cloud-costs
+    tag: "0.1"
+  serviceAccount:
+    annotations:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  securityContext: {}
+  containerSecurityContext: {}
+
 right-sizer:
   enabled: false
   schedule: "rand * * * *"

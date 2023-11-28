@@ -149,6 +149,21 @@ awscosts:
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
 
+cloudCosts:
+  enabled: false
+  secretName: awscosts-secret
+  awsAccessKeyId: someAccessID
+  awsSecretAccessKey: someAccessKey
+  gcpAccessKeyId: someAccessID
+  gcpSecretAccessKey: someAccessKey
+  region: us-east-1
+  database: athena_cur_database
+  table: fairwinds_insights_cur_report
+  catalog: AwsDataCatalog
+  tagkey: kubernetes_cluster
+  tagvalue: staging.internal.reactiveops.com
+  workgroup: cur_athena_workgroup
+
 # Falco does not work well with KIND cluster
 falco:
   installFalco: false
