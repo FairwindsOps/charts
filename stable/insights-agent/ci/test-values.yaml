@@ -21,7 +21,7 @@ goldilocks:
       cpu: 50m
 
 opa:
-  enabled: true
+  enabled: false
   labels:
     foo: bar
   annotations:
@@ -40,40 +40,40 @@ workloads:
       cpu: 50m
 
 test:
-  enabled: true
+  enabled: false
 
 kube-bench:
-  enabled: true
+  enabled: false
   resources:
     requests:
       cpu: 50m
 
 polaris:
-  enabled: true
+  enabled: false
   resources:
     requests:
       cpu: 50m
 
 pluto:
-  enabled: true
+  enabled: false
   resources:
     requests:
       cpu: 50m
 
 nova:
-  enabled: true
+  enabled: false
   resources:
     requests:
       cpu: 50m
 
 kube-hunter:
-  enabled: true
+  enabled: false
   resources:
     requests:
       cpu: 50m
 
 trivy:
-  enabled: true
+  enabled: false
   maxScansPerRun: 2
   resources:
     requests:
@@ -91,7 +91,7 @@ trivy:
         - ALL
 
 prometheus-metrics:
-  enabled: true
+  enabled: false
   installPrometheusServer: true
   image:
     repository: quay.io/fairwinds/prometheus-collector
@@ -108,7 +108,7 @@ prometheus:
         memory: 512Mi
 
 admission:
-  enabled: true
+  enabled: false
 
 insights-admission:
   webhookConfig:
@@ -149,8 +149,8 @@ awscosts:
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
 
-cloudCosts:
-  enabled: false
+couldcosts:
+  enabled: true
   secretName: awscosts-secret
   awsAccessKeyId: someAccessID
   awsSecretAccessKey: someAccessKey

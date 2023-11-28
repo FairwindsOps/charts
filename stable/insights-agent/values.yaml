@@ -429,7 +429,7 @@ awscosts:
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
   containerSecurityContext: {}
 
-cloudCosts:
+couldcosts:
   enabled: false
   provider: aws  # aws or gcp
   schedule: "rand * * * *"
