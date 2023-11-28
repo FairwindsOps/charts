@@ -431,7 +431,7 @@ awscosts:
 
 cloudCosts:
   enabled: false
-  provider: aws #aws or gcp
+  provider: aws  # aws or gcp
   schedule: "rand * * * *"
   timeout: 300
   image:
