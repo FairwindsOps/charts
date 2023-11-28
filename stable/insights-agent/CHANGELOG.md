@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.25.1
+* Cloud costs plugin bug fix
+
 ## 2.25.0
 * Added cloud costs plugin
 
