@@ -1,11 +1,11 @@
-{{- if and .Values.cloud-costs.enabled (not .Values.rbac.disabled) -}}
+{{- if and .Values.cloudCosts.enabled (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: {{ include "insights-agent.fullname" . }}-cloud-costs
   labels:
     app: insights-agent
-  {{- with .Values.cloud-costs.serviceAccount.annotations }}
+  {{- with .Values.cloudCosts.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end }}

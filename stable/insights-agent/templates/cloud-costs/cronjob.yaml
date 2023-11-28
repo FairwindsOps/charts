@@ -1,6 +1,6 @@
-{{- if .Values.cloud-costs.enabled -}}
-{{- $_ := set . "Label" "cloud-costs" }}
-{{- $_ := set . "Config" .Values.cloud-costs }}
+{{- if .Values.cloudCosts.enabled -}}
+{{- $_ := set . "Label" "cloudCosts" }}
+{{- $_ := set . "Config" .Values.cloudCosts }}
 {{- include "cronjob" . }}
 spec:
   {{ include "cronjob-spec" . | nindent 2 | trim }}
@@ -14,63 +14,62 @@ spec:
           - name: creds
             emptyDir: {}
           containers:
-          {{- if .Values.cloud-costs.secretName }}
+          {{- if .Values.cloudCosts.secretName }}
           - {{ include "container-spec" . | indent 12 | trim }}
             - name: creds
               mountPath: /.aws
             env:
-            {{- if eq .Values.cloud-costs.provider "aws" }}
+            {{- if eq .Values.cloudCosts.provider "aws" }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.cloud-costs.secretName }}
+                  name: {{ .Values.cloudCosts.secretName }}
                   key: AWS_ACCESS_KEY_ID
             - name: AWS_SECRET_ACCESS_KEY
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.cloud-costs.secretName }}
+                  name: {{ .Values.cloudCosts.secretName }}
                   key: AWS_SECRET_ACCESS_KEY
             {{- end }}
             - name: AWS_DEFAULT_REGION
-              value: {{ required "You must set cloud-costs.region, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.region }}
+              value: {{ required "You must set cloudCosts.region, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.region }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
               - --database
-              - {{ required "You must set cloud-costs.database, , please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.database }}
+              - {{ required "You must set cloudCosts.database, , please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.database }}
               - --table
-              - {{ required "You must set cloud-costs.table, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.table }}
+              - {{ required "You must set cloudCosts.table, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.table }}
               - --catalog
-              - {{ required "You must set cloud-costs.catalog, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.catalog }}
+              - {{ required "You must set cloudCosts.catalog, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.catalog }}
               - --tagkey
-              - {{ required "You must set cloud-costs.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.tagkey }}
+              - {{ required "You must set cloudCosts.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.tagkey }}
               - --tagvalue
-              - {{ required "You must set cloud-costs.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.tagvalue }}
+              - {{ required "You must set cloudCosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.tagvalue }}
               - --workgroup
-              - {{ required "You must set cloud-costs.workgroup, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.workgroup }}
+              - {{ required "You must set cloudCosts.workgroup, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.workgroup }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
           {{- end }}
-          {{- if eq .Values.cloud-costs.provider "gcp" }}
+          {{- if eq .Values.cloudCosts.provider "gcp" }}
             - name: GOOGLE_APPLICATION_CREDENTIALS
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.cloud-costs.secretName }}
+                  name: {{ .Values.cloudCosts.secretName }}
                   key: GOOGLE_APPLICATION_CREDENTIALS
-            {{- end }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
               - --tagkey
-              - {{ required "You must set cloud-costs.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.tagkey }}
+              - {{ required "You must set cloudCosts.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.tagkey }}
               - --tagvalue
-              - {{ required "You must set cloud-costs.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.tagvalue }}
+              - {{ required "You must set cloudCosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.tagvalue }}
               - --projectname
-              - {{ required "You must set cloud-costs.projectname, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.projectname }}
+              - {{ required "You must set cloudCosts.projectname, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.projectname }}
               - --dataset
-              - {{ required "You must set cloud-costs.dataset, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.dataset }}
+              - {{ required "You must set cloudCosts.dataset, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.dataset }}
               - --billingaccount
-              - {{ required "You must set cloud-costs.billingaccount, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloud-costs.billingaccount }}
+              - {{ required "You must set cloudCosts.billingaccount, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudCosts.billingaccount }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
           {{- end }}           
