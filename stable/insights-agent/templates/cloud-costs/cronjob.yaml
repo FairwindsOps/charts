@@ -36,11 +36,7 @@ spec:
             command: ["./cloud-costs.sh"]
             args:
               - --database
-<<<<<<< HEAD
-              - {{ required "You must set cloudcosts.aws.database, , please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.database }}
-=======
-              - {{ required "You must set cloudcosts.database, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.database }}
->>>>>>> 74c2ad860de2986fb82fb13b995360e879312f06
+              - {{ required "You must set cloudcosts.aws.database, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.database }}
               - --table
               - {{ required "You must set cloudcosts.aws.table, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.table }}
               - --catalog
