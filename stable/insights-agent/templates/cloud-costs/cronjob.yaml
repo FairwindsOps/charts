@@ -1,4 +1,4 @@
-{{- if .Values.cloudcosts.enabled -}}
+{{- if and .Values.cloudcosts .Values.cloudcosts.enabled -}}
 {{- $_ := set . "Label" "cloudcosts" }}
 {{- $_ := set . "Config" .Values.cloudcosts }}
 {{- include "cronjob" . }}
