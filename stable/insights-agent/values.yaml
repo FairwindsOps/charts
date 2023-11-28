@@ -431,12 +431,14 @@ awscosts:
 
 cloudcosts:
   enabled: false
+  secretName: cloudcosts
+  tagkey: ""
   provider: aws  # aws or gcp
   schedule: "0/10 * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
-    tag: "js-Costs"
+    tag: "0.1"
   serviceAccount:
     annotations:
   resources:

@@ -154,8 +154,6 @@ cloudcosts:
   secretName: cloudcosts-secret
   awsAccessKeyId: someAccessID
   awsSecretAccessKey: someAccessKey
-  gcpAccessKeyId: someAccessID
-  gcpSecretAccessKey: someAccessKey
   region: us-east-1
   database: athena_cur_database
   table: fairwinds_insights_cur_report
