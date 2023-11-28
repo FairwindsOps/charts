@@ -1,4 +1,4 @@
-{{- if and .Values.cloudcosts.enabled (not .Values.rbac.disabled) -}}
+{{- if and .Values.cloudcosts (and .Values.cloudcosts.enabled (not .Values.rbac.disabled)) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
