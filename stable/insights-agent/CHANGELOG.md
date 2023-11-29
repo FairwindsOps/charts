@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.25.2
+* Cloud costs - google credentials bug fix
+
 ## 2.25.1
 * Cloud costs plugin bug fix
 
