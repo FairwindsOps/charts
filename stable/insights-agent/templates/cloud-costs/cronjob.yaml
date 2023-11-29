@@ -11,15 +11,26 @@ spec:
         {{ include "job-spec-metadata" . | nindent 8 | trim }}
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
+          {{- if eq .Values.cloudcosts.provider "gcp" }}
+          - name: cloudcosts-secret-volume
+            secret:
+              secretName: {{ .Values.cloudcosts.secretName }}
+          - name: gcpconfig
+            emptyDir: {}
+          - name: gcplogs
+            emptyDir: {}
+          {{- end }}
+          {{- if eq .Values.cloudcosts.provider "aws" }}        
           - name: creds
             emptyDir: {}
+          {{- end }}  
           containers:
           {{- if .Values.cloudcosts.secretName }}
           - {{ include "container-spec" . | indent 12 | trim }}
+            {{- if eq .Values.cloudcosts.provider "aws" }}
             - name: creds
               mountPath: /.aws
             env:
-            {{- if eq .Values.cloudcosts.provider "aws" }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -35,6 +46,8 @@ spec:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
+              - --provider
+              - aws
               - --database
               - {{ required "You must set cloudcosts.aws.database, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.database }}
               - --table
@@ -51,14 +64,17 @@ spec:
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
           {{- if eq .Values.cloudcosts.provider "gcp" }}
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.cloudcosts.secretName }}
-                  key: GOOGLE_APPLICATION_CREDENTIALS
             {{ include "proxy-env-spec" . | indent 12 | trim }}
+            - name: cloudcosts-secret-volume
+              mountPath: "/.config"
+            - name: gcpconfig
+              mountPath: /.config/gcloud/credentials
+            - name: gcplogs
+              mountPath: /.config/gcloud              
             command: ["./cloud-costs.sh"]
             args:
+              - --provider
+              - gcp
               {{- if .Values.cloudcosts.tagkey }}
               - --tagkey
               - {{ .Values.cloudcosts.tagkey }}
