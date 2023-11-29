@@ -15,12 +15,6 @@ spec:
           - name: cloudcosts-secret-volume
             secret:
               secretName: {{ .Values.cloudcosts.secretName }}
-          - name: gcpconfig
-            emptyDir: {}
-          - name: gcpconfigdefault
-            emptyDir: {}
-          - name: gcplogs
-            emptyDir: {}
           {{- end }}
           {{- if eq .Values.cloudcosts.provider "aws" }}        
           - name: creds
@@ -66,17 +60,9 @@ spec:
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
           {{- if eq .Values.cloudcosts.provider "gcp" }}
-            - name: gcpconfig
-              mountPath: /.config/gcloud/credentials
-            - name: gcpconfigdefault
-              mountPath: /.config/gcloud/configurations
-            - name: gcplogs
-              mountPath: /.config/gcloud
-            env:
-            - name: GOOGLE_APPLICATION_CREDENTIALS
-              value: /.gcp_config.json
-              value: /.gcp_config.json
             {{ include "proxy-env-spec" . | indent 12 | trim }}
+            - name: cloudcosts-secret-volume
+              mountPath: "/config"                     
             command: ["./cloud-costs.sh"]
             args:
               - --provider
@@ -95,9 +81,6 @@ spec:
               - {{ required "You must set cloudcosts.gcp.billingaccount, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.billingaccount }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
-            volumeMounts:
-              - name: cloudcosts-secret-volume
-                mountPath: "/.gcp_config.json"
             {{- end }}
           {{- end }}  
   {{- end -}}
