@@ -12,7 +12,7 @@ spec:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           {{- if eq .Values.cloudcosts.provider "gcp" }}
-          - name: secret-volume
+          - name: cloudcosts-secret-volume
             secret:
               secretName: {{ .Values.cloudcosts.secretName }}
           - name: gcpConfig
@@ -82,7 +82,7 @@ spec:
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
             volumeMounts:
-              - name: secret-volume
+              - name: cloudcosts-secret-volume
                 mountPath: "/.gcp_config.json"
             {{- end }}
           {{- end }}  
