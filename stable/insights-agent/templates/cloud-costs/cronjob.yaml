@@ -15,7 +15,9 @@ spec:
           - name: cloudcosts-secret-volume
             secret:
               secretName: {{ .Values.cloudcosts.secretName }}
-          - name: gcpConfig
+          - name: gcpconfig
+            emptyDir: {}
+          - name: gcpconfigdefault
             emptyDir: {}
           {{- end }}
           {{- if eq .Values.cloudcosts.provider "aws" }}        
@@ -44,6 +46,8 @@ spec:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
+              - --provider
+              - aws
               - --database
               - {{ required "You must set cloudcosts.aws.database, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.database }}
               - --table
@@ -60,15 +64,22 @@ spec:
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
           {{- if eq .Values.cloudcosts.provider "gcp" }}
-            - name: gcpConfig
-              mountPath: /.config/gcloud/credentials.db
+            - name: gcpconfig
+              mountPath: /.config/gcloud/credentials
+            - name: gcpconfigdefault
+              mountPath: /.config/gcloud/configurations/config_default
+            env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
+              value: /.gcp_config.json
+            - name: GOOGLE_CLIENT_EMAIL
               value: /.gcp_config.json
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
+              - --provider
+              - gcp
               {{- if .Values.cloudcosts.tagkey }}
-              - --tagkey
+              - --provider
               - {{ .Values.cloudcosts.tagkey }}
               {{- end }}
               - --tagvalue
