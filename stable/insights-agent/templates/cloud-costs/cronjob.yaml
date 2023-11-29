@@ -16,6 +16,12 @@ spec:
             secret:
               secretName: {{ .Values.cloudcosts.secretName }}
           {{- end }}
+          {{- if eq .Values.cloudcosts.provider "gcp" }}
+          - name: gcpconfig
+            emptyDir: {}
+          - name: gcplogs
+            emptyDir: {}
+          {{- end }}
           {{- if eq .Values.cloudcosts.provider "aws" }}        
           - name: creds
             emptyDir: {}
@@ -62,7 +68,11 @@ spec:
           {{- if eq .Values.cloudcosts.provider "gcp" }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             - name: cloudcosts-secret-volume
-              mountPath: "/config"                     
+              mountPath: "/.config"
+            - name: gcpconfig
+              mountPath: /.config/gcloud/credentials
+            - name: gcplogs
+              mountPath: /.config/gcloud              
             command: ["./cloud-costs.sh"]
             args:
               - --provider
