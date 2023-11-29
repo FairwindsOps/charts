@@ -11,15 +11,24 @@ spec:
         {{ include "job-spec-metadata" . | nindent 8 | trim }}
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
+          {{- if eq .Values.cloudcosts.provider "gcp" }}
+          - name: secret-volume
+            secret:
+              secretName: {{ .Values.cloudcosts.secretName }}
+          - name: gcpConfig
+            emptyDir: {}
+          {{- end }}
+          {{- if eq .Values.cloudcosts.provider "aws" }}        
           - name: creds
             emptyDir: {}
+          {{- end }}  
           containers:
           {{- if .Values.cloudcosts.secretName }}
           - {{ include "container-spec" . | indent 12 | trim }}
+            {{- if eq .Values.cloudcosts.provider "aws" }}
             - name: creds
               mountPath: /.aws
             env:
-            {{- if eq .Values.cloudcosts.provider "aws" }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -51,11 +60,10 @@ spec:
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
           {{- if eq .Values.cloudcosts.provider "gcp" }}
+            - name: gcpConfig
+              mountPath: /.config/gcloud/credentials.db
             - name: GOOGLE_APPLICATION_CREDENTIALS
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.cloudcosts.secretName }}
-                  key: GOOGLE_APPLICATION_CREDENTIALS
+              value: /.gcp_config.json
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
@@ -73,6 +81,9 @@ spec:
               - {{ required "You must set cloudcosts.gcp.billingaccount, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.billingaccount }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
+            volumeMounts:
+              - name: secret-volume
+                mountPath: "/.gcp_config.json"
             {{- end }}
           {{- end }}  
   {{- end -}}
