@@ -15,8 +15,6 @@ spec:
           - name: cloudcosts-secret-volume
             secret:
               secretName: {{ .Values.cloudcosts.secretName }}
-          {{- end }}
-          {{- if eq .Values.cloudcosts.provider "gcp" }}
           - name: gcpconfig
             emptyDir: {}
           - name: gcplogs
