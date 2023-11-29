@@ -79,7 +79,7 @@ spec:
               - --provider
               - gcp
               {{- if .Values.cloudcosts.tagkey }}
-              - --provider
+              - --tagkey
               - {{ .Values.cloudcosts.tagkey }}
               {{- end }}
               - --tagvalue
