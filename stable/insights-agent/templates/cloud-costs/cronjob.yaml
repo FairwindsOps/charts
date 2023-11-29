@@ -19,6 +19,8 @@ spec:
             emptyDir: {}
           - name: gcpconfigdefault
             emptyDir: {}
+          - name: gcplogs
+            emptyDir: {}
           {{- end }}
           {{- if eq .Values.cloudcosts.provider "aws" }}        
           - name: creds
@@ -68,10 +70,11 @@ spec:
               mountPath: /.config/gcloud/credentials
             - name: gcpconfigdefault
               mountPath: /.config/gcloud/configurations/config_default
+            - name: gcplogs
+              mountPath: /.config/gcloud/logs
             env:
             - name: GOOGLE_APPLICATION_CREDENTIALS
               value: /.gcp_config.json
-            - name: GOOGLE_CLIENT_EMAIL
               value: /.gcp_config.json
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
