@@ -228,6 +228,8 @@ recommender:
 | admissionController.tolerations | list | `[]` |  |
 | admissionController.affinity | object | `{}` |  |
 | admissionController.useHostNetwork | bool | `false` | Whether to use host network, this is required on EKS with custom CNI |
+| admissionController.httpPort | int | `8000` | Port of the admission controller for the mutating webhooks |
+| admissionController.metricsPort | int | `8944` | Port of the admission controller where metrics can be received from |
 | tests.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The security context for the containers run as helm hook tests |
 | tests.image.repository | string | `"bitnami/kubectl"` | An image used for testing containing bash, cat and kubectl |
 | tests.image.tag | string | `""` | An image tag for the tests image |

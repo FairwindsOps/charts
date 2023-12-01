@@ -75,10 +75,10 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 8000
+              containerPort: {{ .Values.admissionController.httpPort | default 8000 }}
               protocol: TCP
             - name: metrics
-              containerPort: 8944
+              containerPort: {{ .Values.admissionController.metricsPort | default 8944 }}
               protocol: TCP
           env:
             - name: NAMESPACE
