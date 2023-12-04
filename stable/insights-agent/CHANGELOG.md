@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.25.3
+* Cloud costs - added nested ifs to workaround a bug on some helm versions
+
 ## 2.25.2
 * Cloud costs - google credentials bug fix
 
