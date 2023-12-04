@@ -1,10 +1,6 @@
 {{- if .Values.dashboard.ingress.enabled -}}
 {{ $serviceName := printf "%s-dashboard" (include "polaris.fullname" .) -}}
-{{- if not (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
-apiVersion: networking.k8s.io/v1beta1
-{{- else }}
 apiVersion: networking.k8s.io/v1
-{{- end }}
 kind: Ingress
 metadata:
   annotations:
@@ -17,9 +13,7 @@ metadata:
     app.kubernetes.io/instance: {{ .Release.Name }}
   name: polaris
 spec:
-{{- if and (.Values.dashboard.ingress.ingressClassName) (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
   ingressClassName: {{ .Values.dashboard.ingress.ingressClassName }}
-{{- end }}
 {{- if .Values.dashboard.ingress.defaultBackendEnabled }}
   defaultBackend:
     service:
@@ -32,11 +26,6 @@ spec:
   - host: {{ . }}
     http:
       paths:
-      {{- if not ($.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
-      - backend:
-          serviceName: {{ $serviceName }}
-          servicePort: 80
-      {{- else }}
       - backend:
           service:
             name: {{ $serviceName }}
@@ -44,7 +33,6 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-      {{- end }}
   {{- end -}}
 {{- if .Values.dashboard.ingress.tls }}
   tls:
