@@ -63,6 +63,7 @@ cronjobExecutor:
       memory: 128Mi
 
 installReporter:
+  ttl: 300
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.4"
