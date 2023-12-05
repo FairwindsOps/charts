@@ -1,7 +1,19 @@
 # Changelog
 
-## 2.25.0
+## 2.26.0
 * Add TTL option for install-reporter to better support Argo deployment
+
+## 2.25.3
+* Cloud costs - added nested ifs to workaround a bug on some helm versions
+
+## 2.25.2
+* Cloud costs - google credentials bug fix
+
+## 2.25.1
+* Cloud costs plugin bug fix
+
+## 2.25.0
+* Added cloud costs plugin
 
 ## 2.24.5
 * Bumped `polaris` plugin version to `8.5`
