@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.26.0
+* Add TTL option for install-reporter to better support Argo deployment
+
 ## 2.25.3
 * Cloud costs - added nested ifs to workaround a bug on some helm versions
 
