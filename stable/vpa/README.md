@@ -146,6 +146,7 @@ recommender:
 | serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |
 | serviceAccount.automountServiceAccountToken | bool | `true` | Automount API credentials for the Service Account |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
+| recommender.envFromSecret | string | `""` | Specify a secret to get environment variables from |
 | recommender.annotations | object | `{}` | Annotations to add to the recommender deployment |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
