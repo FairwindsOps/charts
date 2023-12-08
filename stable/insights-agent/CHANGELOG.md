@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.26.1
+* unset awscosts aws keys in install-reporter configmap 
+
 ## 2.26.0
 * Add TTL option for install-reporter to better support Argo deployment
 
