@@ -66,6 +66,11 @@ spec:
             - name: metrics
               containerPort: 8942
               protocol: TCP
+          {{- if .Values.recommender.envFromSecret }}
+          envFrom:
+          - secretRef:
+              name: {{ .Values.recommender.envFromSecret }}
+          {{- end }}
           resources:
             {{- toYaml .Values.recommender.resources | nindent 12 }}
       {{- with .Values.recommender.nodeSelector }}

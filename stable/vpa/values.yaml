@@ -44,6 +44,8 @@ serviceAccount:
 recommender:
   # recommender.enabled -- If true, the vpa recommender component will be installed.
   enabled: true
+  # -- Specify a secret to get environment variables from
+  envFromSecret: ""
   # recommender.annotations -- Annotations to add to the recommender deployment
   annotations: {}
   # recommender.extraArgs -- A set of key-value flags to be passed to the recommender
