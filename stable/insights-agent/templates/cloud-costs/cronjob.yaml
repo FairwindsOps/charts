@@ -12,9 +12,6 @@ spec:
         spec:
           {{ include "job-template-spec" . | indent 10 | trim }}
           {{- if eq .Values.cloudcosts.provider "gcp" }}
-          - name: cloudcosts-secret-volume
-            secret:
-              secretName: {{ .Values.cloudcosts.secretName }}
           - name: gcpconfig
             emptyDir: {}
           - name: gcplogs
@@ -65,8 +62,6 @@ spec:
             {{- end }}
           {{- if eq .Values.cloudcosts.provider "gcp" }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
-            - name: cloudcosts-secret-volume
-              mountPath: "/.config"
             - name: gcpconfig
               mountPath: /.config/gcloud/credentials
             - name: gcplogs
