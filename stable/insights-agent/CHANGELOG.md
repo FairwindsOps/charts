@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.26.1
+* Cloud Costs - removed gcloud auth and secret
+
 ## 2.26.0
 * Add TTL option for install-reporter to better support Argo deployment
 
