@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.26.2
+* unset awscosts aws keys in install-reporter configmap 
+
 ## 2.26.1
 * Cloud Costs - removed gcloud auth and secret
 
