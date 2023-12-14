@@ -174,6 +174,8 @@ spec:
         # Where possible, we want to have lowercase usernames in PostgreSQL as more complex postgres usernames
         # requiring quoting to be done in certain contexts, which many tools do not do correctly, or even at all.
         # https://patroni.readthedocs.io/en/latest/ENVIRONMENT.html#bootstrap-configuration
+        - name: PATRONICTL_CONFIG_FILE
+          value: "/etc/timescaledb/patroni.yaml"
         - name: PATRONI_admin_OPTIONS
           value: createrole,createdb
         - name: PATRONI_REPLICATION_USERNAME
@@ -293,6 +295,9 @@ spec:
         - mountPath: {{ template "scripts_dir" . }}
           name: timescaledb-scripts
           readOnly: true
+        - mountPath: /etc/pgbackrest_secrets
+          name: pgbackrest-secrets
+          readOnly: true
         - mountPath: "/etc/timescaledb/post_init.d"
           name: post-init
           readOnly: true
@@ -392,6 +397,9 @@ spec:
           readOnly: true
         - mountPath: {{ template "scripts_dir" . }}
           name: timescaledb-scripts
+          readOnly: true
+        - mountPath: /etc/pgbackrest_secrets
+          name: pgbackrest-secrets
           readOnly: true
         env:
           - name: PGHOST
@@ -506,6 +514,11 @@ spec:
         configMap:
           name: {{ template "timescaledb.fullname" . }}-pgbackrest
           defaultMode: 416 # 0640 permissions
+          optional: true
+      - name: pgbackrest-secrets
+        secret:
+          secretName: {{ template "timescaledb.fullname" . }}-pgbackrest-secrets
+          defaultMode: 416
           optional: true
       - name: certificate
         secret:
