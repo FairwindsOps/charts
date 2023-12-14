@@ -28,7 +28,7 @@ TimescaleDB HA Deployment.
 | clusterName | string | `""` |  |
 | version | string | `nil` |  |
 | image.repository | string | `"timescale/timescaledb-ha"` |  |
-| image.tag | string | `"pg14.6-ts2.9.1-p1"` |  |
+| image.tag | string | `"pg14.8-ts2.11.0-all"` |  |
 | image.pullPolicy | string | `"Always"` |  |
 | curlImage.repository | string | `"curlimages/curl"` |  |
 | curlImage.tag | string | `"7.87.0"` |  |
