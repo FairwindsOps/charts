@@ -63,6 +63,7 @@ cronjobExecutor:
       memory: 128Mi
 
 installReporter:
+  ttl: 300
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.4"
@@ -90,7 +91,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "8.4"
+    tag: "8.5"
   resources:
     requests:
       cpu: 100m
@@ -179,6 +180,10 @@ opa:
     resources:
     - pods
     - replicationcontrollers
+  - apiGroups:
+    - networking.k8s.io
+    resources:
+    - ingresses
   # opa.admissionRulesAsTargetResources -- If the admission controller is enabled,
   # the APIGroups and Resources found in insights-admission `webhookConfig.rules`
   # will be added as OPA Kubernetes target resources, plus
@@ -423,6 +428,25 @@ awscosts:
   # awscosts.securityContext  -- Additional securityContext field in the Pod specification(PodSecurityContext) for the cronjob.
   securityContext: {}
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
+  containerSecurityContext: {}
+
+cloudcosts:
+  enabled: false
+  secretName: cloudcosts
+  tagkey: ""
+  provider: aws  # aws or gcp
+  schedule: "rand * * * *"
+  timeout: 300
+  image:
+    repository: quay.io/fairwinds/cloud-costs
+    tag: "0.1"
+  serviceAccount:
+    annotations:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 2Gi
+  securityContext: {}
   containerSecurityContext: {}
 
 right-sizer:

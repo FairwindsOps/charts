@@ -1,16 +1,15 @@
-{{- if .Values.closeTicketsCronjob.enabled }}
-{{ range .Values.closeTicketsCronjob.schedules }}
----
+{{ range $name, $options := .Values.cronjobs }}
+{{ if $options.schedule }}
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ include "fairwinds-insights.fullname" $ }}-cronjob-{{ .name }}
+  name: {{ include "fairwinds-insights.fullname" $ }}-cj-{{ $name }}
   labels:
     {{- include "fairwinds-insights.labels" $ | nindent 4 }}
-    app.kubernetes.io/component: close-tickets-cronjob
+    app.kubernetes.io/component: cronjob-{{ $name }}
 spec:
+  schedule: "{{ $options.schedule }}"
   concurrencyPolicy: Forbid
-  schedule: "{{ .cron }}"
   jobTemplate:
     spec:
       template:
@@ -21,29 +20,31 @@ spec:
             - name: {{ . }}
           {{- end }}
           containers:
-            - name: fairwinds-insights
+            - name: {{ $name }}
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
-              command: ["close_tickets"]
+              command: ["{{ $options.command }}"]
+              args:
+              {{- with $options.interval }}
+                - --interval={{ . }}
+              {{- end }}
               {{- include "env" $ | indent 14 }}
               imagePullPolicy: Always
               resources:
-                {{- toYaml $.Values.closeTicketsCronjob.resources | nindent 16 }}
+                {{- toYaml (default $.Values.cronjobOptions.resources $options.resources) | nindent 16 }}
+              {{- if $options.includeGitHubSecret }}
               volumeMounts:
               - name: secrets
                 mountPath: /var/run/secrets/github
+              {{- end }}
               securityContext:
-                readOnlyRootFilesystem: true
-                allowPrivilegeEscalation: false
-                privileged: false
-                runAsNonRoot: true
-                runAsUser: 10324
-                capabilities:
-                  drop:
-                    - ALL
+                {{- toYaml (default $.Values.cronjobOptions.securityContext $options.securityContext) | nindent 16 }}
+          {{- if $options.includeGitHubSecret }}
           volumes:
             - name: secrets
               secret:
                 secretName: github-secrets
                 optional: true
+          {{- end }}
+---
 {{ end }}
-{{- end }}
+{{ end }}

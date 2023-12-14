@@ -8,11 +8,17 @@ metadata:
     polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
     polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
     "helm.sh/hook-delete-policy": hook-succeeded,before-hook-creation
+    {{- $values := .Values | deepCopy }}
+    {{- $_ := unset $values "insights" }}
+    {{- $out := dict "values" $values "version" .Chart.Version }}
+    insights.fairwinds.com/values-hash: "{{- toPrettyJson $out | sha256sum }}"
   {{- with .Values.installReporter.additionalAnnotations }}
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if gt (int .Values.installReporter.ttl) 0 }}
   ttlSecondsAfterFinished: 300
+  {{- end }}
   backoffLimit: {{ .Values.cronjobs.backoffLimit }}
   template:
     {{- with .Values.global.customWorkloadAnnotations }}

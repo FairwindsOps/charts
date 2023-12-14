@@ -10,5 +10,7 @@ data:
   values.json: |
     {{ $values := .Values | deepCopy }}
     {{ $_ := unset $values "insights" }}
+    {{ $_ := unset $values "awscosts.awsAccessKeyId" }}
+    {{ $_ := unset $values "awscosts.awsSecretAccessKey" }}
     {{ $out := dict "values" $values "version" .Chart.Version }}
     {{- toPrettyJson $out | nindent 4 }}

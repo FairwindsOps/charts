@@ -48,7 +48,6 @@ rules:
       - get
       - list
       - watch
-      - patch
   - apiGroups:
       - "autoscaling.k8s.io"
     resources:
@@ -60,6 +59,22 @@ rules:
       - patch
   {{- if .Values.rbac.extraRules.vpaActor -}}
   {{ toYaml .Values.rbac.extraRules.vpaActor | nindent 2 }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: vpa-status-actor
+rules:
+  - apiGroups:
+      - "autoscaling.k8s.io"
+    resources:
+      - verticalpodautoscalers/status
+    verbs:
+      - get
+      - patch
+  {{- if .Values.rbac.extraRules.vpaStatusActor -}}
+  {{ toYaml .Values.rbac.extraRules.vpaStatusActor | nindent 2 }}
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
