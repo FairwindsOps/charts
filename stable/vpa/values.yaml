@@ -20,6 +20,8 @@ rbac:
   extraRules:
     # rbac.extraRules.vpaActor -- Extra rbac rules for the vpa-actor ClusterRole
     vpaActor: []
+    # -- Extra rbac rules for the vpa-status-actor ClusterRole
+    vpaStatusActor: []
     # rbac.extraRules.vpaCheckpointActor -- Extra rbac rules for the vpa-checkpoint-actor ClusterRole
     vpaCheckpointActor: []
     # rbac.extraRules.vpaEvictioner -- Extra rbac rules for the vpa-evictioner ClusterRole
