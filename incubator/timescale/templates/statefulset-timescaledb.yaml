@@ -101,16 +101,16 @@ spec:
       # We choose shutdown here, especially as during the largest part of the shutdown
       # we can still serve clients.
       terminationGracePeriodSeconds: 600
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+      - name: {{ . }}
+      {{- end }}
       containers:
       - name: timescaledb
         securityContext:
           allowPrivilegeEscalation: false
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
-        {{- with .Values.image.pullSecret }}
-        imagePullSecrets:
-        - name: {{ . }}
-        {{- end }}
         lifecycle:
           preStop:
             exec:
