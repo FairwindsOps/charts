@@ -12,7 +12,7 @@ To update this chart, run:
 
 ```bash
 git clone https://github.com/timescale/helm-charts
-cp -r helm-charts/charts/timescaledb-single/* ~/git/charts/incubator/timescale/
+cp -r helm-charts/charts/timescaledb-single/* ./incubator/timescale/
 rm incubator/timescale/templates/job-update-patroni.yaml
 git checkout -- incubator/timescale/templates/role-timescaledb.yaml
 helm-docs --sort-values-order=file
