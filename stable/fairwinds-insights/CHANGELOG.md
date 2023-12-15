@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.4
+* Update downstream timescale subchart. Timescale version is the same, but some changes were made to the chart.
+
 ## 1.0.3
 * Update application version to 14.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
