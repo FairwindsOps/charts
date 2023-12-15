@@ -1,4 +1,6 @@
 # Changelog
+## 1.0.5
+* Trigger rebuild with new timescale subchart
 
 ## 1.0.4
 * Update timescale subchart. Timescale version is the same, but some changes were made to the chart.
