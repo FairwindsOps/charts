@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.0.6
+* Update application version to 14.11. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+## 1.0.5
+* Trigger rebuild with new timescale subchart
+
+## 1.0.4
+* Update timescale subchart. Timescale version is the same, but some changes were made to the chart.
+
+## 1.0.3
+* Update application version to 14.10. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 1.0.2
 * Update application version to 14.9. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
