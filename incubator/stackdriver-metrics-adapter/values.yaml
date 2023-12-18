@@ -1,8 +1,12 @@
+# replicaCount -- Number of replicas the deployment should run
 replicaCount: 1
 
 image:
+  # image.repository -- Repository for adapter image
   repository: gcr.io/gke-release/custom-metrics-stackdriver-adapter
-  tag: v0.12.0-gke.0
+  # image.tag -- adapter image tag to use
+  tag: v0.13.1-gke.0
+  # image.pullPolicy -- the image pull policy for adapter image
   pullPolicy: IfNotPresent
 
 nameOverride: ""
@@ -10,16 +14,23 @@ fullnameOverride: ""
 
 
 serviceAccount:
-# serviceAccount.annotations is a map of annotations you'd like added to the service account
+  # serviceAccount.annotations -- Annotations to add to the service account
+  # provide `key: value` pairs, this is required for GKE workloads to bind to an IAM account
+  # see [the documentation](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/custom-metrics-stackdriver-adapter#configure-cluster) for details
   annotations:
-#   key: value
+  #   key: value
 
 service:
+  # service.type -- The type of service to run for the deployment
   type: ClusterIP
+  # service.protocol -- The protocol to expose the service on
   protocol: TCP
+  # service.port -- The incoming port to expose the service on
   port: 443
+  # service.targetPort -- The target port to send service traffic to
   targetPort: 443
 
+# resources -- The container resources block for the adapter deployment pods
 resources:
   limits:
     cpu: 250m
@@ -29,4 +40,6 @@ resources:
     memory: 200Mi
 
 container:
+  # container.useNewResourceModel -- whether to use "legacy model" vs "new model"
+  # see these terms [in the documentation](https://github.com/GoogleCloudPlatform/k8s-stackdriver/tree/master/custom-metrics-stackdriver-adapter#configure-cluster)
   useNewResourceModel: false
