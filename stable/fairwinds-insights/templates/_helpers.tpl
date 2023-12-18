@@ -13,13 +13,13 @@ If release name contains chart name it will be used as a full name.
 */}}
 {{- define "fairwinds-insights.fullname" -}}
 {{- if .Values.fullnameOverride -}}
-{{- .Values.fullnameOverride | trunc 27 | trimSuffix "-" -}}
+{{- .Values.fullnameOverride | trunc 20 | trimSuffix "-" -}}
 {{- else -}}
 {{- $name := default .Chart.Name .Values.nameOverride -}}
 {{- if contains $name .Release.Name -}}
-{{- .Release.Name | trunc 27 | trimSuffix "-" -}}
+{{- .Release.Name | trunc 20 | trimSuffix "-" -}}
 {{- else -}}
-{{- printf "%s" .Release.Name | trunc 27 | trimSuffix "-" -}}
+{{- printf "%s" .Release.Name | trunc 20 | trimSuffix "-" -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}
@@ -33,7 +33,7 @@ Create chart name and version as used by the chart label.
 
 {{- define "fairwinds-insights.sanitizedPrefix" -}}
 {{- if .Values.sanitizedBranch -}}
-{{- printf "%s." (.Values.sanitizedBranch | trunc 12 | trimSuffix "-") -}}
+{{- printf "%s." (.Values.sanitizedBranch | trunc (int .Values.sanitizedPrefixMaxLength | default 12) | trimSuffix "-") -}}
 {{- end -}}
 {{- end -}}
 

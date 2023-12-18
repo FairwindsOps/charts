@@ -37,16 +37,22 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.overprovisioning.enabled | bool | `false` |  |
 | options.overprovisioning.cpu | string | `"1000m"` |  |
 | options.overprovisioning.memory | string | `"1Gi"` |  |
-| hubspotCronjob.resources.limits.cpu | string | `"500m"` |  |
-| hubspotCronjob.resources.limits.memory | string | `"1024Mi"` |  |
-| hubspotCronjob.resources.requests.cpu | string | `"80m"` |  |
-| hubspotCronjob.resources.requests.memory | string | `"128Mi"` |  |
-| hubspotCronjob.schedules | list | `[]` |  |
-| benchmarkCronjob.resources.limits.cpu | string | `"500m"` |  |
-| benchmarkCronjob.resources.limits.memory | string | `"1024Mi"` |  |
-| benchmarkCronjob.resources.requests.cpu | string | `"80m"` |  |
-| benchmarkCronjob.resources.requests.memory | string | `"128Mi"` |  |
-| benchmarkCronjob.schedules | list | `[]` |  |
+| cronjobOptions.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | Default security context for cronjobs |
+| cronjobOptions.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Default resources for cronjobs |
+| cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *"}` | Options for the action-items filters refresher job. |
+| cronjobs.action-items-statistics | object | `{"command":"action_items_statistics","schedule":"15 * * * *"}` | Options for the action item stats job |
+| cronjobs.alerts-realtime | object | `{"command":"notifications_digest","interval":"10m","schedule":"5/10 * * * *"}` | Options for the realtime alerts job |
+| cronjobs.benchmark | object | `{"command":"benchmark","schedule":""}` | Options for the benchmark job |
+| cronjobs.close-tickets | object | `{"command":"close_tickets","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"0/15 * * * *"}` | Options for the close tickets job. |
+| cronjobs.costs-update | object | `{"command":"cloud_costs_update","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"15 */3 * * *"}` | Options for the cloud costs update job |
+| cronjobs.database-cleanup | object | `{"command":"database_cleanup","schedule":"0 0 * * *"}` | Options for the database cleanup job. |
+| cronjobs.email | object | `{"command":"email_digest","schedule":""}` | Options for the email digest job. |
+| cronjobs.hubspot | object | `{"command":"hubspot_sync","schedule":""}` | Options for the hubspot job. |
+| cronjobs.notifications-digest | object | `{"command":"notifications_digest","interval":"24h","schedule":"0 16 * * *"}` | Options for digest notifications job |
+| cronjobs.resources-recommendations | object | `{"command":"resources_recommendations","resources":{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}},"schedule":"0 2 * * *"}` | Options for the resources recommendations job |
+| cronjobs.saml | object | `{"command":"refresh_saml_metadata","schedule":"0 * * * *"}` | Options for the SAML sync job |
+| cronjobs.slack-channels | object | `{"command":"slack_channels_local_refresher","schedule":"0/15 * * * *"}` | Options for the slack channels job. |
+| cronjobs.trial-end | object | `{"command":"trial_end_downgrade","schedule":""}` | Options for the trial-end job. |
 | selfHostedSecret | string | `nil` |  |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
@@ -87,46 +93,11 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.service.type | string | `nil` | Service type for Open API server |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
-| samlCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the SAML sync job. |
-| samlCronjob.schedules | list | `[{"cron":"0 * * * *","interval":"60m","name":"hourly"}]` | CRON schedules for the SAML sync job |
-| alertsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Slack/Datadog integrations |
-| alertsCronjob.schedules | list | `[{"cron":"5/10 * * * *","interval":"10m","name":"realtime"},{"cron":"0 16 * * *","interval":"24h","name":"digest"}]` | CRON schedules for the Slack/Datadog integrations |
-| alertsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the alerts job under. |
-| emailCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the Action Items email job. |
-| emailCronjob.schedules | list | `[]` | CRON schedules for the Action Items email job. |
-| emailCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the email job under. |
-| databaseCleanupCronjob.enabled | bool | `true` | Enable database cleanup true by default |
-| databaseCleanupCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database cleanup job. |
-| databaseCleanupCronjob.schedules | list | `[{"cron":"0 0 * * *","interval":"24h","name":"database-cleanup"}]` | CRON schedules for the database cleanup job. |
-| databaseCleanupCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the database cleanup job under. |
-| actionItemsStatisticsCronjob.enabled | bool | `true` |  |
-| actionItemsStatisticsCronjob.resources.limits.cpu | string | `"500m"` |  |
-| actionItemsStatisticsCronjob.resources.limits.memory | string | `"1024Mi"` |  |
-| actionItemsStatisticsCronjob.resources.requests.cpu | string | `"80m"` |  |
-| actionItemsStatisticsCronjob.resources.requests.memory | string | `"128Mi"` |  |
-| actionItemsStatisticsCronjob.schedules[0].name | string | `"action-items-statistics"` |  |
-| actionItemsStatisticsCronjob.schedules[0].interval | string | `"60m"` |  |
-| actionItemsStatisticsCronjob.schedules[0].cron | string | `"15 * * * *"` |  |
-| actionItemsStatisticsCronjob.securityContext.runAsUser | int | `10324` |  |
-| resourcesRecommendationsCronjob.enabled | bool | `true` | Enable resources recommendations true by default |
-| resourcesRecommendationsCronjob.resources | object | `{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}}` | Resources for the resources recommendations job. |
-| resourcesRecommendationsCronjob.schedules | list | `[{"cron":"0 2 * * *","interval":"24h","name":"resources-recommendations"}]` | CRON schedules for the resources recommendations job. |
-| resourcesRecommendationsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the resources recommendations job under. |
-| closeTicketsCronjob.enabled | bool | `true` | Close tickets enabled by default |
-| closeTicketsCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"1.5Gi"}}` | Resources for the close tickets job. |
-| closeTicketsCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"close-tickets"}]` | CRON schedules for the close tickets job. |
-| closeTicketsCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the close tickets job under. |
-| cloudCostsUpdateCronjob.enabled | bool | `true` | Cloud costs update enabled by default |
-| cloudCostsUpdateCronjob.resources | object | `{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}}` | Resources for the cloud costs update job. |
-| cloudCostsUpdateCronjob.schedules | list | `[{"cron":"15 */3 * * *","name":"costs-update"}]` | CRON schedules for the cloud costs update job |
-| cloudCostsUpdateCronjob.securityContext.runAsUser | int | `10324` | The user ID to run the cloud costs update job under. |
-| actionItemsFiltersRefresherCronJob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Resources for the action-items filters refresher job. |
-| actionItemsFiltersRefresherCronJob.schedules | list | `[{"cron":"0/15 * * * *","name":"every-15-min"}]` | CRON schedules for the action-items filters refresher job. |
-| actionItemsFiltersRefresherCronJob.securityContext.runAsUser | int | `10324` | The user ID to run the action-items filters refresher job under. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | service.annotations | string | `nil` | Annotations for the services |
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
+| sanitizedPrefixMaxLength | int | `12` | Maximum length for hostname prefix. |
 | ingress.enabled | bool | `false` | Enable Ingress |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
@@ -255,7 +226,3 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.resources.requests.memory | string | `"128Mi"` |  |
 | repoScanJob.nodeSelector | object | `{}` |  |
 | repoScanJob.tolerations | list | `[]` |  |
-| slackChannelsLocalRefresherCronjob.enabled | bool | `true` |  |
-| slackChannelsLocalRefresherCronjob.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"150m","memory":"256Mi"}}` | Resources for the slack channels local refresher cron-job. |
-| slackChannelsLocalRefresherCronjob.schedules | list | `[{"cron":"0/15 * * * *","name":"default-schedule"}]` | CRON schedules for the slack channels local refresher cron-job. |
-| slackChannelsLocalRefresherCronjob.securityContext.runAsUser | int | `10324` |  |

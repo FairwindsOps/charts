@@ -20,6 +20,8 @@ rbac:
   extraRules:
     # rbac.extraRules.vpaActor -- Extra rbac rules for the vpa-actor ClusterRole
     vpaActor: []
+    # -- Extra rbac rules for the vpa-status-actor ClusterRole
+    vpaStatusActor: []
     # rbac.extraRules.vpaCheckpointActor -- Extra rbac rules for the vpa-checkpoint-actor ClusterRole
     vpaCheckpointActor: []
     # rbac.extraRules.vpaEvictioner -- Extra rbac rules for the vpa-evictioner ClusterRole
@@ -44,6 +46,8 @@ serviceAccount:
 recommender:
   # recommender.enabled -- If true, the vpa recommender component will be installed.
   enabled: true
+  # -- Specify a secret to get environment variables from
+  envFromSecret: ""
   # recommender.annotations -- Annotations to add to the recommender deployment
   annotations: {}
   # recommender.extraArgs -- A set of key-value flags to be passed to the recommender
@@ -96,9 +100,9 @@ recommender:
     timeoutSeconds: 3
   # recommender.resources -- The resources block for the recommender pod
   resources:
-    limits:
-      cpu: 200m
-      memory: 1000Mi
+    limits: {}
+      # cpu: 200m
+      # memory: 1000Mi
     requests:
       cpu: 50m
       memory: 500Mi
@@ -163,9 +167,9 @@ updater:
     timeoutSeconds: 3
   # updater.resources -- The resources block for the updater pod
   resources:
-    limits:
-      cpu: 200m
-      memory: 1000Mi
+    limits: {}
+      # cpu: 200m
+      # memory: 1000Mi
     requests:
       cpu: 50m
       memory: 500Mi
@@ -264,9 +268,9 @@ admissionController:
     timeoutSeconds: 3
   # admissionController.resources -- The resources block for the admission controller pod
   resources:
-    limits:
-      cpu: 200m
-      memory: 500Mi
+    limits: {}
+      # cpu: 200m
+      # memory: 500Mi
     requests:
       cpu: 50m
       memory: 200Mi

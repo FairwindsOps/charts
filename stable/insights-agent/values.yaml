@@ -63,6 +63,7 @@ cronjobExecutor:
       memory: 128Mi
 
 installReporter:
+  ttl: 300
   image:
     repository: quay.io/fairwinds/insights-uploader
     tag: "0.4"
@@ -427,6 +428,25 @@ awscosts:
   # awscosts.securityContext  -- Additional securityContext field in the Pod specification(PodSecurityContext) for the cronjob.
   securityContext: {}
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
+  containerSecurityContext: {}
+
+cloudcosts:
+  enabled: false
+  secretName: cloudcosts
+  tagkey: ""
+  provider: aws  # aws or gcp
+  schedule: "rand * * * *"
+  timeout: 300
+  image:
+    repository: quay.io/fairwinds/cloud-costs
+    tag: "0.1"
+  serviceAccount:
+    annotations:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 2Gi
+  securityContext: {}
   containerSecurityContext: {}
 
 right-sizer:

@@ -25,6 +25,10 @@ The admissionController is the only one that poses a stability consideration bec
 
 For more details, please see the values below, and the vertical pod autosclaer documentation.
 
+## *BREAKING* Upgrading to >=4.0.0
+
+Ensure that you update the CRDs from [the autoscaler repository](https://raw.githubusercontent.com/kubernetes/autoscaler/master/vertical-pod-autoscaler/deploy/vpa-v1-crd-gen.yaml) or the crds/ folder.
+
 ## *BREAKING* Upgrading from <= v2.5.1 to 3.0.0
 
 ### ClusterRole rules
@@ -134,8 +138,9 @@ recommender:
 | fullnameOverride | string | `""` | A template override for the fullname |
 | podLabels | object | `{}` | Labels to add to all pods |
 | rbac.create | bool | `true` | If true, then rbac resources (ClusterRoles and ClusterRoleBindings) will be created for the selected components. Temporary rbac resources will still be created, to ensure a functioning installation process |
-| rbac.extraRules | object | `{"vpaActor":[],"vpaCheckpointActor":[],"vpaEvictioner":[],"vpaMetricsReader":[],"vpaStatusReader":[],"vpaTargetReader":[]}` | Extra rbac rules for ClusterRoles |
+| rbac.extraRules | object | `{"vpaActor":[],"vpaCheckpointActor":[],"vpaEvictioner":[],"vpaMetricsReader":[],"vpaStatusActor":[],"vpaStatusReader":[],"vpaTargetReader":[]}` | Extra rbac rules for ClusterRoles |
 | rbac.extraRules.vpaActor | list | `[]` | Extra rbac rules for the vpa-actor ClusterRole |
+| rbac.extraRules.vpaStatusActor | list | `[]` | Extra rbac rules for the vpa-status-actor ClusterRole |
 | rbac.extraRules.vpaCheckpointActor | list | `[]` | Extra rbac rules for the vpa-checkpoint-actor ClusterRole |
 | rbac.extraRules.vpaEvictioner | list | `[]` | Extra rbac rules for the vpa-evictioner ClusterRole |
 | rbac.extraRules.vpaMetricsReader | list | `[]` | Extra rbac rules for the vpa-metrics-reader ClusterRole |
@@ -146,6 +151,7 @@ recommender:
 | serviceAccount.name | string | `""` | The base name of the service account to use (appended with the component). If not set and create is true, a name is generated using the fullname template and appended for each component |
 | serviceAccount.automountServiceAccountToken | bool | `true` | Automount API credentials for the Service Account |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
+| recommender.envFromSecret | string | `""` | Specify a secret to get environment variables from |
 | recommender.annotations | object | `{}` | Annotations to add to the recommender deployment |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
@@ -160,7 +166,7 @@ recommender:
 | recommender.securityContext | object | `{}` | The security context for the containers inside the recommender pod |
 | recommender.livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The liveness probe definition inside the recommender pod |
 | recommender.readinessProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The readiness probe definition inside the recommender pod |
-| recommender.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
+| recommender.resources | object | `{"limits":{},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
 | recommender.nodeSelector | object | `{}` |  |
 | recommender.tolerations | list | `[]` |  |
 | recommender.affinity | object | `{}` |  |
@@ -180,7 +186,7 @@ recommender:
 | updater.securityContext | object | `{}` | The security context for the containers inside the updater pod |
 | updater.livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The liveness probe definition inside the updater pod |
 | updater.readinessProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The readiness probe definition inside the updater pod |
-| updater.resources | object | `{"limits":{"cpu":"200m","memory":"1000Mi"},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
+| updater.resources | object | `{"limits":{},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
 | updater.nodeSelector | object | `{}` |  |
 | updater.tolerations | list | `[]` |  |
 | updater.affinity | object | `{}` |  |
@@ -216,7 +222,7 @@ recommender:
 | admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
 | admissionController.livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The liveness probe definition inside the admission controller pod |
 | admissionController.readinessProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The readiness probe definition inside the admission controller pod |
-| admissionController.resources | object | `{"limits":{"cpu":"200m","memory":"500Mi"},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
+| admissionController.resources | object | `{"limits":{},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
 | admissionController.tlsSecretKeys | list | `[]` | The keys in the vpa-tls-certs secret to map in to the admission controller |
 | admissionController.nodeSelector | object | `{}` |  |
 | admissionController.tolerations | list | `[]` |  |
