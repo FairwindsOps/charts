@@ -1,7 +1,7 @@
 # Changelog
 
-## 2.26.3
-* upgrade prometheus helm chart to 25.8.2 and remove pinned kube-state-metrics image
+## 3.0.0
+* upgrade prometheus helm chart to 25.8.2 and remove pinned kube-state-metrics image. Important note for migration: the following values have been changed in the upstream prometheus chart: `prometheus.nodeExporter` -> `prometheus.prometheus-node-exporter`, `prometheus.pushgateway` -> `prometheus.prometheus-pushgateway`
 
 ## 2.26.2
 * unset awscosts aws keys in install-reporter configmap 
