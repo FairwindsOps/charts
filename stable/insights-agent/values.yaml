@@ -328,9 +328,9 @@ prometheus:
     enabled: true
   alertmanager:
     enabled: false
-  nodeExporter:
+  prometheus-node-exporter:
     enabled: false
-  pushgateway:
+  prometheus-pushgateway:
     enabled: false
   configmapReload:
     prometheus:
