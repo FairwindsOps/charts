@@ -30,6 +30,9 @@ TimescaleDB HA Deployment.
 | image.repository | string | `"timescale/timescaledb-ha"` |  |
 | image.tag | string | `"pg14.8-ts2.11.0-all"` |  |
 | image.pullPolicy | string | `"Always"` |  |
+| curlImage.repository | string | `"curlimages/curl"` |  |
+| curlImage.tag | string | `"7.87.0"` |  |
+| curlImage.pullPolicy | string | `"Always"` |  |
 | secrets.credentials.PATRONI_SUPERUSER_PASSWORD | string | `""` |  |
 | secrets.credentials.PATRONI_REPLICATION_PASSWORD | string | `""` |  |
 | secrets.credentials.PATRONI_admin_PASSWORD | string | `""` |  |
@@ -37,11 +40,7 @@ TimescaleDB HA Deployment.
 | secrets.certificate."tls.crt" | string | `""` |  |
 | secrets.certificate."tls.key" | string | `""` |  |
 | secrets.certificateSecretName | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_REGION | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_KEY | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_KEY_SECRET | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_BUCKET | string | `""` |  |
-| secrets.pgbackrest.PGBACKREST_REPO1_S3_ENDPOINT | string | `"s3.amazonaws.com"` |  |
+| secrets.pgbackrest | object | `{}` |  |
 | secrets.pgbackrestSecretName | string | `""` |  |
 | backup.enabled | bool | `false` |  |
 | backup.pgBackRest.compress-type | string | `"lz4"` |  |
@@ -49,10 +48,7 @@ TimescaleDB HA Deployment.
 | backup.pgBackRest.start-fast | string | `"y"` |  |
 | backup.pgBackRest.repo1-retention-diff | int | `2` |  |
 | backup.pgBackRest.repo1-retention-full | int | `2` |  |
-| backup.pgBackRest.repo1-type | string | `"s3"` |  |
 | backup.pgBackRest.repo1-cipher-type | string | `"none"` |  |
-| backup.pgBackRest.repo1-s3-region | string | `"us-east-2"` |  |
-| backup.pgBackRest.repo1-s3-endpoint | string | `"s3.amazonaws.com"` |  |
 | backup.pgBackRest:archive-push | object | `{}` |  |
 | backup.pgBackRest:archive-get | object | `{}` |  |
 | backup.jobs[0].name | string | `"full-weekly"` |  |
