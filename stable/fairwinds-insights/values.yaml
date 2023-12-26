@@ -615,7 +615,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "5.1"
+  insightsCIVersion: "5.3"
   hpa:
     enabled: true
     min: 2
