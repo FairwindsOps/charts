@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.8
+* Update application version to 14.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 1.0.7
 * Update `repoScanJob.insightsCIVersion` to `5.3` which provides a better best-effort on scanning 
 
