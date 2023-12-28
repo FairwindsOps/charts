@@ -411,11 +411,12 @@ test:
 
 awscosts:
   enabled: false
+  tagprefix: "resource_tags_user_"
   schedule: "rand * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "1.3"
+    tag: "1.4"
   serviceAccount:
     annotations:
   resources:
@@ -432,6 +433,8 @@ cloudcosts:
   secretName: cloudcosts
   tagkey: ""
   provider: aws  # aws or gcp
+  aws:
+    tagprefix: "resource_tags_user_"
   schedule: "rand * * * *"
   timeout: 300
   image:
