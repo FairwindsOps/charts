@@ -411,6 +411,7 @@ test:
 
 awscosts:
   enabled: false
+  tagprefix: "resource_tags_user_"
   schedule: "rand * * * *"
   timeout: 300
   image:
