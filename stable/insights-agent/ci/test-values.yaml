@@ -145,6 +145,7 @@ awscosts:
   database: athena_cur_database
   table: fairwinds_insights_cur_report
   catalog: AwsDataCatalog
+  tagprefix: resource_tags_user_
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
   workgroup: cur_athena_workgroup
@@ -152,6 +153,7 @@ awscosts:
 cloudcosts:
   enabled: false
   secretName: cloudcosts-secret
+  tagprefix: resource_tags_user_
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
   aws:

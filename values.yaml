@@ -1,0 +1,13 @@
+insights:
+  organization: "acme-co"
+  cluster: "james-gcp-cluster"
+  base64token: "MTdqVzBtSFowNnpGS0dldHMtbUpwTFB5eGVDTHNJd25Qd0Q2VXV5WHcwOFRnNkU1Q21GWVdGOVp1cC1WUmlLUw=="
+  host: "https://be-js-gcp.k8s.insights.fairwinds.com"
+cloudcosts:
+  enabled: true
+  provider: "gcp"
+  tagvalue: "james-cluster"
+  gcp:
+    projectname: "gcp-prime"
+    dataset: "insightscosts"
+    billingaccount: "00C3EF-862AAB-053900"
