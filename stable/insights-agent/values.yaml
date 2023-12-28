@@ -430,7 +430,7 @@ awscosts:
 cloudcosts:
   enabled: false
   secretName: cloudcosts
-  tagprefix: ""
+  tagprefix: "resource_tags_user_"
   tagkey: ""
   provider: aws  # aws or gcp
   schedule: "rand * * * *"
