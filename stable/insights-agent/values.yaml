@@ -434,6 +434,8 @@ cloudcosts:
   tagprefix: "resource_tags_user_"
   tagkey: ""
   provider: aws  # aws or gcp
+  aws:
+    tagprefix: "resource_tags_user_"
   schedule: "rand * * * *"
   timeout: 300
   image:
