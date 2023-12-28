@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.1
+## 3.1.0
 * upgraded aws costs and cloud costs to support tagprefix parameter
 
 ## 3.0.0
