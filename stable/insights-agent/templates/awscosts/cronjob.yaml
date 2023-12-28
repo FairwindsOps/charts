@@ -42,7 +42,7 @@ spec:
               - --catalog
               - {{ required "You must set awscosts.catalog, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.catalog }}
               - --tagprefix
-              - {{ optional "You may set awscosts.tagprefix, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" guration" .Values.awscosts.tagprefix }}
+              - {{ "You may set awscosts.tagprefix, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" guration" .Values.awscosts.tagprefix }}
               - --tagkey
               - {{ required "You must set awscosts.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.awscosts.tagkey }}
               - --tagvalue
