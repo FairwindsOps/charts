@@ -189,6 +189,11 @@ cronjobs:
     command: trial_end_downgrade
     schedule: ""
 
+  # -- Options for the move-health-scores-to-ts job.
+  move-health-scores-to-ts:
+    command: move_resource_health_scores_to_ts
+    schedule: "*/30 * * * *"
+
 selfHostedSecret:
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.

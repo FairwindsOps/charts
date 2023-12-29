@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.0.10
+* Add `cronjobs.move-health-scores-to-ts` support
+
 ## 1.0.9
 * Update application version to 14.13. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
