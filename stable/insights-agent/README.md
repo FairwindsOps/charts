@@ -71,7 +71,7 @@ Parameter | Description | Default
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.imagePullSecret` | A pull secret for a private uploader image
-`uploader.image.tag` | The tag to use for the uploader script | 0.2
+`uploader.image.tag` | The tag to use for the uploader script | 0.5
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
 `uploader.sendFailures` | Send logs of failure to Insights when a job fails. | true
 `uploader.env` | Set extra environment variables for the uploader script | []

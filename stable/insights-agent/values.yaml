@@ -29,7 +29,7 @@ rbac:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.5.1"
+    tag: "0.5"
   imagePullSecret: ""
   sendFailures: true
   resources:
