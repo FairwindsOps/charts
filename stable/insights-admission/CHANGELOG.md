@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.10.0
+## 1.9.1
 * Bump insights-admission to version 1.14
 
 ## 1.9.0
