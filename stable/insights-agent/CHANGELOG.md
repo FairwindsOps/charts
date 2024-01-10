@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.1
+* use `insights-uploader:0.5` as default (remove fixed patch version) 
+
 ## 3.1.0
 * upgraded aws costs and cloud costs to support tagprefix parameter
 
