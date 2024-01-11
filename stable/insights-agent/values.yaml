@@ -427,6 +427,7 @@ awscosts:
   securityContext: {}
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
   containerSecurityContext: {}
+  mountTmp: true
 
 cloudcosts:
   enabled: false
@@ -448,6 +449,7 @@ cloudcosts:
       memory: 2Gi
   securityContext: {}
   containerSecurityContext: {}
+  mountTmp: true
 
 right-sizer:
   enabled: false
