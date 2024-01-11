@@ -450,7 +450,7 @@ cloudcosts:
   securityContext: {}
   containerSecurityContext: {}
   mountTmp: true
-  
+
 right-sizer:
   enabled: false
   schedule: "rand * * * *"
