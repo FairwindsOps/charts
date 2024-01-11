@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.1.2
-* Added parameter mountTmp= true as default for aws and cloud costs
+* Added parameter mountTmp=true as default for aws and cloud costs
 
 ## 3.1.1
 * use `insights-uploader:0.5` as default (remove fixed patch version) 
