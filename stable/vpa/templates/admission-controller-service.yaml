@@ -6,7 +6,7 @@ metadata:
 spec:
   ports:
     - port: 443
-      targetPort: 8000
+      targetPort: {{ .Values.admissionController.service.port }}
   selector:
     app.kubernetes.io/component: admission-controller
     {{- include "vpa.selectorLabels" . | nindent 4 }}

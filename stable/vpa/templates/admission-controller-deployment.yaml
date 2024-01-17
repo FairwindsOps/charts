@@ -51,6 +51,7 @@ spec:
           args:
             - --register-webhook=false
             - --webhook-service={{ include "vpa.fullname" . }}-webhook
+            - --port={{ .Values.admissionController.service.port }}
           {{- if .Values.admissionController.generateCertificate }}
             - --client-ca-file=/etc/tls-certs/ca
             - --tls-cert-file=/etc/tls-certs/cert
@@ -75,7 +76,7 @@ spec:
           {{- end }}
           ports:
             - name: http
-              containerPort: 8000
+              containerPort: {{ .Values.admissionController.service.port }}
               protocol: TCP
             - name: metrics
               containerPort: 8944

@@ -274,6 +274,9 @@ admissionController:
     requests:
       cpu: 50m
       memory: 200Mi
+  service:
+    # -- The port to run the admission controller on. Primarily affects GKE where firewall rules need to be added for admission controlle requests.
+    port: 8000
   # admissionController.tlsSecretKeys -- The keys in the vpa-tls-certs secret to map in to the admission controller
   tlsSecretKeys: []
     # - key: ca.crt
