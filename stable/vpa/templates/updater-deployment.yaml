@@ -12,9 +12,7 @@ metadata:
     {{- include "vpa.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.updater.replicaCount }}
-  {{- if .Values.updater.revisionHistoryLimit }}
   revisionHistoryLimit: {{ .Values.updater.revisionHistoryLimit }}
-  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/component: updater

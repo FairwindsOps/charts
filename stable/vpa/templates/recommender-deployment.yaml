@@ -12,9 +12,7 @@ metadata:
     {{- include "vpa.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.recommender.replicaCount }}
-  {{- if .Values.recommender.revisionHistoryLimit }}
   revisionHistoryLimit: {{ .Values.recommender.revisionHistoryLimit }}
-  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/component: recommender
