@@ -1,7 +1,20 @@
 # Changelog
 
+## 1.0.10
+* Add `cronjobs.move-health-scores-to-ts` support
+
+## 1.0.9
+* Update application version to 14.13. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 1.0.8
+* Update application version to 14.12. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 1.0.7
+* Update `repoScanJob.insightsCIVersion` to `5.3` which provides a better best-effort on scanning 
+
 ## 1.0.6
 * Update application version to 14.11. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 1.0.5
 * Trigger rebuild with new timescale subchart
 

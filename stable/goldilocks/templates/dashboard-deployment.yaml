@@ -19,9 +19,7 @@ metadata:
   {{- end }}
 spec:
   replicas: {{ .Values.dashboard.replicaCount }}
-  {{- if .Values.dashboard.revisionHistoryLimit }}
   revisionHistoryLimit: {{ .Values.dashboard.revisionHistoryLimit }}
-  {{- end }}
   selector:
     matchLabels:
       app.kubernetes.io/name: {{ include "goldilocks.name" . }}

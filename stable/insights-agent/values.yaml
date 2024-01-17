@@ -29,7 +29,7 @@ rbac:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.5.1"
+    tag: "0.5"
   imagePullSecret: ""
   sendFailures: true
   resources:
@@ -411,11 +411,12 @@ test:
 
 awscosts:
   enabled: false
+  tagprefix: "resource_tags_user_"
   schedule: "rand * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/aws-costs
-    tag: "1.3"
+    tag: "1.4"
   serviceAccount:
     annotations:
   resources:
@@ -426,12 +427,15 @@ awscosts:
   securityContext: {}
   # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
   containerSecurityContext: {}
+  mountTmp: true
 
 cloudcosts:
   enabled: false
   secretName: cloudcosts
   tagkey: ""
   provider: aws  # aws or gcp
+  aws:
+    tagprefix: "resource_tags_user_"
   schedule: "rand * * * *"
   timeout: 300
   image:
@@ -445,6 +449,7 @@ cloudcosts:
       memory: 2Gi
   securityContext: {}
   containerSecurityContext: {}
+  mountTmp: true
 
 right-sizer:
   enabled: false

@@ -53,6 +53,8 @@ spec:
               - {{ required "You must set cloudcosts.aws.catalog, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.catalog }}
               - --workgroup
               - {{ required "You must set cloudcosts.aws.workgroup, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.workgroup }}
+              - --tagprefix
+              - {{ .Values.cloudcosts.aws.tagprefix }}              
               - --tagkey
               - {{ required "You must set cloudcosts.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagkey }}
               - --tagvalue
