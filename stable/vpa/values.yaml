@@ -306,6 +306,12 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # admissionController.useHostNetwork -- Whether to use host network, this is required on EKS with custom CNI
+  useHostNetwork: false
+  # admissionController.httpPort -- Port of the admission controller for the mutating webhooks
+  httpPort: 8000
+  # admissionController.metricsPort -- Port of the admission controller where metrics can be received from
+  metricsPort: 8944
 
 tests:
   # tests.securityContext -- The security context for the containers run as helm hook tests
