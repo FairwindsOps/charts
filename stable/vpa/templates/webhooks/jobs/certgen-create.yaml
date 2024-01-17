@@ -16,7 +16,7 @@ spec:
     metadata:
       name: {{ include "vpa.fullname" . }}-admission-certgen
       labels:
-        app.kubernetes.io/component: cadmission-ertgen
+        app.kubernetes.io/component: admission-certgen
         {{- include "vpa.labels" . | nindent 8 }}
     spec:
       restartPolicy: OnFailure
