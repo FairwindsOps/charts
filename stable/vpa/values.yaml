@@ -76,8 +76,15 @@ recommender:
   podSecurityContext:
     runAsNonRoot: true
     runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
   # recommender.securityContext -- The security context for the containers inside the recommender pod
-  securityContext: {}
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
   # recommender.livenessProbe -- The liveness probe definition inside the recommender pod
   livenessProbe:
     failureThreshold: 6
@@ -143,8 +150,15 @@ updater:
   podSecurityContext:
     runAsNonRoot: true
     runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
   # updater.securityContext -- The security context for the containers inside the updater pod
-  securityContext: {}
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
   # updater.livenessProbe -- The liveness probe definition inside the updater pod
   livenessProbe:
     failureThreshold: 6
@@ -244,8 +258,15 @@ admissionController:
   podSecurityContext:
     runAsNonRoot: true
     runAsUser: 65534
+    seccompProfile:
+      type: RuntimeDefault
   # admissionController.securityContext -- The security context for the containers inside the admission controller pod
-  securityContext: {}
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
   # admissionController.livenessProbe -- The liveness probe definition inside the admission controller pod
   livenessProbe:
     failureThreshold: 6

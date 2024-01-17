@@ -162,8 +162,8 @@ recommender:
 | recommender.image.pullPolicy | string | `"Always"` | The pull policy for the recommender image. Recommend not changing this |
 | recommender.podAnnotations | object | `{}` | Annotations to add to the recommender pod |
 | recommender.podLabels | object | `{}` | Labels to add to the recommender pod |
-| recommender.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the recommender pod |
-| recommender.securityContext | object | `{}` | The security context for the containers inside the recommender pod |
+| recommender.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534,"seccompProfile":{"type":"RuntimeDefault"}}` | The security context for the recommender pod |
+| recommender.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | The security context for the containers inside the recommender pod |
 | recommender.livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The liveness probe definition inside the recommender pod |
 | recommender.readinessProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The readiness probe definition inside the recommender pod |
 | recommender.resources | object | `{"limits":{},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the recommender pod |
@@ -182,8 +182,8 @@ recommender:
 | updater.image.pullPolicy | string | `"Always"` | The pull policy for the updater image. Recommend not changing this |
 | updater.podAnnotations | object | `{}` | Annotations to add to the updater pod |
 | updater.podLabels | object | `{}` | Labels to add to the updater pod |
-| updater.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the updater pod |
-| updater.securityContext | object | `{}` | The security context for the containers inside the updater pod |
+| updater.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534,"seccompProfile":{"type":"RuntimeDefault"}}` | The security context for the updater pod |
+| updater.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | The security context for the containers inside the updater pod |
 | updater.livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The liveness probe definition inside the updater pod |
 | updater.readinessProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The readiness probe definition inside the updater pod |
 | updater.resources | object | `{"limits":{},"requests":{"cpu":"50m","memory":"500Mi"}}` | The resources block for the updater pod |
@@ -218,8 +218,8 @@ recommender:
 | admissionController.image.pullPolicy | string | `"Always"` | The pull policy for the admission controller image. Recommend not changing this |
 | admissionController.podAnnotations | object | `{}` | Annotations to add to the admission controller pod |
 | admissionController.podLabels | object | `{}` | Labels to add to the admission controller pod |
-| admissionController.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534}` | The security context for the admission controller pod |
-| admissionController.securityContext | object | `{}` | The security context for the containers inside the admission controller pod |
+| admissionController.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534,"seccompProfile":{"type":"RuntimeDefault"}}` | The security context for the admission controller pod |
+| admissionController.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | The security context for the containers inside the admission controller pod |
 | admissionController.livenessProbe | object | `{"failureThreshold":6,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The liveness probe definition inside the admission controller pod |
 | admissionController.readinessProbe | object | `{"failureThreshold":120,"httpGet":{"path":"/health-check","port":"metrics","scheme":"HTTP"},"periodSeconds":5,"successThreshold":1,"timeoutSeconds":3}` | The readiness probe definition inside the admission controller pod |
 | admissionController.resources | object | `{"limits":{},"requests":{"cpu":"50m","memory":"200Mi"}}` | The resources block for the admission controller pod |
