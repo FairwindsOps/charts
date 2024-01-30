@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.1.0
+* Added the ability to configure keda scaledObjects for certain deployments.
+
 ## 1.0.11
 * Update application version to 15.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 

@@ -74,6 +74,20 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
 | api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
+| api.scaledObject.enabled | bool | `false` |  |
+| api.scaledObject.min | int | `0` |  |
+| api.scaledObject.max | int | `1` |  |
+| api.scaledObject.triggers[0].type | string | `"prometheus"` |  |
+| api.scaledObject.triggers[0].metadata.serverAddress | string | `"http://prometheus-operated.prometheus:9090"` |  |
+| api.scaledObject.triggers[0].metadata.metricName | string | `"nginx_ingress_controller_requests"` |  |
+| api.scaledObject.triggers[0].metadata.threshold | string | `"5"` |  |
+| api.scaledObject.triggers[0].metadata.activationThreshold | string | `".001"` |  |
+| api.scaledObject.triggers[0].metadata.query | string | `"sum(rate(nginx_ingress_controller_requests{host=\"INGRESS_HOST\"}[1m]))"` |  |
+| api.scaledObject.triggers[1].type | string | `"cron"` |  |
+| api.scaledObject.triggers[1].metadata.timezone | string | `"America/Denver"` |  |
+| api.scaledObject.triggers[1].metadata.start | string | `"9 * * * 1-5"` |  |
+| api.scaledObject.triggers[1].metadata.end | string | `"14 * * * 1-5"` |  |
+| api.scaledObject.triggers[1].metadata.desiredReplicas | string | `"1"` |  |
 | api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
