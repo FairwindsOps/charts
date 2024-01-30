@@ -276,6 +276,28 @@ api:
         target:
           type: Utilization
           averageUtilization: 75
+  scaledObject:
+    ## -- If true, enables a keda scaledObject for scaling the api pods.
+    enabled: false
+    ## -- Minimum replicas of the api deployment.
+    min: 0
+    ## -- Maximum replicas of the api deployment.
+    max: 1
+    ## -- A set of triggers for the api keda scaledObject.
+    triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: http://prometheus-operated.prometheus:9090
+        metricName: nginx_ingress_controller_requests
+        threshold: '5'
+        activationThreshold: '.001'
+        query: sum(rate(nginx_ingress_controller_requests{host="INGRESS_HOST"}[1m]))
+    - type: cron
+      metadata:
+        timezone: America/Denver
+        start: 9 * * * 1-5
+        end: 14 * * * 1-5
+        desiredReplicas: "1"
   # -- Resources for the API server.
   resources:
     limits:
