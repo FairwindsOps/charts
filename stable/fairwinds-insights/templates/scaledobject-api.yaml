@@ -1,0 +1,16 @@
+{{- if .Values.api.scaledObject.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-api
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: api
+spec:
+  scaleTargetRef:
+    name: {{ include "fairwinds-insights.fullname" . }}-api
+  minReplicaCount: {{ .Values.api.scaledObject.min }}
+  maxReplicaCount: {{ .Values.api.scaledObject.max }}
+  triggers:
+  {{- toYaml  .Values.api.scaledObject.triggers | nindent 2 }}
+{{- end }}
