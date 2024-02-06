@@ -108,6 +108,8 @@ dashboard:
     port: 80
     # dashboard.service.annotations -- Extra annotations for the dashboard service
     annotations: {}
+    # dashboard.service.additionalLabels -- Extra labels for the dashboard service
+    additionalLabels: {}
   # dashboard.flags -- A map of additional flags to pass to the dashboard
   flags: {}
   # dashboard.logVerbosity -- Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose
