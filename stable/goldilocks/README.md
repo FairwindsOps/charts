@@ -99,6 +99,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
 | dashboard.service.port | int | `80` | The port to run the dashboard service on |
 | dashboard.service.annotations | object | `{}` | Extra annotations for the dashboard service |
+| dashboard.service.additionalLabels | object | `{}` | Extra labels for the dashboard service  |
 | dashboard.flags | object | `{}` | A map of additional flags to pass to the dashboard |
 | dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
