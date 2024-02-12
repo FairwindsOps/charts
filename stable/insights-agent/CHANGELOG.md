@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.3
+## 4.0.0
 * Bumped postgres charts
 
 ## 3.1.2
