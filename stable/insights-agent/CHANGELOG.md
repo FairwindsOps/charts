@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.3
+* Bumped postgres charts
+
 ## 3.1.2
 * Added parameter mountTmp=true as default for aws and cloud costs
 
