@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.12
+## 2.0.0
 * Bumped postgres charts to 14.0.5
 
 ## 1.0.11
