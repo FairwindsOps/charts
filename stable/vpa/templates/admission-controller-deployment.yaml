@@ -41,7 +41,7 @@ spec:
       securityContext:
         {{- toYaml .Values.admissionController.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-admission-controller
           securityContext:
             {{- toYaml .Values.admissionController.securityContext | nindent 12 }}
           image: {{ printf "%s:%s" .Values.admissionController.image.repository (.Values.admissionController.image.tag | default .Chart.AppVersion) }}

@@ -41,7 +41,7 @@ spec:
       securityContext:
         {{- toYaml .Values.updater.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-updater
           securityContext:
             {{- toYaml .Values.updater.securityContext | nindent 12 }}
           image: {{ printf "%s:%s" .Values.updater.image.repository (.Values.updater.image.tag | default .Chart.AppVersion) }}

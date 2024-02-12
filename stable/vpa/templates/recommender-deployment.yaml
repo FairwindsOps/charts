@@ -41,7 +41,7 @@ spec:
       securityContext:
         {{- toYaml .Values.recommender.podSecurityContext | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: {{ .Chart.Name }}-recommender
           securityContext:
             {{- toYaml .Values.recommender.securityContext | nindent 12 }}
           image: {{ printf "%s:%s" .Values.recommender.image.repository (.Values.recommender.image.tag | default .Chart.AppVersion) }}
