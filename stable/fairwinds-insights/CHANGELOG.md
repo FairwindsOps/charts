@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.1
+* Bumped CI plugin to 5.4
+
 ## 2.0.0
 * Bumped postgres charts to 14.0.5
 
