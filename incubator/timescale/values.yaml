@@ -259,7 +259,7 @@ patroni:
   kubernetes:
     role_label: role
     scope_label: cluster-name
-    use_endpoints: true
+    use_endpoints: false
   postgresql:
     create_replica_methods:
     - pgbackrest

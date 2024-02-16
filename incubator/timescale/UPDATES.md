@@ -15,6 +15,7 @@ git clone https://github.com/timescale/helm-charts
 cp -r helm-charts/charts/timescaledb-single/* ./incubator/timescale/
 rm incubator/timescale/templates/job-update-patroni.yaml
 git checkout -- incubator/timescale/templates/role-timescaledb.yaml
+sed -i 's/use_endpoints: true/use_endpoints: false/' incubator/timescale/values.yaml
 helm-docs --sort-values-order=file
 ```
 

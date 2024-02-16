@@ -109,7 +109,7 @@ TimescaleDB HA Deployment.
 | patroni.bootstrap.dcs.ttl | int | `30` |  |
 | patroni.kubernetes.role_label | string | `"role"` |  |
 | patroni.kubernetes.scope_label | string | `"cluster-name"` |  |
-| patroni.kubernetes.use_endpoints | bool | `true` |  |
+| patroni.kubernetes.use_endpoints | bool | `false` |  |
 | patroni.postgresql.create_replica_methods[0] | string | `"pgbackrest"` |  |
 | patroni.postgresql.create_replica_methods[1] | string | `"basebackup"` |  |
 | patroni.postgresql.pgbackrest.command | string | `"/etc/timescaledb/scripts/pgbackrest_restore.sh"` |  |
