@@ -1,0 +1,33 @@
+# For testing, make sure to install the vpa and metrics-server as sub-charts
+vpa:
+  enabled: true
+  recommender:
+      envFromSecret: insights-agent-token
+
+metrics-server:
+  enabled: true
+  extraArgs:
+    - --kubelet-insecure-tls
+    - --kubelet-preferred-address-types=InternalIP
+
+controller:
+  flags:
+    on-by-default: true
+    exclude-namespaces: kube-system
+  deployment:
+    additionalLabels:
+      test: value
+    podAnnotations:
+      foo: bar
+  rbac:
+    extraRules:
+      - apiGroups:
+          - "batch"
+        resources:
+          - "*"
+        verbs:
+          - "get"
+          - "list"
+          - "watch"
+    extraClusterRoleBindings:
+      - view

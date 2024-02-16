@@ -1,0 +1,42 @@
+{{- if and .Values.controller.rbac.create .Values.controller.enabled }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-right-sizer.fullname" . }}-controller
+  labels:
+    app.kubernetes.io/name: {{ include "insights-right-sizer.name" . }}
+    helm.sh/chart: {{ include "insights-right-sizer.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-right-sizer.fullname" . }}-controller
+subjects:
+  - kind: ServiceAccount
+    name: {{ template "controller.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+
+{{- range $.Values.controller.rbac.extraClusterRoleBindings }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-right-sizer.fullname" $ }}-controller-{{ . }}
+  labels:
+    app.kubernetes.io/name: {{ include "insights-right-sizer.name" $ }}
+    helm.sh/chart: {{ include "insights-right-sizer.chart" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: {{ $.Release.Service }}
+    app.kubernetes.io/component: controller
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-right-sizer.fullname" $ }}-controller
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}

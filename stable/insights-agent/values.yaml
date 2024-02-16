@@ -151,6 +151,40 @@ goldilocks:
       cpu: 250m
       memory: 512Mi
 
+# do not enable goldilocks or vpa with insights-right-sizer
+# it includes it's own modified version of the VPA recommendation controller that's
+# needed to retrieve recommendations from Insights
+insights-right-sizer:
+  enabled: false
+  image:
+    repository: quay.io/fairwinds/insights-right-sizer
+    tag: v0.0.2-dev
+  controller:
+    flags:
+      on-by-default: true
+  config:
+    default:
+      vpa:
+        minReplicas: 1
+        updatePolicy:
+          updateMode: "Off"
+        resourcePolicy:
+            containerPolicies:
+              - containerName: "*"
+                maxAllowed:
+                  cpu: 2
+                  memory: "4Gi"
+  vpa:
+    enabled: true
+    recommender:
+      image:
+        repository: quay.io/fairwinds/vpa-recommender
+        tag: master
+      extraArgs:
+        use-insights-recommender: 'true'
+      # should be set to {{ include "insights-agent.fullname" . }}-token
+      # envFromSecret: insights-agent-token
+
 opa:
   enabled: false
   schedule: "rand * * * *"
