@@ -12,6 +12,7 @@ vpa:
       tag: master
     extraArgs:
       use-insights-recommender: 'true'
+      recommender-interval: '1h'
     # should be set to {{ include "insights-agent.fullname" . }}-token
     # envFromSecret: insights-agent-token
     securityContext:
