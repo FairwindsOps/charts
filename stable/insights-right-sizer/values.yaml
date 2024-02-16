@@ -108,7 +108,7 @@ controller:
     # controller.deployment.podAnnotations -- Extra annotations for the controller pod
     podAnnotations: {}
 
-# config -- The [goldilocks configuration]() Optional
+# config -- The [insights-right-sizer configuration]() Optional
 config: null
 
 # configUrl could also be supported if there is a use case
