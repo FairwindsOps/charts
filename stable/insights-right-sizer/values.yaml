@@ -9,12 +9,11 @@ vpa:
     image:
       # modified vpa-recommender image
       repository: quay.io/fairwinds/vpa-recommender
-      tag: master
+      tag: dev
     extraArgs:
       use-insights-recommender: 'true'
       recommender-interval: '1h'
-    # should be set to {{ include "insights-agent.fullname" . }}-token
-    # envFromSecret: insights-agent-token
+    envFromSecret: insights-agent-token
     securityContext:
       allowPrivilegeEscalation: false
       readOnlyRootFilesystem: true
