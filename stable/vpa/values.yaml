@@ -207,6 +207,8 @@ admissionController:
   generateCertificate: true
   # admissionController.secretName -- Name for the TLS secret created for the webhook. Default {{ .Release.Name }}-tls-secret
   secretName: "{{ include \"vpa.fullname\" . }}-tls-secret"
+  # admissionController.registerWebhook -- If true, will allow the vpa admission controller to register itself as a mutating webhook
+  registerWebhook: false
   certGen:
     image:
       # admissionController.certGen.image.repository -- An image that contains certgen for creating certificates. Only used if admissionController.generateCertificate is true
