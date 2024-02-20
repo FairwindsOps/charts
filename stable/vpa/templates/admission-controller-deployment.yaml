@@ -47,11 +47,7 @@ spec:
           image: {{ printf "%s:%s" .Values.admissionController.image.repository (.Values.admissionController.image.tag | default .Chart.AppVersion) }}
           imagePullPolicy: {{ .Values.admissionController.image.pullPolicy }}
           args:
-          {{- if .Values.admissionController.registerWebhook }}
-            - --register-webhook=true
-          {{- else }}
-            - --register-webhook=false
-          {{- end }}
+            - --register-webhook={{ .Values.admissionController.registerWebhook }}
             - --webhook-service={{ include "vpa.fullname" . }}-webhook
           {{- if .Values.admissionController.generateCertificate }}
             - --client-ca-file=/etc/tls-certs/ca
