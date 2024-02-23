@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.3
+* Update application version to 15.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 2.0.2
 * Update application version to 15.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
