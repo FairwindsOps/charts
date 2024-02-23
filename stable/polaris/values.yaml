@@ -47,6 +47,8 @@ dashboard:
   logLevel: Info
   # dashboard.podAdditionalLabels -- Custom additional labels on dashboard pods.
   podAdditionalLabels: {}
+  # dashboard.podAdditionalAnnotations -- Custom additional annotations on dashboard pods.
+  podAdditionalAnnotations: {}
   # dashboard.deploymentAnnotations -- Custom additional annotations on dashboard Deployment.
   deploymentAnnotations: {}
   # dashboard.resources -- Requests and limits for the dashboard
