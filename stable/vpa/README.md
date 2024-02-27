@@ -196,6 +196,7 @@ recommender:
 | admissionController.extraArgs | object | `{}` | A key-value map of flags to pass to the admissionController |
 | admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
 | admissionController.secretName | string | `"{{ include \"vpa.fullname\" . }}-tls-secret"` | Name for the TLS secret created for the webhook. Default {{ .Release.Name }}-tls-secret |
+| admissionController.registerWebhook | bool | `false` | If true, will allow the vpa admission controller to register itself as a mutating webhook |
 | admissionController.certGen.image.repository | string | `"registry.k8s.io/ingress-nginx/kube-webhook-certgen"` | An image that contains certgen for creating certificates. Only used if admissionController.generateCertificate is true |
 | admissionController.certGen.image.tag | string | `"v20230312-helm-chart-4.5.2-28-g66a760794"` | An image tag for the admissionController.certGen.image.repository image. Only used if admissionController.generateCertificate is true |
 | admissionController.certGen.image.pullPolicy | string | `"Always"` | The pull policy for the certgen image. Recommend not changing this |

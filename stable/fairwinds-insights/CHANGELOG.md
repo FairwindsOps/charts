@@ -1,7 +1,16 @@
 # Changelog
 
-## 1.0.12
+## 2.0.3
 * Update agent version to 3.x
+
+## 2.0.2
+* Update application version to 15.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.0.1
+* Bumped CI plugin to 5.4
+
+## 2.0.0
+* Bumped postgres charts to 14.0.5
 
 ## 1.0.11
 * Update application version to 15.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
