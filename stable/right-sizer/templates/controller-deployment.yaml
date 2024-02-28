@@ -54,7 +54,7 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - /right-sizer
+            - /insights-right-sizer
             - controller
             - -v{{ .Values.controller.logVerbosity }}
             {{- range $name, $value := .Values.controller.flags }}
