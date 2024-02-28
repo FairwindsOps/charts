@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.2.0
+* Added `right-sizer` chart to `stable`
+
 ## 3.1.5
 * Fix bug in cloud-costs chart
 

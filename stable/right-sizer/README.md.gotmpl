@@ -1,0 +1,19 @@
+## Intro
+
+This is a Helm chart for the Fairwinds Insights Right-sizer
+
+## Installation
+```bash
+helm repo add fairwinds-stable https://charts.fairwinds.com/stable
+helm install right-sizer fairwinds-stable/right-sizer --namespace right-sizer
+```
+
+## Requirements
+
+This has a hard requirement on VPA being installed. Insights Right-sizer uses a custom version of the VPA recommender in order to provide recommendations from Insights directly.
+
+## vpa subchart
+
+Fairwinds has published a chart for installing VPA [in our stable repo](https://github.com/FairwindsOps/charts/tree/master/stable/vpa). It can be enabled as a sub-chart by setting `vpa.enabled==true`. When installed via the provided sub-chart, the custom recommender image (quay.io/fairwinds/vpa-recommender) will be selected and configured. In order to retrieve recommendations from insights, there must be a secret that populates `INSIGHTS_TOKEN` with your credentials.
+
+{{ template "chart.valuesSection" . }}

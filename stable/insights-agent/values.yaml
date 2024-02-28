@@ -151,13 +151,13 @@ goldilocks:
       cpu: 250m
       memory: 512Mi
 
-# do not enable goldilocks or vpa with insights-right-sizer
+# do not enable goldilocks or vpa with right-sizer
 # it includes it's own modified version of the VPA recommendation controller that's
 # needed to retrieve recommendations from Insights
-insights-right-sizer:
+right-sizer:
   enabled: false
   image:
-    repository: quay.io/fairwinds/insights-right-sizer
+    repository: quay.io/fairwinds/right-sizer
     tag: v0.0.2-dev
   controller:
     flags:
