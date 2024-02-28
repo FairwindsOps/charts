@@ -17,6 +17,6 @@ dependencies:
   condition: falco.installFalco
   alias: falcosecurity
 - name: right-sizer
-  repository: file://../right-sizer
+  repository: https://charts.fairwinds.com/stable
   version: '0.0.*'
   condition: right-sizer.enabled

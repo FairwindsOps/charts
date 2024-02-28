@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.2.0
-* Added `right-sizer` chart to `stable`
+* Added `right-sizer` chart to `stable`, rename right-sizer to oom-detection, dependency of new right-sizer
 
 ## 3.1.5
 * Fix bug in cloud-costs chart

@@ -26,6 +26,8 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 | vpa.recommender.image.repository | string | `"quay.io/fairwinds/vpa-recommender"` |  |
 | vpa.recommender.image.tag | string | `"master"` |  |
 | vpa.recommender.extraArgs.use-insights-recommender | string | `"true"` |  |
+| vpa.recommender.extraArgs.recommender-interval | string | `"1h"` |  |
+| vpa.recommender.envFromSecret | string | `"insights-agent-token"` |  |
 | vpa.recommender.securityContext.allowPrivilegeEscalation | bool | `false` |  |
 | vpa.recommender.securityContext.readOnlyRootFilesystem | bool | `true` |  |
 | vpa.recommender.securityContext.runAsUser | int | `65534` |  |
@@ -60,4 +62,4 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 | controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
 | controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
 | controller.deployment.podAnnotations | object | `{}` | Extra annotations for the controller pod |
-| config | string | `nil` | The [goldilocks configuration]() Optional |
+| config | string | `nil` | The [right-sizer configuration]() Optional |

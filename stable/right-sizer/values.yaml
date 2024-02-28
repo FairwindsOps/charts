@@ -9,7 +9,7 @@ vpa:
     image:
       # modified vpa-recommender image
       repository: quay.io/fairwinds/vpa-recommender
-      tag: dev
+      tag: master
     extraArgs:
       use-insights-recommender: 'true'
       recommender-interval: '1h'
