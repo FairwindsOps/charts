@@ -456,12 +456,13 @@ cloudcosts:
 # needed to retrieve recommendations from Insights
 right-sizer:
   enabled: false
+  # uninstallVPA -- Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release.
+  uninstallVPA: false
   image:
     repository: quay.io/fairwinds/insights-right-sizer
     tag: v0.0.2-dev
-  controller:
-    flags:
-      on-by-default: true
+    # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
+    pullPolicy: Always
   config:
     default:
       vpa:
@@ -474,17 +475,96 @@ right-sizer:
                 maxAllowed:
                   cpu: 2
                   memory: "4Gi"
+  # imagePullSecrets -- A list of image pull secret names to use
+  imagePullSecrets: []
   vpa:
     enabled: true
     recommender:
       image:
+        # modified vpa-recommender image
         repository: quay.io/fairwinds/vpa-recommender
         tag: master
       extraArgs:
         use-insights-recommender: 'true'
+        recommender-interval: '1h'
       # should be set to {{ include "insights-agent.fullname" . }}-token
       # envFromSecret: insights-agent-token
-  # OOM detection/remediation settings in right-sizer
+      envFromSecret: insights-agent-token
+      securityContext:
+        allowPrivilegeEscalation: false
+        readOnlyRootFilesystem: true
+        runAsUser: 65534
+        capabilities:
+          drop:
+          - ALL
+  controller:
+    # controller.revisionHistoryLimit -- Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
+    revisionHistoryLimit: 10
+    rbac:
+      # controller.rbac.create -- If set to true, rbac resources will be created for the controller
+      create: true
+      # controller.rbac.enableArgoproj -- If set to true, the clusterrole will give access to argoproj.io resources
+      enableArgoproj: true
+      # controller.rbac.extraRules -- Extra rbac rules for the controller clusterrole
+      extraRules: []
+      # controller.rbac.extraClusterRoleBindings -- A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled
+      extraClusterRoleBindings:
+        - view
+    serviceAccount:
+      # controller.serviceAccount.create -- If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name`
+      create: true
+      # controller.serviceAccount.name -- The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create`
+      name:
+
+    # controller.flags -- A map of additional flags to pass to the controller
+    flags:
+      on-by-default: true
+    # controller.logVerbosity -- Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose
+    logVerbosity: "2"
+    # controller.nodeSelector -- Node selector for the controller pod
+    nodeSelector: {}
+    # controller.tolerations -- Tolerations for the controller pod
+    tolerations: []
+    # controller.affinity -- Affinity for the controller pods
+    affinity: {}
+    # controller.topologySpreadConstraints -- Topology spread constraints for the controller pods
+    topologySpreadConstraints: []
+    # controller.resources -- The resources block for the controller pods
+    resources:
+      limits: {}
+      requests:
+        cpu: 25m
+        memory: 256Mi
+    # controller.podSecurityContext -- Defines the podSecurityContext for the controller pod
+    podSecurityContext:
+      seccompProfile:
+        type: RuntimeDefault
+    # controller.securityContext -- The container securityContext for the controller container
+    securityContext:
+      readOnlyRootFilesystem: true
+      allowPrivilegeEscalation: false
+      runAsNonRoot: true
+      runAsUser: 10324
+      capabilities:
+        drop:
+          - ALL
+    deployment:
+      # controller.deployment.extraVolumeMounts -- Extra volume mounts for the controller container
+      extraVolumeMounts: []
+      # controller.deployment.extraVolumes -- Extra volumes for the controller pod
+      extraVolumes: []
+      # controller.deployment.annotations -- Extra annotations for the controller deployment
+      annotations: {}
+      # controller.deployment.additionalLabels -- Extra labels for the controller deployment
+      additionalLabels: {}
+
+      # controller.deployment.podAnnotations -- Extra annotations for the controller pod
+      podAnnotations: {}
+  metrics-server:
+    # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
+    enabled: false
+    apiService:
+      create: true
   oom-detection:
     enabled: false
     schedule: "rand * * * *"
@@ -494,53 +574,49 @@ right-sizer:
       repository: quay.io/fairwinds/right-sizer
       tag: 0.5
       pullPolicy: Always
-    # rightsizer.imagePullSecrets -- imagePullSecrets containing private registry credentials.
-    imagePullSecrets: []
 
-    # rightsizer.stateconfigmapname -- The name of a ConfigMap where controller
+    # oom-detection.stateconfigmapname -- The name of a ConfigMap where controller
     # state is stored inbetween restarts.
     stateconfigmapname: insights-agent-right-sizer-oom-detection-controller-state
-    # rightsizer.resetOOMsWindow -- The amount of time after which, if no OOMs
+    # oom-detection.resetOOMsWindow -- The amount of time after which, if no OOMs
     # have been seen, items will be removed from the Insights report.
     resetOOMsWindow: "24h"
-    # rightsizer.namespaces -- Kubernetes namespaces to restrict all operations.
+    # oom-detection.annotations -- Extra annotations for oom-detection
+    annotations: {}
+    # oom-detection.namespaces -- Kubernetes namespaces to restrict all operations.
     # By default, all namespaces are allowed.
     # This applies both to OOM-kill alerts, and updating memory limits if enabled.
     namespaces: []
     updateMemoryLimits:
-      # rightsizer.updateMemoryLimits.enabled -- Update memory limits of
+      # oom-detection.updateMemoryLimits.enabled -- Update memory limits of
       # pod-controller resources whos containers are OOM-killed.
       enabled: false
-      # rightsizer.updateMemoryLimits.increment -- The multiplier used to
+      # oom-detection.updateMemoryLimits.increment -- The multiplier used to
       # increase memory limits, in response to an OOM-kill. This value is
       # multiplied by the limits of the OOM-killed container.
       increment: 1.2
-      # rightsizer.updateMemoryLimits.minOOMs -- The number of OOM-kills required
+      # oom-detection.updateMemoryLimits.minOOMs -- The number of OOM-kills required
       # before a pod-controller memory limits will be updated.
       minOOMs: 2
-      # rightsizer.updateMemoryLimits.max -- The multiplier used to calculate a
+      # oom-detection.updateMemoryLimits.max -- The multiplier used to calculate a
       # maximum value to update a pod-controller memory limits.
       # This value is multiplied by the starting memory limits of the first
       # OOM-killed container seen by this controller.
       max: 2.0
-      # rightsizer.updateMemoryLimits.namespaces -- Kubernetes namespaces to
+      # oom-detection.updateMemoryLimits.namespaces -- Kubernetes namespaces to
       # restrict where memory limits will be updated.
-      # This value narrows the namespaces specified in the global `rightsizer.namespaces` one.
+      # This value narrows the namespaces specified in the global `oom-detection.namespaces` one.
       namespaces: []
     SkipVolumes: true
-    # rightsizer.resources -- Resources for the controller deployment
+    # oom-detection.resources -- Resources for the controller deployment
     resources:
       requests:
         cpu: 100m
         memory: 128Mi
-    # rightsizer.deploymentAnnotations -- Annotations to add to the right-sizer controller deployment.
-    deploymentAnnotations: {}
-    # rightsizer.workloadAnnotations -- Annotations to add to the right-sizer controller deployment's worload.
-    workloadAnnotations: {}
-    # rightsizer.extraArgs -- Additional command-line flags for the controller.
+    # oom-detection.extraArgs -- Additional command-line flags for the controller.
     extraArgs: []
       # - "-v2"
-    # rightsizer.containerSecurityContext -- The securityContext for the
+    # oom-detection.containerSecurityContext -- The securityContext for the
     # controller container.
     containerSecurityContext:
       readOnlyRootFilesystem: true
@@ -551,25 +627,6 @@ right-sizer:
       capabilities:
         drop:
           - ALL
-    # The global `rbac.disabled` causes this ServiceAccount to not be created.
-    # rightsizer.serviceAccountName -- The Kubernetes ServiceAccount for the
-    # controller. This account will be created unless `rbac.disabled` is set to true.
-    serviceAccountName: insights-agent-right-sizer-oom-detection-controller
-    rbac:
-      # See the global rbac.disabled value is used instead of `create` here.
-      # rightsizer.rbac.additionalAccess -- RBAC rules to be granted to the
-      # controller, providing access to custom resources.
-      # Specify a list of RBAC rules,
-      # each with a list of apiGroups, resources, and verbs.
-      additionalAccess: []
-        # - apiGroups:
-        #     - ''
-        #  resources:
-      #     - 'ACustomResource'
-        #  verbs:
-        #    - 'get'
-        #    - 'update'
-        #    - 'patch'
 
 falco:
   enabled: false

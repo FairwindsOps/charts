@@ -3,9 +3,9 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ include "insights-agent.fullname" . }}-right-sizer-oom-detection-controller
-  {{- if  (index .Values "right-sizer" "oom-detection" "deploymentAnnotations") }}
+  {{- if  (index .Values "right-sizer" "oom-detection" "annotations") }}
   annotations:
-    {{- toYaml (index .Values "right-sizer" "oom-detection" "deploymentAnnotations") | nindent 4 }}
+    {{- toYaml (index .Values "right-sizer" "oom-detection" "annotations") | nindent 4 }}
   {{- end }}
   labels:
     component: right-sizer
@@ -20,9 +20,9 @@ spec:
       labels:
         component: right-sizer
         app: insights-agent
-      {{- if  (index .Values "right-sizer" "oom-detection" "workloadAnnotations") }}
+      {{- if  (index .Values "right-sizer" "oom-detection" "annotations") }}
       annotations:
-        {{- toYaml (index .Values "right-sizer" "oom-detection" "workloadAnnotations") | nindent 8 }}
+        {{- toYaml (index .Values "right-sizer" "oom-detection" "annotations") | nindent 8 }}
       {{- end }}
     spec:
       {{- with (index .Values "right-sizer" "oom-detection" "imagePullSecrets") }}
@@ -77,5 +77,5 @@ spec:
               port: 8080
           resources:
             {{- toYaml (index .Values "right-sizer" "oom-detection" "resources") | nindent 12 }}
-      serviceAccountName: {{ (index .Values "right-sizer" "oom-detection" "serviceAccountName") }}
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-right-sizer-oom-detection-controller
 {{- end -}}

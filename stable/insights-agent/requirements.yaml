@@ -16,7 +16,11 @@ dependencies:
   version: '1.17.0'
   condition: falco.installFalco
   alias: falcosecurity
-- name: right-sizer
+- name: vpa
+  version: 4.4.*
   repository: https://charts.fairwinds.com/stable
-  version: '0.0.*'
-  condition: right-sizer.enabled
+  condition: vpa.enabled
+- name: metrics-server
+  version: 6.4.1
+  repository: https://charts.bitnami.com/bitnami
+  condition: metrics-server.enabled

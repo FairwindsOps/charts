@@ -1,9 +1,0 @@
-dependencies:
-  - name: vpa
-    version: 4.4.*
-    repository: https://charts.fairwinds.com/stable
-    condition: vpa.enabled
-  - name: metrics-server
-    version: 6.4.1
-    repository: https://charts.bitnami.com/bitnami
-    condition: metrics-server.enabled

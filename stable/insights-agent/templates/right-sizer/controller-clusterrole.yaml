@@ -1,14 +1,15 @@
-{{- if and .Values.controller.rbac.create .Values.controller.enabled }}
+{{- if and (index .Values "right-sizer" "controller" "rbac" "create") (index .Values "right-sizer" "enabled") }}
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: {{ include "right-sizer.fullname" . }}-controller
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  {{- if  (index .Values "right-sizer" "controller" "deployment" "annotations") }}
+  annotations:
+    {{- toYaml (index .Values "right-sizer" "controller" "deployment" "annotations") | nindent 4 }}
+  {{- end }}
   labels:
-    app.kubernetes.io/name: {{ include "right-sizer.name" . }}
-    helm.sh/chart: {{ include "right-sizer.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: controller
+    component: right-sizer
+    app: insights-agent
 rules:
   - apiGroups:
       - 'apps'
@@ -46,7 +47,7 @@ rules:
       - 'create'
       - 'delete'
       - 'update'
-  {{- if .Values.controller.rbac.enableArgoproj }}
+  {{- if (index .Values "right-sizer" "controller" "rbac" "enableArgoproj") }}
   - apiGroups:
       - 'argoproj.io'
     resources:
@@ -56,7 +57,7 @@ rules:
       - 'list'
       - 'watch'
   {{- end }}
-  {{- if .Values.controller.rbac.extraRules -}}
-  {{ toYaml .Values.controller.rbac.extraRules | nindent 2 }}
+  {{- if (index .Values "right-sizer" "controller" "rbac" "extraRules") -}}
+  {{ toYaml (index .Values "right-sizer" "controller" "rbac" "extraRules") | nindent 2 }}
   {{- end }}
 {{- end }}
