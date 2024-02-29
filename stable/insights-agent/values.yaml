@@ -294,7 +294,7 @@ trivy:
   resources:
     requests:
       cpu: 100m
-      memory: 128Mi
+      memory: 1Gi
 
 pluto:
   enabled: false
