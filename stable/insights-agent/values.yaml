@@ -470,11 +470,11 @@ right-sizer:
         updatePolicy:
           updateMode: "Off"
         resourcePolicy:
-            containerPolicies:
-              - containerName: "*"
-                maxAllowed:
-                  cpu: 2
-                  memory: "4Gi"
+          containerPolicies:
+            - containerName: "*"
+              maxAllowed:
+                cpu: 2
+                memory: "4Gi"
   # imagePullSecrets -- A list of image pull secret names to use
   imagePullSecrets: []
   vpa:
