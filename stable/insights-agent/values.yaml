@@ -451,9 +451,7 @@ cloudcosts:
   containerSecurityContext: {}
   mountTmp: true
 
-# do not enable goldilocks or vpa with right-sizer
-# it includes it's own modified version of the VPA recommendation controller that's
-# needed to retrieve recommendations from Insights
+# requires a custom VPA configuration to work properly, see `vpa` section below in this values file
 right-sizer:
   enabled: false
   # uninstallVPA -- Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release.
@@ -477,28 +475,7 @@ right-sizer:
                 memory: "4Gi"
   # imagePullSecrets -- A list of image pull secret names to use
   imagePullSecrets: []
-  vpa:
-    enabled: true
-    admissionController:
-      registerWebhook: true
-    recommender:
-      image:
-        # modified vpa-recommender image
-        repository: quay.io/fairwinds/vpa-recommender
-        tag: master
-      extraArgs:
-        use-insights-recommender: 'true'
-        recommender-interval: '1h'
-      # should be set to {{ include "insights-agent.fullname" . }}-token
-      # envFromSecret: insights-agent-token
-      envFromSecret: insights-agent-token
-      securityContext:
-        allowPrivilegeEscalation: false
-        readOnlyRootFilesystem: true
-        runAsUser: 65534
-        capabilities:
-          drop:
-          - ALL
+
   controller:
     # controller.revisionHistoryLimit -- Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
     revisionHistoryLimit: 10
@@ -629,6 +606,22 @@ right-sizer:
       capabilities:
         drop:
           - ALL
+
+# required VPA configuration for right-sizer
+# vpa:
+#   enabled: true
+#   admissionController:
+#     registerWebhook: true
+#   recommender:
+#     image:
+#       # custom Fairwinds vpa-recommender image
+#       repository: quay.io/fairwinds/vpa-recommender
+#       tag: master
+#     extraArgs:
+#       use-insights-recommender: 'true'
+#       recommender-interval: '1h'
+#     # should be set to {{ include "insights-agent.fullname" . }}-token
+#     envFromSecret: insights-agent-token
 
 falco:
   enabled: false
