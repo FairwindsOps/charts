@@ -3,9 +3,9 @@ Get kubectl image tag
 */}}
 {{- define "vpa.test.tag" -}}
 {{- if .Values.tests.image }}
-{{- default (printf "%s.%s" .Capabilities.KubeVersion.Major .Capabilities.KubeVersion.Minor) .Values.tests.image.tag }}
+{{- default (printf "%s.%s" .Capabilities.KubeVersion.Major (trimSuffix "+" .Capabilities.KubeVersion.Minor)) .Values.tests.image.tag }}
 {{- else }}
-{{- printf "%s.%s" .Capabilities.KubeVersion.Major .Capabilities.KubeVersion.Minor }}
+{{- printf "%s.%s" .Capabilities.KubeVersion.Major (trimSuffix "+" .Capabilities.KubeVersion.Minor) }}
 {{- end }}
 {{- end }}
 
