@@ -17,7 +17,7 @@ dependencies:
   condition: falco.installFalco
   alias: falcosecurity
 - name: vpa
-  version: 4.4.*
+  version: 4.4.2
   repository: https://charts.fairwinds.com/stable
   condition: right-sizer.vpa.enabled
 - name: metrics-server

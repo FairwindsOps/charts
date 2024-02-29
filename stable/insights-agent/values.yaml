@@ -479,6 +479,8 @@ right-sizer:
   imagePullSecrets: []
   vpa:
     enabled: true
+    admissionController:
+      registerWebhook: true
     recommender:
       image:
         # modified vpa-recommender image
