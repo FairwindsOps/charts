@@ -43,7 +43,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.action-items-statistics | object | `{"command":"action_items_statistics","schedule":"15 * * * *"}` | Options for the action item stats job |
 | cronjobs.alerts-realtime | object | `{"command":"notifications_digest","interval":"10m","schedule":"5/10 * * * *"}` | Options for the realtime alerts job |
 | cronjobs.benchmark | object | `{"command":"benchmark","schedule":""}` | Options for the benchmark job |
-| cronjobs.close-tickets | object | `{"command":"close_tickets","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"0/15 * * * *"}` | Options for the close tickets job. |
+| cronjobs.update-tickets | object | `{"command":"update_tickets","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"0 * * * *"}` | Options for the update tickets job. |
 | cronjobs.costs-update | object | `{"command":"cloud_costs_update","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"15 */3 * * *"}` | Options for the cloud costs update job |
 | cronjobs.database-cleanup | object | `{"command":"database_cleanup","schedule":"0 0 * * *"}` | Options for the database cleanup job. |
 | cronjobs.email | object | `{"command":"email_digest","schedule":""}` | Options for the email digest job. |
