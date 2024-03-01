@@ -65,9 +65,6 @@ resourcesRecommendationsCronjob:
   enabled: true
   schedules: []
 
-updateTicketsCronjob:
-  schedules: []
-
 minio:
   persistence:
     enabled: false
