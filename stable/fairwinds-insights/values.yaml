@@ -115,11 +115,11 @@ cronjobs:
     command: benchmark
     schedule: ''
 
-  # -- Options for the close tickets job.
-  close-tickets:
-    command: close_tickets
+  # -- Options for the update tickets job.
+  update-tickets:
+    command: update_tickets
     includeGitHubSecret: true
-    schedule: "0/15 * * * *"
+    schedule: "0 * * * *"
     resources:
       limits:
         cpu: 500m
