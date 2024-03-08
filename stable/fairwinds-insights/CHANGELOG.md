@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.1
+* Update application version to 15.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 2.1.0
 * Updated cronjob close-tickets to update-tickets
 
