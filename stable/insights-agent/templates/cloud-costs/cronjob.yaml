@@ -24,7 +24,6 @@ spec:
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if eq .Values.cloudcosts.provider "aws" }}
-            {{- if .Values.cloudcosts.secretName }}
             - name: creds
               mountPath: /.aws
             env:
