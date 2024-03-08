@@ -22,7 +22,6 @@ spec:
             emptyDir: {}
           {{- end }}  
           containers:
-          {{- if .Values.cloudcosts.secretName }}
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if eq .Values.cloudcosts.provider "aws" }}
             - name: creds
