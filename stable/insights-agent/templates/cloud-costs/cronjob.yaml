@@ -28,6 +28,7 @@ spec:
             - name: creds
               mountPath: /.aws
             env:
+            {{- if .Values.cloudcosts.secretName }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
