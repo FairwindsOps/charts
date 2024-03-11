@@ -1,4 +1,8 @@
 # Changelog
+
+## 3.1.5
+* Fix bug in cloud-costs chart
+
 ## 3.1.4
 * Fix support for IRSA in cloud-costs
 
