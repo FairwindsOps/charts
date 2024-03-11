@@ -1,7 +1,17 @@
 # Changelog
 
-## 2.0.4
+
+## 2.1.2
 * Update agent version to 3.x
+
+## 2.1.1
+* Update application version to 15.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.1.0
+* Updated cronjob close-tickets to update-tickets
+
+## 2.0.4
+* Update application version to 15.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
 ## 2.0.3
 * Update application version to 15.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)

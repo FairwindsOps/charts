@@ -22,12 +22,12 @@ spec:
             emptyDir: {}
           {{- end }}  
           containers:
-          {{- if .Values.cloudcosts.secretName }}
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if eq .Values.cloudcosts.provider "aws" }}
             - name: creds
               mountPath: /.aws
             env:
+            {{- if .Values.cloudcosts.secretName }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:
@@ -38,6 +38,7 @@ spec:
                 secretKeyRef:
                   name: {{ .Values.cloudcosts.secretName }}
                   key: AWS_SECRET_ACCESS_KEY
+            {{- end }}
             - name: AWS_DEFAULT_REGION
               value: {{ required "You must set cloudcosts.aws.region, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.region }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
@@ -87,5 +88,4 @@ spec:
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
-          {{- end }}  
   {{- end -}}
