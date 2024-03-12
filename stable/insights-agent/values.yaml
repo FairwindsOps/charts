@@ -539,11 +539,6 @@ right-sizer:
 
       # controller.deployment.podAnnotations -- Extra annotations for the controller pod
       podAnnotations: {}
-  metrics-server:
-    # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
-    enabled: false
-    apiService:
-      create: true
   oom-detection:
     enabled: false
     schedule: "rand * * * *"
@@ -622,6 +617,11 @@ right-sizer:
 #       recommender-interval: '1h'
 #     # should be set to {{ include "insights-agent.fullname" . }}-token
 #     envFromSecret: insights-agent-token
+#   metrics-server:
+#     # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
+#     enabled: false
+#     apiService:
+#       create: true
 
 falco:
   enabled: false

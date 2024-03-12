@@ -19,8 +19,4 @@ dependencies:
 - name: vpa
   version: 4.4.2
   repository: https://charts.fairwinds.com/stable
-  condition: right-sizer.vpa.enabled
-- name: metrics-server
-  version: 6.4.1
-  repository: https://charts.bitnami.com/bitnami
-  condition: right-sizer.metrics-server.enabled
+  condition: vpa.enabled
