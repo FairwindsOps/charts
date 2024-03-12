@@ -18,6 +18,9 @@ right-sizer:
     timeout: 300
 ```
 
+## 3.1.6
+* Update plugin versions
+
 ## 3.1.5
 * Fix bug in cloud-costs chart
 
