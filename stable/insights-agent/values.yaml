@@ -538,7 +538,7 @@ right-sizer:
       # controller.deployment.podAnnotations -- Extra annotations for the controller pod
       podAnnotations: {}
   oom-detection:
-    enabled: false
+    enabled: true
     schedule: "rand * * * *"
     timeout: 300
     # This image is for the controller, the agent only runs the Insights uploader.
@@ -600,28 +600,24 @@ right-sizer:
         drop:
           - ALL
 
-vpa:
-  enabled: false
-# required VPA configuration for right-sizer
-# vpa:
-#   enabled: true
-#   admissionController:
-#     registerWebhook: true
-#   recommender:
-#     image:
-#       # custom Fairwinds vpa-recommender image
-#       repository: quay.io/fairwinds/vpa-recommender
-#       tag: master
-#     extraArgs:
-#       use-insights-recommender: 'true'
-#       recommender-interval: '1h'
-#     # should be set to {{ include "insights-agent.fullname" . }}-token
-#     envFromSecret: insights-agent-token
-#   metrics-server:
-#     # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
-#     enabled: false
-#     apiService:
-#       create: true
+right-sizer-vpa:
+  admissionController:
+    registerWebhook: true
+  recommender:
+    image:
+      # custom Fairwinds vpa-recommender image
+      repository: quay.io/fairwinds/vpa-recommender
+      tag: master
+    extraArgs:
+      use-insights-recommender: 'true'
+      recommender-interval: '1h'
+    # should be set to {{ include "insights-agent.fullname" . }}-token
+    envFromSecret: insights-agent-token
+  metrics-server:
+    # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
+    enabled: false
+    apiService:
+      create: true
 
 falco:
   enabled: false
