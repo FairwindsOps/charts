@@ -451,7 +451,7 @@ cloudcosts:
   containerSecurityContext: {}
   mountTmp: true
 
-# requires a custom VPA configuration to work properly, see `vpa` section below in this values file
+# requires a custom VPA configuration to work properly, see `right-sizer-vpa` section below in this values file
 right-sizer:
   enabled: false
   image:
@@ -600,6 +600,7 @@ right-sizer:
         drop:
           - ALL
 
+# will only apply if `right-sizer.enabled`
 right-sizer-vpa:
   admissionController:
     registerWebhook: true
