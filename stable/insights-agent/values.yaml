@@ -602,6 +602,8 @@ right-sizer:
         drop:
           - ALL
 
+vpa:
+  enabled: false
 # required VPA configuration for right-sizer
 # vpa:
 #   enabled: true
