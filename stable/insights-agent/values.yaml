@@ -454,8 +454,6 @@ cloudcosts:
 # requires a custom VPA configuration to work properly, see `vpa` section below in this values file
 right-sizer:
   enabled: false
-  # uninstallVPA -- Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release.
-  uninstallVPA: false
   image:
     repository: quay.io/fairwinds/insights-right-sizer
     tag: v0.0.2-dev
