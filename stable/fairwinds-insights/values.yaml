@@ -46,7 +46,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 2.24.1
+  agentChartTargetVersion: 3.1.2
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -115,11 +115,11 @@ cronjobs:
     command: benchmark
     schedule: ''
 
-  # -- Options for the close tickets job.
-  close-tickets:
-    command: close_tickets
+  # -- Options for the update tickets job.
+  update-tickets:
+    command: update_tickets
     includeGitHubSecret: true
-    schedule: "0/15 * * * *"
+    schedule: "0 * * * *"
     resources:
       limits:
         cpu: 500m
@@ -620,7 +620,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "5.3"
+  insightsCIVersion: "5.4"
   hpa:
     enabled: true
     min: 2

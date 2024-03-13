@@ -1,5 +1,33 @@
 # Changelog
 
+
+## 2.1.2
+* Update agent version to 3.x
+
+## 2.1.1
+* Update application version to 15.5. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.1.0
+* Updated cronjob close-tickets to update-tickets
+
+## 2.0.4
+* Update application version to 15.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.0.3
+* Update application version to 15.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.0.2
+* Update application version to 15.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.0.1
+* Bumped CI plugin to 5.4
+
+## 2.0.0
+* Bumped postgres charts to 14.0.5
+
+## 1.0.11
+* Update application version to 15.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 1.0.10
 * Add `cronjobs.move-health-scores-to-ts` support
 

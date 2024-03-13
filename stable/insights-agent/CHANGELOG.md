@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.1.6
+* Update plugin versions
+
+## 3.1.5
+* Fix bug in cloud-costs chart
+
+## 3.1.4
+* Fix support for IRSA in cloud-costs
+
+## 3.1.3
+* Increase default memory for trivy
+
 ## 3.1.2
 * Added parameter mountTmp=true as default for aws and cloud costs
 
