@@ -188,4 +188,4 @@ right-sizer:
     enabled: true
 right-sizer-vpa:
   admissionController:
-    generateCertificate: false
+    enabled: false
