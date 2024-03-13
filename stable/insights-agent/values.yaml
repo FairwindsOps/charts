@@ -612,8 +612,6 @@ right-sizer-vpa:
     extraArgs:
       use-insights-recommender: 'true'
       recommender-interval: '1h'
-    # should be set to {{ include "insights-agent.fullname" . }}-token
-    envFromSecret: insights-agent-token
   metrics-server:
     # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
     enabled: false
