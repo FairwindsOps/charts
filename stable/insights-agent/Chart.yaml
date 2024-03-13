@@ -7,5 +7,4 @@ kubeVersion: ">= 1.22.0-0"
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insights-agent/icon.png
 maintainers:
   - name: rbren
-  - name: makoscafee
   - name: jdesouza

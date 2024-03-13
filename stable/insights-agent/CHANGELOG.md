@@ -18,6 +18,9 @@ right-sizer:
     timeout: 300
 ```
 
+## 3.1.7
+* Updated changelog
+
 ## 3.1.6
 * Update plugin versions
 
@@ -40,6 +43,8 @@ right-sizer:
 * upgraded aws costs and cloud costs to support tagprefix parameter
 
 ## 3.0.0
+> If you're using the prometheus packaged with the Insights Agent, you'll need to run `helm delete insights-agent -n insights-agent` before installing 3.x
+
 * upgrade prometheus helm chart to 25.8.2 and remove pinned kube-state-metrics image. Important note for migration: the following values have been changed in the upstream prometheus chart: `prometheus.nodeExporter` -> `prometheus.prometheus-node-exporter`, `prometheus.pushgateway` -> `prometheus.prometheus-pushgateway`
 
 ## 2.26.2
