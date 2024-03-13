@@ -70,11 +70,11 @@ spec:
           envFrom:
           {{- if $insightsRecommenderArgs }}
           - secretRef:
-            name: {{ .Release.Name }}-token
+              name: {{ .Release.Name }}-token
           {{- end }}
           {{- if .Values.recommender.envFromSecret }}
           - secretRef:
-            name: {{ .Values.recommender.envFromSecret }}
+              name: {{ .Values.recommender.envFromSecret }}
           {{- end }}
           {{- end }}
           resources:
