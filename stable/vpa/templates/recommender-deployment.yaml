@@ -64,10 +64,18 @@ spec:
             - name: metrics
               containerPort: 8942
               protocol: TCP
-          {{- if .Values.recommender.envFromSecret }}
+          {{- $extraArgs := .Values.recommender.extraArgs | default dict }}
+          {{- $insightsRecommenderArgs := index $extraArgs "use-insights-recommender" | default dict }}
+          {{- if or .Values.recommender.envFromSecret $insightsRecommenderArgs }}
           envFrom:
+          {{- if $insightsRecommenderArgs }}
           - secretRef:
-              name: {{ .Values.recommender.envFromSecret }}
+            name: {{ .Release.Name }}-token
+          {{- end }}
+          {{- if .Values.recommender.envFromSecret }}
+          - secretRef:
+            name: {{ .Values.recommender.envFromSecret }}
+          {{- end }}
           {{- end }}
           resources:
             {{- toYaml .Values.recommender.resources | nindent 12 }}
