@@ -186,3 +186,6 @@ right-sizer:
   enabled: true
   oom-detection:
     enabled: true
+right-sizer-vpa:
+  admissionController:
+    generateCertificate: false
