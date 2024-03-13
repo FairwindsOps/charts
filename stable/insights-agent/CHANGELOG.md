@@ -1,7 +1,10 @@
 # Changelog
 
-## 3.1.6
+## 3.1.7
 * Updated changelog
+
+## 3.1.6
+* Update plugin versions
 
 ## 3.1.5
 * Fix bug in cloud-costs chart

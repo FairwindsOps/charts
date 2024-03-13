@@ -2,7 +2,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name:  {{ include "vpa.fullname" . }}-admission-certgen-create
+  name:  {{ include "vpa.fullname" . }}-admission-certgen
   annotations:
     "helm.sh/hook": pre-install,pre-upgrade
     "helm.sh/hook-delete-policy": before-hook-creation,hook-succeeded
