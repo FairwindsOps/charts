@@ -189,3 +189,5 @@ right-sizer:
 right-sizer-vpa:
   admissionController:
     enabled: false
+  metrics-server:
+    enabled: true
