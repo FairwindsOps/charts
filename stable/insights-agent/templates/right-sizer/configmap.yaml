@@ -1,0 +1,26 @@
+{{- if (index .Values "right-sizer" "enabled") }}
+{{- with (index .Values "right-sizer" "config") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-right-sizer
+  labels:
+    component: right-sizer
+    app: insights-agent
+  {{- if  (index $.Values "right-sizer" "controller" "deployment" "annotations") }}
+  annotations:
+    {{- toYaml (index $.Values "right-sizer" "controller" "deployment" "annotations") | nindent 4 }}
+  {{- end }}
+data:
+  config.yaml: |
+    {{- if kindIs "map" . }}
+    {{- range $key, $value := . }}
+    {{ $key }}:
+    {{- toYaml $value | nindent 6 }}
+    {{- end }}
+    {{- end }}
+    {{- if kindIs "string" . }}
+    {{- . | nindent 4 }}
+    {{- end }}
+{{- end }}
+{{- end }}

@@ -1,4 +1,4 @@
-{{- if (index .Values "right-sizer" "enabled") -}}
+{{- if (index .Values "right-sizer" "enabled") }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -11,71 +11,95 @@ metadata:
     component: right-sizer
     app: insights-agent
 spec:
+  replicas: 1
+  revisionHistoryLimit: {{ (index .Values "right-sizer" "controller" "revisionHistoryLimit") }}
   selector:
     matchLabels:
-      component: right-sizer
-      app: insights-agent
+      app.kubernetes.io/name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+      app.kubernetes.io/instance: {{ .Release.Name }}
+      app.kubernetes.io/component: right-sizer
   template:
     metadata:
       labels:
-        component: right-sizer
-        app: insights-agent
-      {{- if  (index .Values "right-sizer" "workloadAnnotations") }}
+        app.kubernetes.io/name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        app.kubernetes.io/component: right-sizer
+        {{- if (index .Values "right-sizer" "controller" "deployment" "additionalLabels") }}
+        {{ toYaml (index .Values "right-sizer" "controller" "deployment" "additionalLabels") | nindent 8 }}
+        {{- end }}
+      {{- with (index .Values "right-sizer" "controller" "deployment" "podAnnotations") }}
       annotations:
-        {{- toYaml (index .Values "right-sizer" "workloadAnnotations") | nindent 8 }}
+        {{- toYaml . | nindent 8 }}
+        {{- with (index .Values "right-sizer" "config") }}
+          checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}'
+        {{- end }}
       {{- end }}
     spec:
       {{- with (index .Values "right-sizer" "imagePullSecrets") }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+      securityContext:
+        {{- toYaml (index .Values "right-sizer" "controller" "podSecurityContext") | nindent 8 }}
       containers:
-        - name: {{ .Chart.Name }}-right-sizer-controller
-          ports:
-          - containerPort: 8080
-          env:
-          {{ include "proxy-env-spec" . | indent 12 | trim }}
-          securityContext:
-            {{- toYaml (index .Values "right-sizer" "containerSecurityContext") | nindent 12 }}
+        - name: {{ .Chart.Name }}
           image: "{{ (index .Values "right-sizer" "image" "repository") }}:{{ (index .Values "right-sizer" "image" "tag") }}"
           imagePullPolicy: {{ (index .Values "right-sizer" "image" "pullPolicy") }}
           command:
-          - "right-sizer"
-          - "--state-configmap-namespace"
-          - "{{ .Release.Namespace }}"
-          - "--state-configmap-name"
-          - "{{ (index .Values "right-sizer" "stateconfigmapname") }}"
-          {{- range (index .Values "right-sizer" "namespaces") }}
-          - "--namespace"
-          - "{{ . }}"
-          {{- end }}
-          {{- if (index .Values "right-sizer" "updateMemoryLimits" "enabled") }}
-          - "--update-memory-limits"
-          - "--update-memory-limits-increment"
-          - "{{ (index .Values "right-sizer" "updateMemoryLimits" "increment") }}"
-          - "--update-memory-limits-max"
-          - "{{ (index .Values "right-sizer" "updateMemoryLimits" "max") }}"
-          - "--update-memory-limits-min-ooms"
-          - "{{ (index .Values "right-sizer" "updateMemoryLimits" "minOOMs") }}"
-          {{- range (index .Values "right-sizer" "updateMemoryLimits" "namespaces") }}
-          - "--update-memory-limits-namespace"
-          - "{{ . }}"
-          {{- end }}
-{{- end }}
-          - "--reset-ooms-window"
-          - "{{ (index .Values "right-sizer" "resetOOMsWindow") }}"
-          {{- range (index .Values "right-sizer" "extraArgs") }}
-          - "{{ . }}"
-          {{- end }}
-          readinessProbe:
-            httpGet:
-              path: /healthz
-              port: 8080
-          livenessProbe:
-            httpGet:
-              path: /healthz
-              port: 8080
+            - /insights-right-sizer
+            - controller
+            - -v{{ (index .Values "right-sizer" "controller" "logVerbosity") }}
+            {{- range $name, $value := (index .Values "right-sizer" "controller" "flags") }}
+            - --{{ $name }}={{ $value }}
+            {{- end }}
+            {{- with (index .Values "right-sizer" "config") }}
+            - --config
+            - /opt/app/config.yaml
+            {{- end }}
+        {{- if (index .Values "right-sizer" "controller" "securityContext") }}
+          securityContext:
+            {{- toYaml (index .Values "right-sizer" "controller" "securityContext") | nindent 12 }}
+        {{- end }}
           resources:
-            {{- toYaml (index .Values "right-sizer" "resources") | nindent 12 }}
-      serviceAccountName: {{ (index .Values "right-sizer" "serviceAccountName") }}
-{{- end -}}
+            {{- toYaml (index .Values "right-sizer" "controller" "resources") | nindent 12 }}
+          {{- if or (index .Values "right-sizer" "config") (index .Values "right-sizer" "controller" "deployment" "extraVolumeMounts") }}
+          volumeMounts:
+          {{- end }}
+          {{- with (index .Values "right-sizer" "config") }}
+          - name: config
+            mountPath: /opt/app/config.yaml
+            subPath: config.yaml
+            readOnly: true
+          {{- end }}
+          {{- if (index .Values "right-sizer" "controller" "deployment" "extraVolumeMounts") }}
+          {{ toYaml (index .Values "right-sizer" "controller" "deployment" "extraVolumeMounts") | nindent 12 }}
+          {{- end }}
+{{- if or (index .Values "right-sizer" "config") (index .Values "right-sizer" "controller" "deployment" "extraVolumes") }}
+      volumes:
+{{- if (index .Values "right-sizer" "controller" "deployment" "extraVolumes") }}
+{{ toYaml (index .Values "right-sizer" "controller" "deployment" "extraVolumes") | indent 8}}
+{{- end }}
+        {{- with (index .Values "right-sizer" "config") }}
+        - name: config
+          configMap:
+            name: {{ include "insights-agent.fullname" $ }}-right-sizer
+        {{- end }}
+{{- end }}
+      {{- with (index .Values "right-sizer" "controller" "nodeSelector") }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with (index .Values "right-sizer" "controller" "affinity") }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with (index .Values "right-sizer" "controller" "tolerations") }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with (index .Values "right-sizer" "controller" "topologySpreadConstraints") }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+{{- end }}

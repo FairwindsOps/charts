@@ -1,9 +1,0 @@
-{{- if and (index .Values "right-sizer" "enabled") (not .Values.rbac.disabled) -}}
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-right-sizer
-  labels:
-    app: insights-agent
-# This ServiceAccount currently needs no permissions.
-{{- end -}}

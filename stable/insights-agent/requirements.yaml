@@ -16,3 +16,8 @@ dependencies:
   version: '1.17.0'
   condition: falco.installFalco
   alias: falcosecurity
+- name: vpa
+  version: '4.4.5'
+  repository: https://charts.fairwinds.com/stable
+  condition: right-sizer.enabled
+  alias: right-sizer-vpa

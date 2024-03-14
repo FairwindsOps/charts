@@ -1,0 +1,44 @@
+{{- if and (index .Values "right-sizer" "controller" "rbac" "create") (index .Values "right-sizer" "enabled") }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  {{- if  (index .Values "right-sizer" "controller" "deployment" "annotations") }}
+  annotations:
+    {{- toYaml (index .Values "right-sizer" "controller" "deployment" "annotations") | nindent 4 }}
+  {{- end }}
+  labels:
+    component: right-sizer
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+    namespace: {{ .Release.Namespace }}
+
+{{- range (index .Values "right-sizer" "controller" "rbac" "extraClusterRoleBindings" )}}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" $ }}-right-sizer-controller-{{ . }}
+  {{- if  (index $.Values "right-sizer" "controller" "deployment" "annotations") }}
+  annotations:
+    {{- toYaml (index $.Values "right-sizer" "controller" "deployment" "annotations") | nindent 4 }}
+  {{- end }}
+  labels:
+    component: right-sizer
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" $ }}-right-sizer-controller
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}

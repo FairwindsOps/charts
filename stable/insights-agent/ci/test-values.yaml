@@ -181,3 +181,17 @@ installReporter:
   additionalAnnotations:
     "argocd.argoproj.io/hook": PostSync
     "argocd.argoproj.io/hook-delete-policy": HookSucceeded
+
+right-sizer:
+  enabled: true
+  oom-detection:
+    enabled: true
+right-sizer-vpa:
+  admissionController:
+    enabled: false
+  metrics-server:
+    enabled: true
+    apiService:
+      insecureSkipTLSVerify: true
+    args:
+      - "--kubelet-insecure-tls"

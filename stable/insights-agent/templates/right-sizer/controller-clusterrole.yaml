@@ -1,0 +1,63 @@
+{{- if and (index .Values "right-sizer" "controller" "rbac" "create") (index .Values "right-sizer" "enabled") }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-right-sizer-controller
+  {{- if  (index .Values "right-sizer" "controller" "deployment" "annotations") }}
+  annotations:
+    {{- toYaml (index .Values "right-sizer" "controller" "deployment" "annotations") | nindent 4 }}
+  {{- end }}
+  labels:
+    component: right-sizer
+    app: insights-agent
+rules:
+  - apiGroups:
+      - 'apps'
+    resources:
+      - '*'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  - apiGroups:
+      - 'batch'
+    resources:
+      - 'cronjobs'
+      - 'jobs'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  - apiGroups:
+      - ''
+    resources:
+      - 'namespaces'
+      - 'pods'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  - apiGroups:
+      - 'autoscaling.k8s.io'
+    resources:
+      - 'verticalpodautoscalers'
+    verbs:
+      - 'get'
+      - 'list'
+      - 'create'
+      - 'delete'
+      - 'update'
+  {{- if (index .Values "right-sizer" "controller" "rbac" "enableArgoproj") }}
+  - apiGroups:
+      - 'argoproj.io'
+    resources:
+      - rollouts
+    verbs:
+      - 'get'
+      - 'list'
+      - 'watch'
+  {{- end }}
+  {{- if (index .Values "right-sizer" "controller" "rbac" "extraRules") -}}
+  {{ toYaml (index .Values "right-sizer" "controller" "rbac" "extraRules") | nindent 2 }}
+  {{- end }}
+{{- end }}
