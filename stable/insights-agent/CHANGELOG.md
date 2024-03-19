@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.1
+* Fix goldilocks version
+
 ## 4.0.0
 * `right-sizer` has been renamed to `oom-detection`, which is a component of the new Insights right-sizer. The `right-sizer` prior to this release will be referred to as `oom-detection` going forward. These binaries may be further consolidated in a future release to avoid confusion. Configuration for `right-sizer` in your `values.yaml` will now be under `right-sizer.oom-detection`. e.g.:
 
