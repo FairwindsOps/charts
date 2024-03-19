@@ -126,7 +126,7 @@ goldilocks:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
-    tag: "v4.11"
+    tag: "v4.10"
   controller:
     flags:
       on-by-default: true
