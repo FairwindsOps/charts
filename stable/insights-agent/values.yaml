@@ -612,11 +612,17 @@ right-sizer-vpa:
     extraArgs:
       use-insights-recommender: 'true'
       recommender-interval: '1h'
+      # these need to be set separately if using right-sizer, as 'vpa' is a subchart
+      # insights-organization: ''
+      # insights-cluster: ''
   metrics-server:
     # metrics-server.enabled -- If true, the metrics-server will be installed as a sub-chart
     enabled: false
     apiService:
       create: true
+  updater:
+    extraArgs:
+      min-replicas: 1
 
 falco:
   enabled: false
