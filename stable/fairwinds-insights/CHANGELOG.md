@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.1.3
+* Update agent version to 4.x
 
 ## 2.1.2
 * Update agent version to 3.x
