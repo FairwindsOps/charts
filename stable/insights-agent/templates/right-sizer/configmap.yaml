@@ -1,4 +1,4 @@
-{{- if (index .Values "right-sizer" "enabled") }}
+{{- if and (index .Values "right-sizer" "enabled") (index .Values "right-sizer" "enableClosedBeta") }}
 {{- with (index .Values "right-sizer" "config") }}
 apiVersion: v1
 kind: ConfigMap

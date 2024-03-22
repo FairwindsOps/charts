@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.3
+* add `enableClosedBeta` flag to the `right-sizer` chart, also make it the condition for the VPA subchart
+
 ## 4.0.2
 * update nova to v3.8.0
 
