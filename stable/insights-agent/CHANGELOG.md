@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.2
+* update nova to v3.8.0
+
 ## 4.0.1
 * add documentation on custom VPA recommender, default min-replicas for vpa updater to 1 for right-sizer
 
