@@ -1,4 +1,6 @@
 # Changelog
+## 4.0.4
+* Fix guard against installing oom-detector unless right-sizer is enabled
 
 ## 4.0.3
 * add `enableClosedBeta` flag to the `right-sizer` chart, also make it the condition for the VPA subchart
