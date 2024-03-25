@@ -19,5 +19,5 @@ dependencies:
 - name: vpa
   version: '4.4.5'
   repository: https://charts.fairwinds.com/stable
-  condition: right-sizer.enabled
+  condition: right-sizer.enableClosedBeta
   alias: right-sizer-vpa

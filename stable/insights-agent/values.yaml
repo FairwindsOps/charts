@@ -454,6 +454,7 @@ cloudcosts:
 # requires a custom VPA configuration to work properly, see `right-sizer-vpa` section below in this values file
 right-sizer:
   enabled: false
+  enableClosedBeta: false
   image:
     repository: quay.io/fairwinds/insights-right-sizer
     tag: v0.0.2-dev
