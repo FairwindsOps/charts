@@ -1,4 +1,4 @@
-{{- if and (index .Values "right-sizer" "oom-detection" "enabled") (not .Values.rbac.disabled) -}}
+{{- if and (and (index .Values "right-sizer" "enabled") (index .Values "right-sizer" "oom-detection" "enabled")) (not .Values.rbac.disabled) -}}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
