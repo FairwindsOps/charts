@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.0
+* Add `cronjobs.image-vulnerabilities-refresh` support 
+
 ## 2.1.3
 * Update agent version to 4.x
 
