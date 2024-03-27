@@ -194,6 +194,11 @@ cronjobs:
     command: move_resource_health_scores_to_ts
     schedule: "*/30 * * * *"
 
+  # -- Options for the image vulnerabilities refresher job.
+  image-vulnerabilities-refresh:
+    command: 'image_vulnerabilities_refresher'
+    schedule: "*/30 * * * *"
+
 selfHostedSecret:
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
