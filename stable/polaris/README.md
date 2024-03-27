@@ -53,6 +53,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.replicas | int | `2` | Number of replicas to run. |
 | dashboard.logLevel | string | `"Info"` | Set the logging level for the Dashboard command |
 | dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
+| dashboard.podAdditionalAnnotations | object | `{}` | Custom additional annotations on dashboard pods. |
 | dashboard.deploymentAnnotations | object | `{}` | Custom additional annotations on dashboard Deployment. |
 | dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.extraContainers | list | `[]` | allows injecting additional containers. |
