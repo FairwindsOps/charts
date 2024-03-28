@@ -54,7 +54,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | dashboard.logLevel | string | `"Info"` | Set the logging level for the Dashboard command |
 | dashboard.podAdditionalLabels | object | `{}` | Custom additional labels on dashboard pods. |
 | dashboard.deploymentAnnotations | object | `{}` | Custom additional annotations on dashboard Deployment. |
-| dashboard.resources | object | `{"limits":{"cpu":"150m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
+| dashboard.resources | object | `{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the dashboard |
 | dashboard.extraContainers | list | `[]` | allows injecting additional containers. |
 | dashboard.service.type | string | `"ClusterIP"` | Service Type |
 | dashboard.service.annotations | object | `{}` | Service annotations |
@@ -97,7 +97,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | webhook.defaultRules | list | `[{"apiGroups":["apps"],"apiVersions":["v1","v1beta1","v1beta2"],"operations":["CREATE","UPDATE"],"resources":["daemonsets","deployments","statefulsets"],"scope":"Namespaced"},{"apiGroups":["batch"],"apiVersions":["v1","v1beta1"],"operations":["CREATE","UPDATE"],"resources":["jobs","cronjobs"],"scope":"Namespaced"},{"apiGroups":[""],"apiVersions":["v1"],"operations":["CREATE","UPDATE"],"resources":["pods","replicationcontrollers"],"scope":"Namespaced"}]` | An array of rules for common types for the ValidatingWebhookConfiguration |
 | webhook.podAdditionalLabels | object | `{}` | Custom additional labels on webhook pods. |
 | webhook.deploymentAnnotations | object | `{}` | Custom additional annotations on webhook Deployment. |
-| webhook.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
+| webhook.resources | object | `{"limits":{},"requests":{"cpu":"100m","memory":"128Mi"}}` | Requests and limits for the webhook. |
 | webhook.priorityClassName | string | `nil` | Priority Class name to be used in deployment if provided. |
 | webhook.disallowExemptions | bool | `false` | Disallow any exemption |
 | webhook.disallowConfigExemptions | bool | `false` | Disallow exemptions that are configured in the config file |

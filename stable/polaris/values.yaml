@@ -54,9 +54,7 @@ dashboard:
     requests:
       cpu: 100m
       memory: 128Mi
-    limits:
-      cpu: 150m
-      memory: 512Mi
+    limits: {}
   # dashboard.extraContainers -- allows injecting additional containers.
   extraContainers: []
   # extraContainers:
@@ -234,9 +232,7 @@ webhook:
     requests:
       cpu: 100m
       memory: 128Mi
-    limits:
-      cpu: 100m
-      memory: 128Mi
+    limits: {}
   # webhook.priorityClassName -- Priority Class name to be used in deployment if provided.
   priorityClassName:
   # webhook.disallowExemptions -- Disallow any exemption
