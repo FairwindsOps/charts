@@ -196,7 +196,7 @@ cronjobs:
 
   # -- Options for the image vulnerabilities refresher job.
   image-vulnerabilities-refresh:
-    command: 'image_vulnerabilities_refresher'
+    command: image_vulnerabilities_refresher
     schedule: "*/30 * * * *"
 
 selfHostedSecret:
