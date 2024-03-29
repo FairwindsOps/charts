@@ -1,7 +1,10 @@
 # Changelog
 
 ## 2.2.0
-* Add `cronjobs.image-vulnerabilities-refresh` support 
+* Add `cronjobs.image-vulnerabilities-refresh` support
+
+## 2.1.4
+* Update application version to 15.6. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
 ## 2.1.3
 * Update agent version to 4.x
