@@ -194,8 +194,8 @@ cronjobs:
     command: move_resource_health_scores_to_ts
     schedule: "*/30 * * * *"
 
-  # -- Options for the image-vulnerabilities-refresh job.
-  image-vulnerabilities-refresh:
+  # -- Options for the image-vulns-refresh job.
+  image-vulns-refresh:
     command: image_vulnerabilities_refresher
     schedule: "*/30 * * * *"
 
