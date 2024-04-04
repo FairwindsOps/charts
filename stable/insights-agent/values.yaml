@@ -695,7 +695,7 @@ kyverno:
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/kyverno
-    tag: "0.1"
+    tag: "0.2"
   resources:
     requests:
       cpu: 100m

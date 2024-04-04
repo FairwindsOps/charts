@@ -1,4 +1,7 @@
 # Changelog
+## 4.0.5
+* update kyverno to v0.2
+
 ## 4.0.4
 * Fix guard against installing oom-detector unless right-sizer is enabled
 
