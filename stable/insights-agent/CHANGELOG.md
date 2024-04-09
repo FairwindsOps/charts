@@ -1,4 +1,8 @@
 # Changelog
+
+## 4.0.6
+* Added days parameter to cloud costs
+
 ## 4.0.5
 * update kyverno to v0.2
 
