@@ -154,6 +154,7 @@ cloudcosts:
   secretName: cloudcosts-secret
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
+  days: 10
   aws:
     accessKeyId: someAccessID
     secretAccessKey: someAccessKey
