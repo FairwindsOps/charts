@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.0
+* Bumped cloud costs to 0.2
+
 ## 4.0.6
 * Added days parameter to cloud costs
 
