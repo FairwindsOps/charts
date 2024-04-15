@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.1
+* Fixed cloud costs data conversion
+
 ## 4.1.0
 * Bumped cloud costs to 0.2
 
