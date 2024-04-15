@@ -87,7 +87,7 @@ spec:
               - {{ required "You must set cloudcosts.gcp.billingaccount, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.billingaccount }}
               {{- if .Values.cloudcosts.days }}
               - --days
-              - {{ .Values.cloudcosts.days }}
+              - "{{ .Values.cloudcosts.days }}"
               {{- end }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
