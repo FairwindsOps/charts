@@ -210,7 +210,7 @@ recommender:
 | admissionController.mutatingWebhookConfiguration.failurePolicy | string | `"Ignore"` | The failurePolicy for the mutating webhook. Allowed values are: Ignore, Fail |
 | admissionController.mutatingWebhookConfiguration.namespaceSelector | object | `{}` | The namespaceSelector controls, which namespaces are affected by the webhook |
 | admissionController.mutatingWebhookConfiguration.objectSelector | object | `{}` | The objectSelector can filter object on e.g. labels |
-| admissionController.mutatingWebhookConfiguration.timeoutSeconds | int | `30` |  |
+| admissionController.mutatingWebhookConfiguration.timeoutSeconds | int | `5` |  |
 | admissionController.replicaCount | int | `1` |  |
 | admissionController.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | admissionController.podDisruptionBudget | object | `{}` | This is the setting for the pod disruption budget |
