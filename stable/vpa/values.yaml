@@ -237,7 +237,7 @@ admissionController:
     # admissionController.mutatingWebhookConfiguration.objectSelector -- The objectSelector can filter object on e.g. labels
     objectSelector: {}
     # admissionController.mutatingWebhookConfiguration.timeout -- Sets the amount of time the API server will wait on a response from the webhook service.
-    timeoutSeconds: 30
+    timeoutSeconds: 5
 
   replicaCount: 1
   # admissionController.revisionHistoryLimit -- The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
