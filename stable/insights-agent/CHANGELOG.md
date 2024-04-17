@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.2
+* Exclude kube-system from VPA admission controller webhook in right-sizer
+
 ## 4.1.1
 * Fixed cloud costs data conversion
 
