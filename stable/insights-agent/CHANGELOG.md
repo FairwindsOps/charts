@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.0
+* Collecting Idle usage from prometheus plugin
+
 ## 4.1.1
 * Fixed cloud costs data conversion
 
