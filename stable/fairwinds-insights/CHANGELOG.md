@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.1
+* Update application version to 16.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 2.2.0
 * Add `cronjobs.image-vulns-refresh` support
 
