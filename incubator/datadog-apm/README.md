@@ -5,7 +5,7 @@
 
 # datadog-apm
 
-![Version: 0.0.13](https://img.shields.io/badge/Version-0.0.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.40.0](https://img.shields.io/badge/AppVersion-7.52.1-informational?style=flat-square)
+![Version: 0.0.13](https://img.shields.io/badge/Version-0.0.13-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.52.1](https://img.shields.io/badge/AppVersion-7.52.1-informational?style=flat-square)
 
 A modified chart that only installs the datadog-apm agent
 
