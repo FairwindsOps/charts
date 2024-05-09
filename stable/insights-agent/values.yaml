@@ -323,7 +323,7 @@ prometheus-metrics:
       cpu: 100m
       memory: 128Mi
   serviceAccount:
-    annotations:      
+    annotations:
 
 prometheus:
   kubeStateMetrics:
