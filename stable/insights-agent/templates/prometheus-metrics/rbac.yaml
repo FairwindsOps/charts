@@ -5,10 +5,12 @@ metadata:
   name: {{ include "insights-agent.fullname" . }}-prometheus-metrics
   labels:
     app: insights-agent
+  {{- if  (index $.Values "prometheus-metrics" "serviceAccount") }}
   {{- if  (index $.Values "prometheus-metrics" "serviceAccount" "annotations") }}
   annotations:
     {{- toYaml (index $.Values "prometheus-metrics" "serviceAccount" "annotations") | nindent 4 }}
-  {{- end }}  
+  {{- end }}
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
