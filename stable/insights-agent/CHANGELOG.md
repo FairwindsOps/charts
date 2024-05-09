@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.1
+* prometheus service account
+
 ## 4.2.0
 * Collecting Idle usage from prometheus plugin
 
