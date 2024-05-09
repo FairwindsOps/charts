@@ -5,7 +5,7 @@ metadata:
   name: {{ include "insights-agent.fullname" . }}-prometheus-metrics
   labels:
     app: insights-agent
-  {{- with .Values "prometheus-metrics" "serviceAccount" "annotations" }}
+  {{- with .Values.prometheus-metrics.serviceAccount.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
   {{- end -}}
