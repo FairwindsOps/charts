@@ -315,6 +315,7 @@ prometheus-metrics:
   schedule: "0/10 * * * *"
   timeout: 300
   address: "http://prometheus-server"
+  providerClusterName: ""
   image:
     repository: quay.io/fairwinds/prometheus-collector
     tag: "1.4"
