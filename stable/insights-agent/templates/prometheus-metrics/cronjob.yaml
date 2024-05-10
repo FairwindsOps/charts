@@ -21,6 +21,8 @@ spec:
             env:
             - name: PROMETHEUS_ADDRESS
               value: {{ (index .Values "prometheus-metrics"  "address") | quote }}
+            - name: CLUSTER_NAME
+              value: {{ (index .Values "prometheus-metrics"  "managedPrometheusClusterName") | quote }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
