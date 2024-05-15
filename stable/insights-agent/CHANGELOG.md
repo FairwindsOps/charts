@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.2.2
+* prometheus cluster name parameter
+
 ## 4.2.1
 * prometheus service account
 
