@@ -5,6 +5,12 @@ metadata:
   name: {{ include "fairwinds-insights.fullname" . }}-automated-pr-job
   labels:
     app: {{ include "fairwinds-insights.fullname" . }}-automated-pr-job
+  {{ with .Values.rbac.serviceAccount.annotations }}
+  annotations:
+  {{-   range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{-   end }}
+  {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
