@@ -19,6 +19,7 @@ spec:
           imagePullSecrets:
             - name: {{ . }}
           {{- end }}
+          serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-cronjob-executor
           containers:
             - name: {{ $name }}
               image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" $ }}"
