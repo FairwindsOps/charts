@@ -66,7 +66,7 @@ installReporter:
   ttl: 300
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.4"
+    tag: "0.5"
   resources:
     requests:
       cpu: 100m
@@ -91,7 +91,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "8.5"
+    tag: "9.0"
   resources:
     requests:
       cpu: 100m
@@ -222,7 +222,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.8"
+    tag: "v3.9"
   resources:
     requests:
       cpu: 100m
@@ -288,7 +288,7 @@ trivy:
   env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.28"
+    tag: "0.29"
   serviceAccount:
     annotations:
   resources:
@@ -443,7 +443,7 @@ cloudcosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
-    tag: "0.2"
+    tag: "0.3"
   serviceAccount:
     annotations:
   resources:
