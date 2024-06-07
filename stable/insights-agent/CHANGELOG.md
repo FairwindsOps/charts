@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.3.0
+* bumped plugins version
+
 ## 4.2.2
 * prometheus cluster name parameter
 
