@@ -1,6 +1,9 @@
 # Changelog
 
 ## 2.2.2
+* bumped plugin target version
+
+## 2.2.2
 * `rbac.serviceAccount.annotations` are now applied to all Insights related service-accounts
 * fix `serviceAccountName` on Insights cronjobs templates
 
