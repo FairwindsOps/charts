@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2.2.3
+* Update application version to 16.1. [See the release notes for more details](https://
 * bumped insights plugins target version
 
 ## 2.2.2
