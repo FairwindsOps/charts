@@ -4,7 +4,7 @@
 * bumped insights plugins target version
 
 ## 2.2.3
-* Update application version to 16.1. [See the release notes for more details](https://
+* Update application version to 16.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
 ## 2.2.2
 * `rbac.serviceAccount.annotations` are now applied to all Insights related service-accounts
