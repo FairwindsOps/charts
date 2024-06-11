@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.9.2
+* Bump insights-admission to version 1.15
+
 ## 1.9.1
 * Bump insights-admission to version 1.14
 
