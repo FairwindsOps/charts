@@ -460,7 +460,7 @@ right-sizer:
   enableClosedBeta: false
   image:
     repository: quay.io/fairwinds/insights-right-sizer
-    tag: v0.0.2-dev
+    tag: 0.5
     # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
     pullPolicy: Always
   config:
