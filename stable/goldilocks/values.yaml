@@ -32,6 +32,8 @@ controller:
   enabled: true
   # controller.revisionHistoryLimit -- Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
   revisionHistoryLimit: 10
+  # controller.priorityClassName -- Name of a priority class, which indicates the importance of a workload relative to others
+  priorityClassName: ""
   rbac:
     # controller.rbac.create -- If set to true, rbac resources will be created for the controller
     create: true
@@ -99,6 +101,8 @@ dashboard:
   enabled: true
   # dashboard.revisionHistoryLimit -- Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets
   revisionHistoryLimit: 10
+  # dashboard.priorityClassName -- Name of a priority class, which indicates the importance of a workload relative to others
+  priorityClassName: ""
   # dashboard.replicaCount -- Number of dashboard pods to run
   replicaCount: 2
   service:
