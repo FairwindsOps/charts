@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.3.1
+* bumped plugins version
+
 ## 4.3.0
 * bumped plugins version
 
