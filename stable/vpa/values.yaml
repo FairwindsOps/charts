@@ -221,8 +221,10 @@ admissionController:
     env: {}
     # admissionController.certGen.resources -- The resources block for the certgen pod
     resources: {}
-    # admissionController.certGen.securityContext -- The securityContext block for the certgen pod
+    # admissionController.certGen.securityContext -- The securityContext block for the certgen container(s)
     securityContext: {}
+    # admissionController.certGen.podSecurityContext -- The securityContext block for the certgen pod(s)
+    podSecurityContext: {}
     nodeSelector: {}
     tolerations: []
     affinity: {}
