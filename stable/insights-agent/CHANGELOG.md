@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.0
+* added prometheus flag to skip non zero validation
+
 ## 4.3.1
 * bumped plugins version
 

@@ -23,6 +23,8 @@ spec:
               value: {{ (index .Values "prometheus-metrics"  "address") | quote }}
             - name: CLUSTER_NAME
               value: {{ (index .Values "prometheus-metrics"  "managedPrometheusClusterName") | quote }}
+            - name: SKIP_NON_ZERO_METRICS_CHECK
+              value: {{ (index .Values "prometheus-metrics"  "skipNonZeroMetricsCheck") | quote }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
