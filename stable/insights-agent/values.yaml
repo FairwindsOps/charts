@@ -316,6 +316,7 @@ prometheus-metrics:
   timeout: 300
   address: "http://prometheus-server"
   managedPrometheusClusterName: ""
+  skipNonZeroMetricsCheck: false
   image:
     repository: quay.io/fairwinds/prometheus-collector
     tag: "1.4"
