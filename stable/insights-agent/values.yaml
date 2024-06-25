@@ -612,7 +612,7 @@ right-sizer-vpa:
     image:
       # custom Fairwinds vpa-admission-controller image
       repository: quay.io/fairwinds/vpa-admission-controller
-      tag: master-test
+      tag: master
     extraArgs:
       right-size-over-provisioned: true
       right-size-under-provisioned: false
