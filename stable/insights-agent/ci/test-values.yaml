@@ -184,12 +184,12 @@ installReporter:
     "argocd.argoproj.io/hook-delete-policy": HookSucceeded
 
 right-sizer:
-  enabled: false
+  enabled: true
   oom-detection:
     enabled: true
 right-sizer-vpa:
   admissionController:
-    enabled: true
+    enabled: false
   metrics-server:
     enabled: true
     apiService:
