@@ -185,7 +185,6 @@ installReporter:
 
 right-sizer:
   enabled: true
-  enableClosedBeta: true
   oom-detection:
     enabled: true
 right-sizer-vpa:
