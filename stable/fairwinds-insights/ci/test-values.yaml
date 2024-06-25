@@ -68,3 +68,7 @@ resourcesRecommendationsCronjob:
 minio:
   persistence:
     enabled: false
+
+right-sizer:
+  enabled: true
+  enableClosedBeta: true
