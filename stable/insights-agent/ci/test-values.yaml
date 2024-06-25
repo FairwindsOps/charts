@@ -185,11 +185,12 @@ installReporter:
 
 right-sizer:
   enabled: true
+  enableClosedBeta: true
   oom-detection:
     enabled: true
 right-sizer-vpa:
   admissionController:
-    enabled: false
+    enabled: true
   metrics-server:
     enabled: true
     apiService:
