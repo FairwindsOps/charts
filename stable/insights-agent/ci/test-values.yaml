@@ -184,7 +184,7 @@ installReporter:
     "argocd.argoproj.io/hook-delete-policy": HookSucceeded
 
 right-sizer:
-  enabled: true
+  enabled: false
   oom-detection:
     enabled: true
 right-sizer-vpa:
