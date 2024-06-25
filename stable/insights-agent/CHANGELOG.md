@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.1
+* added Fairwinds VPA Admission Controller
+
 ## 4.4.0
 * added prometheus flag to skip non zero validation
 
