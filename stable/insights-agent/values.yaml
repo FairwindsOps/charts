@@ -609,6 +609,13 @@ right-sizer:
 right-sizer-vpa:
   admissionController:
     registerWebhook: true
+    image:
+      # custom Fairwinds vpa-admission-controller image
+      repository: quay.io/fairwinds/vpa-admission-controller
+      tag: master
+    extraArgs:
+      right-size-over-provisioned: true
+      right-size-under-provisioned: false
   recommender:
     image:
       # custom Fairwinds vpa-recommender image
