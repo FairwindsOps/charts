@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.2
+* bumped prometheus version
+
 ## 4.4.1
 * added Fairwinds VPA Admission Controller
 
