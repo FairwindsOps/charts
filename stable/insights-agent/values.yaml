@@ -91,7 +91,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "9.0"
+    tag: "9.1"
   resources:
     requests:
       cpu: 100m
@@ -319,7 +319,7 @@ prometheus-metrics:
   skipNonZeroMetricsCheck: false
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.4"
+    tag: "1.5"
   resources:
     requests:
       cpu: 100m
