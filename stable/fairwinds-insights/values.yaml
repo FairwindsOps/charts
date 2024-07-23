@@ -400,7 +400,7 @@ postgresql:
   image:
     registry: quay.io
     repository: fairwinds/postgres-partman
-    tag: "14.4"
+    tag: "16.0"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
   # -- SSL mode for connecting to the database

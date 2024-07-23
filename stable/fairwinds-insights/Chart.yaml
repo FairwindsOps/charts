@@ -9,7 +9,7 @@ maintainers:
   - name: mhoss019
 dependencies:
   - name: postgresql
-    version: 14.0.5
+    version: 15.5.18
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.ephemeral
   - name: minio

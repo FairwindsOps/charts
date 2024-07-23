@@ -110,7 +110,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
 | postgresql.image.registry | string | `"quay.io"` |  |
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
-| postgresql.image.tag | string | `"14.4"` |  |
+| postgresql.image.tag | string | `"16.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
