@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.6
+* bumped insights agent chart target version
+
+## 2.2.5
+* upgrade bitnami postgres chart dependency and postgres-partman version
+
 ## 2.2.4
 * bumped insights plugins target version
 
