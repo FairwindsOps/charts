@@ -40,7 +40,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | additionalExemptions | string | `nil` | List of additional exemptions to append to the exemptions given in `config` |
 | image.repository | string | `"quay.io/fairwinds/polaris"` | Image repo |
 | image.tag | string | `""` | The Polaris Image tag to use. Defaults to the Chart's AppVersion |
-| image.pullPolicy | string | `"Always"` | Image pull policy |
+| image.pullPolicy | string | `"IfNotPresent"` | Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent' |
 | image.pullSecrets | list | `[]` | Image pull secrets |
 | rbac.enabled | bool | `true` | Whether RBAC resources (ClusterRole, ClusterRolebinding) should be created |
 | serviceAccount.create | bool | `true` | Specifies whether a service account should be created |

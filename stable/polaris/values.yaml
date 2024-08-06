@@ -14,8 +14,8 @@ image:
   repository: quay.io/fairwinds/polaris
   # image.tag -- The Polaris Image tag to use. Defaults to the Chart's AppVersion
   tag: ""
-  # image.pullPolicy -- Image pull policy
-  pullPolicy: Always
+  # image.pullPolicy -- Defaults to 'Always' if image tag is 'latest', else set to 'IfNotPresent'
+  pullPolicy: IfNotPresent
   # image.pullSecrets -- Image pull secrets
   pullSecrets: []
 
