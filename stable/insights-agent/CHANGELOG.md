@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.4
+* bumped opa version
+
 ## 4.4.3
 * bumped polaris version
 
