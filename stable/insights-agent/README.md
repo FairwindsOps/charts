@@ -49,7 +49,7 @@ cluster's access token.
 
 To better serve customers with a large number of clusters, we've created a flow
 that allows you to easily deploy the Insights Agent across your fleet.
-[Read more here](https://insights.docs.fairwinds.com/run/agent/installation/#fleet-installation)
+[Read more here](https://insights.docs.fairwinds.com/features/in-cluster-scanning/#fleet-installation)
 
 ## Configuration
 Parameter | Description | Default
