@@ -37,7 +37,7 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.image.pullPolicy | string | `"Always"` |  |
 | clusterAgent.image.tag | string | `""` | Overrides the image tag whose default is {{ .Chart.AppVersion }} |
 | clusterAgent.command[0] | string | `"trace-agent"` |  |
-| clusterAgent.command[1] | string | `"-config=/etc/datadog-agent/datadog.yaml"` |  |
+| clusterAgent.command[1] | string | `"--config=/etc/datadog-agent/datadog-cluster.yaml"` |  |
 | clusterAgent.enabled | bool | `true` |  |
 | clusterAgent.token | string | `nil` |  |
 | clusterAgent.apm.enabled | bool | `true` |  |
