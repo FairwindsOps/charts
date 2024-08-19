@@ -27,6 +27,7 @@ A modified chart that only installs the datadog-apm agent
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | targetSystem | string | `"linux"` |  |
+| remoteConfiguration.enabled | bool | `false` |  |
 | datadog.apiKey | string | `nil` |  |
 | datadog.apiKeyExistingSecret | string | `nil` |  |
 | datadog.appKey | string | `nil` |  |
@@ -78,7 +79,6 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.createPodDisruptionBudget | bool | `true` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
-| remoteConfiguration.enabled | bool | `false` |  |
 | securityContext | object | `{}` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
