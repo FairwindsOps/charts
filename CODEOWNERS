@@ -1,5 +1,5 @@
 ## DO NOT EDIT - Managed by Terraform
-* @sudermanjr @rbren @transient1 @vitorvezani
+* @sudermanjr @transient1 @vitorvezani
 
 /incubator/autospotting/ @sudermanjr
 /incubator/basic-demo/ @sudermanjr
@@ -20,13 +20,13 @@
 /stable/aws-iam-authenticator/ @sudermanjr
 /stable/ecr-cleanup/ @sudermanjr
 /stable/rbac-manager/ @sudermanjr
-/stable/polaris/ @rbren
-/stable/gemini/ @rbren
+/stable/polaris/ @sudermanjr
+/stable/gemini/ @sudermanjr
 /stable/gke-node-termination-handler/ @sudermanjr
 /stable/goldilocks/ @sudermanjr
-/stable/fairwinds-insights/ @rbren @jdesouza @vitorvezani @jslivka
-/stable/insights-admission/ @rbren @jdesouza @vitorvezani @jslivka
-/stable/insights-agent/ @rbren @jdesouza @vitorvezani @jslivka
-/stable/helm-release-pruner/ @rbren
+/stable/fairwinds-insights/ @sudermanjr @jdesouza @vitorvezani
+/stable/insights-admission/ @sudermanjr @jdesouza @vitorvezani
+/stable/insights-agent/ @sudermanjr @jdesouza @vitorvezani
+/stable/helm-release-pruner/ @sudermanjr
 /stable/vpa/ @sudermanjr
 

@@ -1,5 +1,35 @@
 # Changelog
 
+## 4.4.5
+* fixed docs
+
+## 4.4.4
+* bumped opa version
+
+## 4.4.3
+* bumped polaris version
+
+## 4.4.2
+* bumped prometheus version
+
+## 4.4.1
+* added Fairwinds VPA Admission Controller
+
+## 4.4.0
+* added prometheus flag to skip non zero validation
+
+## 4.3.1
+* bumped plugins version
+
+## 4.3.0
+* bumped plugins version
+
+## 4.2.2
+* prometheus cluster name parameter
+
+## 4.2.1
+* prometheus service account
+
 ## 4.2.0
 * Collecting Idle usage from prometheus plugin
 

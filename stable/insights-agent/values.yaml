@@ -66,7 +66,7 @@ installReporter:
   ttl: 300
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.4"
+    tag: "0.5"
   resources:
     requests:
       cpu: 100m
@@ -91,7 +91,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "8.5"
+    tag: "9.2"
   resources:
     requests:
       cpu: 100m
@@ -158,7 +158,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "2.4"
+    tag: "2.5"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -222,7 +222,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.8"
+    tag: "v3.9"
   resources:
     requests:
       cpu: 100m
@@ -288,7 +288,7 @@ trivy:
   env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.28"
+    tag: "0.29"
   serviceAccount:
     annotations:
   resources:
@@ -315,13 +315,17 @@ prometheus-metrics:
   schedule: "0/10 * * * *"
   timeout: 300
   address: "http://prometheus-server"
+  managedPrometheusClusterName: ""
+  skipNonZeroMetricsCheck: false
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.4"
+    tag: "1.5"
   resources:
     requests:
       cpu: 100m
       memory: 128Mi
+  serviceAccount:
+    annotations:
 
 prometheus:
   kubeStateMetrics:
@@ -440,7 +444,7 @@ cloudcosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
-    tag: "0.2"
+    tag: "0.3"
   serviceAccount:
     annotations:
   resources:
@@ -605,6 +609,13 @@ right-sizer:
 right-sizer-vpa:
   admissionController:
     registerWebhook: true
+    image:
+      # custom Fairwinds vpa-admission-controller image
+      repository: quay.io/fairwinds/vpa-admission-controller
+      tag: master
+    extraArgs:
+      right-size-over-provisioned: true
+      right-size-under-provisioned: false
   recommender:
     image:
       # custom Fairwinds vpa-recommender image

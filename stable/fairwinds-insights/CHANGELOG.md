@@ -1,5 +1,27 @@
 # Changelog
 
+## 2.2.7
+* Update application version to 16.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.2.6
+* bumped insights agent chart target version
+
+## 2.2.5
+* upgrade bitnami postgres chart dependency and postgres-partman version
+
+## 2.2.4
+* bumped insights plugins target version
+
+## 2.2.3
+* Update application version to 16.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.2.2
+* `rbac.serviceAccount.annotations` are now applied to all Insights related service-accounts
+* fix `serviceAccountName` on Insights cronjobs templates
+
+## 2.2.1
+* Update application version to 16.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 2.2.0
 * Add `cronjobs.image-vulns-refresh` support
 
