@@ -4,6 +4,9 @@ nameOverride: ""
 fullnameOverride: ""
 targetSystem: linux
 
+remoteConfiguration:
+  enabled: false
+
 datadog:
   apiKey:  # <DATADOG_API_KEY>
   apiKeyExistingSecret:   # <DATADOG_API_KEY_SECRET>
@@ -20,7 +23,7 @@ clusterAgent:
     tag: ""
   command:
     - trace-agent
-    - -config=/etc/datadog-agent/datadog.yaml
+    - --config=/etc/datadog-agent/datadog-cluster.yaml
   enabled: true
   token:   # <DATADOG_CLUSTER_AGENT_TOKEN>
   apm:
