@@ -5,9 +5,15 @@ metadata:
   name: {{ include "fairwinds-insights.fullname" . }}-repo-scan-job
   labels:
     app: {{ include "fairwinds-insights.fullname" . }}-repo-scan-job
+  {{ with .Values.rbac.serviceAccount.annotations }}
+  annotations:
+  {{-   range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{-   end }}
+  {{- end }}
 ---
-kind: Role
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
 metadata:
   name: {{ include "fairwinds-insights.fullname" . }}-repo-scan-job
   labels:

@@ -1,15 +1,16 @@
 apiVersion: v2
-appVersion: "15.6"
+appVersion: "16.2"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 2.2.0
+version: 2.2.7
 kubeVersion: ">= 1.22.0-0"
 maintainers:
   - name: rbren
-  - name: mhoss019
+  - name: vitorvezani
+  - name: jdesouza
 dependencies:
   - name: postgresql
-    version: 14.0.5
+    version: 15.5.18
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.ephemeral
   - name: minio
