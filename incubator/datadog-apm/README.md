@@ -78,6 +78,7 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.createPodDisruptionBudget | bool | `true` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
+| remoteConfiguration.enabled | bool | `false` |  |
 | securityContext | object | `{}` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
