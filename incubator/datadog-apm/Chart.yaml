@@ -4,7 +4,7 @@ name: datadog-apm
 description: A modified chart that only installs the datadog-apm agent
 type: application
 version: 0.0.13
-appVersion: 7.52.1
+appVersion: 7.55.3
 maintainers:
   - name: sudermanjr
   - name: Azahorscak
