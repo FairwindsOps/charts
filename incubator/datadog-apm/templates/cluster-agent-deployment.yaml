@@ -108,8 +108,10 @@ spec:
                 name: {{ template "datadog-apm.apiSecretName" . }}
                 key: api-key
                 optional: true
+          {{- if .Values.datadog.remoteConfiguration.enabled }}
           - name: DD_REMOTE_CONFIGURATION_ENABLED
             value: {{ .Values.datadog.remoteConfiguration.enabled | quote }}
+          {{- end }}
           {{- if .Values.clusterAgent.metricsProvider.enabled }}
           - name: DD_APP_KEY
             valueFrom:
