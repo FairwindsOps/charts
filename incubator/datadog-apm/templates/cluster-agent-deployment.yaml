@@ -109,7 +109,7 @@ spec:
                 key: api-key
                 optional: true
           - name: DD_REMOTE_CONFIGURATION_ENABLED
-            value: "false"
+            value: {{ .Values.remoteConfiguration.enabled | quote }}
           {{- if .Values.clusterAgent.metricsProvider.enabled }}
           - name: DD_APP_KEY
             valueFrom:

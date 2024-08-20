@@ -27,7 +27,7 @@ A modified chart that only installs the datadog-apm agent
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | targetSystem | string | `"linux"` |  |
-| remoteConfiguration | bool | `false` |  |
+| remoteConfiguration.enabled | bool | `false` |  |
 | datadog.apiKey | string | `nil` |  |
 | datadog.apiKeyExistingSecret | string | `nil` |  |
 | datadog.appKey | string | `nil` |  |
