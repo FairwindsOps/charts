@@ -4,9 +4,7 @@ nameOverride: ""
 fullnameOverride: ""
 targetSystem: linux
 
-remoteConfiguration:
-  enabled: false
-
+remoteConfiguration: false
 datadog:
   apiKey:  # <DATADOG_API_KEY>
   apiKeyExistingSecret:   # <DATADOG_API_KEY_SECRET>
