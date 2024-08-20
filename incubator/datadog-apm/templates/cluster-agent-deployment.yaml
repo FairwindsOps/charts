@@ -108,6 +108,8 @@ spec:
                 name: {{ template "datadog-apm.apiSecretName" . }}
                 key: api-key
                 optional: true
+          - name: DD_REMOTE_CONFIGURATION_ENABLED
+            value: {{ .Values.remoteConfiguration.enabled | quote }}
           {{- if .Values.clusterAgent.metricsProvider.enabled }}
           - name: DD_APP_KEY
             valueFrom:
@@ -116,8 +118,6 @@ spec:
                 key: app-key
           - name: DD_EXTERNAL_METRICS_PROVIDER_ENABLED
             value: {{ .Values.clusterAgent.metricsProvider.enabled | quote }}
-          - name: DD_REMOTE_CONFIGURATION_ENABLED
-            value: {{ .Values.remoteConfiguration.enabled | quote }}
           - name: DD_EXTERNAL_METRICS_PROVIDER_PORT
             value: {{ include "clusterAgent.metricsProvider.port" . | quote }}
           - name: DD_EXTERNAL_METRICS_PROVIDER_WPA_CONTROLLER
