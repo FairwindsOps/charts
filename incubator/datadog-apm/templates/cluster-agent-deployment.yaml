@@ -24,14 +24,14 @@ spec:
     matchLabels:
       app: {{ template "datadog-apm.fullname" . }}-cluster-agent
         {{- if .Values.clusterAgent.podLabels }}
-{{ toYaml .Values.clusterAgent.podLabels | indent 6 }}
+          {{ toYaml .Values.clusterAgent.podLabels | indent 6 }}
         {{- end }}
   template:
     metadata:
       labels:
         app: {{ template "datadog-apm.fullname" . }}-cluster-agent
         {{- if .Values.clusterAgent.podLabels }}
-{{ toYaml .Values.clusterAgent.podLabels | indent 8 }}
+        {{ toYaml .Values.clusterAgent.podLabels | indent 8 }}
         {{- end }}
       name: {{ template "datadog-apm.fullname" . }}-cluster-agent
       annotations:
@@ -55,7 +55,7 @@ spec:
             ]
           }]
       {{- if .Values.clusterAgent.podAnnotations }}
-{{ toYaml .Values.clusterAgent.podAnnotations | indent 8 }}
+      {{ toYaml .Values.clusterAgent.podAnnotations | indent 8 }}
       {{- end }}
 
     spec:
@@ -64,7 +64,7 @@ spec:
       {{- end }}
       {{- if .Values.clusterAgent.image.pullSecrets }}
       imagePullSecrets:
-{{ toYaml .Values.clusterAgent.image.pullSecrets | indent 8 }}
+      {{ toYaml .Values.clusterAgent.image.pullSecrets | indent 8 }}
       {{- end }}
       serviceAccountName: {{ template "datadog-apm.serviceAccountName" . }}
       {{- if .Values.clusterAgent.useHostNetwork }}
@@ -73,7 +73,7 @@ spec:
       {{- end }}
       {{- if .Values.clusterAgent.dnsConfig }}
       dnsConfig:
-{{ toYaml .Values.clusterAgent.dnsConfig | indent 8 }}
+      {{ toYaml .Values.clusterAgent.dnsConfig | indent 8 }}
       {{- end }}
       containers:
       - name: cluster-agent
@@ -85,7 +85,7 @@ spec:
         {{- end }}
         imagePullPolicy: {{ .Values.clusterAgent.image.pullPolicy }}
         resources:
-{{ toYaml .Values.clusterAgent.resources | indent 10 }}
+        {{ toYaml .Values.clusterAgent.resources | indent 10 }}
         ports:
         - containerPort: 5005
           name: agentport
@@ -95,10 +95,10 @@ spec:
           name: metricsapi
           protocol: TCP
         {{- end }}
-{{- if .Values.datadog.envFrom }}
+        {{- if .Values.datadog.envFrom }}
         envFrom:
-{{ toYaml .Values.datadog.envFrom | indent 10 }}
-{{- end }}
+        {{ toYaml .Values.datadog.envFrom | indent 10 }}
+        {{- end }}
         env:
           - name: DD_HEALTH_PORT
             value: {{ .Values.clusterAgent.healthPort | quote }}
@@ -109,7 +109,7 @@ spec:
                 key: api-key
                 optional: true
           - name: DD_REMOTE_CONFIGURATION_ENABLED
-            value: {{ .Values.remoteConfiguration.enabled | quote }}
+            value: {{ .Values.datadog.remoteConfiguration.enabled | quote }}
           {{- if .Values.clusterAgent.metricsProvider.enabled }}
           - name: DD_APP_KEY
             valueFrom:

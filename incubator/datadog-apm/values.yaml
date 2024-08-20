@@ -4,8 +4,6 @@ nameOverride: ""
 fullnameOverride: ""
 targetSystem: linux
 
-remoteConfiguration:
-  enabled: false
 
 datadog:
   apiKey:  # <DATADOG_API_KEY>
@@ -14,7 +12,8 @@ datadog:
   appKeySecretName:   # <DATADOG_APP_KEY_SECRET>
   logLevel: INFO
   site: datadoghq.com
-
+  remoteConfiguration:
+    enabled: false
 clusterAgent:
   image:
     repository: datadog/agent

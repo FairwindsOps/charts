@@ -27,13 +27,13 @@ A modified chart that only installs the datadog-apm agent
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | targetSystem | string | `"linux"` |  |
-| remoteConfiguration.enabled | bool | `false` |  |
 | datadog.apiKey | string | `nil` |  |
 | datadog.apiKeyExistingSecret | string | `nil` |  |
 | datadog.appKey | string | `nil` |  |
 | datadog.appKeySecretName | string | `nil` |  |
 | datadog.logLevel | string | `"INFO"` |  |
 | datadog.site | string | `"datadoghq.com"` |  |
+| datadog.remoteConfiguration.enabled | bool | `false` |  |
 | clusterAgent.image.repository | string | `"datadog/agent"` |  |
 | clusterAgent.image.pullPolicy | string | `"Always"` |  |
 | clusterAgent.image.tag | string | `""` | Overrides the image tag whose default is {{ .Chart.AppVersion }} |
