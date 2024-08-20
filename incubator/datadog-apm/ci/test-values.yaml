@@ -21,7 +21,7 @@ clusterAgent:
     tag: ""
   command:
     - trace-agent
-    - -config=/etc/datadog-agent/datadog.yaml
+    - --config=/etc/datadog-agent/datadog-cluster.yaml
   enabled: true
   # -- DATADOG_CLUSTER_AGENT_TOKEN
   token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=
