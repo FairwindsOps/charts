@@ -126,7 +126,7 @@ goldilocks:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
-    tag: "v4.11"
+    tag: "v4.13"
   controller:
     flags:
       on-by-default: true
@@ -222,7 +222,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.9"
+    tag: "v3.10"
   resources:
     requests:
       cpu: 100m
@@ -303,7 +303,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.19"
+    tag: "v5.20"
   resources:
     requests:
       cpu: 100m
