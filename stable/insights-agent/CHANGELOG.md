@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.4.6
+* bumped plugins version
+
+## 4.4.5
+* fixed docs
+
 ## 4.4.4
 * bumped opa version
 

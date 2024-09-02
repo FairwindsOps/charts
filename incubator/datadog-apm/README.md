@@ -5,7 +5,7 @@
 
 # datadog-apm
 
-![Version: 0.0.10](https://img.shields.io/badge/Version-0.0.10-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.40.0](https://img.shields.io/badge/AppVersion-7.40.0-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.55.2](https://img.shields.io/badge/AppVersion-7.55.2-informational?style=flat-square)
 
 A modified chart that only installs the datadog-apm agent
 
@@ -27,6 +27,7 @@ A modified chart that only installs the datadog-apm agent
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | targetSystem | string | `"linux"` |  |
+| remoteConfiguration.enabled | bool | `false` |  |
 | datadog.apiKey | string | `nil` |  |
 | datadog.apiKeyExistingSecret | string | `nil` |  |
 | datadog.appKey | string | `nil` |  |
@@ -37,7 +38,7 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.image.pullPolicy | string | `"Always"` |  |
 | clusterAgent.image.tag | string | `""` | Overrides the image tag whose default is {{ .Chart.AppVersion }} |
 | clusterAgent.command[0] | string | `"trace-agent"` |  |
-| clusterAgent.command[1] | string | `"-config=/etc/datadog-agent/datadog.yaml"` |  |
+| clusterAgent.command[1] | string | `"--config=/etc/datadog-agent/datadog-cluster.yaml"` |  |
 | clusterAgent.enabled | bool | `true` |  |
 | clusterAgent.token | string | `nil` |  |
 | clusterAgent.apm.enabled | bool | `true` |  |
