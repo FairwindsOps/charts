@@ -38,7 +38,7 @@ spec:
           - name: http
             containerPort: {{ .Values.api.port }}
             protocol: TCP
-          {{- include "env" . | indent 10 }}
+          {{- include "env" (dict "root" .) | indent 10 }}
           livenessProbe:
             httpGet:
               path: /health
