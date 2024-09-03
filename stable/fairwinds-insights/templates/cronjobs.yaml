@@ -28,7 +28,7 @@ spec:
               {{- with $options.interval }}
                 - --interval={{ . }}
               {{- end }}
-              {{- include "env" (dict "cronOptions" $options "root" $) | indent 14 }}
+              {{- include "env" (dict "useReadReplica" $options.useReadReplica "root" $) | indent 14 }}
               imagePullPolicy: Always
               resources:
                 {{- toYaml (default $.Values.cronjobOptions.resources $options.resources) | nindent 16 }}
