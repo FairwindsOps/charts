@@ -47,7 +47,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.costs-update | object | `{"command":"cloud_costs_update","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"15 */3 * * *"}` | Options for the cloud costs update job |
 | cronjobs.database-cleanup | object | `{"command":"database_cleanup","schedule":"0 0 * * *"}` | Options for the database cleanup job. |
 | cronjobs.email | object | `{"command":"email_digest","schedule":""}` | Options for the email digest job. |
-| cronjobs.hubspot | object | `{"command":"hubspot_sync","schedule":""}` | Options for the hubspot job. |
+| cronjobs.hubspot | object | `{"command":"hubspot_sync","schedule":"","useReadReplica":true}` | Options for the hubspot job. |
 | cronjobs.notifications-digest | object | `{"command":"notifications_digest","interval":"24h","schedule":"0 16 * * *"}` | Options for digest notifications job |
 | cronjobs.resources-recommendations | object | `{"command":"resources_recommendations","resources":{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}},"schedule":"0 2 * * *"}` | Options for the resources recommendations job |
 | cronjobs.saml | object | `{"command":"refresh_saml_metadata","schedule":"0 * * * *"}` | Options for the SAML sync job |

@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.0
+* Adds `useReadReplica` to cronjobs to enable `postgresql.readReplica` injection instead of primary database
+
 ## 2.2.7
 * Update application version to 16.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
