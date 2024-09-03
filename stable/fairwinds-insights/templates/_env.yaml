@@ -78,7 +78,7 @@ env:
 - name: POSTGRES_SSL_MODE
   value: {{ $.Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST
-  value: {{ $.Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
+  value: {{ $.Values.postgresql.postgresqlHost | default (printf "%s-%s" $.Release.Name "postgresql") }}
 {{- if $.Values.postgresql.readOnly }}
 - name: POSTGRES_PASSWORD
   valueFrom:
@@ -103,7 +103,7 @@ env:
 - name: TIMESCALE_SSL_MODE
   value: {{ $.Values.timescale.sslMode | default "require" }}
 - name: TIMESCALE_HOST
-  value: {{ $.Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}
+  value: {{ $.Values.timescale.postgresqlHost | default (printf "%s-%s" $.Release.Name "timescale") }}
 {{- if $.Values.timescale.ephemeral }}
 - name: TIMESCALE_PASSWORD
   valueFrom:
@@ -139,17 +139,17 @@ env:
   value: {{ $.Values.reportStorage.minioHost }}
 {{ else }}
 - name: MINIO_HOST
-  value: {{ printf "%s-%s" .Release.Name "fw-minio:9000" }}
+  value: {{ printf "%s-%s" $.Release.Name "fw-minio:9000" }}
 {{ end -}}
 - name: MINIO_ACCESS_KEY_ID
   valueFrom:
     secretKeyRef:
-      name: {{ printf "%s-%s" .Release.Name $.Values.minio.nameOverride }}
+      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
       key: rootUser                
 - name: MINIO_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
-      name: {{ printf "%s-%s" .Release.Name $.Values.minio.nameOverride }}
+      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
       key: rootPassword
 {{ else if eq $.Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
@@ -191,7 +191,7 @@ env:
 
 # repo-scan-job specific
 - name: K8S_NAMESPACE
-  value: {{ .Release.Namespace }}
+  value: {{ $.Release.Namespace }}
 - name: INSIGHTS_CI_IMAGE_VERSION
   value: {{ $.Values.repoScanJob.insightsCIVersion | quote }}
 
@@ -199,5 +199,5 @@ env:
 - name: CRON_JOB_IMAGE_REPOSITORY
   value: {{ $.Values.cronjobImage.repository | quote }}
 - name: CRON_JOB_IMAGE_TAG
-  value: {{ include "fairwinds-insights.cronjobImageTag" . | quote }}
+  value: {{ include "fairwinds-insights.cronjobImageTag" $ | quote }}
 {{ end }}
