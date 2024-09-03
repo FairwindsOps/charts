@@ -155,6 +155,7 @@ cronjobs:
   hubspot:
     command: 'hubspot_sync'
     schedule: ''
+    useReadReplica: true
 
   # -- Options for digest notifications job
   notifications-digest:

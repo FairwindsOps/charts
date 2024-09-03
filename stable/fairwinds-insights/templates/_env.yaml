@@ -50,7 +50,7 @@ env:
   value: {{ . | quote }}
 {{- end }}
 # Database
-{{- if and (.Values.postgresql.readReplica) (eq .Template.Name "fairwinds-insights/templates/hubspot-cronjob.yaml") }}
+{{- if and ($options.useReadReplica) (.Values.postgresql.readReplica) }}
 - name: POSTGRES_DB
   value: {{ .Values.postgresql.readReplica.database }}
 - name: POSTGRES_USER
