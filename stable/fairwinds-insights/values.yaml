@@ -433,7 +433,7 @@ postgresql:
       requests:
         cpu: 75m
         memory: 256Mi
-  # -- Optional read replica configuration. Currently in use by [`hubspot-cronjob`]
+  # -- Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it
   readReplica:
     username:
     database:
