@@ -47,7 +47,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.costs-update | object | `{"command":"cloud_costs_update","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"15 */3 * * *"}` | Options for the cloud costs update job |
 | cronjobs.database-cleanup | object | `{"command":"database_cleanup","schedule":"0 0 * * *"}` | Options for the database cleanup job. |
 | cronjobs.email | object | `{"command":"email_digest","schedule":""}` | Options for the email digest job. |
-| cronjobs.hubspot | object | `{"command":"hubspot_sync","schedule":""}` | Options for the hubspot job. |
+| cronjobs.hubspot | object | `{"command":"hubspot_sync","schedule":"","useReadReplica":true}` | Options for the hubspot job. |
 | cronjobs.notifications-digest | object | `{"command":"notifications_digest","interval":"24h","schedule":"0 16 * * *"}` | Options for digest notifications job |
 | cronjobs.resources-recommendations | object | `{"command":"resources_recommendations","resources":{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}},"schedule":"0 2 * * *"}` | Options for the resources recommendations job |
 | cronjobs.saml | object | `{"command":"refresh_saml_metadata","schedule":"0 * * * *"}` | Options for the SAML sync job |
@@ -121,7 +121,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
-| postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Currently in use by [`hubspot-cronjob`] |
+| postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
 | timescale.replicaCount | int | `1` |  |
