@@ -3,6 +3,9 @@
 ## 4.4.8
 * bumped kyverno to 0.3
 
+## 4.4.7
+* bumped poalris to 9.3
+
 ## 4.4.6
 * bumped plugins version
 
