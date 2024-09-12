@@ -1,6 +1,10 @@
 {{/*
 Expand the name of the chart.
 */}}
+{{- define "yelb.name" -}}
+{{- default .Chart.Name .Values.nameOverride | trunc 50 | trimSuffix "-" }}
+{{- end }}
+
 {{- define "yelb.appserver.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 50 | trimSuffix "-" }}-appserver
 {{- end }}
@@ -14,6 +18,19 @@ Create a default fully qualified app name.
 We truncate at 50 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
+{{- define "yelb.fullname" -}}
+{{- if .Values.fullnameOverride }}
+{{- .Values.fullnameOverride | trunc 50 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default .Chart.Name .Values.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 50 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 50 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
 {{- define "yelb.appserver.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 50 | trimSuffix "-" }}-appserver
@@ -50,6 +67,15 @@ Create chart name and version as used by the chart label.
 {{/*
 Common labels
 */}}
+{{- define "yelb.labels" -}}
+helm.sh/chart: {{ include "yelb.chart" . }}
+{{ include "yelb.selectorLabels" . }}
+{{- if .Chart.AppVersion }}
+app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+{{- end }}
+app.kubernetes.io/managed-by: {{ .Release.Service }}
+{{- end }}
+
 {{- define "yelb.appserver.labels" -}}
 helm.sh/chart: {{ include "yelb.chart" . }}
 {{ include "yelb.appserver.selectorLabels" . }}
@@ -71,6 +97,11 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
+{{- define "yelb.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "yelb.name" . }}
+app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
+
 {{- define "yelb.appserver.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "yelb.appserver.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
