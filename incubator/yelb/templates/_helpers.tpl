@@ -18,11 +18,11 @@ If release name contains chart name it will be used as a full name.
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 50 | trimSuffix "-" }}-appserver
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}-appserver
+{{- $name := default .Chart.Name .Values.nameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 50 | trimSuffix "-" }}-appserver
 {{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 50 | trimSuffix "-" }}-appserver
+{{- printf "%s-%s-appserver" .Release.Name $name | trunc 50 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
 {{- end }}
@@ -31,11 +31,11 @@ If release name contains chart name it will be used as a full name.
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 50 | trimSuffix "-" }}-ui
 {{- else }}
-{{- $name := default .Chart.Name .Values.nameOverride }}-ui
+{{- $name := default .Chart.Name .Values.nameOverride }}
 {{- if contains $name .Release.Name }}
 {{- .Release.Name | trunc 50 | trimSuffix "-" }}-ui
 {{- else }}
-{{- printf "%s-%s" .Release.Name $name | trunc 50 | trimSuffix "-" }}-ui
+{{- printf "%s-%s-ui" .Release.Name $name | trunc 50 | trimSuffix "-" }}
 {{- end }}
 {{- end }}
 {{- end }}
@@ -57,7 +57,6 @@ helm.sh/chart: {{ include "yelb.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/component: appserver
 {{- end }}
 
 {{- define "yelb.ui.labels" -}}
@@ -67,7 +66,6 @@ helm.sh/chart: {{ include "yelb.chart" . }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
-app.kubernetes.io/component: ui
 {{- end }}
 
 {{/*
