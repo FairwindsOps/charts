@@ -9,10 +9,14 @@ metadata:
     {{- include "yelb.labels" . | nindent 4 }}
     app.kubernetes.io/component: migrate-db
 spec:
-  backoffLimit: 5
+  backoffLimit: 1
   template:
     spec:
       restartPolicy: Never
+      securityContext:
+        fsGroup: 1001
+        runAsUser: 1001
+        runAsGroup: 1001
       containers:
       - name: db-migrate
         image: postgres
@@ -21,14 +25,16 @@ spec:
           readOnlyRootFilesystem: true
           allowPrivilegeEscalation: false
           privileged: false
-          runAsNonRoot: false
+          runAsNonRoot: true
+          runAsUser: 1001
+          runAsGroup: 1001
           capabilities:
             drop:
               - ALL
-          command:
-            - /bin/bash
-            - -c
-            - /tmp/init-db.sh
+        command:
+          - /bin/bash
+          - -c
+          - /tmp/init-db.sh
         volumeMounts:
         - name: init
           mountPath: /tmp/
@@ -36,3 +42,4 @@ spec:
       - name: init
         secret:
           secretName: yelb-db-init
+          defaultMode: 301
