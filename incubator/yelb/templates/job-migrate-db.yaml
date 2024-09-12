@@ -1,0 +1,38 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: migrate-yelb-database
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook": "post-install,post-upgrade"
+  labels:
+    {{- include "yelb.labels" . | nindent 4 }}
+    app.kubernetes.io/component: migrate-db
+spec:
+  backoffLimit: 5
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: db-migrate
+        image: postgres
+        imagePullPolicy: Always
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: false
+          capabilities:
+            drop:
+              - ALL
+          command:
+            - /bin/bash
+            - -c
+            - /tmp/init-db.sh
+        volumeMounts:
+        - name: init
+          mountPath: /tmp/
+      volumes:
+      - name: init
+        secret:
+          secretName: yelb-db-init

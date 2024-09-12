@@ -173,11 +173,17 @@ ingress:
 postgresql:
   enabled: true
   primary:
-    initdb:
-      scriptsSecret: yelb-db-init
+    extraVolumes:
+      - name: init
+        secret:
+          secretName: yelb-db-init
+    extraVolumeMounts:
+      - name: init
+        readOnly: true
+        mountPath: "/init/"
   global:
     postgresql:
       auth:
         username: "yelb"
         password: "yelb"
-        database: "yelb"
+        database: "yelbdatabase"
