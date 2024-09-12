@@ -1,15 +1,13 @@
 valkey:
   enabled: true
-postgresql:
-  enabled: true
 
 appserver:
   replicaCount: 1
 
   image:
-    repository: nginx
+    repository: quay.io/fairwindsops/yelb-appserver
     pullPolicy: Always
-    tag: ""
+    tag: "v0.1.0"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -88,9 +86,9 @@ ui:
   replicaCount: 1
 
   image:
-    repository: nginx
+    repository: quay.io/fairwindsops/yelb-ui
     pullPolicy: Always
-    tag: ""
+    tag: "v0.1.0"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -180,3 +178,11 @@ ingress:
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
+postgresql:
+  enabled: true
+  global:
+    postgresql:
+      auth:
+        username: "yelb"
+        password: "yelb"
+        database: "yelb"
