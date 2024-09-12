@@ -1,3 +1,8 @@
+valkey:
+  enabled: true
+postgresql:
+  enabled: true
+
 appserver:
   replicaCount: 1
 
