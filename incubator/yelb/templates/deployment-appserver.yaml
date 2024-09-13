@@ -32,6 +32,17 @@ spec:
         {{- toYaml .Values.appserver.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          env:
+            - name: RACK_ENV
+              name: custom
+            - name: REDIS_SERVER_ENDPOINT
+              value: {{ include "yelb.fullname" . }}-valkey-master
+            - name: YELB_DB_SERVER_ENDPOINT
+              value: {{ include "yelb.fullname" . }}-postgresql
+            - name: YELB_DB_SERVER_USER
+              value: yelb
+            - name: YELB_DB_SERVER_PASSWORD
+              value: yelb
           securityContext:
             {{- toYaml .Values.appserver.securityContext | nindent 12 }}
           image: "{{ .Values.appserver.image.repository }}:{{ .Values.appserver.image.tag }}"

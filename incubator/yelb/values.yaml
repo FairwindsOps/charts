@@ -1,13 +1,10 @@
-valkey:
-  enabled: true
-
 appserver:
   replicaCount: 1
 
   image:
     repository: quay.io/fairwinds/yelb-appserver
     pullPolicy: Always
-    tag: "v0.1.0"
+    tag: "v0.5.0"
 
   imagePullSecrets: []
   nameOverride: ""
@@ -39,23 +36,23 @@ appserver:
 
   service:
     type: ClusterIP
-    port: 80
+    port: 4567
 
   resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
+    #limits:
+    #  cpu: 100m
+    #  memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
 
   livenessProbe:
     httpGet:
-      path: /
+      path: /api/hostname
       port: http
   readinessProbe:
     httpGet:
-      path: /
+      path: /api/getstats
       port: http
 
   autoscaling:
@@ -187,3 +184,8 @@ postgresql:
         username: "yelb"
         password: "yelb"
         database: "yelbdatabase"
+valkey:
+  enabled: true
+  auth:
+    enabled: false
+    password: foobar
