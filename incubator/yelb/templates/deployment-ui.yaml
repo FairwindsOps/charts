@@ -34,7 +34,7 @@ spec:
         - name: {{ .Chart.Name }}
           env:
             - name: YELB_APPSERVER_ENDPOINT
-              value: {{ include "yelb.appserver.fullname" . }}
+              value: "http://{{ include "yelb.appserver.fullname" . }}:4567"
           securityContext:
             {{- toYaml .Values.ui.securityContext | nindent 12 }}
           image: "{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}"
