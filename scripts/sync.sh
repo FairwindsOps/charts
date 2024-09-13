@@ -19,7 +19,7 @@ set -o nounset
 set -o pipefail
 
 readonly HELM_URL=https://get.helm.sh
-readonly HELM_TARBALL=helm-v3.2.0-linux-amd64.tar.gz
+readonly HELM_TARBALL=helm-v3.16.1-linux-amd64.tar.gz
 readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io
