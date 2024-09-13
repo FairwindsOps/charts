@@ -2,6 +2,13 @@
 
 A demo app created by https://github.com/mreferre/yelb
 
+## Requirements
+
+| Repository | Name | Version |
+|------------|------|---------|
+| oci://registry-1.docker.io/bitnamicharts | postgresql | 15.5.29 |
+| oci://registry-1.docker.io/bitnamicharts | valkey | 0.3.16 |
+
 ## Values
 
 | Key | Type | Default | Description |
