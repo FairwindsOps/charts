@@ -32,6 +32,9 @@ spec:
         {{- toYaml .Values.ui.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
+          env:
+            - name: YELB_APPSERVER_ENDPOINT
+              value: {{ include "yelb.appserver.fullname" . }}
           securityContext:
             {{- toYaml .Values.ui.securityContext | nindent 12 }}
           image: "{{ .Values.ui.image.repository }}:{{ .Values.ui.image.tag }}"
