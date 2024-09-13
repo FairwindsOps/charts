@@ -4,6 +4,8 @@ description: A Helm chart to deploy the yelb demo app
 type: application
 version: 0.1.0
 appVersion: 'v0.1.0'
+maintainers:
+  - sudermanjr
 dependencies:
 - name: valkey
   version: "0.3.16"
