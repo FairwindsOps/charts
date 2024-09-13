@@ -39,9 +39,9 @@ appserver:
     port: 4567
 
   resources:
-    #limits:
-    #  cpu: 100m
-    #  memory: 512Mi
+    # limits:
+    #   cpu: 100m
+    #   memory: 512Mi
     requests:
       cpu: 100m
       memory: 128Mi
