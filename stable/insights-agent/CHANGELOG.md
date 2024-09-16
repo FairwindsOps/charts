@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.9
+* bumped kube-bench to 0.5
+
 ## 4.4.8
 * bumped kyverno to 0.3
 
