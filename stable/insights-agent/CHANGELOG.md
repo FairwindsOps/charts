@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.10
+* bumped trivy to 0.30
+
 ## 4.4.9
 * bumped kube-bench to 0.5
 
