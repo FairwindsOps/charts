@@ -2,6 +2,7 @@
 
 ## 4.4.10
 * bumped trivy to 0.30
+* bumped CI version for auto-scan to 5.7
 
 ## 4.4.9
 * bumped kube-bench to 0.5
