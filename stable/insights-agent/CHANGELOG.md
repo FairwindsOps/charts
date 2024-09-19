@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.11
+* bumped polaris to 9.4
+
 ## 4.4.10
 * bumped trivy to 0.30
 
