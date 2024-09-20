@@ -1,0 +1,36 @@
+{{- if .Values.ingress.enabled -}}
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "yelb.fullname" . }}
+  labels:
+    {{- include "yelb.labels" . | nindent 4 }}
+  {{- with .Values.ingress.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  tls:
+    - hosts:
+        - {{ .Values.ingress.hostName }}
+      secretName: {{ include "yelb.fullname" . }}-tls
+  rules:
+  - host: {{ .Values.ingress.hostName }}
+    http:
+      paths:
+      - backend:
+          service:
+            name: {{ include "yelb.appserver.fullname" . }}
+            port:
+              name: http
+        path: /api
+        pathType: Prefix
+      - backend:
+          service:
+            name: {{ include "yelb.ui.fullname" . }}
+            port:
+              name: http
+        path: /
+        pathType: Prefix
+{{- end }}

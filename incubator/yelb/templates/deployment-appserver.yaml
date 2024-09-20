@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "yelb.appserver.fullname" . }}
+  labels:
+    {{- include "yelb.appserver.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.appserver.autoscaling.enabled }}
+  replicas: {{ .Values.appserver.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "yelb.appserver.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.appserver.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "yelb.appserver.labels" . | nindent 8 }}
+        {{- with .Values.appserver.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      {{- with .Values.appserver.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "yelb.appserver.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.appserver.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          env:
+            - name: RACK_ENV
+              name: custom
+            - name: REDIS_SERVER_ENDPOINT
+              value: {{ include "yelb.fullname" . }}-valkey-master
+            - name: YELB_DB_SERVER_ENDPOINT
+              value: {{ include "yelb.fullname" . }}-postgresql
+            - name: YELB_DB_SERVER_USER
+              value: yelb
+            - name: YELB_DB_SERVER_PASSWORD
+              value: yelb
+          securityContext:
+            {{- toYaml .Values.appserver.securityContext | nindent 12 }}
+          image: "{{ .Values.appserver.image.repository }}:{{ .Values.appserver.image.tag }}"
+          imagePullPolicy: {{ .Values.appserver.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.appserver.service.port }}
+              protocol: TCP
+          livenessProbe:
+            {{- toYaml .Values.appserver.livenessProbe | nindent 12 }}
+          readinessProbe:
+            {{- toYaml .Values.appserver.readinessProbe | nindent 12 }}
+          resources:
+            {{- toYaml .Values.appserver.resources | nindent 12 }}
+          {{- with .Values.appserver.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.appserver.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.appserver.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.appserver.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.appserver.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

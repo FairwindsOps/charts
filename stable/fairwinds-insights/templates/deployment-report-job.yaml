@@ -38,7 +38,7 @@ spec:
           image: "{{ .Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" . }}"
           imagePullPolicy: Always
           command: ["report_job"]
-          {{- include "env" . | indent 10 }}
+          {{- include "env" (dict "root" .) | indent 10 }}
           volumeMounts:
             - name: secrets
               mountPath: /var/run/secrets/github

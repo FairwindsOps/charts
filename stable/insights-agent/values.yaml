@@ -91,7 +91,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "9.2"
+    tag: "9.4"
   resources:
     requests:
       cpu: 100m
@@ -126,7 +126,7 @@ goldilocks:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
-    tag: "v4.11"
+    tag: "v4.13"
   controller:
     flags:
       on-by-default: true
@@ -222,7 +222,7 @@ nova:
   logLevel: 3
   image:
     repository: quay.io/fairwinds/nova
-    tag: "v3.9"
+    tag: "v3.10"
   resources:
     requests:
       cpu: 100m
@@ -257,7 +257,7 @@ kube-bench:
   SkipVolumes: true
   image:
     repository: quay.io/fairwinds/fw-kube-bench
-    tag: 0.4
+    tag: 0.5
   aggregator:
     image:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
@@ -288,7 +288,7 @@ trivy:
   env:
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.29"
+    tag: "0.30"
   serviceAccount:
     annotations:
   resources:
@@ -303,7 +303,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.19"
+    tag: "v5.20"
   resources:
     requests:
       cpu: 100m
@@ -706,7 +706,7 @@ kyverno:
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/kyverno
-    tag: "0.2"
+    tag: "0.3"
   resources:
     requests:
       cpu: 100m
