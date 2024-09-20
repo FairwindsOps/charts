@@ -35,7 +35,7 @@ spec:
               capabilities:
                 drop:
                   - ALL
-            {{- include "env" . | indent 12 }}
+            {{- include "env" (dict "root" .) | indent 12 }}
 
 ---
 apiVersion: batch/v1

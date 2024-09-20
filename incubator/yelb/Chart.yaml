@@ -1,0 +1,17 @@
+apiVersion: v2
+name: yelb
+description: A Helm chart to deploy the yelb demo app
+type: application
+version: 0.1.0
+appVersion: 'v0.1.0'
+maintainers:
+  - name: sudermanjr
+dependencies:
+- name: valkey
+  version: "0.3.16"
+  repository: "oci://registry-1.docker.io/bitnamicharts"
+  condition: valkey.enabled
+- name: postgresql
+  version: "15.5.29"
+  repository: "oci://registry-1.docker.io/bitnamicharts"
+  condition: postgresql.enabled
