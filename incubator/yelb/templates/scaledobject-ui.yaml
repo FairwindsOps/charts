@@ -1,0 +1,18 @@
+{{- if .Values.ui.autoscaling.enabled }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "yelb.ui.fullname" . }}
+spec:
+  scaleTargetRef:
+    name: {{ include "yelb.ui.fullname" . }}
+  minReplicaCount: {{ .Values.ui.autoscaling.minReplicas }}
+  maxReplicaCount: {{ .Values.ui.autoscaling.maxReplicas }}
+  triggers:
+  - type: prometheus
+    metadata:
+      serverAddress: http://prometheus-kube-prometheus-prometheus.fw-prometheus:9090
+      metricName: nginx_ingress_controller_requests
+      threshold: '10000'
+      query: round(sum(rate(container_network_receive_bytes_total{namespace="yelb", pod=~"yelb-ui-.+"}[2m])))
+{{- end }}

@@ -1,26 +1,28 @@
 {{ define "env" }}
+{{- $useReadReplica := .useReadReplica }}
+{{- $ := .root }}
 # Required values
 envFrom:
 - secretRef:
-    name: {{ .Values.options.secretName }}
+    name: {{ $.Values.options.secretName }}
 env:
 - name: FAIRWINDS_HOST
-  {{- if .Values.options.host }}
-  value: {{ .Values.options.host }}
-  {{- else if gt (len .Values.ingress.hostedZones) 0 }}
-  value: {{ "https://" }}{{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ index .Values.ingress.hostedZones 0 }}
+  {{- if $.Values.options.host }}
+  value: {{ $.Values.options.host }}
+  {{- else if gt (len $.Values.ingress.hostedZones) 0 }}
+  value: {{ "https://" }}{{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ index $.Values.ingress.hostedZones 0 }}
   {{- end }}
-{{- if .Values.options.allowHTTPCookies }}
+{{- if $.Values.options.allowHTTPCookies }}
 - name: ALLOW_HTTP_COOKIES
   value: "true"
 {{- end }}
-{{- with .Values.additionalEnvironmentVariables }}
+{{- with $.Values.additionalEnvironmentVariables }}
 {{- range $k, $v := . }}
 - name: {{ $k }}
   value: {{ $v | quote }}
 {{- end }}
 {{- end }}
-{{- with .Values.selfHostedSecret }}
+{{- with $.Values.selfHostedSecret }}
 - name: FAIRWINDS_CERTIFICATE_LOCATION
   value: /var/run/secrets/self-hosted/current.pem
 - name: SELF_HOSTED_PUBLIC_KEY
@@ -29,11 +31,11 @@ env:
       name: {{ . }}
       key: pubkey
 {{- end }}
-{{- with .Values.installationCode }}
+{{- with $.Values.installationCode }}
 - name: INSTALLATION_CODE
   value: {{ . | quote }}
 {{- end }}
-{{- with .Values.installationCodeSecret }}
+{{- with $.Values.installationCodeSecret }}
 - name: INSTALLATION_CODE
   valueFrom:
     secretKeyRef:
@@ -43,159 +45,159 @@ env:
 - name: CACHE_BUST_TOKEN
   value: {{ randAlphaNum 10 }}
 - name: FAIRWINDS_AGENT_CHART_TARGET_VERSION
-  value: {{ .Values.options.agentChartTargetVersion }}
+  value: {{ $.Values.options.agentChartTargetVersion }}
 # General Server
-{{- with .Values.options.authRateLimit }}
+{{- with $.Values.options.authRateLimit }}
 - name: AUTH_RATE_LIMIT
   value: {{ . | quote }}
 {{- end }}
 # Database
-{{- if and (.Values.postgresql.readReplica) (eq .Template.Name "fairwinds-insights/templates/hubspot-cronjob.yaml") }}
+{{- if and ($useReadReplica) ($.Values.postgresql.readReplica) }}
 - name: POSTGRES_DB
-  value: {{ .Values.postgresql.readReplica.database }}
+  value: {{ $.Values.postgresql.readReplica.database }}
 - name: POSTGRES_USER
-  value: {{ .Values.postgresql.readReplica.username }}
+  value: {{ $.Values.postgresql.readReplica.username }}
 - name: POSTGRES_PORT
-  value: {{ .Values.postgresql.readReplica.port | quote }}
+  value: {{ $.Values.postgresql.readReplica.port | quote }}
 - name: POSTGRES_SSL_MODE
-  value: {{ .Values.postgresql.readReplica.sslMode | default "require" }}
+  value: {{ $.Values.postgresql.readReplica.sslMode | default "require" }}
 - name: POSTGRES_HOST
-  value: {{ .Values.postgresql.readReplica.host }}
+  value: {{ $.Values.postgresql.readReplica.host }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.postgresql.auth.existingSecret }}
+      name: {{ $.Values.postgresql.auth.existingSecret }}
       key: readreplica-password
 {{- else }}
 - name: POSTGRES_DB
-  value: {{ .Values.postgresql.auth.database }}
+  value: {{ $.Values.postgresql.auth.database }}
 - name: POSTGRES_USER
-  value: {{ .Values.postgresql.auth.username }}
+  value: {{ $.Values.postgresql.auth.username }}
 - name: POSTGRES_PORT
-  value: {{ .Values.postgresql.primary.service.port | quote }}
+  value: {{ $.Values.postgresql.primary.service.port | quote }}
 - name: POSTGRES_SSL_MODE
-  value: {{ .Values.postgresql.sslMode | default "require" }}
+  value: {{ $.Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST
-  value: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
-{{- if .Values.postgresql.readOnly }}
+  value: {{ $.Values.postgresql.postgresqlHost | default (printf "%s-%s" $.Release.Name "postgresql") }}
+{{- if $.Values.postgresql.readOnly }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.postgresql.auth.existingSecret }}
+      name: {{ $.Values.postgresql.auth.existingSecret }}
       key: readonly-password
 {{- else }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.postgresql.auth.existingSecret }}
+      name: {{ $.Values.postgresql.auth.existingSecret }}
       key: postgresql-password
 {{- end }}
 {{- end }}
 # Timescale Database
 - name: TIMESCALE_DB
-  value: {{ .Values.timescale.postgresqlDatabase }}
+  value: {{ $.Values.timescale.postgresqlDatabase }}
 - name: TIMESCALE_USER
-  value: {{ .Values.timescale.postgresqlUsername }}
+  value: {{ $.Values.timescale.postgresqlUsername }}
 - name: TIMESCALE_PORT
-  value: {{ .Values.timescale.service.primary.port | quote }}
+  value: {{ $.Values.timescale.service.primary.port | quote }}
 - name: TIMESCALE_SSL_MODE
-  value: {{ .Values.timescale.sslMode | default "require" }}
+  value: {{ $.Values.timescale.sslMode | default "require" }}
 - name: TIMESCALE_HOST
-  value: {{ .Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}
-{{- if .Values.timescale.ephemeral }}
+  value: {{ $.Values.timescale.postgresqlHost | default (printf "%s-%s" $.Release.Name "timescale") }}
+{{- if $.Values.timescale.ephemeral }}
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.timescale.secrets.credentialsSecretName }}
+      name: {{ $.Values.timescale.secrets.credentialsSecretName }}
       key: PATRONI_SUPERUSER_PASSWORD
 {{- else }}
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ .Values.postgresql.auth.existingSecret }}
+      name: {{ $.Values.postgresql.auth.existingSecret }}
       key: timescale-password
 {{- end }}
-{{- with .Values.options.insightsSAASHost }}
+{{- with $.Values.options.insightsSAASHost }}
 - name: INSIGHTS_SAAS_HOST
   value: {{ . | quote }}
 {{- end }}
-{{- if .Values.options.addFixtures }}
+{{- if $.Values.options.addFixtures }}
 - name: ADD_FIXTURES
   value: "true"
 {{- end }}
-{{- if .Values.reportStorage.skipFileFixtures }}
+{{- if $.Values.reportStorage.skipFileFixtures }}
 - name: SKIP_FILE_FIXTURES 
   value: "true"
 {{- end }}
 
 # Report Storage
 - name: REPORT_STORAGE_STRATEGY
-  value: {{ .Values.reportStorage.strategy }}
-{{ if eq .Values.reportStorage.strategy "minio" -}}
-{{ if .Values.reportStorage.minioHost -}}
+  value: {{ $.Values.reportStorage.strategy }}
+{{ if eq $.Values.reportStorage.strategy "minio" -}}
+{{ if $.Values.reportStorage.minioHost -}}
 - name: MINIO_HOST
-  value: {{ .Values.reportStorage.minioHost }}
+  value: {{ $.Values.reportStorage.minioHost }}
 {{ else }}
 - name: MINIO_HOST
-  value: {{ printf "%s-%s" .Release.Name "fw-minio:9000" }}
+  value: {{ printf "%s-%s" $.Release.Name "fw-minio:9000" }}
 {{ end -}}
 - name: MINIO_ACCESS_KEY_ID
   valueFrom:
     secretKeyRef:
-      name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
+      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
       key: rootUser                
 - name: MINIO_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
-      name: {{ printf "%s-%s" .Release.Name .Values.minio.nameOverride }}
+      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
       key: rootPassword
-{{ else if eq .Values.reportStorage.strategy "local" -}}
+{{ else if eq $.Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
-  value: {{ .Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}
+  value: {{ $.Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}
 {{ end -}}
 - name: REPORT_STORAGE_REGION
-  value: {{ .Values.reportStorage.region }}
+  value: {{ $.Values.reportStorage.region }}
 - name: REPORT_STORAGE_BUCKET
-  value: {{ .Values.reportStorage.bucket | quote }}
+  value: {{ $.Values.reportStorage.bucket | quote }}
 
 # Email
 - name: EMAIL_STRATEGY
-  value: {{ .Values.email.strategy }}
+  value: {{ $.Values.email.strategy }}
 - name: EMAIL_SENDER
-  value: {{ .Values.email.sender }}
+  value: {{ $.Values.email.sender }}
 - name: EMAIL_RECIPIENT
-  value: {{ .Values.email.recipient }}
-{{ if eq .Values.email.strategy "smtp" -}}
+  value: {{ $.Values.email.recipient }}
+{{ if eq $.Values.email.strategy "smtp" -}}
 - name: SMTP_HOST
-  value: {{ .Values.email.smtpHost }}
+  value: {{ $.Values.email.smtpHost }}
 - name: SMTP_USERNAME
-  value: {{ .Values.email.smtpUsername }}
+  value: {{ $.Values.email.smtpUsername }}
 - name: SMTP_PORT
-  value: {{ .Values.email.smtpPort | quote }}
-{{ else if eq .Values.email.strategy "ses" -}}
+  value: {{ $.Values.email.smtpPort | quote }}
+{{ else if eq $.Values.email.strategy "ses" -}}
 - name: SES_AWS_REGION
-  value: {{ .Values.email.awsRegion }}
+  value: {{ $.Values.email.awsRegion }}
 {{ end -}}
 
 # Third-party integrations
-{{ with .Values.options.githubAppID -}}
+{{ with $.Values.options.githubAppID -}}
 - name: GITHUB_APP_ID
   value: {{ . | quote }}
 {{ end -}}
-{{ with .Values.options.githubAppName -}}
+{{ with $.Values.options.githubAppName -}}
 - name: GITHUB_APP_NAME
   value: {{ . | quote }}
 {{ end -}}
 
 # repo-scan-job specific
 - name: K8S_NAMESPACE
-  value: {{ .Release.Namespace }}
+  value: {{ $.Release.Namespace }}
 - name: INSIGHTS_CI_IMAGE_VERSION
-  value: {{ .Values.repoScanJob.insightsCIVersion | quote }}
+  value: {{ $.Values.repoScanJob.insightsCIVersion | quote }}
 
 # tag used for the fixer container 
 - name: CRON_JOB_IMAGE_REPOSITORY
-  value: {{ .Values.cronjobImage.repository | quote }}
+  value: {{ $.Values.cronjobImage.repository | quote }}
 - name: CRON_JOB_IMAGE_TAG
-  value: {{ include "fairwinds-insights.cronjobImageTag" . | quote }}
+  value: {{ include "fairwinds-insights.cronjobImageTag" $ | quote }}
 {{ end }}

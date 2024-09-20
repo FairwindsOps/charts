@@ -1,0 +1,6 @@
+appserver:
+  autoscaling:
+    enabled: false
+ui:
+  autoscaling:
+    enabled: false

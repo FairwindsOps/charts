@@ -1,5 +1,20 @@
 # Changelog
 
+## 4.4.11
+* bumped polaris to 9.4
+
+## 4.4.10
+* bumped trivy to 0.30
+
+## 4.4.9
+* bumped kube-bench to 0.5
+
+## 4.4.8
+* bumped kyverno to 0.3
+
+## 4.4.7
+* bumped poalris to 9.3
+
 ## 4.4.6
 * bumped plugins version
 

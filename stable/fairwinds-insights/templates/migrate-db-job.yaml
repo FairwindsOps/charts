@@ -27,7 +27,7 @@ spec:
         imagePullPolicy: Always
         resources:
           {{- toYaml .Values.dbMigration.resources | nindent 10 }}
-        {{- include "env" . | indent 8 }}
+        {{- include "env" (dict "root" .) | indent 8 }}
         {{- with .Values.options.adminEmail }}
         - name: SETUP_ADMIN_EMAIL
           value: {{ . }}
