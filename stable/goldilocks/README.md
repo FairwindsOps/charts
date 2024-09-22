@@ -79,6 +79,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
 | controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
 | controller.flags | object | `{}` | A map of additional flags to pass to the controller |
+| controller.flags.on-by-default | bool | `false` | Enable monitoring all namespaces by default|
 | controller.logVerbosity | string | `"2"` | Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | controller.nodeSelector | object | `{}` | Node selector for the controller pod |
 | controller.tolerations | list | `[]` | Tolerations for the controller pod |
