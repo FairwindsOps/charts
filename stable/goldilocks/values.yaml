@@ -46,8 +46,7 @@ controller:
     create: true
     # controller.serviceAccount.name -- The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create`
     name:
-
-  # controller.flags -- A map of additional flags to pass to the controller
+  # controller.flags -- A map of additional flags to pass to the controller. For monitoring all namespaces out of the box, add the following flag "on-by-default: true"
   flags: {}
   # controller.logVerbosity -- Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
@@ -108,7 +107,7 @@ dashboard:
     port: 80
     # dashboard.service.annotations -- Extra annotations for the dashboard service
     annotations: {}
-  # dashboard.flags -- A map of additional flags to pass to the dashboard
+  # dashboard.flags -- A map of additional flags to pass to the dashboard. For monitoring all namespaces out of the box, add the following flag "on-by-default: true".
   flags: {}
   # dashboard.logVerbosity -- Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose
   logVerbosity: "2"
