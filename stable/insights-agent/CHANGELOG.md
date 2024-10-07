@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.12
+* bumped nova to 3.11
+
 ## 4.4.11
 * bumped polaris to 9.4
 
