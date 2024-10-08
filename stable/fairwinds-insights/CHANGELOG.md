@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4.0
+* Adds `cronjobs.sync-action-items-iac-files` definition - this cronjob is responsible for linking action-items and IaC Files
+
 ## 2.3.0
 * Adds `useReadReplica` to cronjobs to enable `postgresql.readReplica` injection instead of primary database
 
