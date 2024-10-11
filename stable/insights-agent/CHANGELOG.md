@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.5.0
+* Add support for `SERVICE_ACCOUNT_ANNOTATIONS` environment variable on trivy
+
 ## 4.4.12
 * bumped nova to 3.11
 
