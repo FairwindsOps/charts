@@ -202,6 +202,11 @@ cronjobs:
   sync-action-items-iac-files:
     command: sync_action_items_iac_files
     schedule: "0 * * * *"
+  # -- Options for the app_groups_cves_statistics cronjob.
+  app-groups-cves-statistics:
+    command: app_groups_cves_statistics
+    -- run twice a day
+    schedule: "0 9,21 * * *"
 
 selfHostedSecret:
 
