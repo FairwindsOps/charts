@@ -205,7 +205,6 @@ cronjobs:
   # -- Options for the app_groups_cves_statistics cronjob.
   app-groups-cves-statistics:
     command: app_groups_cves_statistics
-    -- run twice a day
     schedule: "0 9,21 * * *"
 
 selfHostedSecret:
