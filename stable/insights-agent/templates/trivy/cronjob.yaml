@@ -75,6 +75,10 @@ spec:
             {{- end }}
             - name: NAMESPACE_ALLOWLIST
               value: {{ join "," .Values.trivy.namespaceAllowlist | lower }}
+            - name: SERVICE_ACCOUNT_ANNOTATIONS
+              value: >
+                {{- $annotations := .Values.trivy.serviceAccount.annotations }}
+                {{ $annotations | toJson }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
 {{- end -}}
