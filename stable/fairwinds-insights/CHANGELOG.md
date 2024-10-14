@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.4.1
+## 2.5.0
 * Adds `cronjobs.app_groups_cves_statistics` - inserts CVEs statistics by App Group
 
 ## 2.4.0
