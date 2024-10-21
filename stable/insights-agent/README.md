@@ -99,6 +99,8 @@ Parameter | Description | Default
 `{report}.annotations` | annotations for the CronJob | {}
 `{report}.jobLabels` | labels for the Jobs created by the CronJob | {}
 `{report}.jobAnnotations` | annotations for the Jobs created by the CronJob | {}
+`{report}.SkipVolumes` | skip volume creation if set | 
+`{report}.mountTmp` | mount `/tmp` folder if set |
 `polaris.config` | A custom [polaris configuration](https://polaris.docs.fairwinds.com/customization/configuration/)
 `polaris.extraArgs` | A string of custom arguments to pass to the polaris CLI, e.g. `--disallow-annotation-exemptions=true` | 
 `kube-hunter.logLevel` | DEFAULT, INFO, or WARNING | `INFO`
