@@ -295,6 +295,7 @@ trivy:
     requests:
       cpu: 100m
       memory: 1Gi
+  mountTmp: true
 
 pluto:
   enabled: false

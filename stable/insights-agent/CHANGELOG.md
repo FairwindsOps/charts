@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.14
+* Change parameter mountTmp=true as default for trivy
+
 ## 4.4.13
 * Add support for `SERVICE_ACCOUNT_ANNOTATIONS` environment variable on trivy
 
