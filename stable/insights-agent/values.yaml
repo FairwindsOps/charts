@@ -286,6 +286,8 @@ trivy:
   insecureSSL: false
   # trivy.env -- A map of environment variables that will be set for the trivy container.
   env:
+    TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db:2,public.ecr.aws/aquasecurity/trivy-db:2,docker.io/aquasec/trivy-db:2
+    TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1,public.ecr.aws/aquasecurity/trivy-java-db:1,docker.io/aquasec/trivy-java-db:1
   image:
     repository: quay.io/fairwinds/fw-trivy
     tag: "0.30"
