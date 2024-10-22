@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.14
+* Add fallback OCI repositories for trivy (ghcr, ecr and docker)
+
 ## 4.4.13
 * Add support for `SERVICE_ACCOUNT_ANNOTATIONS` environment variable on trivy
 
