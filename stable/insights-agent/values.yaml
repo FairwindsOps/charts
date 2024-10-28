@@ -290,7 +290,7 @@ trivy:
     TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1,public.ecr.aws/aquasecurity/trivy-java-db:1,docker.io/aquasec/trivy-java-db:1
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.30"
+    tag: "0.31"
   serviceAccount:
     annotations:
   resources:
