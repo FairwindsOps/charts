@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.15
+* bump trivy to 0.31
+
 ## 4.4.14
 * Add fallback OCI repositories for trivy (ghcr, ecr and docker)
 
