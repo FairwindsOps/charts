@@ -1,3 +1,4 @@
+
 {{- if .Values.controller.enabled }}
 apiVersion: apps/v1
 kind: Deployment
@@ -42,6 +43,9 @@ spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.controller.priorityClassName }}
+      priorityClassName: {{ . }}
       {{- end }}
       serviceAccountName: {{ template "controller.serviceAccountName" . }}
       securityContext:
