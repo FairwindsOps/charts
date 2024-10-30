@@ -92,6 +92,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
 | controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
 | controller.deployment.podAnnotations | object | `{}` | Extra annotations for the controller pod |
+| controller.deployment.priorityClassName | object | `{}` | Extra annotations for the controller pod |
 | dashboard.basePath | string | `nil` | Path on which the dashboard is served. Defaults to `/` |
 | dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
 | dashboard.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
