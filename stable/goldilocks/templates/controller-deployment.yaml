@@ -46,6 +46,7 @@ spec:
       serviceAccountName: {{ template "controller.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
+      priorityClassName: "system-cluster-critical" # Set priority class to system-cluster-critical
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
