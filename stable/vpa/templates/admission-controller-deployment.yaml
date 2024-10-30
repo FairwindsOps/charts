@@ -1,93 +1,113 @@
-{{- if .Values.controller.enabled }}
+{{- if .Values.admissionController.enabled }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "goldilocks.fullname" . }}-controller
-  namespace: {{ .Release.Namespace }}
-  labels:
-    app.kubernetes.io/name: {{ include "goldilocks.name" . }}
-    helm.sh/chart: {{ include "goldilocks.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
-    app.kubernetes.io/component: controller
-    {{- if .Values.controller.deployment.additionalLabels }}
-    {{ toYaml .Values.controller.deployment.additionalLabels | nindent 4 }}
-    {{- end }}
-  {{- with .Values.controller.deployment.annotations }}
+  {{- if .Values.admissionController.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
+  {{- .Values.admissionController.annotations | toYaml | nindent 4 }}
   {{- end }}
+  name: {{ include "vpa.fullname" . }}-admission-controller
+  labels:
+    app.kubernetes.io/component: admission-controller
+    {{- include "vpa.labels" . | nindent 4 }}
 spec:
-  replicas: 1
-  revisionHistoryLimit: {{ .Values.controller.revisionHistoryLimit }}
+  replicas: {{ .Values.admissionController.replicaCount }}
+  revisionHistoryLimit: {{ .Values.admissionController.revisionHistoryLimit }}
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "goldilocks.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
-      app.kubernetes.io/component: controller
+      app.kubernetes.io/component: admission-controller
+      {{- include "vpa.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      labels:
-        app.kubernetes.io/name: {{ include "goldilocks.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
-        app.kubernetes.io/component: controller
-        {{- if .Values.controller.deployment.additionalLabels }}
-        {{ toYaml .Values.controller.deployment.additionalLabels | nindent 8 }}
-        {{- end }}
-      {{- with .Values.controller.deployment.podAnnotations }}
+    {{- with .Values.admissionController.podAnnotations }}
       annotations:
         {{- toYaml . | nindent 8 }}
+    {{- end }}
+      labels:
+      {{- with .Values.admissionController.podLabels }}
+          {{- toYaml . | nindent 8 }}
       {{- end }}
+        app.kubernetes.io/component: admission-controller
+        {{- include "vpa.selectorLabels" . | nindent 8 }}
     spec:
       {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.controller.priorityClassName }}
-      priorityClassName: {{ . }} # User-defined priority class
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
       {{- end }}
-      serviceAccountName: {{ template "controller.serviceAccountName" . }}
+      serviceAccountName: {{ include "vpa.serviceAccountName" . }}-admission-controller
       securityContext:
-        {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
+        {{- toYaml .Values.admissionController.podSecurityContext | nindent 8 }}
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command:
-            - /goldilocks
-            - controller
-            - -v{{ .Values.controller.logVerbosity }}
-            {{- range $name, $value := .Values.controller.flags }}
-            - --{{ $name }}={{ $value }}
-            {{- end }}
-        {{- if .Values.controller.securityContext }}
           securityContext:
-            {{- toYaml .Values.controller.securityContext | nindent 12 }}
-        {{- end }}
-          resources:
-            {{- toYaml .Values.controller.resources | nindent 12 }}
-          {{- if .Values.controller.deployment.extraVolumeMounts }}
-          volumeMounts:
-          {{ toYaml .Values.controller.deployment.extraVolumeMounts | nindent 12 }}
+            {{- toYaml .Values.admissionController.securityContext | nindent 12 }}
+          image: {{ printf "%s:%s" .Values.admissionController.image.repository (.Values.admissionController.image.tag | default .Chart.AppVersion) }}
+          imagePullPolicy: {{ .Values.admissionController.image.pullPolicy }}
+          args:
+          {{- if .Values.admissionController.registerWebhook }}
+            - --register-webhook=true
+          {{- else }}
+            - --register-webhook=false
           {{- end }}
-{{- if .Values.controller.deployment.extraVolumes }}
+            - --webhook-service={{ include "vpa.fullname" . }}-webhook
+          {{- if .Values.admissionController.generateCertificate }}
+            - --client-ca-file=/etc/tls-certs/ca
+            - --tls-cert-file=/etc/tls-certs/cert
+            - --tls-private-key=/etc/tls-certs/key
+          {{- end }}
+          {{- if .Values.admissionController.extraArgs }}
+          {{- range $key, $value := .Values.admissionController.extraArgs }}
+            - --{{ $key }}={{ $value }}
+          {{- end }}
+          {{- end }}
+          volumeMounts:
+            - name: tls-certs
+              mountPath: "/etc/tls-certs"
+              readOnly: true
+          {{- if .Values.admissionController.livenessProbe }}
+          livenessProbe:
+            {{- toYaml .Values.admissionController.livenessProbe | nindent 12 }}
+          {{- end }}
+          {{- if .Values.admissionController.readinessProbe }}
+          readinessProbe:
+            {{- toYaml .Values.admissionController.readinessProbe | nindent 12 }}
+          {{- end }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.admissionController.httpPort | default 8000 }}
+              protocol: TCP
+            - name: metrics
+              containerPort: {{ .Values.admissionController.metricsPort | default 8944 }}
+              protocol: TCP
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          resources:
+            {{- toYaml .Values.admissionController.resources | nindent 12 }}
+      hostNetwork: {{ .Values.admissionController.useHostNetwork | default false }}
       volumes:
-{{ toYaml .Values.controller.deployment.extraVolumes | indent 8}}
-{{- end }}
-      {{- with .Values.controller.nodeSelector }}
+        - name: tls-certs
+          secret:
+            secretName: {{ include "vpa.webhook.secret" . }}
+            {{- with .Values.admissionController.tlsSecretKeys }}
+            items:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
+      {{- with .Values.admissionController.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- with .Values.controller.affinity }}
+      {{- with .Values.admissionController.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.controller.tolerations }}
+      {{- end }}
+      {{- with .Values.admissionController.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.controller.topologySpreadConstraints }}
-      topologySpreadConstraints:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+      {{- end }}
 {{- end }}
