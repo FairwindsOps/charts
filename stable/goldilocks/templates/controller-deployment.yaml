@@ -43,10 +43,12 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.controller.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
       serviceAccountName: {{ template "controller.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
-      priorityClassName: "system-cluster-critical" # Set priority class to system-cluster-critical
       containers:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
