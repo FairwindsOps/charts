@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.1
+* Update application version to 16.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 2.5.0
 * Adds `cronjobs.app_groups_cves_statistics` - inserts CVEs statistics by App Group
 

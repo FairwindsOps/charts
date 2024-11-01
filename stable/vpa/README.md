@@ -202,8 +202,8 @@ recommender:
 | admissionController.certGen.image.pullPolicy | string | `"Always"` | The pull policy for the certgen image. Recommend not changing this |
 | admissionController.certGen.env | object | `{}` | Additional environment variables to be added to the certgen container. Format is KEY: Value format |
 | admissionController.certGen.resources | object | `{}` | The resources block for the certgen pod |
-| admissionController.certGen.securityContext | object | `{}` | The securityContext block for the certgen container(s) |
-| admissionController.certGen.podSecurityContext | object | `{}` | The securityContext block for the certgen pod(s) |
+| admissionController.certGen.podSecurityContext | object | `{"runAsNonRoot":true,"runAsUser":65534,"seccompProfile":{"type":"RuntimeDefault"}}` | The securityContext block for the certgen pod(s) |
+| admissionController.certGen.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | The securityContext block for the certgen container(s) |
 | admissionController.certGen.nodeSelector | object | `{}` |  |
 | admissionController.certGen.tolerations | list | `[]` |  |
 | admissionController.certGen.affinity | object | `{}` |  |
