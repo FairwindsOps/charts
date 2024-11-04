@@ -1,3 +1,5 @@
+mergeConfig: true
+
 dashboard:
   ingress:
     enabled: true
