@@ -44,7 +44,7 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.controller.priorityClassName }}
+      {{- if .Values.controller.priorityClassName }}
       priorityClassName: 
         {{- toYaml .Values.controller.priorityClassName | nindent 8 }}
       {{- end }}
