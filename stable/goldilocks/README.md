@@ -59,69 +59,69 @@ This will completely remove the VPA and then re-install it using the new method.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
-| vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
-| vpa.updater.enabled | bool | `false` |  |
-| metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
-| metrics-server.apiService.create | bool | `true` |  |
-| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/goldilocks"` | Repository for the goldilocks image |
-| image.tag | string | `"v4.13.0"` | The goldilocks image tag to use |
-| image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
-| imagePullSecrets | list | `[]` | A list of image pull secret names to use |
-| nameOverride | string | `""` |  |
-| fullnameOverride | string | `""` |  |
+| controller.affinity | object | `{}` | Affinity for the controller pods |
+| controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
+| controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
+| controller.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the controller container |
+| controller.deployment.extraVolumes | list | `[]` | Extra volumes for the controller pod |
+| controller.deployment.podAnnotations | object | `{}` | Extra annotations for the controller pod |
 | controller.enabled | bool | `true` | Whether or not to install the controller deployment |
-| controller.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
-| controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
-| controller.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
-| controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
-| controller.rbac.extraClusterRoleBindings | list | `[]` | A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled |
-| controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
-| controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
 | controller.flags | object | `{}` | A map of additional flags to pass to the controller. For monitoring all namespaces out of the box, add the following flag "on-by-default: true" |
 | controller.logVerbosity | string | `"2"` | Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | controller.nodeSelector | object | `{}` | Node selector for the controller pod |
-| controller.tolerations | list | `[]` | Tolerations for the controller pod |
-| controller.affinity | object | `{}` | Affinity for the controller pods |
-| controller.topologySpreadConstraints | list | `[]` | Topology spread constraints for the controller pods |
-| controller.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | The resources block for the controller pods |
 | controller.podSecurityContext | object | `{"seccompProfile":{"type":"RuntimeDefault"}}` | Defines the podSecurityContext for the controller pod |
+| controller.rbac.create | bool | `true` | If set to true, rbac resources will be created for the controller |
+| controller.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
+| controller.rbac.extraClusterRoleBindings | list | `[]` | A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled |
+| controller.rbac.extraRules | list | `[]` | Extra rbac rules for the controller clusterrole |
+| controller.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | The resources block for the controller pods |
+| controller.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
 | controller.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the controller container |
-| controller.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the controller container |
-| controller.deployment.extraVolumes | list | `[]` | Extra volumes for the controller pod |
-| controller.deployment.annotations | object | `{}` | Extra annotations for the controller deployment |
-| controller.deployment.additionalLabels | object | `{}` | Extra labels for the controller deployment |
-| controller.deployment.podAnnotations | object | `{}` | Extra annotations for the controller pod |
+| controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
+| controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
+| controller.tolerations | list | `[]` | Tolerations for the controller pod |
+| controller.topologySpreadConstraints | list | `[]` | Topology spread constraints for the controller pods |
+| dashboard.affinity | object | `{}` |  |
 | dashboard.basePath | string | `nil` | Path on which the dashboard is served. Defaults to `/` |
-| dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
-| dashboard.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
-| dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
-| dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
-| dashboard.service.port | int | `80` | The port to run the dashboard service on |
-| dashboard.service.annotations | object | `{}` | Extra annotations for the dashboard service |
-| dashboard.flags | object | `{}` | A map of additional flags to pass to the dashboard. For monitoring all namespaces out of the box, add the following flag "on-by-default: true". |
-| dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
-| dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
-| dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
-| dashboard.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
-| dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
-| dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
-| dashboard.deployment.annotations | object | `{}` | Extra annotations for the dashboard deployment |
 | dashboard.deployment.additionalLabels | object | `{}` | Extra labels for the dashboard deployment |
+| dashboard.deployment.annotations | object | `{}` | Extra annotations for the dashboard deployment |
 | dashboard.deployment.extraVolumeMounts | list | `[]` | Extra volume mounts for the dashboard container |
 | dashboard.deployment.extraVolumes | list | `[]` | Extra volumes for the dashboard pod |
 | dashboard.deployment.podAnnotations | object | `{}` | Extra annotations for the dashboard pod |
-| dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
-| dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
+| dashboard.enabled | bool | `true` | If true, the dashboard component will be installed |
+| dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
+| dashboard.flags | object | `{}` | A map of additional flags to pass to the dashboard. For monitoring all namespaces out of the box, add the following flag "on-by-default: true". |
 | dashboard.ingress.annotations | object | `{}` |  |
+| dashboard.ingress.enabled | bool | `false` | Enables an ingress object for the dashboard. |
 | dashboard.ingress.hosts[0].host | string | `"chart-example.local"` |  |
 | dashboard.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | dashboard.ingress.hosts[0].paths[0].type | string | `"ImplementationSpecific"` |  |
+| dashboard.ingress.ingressClassName | string | `nil` | From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation. |
 | dashboard.ingress.tls | list | `[]` |  |
-| dashboard.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | A resources block for the dashboard. |
-| dashboard.podSecurityContext | object | `{"seccompProfile":{"type":"RuntimeDefault"}}` | Defines the podSecurityContext for the dashboard pod |
-| dashboard.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the dashboard container |
+| dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | dashboard.nodeSelector | object | `{}` |  |
+| dashboard.podSecurityContext | object | `{"seccompProfile":{"type":"RuntimeDefault"}}` | Defines the podSecurityContext for the dashboard pod |
+| dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
+| dashboard.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
+| dashboard.replicaCount | int | `2` | Number of dashboard pods to run |
+| dashboard.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | A resources block for the dashboard. |
+| dashboard.revisionHistoryLimit | int | `10` | Number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
+| dashboard.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the dashboard container |
+| dashboard.service.annotations | object | `{}` | Extra annotations for the dashboard service |
+| dashboard.service.port | int | `80` | The port to run the dashboard service on |
+| dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
+| dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
+| dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
 | dashboard.tolerations | list | `[]` |  |
-| dashboard.affinity | object | `{}` |  |
 | dashboard.topologySpreadConstraints | list | `[]` | Topology spread constraints for the dashboard pods |
+| fullnameOverride | string | `""` |  |
+| image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/goldilocks"` | Repository for the goldilocks image |
+| image.tag | string | `"v4.13.0"` | The goldilocks image tag to use |
+| imagePullSecrets | list | `[]` | A list of image pull secret names to use |
+| metrics-server.apiService.create | bool | `true` |  |
+| metrics-server.enabled | bool | `false` | If true, the metrics-server will be installed as a sub-chart |
+| nameOverride | string | `""` |  |
+| uninstallVPA | bool | `false` | Enabling this flag will remove a vpa installation that was previously managed with this chart. It is considered deprecated and will be removed in a later release. |
+| vpa.enabled | bool | `false` | If true, the vpa will be installed as a sub-chart |
+| vpa.updater.enabled | bool | `false` |  |
