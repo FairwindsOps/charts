@@ -68,7 +68,7 @@ spec:
           {{- $insightsRecommenderArgs := index $extraArgs "use-insights-recommender" | default dict }}
           {{- if or .Values.recommender.envFromSecret $insightsRecommenderArgs }}
           envFrom:
-          {{- if $insightsRecommenderArgs }}
+          {{- if and (not .Values.recommender.envFromSecret) $insightsRecommenderArgs }}
           - secretRef:
               name: {{ .Release.Name }}-token
           {{- end }}
