@@ -90,6 +90,8 @@ controller:
 
     # controller.deployment.podAnnotations -- Extra annotations for the controller pod
     podAnnotations: {}
+    # controller.deployment.priorityClassName -- Extra annotations for the controller pod
+    priorityClassName: {}
 
 dashboard:
   # dashboard.basePath -- Path on which the dashboard is served. Defaults to `/`
@@ -143,7 +145,8 @@ dashboard:
 
     # dashboard.ingress.ingressClassName -- From Kubernetes 1.18+ this field is supported in case your ingress controller supports it. When set, you do not need to add the ingress class as annotation.
     ingressClassName:
-    annotations: {}
+    annotations:
+      {}
       # kubernetes.io/ingress.class: nginx
       # kubernetes.io/tls-acme: "true"
     hosts:
