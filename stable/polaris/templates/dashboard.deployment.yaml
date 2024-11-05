@@ -79,6 +79,9 @@ spec:
         - --log-level
         - {{ .Values.dashboard.logLevel | quote }}
         {{- end }}
+        {{- if .Values.mergeConfig }}
+        - --merge-config
+        {{- end }}
         image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
