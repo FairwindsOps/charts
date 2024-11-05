@@ -45,7 +45,7 @@ spec:
       {{- end }}
       {{- with .Values.controller.priorityClassName }}
       priorityClassName: {{ . }}
-      {{- end }}
+      {{- end }}      
       serviceAccountName: {{ template "controller.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.controller.podSecurityContext | nindent 8 }}
