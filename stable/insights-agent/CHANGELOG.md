@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.16
+* bump VPA to 4.7.1
+
 ## 4.4.15
 * bump trivy to 0.31
 
