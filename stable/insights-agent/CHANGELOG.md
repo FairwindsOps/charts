@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.17
+* bumped Polaris to 9.5
+
 ## 4.4.16
 * bump VPA to 4.7.1
 
