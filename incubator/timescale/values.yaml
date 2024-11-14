@@ -20,7 +20,7 @@ image:
   # Image was built from
   # https://github.com/timescale/timescaledb-docker-ha
   repository: timescale/timescaledb-ha
-  tag: pg14.11-ts2.14.2-all
+  tag: pg14.13-ts2.17.1-all
   pullPolicy: Always
 
 # There are job and cronjob resources that run during updates or backups that use curl image
