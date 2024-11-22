@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.5.0
+## 4.4.19
 * bumped prometheus charts to 25.30.0 
 
 ## 4.4.18
