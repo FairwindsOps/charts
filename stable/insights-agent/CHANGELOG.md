@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.19
+* bumped prometheus charts to 25.30.1
+
 ## 4.4.18
 * bumped Polaris to 9.6
 
