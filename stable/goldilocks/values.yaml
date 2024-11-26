@@ -90,6 +90,8 @@ controller:
 
     # controller.deployment.podAnnotations -- Extra annotations for the controller pod
     podAnnotations: {}
+    # controller.deployment.priorityClassName -- Extra annotations for the controller pod
+    priorityClassName: {}
 
 dashboard:
   # dashboard.basePath -- Path on which the dashboard is served. Defaults to `/`
