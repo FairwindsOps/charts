@@ -8,6 +8,9 @@ configUrl: null
 # additionalExemptions -- List of additional exemptions to append to the exemptions given in `config`
 additionalExemptions: null
 
+# mergeConfig -- If the config should be merged with the default config. See https://github.com/FairwindsOps/polaris/pull/1075
+mergeConfig: false
+
 
 image:
   # image.repository -- Image repo

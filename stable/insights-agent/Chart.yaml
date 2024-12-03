@@ -1,7 +1,7 @@
 apiVersion: v1
 description: A Helm chart to run the Fairwinds Insights agent
 name: insights-agent
-version: 4.4.15
+version: 4.4.19
 appVersion: 9.2.1
 kubeVersion: ">= 1.22.0-0"
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insights-agent/icon.png

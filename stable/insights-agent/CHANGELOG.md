@@ -1,5 +1,17 @@
 # Changelog
 
+## 4.4.19
+* bumped prometheus charts to 25.30.1
+
+## 4.4.18
+* bumped Polaris to 9.6
+
+## 4.4.17
+* bumped Polaris to 9.5
+
+## 4.4.16
+* bump VPA to 4.7.1
+
 ## 4.4.15
 * bump trivy to 0.31
 

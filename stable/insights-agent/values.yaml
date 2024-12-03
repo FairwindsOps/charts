@@ -91,7 +91,7 @@ polaris:
     disabled: false
   image:
     repository: quay.io/fairwinds/polaris
-    tag: "9.4"
+    tag: "9.6"
   resources:
     requests:
       cpu: 100m
