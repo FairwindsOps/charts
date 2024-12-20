@@ -175,6 +175,12 @@ spec:
             value: {{ .Values.clusterAgent.apm.nonLocalTraffic | quote }}
           - name: DD_APM_RECEIVER_PORT
             value: {{ .Values.clusterAgent.apm.receiverPort | quote }}
+          {{- if .Values.clusterAgent.apm.unlimited }}
+          - name: DD_APM_MAX_MEMORY
+            value: "0"
+          - name: DD_APM_MAX_CPU_PERCENT
+            value: "0"
+          {{- end }}
         {{- include "additional-env-entries" .Values.clusterAgent.additionalEnvVars | indent 10 }}
         {{- include "additional-env-dict-entries" .Values.clusterAgent.additionalEnvDict | indent 10 }}
 {{- if .Values.clusterAgent.env }}

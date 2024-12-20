@@ -44,6 +44,7 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.apm.enabled | bool | `true` |  |
 | clusterAgent.apm.nonLocalTraffic | bool | `true` |  |
 | clusterAgent.apm.receiverPort | int | `8126` |  |
+| clusterAgent.apm.unlimited | bool | `true` |  |
 | clusterAgent.additionalEnvVars | object | `{}` |  |
 | clusterAgent.metricsProvider.enabled | bool | `true` |  |
 | clusterAgent.metricsProvider.port | int | `8126` |  |
@@ -75,7 +76,10 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.hpa.enabled | bool | `true` |  |
 | clusterAgent.hpa.minReplicas | int | `2` |  |
 | clusterAgent.hpa.maxReplicas | int | `6` |  |
+| clusterAgent.hpa.memoryScaler | bool | `true` |  |
 | clusterAgent.hpa.averageMemoryUtilization | int | `75` |  |
+| clusterAgent.hpa.cpuScaler | bool | `false` |  |
+| clusterAgent.hpa.averageCPUUtilization | int | `60` |  |
 | clusterAgent.createPodDisruptionBudget | bool | `true` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |
