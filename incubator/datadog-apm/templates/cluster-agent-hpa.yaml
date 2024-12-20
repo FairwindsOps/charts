@@ -12,10 +12,20 @@ spec:
   maxReplicas: {{ .Values.clusterAgent.hpa.maxReplicas }}
   minReplicas: {{ .Values.clusterAgent.hpa.minReplicas }}
   metrics:
-    - type: Resource
-      resource:
-        name: memory
-        target:
-          averageUtilization: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
-          type: Utilization
+  {{- if .Values.clusterAgent.hpa.memoryScaler }}
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        averageUtilization: {{ .Values.clusterAgent.hpa.averageMemoryUtilization }}
+        type: Utilization
+  {{- end }}
+  {{- if .Values.clusterAgent.hpa.cpuScaler }}
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        averageUtilization: {{ .Values.clusterAgent.hpa.averageCPUUtilization }}
+        type: Utilization
+  {{- end }}
 {{- end }}
