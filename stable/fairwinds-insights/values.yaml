@@ -202,10 +202,16 @@ cronjobs:
   sync-action-items-iac-files:
     command: sync_action_items_iac_files
     schedule: "0 * * * *"
+
   # -- Options for the app_groups_cves_statistics cronjob.
   app-groups-cves-statistics:
     command: app_groups_cves_statistics
     schedule: "0 9,21 * * *"
+
+  # -- Options for the cve_reports_email_sender cronjob.
+  cve-reports-email-sender:
+    command: cve_reports_email_sender
+    schedule: "0 3 1 * *"
 
 selfHostedSecret:
 
