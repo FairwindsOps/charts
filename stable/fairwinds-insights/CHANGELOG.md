@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.5.2
+* Updated insights-ci to 5.7
+
 ## 2.5.1
 * Update application version to 16.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
