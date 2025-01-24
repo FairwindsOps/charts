@@ -211,7 +211,7 @@ cronjobs:
   # -- Options for the cve_reports_email_sender cronjob.
   cve-reports-email-sender:
     command: cve_reports_email_sender
-    schedule: "0 3 1 * *"
+    schedule: "0 5 1 * *"
 
 selfHostedSecret:
 
