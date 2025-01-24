@@ -57,7 +57,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.image-vulns-refresh | object | `{"command":"image_vulnerabilities_refresher","schedule":"*/30 * * * *"}` | Options for the image-vulns-refresh job. |
 | cronjobs.sync-action-items-iac-files | object | `{"command":"sync_action_items_iac_files","schedule":"0 * * * *"}` | Options for the sync-action-items-iac-files cronjob. |
 | cronjobs.app-groups-cves-statistics | object | `{"command":"app_groups_cves_statistics","schedule":"0 9,21 * * *"}` | Options for the app_groups_cves_statistics cronjob. |
-| cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 3 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
+| cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
 | selfHostedSecret | string | `nil` |  |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
