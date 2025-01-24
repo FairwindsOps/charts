@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.6.0
-* Adds `cronjobs.cve-reports-email-sender` - inserts CVEs statistics by App Group
+* Adds `cronjobs.cve-reports-email-sender` - sends monthly CVE audit log emails to configured users
 
 ## 2.5.1
 * Update application version to 16.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
