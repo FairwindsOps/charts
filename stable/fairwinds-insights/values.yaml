@@ -213,6 +213,11 @@ cronjobs:
     command: cve_reports_email_sender
     schedule: "0 5 1 * *"
 
+  # -- Options for the cluster_deletion cronjob
+  cluster-deletion:
+    command: cluster_deletion
+    schedule: "0 * * * *"
+
 selfHostedSecret:
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
