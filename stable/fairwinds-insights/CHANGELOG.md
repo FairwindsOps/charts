@@ -1,7 +1,10 @@
 # Changelog
 
+## 2.7.0
+* Adds `cluster-deletion` cronjob - a exclusive job to hard delete cluster data (s3, timescale and RDS)
+
 ## 2.6.0
-* Adds `cronjobs.cve-reports-email-sender` - sends monthly CVE audit log emails to configured users
+* Adds `cronjobs.cve-reports-email-sender` cronjob - sends monthly CVE audit log emails to configured users
 
 ## 2.5.2
 * Updated insights-ci to 5.7
