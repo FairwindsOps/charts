@@ -1,0 +1,18 @@
+# -- The list of dev appGroups
+devAppGroups:
+  # -- dev-one
+  - name: dev-one
+    labels:
+      - "foo": "bar"
+      - "key": "value"
+    namespaceLabels:
+      - "fargle": "bargle"
+  # -- dev-two
+  - name: dev-two
+# -- The list of prod appGroups
+prodAppGroups:
+  - name: prod-one
+
+# -- labels to use when selecting production stuff
+prodLabels:
+  - "env": "prod"
