@@ -18,6 +18,8 @@ You may want to change the `-o` to a different directory.
 
 `helm template .  | kubectl slice -f - -o /tmp -t "{{ .name }}.yaml"`
 
+This uses https://github.com/patrickdappollonio/kubectl-slice to split the files into separate outputs.
+
 ## Generating This Doc
 
 This is generated from README.md.gotmpl using https://github.com/norwoodj/helm-docs
