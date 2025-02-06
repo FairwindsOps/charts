@@ -1,4 +1,4 @@
-{{- range .Values.prodAppGroups }}
+{{- range .Values.appGroups.prod }}
 ---
 type: AppGroup
 name: {{ .name }}

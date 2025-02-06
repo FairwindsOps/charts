@@ -15,23 +15,77 @@ x-labelSelectors:
   prodLabels: &prodLabels
     - "env": "prod"
 
-# -- The list of dev appGroups
-devAppGroups:
-  # -- dev-one
-  - name: dev-one
-    labels:
-      - "foo": "bar"
-      - "key": "value"
-    namespaceLabels:
-      - "fargle": "bargle"
-    clusters: *devClusters
-  # -- dev-two
-  - name: dev-two
-    clusters: *devClusters
 
-# -- The list of prod appGroups
-prodAppGroups:
-  - name: prod-one
-    clusters: *prodClusters
-    labels: *prodLabels
+# -- blocking policies
+x-policiesBlocking: &blockingPolicies
+  - polaris.procMount
+
+x-policiesAudit: &auditPolicies
+  - polaris.tagNotSpecified
+  - polaris.runAsPrivileged
+  - polaris.runAsRootAllowed
+  - polaris.privilegeEscalationAllowed
+  - polaris.hostPIDSet
+  - polaris.hostIPCSet
+  - polaris.dangerousCapabilities
+  - polaris.topologySpreadConstraint
+  - polaris.pdbMinAvailableGreaterThanHPAMinReplicas
+  - polaris.pdbDisruptionsIsZero
+  - polaris.hpaMinAvailability
+  - polaris.hpaMaxAvailability
+  - polaris.readinessProbeMissing
+  - polaris.livenessProbeMissing
+  - polaris.pullPolicyNotAlways
+  - polaris.procMount
+  - polaris.notReadOnlyRootFilesystem
+  - polaris.missingPodDisruptionBudget
+  - polaris.metadataAndInstanceMismatched
+  - polaris.metadataAndNameMismatched
+  - polaris.memoryRequestsMissing
+  - polaris.memoryLimitsMissing
+  - polaris.cpuRequestsMissing
+  - polaris.linuxHardening
+  - polaris.hostPathSet
+  - polaris.hostNetworkSet
+  - polaris.hostProcess
+  - polaris.hostPortSet
+  - polaris.automountServiceAccountToken
+
+# -- All of the appGroups
+appGroups:
+  # -- dev policy mappings
+  dev:
+    # -- dev-one
+    - name: appGroup_ddev-one
+      labels:
+        - "foo": "bar"
+        - "key": "value"
+      namespaceLabels:
+        - "fargle": "bargle"
+      clusters: *devClusters
+    # -- dev-two
+    - name: appGroup_dev-two
+      clusters: *devClusters
+
+  # -- The list of prod appGroups
+  prod:
+    # -- prod-one
+    - name: appGroup_prod-one
+      clusters: *prodClusters
+      labels: *prodLabels
+
+# -- All of the policyMappings
+policyMappings:
+  # -- dev policy mappings
+  dev:
+    ## - dev-blocking
+    - name: policyMapping_dev-blocking
+      block: true
+      appGroups: ["dev-one"]
+      policies: *blockingPolicies
+    ## - dev-audit
+    - name: policyMapping_dev-audit
+      block: false
+      appGroups: ["dev-one"]
+      policies: *auditPolicies
 
