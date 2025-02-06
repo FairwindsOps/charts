@@ -5,7 +5,7 @@ name: {{ .name }}
 spec:
   match:
     -
-      {{- with $.Values.devClusters }}
+      {{- with .clusters }}
       clusters:
         {{- toYaml . | nindent 8 }}
       {{- end }}

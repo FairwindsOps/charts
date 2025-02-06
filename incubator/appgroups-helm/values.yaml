@@ -1,3 +1,14 @@
+clusters:
+  devClusters: &devClusters
+    - us-east1-dev*
+    - us-east2-dev*
+  testClusters: &testClusters
+    - us-east1-test*
+    - us-east2-test*
+  prodClusters: &prodClusters
+    - us-east1-prod*
+    - us-east2-prod*
+
 # -- The list of dev appGroups
 devAppGroups:
   # -- dev-one
@@ -7,23 +18,16 @@ devAppGroups:
       - "key": "value"
     namespaceLabels:
       - "fargle": "bargle"
+    clusters: *devClusters
   # -- dev-two
   - name: dev-two
+    clusters: *devClusters
+
 # -- The list of prod appGroups
 prodAppGroups:
   - name: prod-one
+    clusters: *prodClusters
 
 # -- labels to use when selecting production stuff
 prodLabels:
   - "env": "prod"
-
-
-devClusters:
-  - us-east1-dev*
-  - us-east2-dev*
-testClusters:
-  - us-east1-test*
-  - us-east2-test*
-prodClusters:
-  - us-east1-prod*
-  - us-east2-prod*
