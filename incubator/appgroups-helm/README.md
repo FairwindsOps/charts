@@ -1,6 +1,9 @@
 # appgroups-helm
 
-A Helm chart for Kubernetes
+This chart is an example of how an end-user might use Helm to template a large
+number of appGroups and policyMappings. It uses helm templates with yaml anchors
+in the values file to pre-define groups of labels or clusters, and then uses a
+{{with}} block to allow defining all the appGroups and policyMappings in one place
 
 ## Values
 
