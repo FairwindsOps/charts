@@ -6,11 +6,12 @@ A Helm chart for Kubernetes
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| devAppGroups | list | `[{"labels":[{"foo":"bar"},{"key":"value"}],"name":"dev-one","namespaceLabels":[{"fargle":"bargle"}]},{"name":"dev-two"}]` | The list of dev appGroups |
-| devAppGroups[0] | object | `{"labels":[{"foo":"bar"},{"key":"value"}],"name":"dev-one","namespaceLabels":[{"fargle":"bargle"}]}` | dev-one |
-| devAppGroups[1] | object | `{"name":"dev-two"}` | dev-two |
-| prodAppGroups | list | `[{"name":"prod-one"}]` | The list of prod appGroups |
-| prodLabels | list | `[{"env":"prod"}]` | labels to use when selecting production stuff |
+| devAppGroups | list | `[{"clusters":["us-east1-dev*","us-east2-dev*"],"labels":[{"foo":"bar"},{"key":"value"}],"name":"dev-one","namespaceLabels":[{"fargle":"bargle"}]},{"clusters":["us-east1-dev*","us-east2-dev*"],"name":"dev-two"}]` | The list of dev appGroups |
+| devAppGroups[0] | object | `{"clusters":["us-east1-dev*","us-east2-dev*"],"labels":[{"foo":"bar"},{"key":"value"}],"name":"dev-one","namespaceLabels":[{"fargle":"bargle"}]}` | dev-one |
+| devAppGroups[1] | object | `{"clusters":["us-east1-dev*","us-east2-dev*"],"name":"dev-two"}` | dev-two |
+| prodAppGroups | list | `[{"clusters":["us-east1-prod*","us-east2-prod*"],"labels":[{"env":"prod"}],"name":"prod-one"}]` | The list of prod appGroups |
+| x-clusters | object | `{"devClusters":["us-east1-dev*","us-east2-dev*"],"prodClusters":["us-east1-prod*","us-east2-prod*"],"testClusters":["us-east1-test*","us-east2-test*"]}` | pre-defined cluster groups |
+| x-labelSelectors | object | `{"prodLabels":[{"env":"prod"}]}` | labels to use when selecting production stuff |
 
 ## Usage
 
