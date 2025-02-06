@@ -1,4 +1,5 @@
-clusters:
+# -- pre-defined cluster groups
+x-clusters:
   devClusters: &devClusters
     - us-east1-dev*
     - us-east2-dev*
@@ -8,6 +9,11 @@ clusters:
   prodClusters: &prodClusters
     - us-east1-prod*
     - us-east2-prod*
+
+# -- labels to use when selecting production stuff
+x-labelSelectors:
+  prodLabels: &prodLabels
+    - "env": "prod"
 
 # -- The list of dev appGroups
 devAppGroups:
@@ -27,7 +33,5 @@ devAppGroups:
 prodAppGroups:
   - name: prod-one
     clusters: *prodClusters
+    labels: *prodLabels
 
-# -- labels to use when selecting production stuff
-prodLabels:
-  - "env": "prod"
