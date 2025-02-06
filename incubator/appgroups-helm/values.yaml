@@ -16,3 +16,14 @@ prodAppGroups:
 # -- labels to use when selecting production stuff
 prodLabels:
   - "env": "prod"
+
+
+devClusters:
+  - us-east1-dev*
+  - us-east2-dev*
+testClusters:
+  - us-east1-test*
+  - us-east2-test*
+prodClusters:
+  - us-east1-prod*
+  - us-east2-prod*

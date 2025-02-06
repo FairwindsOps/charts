@@ -1,0 +1,25 @@
+{{- range .Values.devAppGroups }}
+---
+type: AppGroup
+name: {{ .name }}
+spec:
+  match:
+    -
+      {{- with $.Values.devClusters }}
+      clusters:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers: [api]
+      names: [api]
+      namespaces: [prod]
+      {{- with .labels }}
+      labels:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      namespaceLabels:
+      {{- with .namespaceLabels }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  exclude:
+    - kind: [StatefulSet]
+{{- end }}
