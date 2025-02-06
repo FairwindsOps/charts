@@ -28,35 +28,13 @@ x-policiesAudit: &auditPolicies
   - polaris.hostPIDSet
   - polaris.hostIPCSet
   - polaris.dangerousCapabilities
-  - polaris.topologySpreadConstraint
-  - polaris.pdbMinAvailableGreaterThanHPAMinReplicas
-  - polaris.pdbDisruptionsIsZero
-  - polaris.hpaMinAvailability
-  - polaris.hpaMaxAvailability
-  - polaris.readinessProbeMissing
-  - polaris.livenessProbeMissing
-  - polaris.pullPolicyNotAlways
-  - polaris.procMount
-  - polaris.notReadOnlyRootFilesystem
-  - polaris.missingPodDisruptionBudget
-  - polaris.metadataAndInstanceMismatched
-  - polaris.metadataAndNameMismatched
-  - polaris.memoryRequestsMissing
-  - polaris.memoryLimitsMissing
-  - polaris.cpuRequestsMissing
-  - polaris.linuxHardening
-  - polaris.hostPathSet
-  - polaris.hostNetworkSet
-  - polaris.hostProcess
-  - polaris.hostPortSet
-  - polaris.automountServiceAccountToken
 
 # -- All of the appGroups
 appGroups:
   # -- dev policy mappings
   dev:
     # -- dev-one
-    - name: appGroup_ddev-one
+    - name: appGroup_dev-one
       labels:
         - "foo": "bar"
         - "key": "value"
