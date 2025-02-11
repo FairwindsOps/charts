@@ -29,6 +29,7 @@ clusterAgent:
     enabled: true
     nonLocalTraffic: true
     receiverPort: 8126
+    unlimited: true
   additionalEnvVars: {}
   metricsProvider:
     enabled: true
@@ -71,7 +72,10 @@ clusterAgent:
     enabled: true
     minReplicas: 2
     maxReplicas: 6
+    memoryScaler: true
     averageMemoryUtilization: 75
+    cpuScaler: false
+    averageCPUUtilization: 60
   createPodDisruptionBudget: true
 
 podAnnotations: {}

@@ -202,10 +202,21 @@ cronjobs:
   sync-action-items-iac-files:
     command: sync_action_items_iac_files
     schedule: "0 * * * *"
+
   # -- Options for the app_groups_cves_statistics cronjob.
   app-groups-cves-statistics:
     command: app_groups_cves_statistics
     schedule: "0 9,21 * * *"
+
+  # -- Options for the cve_reports_email_sender cronjob.
+  cve-reports-email-sender:
+    command: cve_reports_email_sender
+    schedule: "0 5 1 * *"
+
+  # -- Options for the cluster_deletion cronjob
+  cluster-deletion:
+    command: cluster_deletion
+    schedule: "0 * * * *"
 
 selfHostedSecret:
 
@@ -633,7 +644,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "5.4"
+  insightsCIVersion: "5.7"
   hpa:
     enabled: true
     min: 2

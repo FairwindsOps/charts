@@ -5,7 +5,7 @@
 
 # datadog-apm
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.55.2](https://img.shields.io/badge/AppVersion-7.55.2-informational?style=flat-square)
+![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.59.0](https://img.shields.io/badge/AppVersion-7.59.0-informational?style=flat-square)
 
 A modified chart that only installs the datadog-apm agent
 
@@ -44,6 +44,7 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.apm.enabled | bool | `true` |  |
 | clusterAgent.apm.nonLocalTraffic | bool | `true` |  |
 | clusterAgent.apm.receiverPort | int | `8126` |  |
+| clusterAgent.apm.unlimited | bool | `true` |  |
 | clusterAgent.additionalEnvVars | object | `{}` |  |
 | clusterAgent.metricsProvider.enabled | bool | `true` |  |
 | clusterAgent.metricsProvider.port | int | `8126` |  |
@@ -75,7 +76,10 @@ A modified chart that only installs the datadog-apm agent
 | clusterAgent.hpa.enabled | bool | `true` |  |
 | clusterAgent.hpa.minReplicas | int | `2` |  |
 | clusterAgent.hpa.maxReplicas | int | `6` |  |
+| clusterAgent.hpa.memoryScaler | bool | `true` |  |
 | clusterAgent.hpa.averageMemoryUtilization | int | `75` |  |
+| clusterAgent.hpa.cpuScaler | bool | `false` |  |
+| clusterAgent.hpa.averageCPUUtilization | int | `60` |  |
 | clusterAgent.createPodDisruptionBudget | bool | `true` |  |
 | podAnnotations | object | `{}` |  |
 | podSecurityContext | object | `{}` |  |

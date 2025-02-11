@@ -1,10 +1,19 @@
 # Changelog
 
+## 2.7.0
+* Adds `cluster-deletion` cronjob - a exclusive job to hard delete cluster data (s3, timescale and RDS)
+
+## 2.6.0
+* Adds `cronjobs.cve-reports-email-sender` cronjob - sends monthly CVE audit log emails to configured users
+
+## 2.5.2
+* Updated insights-ci to 5.7
+
 ## 2.5.1
 * Update application version to 16.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
 ## 2.5.0
-* Adds `cronjobs.app_groups_cves_statistics` - inserts CVEs statistics by App Group
+* Adds `cronjobs.app-groups-cves-statistics` - inserts CVEs statistics by App Group
 
 ## 2.4.0
 * Adds `cronjobs.sync-action-items-iac-files` definition - this cronjob is responsible for linking action-items and IaC Files
