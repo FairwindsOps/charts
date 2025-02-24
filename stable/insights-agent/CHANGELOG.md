@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.4.22
+* update charts to have table name for cloud costs
+
 ## 4.4.21
 * Add commented toleration to values file for reference
 
