@@ -75,10 +75,10 @@ spec:
               - gcp
               {{- if .Values.cloudcosts.tagkey }}
               - --tagkey
-              - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.tagvalue }}
+              - {{ .Values.cloudcosts.tagkey }}
               {{- end }}
               - --tagvalue
-              - {{ .Values.cloudcosts.tagvalue }}
+              - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagvalue }}
               - --projectname
               - {{ .Values.cloudcosts.gcp.projectname }}
               - --dataset
