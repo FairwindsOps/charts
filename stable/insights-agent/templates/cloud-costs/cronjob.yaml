@@ -78,15 +78,15 @@ spec:
               - {{ .Values.cloudcosts.tagkey }}
               {{- end }}
               - --tagvalue
-              - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.tagvalue }}
+              - {{ .Values.cloudcosts.tagvalue }}
               - --projectname
-              - {{ optional "You must set cloudcosts.gcp.projectname if table is not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.projectname }}
+              - {{ .Values.cloudcosts.gcp.projectname }}
               - --dataset
-              - {{ optional "You must set cloudcosts.gcp.dataset if table is not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.dataset }}
+              - {{ .Values.cloudcosts.gcp.dataset }}
               - --billingaccount
-              - {{ optional "You must set cloudcosts.gcp.billingaccount if table is not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.billingaccount }}
+              - {{ .Values.cloudcosts.gcp.billingaccount }}
               - --table
-              - {{ optional "You must set cloudcosts.gcp.table if projectname/dataset/billingacount are not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.table }}
+              - {{ .Values.cloudcosts.gcp.table }}
               {{- if .Values.cloudcosts.days }}
               - --days
               - "{{ .Values.cloudcosts.days }}"
