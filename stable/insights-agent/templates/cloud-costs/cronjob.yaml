@@ -78,13 +78,15 @@ spec:
               - {{ .Values.cloudcosts.tagkey }}
               {{- end }}
               - --tagvalue
-              - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagvalue }}
+              - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.tagvalue }}
               - --projectname
-              - {{ required "You must set cloudcosts.gcp.projectname, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.projectname }}
+              - {{ optional "You must set cloudcosts.gcp.projectname if table is not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.projectname }}
               - --dataset
-              - {{ required "You must set cloudcosts.gcp.dataset, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.dataset }}
+              - {{ optional "You must set cloudcosts.gcp.dataset if table is not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.dataset }}
               - --billingaccount
-              - {{ required "You must set cloudcosts.gcp.billingaccount, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.billingaccount }}
+              - {{ optional "You must set cloudcosts.gcp.billingaccount if table is not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.billingaccount }}
+              - --table
+              - {{ optional "You must set cloudcosts.gcp.table if projectname/dataset/billingacount are not provided, please see https://insights.docs.fairwinds.com/technical-details/reports/cloud-costs" .Values.cloudcosts.gcp.table }}
               {{- if .Values.cloudcosts.days }}
               - --days
               - "{{ .Values.cloudcosts.days }}"
