@@ -75,7 +75,7 @@ spec:
               - gcp
               {{- if .Values.cloudcosts.tagkey }}
               - --tagkey
-              - {{ .Values.cloudcosts.tagkey }}
+              - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagvalue }}
               {{- end }}
               - --tagvalue
               - {{ .Values.cloudcosts.tagvalue }}
