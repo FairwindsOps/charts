@@ -214,7 +214,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | automatedPullRequestJob.nodeSelector | object | `{}` |  |
 | automatedPullRequestJob.tolerations | list | `[]` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"5.7"` |  |
+| repoScanJob.insightsCIVersion | string | `"5.8"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |

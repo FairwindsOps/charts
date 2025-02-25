@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.5.0
+* support to Rego V1
+
 ## 4.4.22
 * update charts to have table name for cloud costs
 

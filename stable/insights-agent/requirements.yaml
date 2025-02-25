@@ -9,7 +9,7 @@ dependencies:
   condition: prometheus-metrics.installPrometheusServer
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: '1.9.*'
+  version: '1.10.*'
   condition: admission.enabled
 - name: falco
   repository: https://falcosecurity.github.io/charts
