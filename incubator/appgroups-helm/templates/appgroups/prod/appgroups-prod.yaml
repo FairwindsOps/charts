@@ -1,0 +1,21 @@
+{{- range .Values.appGroups.prod }}
+---
+type: AppGroup
+name: {{ .name }}
+spec:
+  match:
+    -
+      {{- with .clusters }}
+      clusters:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers: [api]
+      names: [api]
+      namespaces: [prod]
+{{- with .labels }}
+      labels:
+{{- toYaml . | nindent 8 }}
+{{- end }}
+  exclude:
+    - kind: [StatefulSet]
+{{- end }}
