@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.1
+* Updated insights agent target version
+
 ## 2.8.0
 * Support to Rego V1
 
