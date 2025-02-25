@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.0
+* Support to Rego V1
+
 ## 2.7.0
 * Adds `cluster-deletion` cronjob - a exclusive job to hard delete cluster data (s3, timescale and RDS)
 
