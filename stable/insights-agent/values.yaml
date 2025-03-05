@@ -322,6 +322,7 @@ prometheus-metrics:
   address: "http://prometheus-server"
   managedPrometheusClusterName: ""
   skipNonZeroMetricsCheck: false
+  sKipKsmNonZeroMetricsCheck: true
   image:
     repository: quay.io/fairwinds/prometheus-collector
     tag: "1.5"

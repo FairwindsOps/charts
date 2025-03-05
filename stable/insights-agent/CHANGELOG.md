@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.5.1
+* Added SKIP_KSM_NON_ZERO_METRICS_CHECK
+
 ## 4.5.0
 * support to Rego V1
 
