@@ -2,8 +2,8 @@ apiVersion: v2
 name: datadog-apm
 description: A modified chart that only installs the datadog-apm agent
 type: application
-version: 1.1.1
-appVersion: 7.59.0
+version: 1.2.0
+appVersion: 7.104.0
 maintainers:
   - name: sudermanjr
   - name: Azahorscak
