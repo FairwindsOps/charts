@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.8.2
+* Update application version to 16.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 2.8.1
 * Updated insights agent target version
 
