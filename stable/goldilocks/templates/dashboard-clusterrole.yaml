@@ -41,4 +41,7 @@ rules:
       - 'get'
       - 'list'
   {{- end }}
+  {{- if .Values.dashboard.rbac.extraRules }}
+    {{- toYaml .Values.dashboard.rbac.extraRules | nindent 2 }}
+  {{- end }}
 {{- end }}
