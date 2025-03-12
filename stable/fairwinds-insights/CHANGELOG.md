@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.9.0
+* Adds `refresh-jira-webhooks` cronjob - a exclusive job to refresh jira webhooks from Insights Integrations
+
 ## 2.8.2
 * Update application version to 16.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
