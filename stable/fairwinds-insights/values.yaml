@@ -218,6 +218,11 @@ cronjobs:
     command: cluster_deletion
     schedule: "0 * * * *"
 
+  # -- Options for the refresh_jira_webhooks cronjob
+  refresh-jira-webhooks:
+    command: refresh_jira_webhooks
+    schedule: "0 * * * *"
+
 selfHostedSecret:
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
