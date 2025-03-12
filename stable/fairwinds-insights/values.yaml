@@ -221,7 +221,7 @@ cronjobs:
   # -- Options for the refresh_jira_webhooks cronjob
   refresh-jira-webhooks:
     command: refresh_jira_webhooks
-    schedule: "0 0 25 * *"
+    schedule: "0 0 1,15 * *"
 
 selfHostedSecret:
 
