@@ -1,7 +1,7 @@
 # Changelog
 
 ## 4.6.0
-* Update chart to use Prometheus Server v3
+* Update Prometheus Server Chart to 27.7.1 (Prom Server v3.2.1)
 
 ## 4.5.1
 * Added SKIP_KSM_NON_ZERO_METRICS_CHECK
