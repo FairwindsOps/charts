@@ -216,7 +216,7 @@ cronjobs:
   # -- Options for the cluster_deletion cronjob
   cluster-deletion:
     command: cluster_deletion
-    schedule: "0 * * * *"
+    schedule: "*/15 * * * *"
 
   # -- Options for the refresh_jira_webhooks cronjob
   refresh-jira-webhooks:
