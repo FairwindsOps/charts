@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.9.1
+* Updated default cronjob for cluster deletion
+
 ## 2.9.0
 * Adds `refresh-jira-webhooks` cronjob - a exclusive job to refresh jira webhooks from Insights Integrations
 
