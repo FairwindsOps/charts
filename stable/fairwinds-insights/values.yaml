@@ -272,6 +272,22 @@ dashboard:
   nodeSelector: {}
   # -- Tolerations for the front end pods.
   tolerations: []
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the front end pods.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: dashboard
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: dashboard
+          app.kubernetes.io/name: fairwinds-insights
   securityContext:
     # -- The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile
     runAsUser: 101
@@ -317,6 +333,22 @@ api:
   nodeSelector: {}
   # -- Tolerations for the API server.
   tolerations: []
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the API server.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: api
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: api
+          app.kubernetes.io/name: fairwinds-insights
   securityContext:
     # -- The user ID to run the API server under.
     runAsUser: 10324
@@ -368,6 +400,22 @@ openApi:
   nodeSelector: {}
   # -- Tolerations for the Open API server.
   tolerations: []
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the Open API Server.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: open-api
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: open-api
+          app.kubernetes.io/name: fairwinds-insights
   ingress:
     # -- Enable the Open API ingress
     enabled: true
@@ -616,6 +664,22 @@ reportjob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the reportJob Deployment.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: api
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: api
+          app.kubernetes.io/name: fairwinds-insights
   terminationGracePeriodSeconds: 600
 
 automatedPullRequestJob:
@@ -646,6 +710,22 @@ automatedPullRequestJob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the autoamtedPullRequestJob Deployment.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: automated-pr-job
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: automated-pr-job
+          app.kubernetes.io/name: fairwinds-insights
 
 repoScanJob:
   enabled: false
@@ -676,3 +756,19 @@ repoScanJob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the repoScanJob.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: repo-scan-job
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: repo-scan-job
+          app.kubernetes.io/name: fairwinds-insights
