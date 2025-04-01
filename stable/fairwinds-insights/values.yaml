@@ -671,14 +671,14 @@ reportjob:
       whenUnsatisfiable: ScheduleAnyway
       labelSelector:
         matchLabels:
-          app.kubernetes.io/component: api
+          app.kubernetes.io/component: reportjob
           app.kubernetes.io/name: fairwinds-insights
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname
       whenUnsatisfiable: ScheduleAnyway
       labelSelector:
         matchLabels:
-          app.kubernetes.io/component: api
+          app.kubernetes.io/component: reportjob
           app.kubernetes.io/name: fairwinds-insights
   terminationGracePeriodSeconds: 600
 

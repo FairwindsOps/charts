@@ -228,12 +228,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.topologySpreadConstraints[0].maxSkew | int | `1` |  |
 | reportjob.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
 | reportjob.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
-| reportjob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"api"` |  |
+| reportjob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"reportjob"` |  |
 | reportjob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | reportjob.topologySpreadConstraints[1].maxSkew | int | `1` |  |
 | reportjob.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
 | reportjob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
-| reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"api"` |  |
+| reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"reportjob"` |  |
 | reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | reportjob.terminationGracePeriodSeconds | int | `600` |  |
 | automatedPullRequestJob.enabled | bool | `true` |  |
