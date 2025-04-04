@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.10.0
+* Adds node and zone topologySpreadConstrants and sets defaults on all deployments
+
+## 2.9.1
+* Updated default cronjob for cluster deletion
+
+## 2.9.0
+* Adds `refresh-jira-webhooks` cronjob - a exclusive job to refresh jira webhooks from Insights Integrations
+
+## 2.8.2
+* Update application version to 16.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 2.8.1
+* Updated insights agent target version
+
+## 2.8.0
+* Support to Rego V1
+
 ## 2.7.0
 * Adds `cluster-deletion` cronjob - a exclusive job to hard delete cluster data (s3, timescale and RDS)
 

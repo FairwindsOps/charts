@@ -161,7 +161,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "2.5"
+    tag: "2.6"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -322,6 +322,7 @@ prometheus-metrics:
   address: "http://prometheus-server"
   managedPrometheusClusterName: ""
   skipNonZeroMetricsCheck: false
+  sKipKsmNonZeroMetricsCheck: true
   image:
     repository: quay.io/fairwinds/prometheus-collector
     tag: "1.5"

@@ -80,11 +80,13 @@ spec:
               - --tagvalue
               - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagvalue }}
               - --projectname
-              - {{ required "You must set cloudcosts.gcp.projectname, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.projectname }}
+              - {{ .Values.cloudcosts.gcp.projectname }}
               - --dataset
-              - {{ required "You must set cloudcosts.gcp.dataset, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.dataset }}
+              - {{ .Values.cloudcosts.gcp.dataset }}
               - --billingaccount
-              - {{ required "You must set cloudcosts.gcp.billingaccount, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.gcp.billingaccount }}
+              - {{ .Values.cloudcosts.gcp.billingaccount }}
+              - --table
+              - {{ .Values.cloudcosts.gcp.table }}
               {{- if .Values.cloudcosts.days }}
               - --days
               - "{{ .Values.cloudcosts.days }}"

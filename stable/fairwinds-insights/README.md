@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"4.4.4"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"4.5.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -58,7 +58,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.sync-action-items-iac-files | object | `{"command":"sync_action_items_iac_files","schedule":"0 * * * *"}` | Options for the sync-action-items-iac-files cronjob. |
 | cronjobs.app-groups-cves-statistics | object | `{"command":"app_groups_cves_statistics","schedule":"0 9,21 * * *"}` | Options for the app_groups_cves_statistics cronjob. |
 | cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
-| cronjobs.cluster-deletion | object | `{"command":"cluster_deletion","schedule":"0 * * * *"}` | Options for the cluster_deletion cronjob |
+| cronjobs.cluster-deletion | object | `{"command":"cluster_deletion","schedule":"*/15 * * * *"}` | Options for the cluster_deletion cronjob |
+| cronjobs.refresh-jira-webhooks | object | `{"command":"refresh_jira_webhooks","schedule":"0 0 1,15 * *"}` | Options for the refresh_jira_webhooks cronjob |
 | selfHostedSecret | string | `nil` |  |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
@@ -71,6 +72,16 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | dashboard.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the front end pods. |
 | dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
 | dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
+| dashboard.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| dashboard.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| dashboard.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| dashboard.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"dashboard"` |  |
+| dashboard.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| dashboard.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| dashboard.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| dashboard.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| dashboard.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"dashboard"` |  |
+| dashboard.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | dashboard.securityContext.runAsUser | int | `101` | The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile |
 | api.port | int | `8080` | Port for the API server to listen on. |
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
@@ -82,6 +93,16 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
+| api.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| api.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| api.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| api.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"api"` |  |
+| api.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| api.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| api.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| api.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| api.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"api"` |  |
+| api.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
 | api.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | api.service.type | string | `nil` | Service type for Open API server |
@@ -95,6 +116,16 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the Open API server. |
 | openApi.nodeSelector | object | `{}` | Node Selector for the Open API server. |
 | openApi.tolerations | list | `[]` | Tolerations for the Open API server. |
+| openApi.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| openApi.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| openApi.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| openApi.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"open-api"` |  |
+| openApi.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| openApi.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| openApi.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| openApi.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"open-api"` |  |
+| openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
@@ -194,6 +225,16 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
 | reportjob.nodeSelector | object | `{}` |  |
 | reportjob.tolerations | list | `[]` |  |
+| reportjob.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| reportjob.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| reportjob.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| reportjob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"reportjob"` |  |
+| reportjob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| reportjob.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| reportjob.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| reportjob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"reportjob"` |  |
+| reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | reportjob.terminationGracePeriodSeconds | int | `600` |  |
 | automatedPullRequestJob.enabled | bool | `true` |  |
 | automatedPullRequestJob.hpa.enabled | bool | `true` |  |
@@ -213,8 +254,18 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | automatedPullRequestJob.resources.requests.memory | string | `"128Mi"` |  |
 | automatedPullRequestJob.nodeSelector | object | `{}` |  |
 | automatedPullRequestJob.tolerations | list | `[]` |  |
+| automatedPullRequestJob.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| automatedPullRequestJob.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| automatedPullRequestJob.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| automatedPullRequestJob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"automated-pr-job"` |  |
+| automatedPullRequestJob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| automatedPullRequestJob.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| automatedPullRequestJob.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| automatedPullRequestJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| automatedPullRequestJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"automated-pr-job"` |  |
+| automatedPullRequestJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"5.7"` |  |
+| repoScanJob.insightsCIVersion | string | `"5.8"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |
@@ -232,3 +283,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.resources.requests.memory | string | `"128Mi"` |  |
 | repoScanJob.nodeSelector | object | `{}` |  |
 | repoScanJob.tolerations | list | `[]` |  |
+| repoScanJob.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| repoScanJob.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| repoScanJob.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| repoScanJob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
+| repoScanJob.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| repoScanJob.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| repoScanJob.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| repoScanJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
+| repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
