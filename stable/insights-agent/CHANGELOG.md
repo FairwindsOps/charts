@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.5.2
+* Removed AWS Costs plugin
+
 ## 4.5.1
 * Added SKIP_KSM_NON_ZERO_METRICS_CHECK
 
