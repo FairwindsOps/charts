@@ -419,26 +419,6 @@ test:
       drop:
         - ALL
 
-awscosts:
-  enabled: false
-  tagprefix: "resource_tags_user_"
-  schedule: "rand * * * *"
-  timeout: 300
-  image:
-    repository: quay.io/fairwinds/aws-costs
-    tag: "1.4"
-  serviceAccount:
-    annotations:
-  resources:
-    requests:
-      cpu: 100m
-      memory: 128Mi
-  # awscosts.securityContext  -- Additional securityContext field in the Pod specification(PodSecurityContext) for the cronjob.
-  securityContext: {}
-  # awscosts.containerSecurityContext -- Additional container securityContext items for the cronJob.
-  containerSecurityContext: {}
-  mountTmp: true
-
 cloudcosts:
   enabled: false
   secretName: cloudcosts

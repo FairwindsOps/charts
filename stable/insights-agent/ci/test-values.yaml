@@ -136,19 +136,6 @@ insights-admission:
       - statefulsets
       scope: Cluster
 
-awscosts:
-  enabled: false
-  secretName: awscosts-secret
-  awsAccessKeyId: someAccessID
-  awsSecretAccessKey: someAccessKey
-  region: us-east-1
-  database: athena_cur_database
-  table: fairwinds_insights_cur_report
-  catalog: AwsDataCatalog
-  tagkey: kubernetes_cluster
-  tagvalue: staging.internal.reactiveops.com
-  workgroup: cur_athena_workgroup
-
 cloudcosts:
   enabled: false
   secretName: cloudcosts-secret
