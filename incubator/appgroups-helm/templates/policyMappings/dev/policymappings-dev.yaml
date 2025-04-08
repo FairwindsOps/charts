@@ -1,0 +1,19 @@
+{{- range .Values.policyMappings.dev }}
+---
+type: PolicyMapping
+name: {{ .name }}
+spec:
+  block: {{ .block }}
+  {{- with .appGroups }}
+  appGroups:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .contexts }}
+  contexts:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .policies }}
+  policies:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
