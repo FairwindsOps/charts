@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.6.1
+* Removed AWS Costs plugin
+
 ## 4.6.0
 * Update Prometheus Server Chart to 27.7.1 (Prom Server v3.2.1)
 * Add E2E tests for k8s versions 1.31 and 1.32
