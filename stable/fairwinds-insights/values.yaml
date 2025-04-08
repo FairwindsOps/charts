@@ -45,7 +45,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 4.5.0
+  agentChartTargetVersion: 4.6.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -729,7 +729,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "5.8"
+  insightsCIVersion: "5.9"
   hpa:
     enabled: true
     min: 2
