@@ -1,4 +1,4 @@
-{{- if .Values.polaris.config" }}
+{{- if .Values.polaris.config }}
 {{- with .Values.polaris.config }}
 apiVersion: v1
 kind: ConfigMap
