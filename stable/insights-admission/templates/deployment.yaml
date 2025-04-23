@@ -61,11 +61,13 @@ spec:
           - name: secret
             mountPath: /opt/cert/
             readOnly: true
+          {{- if .Values.polaris }}  
           {{- if .Values.polaris.config }}
           - name: polaris-config
             mountPath: /opt/app/polaris-config.yaml
             subPath: config.yaml
             readOnly: true
+          {{- end }}
           {{- end }}
 {{ include "ssl-cert-file-volumemount-spec" . | indent 10 }}
           env:
@@ -129,9 +131,12 @@ spec:
           secretName: {{ include "insights-admission.fullname" . }}
 {{ include "ssl-cert-file-volume-spec" . | indent 6 }}
           {{- end }}
+      {{- if .Values.polaris }}    
       {{- if .Values.polaris.config }}
       - name: polaris-config
         configMap:
           name: admission-polaris
       {{- end }}
+      {{- end }}
+
 
