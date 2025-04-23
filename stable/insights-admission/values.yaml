@@ -236,6 +236,10 @@ clusterDomain: cluster.local
 # certManagerApiVersion -- If secretName is empty, we assume that you use cert-manager to provision the admission controller certificates. This allows pinning the apiVersion rather than using helm capabilities detection. Useful for gitops tools such as ArgoCD
 certManagerApiVersion: ""
 
+polaris:
+  # -- Configuration for Polaris
+  config:
+
 # test -- Used for chart CI only - deploys a test deployment
 test:
   enabled: false

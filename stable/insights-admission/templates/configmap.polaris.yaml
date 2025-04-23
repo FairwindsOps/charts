@@ -1,0 +1,11 @@
+{{- with .Values.polaris.config }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: admission-polaris
+  labels:
+    app: insights-agent
+data:
+  config.yaml: |
+    {{- toYaml . | nindent 4 }}
+{{- end }}

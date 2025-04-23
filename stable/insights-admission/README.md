@@ -100,4 +100,5 @@ rules:
 | secretName | string | `""` | If you are providing your own certificate then this is the name of the secret holding the certificate. |
 | clusterDomain | string | `"cluster.local"` | The base domain to use for cluster DNS |
 | certManagerApiVersion | string | `""` | If secretName is empty, we assume that you use cert-manager to provision the admission controller certificates. This allows pinning the apiVersion rather than using helm capabilities detection. Useful for gitops tools such as ArgoCD |
+| polaris.config | string | `nil` | Configuration for Polaris |
 | test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.10-alpine"}}` | Used for chart CI only - deploys a test deployment |
