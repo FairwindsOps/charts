@@ -64,7 +64,7 @@ spec:
           {{- if .Values.polaris.config }}
           - name: polaris-config
             mountPath: /opt/app/polaris-config.yaml
-            subPath: polaris-config.yaml
+            subPath: config.yaml
             readOnly: true
           {{- end }}
 {{ include "ssl-cert-file-volumemount-spec" . | indent 10 }}
