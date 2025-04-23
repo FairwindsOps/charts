@@ -21,3 +21,14 @@ serviceAccount:
 webhookConfig:
   annotations:
     "test-annotation": "test-annotation-value"
+polaris:
+  config:
+    customChecks:
+      checks:
+        - name: test-check
+          enabled: true
+          severity: high
+          description: "This is a test check"
+          remediation: "This is a test remediation"
+          category: "Test"
+          type: "Test"
