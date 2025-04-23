@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.6.2
+* Bumped version for insights-admission upgrade
+
 ## 4.6.1
 * Removed AWS Costs plugin
 
