@@ -1,3 +1,4 @@
+{{- if .Values.polaris.config" }}
 {{- with .Values.polaris.config }}
 apiVersion: v1
 kind: ConfigMap
@@ -8,4 +9,5 @@ metadata:
 data:
   config.yaml: |
     {{- toYaml . | nindent 4 }}
+{{- end }}
 {{- end }}
