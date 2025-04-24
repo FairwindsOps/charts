@@ -18,7 +18,9 @@ spec:
 {{- end }}
 {{- if and .Values.falco.statefulset .Values.falco.persistence.enabled }}
   volumeClaimTemplates:
-  - metadata:
+  - apiVersion: v1
+    kind: PersistentVolumeClaim 
+    metadata:
         name: output-data
       {{- with .Values.falco.persistence.annotations }}
         annotations:

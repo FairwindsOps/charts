@@ -1,4 +1,6 @@
 # Changelog
+## 4.6.3
+* Defines apiVersion and Kind fields for falco sts volumeclaimtemplate
 
 ## 4.6.2
 * Bumped version for insights-admission upgrade
