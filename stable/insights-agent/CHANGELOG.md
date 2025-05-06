@@ -1,4 +1,12 @@
 # Changelog
+## 4.6.3
+* Defines apiVersion and Kind fields for falco sts volumeclaimtemplate
+
+## 4.6.2
+* Bumped version for insights-admission upgrade
+
+## 4.6.1
+* Removed AWS Costs plugin
 
 ## 4.6.0
 * Update Prometheus Server Chart to 27.7.1 (Prom Server v3.2.1)

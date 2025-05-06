@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.1
+* Add support to polaris config
+
 ## 1.10.0
 * Bump insights-admission to version 1.18
 
