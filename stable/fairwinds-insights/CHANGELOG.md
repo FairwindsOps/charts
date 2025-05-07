@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.2
+* Bumped openapi to v5.20.2
+
 ## 2.10.1
 * Update insights-agent to 4.6.0 and insights CI version to 5.9
 
