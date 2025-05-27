@@ -201,7 +201,7 @@ cronjobs:
   # -- Options for the image-vulnerabilities-on-demand-refresher
   image-vulns-on-demand-refresh:
     command: image_vulnerabilities_on_demand_refresher
-    schedule: "*/2 0 * * *"
+    schedule: "*/2 * * * *"
 
   # -- Options for the sync-action-items-iac-files cronjob.
   sync-action-items-iac-files:
