@@ -549,7 +549,7 @@ timescale:
     primary:
       port: 5433
     replica:
-      port: 5433      
+      port: 5433
   loadBalancer:
     enabled: false
   # -- Database tuning for timescale
