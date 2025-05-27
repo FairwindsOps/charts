@@ -548,6 +548,8 @@ timescale:
     # -- Port of the Timescale Database
     primary:
       port: 5433
+    replica:
+      port: 5433      
   loadBalancer:
     enabled: false
   # -- Database tuning for timescale
