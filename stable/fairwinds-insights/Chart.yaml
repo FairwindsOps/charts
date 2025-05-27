@@ -18,7 +18,7 @@ dependencies:
     repository: https://charts.min.io/
     condition: minio.install
   - name: timescaledb-single
-    version: 0.33.8
+    version: 0.33.10
     repository: https://charts.fairwinds.com/incubator
     condition: timescale.ephemeral
     alias: timescale
