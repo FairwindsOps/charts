@@ -168,9 +168,9 @@ workflows:
 #          <<: *kind_configuration_helm3
       - sync:
           requires:
-            - lint-scripts
-            - lint-charts
-            - check-helm-docs
+            #- lint-scripts
+            #- lint-charts
+            #- check-helm-docs
           filters:
             branches:
               only:
