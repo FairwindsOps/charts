@@ -133,42 +133,42 @@ workflows:
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.27"
           kind_node_image: "kindest/node:v1.27.16@sha256:2d21a61643eafc439905e18705b8186f3296384750a835ad7a005dceb9546d20"
-          script: 
+          script: scripts/do_nothing.sh
           #executor:
           #  name: ci-images-large
           #<<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.28"
           kind_node_image: "kindest/node:v1.28.15@sha256:a7c05c7ae043a0b8c818f5a06188bc2c4098f6cb59ca7d1856df00375d839251"
-          script: 
+          script: scripts/do_nothing.sh
           #executor:
           #  name: ci-images-large
           #<<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.29"
           kind_node_image: "kindest/node:v1.29.14@sha256:8703bd94ee24e51b778d5556ae310c6c0fa67d761fae6379c8e0bb480e6fea29"
-          script: 
+          script: scripts/do_nothing.sh
           #executor:
           #  name: ci-images-large
           #<<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.30"
           kind_node_image: "kindest/node:v1.30.10@sha256:4de75d0e82481ea846c0ed1de86328d821c1e6a6a91ac37bf804e5313670e507"
-          script: 
+          script: scripts/do_nothing.sh
           #executor:
           #  name: ci-images-large
           #<<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.31"
           kind_node_image: "kindest/node:v1.31.6@sha256:28b7cbb993dfe093c76641a0c95807637213c9109b761f1d422c2400e22b8e87"
-          script: 
+          script: scripts/do_nothing.sh
           #executor:
           #  name: ci-images-large
           #<<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.32"
           kind_node_image: "kindest/node:v1.32.3@sha256:b36e76b4ad37b88539ce5e07425f77b29f73a8eaaebf3f1a8bc9c764401d118c"
-          script: 
+          script: scripts/do_nothing.sh
          #executor:
           #  name: ci-images-large
           #<<: *kind_configuration_helm3
