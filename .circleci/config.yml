@@ -167,7 +167,7 @@ workflows:
 #            name: ci-images-large
 #          <<: *kind_configuration_helm3
       - sync:
-          requires:
+          #requires:
             #- lint-scripts
             #- lint-charts
             #- check-helm-docs
