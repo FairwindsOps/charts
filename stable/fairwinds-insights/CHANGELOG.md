@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.3
+* Bumped openapi to v5.20.2
+
 ## 2.10.2
 * Add config to vulns refresher on demand
 
