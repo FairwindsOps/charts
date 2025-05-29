@@ -104,7 +104,7 @@ webhookConfig:
   mutating:
     # webhookConfig.mutating.enable -- Enable the mutating webhook, which uses settings defined in webhookConfig values.
     enable: false
-    # consider disabling insights webhook for namespace kube-system when running in GKE, uncommenting the following lines
+    # consider disabling insights webhook for the kube-system namespace when running in GKE, example below
     # namespaceSelector:
     #   matchExpressions:
     #   - key: kubernetes.io/metadata.name
