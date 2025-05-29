@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.10.2
+* Add GKE instructions
+
 ## 1.10.1
 * Add support to polaris config
 

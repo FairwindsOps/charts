@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.3
+* Added instruction to GKE on admission
+
 ## 2.10.2
 * Add config to vulns refresher on demand
 
