@@ -4,6 +4,9 @@
 * Added instruction to GKE on admission
 
 ## 2.10.2
+* Bumped openapi to v5.20.2
+
+## 2.10.2
 * Add config to vulns refresher on demand
 
 ## 2.10.1
