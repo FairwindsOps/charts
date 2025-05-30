@@ -521,6 +521,8 @@ encryption:
     cypherKey:
 
 timescale:
+  image:
+    tag: pg14.17-ts2.19.3-all
   fullnameOverride: timescale
   replicaCount: 1
   clusterName: timescale
