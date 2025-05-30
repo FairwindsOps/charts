@@ -159,6 +159,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
+| timescale.image.tag | string | `"pg14.17-ts2.19.3-all"` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
 | timescale.replicaCount | int | `1` |  |
 | timescale.clusterName | string | `"timescale"` |  |
