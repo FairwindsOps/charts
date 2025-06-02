@@ -228,6 +228,11 @@ cronjobs:
     command: refresh_jira_webhooks
     schedule: "0 0 1,15 * *"
 
+  # -- Options for the utmstack_integration cronjob
+  utmstack-integration:
+    command: utmstack_integration
+    schedule: "*/5 * * * *"
+
 selfHostedSecret:
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.

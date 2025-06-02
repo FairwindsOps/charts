@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.4
+* Adds `utmstack-integration` cronjob.
+
 ## 2.10.3
 * Added instruction to GKE on admission
 
