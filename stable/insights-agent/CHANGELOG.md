@@ -1,4 +1,16 @@
 # Changelog
+## 4.6.3
+* Defines apiVersion and Kind fields for falco sts volumeclaimtemplate
+
+## 4.6.2
+* Bumped version for insights-admission upgrade
+
+## 4.6.1
+* Removed AWS Costs plugin
+
+## 4.6.0
+* Update Prometheus Server Chart to 27.7.1 (Prom Server v3.2.1)
+* Add E2E tests for k8s versions 1.31 and 1.32
 
 ## 4.5.1
 * Added SKIP_KSM_NON_ZERO_METRICS_CHECK

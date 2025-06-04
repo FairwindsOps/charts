@@ -45,7 +45,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 4.5.0
+  agentChartTargetVersion: 4.6.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -198,6 +198,11 @@ cronjobs:
     command: image_vulnerabilities_refresher
     schedule: "*/30 * * * *"
 
+  # -- Options for the image-vulnerabilities-on-demand-refresher
+  img-vulns-on-demand-refresh:
+    command: image_vulnerabilities_on_demand_refresher
+    schedule: "*/2 * * * *"
+
   # -- Options for the sync-action-items-iac-files cronjob.
   sync-action-items-iac-files:
     command: sync_action_items_iac_files
@@ -222,6 +227,11 @@ cronjobs:
   refresh-jira-webhooks:
     command: refresh_jira_webhooks
     schedule: "0 0 1,15 * *"
+
+  # -- Options for the utmstack_integration cronjob
+  utmstack-integration:
+    command: utmstack_integration
+    schedule: "*/5 * * * *"
 
 selfHostedSecret:
 
@@ -729,7 +739,7 @@ automatedPullRequestJob:
 
 repoScanJob:
   enabled: false
-  insightsCIVersion: "5.8"
+  insightsCIVersion: "5.9"
   hpa:
     enabled: true
     min: 2

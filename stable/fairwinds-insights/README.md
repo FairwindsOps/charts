@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v4.1.3"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"4.5.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"4.6.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -55,11 +55,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.trial-end | object | `{"command":"trial_end_downgrade","schedule":""}` | Options for the trial-end job. |
 | cronjobs.move-health-scores-to-ts | object | `{"command":"move_resource_health_scores_to_ts","schedule":"*/30 * * * *"}` | Options for the move-health-scores-to-ts job. |
 | cronjobs.image-vulns-refresh | object | `{"command":"image_vulnerabilities_refresher","schedule":"*/30 * * * *"}` | Options for the image-vulns-refresh job. |
+| cronjobs.img-vulns-on-demand-refresh | object | `{"command":"image_vulnerabilities_on_demand_refresher","schedule":"*/2 * * * *"}` | Options for the image-vulnerabilities-on-demand-refresher |
 | cronjobs.sync-action-items-iac-files | object | `{"command":"sync_action_items_iac_files","schedule":"0 * * * *"}` | Options for the sync-action-items-iac-files cronjob. |
 | cronjobs.app-groups-cves-statistics | object | `{"command":"app_groups_cves_statistics","schedule":"0 9,21 * * *"}` | Options for the app_groups_cves_statistics cronjob. |
 | cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
 | cronjobs.cluster-deletion | object | `{"command":"cluster_deletion","schedule":"*/15 * * * *"}` | Options for the cluster_deletion cronjob |
 | cronjobs.refresh-jira-webhooks | object | `{"command":"refresh_jira_webhooks","schedule":"0 0 1,15 * *"}` | Options for the refresh_jira_webhooks cronjob |
+| cronjobs.utmstack-integration | object | `{"command":"utmstack_integration","schedule":"*/5 * * * *"}` | Options for the utmstack_integration cronjob |
 | selfHostedSecret | string | `nil` |  |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
@@ -265,7 +267,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | automatedPullRequestJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"automated-pr-job"` |  |
 | automatedPullRequestJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | repoScanJob.enabled | bool | `false` |  |
-| repoScanJob.insightsCIVersion | string | `"5.8"` |  |
+| repoScanJob.insightsCIVersion | string | `"5.9"` |  |
 | repoScanJob.hpa.enabled | bool | `true` |  |
 | repoScanJob.hpa.min | int | `2` |  |
 | repoScanJob.hpa.max | int | `6` |  |
