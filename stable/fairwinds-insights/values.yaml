@@ -782,3 +782,85 @@ repoScanJob:
         matchLabels:
           app.kubernetes.io/component: repo-scan-job
           app.kubernetes.io/name: fairwinds-insights
+
+temporal:
+  enabled: true
+  cassandra:
+    enabled: false
+  mysql:
+    enabled: false
+  prometheus:
+    enabled: true
+  grafana:
+    enabled: true
+  elasticsearch:
+    enabled: true
+    replicas: 1
+  server:
+    replicaCount: 1
+    config:
+      persistence:
+        default:
+          driver: "sql"
+          sql:
+            driver: "postgres12"
+            database: temporal
+            host: __HOST__
+            port: 5432
+            user: _USERNAME_
+            password: _PASSWORD_
+            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
+            # it has a single key called `password`
+            # existingSecret: temporal-default-store
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
+            tls:
+             enabled: true
+             enableHostVerification: true
+             serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
+             # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
+             caFile: ""
+             certFile: /etc/temporal/tls/tls.crt
+             keyFile: /etc/temporal/tls/tls.key
+
+        visibility:
+          driver: "sql"
+          sql:
+            driver: "postgres12"
+            database: temporal_visibility
+            host: __HOST__
+            port: 5432
+            user: _USERNAME_
+            password: _PASSWORD_
+            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
+            # it has a single key called `password`
+            # existingSecret: temporal-visibility-store
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
+            tls:
+             enabled: true
+             enableHostVerification: true
+             serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
+             # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
+             caFile: ""
+             certFile: /etc/temporal/tls/tls.crt
+             keyFile: /etc/temporal/tls/tls.key
+
+    additionalVolumes:
+      - name: secret-with-certs
+        secret:
+          secretName: fwinsights-postgresql-ca
+
+    additionalVolumeMounts:
+      - name: secret-with-certs
+        mountPath: "/etc/temporal/tls"
+        readOnly: true
+  schema:
+    createDatabase:
+      enabled: true
+    setup:
+      enabled: false
+    update:
+      enabled: false
