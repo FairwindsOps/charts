@@ -790,9 +790,9 @@ temporal:
   mysql:
     enabled: false
   prometheus:
-    enabled: true
+    enabled: false
   grafana:
-    enabled: true
+    enabled: false
   elasticsearch:
     enabled: false
   server:
