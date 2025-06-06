@@ -794,12 +794,12 @@ temporal:
   grafana:
     enabled: true
   elasticsearch:
-    enabled: true
-    replicas: 1
+    enabled: false
   server:
     replicaCount: 1
     config:
       persistence:
+        visibilityStore: postgres-visibility
         default:
           driver: "sql"
           sql:
