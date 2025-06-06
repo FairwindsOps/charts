@@ -818,7 +818,8 @@ temporal:
             tls:
               enabled: true
               enableHostVerification: true
-              serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
+              # this is strictly required when using serverless CRDB offerings
+              serverName: __HOST__
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
               caFile: ""
               certFile: /etc/temporal/tls/tls.crt
@@ -842,7 +843,8 @@ temporal:
             tls:
               enabled: true
               enableHostVerification: true
-              serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
+              # this is strictly required when using serverless CRDB offerings
+              serverName: __HOST__
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
               caFile: ""
               certFile: /etc/temporal/tls/tls.crt
