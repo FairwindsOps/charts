@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.11.0
+* Add `temporal` server
+
 ## 2.10.4
 * Adds `utmstack-integration` cronjob.
 
