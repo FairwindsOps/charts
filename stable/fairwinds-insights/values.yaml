@@ -816,13 +816,13 @@ temporal:
             maxIdleConns: 20
             maxConnLifetime: "1h"
             tls:
-             enabled: true
-             enableHostVerification: true
-             serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
-             # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-             caFile: ""
-             certFile: /etc/temporal/tls/tls.crt
-             keyFile: /etc/temporal/tls/tls.key
+              enabled: true
+              enableHostVerification: true
+              serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
+              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
+              caFile: ""
+              certFile: /etc/temporal/tls/tls.crt
+              keyFile: /etc/temporal/tls/tls.key
 
         visibility:
           driver: "sql"
@@ -840,13 +840,13 @@ temporal:
             maxIdleConns: 20
             maxConnLifetime: "1h"
             tls:
-             enabled: true
-             enableHostVerification: true
-             serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
-             # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-             caFile: ""
-             certFile: /etc/temporal/tls/tls.crt
-             keyFile: /etc/temporal/tls/tls.key
+              enabled: true
+              enableHostVerification: true
+              serverName: __HOST__ # this is strictly required when using serverless CRDB offerings
+              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
+              caFile: ""
+              certFile: /etc/temporal/tls/tls.crt
+              keyFile: /etc/temporal/tls/tls.key
 
     additionalVolumes:
       - name: secret-with-certs
