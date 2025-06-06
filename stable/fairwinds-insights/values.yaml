@@ -783,18 +783,16 @@ repoScanJob:
           app.kubernetes.io/component: repo-scan-job
           app.kubernetes.io/name: fairwinds-insights
 
-
-cassandra:
-  enabled: false
-prometheus:
-  enabled: false
-elasticsearch:
-  enabled: false
-grafana:
-  enabled: false
-
 temporal:
   enabled: true
+  cassandra:
+    enabled: false
+  prometheus:
+    enabled: false
+  elasticsearch:
+    enabled: false
+  grafana:
+    enabled: false
   mysql:
     enabled: false
   postgresql:

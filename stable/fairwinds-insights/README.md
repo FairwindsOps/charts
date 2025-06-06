@@ -295,11 +295,11 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
-| cassandra.enabled | bool | `false` |  |
-| prometheus.enabled | bool | `false` |  |
-| elasticsearch.enabled | bool | `false` |  |
-| grafana.enabled | bool | `false` |  |
 | temporal.enabled | bool | `true` |  |
+| temporal.cassandra.enabled | bool | `false` |  |
+| temporal.prometheus.enabled | bool | `false` |  |
+| temporal.elasticsearch.enabled | bool | `false` |  |
+| temporal.grafana.enabled | bool | `false` |  |
 | temporal.mysql.enabled | bool | `false` |  |
 | temporal.postgresql.enabled | bool | `true` |  |
 | temporal.server.replicaCount | int | `1` |  |
