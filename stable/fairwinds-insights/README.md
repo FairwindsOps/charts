@@ -298,11 +298,11 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.enabled | bool | `true` |  |
 | temporal.cassandra.enabled | bool | `false` |  |
 | temporal.mysql.enabled | bool | `false` |  |
-| temporal.prometheus.enabled | bool | `true` |  |
-| temporal.grafana.enabled | bool | `true` |  |
-| temporal.elasticsearch.enabled | bool | `true` |  |
-| temporal.elasticsearch.replicas | int | `1` |  |
+| temporal.prometheus.enabled | bool | `false` |  |
+| temporal.grafana.enabled | bool | `false` |  |
+| temporal.elasticsearch.enabled | bool | `false` |  |
 | temporal.server.replicaCount | int | `1` |  |
+| temporal.server.config.persistence.visibilityStore | string | `"postgres-visibility"` |  |
 | temporal.server.config.persistence.default.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |
