@@ -217,6 +217,7 @@ cronjobs:
   cve-reports-email-sender:
     command: cve_reports_email_sender
     schedule: "0 5 1 * *"
+    suspend: true
 
   # -- Options for the cluster_deletion cronjob
   cluster-deletion:

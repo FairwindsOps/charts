@@ -22,6 +22,7 @@ rules:
   - policyreports/status
   - clusterpolicyreports
   - clusterpolicyreports/status
+  - validatingadmissionpolicies
   verbs:
   - get
   - list
@@ -47,6 +48,7 @@ rules:
   resources:
     - clusterpolicyreports
     - policyreports
+    - validatingadmissionpolicies
   verbs:
     - get
     - list
