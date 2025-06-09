@@ -783,6 +783,9 @@ repoScanJob:
           app.kubernetes.io/component: repo-scan-job
           app.kubernetes.io/name: fairwinds-insights
 
+never:
+  enabled: false
+
 temporal:
   enabled: false
   cassandra:
