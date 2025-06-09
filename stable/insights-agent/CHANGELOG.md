@@ -1,4 +1,8 @@
 # Changelog
+
+## 4.6.4
+* added validatingadmissionpolicies to kyverno
+
 ## 4.6.3
 * Defines apiVersion and Kind fields for falco sts volumeclaimtemplate
 
