@@ -22,4 +22,3 @@ dependencies:
     repository: https://charts.fairwinds.com/incubator
     condition: timescale.ephemeral
     alias: timescale
-
