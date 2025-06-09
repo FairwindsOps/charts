@@ -68,3 +68,6 @@ resourcesRecommendationsCronjob:
 minio:
   persistence:
     enabled: false
+
+temporal:
+  enabled: false
