@@ -785,6 +785,7 @@ repoScanJob:
 
 temporal:
   enabled: false
+  bogusField: "values1"
   cassandra:
     enabled: false
   prometheus:

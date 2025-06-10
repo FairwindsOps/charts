@@ -106,7 +106,7 @@ jobs:
           command: |
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
-            ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug
+            ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug --print-config
 
   sync:
     docker:

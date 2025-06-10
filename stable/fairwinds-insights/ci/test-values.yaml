@@ -71,3 +71,4 @@ minio:
 
 temporal:
   enabled: false
+  bogusField: "values2"
