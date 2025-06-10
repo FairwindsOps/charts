@@ -295,7 +295,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
-| never.enabled | bool | `false` |  |
 | temporal.enabled | bool | `false` |  |
 | temporal.cassandra.enabled | bool | `false` |  |
 | temporal.prometheus.enabled | bool | `false` |  |
@@ -304,7 +303,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.mysql.enabled | bool | `false` |  |
 | temporal.postgresql.enabled | bool | `true` |  |
 | temporal.server.replicaCount | int | `1` |  |
-| temporal.server.config.persistence.visibilityStore | string | `"postgres-visibility"` |  |
 | temporal.server.config.persistence.default.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |

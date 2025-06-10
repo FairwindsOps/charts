@@ -783,9 +783,6 @@ repoScanJob:
           app.kubernetes.io/component: repo-scan-job
           app.kubernetes.io/name: fairwinds-insights
 
-never:
-  enabled: false
-
 temporal:
   enabled: false
   cassandra:
@@ -804,7 +801,6 @@ temporal:
     replicaCount: 1
     config:
       persistence:
-        visibilityStore: postgres-visibility
         default:
           driver: "sql"
           sql:
