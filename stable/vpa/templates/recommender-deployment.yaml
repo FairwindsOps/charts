@@ -62,7 +62,7 @@ spec:
           {{- end }}
           ports:
             - name: metrics
-              containerPort: 8942
+              containerPort: {{ .Values.recommender.metricsPort | default 8942 }}
               protocol: TCP
           {{- $extraArgs := .Values.recommender.extraArgs | default dict }}
           {{- $insightsRecommenderArgs := index $extraArgs "use-insights-recommender" | default dict }}

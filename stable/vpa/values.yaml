@@ -121,6 +121,20 @@ recommender:
     enabled: false
     annotations: {}
     labels: {}
+  # recommender.metricsPort -- Port of the recommender where metrics can be received from
+  metricsPort: 8942
+  # recommender.networkPolicy -- Network policy configuration for the recommender component
+  networkPolicy:
+    # recommender.networkPolicy.enabled -- If true, create a NetworkPolicy for the recommender
+    enabled: false
+    # recommender.networkPolicy.annotations -- Annotations to add to the NetworkPolicy
+    annotations: {}
+    # recommender.networkPolicy.labels -- Labels to add to the NetworkPolicy
+    labels: {}
+    # recommender.networkPolicy.ingress -- Custom ingress rules for the NetworkPolicy
+    ingress: []
+    # recommender.networkPolicy.egress -- Custom egress rules for the NetworkPolicy
+    egress: []
 
 updater:
   # updater.enabled -- If true, the updater component will be deployed
@@ -195,6 +209,20 @@ updater:
     enabled: false
     annotations: {}
     labels: {}
+  # updater.metricsPort -- Port of the updater where metrics can be received from
+  metricsPort: 8943
+  # updater.networkPolicy -- Network policy configuration for the updater component
+  networkPolicy:
+    # updater.networkPolicy.enabled -- If true, create a NetworkPolicy for the updater
+    enabled: false
+    # updater.networkPolicy.annotations -- Annotations to add to the NetworkPolicy
+    annotations: {}
+    # updater.networkPolicy.labels -- Labels to add to the NetworkPolicy
+    labels: {}
+    # updater.networkPolicy.ingress -- Custom ingress rules for the NetworkPolicy
+    ingress: []
+    # updater.networkPolicy.egress -- Custom egress rules for the NetworkPolicy
+    egress: []
 
 admissionController:
   # admissionController.enabled -- If true, will install the admission-controller component of vpa
@@ -325,6 +353,18 @@ admissionController:
   httpPort: 8000
   # admissionController.metricsPort -- Port of the admission controller where metrics can be received from
   metricsPort: 8944
+  # admissionController.networkPolicy -- Network policy configuration for the admission controller component
+  networkPolicy:
+    # admissionController.networkPolicy.enabled -- If true, create a NetworkPolicy for the admission controller
+    enabled: false
+    # admissionController.networkPolicy.annotations -- Annotations to add to the NetworkPolicy
+    annotations: {}
+    # admissionController.networkPolicy.labels -- Labels to add to the NetworkPolicy
+    labels: {}
+    # admissionController.networkPolicy.ingress -- Custom ingress rules for the NetworkPolicy (default allows access from anywhere to webhook port)
+    ingress: []
+    # admissionController.networkPolicy.egress -- Custom egress rules for the NetworkPolicy
+    egress: []
 
 tests:
   # tests.securityContext -- The security context for the containers run as helm hook tests
