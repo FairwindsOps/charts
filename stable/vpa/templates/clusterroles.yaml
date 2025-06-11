@@ -40,6 +40,8 @@ rules:
       - list
       - watch
       - create
+      - patch
+      - update
   - apiGroups:
       - "poc.autoscaling.k8s.io"
     resources:
