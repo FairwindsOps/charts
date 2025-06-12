@@ -6,7 +6,7 @@ set -x
 
 # Check whether insights-agent is part of the changed charts
 cd /charts
-CHANGED="$(ct list-changed --config ./scripts/ct.yaml --print-config)"
+CHANGED="$(ct list-changed --config ./scripts/ct.yaml --print-config --namespace fwinsights --release-name insights)"
 
 case "$CHANGED" in 
   *insights-agent*)
