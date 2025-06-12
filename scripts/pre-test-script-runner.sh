@@ -21,7 +21,7 @@ set -x
 CI_DIR="ci"
 SCRIPT_NAME="pre-test-script.sh"
 SCRIPT="$CI_DIR/$SCRIPT_NAME"
-CHANGED="$(ct list-changed --config scripts/ct.yaml --print-config --namespace fwinsights --release-name insights)"
+CHANGED="$(ct list-changed --config scripts/ct.yaml --print-config)"
 
 for chart in ${CHANGED}; do
   if test -f "$chart/$SCRIPT"; then
