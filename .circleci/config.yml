@@ -10,9 +10,9 @@ references:
       command: |
         echo 'export CI_SHA1=$CIRCLE_SHA1' >> ${BASH_ENV}
         echo 'Install AWS CLI'
-        pip install awscli
+        apk --no-cache add aws-cli
         echo 'Install needed packages'
-        apk --update add bash jq curl yq
+        apk --no-cache add bash jq curl yq
 
   check_changelog: &check_changelog
     run:
