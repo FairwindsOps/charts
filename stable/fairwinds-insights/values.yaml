@@ -796,7 +796,7 @@ temporal:
   mysql:
     enabled: false
   postgresql:
-    enabled: true
+    enabled: false
   server:
     replicaCount: 1
     config:
