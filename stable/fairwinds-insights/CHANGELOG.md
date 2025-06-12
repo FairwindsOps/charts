@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.11.0
+## 3.0.0
 * Add `temporal` server
 
 ## 2.10.4
