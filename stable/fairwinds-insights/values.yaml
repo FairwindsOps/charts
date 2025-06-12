@@ -806,9 +806,9 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal
-            host: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
+            host: insights-postgresql
             port: 5432
-            user: {{ .Values.postgresql.auth.username | default "postgres" }}
+            user: postgres
             existingSecret: fwinsights-postgresql
             existingSecretKey: postgresql-password
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
@@ -821,7 +821,7 @@ temporal:
               enabled: true
               enableHostVerification: true
               # this is strictly required when using serverless CRDB offerings
-              serverName: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
+              serverName: insights-postgresql
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
               caFile: ""
               certFile: /etc/temporal/tls/tls.crt
@@ -832,9 +832,9 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal_visibility
-            host: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
+            host: insights-postgresql
             port: 5432
-            user: {{ .Values.postgresql.auth.username | default "postgres" }}
+            user: postgres
             existingSecret: fwinsights-postgresql
             existingSecretKey: postgresql-password
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
@@ -847,7 +847,7 @@ temporal:
               enabled: true
               enableHostVerification: true
               # this is strictly required when using serverless CRDB offerings
-              serverName: {{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}
+              serverName: insights-postgresql
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
               caFile: ""
               certFile: /etc/temporal/tls/tls.crt
