@@ -9,16 +9,34 @@ data:
     #! /bin/sh
 
     set -e
+    BASE_URL=${BASE_URL:-/}
     NGINX_ROOT=/usr/share/nginx/html
-    INITIALIZER_SCRIPT=$NGINX_ROOT/swagger-initializer.js
-    NGINX_CONF=/etc/nginx/conf.d/default.conf
+    INDEX_FILE=$NGINX_ROOT/index.html
+    NGINX_CONF=/etc/nginx/nginx.conf
 
-    node /usr/share/nginx/configurator $INITIALIZER_SCRIPT
+    node /usr/share/nginx/configurator $INDEX_FILE
 
+    replace_in_index () {
+      if [ "$1" != "**None**" ]; then
+        sed -i "s|/\*||g" $INDEX_FILE
+        sed -i "s|\*/||g" $INDEX_FILE
+        sed -i "s|$1|$2|g" $INDEX_FILE
+      fi
+    }
+
+    replace_or_delete_in_index () {
+      if [ -z "$2" ]; then
+        sed -i "/$1/d" $INDEX_FILE
+      else
+        replace_in_index $1 $2
+      fi
+    }
+
+    replace_in_index myApiKeyXXXX123456789 $API_KEY
 
     if [ "$SWAGGER_JSON_URL" ]; then
-      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$SWAGGER_JSON_URL|g" $INITIALIZER_SCRIPT
-      sed -i "s|http://example.com/api|$SWAGGER_JSON_URL|g" $INITIALIZER_SCRIPT
+      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$SWAGGER_JSON_URL|g" $INDEX_FILE
+      sed -i "s|http://example.com/api|$SWAGGER_JSON_URL|g" $INDEX_FILE
     fi
 
     if [[ -f "$SWAGGER_JSON" ]]; then
@@ -29,35 +47,13 @@ data:
         SWAGGER_ROOT="$(dirname $SWAGGER_JSON)"
       fi
 
-      if [[ "$BASE_URL" != "/" ]]
-      then
-        BASE_URL=$(echo $BASE_URL | sed 's/\/$//')
-        sed -i \
-          "s|#SWAGGER_ROOT|rewrite ^$BASE_URL(/.*)$ \$1 break;\n        #SWAGGER_ROOT|" \
-          $NGINX_CONF
-      fi
-      sed -i "s|#SWAGGER_ROOT|root $SWAGGER_ROOT/;|g" $NGINX_CONF
-
-      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$REL_PATH|g" $INITIALIZER_SCRIPT
-      sed -i "s|http://example.com/api|$REL_PATH|g" $INITIALIZER_SCRIPT
-    fi
-
-    # enable/disable the address and port for IPv6 addresses that nginx listens on
-    if [[ -n "${PORT_IPV6}" ]]; then
-        sed -i "s|${PORT};|${PORT};\n    listen            [::]:${PORT_IPV6};|g" $NGINX_CONF
-    fi
-
-    # enable/disable CORS
-    if [ "$CORS" != "true" ]; then
-      truncate -s 0 /etc/nginx/templates/cors.conf
-    fi
-
-    # allow/disallow embedding the swagger-ui in frames/iframes from different origins
-    if [ "$EMBEDDING" != "false" ]; then
-      truncate -s 0 /etc/nginx/templates/embedding.conf
+      sed -i "s|https://petstore.swagger.io/v2/swagger.json|$REL_PATH|g" $INDEX_FILE
+      sed -i "s|http://example.com/api|$REL_PATH|g" $INDEX_FILE
     fi
 
     find $NGINX_ROOT -type f -regex ".*\.\(html\|js\|css\)" -exec sh -c "gzip < {} > {}.gz" \;
+
+    exec nginx -g 'daemon off;'
 
   # This is copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/nginx.conf
   # A /health path is added and BASE_URL is manually set
@@ -69,10 +65,12 @@ data:
     }
 
     http {
-      types {
-        text/plain yaml;
-        text/plain yml;
-      }
+      include             mime.types;
+      default_type        application/octet-stream;
+
+      sendfile on;
+
+      keepalive_timeout   65;
 
       gzip on;
       gzip_static on;
@@ -96,23 +94,20 @@ data:
           alias            /usr/share/nginx/html/;
           expires 1d;
 
-          location ~ swagger-initializer.js {
-            expires -1;
-            include templates/cors.conf;
-          }
-
           location ~* \.(?:json|yml|yaml)$ {
             #SWAGGER_ROOT
             expires -1;
 
-            include templates/cors.conf;
+            include cors.conf;
           }
 
-          include templates/cors.conf;
-          include templates/embedding.conf;
+          include cors.conf;
         }
+
         location /health {
           return 200 'OK';
         }
+        # This is a hack to prevent nginx from running sed on this file, which causes a crash
+        # listen  [::]:80;
       }
     }

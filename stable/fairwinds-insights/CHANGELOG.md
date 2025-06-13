@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.6
+* revert openapi bump
+
 ## 2.10.5
 * Bumped openapi to v5.24.1
 
