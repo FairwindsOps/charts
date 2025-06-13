@@ -822,7 +822,7 @@ temporal:
               enabled: true
               enableHostVerification: false
               # this is strictly required when using serverless CRDB offerings
-              serverName: insights-postgresql
+              serverName: ""
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
               caFile: ""
               certFile: /etc/temporal/tls/tls.crt
@@ -848,7 +848,7 @@ temporal:
               enabled: true
               enableHostVerification: false
               # this is strictly required when using serverless CRDB offerings
-              serverName: insights-postgresql
+              serverName: ""
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
               caFile: ""
               certFile: /etc/temporal/tls/tls.crt
