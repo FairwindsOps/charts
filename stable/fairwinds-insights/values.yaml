@@ -493,6 +493,7 @@ postgresql:
     certificatesSecret: fwinsights-postgresql-ca
     certFilename: tls.crt
     certKeyFilename: tls.key
+  postgresqlHost: insights-postgresql
   auth:
     username: postgres
     database: fairwinds_insights
