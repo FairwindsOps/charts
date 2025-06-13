@@ -811,7 +811,6 @@ temporal:
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
-            existingSecretKey: postgresql-password
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
             # it has a single key called `password`
             # existingSecret: temporal-default-store
@@ -837,7 +836,6 @@ temporal:
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
-            existingSecretKey: postgresql-password
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
             # it has a single key called `password`
             # existingSecret: temporal-visibility-store
