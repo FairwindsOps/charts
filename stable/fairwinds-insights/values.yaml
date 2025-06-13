@@ -786,79 +786,14 @@ repoScanJob:
 
 temporal:
   enabled: true
+  server:
+    replicaCount: 1
   cassandra:
-    enabled: false
-  prometheus:
-    enabled: false
+    config:
+      cluster_size: 1
   elasticsearch:
+    replicas: 1
+  prometheus:
     enabled: false
   grafana:
     enabled: false
-  mysql:
-    enabled: false
-  postgresql:
-    enabled: true
-  server:
-    replicaCount: 1
-    config:
-      persistence:
-        default:
-          driver: "sql"
-          sql:
-            driver: "postgres12"
-            database: temporal
-            host: insights-postgresql
-            port: 5432
-            user: postgres
-            existingSecret: fwinsights-postgresql
-            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
-            # it has a single key called `password`
-            # existingSecret: temporal-default-store
-            maxConns: 20
-            maxIdleConns: 20
-            maxConnLifetime: "1h"
-            tls:
-              enabled: true
-              enableHostVerification: false
-              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-              certFile: /etc/temporal/tls/tls.crt
-              keyFile: /etc/temporal/tls/tls.key
-
-        visibility:
-          driver: "sql"
-          sql:
-            driver: "postgres12"
-            database: temporal_visibility
-            host: insights-postgresql
-            port: 5432
-            user: postgres
-            existingSecret: fwinsights-postgresql
-            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
-            # it has a single key called `password`
-            # existingSecret: temporal-visibility-store
-            maxConns: 20
-            maxIdleConns: 20
-            maxConnLifetime: "1h"
-            tls:
-              enabled: true
-              enableHostVerification: false
-              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-              certFile: /etc/temporal/tls/tls.crt
-              keyFile: /etc/temporal/tls/tls.key
-
-    additionalVolumes:
-      - name: secret-with-certs
-        secret:
-          secretName: fwinsights-postgresql-ca
-
-    additionalVolumeMounts:
-      - name: secret-with-certs
-        mountPath: "/etc/temporal/tls"
-        readOnly: true
-  schema:
-    createDatabase:
-      enabled: true
-    setup:
-      enabled: true
-    update:
-      enabled: true
