@@ -69,3 +69,17 @@ resourcesRecommendationsCronjob:
 minio:
   persistence:
     enabled: false
+
+temporal:
+  server:
+  config:
+    persistence:
+      default:
+        sql:
+          tls:
+            enableHostVerification: false
+
+      visibility:
+        sql:
+          tls:
+            enableHostVerification: false
