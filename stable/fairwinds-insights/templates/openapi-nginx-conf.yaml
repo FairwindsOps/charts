@@ -62,46 +62,56 @@ data:
   # This is copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/nginx.conf
   # A /health path is added and BASE_URL is manually set
   nginx.conf: |
-    types {
-      text/plain yaml;
-      text/plain yml;
+    worker_processes      1;
+
+    events {
+      worker_connections  1024;
     }
 
-    gzip on;
-    gzip_static on;
-    gzip_disable "msie6";
+    http {
+      include             mime.types;
+      default_type        application/octet-stream;
 
-    gzip_vary on;
-    gzip_types text/plain text/css application/javascript;
+      sendfile on;
 
-    map $request_method $access_control_max_age {
-      OPTIONS 1728000; # 20 days
-    }
-    server_tokens off; # Hide Nginx version
+      keepalive_timeout   65;
 
-    server {
-      listen            $PORT;
-      server_name       localhost;
-      index             index.html index.htm;
+      gzip on;
+      gzip_static on;
+      gzip_disable "msie6";
 
-      location $BASE_URL {
-        absolute_redirect off;
-        alias            /usr/share/nginx/html/;
-        expires 1d;
+      gzip_vary on;
+      gzip_types text/plain text/css application/javascript;
 
-        location ~ swagger-initializer.js {
-          expires -1;
-          include templates/cors.conf;
+      map $request_method $access_control_max_age {
+        OPTIONS 1728000; # 20 days
+      }
+      server_tokens off; # Hide Nginx version
+
+      server {
+        listen            8080;
+        server_name       localhost;
+        index             index.html index.htm;
+
+        location /swagger {
+          absolute_redirect off;
+          alias            /usr/share/nginx/html/;
+          expires 1d;
+
+          location ~* \.(?:json|yml|yaml)$ {
+            #SWAGGER_ROOT
+            expires -1;
+
+            include cors.conf;
+          }
+
+          include cors.conf;
         }
 
-        location ~* \.(?:json|yml|yaml)$ {
-          #SWAGGER_ROOT
-          expires -1;
-
-          include templates/cors.conf;
+        location /health {
+          return 200 'OK';
         }
-
-        include templates/cors.conf;
-        include templates/embedding.conf;
+        # This is a hack to prevent nginx from running sed on this file, which causes a crash
+        # listen  [::]:80;
       }
     }
