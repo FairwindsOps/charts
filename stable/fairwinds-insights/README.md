@@ -150,7 +150,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.image.tag | string | `"16.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
-| postgresql.tls | object | `{"certCAFilename":"ca.crt","certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
+| postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
 | postgresql.postgresqlHost | string | `"insights-postgresql"` |  |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
@@ -316,7 +316,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.default.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.default.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.default.sql.tls.enableHostVerification | bool | `false` |  |
-| temporal.server.config.persistence.default.sql.tls.caFile | string | `"/etc/temporal/tls/ca.crt"` |  |
 | temporal.server.config.persistence.default.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
 | temporal.server.config.persistence.default.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
 | temporal.server.config.persistence.visibility.driver | string | `"sql"` |  |
@@ -331,7 +330,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.visibility.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.visibility.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.visibility.sql.tls.enableHostVerification | bool | `false` |  |
-| temporal.server.config.persistence.visibility.sql.tls.caFile | string | `"/etc/temporal/tls/ca.crt"` |  |
 | temporal.server.config.persistence.visibility.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
 | temporal.server.config.persistence.visibility.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
 | temporal.server.additionalVolumes[0].name | string | `"secret-with-certs"` |  |
