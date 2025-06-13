@@ -316,7 +316,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.default.sql.maxIdleConns | int | `20` |  |
 | temporal.server.config.persistence.default.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.default.sql.tls.enabled | bool | `true` |  |
-| temporal.server.config.persistence.default.sql.tls.enableHostVerification | bool | `true` |  |
+| temporal.server.config.persistence.default.sql.tls.enableHostVerification | bool | `false` |  |
 | temporal.server.config.persistence.default.sql.tls.serverName | string | `"insights-postgresql"` |  |
 | temporal.server.config.persistence.default.sql.tls.caFile | string | `""` |  |
 | temporal.server.config.persistence.default.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
@@ -333,7 +333,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.visibility.sql.maxIdleConns | int | `20` |  |
 | temporal.server.config.persistence.visibility.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.visibility.sql.tls.enabled | bool | `true` |  |
-| temporal.server.config.persistence.visibility.sql.tls.enableHostVerification | bool | `true` |  |
+| temporal.server.config.persistence.visibility.sql.tls.enableHostVerification | bool | `false` |  |
 | temporal.server.config.persistence.visibility.sql.tls.serverName | string | `"insights-postgresql"` |  |
 | temporal.server.config.persistence.visibility.sql.tls.caFile | string | `""` |  |
 | temporal.server.config.persistence.visibility.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |

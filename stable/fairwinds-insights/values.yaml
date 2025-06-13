@@ -820,7 +820,7 @@ temporal:
             maxConnLifetime: "1h"
             tls:
               enabled: true
-              enableHostVerification: true
+              enableHostVerification: false
               # this is strictly required when using serverless CRDB offerings
               serverName: insights-postgresql
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
@@ -846,7 +846,7 @@ temporal:
             maxConnLifetime: "1h"
             tls:
               enabled: true
-              enableHostVerification: true
+              enableHostVerification: false
               # this is strictly required when using serverless CRDB offerings
               serverName: insights-postgresql
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
