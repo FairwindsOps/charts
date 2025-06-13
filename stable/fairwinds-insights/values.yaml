@@ -41,7 +41,7 @@ openApiImage:
   # -- Docker image repository for the Open API server
   repository: swaggerapi/swagger-ui
   # -- Overrides tag for the Open API server, defaults to image.tag
-  tag: v5.20.2  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
+  tag: v5.24.1  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights

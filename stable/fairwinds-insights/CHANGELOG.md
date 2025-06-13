@@ -1,7 +1,7 @@
 # Changelog
 
 ## 2.10.5
-* Bumped openapi to v5.20.2
+* Bumped openapi to v5.24.1
 
 ## 2.10.4
 * Adds `utmstack-integration` cronjob.
