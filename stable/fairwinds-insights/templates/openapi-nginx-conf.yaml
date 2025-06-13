@@ -87,11 +87,11 @@ data:
       server_tokens off; # Hide Nginx version
 
       server {
-        listen            $PORT;
+        listen            8080;
         server_name       localhost;
         index             index.html index.htm;
 
-        location $BASE_URL {
+        location /swagger {
           absolute_redirect off;
           alias            /usr/share/nginx/html/;
           expires 1d;
