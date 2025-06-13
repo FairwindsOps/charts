@@ -67,7 +67,7 @@ spec:
           {{- end }}
           ports:
             - name: metrics
-              containerPort: 8943
+              containerPort: {{ .Values.updater.metricsPort | default 8943 }}
               protocol: TCP
           resources:
             {{- toYaml .Values.updater.resources | nindent 12 }}
