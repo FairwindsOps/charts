@@ -493,6 +493,7 @@ postgresql:
     certificatesSecret: fwinsights-postgresql-ca
     certFilename: tls.crt
     certKeyFilename: tls.key
+    certCAFilename: ca.crt
   postgresqlHost: insights-postgresql
   auth:
     username: postgres
@@ -820,10 +821,8 @@ temporal:
             tls:
               enabled: true
               enableHostVerification: false
-              # this is strictly required when using serverless CRDB offerings
-              serverName: ""
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-              caFile: ""
+              caFile: /etc/temporal/tls/ca.crt
               certFile: /etc/temporal/tls/tls.crt
               keyFile: /etc/temporal/tls/tls.key
 
@@ -845,10 +844,8 @@ temporal:
             tls:
               enabled: true
               enableHostVerification: false
-              # this is strictly required when using serverless CRDB offerings
-              serverName: ""
               # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-              caFile: ""
+              caFile: /etc/temporal/tls/ca.crt
               certFile: /etc/temporal/tls/tls.crt
               keyFile: /etc/temporal/tls/tls.key
 
