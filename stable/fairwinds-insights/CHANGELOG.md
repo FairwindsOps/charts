@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.10.4
+* Adds `utmstack-integration` cronjob.
+
+## 2.10.3
+* Added instruction to GKE on admission
+
 ## 2.10.2
 * Bumped openapi to v5.20.2
 
