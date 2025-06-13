@@ -111,5 +111,8 @@ data:
           include templates/cors.conf;
           include templates/embedding.conf;
         }
+        location /health {
+          return 200 'OK';
+        }
       }
     }
