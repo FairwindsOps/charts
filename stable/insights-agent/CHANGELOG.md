@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.6.6
+* bumped kyverno to 0.4
+
 ## 4.6.5
 * added validatingadmissionpolicies for admissionregistration.k8s.io
 
