@@ -858,45 +858,21 @@ temporal:
         readOnly: true
 
     additionalEnv:
-      - name: TEMPORAL_PG_TLS_CERT_FILE
+      - name: SQL_TLS_CERT_FILE
         value: /etc/temporal/tls/tls.crt
-      - name: TEMPORAL_PG_TLS_KEY_FILE
-        value: /etc/temporal/tls/tls.key
-      - name: TEMPORAL_PG_TLS_ENABLED
-        value: "true"
-      - name: TEMPORAL_PG_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
-      - name: TEMPORAL_POSTGRES_TLS_CERT_FILE
+      - name: TEMPORAL_SQL_TLS_CERT_FILE
         value: /etc/temporal/tls/tls.crt
-      - name: TEMPORAL_POSTGRES_TLS_KEY_FILE
+      - name: SQL_TLS_KEY_FILE
         value: /etc/temporal/tls/tls.key
-      - name: TEMPORAL_POSTGRES_TLS_ENABLED
-        value: "true"
-      - name: TEMPORAL_POSTGRES_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
-      - name: TEMPORAL_SQL_TLS_ENABLED
-        value: "true"
-      - name: TEMPORAL_SQL_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
-      - name: PG_TLS_CERT_FILE
-        value: /etc/temporal/tls/tls.crt
-      - name: PG_TLS_KEY_FILE
+      - name: TEMPORAL_SQL_TLS_KEY_FILE
         value: /etc/temporal/tls/tls.key
-      - name: PG_TLS_ENABLED
+      - name: SQL_TLS
         value: "true"
-      - name: PG_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
-      - name: POSTGRES_TLS_CERT_FILE
-        value: /etc/temporal/tls/tls.crt
-      - name: POSTGRES_TLS_KEY_FILE
-        value: /etc/temporal/tls/tls.key
-      - name: POSTGRES_TLS_ENABLED
-        value: "true"
-      - name: POSTGRES_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
-      - name: SQL_TLS_ENABLED
+      - name: TEMPORAL_SQL_TLS
         value: "true"
       - name: SQL_TLS_DISABLE_HOST_VERIFICATION
+        value: "true"
+      - name: TEMPORAL_SQL_TLS_DISABLE_HOST_VERIFICATION
         value: "true"
   schema:
     createDatabase:
