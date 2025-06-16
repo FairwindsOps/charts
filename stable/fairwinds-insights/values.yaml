@@ -855,6 +855,20 @@ temporal:
       - name: secret-with-certs
         mountPath: "/etc/temporal/tls"
         readOnly: true
+
+    additionalEnv:
+      - name: TEMPORAL_PG_TLS_CERT_FILE
+        value: /etc/temporal/tls/tls.crt
+      - name: TEMPORAL_PG_TLS_KEY_FILE
+        value: /etc/temporal/tls/tls.key
+      - name: SQL_TLS_ENABLED
+        value: "true"
+      - name: POSTGRES_TLS_ENABLED
+        value: "true"
+      - name: SQL_TLS_DISABLE_HOST_VERIFICATION
+        value: "true"
+      - name: POSTGRES_TLS_DISABLE_HOST_VERIFICATION
+        value: "true"
   schema:
     createDatabase:
       enabled: true
