@@ -801,6 +801,7 @@ temporal:
   server:
     replicaCount: 1
     config:
+      logLevel: "debug"
       persistence:
         default:
           driver: "sql"
