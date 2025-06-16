@@ -353,3 +353,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.schema.createDatabase.enabled | bool | `true` |  |
 | temporal.schema.setup.enabled | bool | `true` |  |
 | temporal.schema.update.enabled | bool | `true` |  |
+| temporal.extraEnv[0].name | string | `"SQL_TLS_ENABLED"` |  |
+| temporal.extraEnv[0].value | string | `"true"` |  |
+| temporal.extraEnv[1].name | string | `"POSTGRES_TLS_ENABLED"` |  |
+| temporal.extraEnv[1].value | string | `"true"` |  |
+| temporal.extraEnv[2].name | string | `"POSTGRES_TLS_DISABLE_HOST_VERIFICATION"` |  |
+| temporal.extraEnv[2].value | string | `"true"` |  |
