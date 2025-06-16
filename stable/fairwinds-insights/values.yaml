@@ -862,13 +862,21 @@ temporal:
         value: /etc/temporal/tls/tls.crt
       - name: TEMPORAL_PG_TLS_KEY_FILE
         value: /etc/temporal/tls/tls.key
-      - name: TEMPORAL_SQL_TLS_ENABLED
+      - name: TEMPORAL_PG_TLS_ENABLED
         value: "true"
+      - name: TEMPORAL_PG_TLS_DISABLE_HOST_VERIFICATION
+        value: "true"
+      - name: TEMPORAL_POSTGRES_TLS_CERT_FILE
+        value: /etc/temporal/tls/tls.crt
+      - name: TEMPORAL_POSTGRES_TLS_KEY_FILE
+        value: /etc/temporal/tls/tls.key
       - name: TEMPORAL_POSTGRES_TLS_ENABLED
         value: "true"
-      - name: TEMPORAL_SQL_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
       - name: TEMPORAL_POSTGRES_TLS_DISABLE_HOST_VERIFICATION
+        value: "true"
+      - name: TEMPORAL_SQL_TLS_ENABLED
+        value: "true"
+      - name: TEMPORAL_SQL_TLS_DISABLE_HOST_VERIFICATION
         value: "true"
   schema:
     createDatabase:
