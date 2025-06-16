@@ -877,3 +877,10 @@ temporal:
       enabled: true
     update:
       enabled: true
+  extraEnv:
+    - name: SQL_TLS_ENABLED
+      value: "true"
+    - name: POSTGRES_TLS_ENABLED
+      value: "true"
+    - name: POSTGRES_TLS_DISABLE_HOST_VERIFICATION
+      value: "true"
