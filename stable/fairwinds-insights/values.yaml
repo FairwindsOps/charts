@@ -849,6 +849,7 @@ temporal:
       - name: secret-with-certs
         secret:
           secretName: fwinsights-postgresql-ca
+          defaultMode: 0600
 
     additionalVolumeMounts:
       - name: secret-with-certs
