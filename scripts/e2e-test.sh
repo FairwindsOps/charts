@@ -38,7 +38,8 @@ pre_test_script () {
 
 run_tests () {
     printf "Running e2e tests...\n"
-    ct install --config scripts/ct.yaml --debug --print-config --namespace fwinsights --release-name insights --upgrade --helm-extra-args "--timeout 600s --create-namespace"
+    kubectl create namespace fwinsights
+    ct install --config scripts/ct.yaml --debug --print-config --namespace fwinsights --release-name insights --upgrade --helm-extra-args "--timeout 600s"
 }
 
 if [ "$OPERATION" = "setup" ]; then
