@@ -814,7 +814,6 @@ temporal:
             existingSecret: fwinsights-postgresql
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
             # it has a single key called `password`
-            # existingSecret: temporal-default-store
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
@@ -836,7 +835,6 @@ temporal:
             existingSecret: fwinsights-postgresql
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
             # it has a single key called `password`
-            # existingSecret: temporal-visibility-store
             maxConns: 20
             maxIdleConns: 20
             maxConnLifetime: "1h"
@@ -857,53 +855,6 @@ temporal:
         mountPath: "/etc/temporal/tls"
         readOnly: true
 
-    additionalEnv:
-      - name: SQL_PLUGIN
-        value: "postgres12"
-      - name: SQL_HOST
-        value: "insights-postgresql"
-      - name: SQL_PORT
-        value: "5432"
-      - name: SQL_DATABASE
-        value: "temporal"
-      - name: SQL_USER
-        value: "postgres"
-      - name: SQL_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: fwinsights-postgresql
-            key: postgresql-password
-      - name: SQL_TLS
-        value: "true"
-      - name: SQL_TLS_CERT_FILE
-        value: /etc/temporal/tls/tls.crt
-      - name: SQL_TLS_KEY_FILE
-        value: /etc/temporal/tls/tls.key
-      - name: SQL_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
-      - name: TEMPORAL_SQL_PLUGIN
-        value: "postgres12"
-      - name: TEMPORAL_SQL_HOST
-        value: "insights-postgresql"
-      - name: TEMPORAL_SQL_PORT
-        value: "5432"
-      - name: TEMPORAL_SQL_DATABASE
-        value: "temporal"
-      - name: TEMPORAL_SQL_USER
-        value: "postgres"
-      - name: TEMPORAL_SQL_PASSWORD
-        valueFrom:
-          secretKeyRef:
-            name: fwinsights-postgresql
-            key: postgresql-password
-      - name: TEMPORAL_SQL_TLS
-        value: "true"
-      - name: TEMPORAL_SQL_TLS_CERT_FILE
-        value: /etc/temporal/tls/tls.crt
-      - name: TEMPORAL_SQL_TLS_KEY_FILE
-        value: /etc/temporal/tls/tls.key
-      - name: TEMPORAL_SQL_TLS_DISABLE_HOST_VERIFICATION
-        value: "true"
   schema:
     createDatabase:
       enabled: true
