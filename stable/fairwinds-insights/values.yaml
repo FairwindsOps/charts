@@ -70,6 +70,9 @@ options:
     # requests should always match limits here, so we don't separate them
     cpu: 1000m
     memory: 1Gi
+  temporal:
+    hostPort: localhost:7233
+    namespace: default
 
 cronjobOptions:
   # -- Default security context for cronjobs
@@ -721,7 +724,7 @@ automatedPullRequestJob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
-  # topologySpreadConstraints -- Default TopologySpreadConstraints for the autoamtedPullRequestJob Deployment.
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the automatedPullRequestJob Deployment.
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: topology.kubernetes.io/zone
