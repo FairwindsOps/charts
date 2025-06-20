@@ -38,7 +38,6 @@ pre_test_script () {
 
 run_tests () {
     printf "Running e2e tests...\n"
-    kubectl create namespace fwinsights
     ct install --config scripts/ct.yaml --debug --print-config --upgrade --helm-extra-args "--timeout 600s"
 }
 
