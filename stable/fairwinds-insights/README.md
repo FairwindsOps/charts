@@ -37,6 +37,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.overprovisioning.enabled | bool | `false` |  |
 | options.overprovisioning.cpu | string | `"1000m"` |  |
 | options.overprovisioning.memory | string | `"1Gi"` |  |
+| options.temporal.hostPort | string | `"localhost:7233"` |  |
+| options.temporal.namespace | string | `"default"` |  |
 | cronjobOptions.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | Default security context for cronjobs |
 | cronjobOptions.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Default resources for cronjobs |
 | cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *"}` | Options for the action-items filters refresher job. |
