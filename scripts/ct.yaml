@@ -12,3 +12,4 @@ chart-repos:
   - "prometheus-community=https://prometheus-community.github.io/helm-charts"
   - "falcosecurity=https://falcosecurity.github.io/charts"
   - "metrics-server=https://kubernetes-sigs.github.io/metrics-server"
+  - "temporal=https://go.temporal.io/helm-charts"
