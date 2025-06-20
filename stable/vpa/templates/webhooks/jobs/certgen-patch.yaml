@@ -17,6 +17,10 @@ spec:
       labels:
         app.kubernetes.io/component: admission-certgen
         {{- include "vpa.labels" . | nindent 8 }}
+      {{- with .Values.admissionController.certGen.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       restartPolicy: OnFailure
       serviceAccountName: {{ include "vpa.fullname" . }}-admission-certgen

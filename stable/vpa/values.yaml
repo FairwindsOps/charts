@@ -219,6 +219,8 @@ admissionController:
       pullPolicy: Always
     # admissionController.certGen.env -- Additional environment variables to be added to the certgen container. Format is KEY: Value format
     env: {}
+    # admissionController.certGen.podAnnotations -- Annotations to add to the certgen pod
+    podAnnotations: {}
     # admissionController.certGen.resources -- The resources block for the certgen pod
     resources: {}
     # admissionController.certGen.podSecurityContext -- The securityContext block for the certgen pod(s)
