@@ -71,7 +71,7 @@ options:
     cpu: 1000m
     memory: 1Gi
   temporal:
-    hostPort: localhost:7233
+    hostPort: insights-temporal-frontend:7233
     namespace: default
 
 cronjobOptions:
@@ -480,6 +480,7 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  fullnameOverride: insights-postgresql
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
@@ -789,6 +790,7 @@ repoScanJob:
 
 temporal:
   enabled: true
+  fullnameOverride: insights-temporal
   cassandra:
     enabled: false
   prometheus:

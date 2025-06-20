@@ -18,7 +18,6 @@ deployments:
     pod-foo: pod-bar
 
 postgresql:
-  fullnameOverride: insights-postgresql
   auth:
     password: "changeme"
 
