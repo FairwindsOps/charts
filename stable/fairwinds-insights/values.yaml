@@ -786,7 +786,7 @@ repoScanJob:
           app.kubernetes.io/name: fairwinds-insights
 
 temporal:
-  enabled: true
+  enabled: false
   fullnameOverride: insights-temporal
   cassandra:
     enabled: false
