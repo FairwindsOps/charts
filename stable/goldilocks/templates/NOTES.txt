@@ -15,6 +15,6 @@
   export SERVICE_IP=$(kubectl get svc --namespace {{ .Release.Namespace }} {{ include "goldilocks.fullname" . }} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   echo http://$SERVICE_IP:{{ .Values.dashboard.service.port }}
 {{- else if contains "ClusterIP" .Values.dashboard.service.type }}
-  kubectl -n goldilocks port-forward svc/goldilocks-dashboard 8080:80
+  kubectl -n {{ .Release.Namespace }} port-forward svc/goldilocks-dashboard 8080:80
   echo "Visit http://127.0.0.1:8080 to use your application"  
 {{- end }}
