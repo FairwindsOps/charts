@@ -37,8 +37,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.overprovisioning.enabled | bool | `false` |  |
 | options.overprovisioning.cpu | string | `"1000m"` |  |
 | options.overprovisioning.memory | string | `"1Gi"` |  |
-| options.temporal.hostPort | string | `"insights-temporal-frontend:7233"` |  |
-| options.temporal.namespace | string | `"default"` |  |
 | cronjobOptions.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | Default security context for cronjobs |
 | cronjobOptions.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Default resources for cronjobs |
 | cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *"}` | Options for the action-items filters refresher job. |
@@ -299,7 +297,38 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
-| temporal.enabled | bool | `true` |  |
+| temporalWorker.enabled | bool | `true` |  |
+| temporalWorker.pdb.enabled | bool | `true` |  |
+| temporalWorker.pdb.minReplicas | int | `1` |  |
+| temporalWorker.hpa.enabled | bool | `true` |  |
+| temporalWorker.hpa.min | int | `1` |  |
+| temporalWorker.hpa.max | int | `2` |  |
+| temporalWorker.hpa.metrics[0].type | string | `"Resource"` |  |
+| temporalWorker.hpa.metrics[0].resource.name | string | `"cpu"` |  |
+| temporalWorker.hpa.metrics[0].resource.target.type | string | `"Utilization"` |  |
+| temporalWorker.hpa.metrics[0].resource.target.averageUtilization | int | `75` |  |
+| temporalWorker.hpa.metrics[1].type | string | `"Resource"` |  |
+| temporalWorker.hpa.metrics[1].resource.name | string | `"memory"` |  |
+| temporalWorker.hpa.metrics[1].resource.target.type | string | `"Utilization"` |  |
+| temporalWorker.hpa.metrics[1].resource.target.averageUtilization | int | `75` |  |
+| temporalWorker.resources.limits.cpu | string | `"500m"` |  |
+| temporalWorker.resources.limits.memory | string | `"1024Mi"` |  |
+| temporalWorker.resources.requests.cpu | string | `"80m"` |  |
+| temporalWorker.resources.requests.memory | string | `"128Mi"` |  |
+| temporalWorker.nodeSelector | object | `{}` |  |
+| temporalWorker.tolerations | list | `[]` |  |
+| temporalWorker.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| temporalWorker.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| temporalWorker.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| temporalWorker.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"temporal-worker"` |  |
+| temporalWorker.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| temporalWorker.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| temporalWorker.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| temporalWorker.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| temporalWorker.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"temporal-worker"` |  |
+| temporalWorker.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| temporalWorker.terminationGracePeriodSeconds | int | `600` |  |
+| temporal.enabled | bool | `false` |  |
 | temporal.fullnameOverride | string | `"insights-temporal"` |  |
 | temporal.cassandra.enabled | bool | `false` |  |
 | temporal.prometheus.enabled | bool | `false` |  |
@@ -343,6 +372,3 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.additionalVolumeMounts[0].name | string | `"secret-with-certs"` |  |
 | temporal.server.additionalVolumeMounts[0].mountPath | string | `"/etc/temporal/tls"` |  |
 | temporal.server.additionalVolumeMounts[0].readOnly | bool | `true` |  |
-| temporal.schema.createDatabase.enabled | bool | `true` |  |
-| temporal.schema.setup.enabled | bool | `true` |  |
-| temporal.schema.update.enabled | bool | `true` |  |
