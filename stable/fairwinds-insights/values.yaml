@@ -70,9 +70,6 @@ options:
     # requests should always match limits here, so we don't separate them
     cpu: 1000m
     memory: 1Gi
-  temporal:
-    hostPort: insights-temporal-frontend:7233
-    namespace: default
 
 cronjobOptions:
   # -- Default security context for cronjobs
@@ -789,7 +786,7 @@ repoScanJob:
           app.kubernetes.io/name: fairwinds-insights
 
 temporal:
-  enabled: true
+  enabled: false
   fullnameOverride: insights-temporal
   cassandra:
     enabled: false
@@ -860,11 +857,3 @@ temporal:
       - name: secret-with-certs
         mountPath: "/etc/temporal/tls"
         readOnly: true
-
-  schema:
-    createDatabase:
-      enabled: true
-    setup:
-      enabled: true
-    update:
-      enabled: true
