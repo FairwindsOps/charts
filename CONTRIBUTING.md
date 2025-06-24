@@ -3,7 +3,7 @@
 ## Guidelines on Contributing
 
 * Lint your changes:
-  * `docker run --rm -it -v ${PWD}:/charts -w /charts quay.io/helmpack/chart-testing:v2.4.0 ct lint --chart-yaml-schema scripts/schema.yaml --chart-dirs incubator --chart-dirs stable`
+  * `docker run --rm -it -v ${PWD}:/charts -w /charts quay.io/helmpack/chart-testing:v2.5.0 ct lint --chart-yaml-schema scripts/schema.yaml --chart-dirs incubator --chart-dirs stable`
 * End-to-end test your changes:
   * Install [kind 0.7.0+](https://github.com/kubernetes-sigs/kind/releases)
   * Install [chart-testing (ct)](https://github.com/helm/chart-testing/releases)
