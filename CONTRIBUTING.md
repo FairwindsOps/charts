@@ -10,7 +10,7 @@
     quay.io/helmpack/chart-testing:v3.13.0 \
     /bin/sh -c \
     "git config --global --add safe.directory /charts && \
-    ct lint --chart-yaml-schema scripts/schema.yaml \
+    ct lint --target-branch master --chart-yaml-schema scripts/schema.yaml \
     --chart-dirs incubator --chart-dirs stable"
   ```
   > The `git config` command prevents "detected dubious ownership in repository" errors.
