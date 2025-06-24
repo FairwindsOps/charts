@@ -11,7 +11,7 @@
     /bin/sh -c \
     "git config --global --add safe.directory /charts && \
     ct lint --target-branch master --chart-yaml-schema scripts/schema.yaml \
-    --chart-dirs incubator --chart-dirs stable"
+    --config=scripts/ct.yaml --chart-dirs incubator --chart-dirs stable"
   ```
   > The `git config` command prevents "detected dubious ownership in repository" errors.
 * End-to-end test your changes:
