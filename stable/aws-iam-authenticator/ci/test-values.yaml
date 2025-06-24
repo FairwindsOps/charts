@@ -35,3 +35,10 @@ configMap:
     mapAccounts:
     - "012345678901"
     - "456789012345"
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: extra-configmap
+    data:
+      key: value

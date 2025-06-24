@@ -238,3 +238,4 @@ recommender:
 | tests.image.pullPolicy | string | `"Always"` | The pull policy for the tests image. |
 | metrics-server | object | `{"enabled":false}` | configuration options for the [metrics server Helm chart](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server). See the projects [README.md](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server#configuration) for all available options |
 | metrics-server.enabled | bool | `false` | Whether or not the metrics server Helm chart should be installed |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

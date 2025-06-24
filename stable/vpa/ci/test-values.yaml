@@ -93,3 +93,10 @@ metrics-server:
     insecureSkipTLSVerify: true
   args:
     - "--kubelet-insecure-tls"
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: extra-configmap
+    data:
+      key: value

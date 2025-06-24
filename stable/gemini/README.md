@@ -48,3 +48,4 @@ before upgrading, and add `--skip-crds` when running `helm install`.
 | affinity | object | `{}` | Pod affinity and pod anti-affinity allow you to specify rules about how pods should be placed relative to other pods. |
 | additionalPodLabels | object | `{}` | Additional labels added on pod |
 | additionalPodAnnotations | object | `{}` | Additional annotations added on pod |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

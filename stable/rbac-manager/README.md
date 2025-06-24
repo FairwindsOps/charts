@@ -77,3 +77,4 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 | serviceMonitor.namespace | string | `""` | The namespace to deploy the serviceMonitor into |
 | serviceMonitor.interval | string | `"60s"` | How often to scrape the metrics endpoint |
 | serviceMonitor.relabelings | list | `[]` | RelabelConfigs to apply to samples before scraping |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

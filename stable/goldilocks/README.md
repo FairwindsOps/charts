@@ -125,3 +125,4 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.tolerations | list | `[]` |  |
 | dashboard.affinity | object | `{}` |  |
 | dashboard.topologySpreadConstraints | list | `[]` | Topology spread constraints for the dashboard pods |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |
