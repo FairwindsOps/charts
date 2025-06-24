@@ -3,7 +3,17 @@
 ## Guidelines on Contributing
 
 * Lint your changes:
-  * `docker run --rm -it -v ${PWD}:/charts -w /charts quay.io/helmpack/chart-testing:v3.13.0 ct lint --chart-yaml-schema scripts/schema.yaml --chart-dirs incubator --chart-dirs stable`
+  ```
+  docker run --rm -it \
+    -v ${PWD}:/charts \
+    -w /charts \
+    quay.io/helmpack/chart-testing:v3.13.0 \
+    /bin/sh -c \
+    "git config --global --add safe.directory /charts && \
+    ct lint --chart-yaml-schema scripts/schema.yaml \
+    --chart-dirs incubator --chart-dirs stable"
+  ```
+  > The `git config` command prevents "detected dubious ownership in repository" errors.
 * End-to-end test your changes:
   * Install [kind 0.7.0+](https://github.com/kubernetes-sigs/kind/releases)
   * Install [chart-testing (ct)](https://github.com/helm/chart-testing/releases)
