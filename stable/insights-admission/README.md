@@ -102,3 +102,4 @@ rules:
 | certManagerApiVersion | string | `""` | If secretName is empty, we assume that you use cert-manager to provision the admission controller certificates. This allows pinning the apiVersion rather than using helm capabilities detection. Useful for gitops tools such as ArgoCD |
 | polaris.config | string | `nil` | Configuration for Polaris |
 | test | object | `{"enabled":false,"image":{"repository":"python","tag":"3.10-alpine"}}` | Used for chart CI only - deploys a test deployment |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

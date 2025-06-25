@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.7.0
+* added `extraManifests` for extra resources deployment
+
 ## 4.6.6
 * bumped kyverno to 0.4
 

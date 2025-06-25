@@ -20,3 +20,4 @@ We recommend installing gke-node-termination-handler in its own namespace.
 | args | list | `["-v=10","--logtostderr","--exclude-pods=$(POD_NAME):$(POD_NAMESPACE)","--taint=cloud.google.com/impending-node-termination::NoSchedule"]` | Command arguments. Usually you don't need to override them. |
 | extraArgs | list | `[]` | Extra arguments for command. For example, "--system-pod-grace-period=14s" to wait for 14s for regular pods to terminate. |
 | env | object | `{"SLACK_WEBHOOK_URL":""}` | Extra environment variables. For example "SLACK_WEBHOOK_URL" |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

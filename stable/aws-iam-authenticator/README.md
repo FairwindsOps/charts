@@ -25,3 +25,4 @@ In this version, due to updates for Kubernetes 1.16+, the labelSelector for the 
 | resources.requests.cpu | string | `"10m"` |  |
 | resources.limits.memory | string | `"20Mi"` |  |
 | resources.limits.cpu | string | `"100m"` |  |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

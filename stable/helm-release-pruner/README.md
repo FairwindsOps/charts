@@ -64,3 +64,4 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | rbac_manager.namespaceLabel | string | `""` | Label to match namespaces to grant access to |
 | fullnameOverride | string | `""` | A template override for fullname |
 | nameOverride | string | `""` | A template override for name |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

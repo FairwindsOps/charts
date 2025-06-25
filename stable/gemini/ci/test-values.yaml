@@ -1,1 +1,8 @@
 testMode: true
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: extra-configmap
+    data:
+      key: value

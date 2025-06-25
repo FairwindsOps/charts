@@ -55,3 +55,4 @@ Kubernetes 1.11+, Helm 2.13+
 | dryRun | bool | `false` | When set to true monitors will not be managed in datadog. |
 | custom_config.enabled | bool | `false` | If true a custom configuration must be specified in `custom_config.data`. |
 | custom_config.data | string | "" | An astro configuration file. See the [Astro repo readme](https://github.com/fairwindsops/astro) for more details. |
+| extraManifests | list | `[]` | A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart |

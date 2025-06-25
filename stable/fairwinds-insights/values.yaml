@@ -782,3 +782,12 @@ repoScanJob:
         matchLabels:
           app.kubernetes.io/component: repo-scan-job
           app.kubernetes.io/name: fairwinds-insights
+
+# extraManifests -- A list of extra manifests to be installed with this chart. This is useful for installing additional resources that are not part of the chart
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: extra-configmap
+  #   data:
+  #     key: value

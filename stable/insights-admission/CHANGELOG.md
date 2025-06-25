@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.0
+* added `extraManifests` for extra resources deployment
+
 ## 1.10.2
 * Add GKE instructions
 

@@ -21,3 +21,10 @@ serviceAccount:
 webhookConfig:
   annotations:
     "test-annotation": "test-annotation-value"
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: extra-configmap
+    data:
+      key: value

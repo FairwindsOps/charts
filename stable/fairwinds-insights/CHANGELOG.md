@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.11.0
+* added `extraManifests` for extra resources deployment
+
 ## 2.10.6
 * revert openapi bump
 

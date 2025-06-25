@@ -9,3 +9,10 @@ pruneProfiles:
   helmReleaseFilter: "^fwinsights-"
   namespaceFilter: "^fwinsights-"
   maxReleasesToKeep: 40
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: extra-configmap
+    data:
+      key: value

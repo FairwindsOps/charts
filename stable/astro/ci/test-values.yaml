@@ -289,3 +289,10 @@ custom_config:
             thresholds:
               critical: 3
             locked: false
+extraManifests:
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: extra-configmap
+    data:
+      key: value
