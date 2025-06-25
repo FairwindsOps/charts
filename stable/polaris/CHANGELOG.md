@@ -5,6 +5,9 @@ All notable changes to this Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this chart adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 5.19.0
+* added `extraManifests` for extra resources deployment
+
 ## 5.17.0
 * Removed the switch for networking apiVersion and default to networking/v1
 
