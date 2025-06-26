@@ -10,9 +10,9 @@ references:
       command: |
         echo 'export CI_SHA1=$CIRCLE_SHA1' >> ${BASH_ENV}
         echo 'Install AWS CLI'
-        pip install awscli
+        apk --no-cache add aws-cli
         echo 'Install needed packages'
-        apk --update add bash jq curl yq
+        apk --no-cache add bash jq curl yq
 
   check_changelog: &check_changelog
     run:
@@ -39,7 +39,7 @@ references:
   kind_configuration_helm3: &kind_configuration_helm3
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
-    command_runner_image: quay.io/helmpack/chart-testing:v3.8.0
+    command_runner_image: quay.io/helmpack/chart-testing:v3.13.0
     requires:
       - lint-scripts
       - lint-charts
@@ -97,7 +97,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.8.0
+      - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
       - checkout
       - *setup_environment
@@ -106,11 +106,11 @@ jobs:
           command: |
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
-            ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug
+            ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug --print-config
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.8.0
+      - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
       - checkout
       - *setup_environment

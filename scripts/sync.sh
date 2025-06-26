@@ -22,6 +22,7 @@ readonly HELM_URL=https://get.helm.sh
 readonly HELM_TARBALL=helm-v3.16.1-linux-amd64.tar.gz
 readonly STABLE_REPO_URL=https://charts.fairwinds.com/stable/
 readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
+readonly TEMPORAL_REPO_URL=https://go.temporal.io/helm-charts/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io
 readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
 readonly MINIO_REPO_URL=https://charts.min.io/
@@ -62,6 +63,7 @@ setup_helm_client() {
 	helm repo add minio "$MINIO_REPO_URL"
 	helm repo add falco "$FALCO_REPO_URL"
 	helm repo add metrics-server "$METRICS_SERVER_REPO_URL"
+	helm repo add temporal "$TEMPORAL_REPO_URL"
 }
 
 authenticate() {

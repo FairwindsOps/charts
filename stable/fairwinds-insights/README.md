@@ -144,6 +144,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
+| postgresql.fullnameOverride | string | `"insights-postgresql"` |  |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
 | postgresql.image.registry | string | `"quay.io"` |  |
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
@@ -151,6 +152,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
+| postgresql.postgresqlHost | string | `"insights-postgresql"` |  |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
 | postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
@@ -295,3 +297,47 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| temporal.enabled | bool | `false` |  |
+| temporal.fullnameOverride | string | `"insights-temporal"` |  |
+| temporal.cassandra.enabled | bool | `false` |  |
+| temporal.prometheus.enabled | bool | `false` |  |
+| temporal.elasticsearch.enabled | bool | `false` |  |
+| temporal.grafana.enabled | bool | `false` |  |
+| temporal.mysql.enabled | bool | `false` |  |
+| temporal.postgresql.enabled | bool | `true` |  |
+| temporal.server.replicaCount | int | `1` |  |
+| temporal.server.config.logLevel | string | `"debug"` |  |
+| temporal.server.config.persistence.default.driver | string | `"sql"` |  |
+| temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
+| temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |
+| temporal.server.config.persistence.default.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.default.sql.port | int | `5432` |  |
+| temporal.server.config.persistence.default.sql.user | string | `"postgres"` |  |
+| temporal.server.config.persistence.default.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
+| temporal.server.config.persistence.default.sql.maxConns | int | `20` |  |
+| temporal.server.config.persistence.default.sql.maxIdleConns | int | `20` |  |
+| temporal.server.config.persistence.default.sql.maxConnLifetime | string | `"1h"` |  |
+| temporal.server.config.persistence.default.sql.tls.enabled | bool | `true` |  |
+| temporal.server.config.persistence.default.sql.tls.enableHostVerification | bool | `false` |  |
+| temporal.server.config.persistence.default.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
+| temporal.server.config.persistence.default.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
+| temporal.server.config.persistence.visibility.driver | string | `"sql"` |  |
+| temporal.server.config.persistence.visibility.sql.driver | string | `"postgres12"` |  |
+| temporal.server.config.persistence.visibility.sql.database | string | `"temporal_visibility"` |  |
+| temporal.server.config.persistence.visibility.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.visibility.sql.port | int | `5432` |  |
+| temporal.server.config.persistence.visibility.sql.user | string | `"postgres"` |  |
+| temporal.server.config.persistence.visibility.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
+| temporal.server.config.persistence.visibility.sql.maxConns | int | `20` |  |
+| temporal.server.config.persistence.visibility.sql.maxIdleConns | int | `20` |  |
+| temporal.server.config.persistence.visibility.sql.maxConnLifetime | string | `"1h"` |  |
+| temporal.server.config.persistence.visibility.sql.tls.enabled | bool | `true` |  |
+| temporal.server.config.persistence.visibility.sql.tls.enableHostVerification | bool | `false` |  |
+| temporal.server.config.persistence.visibility.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
+| temporal.server.config.persistence.visibility.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
+| temporal.server.additionalVolumes[0].name | string | `"secret-with-certs"` |  |
+| temporal.server.additionalVolumes[0].secret.secretName | string | `"fwinsights-postgresql-ca"` |  |
+| temporal.server.additionalVolumes[0].secret.defaultMode | int | `384` |  |
+| temporal.server.additionalVolumeMounts[0].name | string | `"secret-with-certs"` |  |
+| temporal.server.additionalVolumeMounts[0].mountPath | string | `"/etc/temporal/tls"` |  |
+| temporal.server.additionalVolumeMounts[0].readOnly | bool | `true` |  |
