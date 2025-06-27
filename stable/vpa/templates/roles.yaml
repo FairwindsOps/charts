@@ -4,7 +4,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: system:leader-locking-{{ include "vpa.serviceAccountName" . }}-updater
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-system
 rules:
   - apiGroups:
       - "coordination.k8s.io"
@@ -27,7 +27,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: system:leader-locking-{{ include "vpa.serviceAccountName" . }}-updater
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
@@ -41,7 +41,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
   name: system:leader-locking-{{ include "vpa.serviceAccountName" . }}-recommender
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-system
 rules:
   - apiGroups:
       - "coordination.k8s.io"
@@ -66,7 +66,7 @@ apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
   name: system:leader-locking-{{ include "vpa.serviceAccountName" . }}-recommender
-  namespace: {{ .Release.Namespace }}
+  namespace: kube-system
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: Role
