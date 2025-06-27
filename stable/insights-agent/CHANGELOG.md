@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.6.7
+* fix falco.tolerations
+
 ## 4.6.6
 * bumped kyverno to 0.4
 
