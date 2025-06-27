@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.7.0
+* add `on-demand-job-runner` workload
+* fix falco.tolerations typo
+* update trivy-plugin to 0.32
+
 ## 4.6.6
 * bumped kyverno to 0.4
 

@@ -1,0 +1,74 @@
+{{- if .Values.onDemandJobRunner.enabled -}}
+{{- $_ := set . "Label" "on-demand-job-runner" }}
+{{- $_ := set . "Config" .Values.onDemandJobRunner }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  {{- include "metadata" . }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Label }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Label }}
+    {{- if .Values.onDemandJobRunner.podAnnotations }}
+      annotations:
+        {{ toYaml .Values.onDemandJobRunner.podAnnotations | indent 8 }}
+    {{- end }}
+    spec:
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}-sa
+      securityContext:
+        {{- toYaml .Values.onDemandJobRunner.podSecurityContext | nindent 8 }}
+    {{- if .Values.onDemandJobRunner.priorityClassName }}
+      priorityClassName: {{ .Values.onDemandJobRunner.priorityClassName }}
+    {{- end }}
+    {{- with .Values.onDemandJobRunner.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 6 }}
+     {{- end }}
+      containers:
+      - name: {{ .Label }}
+        env:
+        {{ include "proxy-env-spec" . | indent 8 | trim }}
+        {{- range $key, $value := .Values.onDemandJobRunner.env }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        - name: HOST
+          value: {{ .Values.insights.host | quote }}
+        - name: ORGANIZATION
+          value: {{ .Values.insights.organization | quote }}
+        - name: CLUSTER
+          value: {{ .Values.insights.cluster | quote }}
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+              name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+              name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+              key: token
+      {{- if .Values.onDemandJobRunner.containerSecurityContext }}
+        securityContext:
+          {{- toYaml .Values.onDemandJobRunner.containerSecurityContext | nindent 12 }}
+      {{- end }}
+        imagePullPolicy: {{ .Values.onDemandJobRunner.image.pullPolicy }}
+        image: "{{ .Values.onDemandJobRunner.image.repository }}:{{ .Values.onDemandJobRunner.image.tag }}"
+        resources:
+        {{- toYaml .Values.onDemandJobRunner.resources | nindent 10 }}
+    {{- with .Values.onDemandJobRunner.affinity }}
+      affinity:
+        {{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.onDemandJobRunner.nodeSelector }}
+      nodeSelector:
+        {{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.onDemandJobRunner.tolerations }}
+      tolerations:
+        {{ toYaml . | indent 8 }}
+    {{- end }}
+{{- end -}}
