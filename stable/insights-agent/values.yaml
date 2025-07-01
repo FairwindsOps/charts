@@ -718,6 +718,9 @@ onDemandJobRunner:
     capabilities:
       drop:
         - ALL
+  annotations:
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
   tolerations: []
   resources:
     limits:
