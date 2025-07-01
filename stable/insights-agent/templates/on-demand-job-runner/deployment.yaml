@@ -13,10 +13,10 @@ spec:
     metadata:
       labels:
         app: {{ .Label }}
-    {{- if .Values.onDemandJobRunner.podAnnotations }}
+      {{- with .Values.onDemandJobRunner.podAnnotations }}
       annotations:
-        {{ toYaml .Values.onDemandJobRunner.podAnnotations | indent 8 }}
-    {{- end }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
     spec:
       serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}-sa
       securityContext:
@@ -26,8 +26,8 @@ spec:
     {{- end }}
     {{- with .Values.onDemandJobRunner.imagePullSecrets }}
       imagePullSecrets:
-        {{- toYaml . | nindent 6 }}
-     {{- end }}
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
       containers:
       - name: {{ .Label }}
         env:
@@ -51,24 +51,24 @@ spec:
               name: {{ include "insights-agent.fullname" . }}-token
               {{ end -}}
               key: token
-      {{- if .Values.onDemandJobRunner.containerSecurityContext }}
+        {{- with .Values.onDemandJobRunner.containerSecurityContext }}
         securityContext:
-          {{- toYaml .Values.onDemandJobRunner.containerSecurityContext | nindent 12 }}
-      {{- end }}
+          {{- toYaml . | nindent 12 }}
+        {{- end }}
         imagePullPolicy: {{ .Values.onDemandJobRunner.image.pullPolicy }}
         image: "{{ .Values.onDemandJobRunner.image.repository }}:{{ .Values.onDemandJobRunner.image.tag }}"
         resources:
         {{- toYaml .Values.onDemandJobRunner.resources | nindent 10 }}
     {{- with .Values.onDemandJobRunner.affinity }}
       affinity:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.onDemandJobRunner.nodeSelector }}
       nodeSelector:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
     {{- end }}
     {{- with .Values.onDemandJobRunner.tolerations }}
       tolerations:
-        {{ toYaml . | indent 8 }}
+        {{- toYaml . | nindent 8 }}
     {{- end }}
 {{- end -}}

@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.7.1
+* fix `on-demand-job-runner` templating and default values
+
 ## 4.7.0
 * add `on-demand-job-runner` workload
 * fix falco.tolerations typo
