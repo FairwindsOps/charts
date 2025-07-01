@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.1
+* Bump insights-agent version to `4.7.0`
+
 ## 3.0.0
 * Add `temporal` server
 
