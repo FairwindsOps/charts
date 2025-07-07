@@ -171,6 +171,13 @@ recommender:
 | recommender.tolerations | list | `[]` |  |
 | recommender.affinity | object | `{}` |  |
 | recommender.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the recommender |
+| recommender.metricsPort | int | `8942` | Port of the recommender where metrics can be received from |
+| recommender.networkPolicy | object | `{"annotations":{},"egress":[],"enabled":false,"ingress":[],"labels":{}}` | Network policy configuration for the recommender component |
+| recommender.networkPolicy.enabled | bool | `false` | If true, create a NetworkPolicy for the recommender |
+| recommender.networkPolicy.annotations | object | `{}` | Annotations to add to the NetworkPolicy |
+| recommender.networkPolicy.labels | object | `{}` | Labels to add to the NetworkPolicy |
+| recommender.networkPolicy.ingress | list | `[]` | Custom ingress rules for the NetworkPolicy |
+| recommender.networkPolicy.egress | list | `[]` | Custom egress rules for the NetworkPolicy |
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.annotations | object | `{}` | Annotations to add to the updater deployment |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater |
@@ -191,6 +198,13 @@ recommender:
 | updater.tolerations | list | `[]` |  |
 | updater.affinity | object | `{}` |  |
 | updater.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the updater |
+| updater.metricsPort | int | `8943` | Port of the updater where metrics can be received from |
+| updater.networkPolicy | object | `{"annotations":{},"egress":[],"enabled":false,"ingress":[],"labels":{}}` | Network policy configuration for the updater component |
+| updater.networkPolicy.enabled | bool | `false` | If true, create a NetworkPolicy for the updater |
+| updater.networkPolicy.annotations | object | `{}` | Annotations to add to the NetworkPolicy |
+| updater.networkPolicy.labels | object | `{}` | Labels to add to the NetworkPolicy |
+| updater.networkPolicy.ingress | list | `[]` | Custom ingress rules for the NetworkPolicy |
+| updater.networkPolicy.egress | list | `[]` | Custom egress rules for the NetworkPolicy |
 | admissionController.enabled | bool | `true` | If true, will install the admission-controller component of vpa |
 | admissionController.annotations | object | `{}` | Annotations to add to the admission controller deployment |
 | admissionController.extraArgs | object | `{}` | A key-value map of flags to pass to the admissionController |
@@ -232,6 +246,12 @@ recommender:
 | admissionController.useHostNetwork | bool | `false` | Whether to use host network, this is required on EKS with custom CNI |
 | admissionController.httpPort | int | `8000` | Port of the admission controller for the mutating webhooks |
 | admissionController.metricsPort | int | `8944` | Port of the admission controller where metrics can be received from |
+| admissionController.networkPolicy | object | `{"annotations":{},"egress":[],"enabled":false,"ingress":[],"labels":{}}` | Network policy configuration for the admission controller component |
+| admissionController.networkPolicy.enabled | bool | `false` | If true, create a NetworkPolicy for the admission controller |
+| admissionController.networkPolicy.annotations | object | `{}` | Annotations to add to the NetworkPolicy |
+| admissionController.networkPolicy.labels | object | `{}` | Labels to add to the NetworkPolicy |
+| admissionController.networkPolicy.ingress | list | `[]` | Custom ingress rules for the NetworkPolicy (default allows access from anywhere to webhook port) |
+| admissionController.networkPolicy.egress | list | `[]` | Custom egress rules for the NetworkPolicy |
 | tests.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The security context for the containers run as helm hook tests |
 | tests.image.repository | string | `"bitnami/kubectl"` | An image used for testing containing bash, cat and kubectl |
 | tests.image.tag | string | `""` | An image tag for the tests image |

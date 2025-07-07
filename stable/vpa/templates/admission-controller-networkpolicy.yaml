@@ -1,0 +1,31 @@
+{{- if and .Values.admissionController.enabled .Values.admissionController.networkPolicy.enabled }}
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: {{ include "vpa.fullname" . }}-admission-controller
+  labels:
+    app.kubernetes.io/component: admission-controller
+    {{- include "vpa.labels" . | nindent 4 }}
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/component: admission-controller
+      {{- include "vpa.selectorLabels" . | nindent 6 }}
+  policyTypes:
+    - Ingress
+    {{- if .Values.admissionController.networkPolicy.egress }}
+    - Egress
+    {{- end }}
+  ingress:
+    {{- if .Values.admissionController.networkPolicy.ingress }}
+    {{- toYaml .Values.admissionController.networkPolicy.ingress | nindent 4 }}
+    {{- else }}
+    - ports:
+      - protocol: TCP
+        port: {{ .Values.admissionController.httpPort | default 8000 }}
+    {{- end }}
+  {{- if .Values.admissionController.networkPolicy.egress }}
+  egress:
+    {{- toYaml .Values.admissionController.networkPolicy.egress | nindent 4 }}
+  {{- end }}
+{{- end }}
