@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.0
+* remove support to OPA v1
+
 ## 1.10.2
 * Add GKE instructions
 
