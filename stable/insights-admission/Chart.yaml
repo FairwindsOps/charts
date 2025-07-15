@@ -3,7 +3,7 @@ name: insights-admission
 description: A Validating Webhook Admission Controller that utilizes Fairwinds Insights.
 type: application
 version: 1.10.2
-appVersion: "1.18"
+appVersion: "2.0"
 kubeVersion: ">= 1.22.0-0"
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insights-admission/icon.png
 maintainers:
