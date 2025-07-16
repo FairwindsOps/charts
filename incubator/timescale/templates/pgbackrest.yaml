@@ -17,7 +17,7 @@ spec:
     protocol: TCP
   selector:
     app: {{ template "timescaledb.fullname" . }}
-    role: master
+    role: primary
     cluster-name: {{ template "clusterName" . }}
 ...
 {{- range .Values.backup.jobs }}
