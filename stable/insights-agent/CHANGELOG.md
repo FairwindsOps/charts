@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.8.0
+* Remove support to OPA v1
+
 ## 4.7.1
 * fix `on-demand-job-runner` templating and default values
 
