@@ -200,4 +200,5 @@ env:
   value: {{ $.Values.cronjobImage.repository | quote }}
 - name: CRON_JOB_IMAGE_TAG
   value: {{ include "fairwinds-insights.cronjobImageTag" $ | quote }}
+
 {{ end }}

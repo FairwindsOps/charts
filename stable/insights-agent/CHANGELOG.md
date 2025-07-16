@@ -1,5 +1,16 @@
 # Changelog
 
+## 4.8.0
+* Remove support to OPA v1
+
+## 4.7.1
+* fix `on-demand-job-runner` templating and default values
+
+## 4.7.0
+* add `on-demand-job-runner` workload
+* fix falco.tolerations typo
+* update trivy-plugin to 0.32
+
 ## 4.6.6
 * bumped kyverno to 0.4
 
