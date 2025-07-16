@@ -129,7 +129,7 @@ goldilocks:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
-    tag: "v4.13"
+    tag: "v4.14"
   controller:
     flags:
       on-by-default: true
@@ -161,7 +161,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "2.6"
+    tag: "3.0"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -308,7 +308,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.21"
+    tag: "v5.22"
   resources:
     requests:
       cpu: 100m
