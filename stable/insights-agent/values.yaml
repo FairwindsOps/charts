@@ -293,7 +293,7 @@ trivy:
     TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1,public.ecr.aws/aquasecurity/trivy-java-db:1,docker.io/aquasec/trivy-java-db:1
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.31"
+    tag: "0.32"
   serviceAccount:
     annotations:
   resources:
@@ -692,10 +692,40 @@ kyverno:
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/kyverno
-    tag: "0.3"
+    tag: "0.4"
   resources:
     requests:
       cpu: 100m
       memory: 128Mi
   timeout: 300
   mountTmp: true
+
+onDemandJobRunner:
+  enabled: true
+  image:
+    repository: quay.io/fairwinds/on-demand-job-runner
+    tag: "0.1"
+    pullPolicy: Always
+  podSecurityContext:
+    fsGroup: 101
+    runAsUser: 1200
+    runAsNonRoot: true
+  containerSecurityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    runAsNonRoot: true
+    runAsUser: 1200
+    capabilities:
+      drop:
+        - ALL
+  annotations:
+    polaris.fairwinds.com/livenessProbeMissing-exempt: "true"
+    polaris.fairwinds.com/readinessProbeMissing-exempt: "true"
+  tolerations: []
+  resources:
+    limits:
+      cpu: 250m
+      memory: 256Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi

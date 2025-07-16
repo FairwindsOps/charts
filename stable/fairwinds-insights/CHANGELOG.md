@@ -1,5 +1,17 @@
 # Changelog
 
+## 3.0.1
+* Bump insights-agent version to `4.7.0`
+
+## 3.0.0
+* Add `temporal` server
+
+## 2.10.6
+* revert openapi bump
+
+## 2.10.5
+* Bumped openapi to v5.24.1
+
 ## 2.10.4
 * Adds `utmstack-integration` cronjob.
 

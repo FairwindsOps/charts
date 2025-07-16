@@ -45,7 +45,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 4.6.0
+  agentChartTargetVersion: 4.7.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -477,6 +477,7 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  fullnameOverride: insights-postgresql
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
@@ -493,6 +494,7 @@ postgresql:
     certificatesSecret: fwinsights-postgresql-ca
     certFilename: tls.crt
     certKeyFilename: tls.key
+  postgresqlHost: insights-postgresql
   auth:
     username: postgres
     database: fairwinds_insights
@@ -720,7 +722,7 @@ automatedPullRequestJob:
       memory: 128Mi
   nodeSelector: {}
   tolerations: []
-  # topologySpreadConstraints -- Default TopologySpreadConstraints for the autoamtedPullRequestJob Deployment.
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the automatedPullRequestJob Deployment.
   topologySpreadConstraints:
     - maxSkew: 1
       topologyKey: topology.kubernetes.io/zone
@@ -782,3 +784,76 @@ repoScanJob:
         matchLabels:
           app.kubernetes.io/component: repo-scan-job
           app.kubernetes.io/name: fairwinds-insights
+
+temporal:
+  enabled: false
+  fullnameOverride: insights-temporal
+  cassandra:
+    enabled: false
+  prometheus:
+    enabled: false
+  elasticsearch:
+    enabled: false
+  grafana:
+    enabled: false
+  mysql:
+    enabled: false
+  postgresql:
+    enabled: true
+  server:
+    replicaCount: 1
+    config:
+      logLevel: "debug"
+      persistence:
+        default:
+          driver: "sql"
+          sql:
+            driver: "postgres12"
+            database: temporal
+            host: insights-postgresql
+            port: 5432
+            user: postgres
+            existingSecret: fwinsights-postgresql
+            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
+            # it has a single key called `password`
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
+            tls:
+              enabled: true
+              enableHostVerification: false
+              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
+              certFile: /etc/temporal/tls/tls.crt
+              keyFile: /etc/temporal/tls/tls.key
+
+        visibility:
+          driver: "sql"
+          sql:
+            driver: "postgres12"
+            database: temporal_visibility
+            host: insights-postgresql
+            port: 5432
+            user: postgres
+            existingSecret: fwinsights-postgresql
+            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
+            # it has a single key called `password`
+            maxConns: 20
+            maxIdleConns: 20
+            maxConnLifetime: "1h"
+            tls:
+              enabled: true
+              enableHostVerification: false
+              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
+              certFile: /etc/temporal/tls/tls.crt
+              keyFile: /etc/temporal/tls/tls.key
+
+    additionalVolumes:
+      - name: secret-with-certs
+        secret:
+          secretName: fwinsights-postgresql-ca
+          defaultMode: 0600
+
+    additionalVolumeMounts:
+      - name: secret-with-certs
+        mountPath: "/etc/temporal/tls"
+        readOnly: true
