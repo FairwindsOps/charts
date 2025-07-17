@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.3
+* Update Fairwinds Insights API deployment liveness and readiness probes
+
 ## 3.1.2
 * Update application version to 17.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
