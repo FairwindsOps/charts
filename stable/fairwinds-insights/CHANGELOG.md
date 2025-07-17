@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.1.2
+* Update application version to 17.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+## 3.1.1
+* Bumped swagger to the newest version
+
 ## 3.1.0
 * Bump timescale
 
