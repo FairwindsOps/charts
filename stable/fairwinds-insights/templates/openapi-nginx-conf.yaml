@@ -3,60 +3,36 @@ kind: ConfigMap
 metadata:
   name: openapi-nginx-conf
 data:
-  # Copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/run.sh
-  # and a sed command was replaced, since we can't edit mounted files
+  # Updated for swagger-ui v5.x - configuration is now handled via environment variables
+  # and the static files are served directly without complex sed replacements
   run.sh: |
     #! /bin/sh
 
     set -e
-    BASE_URL=${BASE_URL:-/}
     NGINX_ROOT=/usr/share/nginx/html
     INDEX_FILE=$NGINX_ROOT/index.html
-    NGINX_CONF=/etc/nginx/nginx.conf
 
-    node /usr/share/nginx/configurator $INDEX_FILE
-
-    replace_in_index () {
-      if [ "$1" != "**None**" ]; then
-        sed -i "s|/\*||g" $INDEX_FILE
-        sed -i "s|\*/||g" $INDEX_FILE
-        sed -i "s|$1|$2|g" $INDEX_FILE
-      fi
-    }
-
-    replace_or_delete_in_index () {
-      if [ -z "$2" ]; then
-        sed -i "/$1/d" $INDEX_FILE
-      else
-        replace_in_index $1 $2
-      fi
-    }
-
-    replace_in_index myApiKeyXXXX123456789 $API_KEY
-
+    # For swagger-ui v5.x, we use environment variables for configuration
+    # The swagger-ui container handles the configuration automatically
+    
+    # Create a simple configuration script for v5.x
     if [ "$SWAGGER_JSON_URL" ]; then
+      # Update the index.html to use the correct swagger URL
       sed -i "s|https://petstore.swagger.io/v2/swagger.json|$SWAGGER_JSON_URL|g" $INDEX_FILE
-      sed -i "s|http://example.com/api|$SWAGGER_JSON_URL|g" $INDEX_FILE
     fi
 
     if [[ -f "$SWAGGER_JSON" ]]; then
       cp -s "$SWAGGER_JSON" "$NGINX_ROOT"
       REL_PATH="./$(basename $SWAGGER_JSON)"
-
-      if [[ -z "$SWAGGER_ROOT" ]]; then
-        SWAGGER_ROOT="$(dirname $SWAGGER_JSON)"
-      fi
-
       sed -i "s|https://petstore.swagger.io/v2/swagger.json|$REL_PATH|g" $INDEX_FILE
-      sed -i "s|http://example.com/api|$REL_PATH|g" $INDEX_FILE
     fi
 
+    # Enable gzip compression for better performance
     find $NGINX_ROOT -type f -regex ".*\.\(html\|js\|css\)" -exec sh -c "gzip < {} > {}.gz" \;
 
     exec nginx -g 'daemon off;'
 
-  # This is copied from https://github.com/swagger-api/swagger-ui/blob/master/docker/nginx.conf
-  # A /health path is added and BASE_URL is manually set
+  # Updated nginx configuration for swagger-ui v5.x
   nginx.conf: |
     worker_processes      1;
 
@@ -77,7 +53,7 @@ data:
       gzip_disable "msie6";
 
       gzip_vary on;
-      gzip_types text/plain text/css application/javascript;
+      gzip_types text/plain text/css application/javascript application/json;
 
       map $request_method $access_control_max_age {
         OPTIONS 1728000; # 20 days
@@ -87,27 +63,33 @@ data:
       server {
         listen            8080;
         server_name       localhost;
+        root              /usr/share/nginx/html;
         index             index.html index.htm;
 
+        # Serve swagger-ui at /swagger path
         location /swagger {
           absolute_redirect off;
           alias            /usr/share/nginx/html/;
           expires 1d;
 
+          # Handle swagger spec files
           location ~* \.(?:json|yml|yaml)$ {
-            #SWAGGER_ROOT
             expires -1;
-
-            include cors.conf;
+            add_header Access-Control-Allow-Origin *;
+            add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+            add_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization";
+            add_header Access-Control-Expose-Headers "Content-Length,Content-Range";
           }
 
-          include cors.conf;
+          # CORS headers for swagger-ui
+          add_header Access-Control-Allow-Origin *;
+          add_header Access-Control-Allow-Methods "GET, POST, OPTIONS";
+          add_header Access-Control-Allow-Headers "DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range,Authorization";
+          add_header Access-Control-Expose-Headers "Content-Length,Content-Range";
         }
 
         location /health {
           return 200 'OK';
         }
-        # This is a hack to prevent nginx from running sed on this file, which causes a crash
-        # listen  [::]:80;
       }
     }
