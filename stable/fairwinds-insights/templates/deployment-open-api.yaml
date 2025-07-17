@@ -42,6 +42,10 @@ spec:
           env:
           - name: SWAGGER_JSON_URL
             value: /v0/swagger.yaml
+          - name: SWAGGER_UI_CONFIG_URL
+            value: /v0/swagger.yaml
+          - name: SWAGGER_UI_OAUTH2_REDIRECT_URL
+            value: /swagger/oauth2-redirect.html
           volumeMounts:
           - name: nginx-conf
             subPath: nginx.conf
