@@ -41,14 +41,14 @@ spec:
           {{- include "env" (dict "root" .) | indent 10 }}
           livenessProbe:
             httpGet:
-              path: /health
+              path: /livez
               port: http
             timeoutSeconds: 5
             periodSeconds: 5
             failureThreshold: 12
           readinessProbe:
             httpGet:
-              path: /health
+              path: /readyz
               port: http
             timeoutSeconds: 5
             periodSeconds: 5
