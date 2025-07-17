@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.1
+* Bumped swagger to the newest version
+
 ## 3.1.0
 * Bump timescale
 
