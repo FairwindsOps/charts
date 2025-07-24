@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.8.1
+* Bumped admission to remove support to OPA v1
+
 ## 4.8.0
 * Remove support to OPA v1
 
