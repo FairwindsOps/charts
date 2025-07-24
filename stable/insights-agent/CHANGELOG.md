@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.8.2
+* Expose `onDemandJobRunner.pollInterval` configuration
+
 ## 4.8.1
 * Bumped admission to remove support to OPA v1
 
