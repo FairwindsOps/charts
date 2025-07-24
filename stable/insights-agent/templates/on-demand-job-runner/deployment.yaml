@@ -51,6 +51,8 @@ spec:
               name: {{ include "insights-agent.fullname" . }}-token
               {{ end -}}
               key: token
+        - name: POLL_INTERVAL
+          value: {{ .Values.onDemandJobRunner.pollInterval | quote }}
         {{- with .Values.onDemandJobRunner.containerSecurityContext }}
         securityContext:
           {{- toYaml . | nindent 12 }}

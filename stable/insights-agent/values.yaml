@@ -702,6 +702,7 @@ kyverno:
 
 onDemandJobRunner:
   enabled: true
+  pollInterval: "15s"
   image:
     repository: quay.io/fairwinds/on-demand-job-runner
     tag: "0.1"
