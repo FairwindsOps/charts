@@ -287,6 +287,8 @@ trivy:
   maxScansPerRun: 20
   timeout: 2400
   insecureSSL: false
+  server:
+    enabled: false
   # trivy.env -- A map of environment variables that will be set for the trivy container.
   env:
     TRIVY_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-db:2,public.ecr.aws/aquasecurity/trivy-db:2,docker.io/aquasec/trivy-db:2
@@ -300,6 +302,8 @@ trivy:
     requests:
       cpu: 100m
       memory: 1Gi
+trivy-server:
+  fullnameOverride: "trivy-server"
 
 pluto:
   enabled: false

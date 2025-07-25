@@ -1,4 +1,8 @@
 dependencies:
+- name: trivy
+  version: 0.16.1
+  repository: https://aquasecurity.github.io/helm-charts/
+  alias: trivy-server
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
   version: '6.5.*'
