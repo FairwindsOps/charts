@@ -304,6 +304,7 @@ trivy:
       memory: 1Gi
 trivy-server:
   fullnameOverride: "trivy-server"
+  replicaCount: 2
 
 pluto:
   enabled: false
