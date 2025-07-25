@@ -75,8 +75,6 @@ kube-hunter:
 trivy:
   enabled: true
   maxScansPerRun: 2
-  server:
-    enabled: true
   resources:
     requests:
       cpu: 50m
@@ -91,6 +89,9 @@ trivy:
     capabilities:
       drop:
         - ALL
+
+trivy-server:
+  enabled: true
 
 prometheus-metrics:
   enabled: true
