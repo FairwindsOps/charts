@@ -57,7 +57,7 @@ spec:
             {{ if .Values.trivy.insecureSSL }}
             - name: TRIVY_INSECURE
               value: "true"
-            {{ if .Values.trivy-server.enabled }}
+            {{ if .Values "trivy-server" "enabled" }}
             - name: TRIVY_SERVER_URL
               value: https://{{ .Values.trivy-server.fullname }}.{{ .Release.Namespace }}.svc.cluster.local:443
             {{ end }}
