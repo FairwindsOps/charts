@@ -59,7 +59,7 @@ spec:
               value: "true"
             {{ if .Values "trivy-server" "enabled" }}
             - name: TRIVY_SERVER_URL
-              value: https://{{ .Values.trivy-server.fullname }}.{{ .Release.Namespace }}.svc.cluster.local:443
+              value: https://{{ .Values "trivy-server" "fullname" }}.{{ .Release.Namespace }}.svc.cluster.local:443
             {{ end }}
             {{ end }}
             - name: TRIVY_CACHE_DIR
