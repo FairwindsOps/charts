@@ -57,11 +57,11 @@ spec:
             {{ if .Values.trivy.insecureSSL }}
             - name: TRIVY_INSECURE
               value: "true"
-            {{ if .Values "trivy-server" "enabled" }}
+            {{ end }}
+            {{- if (index .Values "trivy-server" "enabled") }}
             - name: TRIVY_SERVER_URL
-              value: https://{{ .Values "trivy-server" "fullname" }}.{{ .Release.Namespace }}.svc.cluster.local:443
-            {{ end }}
-            {{ end }}
+              value: https://{{ (index .Values "trivy-server" "fullname") }}.{{ .Release.Namespace }}.svc.cluster.local:443
+            {{- end }}
             - name: TRIVY_CACHE_DIR
               value: /var/tmp
             - name: MAX_SCANS
