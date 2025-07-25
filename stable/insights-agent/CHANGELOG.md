@@ -1,6 +1,6 @@
 # Changelog
 
-##4.9.0
+## 4.9.0
 * Added trivy server
 
 ## 4.8.2
