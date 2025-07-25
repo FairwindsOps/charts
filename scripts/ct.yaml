@@ -13,3 +13,4 @@ chart-repos:
   - "falcosecurity=https://falcosecurity.github.io/charts"
   - "metrics-server=https://kubernetes-sigs.github.io/metrics-server"
   - "temporal=https://go.temporal.io/helm-charts"
+  - "aquasecurity=https://aquasecurity.github.io/helm-charts"

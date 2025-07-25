@@ -90,6 +90,9 @@ trivy:
       drop:
         - ALL
 
+trivy-server:
+  enabled: true
+
 prometheus-metrics:
   enabled: true
   installPrometheusServer: true

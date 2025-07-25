@@ -300,6 +300,10 @@ trivy:
     requests:
       cpu: 100m
       memory: 1Gi
+trivy-server:
+  enabled: false
+  fullnameOverride: "trivy-server"
+  replicaCount: 2
 
 pluto:
   enabled: false
