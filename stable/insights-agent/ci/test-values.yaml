@@ -75,6 +75,8 @@ kube-hunter:
 trivy:
   enabled: true
   maxScansPerRun: 2
+  server:
+    enabled: false
   resources:
     requests:
       cpu: 50m
