@@ -76,7 +76,7 @@ trivy:
   enabled: true
   maxScansPerRun: 2
   server:
-    enabled: false
+    enabled: true
   resources:
     requests:
       cpu: 50m
