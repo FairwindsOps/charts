@@ -60,7 +60,7 @@ spec:
             {{ end }}
             {{- if (index .Values "trivy-server" "enabled") }}
             - name: TRIVY_SERVER_URL
-              value: https://{{ (index .Values "trivy-server" "fullname") }}.{{ .Release.Namespace }}.svc.cluster.local:443
+              value: https://{{ (index .Values "trivy-server" "fullnameOverride") }}.{{ .Release.Namespace }}.svc.cluster.local:443
             {{- end }}
             - name: TRIVY_CACHE_DIR
               value: /var/tmp
