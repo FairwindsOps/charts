@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.9.0
+* Bumped polaris to 10.0
+
 ## 4.8.2
 * Expose `onDemandJobRunner.pollInterval` configuration
 
