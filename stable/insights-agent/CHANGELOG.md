@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.9.11
+## 4.9.1
 * Fixed trivy defaults
 
 ## 4.9.0
