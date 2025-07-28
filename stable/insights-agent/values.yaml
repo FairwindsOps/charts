@@ -303,7 +303,7 @@ trivy:
   server:
     installTrivyServer: false
     # use this if you want to use the installed trivy server
-    # serverUrl:  http://trivy-server:4954 
+    # serverUrl: http://trivy-server:4954 
     serverUrl: ""
 trivy-server:
   fullnameOverride: "trivy-server"
