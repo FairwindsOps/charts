@@ -302,7 +302,7 @@ trivy:
       memory: 1Gi
   server:
     installTrivyServer: false
-    serverUrl: "" # https://trivy-server.insights-agent.svc.cluster.local:443
+    serverUrl: "" #https://trivy-server.insights-agent.svc.cluster.local:443
 trivy-server:
   fullnameOverride: "trivy-server"
   replicaCount: 2
