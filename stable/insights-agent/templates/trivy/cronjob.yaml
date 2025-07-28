@@ -60,7 +60,7 @@ spec:
             {{ end }}
             {{- if (index .Values "trivy-server" "enabled") }}
             - name: TRIVY_SERVER_URL
-              value: {{ .Values.trivy.serverUrl }}
+              value: {{ (index .Values "trivy-server" "serverUrl") }}
             {{- end }}
             - name: TRIVY_CACHE_DIR
               value: /var/tmp
