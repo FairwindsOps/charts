@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.9.0
+* Added trivy server
+* Bumped Polaris to 10
+
 ## 4.8.2
 * Expose `onDemandJobRunner.pollInterval` configuration
 
