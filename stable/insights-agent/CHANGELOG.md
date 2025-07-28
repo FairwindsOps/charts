@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.9.1
+* Fixed trivy defaults
+
 ## 4.9.0
 * Added trivy server
 * Bumped Polaris to 10
