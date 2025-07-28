@@ -89,9 +89,9 @@ trivy:
     capabilities:
       drop:
         - ALL
-
-trivy-server:
-  enabled: true
+  server:
+    installTrivyServer: true
+    serverUrl: https://trivy-server.insights-agent.svc.cluster.local:443
 
 prometheus-metrics:
   enabled: true
