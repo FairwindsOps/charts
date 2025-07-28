@@ -300,11 +300,12 @@ trivy:
     requests:
       cpu: 100m
       memory: 1Gi
+  server:
+    installTrivyServer: false
+    serverUrl: "" # https://trivy-server.insights-agent.svc.cluster.local:443
 trivy-server:
-  enabled: false
   fullnameOverride: "trivy-server"
   replicaCount: 2
-  serverUrl: https://trivy-server.insights-agent.svc.cluster.local:443
 
 pluto:
   enabled: false

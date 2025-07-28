@@ -58,10 +58,8 @@ spec:
             - name: TRIVY_INSECURE
               value: "true"
             {{ end }}
-            {{- if (index .Values "trivy-server" "enabled") }}
             - name: TRIVY_SERVER_URL
-              value: {{ (index .Values "trivy-server" "serverUrl") }}
-            {{- end }}
+              value: {{ .Values.trivy.server.serverUrl }}
             - name: TRIVY_CACHE_DIR
               value: /var/tmp
             - name: MAX_SCANS
