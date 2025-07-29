@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.9.2
+* Bumped trivy plugin to support trivy server
+
 ## 4.9.1
 * Fixed trivy defaults
 
