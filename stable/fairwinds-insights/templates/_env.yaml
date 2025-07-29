@@ -167,6 +167,10 @@ env:
   value: {{ $.Values.email.sender }}
 - name: EMAIL_RECIPIENT
   value: {{ $.Values.email.recipient }}
+{{- if $.Values.options.ssoRequiredForAdminAPI }}
+- name: SSO_REQUIRED_FOR_ADMIN_API
+  value: {{ $.Values.options.ssoRequiredForAdminAPI | quote }}
+{{- end }}
 {{ if eq $.Values.email.strategy "smtp" -}}
 - name: SMTP_HOST
   value: {{ $.Values.email.smtpHost }}

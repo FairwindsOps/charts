@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.4
+* Add option to require SSO when accessing Admin API
+
 ## 3.1.3
 * Update Fairwinds Insights API deployment liveness and readiness probes
 
