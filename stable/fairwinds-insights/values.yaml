@@ -70,6 +70,8 @@ options:
     # requests should always match limits here, so we don't separate them
     cpu: 1000m
     memory: 1Gi
+  # -- Whether to require SSO for the admin API
+  ssoRequiredForAdminAPI: false
 
 cronjobOptions:
   # -- Default security context for cronjobs
