@@ -1,6 +1,6 @@
 # Changelog
 
-## 4.9.2
+## 4.9.3
 * Bumped trivy and admission
 
 ## 4.9.2
