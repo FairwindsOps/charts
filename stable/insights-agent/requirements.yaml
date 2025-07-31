@@ -22,7 +22,7 @@ dependencies:
   condition: right-sizer.enableClosedBeta
   alias: right-sizer-vpa
 - name: trivy
-  version: 0.16.1
+  version: 0.17.0
   repository: https://aquasecurity.github.io/helm-charts/
   condition: trivy.server.installTrivyServer
   alias: trivy-server
