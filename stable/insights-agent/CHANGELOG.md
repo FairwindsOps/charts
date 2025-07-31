@@ -1,6 +1,9 @@
 # Changelog
 
 ## 4.9.2
+* Bumped trivy and admission
+
+## 4.9.2
 * Bumped trivy plugin to support trivy server
 
 ## 4.9.1
