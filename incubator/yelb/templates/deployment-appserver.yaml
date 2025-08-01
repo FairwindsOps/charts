@@ -34,7 +34,7 @@ spec:
         - name: {{ .Chart.Name }}
           env:
             - name: RACK_ENV
-            - name: custom
+              value: custom
             - name: REDIS_SERVER_ENDPOINT
               value: {{ include "yelb.fullname" . }}-valkey-master
             - name: YELB_DB_SERVER_ENDPOINT
