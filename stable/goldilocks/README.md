@@ -104,6 +104,8 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
 | dashboard.rbac.create | bool | `true` | If set to true, rbac resources will be created for the dashboard |
 | dashboard.rbac.enableArgoproj | bool | `true` | If set to true, the clusterrole will give access to argoproj.io resources |
+| dashboard.rbac.extraRules | list | `[]` |  |
+| dashboard.rbac.extraClusterRoleBindings | list | `[]` |  |
 | dashboard.serviceAccount.create | bool | `true` | If true, a service account will be created for the dashboard. If set to false, you must set `dashboard.serviceAccount.name` |
 | dashboard.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `dashboard.serviceAccount.create` |
 | dashboard.deployment.annotations | object | `{}` | Extra annotations for the dashboard deployment |

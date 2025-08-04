@@ -17,4 +17,26 @@ subjects:
   - kind: ServiceAccount
     name: {{ template "dashboard.serviceAccountName" . }}
     namespace: {{ .Release.Namespace }}
+
+{{- range $.Values.dashboard.rbac.extraClusterRoleBindings }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "goldilocks.fullname" $ }}-dashboard-{{ . }}
+  labels:
+    app.kubernetes.io/name: {{ include "goldilocks.name" $ }}
+    helm.sh/chart: {{ include "goldilocks.chart" $ }}
+    app.kubernetes.io/instance: {{ $.Release.Name }}
+    app.kubernetes.io/managed-by: {{ $.Release.Service }}
+    app.kubernetes.io/component: dashboard
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "goldilocks.fullname" $ }}-dashboard
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
 {{- end }}
