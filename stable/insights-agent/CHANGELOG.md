@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.9.5
+* Fixed polaris version
+
 ## 4.9.4
 * Bumped polaris to 10.1
 
