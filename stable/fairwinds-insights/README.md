@@ -148,17 +148,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.fullnameOverride | string | `"insights-postgresql"` |  |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
-| postgresql.cluster.name | string | `"insights-postgresql"` | Name of the CloudNativePG cluster |
-| postgresql.cluster.instances | int | `2` | Number of PostgreSQL instances (1 primary and 1 replica) |
-| postgresql.cluster.imageName | string | `"quay.io/fairwinds/postgres-partman:16.0"` | Custom PostgreSQL image with partman extension |
-| postgresql.cluster.bootstrap.initdb.database | string | `"fairwinds_insights"` | Initial database to create |
-| postgresql.cluster.bootstrap.initdb.owner | string | `"postgres"` | Owner of the initial database |
-| postgresql.cluster.certificates | object | `{"serverCASecret":{"name":"fwinsights-postgresql-ca"},"serverTLSSecret":{"name":"fwinsights-postgresql-ca"},"replicationTLSSecret":{"name":"fwinsights-postgresql-ca"}}` | TLS configuration for PostgreSQL |
-| postgresql.cluster.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources for PostgreSQL instances |
-| postgresql.cluster.storage.size | string | `"10Gi"` | Storage size for PostgreSQL instances |
-| postgresql.cluster.replica.enabled | bool | `true` | Enable read replica |
-| postgresql.cluster.replica.instances | int | `1` | Number of read replicas |
-| postgresql.cluster.replica.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources for read replicas |
+| postgresql.cluster | object | `{"bootstrap":{"initdb":{"database":"fairwinds_insights","owner":"postgres","secret":{"name":"fwinsights-postgresql"}}},"certificates":{"replicationTLSSecret":{"name":"fwinsights-postgresql-ca"},"serverCASecret":{"name":"fwinsights-postgresql-ca"},"serverTLSSecret":{"name":"fwinsights-postgresql-ca"}},"imageName":"quay.io/fairwinds/postgres-partman:16.0","instances":2,"name":"insights-postgresql","replica":{"enabled":true,"instances":1,"resources":{"limits":{"cpu":"1","memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}},"resources":{"limits":{"cpu":"1","memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}},"storage":{"size":"10Gi"},"superuserSecret":{"name":"fwinsights-postgresql"}}` | CloudNativePG configuration |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
 | timescale.replicaCount | int | `1` |  |
@@ -308,7 +298,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.default.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |
-| temporal.server.config.persistence.default.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.default.sql.host | string | `"insights-postgresql-rw"` |  |
 | temporal.server.config.persistence.default.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.default.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.default.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
@@ -322,7 +312,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.visibility.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.visibility.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.visibility.sql.database | string | `"temporal_visibility"` |  |
-| temporal.server.config.persistence.visibility.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.visibility.sql.host | string | `"insights-postgresql-rw"` |  |
 | temporal.server.config.persistence.visibility.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.visibility.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.visibility.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
