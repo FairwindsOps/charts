@@ -18,8 +18,18 @@ deployments:
     pod-foo: pod-bar
 
 postgresql:
-  auth:
-    password: "changeme"
+  cluster:
+    name: insights-postgresql
+    instances: 2
+    imageName: quay.io/fairwinds/postgres-partman:16.0
+    bootstrap:
+      initdb:
+        database: fairwinds_insights
+        owner: postgres
+        secret:
+          name: fwinsights-postgresql
+    superuserSecret:
+      name: fwinsights-postgresql
 
 dashboard:
   pdb:
