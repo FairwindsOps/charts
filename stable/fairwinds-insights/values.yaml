@@ -489,18 +489,15 @@ postgresql:
     name: insights-postgresql
     instances: 2  # One primary and one replica
     imageName: quay.io/fairwinds/postgres-partman:16.0
-    
     bootstrap:
       initdb:
         database: fairwinds_insights
         owner: postgres
         secret:
           name: fwinsights-postgresql
-    
     # Configure superuser
     superuserSecret:
       name: fwinsights-postgresql
-    
     # TLS configuration
     certificates:
       serverCASecret:
@@ -509,7 +506,6 @@ postgresql:
         name: fwinsights-postgresql-ca
       replicationTLSSecret:
         name: fwinsights-postgresql-ca
-    
     # Resources configuration
     resources:
       requests:
@@ -518,11 +514,9 @@ postgresql:
       limits:
         memory: "1Gi"
         cpu: "1"
-    
     # Storage configuration
     storage:
-      size: 10Gi
-    
+      size: 10Gi 
     # Read replica configuration
     replica:
       enabled: true
