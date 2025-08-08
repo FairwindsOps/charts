@@ -78,7 +78,7 @@ env:
 - name: POSTGRES_SSL_MODE
   value: {{ $.Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST
-  value: {{ $.Values.postgresql.postgresqlHost | default (printf "%s-%s" $.Release.Name "postgresql") }}
+  value: {{ $.Values.postgresql.postgresqlHost | default "insights-postgresql-rw" }}
 {{- if $.Values.postgresql.readOnly }}
 - name: POSTGRES_PASSWORD
   valueFrom:
