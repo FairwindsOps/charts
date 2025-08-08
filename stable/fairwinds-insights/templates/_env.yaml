@@ -70,28 +70,20 @@ env:
       key: readreplica-password
 {{- else }}
 - name: POSTGRES_DB
-  value: {{ $.Values.postgresql.auth.database }}
+  value: {{ $.Values.postgresql.cluster.bootstrap.initdb.database }}
 - name: POSTGRES_USER
-  value: {{ $.Values.postgresql.auth.username }}
+  value: {{ $.Values.postgresql.cluster.bootstrap.initdb.owner }}
 - name: POSTGRES_PORT
-  value: {{ $.Values.postgresql.primary.service.port | quote }}
+  value: "5432"
 - name: POSTGRES_SSL_MODE
-  value: {{ $.Values.postgresql.sslMode | default "require" }}
+  value: "require"
 - name: POSTGRES_HOST
-  value: {{ $.Values.postgresql.postgresqlHost | default (printf "%s-%s" $.Release.Name "postgresql") }}
-{{- if $.Values.postgresql.readOnly }}
+  value: {{ $.Values.postgresql.cluster.name }}-rw
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ $.Values.postgresql.auth.existingSecret }}
-      key: readonly-password
-{{- else }}
-- name: POSTGRES_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ $.Values.postgresql.auth.existingSecret }}
-      key: postgresql-password
-{{- end }}
+      name: {{ $.Values.postgresql.cluster.superuserSecret.name }}
+      key: password
 {{- end }}
 # Timescale Database
 - name: TIMESCALE_DB
