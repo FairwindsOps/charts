@@ -151,13 +151,16 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
 | postgresql.image.tag | string | `"16.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
+| postgresql.cluster | object | `{"instances":2,"storage":{"size":"10Gi"}}` | CloudNativePG cluster sizing and storage |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
-| postgresql.postgresqlHost | string | `"insights-postgresql"` |  |
+| postgresql.postgresqlHost | string | `"insights-postgresql-rw"` |  |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
 | postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
 | postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
+| postgresql.auth.password | string | `""` |  |
+| postgresql.auth.readonlyPassword | string | `""` |  |
 | postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
 | postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
 | postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
