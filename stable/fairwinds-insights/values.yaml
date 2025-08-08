@@ -482,49 +482,58 @@ postgresql:
   fullnameOverride: insights-postgresql
   # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
-  image:
-    registry: quay.io
-    repository: fairwinds/postgres-partman
-    tag: "16.0"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
-  # -- SSL mode for connecting to the database
-  sslMode: require
-  # -- TLS mode for connecting to the database
-  tls:
-    enabled: true
-    certificatesSecret: fwinsights-postgresql-ca
-    certFilename: tls.crt
-    certKeyFilename: tls.key
-  postgresqlHost: insights-postgresql
-  auth:
-    username: postgres
-    database: fairwinds_insights
-    existingSecret: fwinsights-postgresql
-    secretKeys:
-      adminPasswordKey: postgresql-password
-  primary:
-    service:
-      # -- Port of the Postgres Database
-      port: 5432
-    persistence:
-      # -- Create Persistent Volume with Postgres
-      enabled: true
-    # -- Resources section for Postgres
+  # -- CloudNativePG configuration
+  cluster:
+    name: insights-postgresql
+    instances: 2  # One primary and one replica
+    imageName: quay.io/fairwinds/postgres-partman:16.0
+    
+    bootstrap:
+      initdb:
+        database: fairwinds_insights
+        owner: postgres
+        secret:
+          name: fwinsights-postgresql
+    
+    # Configure superuser
+    superuserSecret:
+      name: fwinsights-postgresql
+    
+    # TLS configuration
+    certificates:
+      serverCASecret:
+        name: fwinsights-postgresql-ca
+      serverTLSSecret:
+        name: fwinsights-postgresql-ca
+      replicationTLSSecret:
+        name: fwinsights-postgresql-ca
+    
+    # Resources configuration
     resources:
-      limits:
-        cpu: 1
-        memory: 1Gi
       requests:
-        cpu: 75m
-        memory: 256Mi
-  # -- Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it
-  readReplica:
-    username:
-    database:
-    host:
-    port:
-    sslMode:
+        memory: "256Mi"
+        cpu: "75m"
+      limits:
+        memory: "1Gi"
+        cpu: "1"
+    
+    # Storage configuration
+    storage:
+      size: 10Gi
+    
+    # Read replica configuration
+    replica:
+      enabled: true
+      instances: 1
+      resources:
+        requests:
+          memory: "256Mi"
+          cpu: "75m"
+        limits:
+          memory: "1Gi"
+          cpu: "1"
 encryption:
   aes:
     cypherKey:
@@ -812,7 +821,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal
-            host: insights-postgresql
+            host: insights-postgresql-rw
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
@@ -833,7 +842,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal_visibility
-            host: insights-postgresql
+            host: insights-postgresql-rw
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql

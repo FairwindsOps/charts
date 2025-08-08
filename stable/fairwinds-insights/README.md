@@ -147,21 +147,18 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
 | postgresql.fullnameOverride | string | `"insights-postgresql"` |  |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
-| postgresql.image.registry | string | `"quay.io"` |  |
-| postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
-| postgresql.image.tag | string | `"16.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
-| postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
-| postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
-| postgresql.postgresqlHost | string | `"insights-postgresql"` |  |
-| postgresql.auth.username | string | `"postgres"` |  |
-| postgresql.auth.database | string | `"fairwinds_insights"` |  |
-| postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
-| postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
-| postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
-| postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
-| postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
-| postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
+| postgresql.cluster.name | string | `"insights-postgresql"` | Name of the CloudNativePG cluster |
+| postgresql.cluster.instances | int | `2` | Number of PostgreSQL instances (1 primary and 1 replica) |
+| postgresql.cluster.imageName | string | `"quay.io/fairwinds/postgres-partman:16.0"` | Custom PostgreSQL image with partman extension |
+| postgresql.cluster.bootstrap.initdb.database | string | `"fairwinds_insights"` | Initial database to create |
+| postgresql.cluster.bootstrap.initdb.owner | string | `"postgres"` | Owner of the initial database |
+| postgresql.cluster.certificates | object | `{"serverCASecret":{"name":"fwinsights-postgresql-ca"},"serverTLSSecret":{"name":"fwinsights-postgresql-ca"},"replicationTLSSecret":{"name":"fwinsights-postgresql-ca"}}` | TLS configuration for PostgreSQL |
+| postgresql.cluster.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources for PostgreSQL instances |
+| postgresql.cluster.storage.size | string | `"10Gi"` | Storage size for PostgreSQL instances |
+| postgresql.cluster.replica.enabled | bool | `true` | Enable read replica |
+| postgresql.cluster.replica.instances | int | `1` | Number of read replicas |
+| postgresql.cluster.replica.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources for read replicas |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
 | timescale.replicaCount | int | `1` |  |
