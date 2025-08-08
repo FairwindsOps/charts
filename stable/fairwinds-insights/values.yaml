@@ -488,6 +488,12 @@ postgresql:
     tag: "16.0"
   # -- Use the ephemeral postgresql chart by default
   ephemeral: true
+  # -- CloudNativePG cluster sizing and storage
+  cluster:
+    instances: 2
+    storage:
+      size: 10Gi
+      # storageClass: <your-storage-class>
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database
@@ -496,13 +502,15 @@ postgresql:
     certificatesSecret: fwinsights-postgresql-ca
     certFilename: tls.crt
     certKeyFilename: tls.key
-  postgresqlHost: insights-postgresql
+  postgresqlHost: insights-postgresql-rw
   auth:
     username: postgres
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
     secretKeys:
       adminPasswordKey: postgresql-password
+    password: ""
+    readonlyPassword: ""
   primary:
     service:
       # -- Port of the Postgres Database

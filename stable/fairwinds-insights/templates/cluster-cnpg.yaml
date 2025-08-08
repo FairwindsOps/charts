@@ -1,0 +1,30 @@
+{{- if .Values.postgresql.ephemeral }}
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.postgresql.fullnameOverride | default (printf "%s-postgresql" .Release.Name) }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+spec:
+  instances: {{ .Values.postgresql.cluster.instances | default 2 }}
+  imageName: {{ .Values.postgresql.image.registry }}/{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: {{ .Values.postgresql.auth.existingSecret }}
+  storage:
+    size: {{ .Values.postgresql.cluster.storage.size | default "10Gi" }}
+{{- if .Values.postgresql.cluster.storage.storageClass }}
+    storageClass: {{ .Values.postgresql.cluster.storage.storageClass }}
+{{- end }}
+  bootstrap:
+    initdb:
+      database: {{ .Values.postgresql.auth.database }}
+      owner: {{ .Values.postgresql.auth.username }}
+      secret:
+        name: {{ .Values.postgresql.auth.existingSecret }}
+  monitoring:
+    enablePodMonitor: true
+{{- end }}
+
+
