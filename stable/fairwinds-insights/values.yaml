@@ -516,7 +516,7 @@ postgresql:
         cpu: "1"
     # Storage configuration
     storage:
-      size: 10Gi 
+      size: 10Gi
     # Read replica configuration
     replica:
       enabled: true
