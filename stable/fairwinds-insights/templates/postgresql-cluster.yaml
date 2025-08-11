@@ -1,0 +1,45 @@
+{{- if .Values.postgresql.ephemeral }}
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.postgresql.cluster.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+spec:
+  instances: {{ .Values.postgresql.cluster.instances }}
+  imageName: {{ .Values.postgresql.cluster.imageName }}
+  bootstrap:
+    initdb:
+      database: {{ .Values.postgresql.cluster.bootstrap.initdb.database }}
+      owner: {{ .Values.postgresql.cluster.bootstrap.initdb.owner }}
+      secret:
+        name: {{ .Values.postgresql.cluster.bootstrap.initdb.secret.name }}
+  superuserSecret:
+    name: {{ .Values.postgresql.cluster.superuserSecret.name }}
+  {{- if .Values.postgresql.cluster.certificates }}
+  certificates:
+    {{- if .Values.postgresql.cluster.certificates.serverCASecret }}
+    serverCASecret: {{ .Values.postgresql.cluster.certificates.serverCASecret }}
+    {{- end }}
+    {{- if .Values.postgresql.cluster.certificates.serverTLSSecret }}
+    serverTLSSecret: {{ .Values.postgresql.cluster.certificates.serverTLSSecret }}
+    {{- end }}
+    {{- if .Values.postgresql.cluster.certificates.clientCASecret }}
+    clientCASecret: {{ .Values.postgresql.cluster.certificates.clientCASecret }}
+    {{- end }}
+    {{- if .Values.postgresql.cluster.certificates.replicationTLSSecret }}
+    replicationTLSSecret: {{ .Values.postgresql.cluster.certificates.replicationTLSSecret }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.postgresql.cluster.resources }}
+  resources:
+    {{- toYaml .Values.postgresql.cluster.resources | nindent 4 }}
+  {{- end }}
+  {{- if .Values.postgresql.cluster.storage }}
+  storage:
+    {{- toYaml .Values.postgresql.cluster.storage | nindent 4 }}
+  {{- end }}
+  # Note: replica configuration is for external replica clusters, not internal read replicas
+  # Internal read replicas are configured via the instances field
+{{- end }}

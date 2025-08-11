@@ -500,12 +500,10 @@ postgresql:
       name: fwinsights-postgresql
     # TLS configuration
     certificates:
-      serverCASecret:
-        name: fwinsights-postgresql-ca
-      serverTLSSecret:
-        name: fwinsights-postgresql-ca
-      replicationTLSSecret:
-        name: fwinsights-postgresql-ca
+      serverCASecret: fwinsights-postgresql-ca
+      serverTLSSecret: fwinsights-postgresql-ca
+      clientCASecret: fwinsights-postgresql-ca
+      replicationTLSSecret: fwinsights-postgresql-ca
     # Resources configuration
     resources:
       requests:
@@ -517,17 +515,8 @@ postgresql:
     # Storage configuration
     storage:
       size: 10Gi
-    # Read replica configuration
-    replica:
-      enabled: true
-      instances: 1
-      resources:
-        requests:
-          memory: "256Mi"
-          cpu: "75m"
-        limits:
-          memory: "1Gi"
-          cpu: "1"
+    # Note: Read replicas are configured via the instances field above
+    # The replica field is for external replica clusters, not internal read replicas
 encryption:
   aes:
     cypherKey:
@@ -815,7 +804,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal
-            host: insights-postgresql-rw
+            host: insights-postgresql
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
@@ -836,7 +825,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal_visibility
-            host: insights-postgresql-rw
+            host: insights-postgresql
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
