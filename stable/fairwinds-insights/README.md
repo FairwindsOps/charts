@@ -6,6 +6,42 @@
 
 See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-details/self-hosted/installation/) for complete documentation.
 
+## PostgreSQL Database
+
+This chart now uses CloudNativePG operator for PostgreSQL database management instead of the Bitnami PostgreSQL chart. The migration provides better Kubernetes-native PostgreSQL management with improved reliability and features.
+
+### Configuration Options
+
+- **`postgresql.ephemeral`**: Controls whether to create a PostgreSQL cluster. When `true`, creates a CloudNativePG cluster named `insights-postgres`. When `false`, expects an existing PostgreSQL instance.
+- **`postgresql.operator.install`**: Controls whether to install the CloudNativePG operator. Set to `false` if the operator is already installed in your cluster.
+
+### Usage Scenarios
+
+1. **New Installation (Default)**: 
+   ```yaml
+   postgresql:
+     ephemeral: true
+     operator:
+       install: true
+   ```
+
+2. **Existing CloudNativePG Operator**:
+   ```yaml
+   postgresql:
+     ephemeral: true
+     operator:
+       install: false
+   ```
+
+3. **External PostgreSQL**:
+   ```yaml
+   postgresql:
+     ephemeral: false
+     operator:
+       install: false
+     postgresqlHost: your-external-postgres-host
+   ```
+
 ## Values
 
 | Key | Type | Default | Description |
@@ -145,22 +181,15 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
-| postgresql.fullnameOverride | string | `"insights-postgresql"` |  |
-| postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
-| postgresql.image.registry | string | `"quay.io"` |  |
-| postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
-| postgresql.image.tag | string | `"16.0"` |  |
-| postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
+| postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
+| postgresql.operator.install | bool | `true` | Install CloudNativePG operator |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
-| postgresql.postgresqlHost | string | `"insights-postgresql"` |  |
+| postgresql.postgresqlHost | string | `"insights-postgres"` | Host for postgresql (CloudNativePG cluster name) |
 | postgresql.auth.username | string | `"postgres"` |  |
 | postgresql.auth.database | string | `"fairwinds_insights"` |  |
 | postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
 | postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
-| postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
-| postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
-| postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
@@ -311,7 +340,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.default.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |
-| temporal.server.config.persistence.default.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.default.sql.host | string | `"insights-postgres"` |  |
 | temporal.server.config.persistence.default.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.default.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.default.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
@@ -325,7 +354,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.visibility.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.visibility.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.visibility.sql.database | string | `"temporal_visibility"` |  |
-| temporal.server.config.persistence.visibility.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.visibility.sql.host | string | `"insights-postgres"` |  |
 | temporal.server.config.persistence.visibility.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.visibility.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.visibility.sql.existingSecret | string | `"fwinsights-postgresql"` |  |

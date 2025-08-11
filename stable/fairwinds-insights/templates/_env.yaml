@@ -74,7 +74,7 @@ env:
 - name: POSTGRES_USER
   value: {{ $.Values.postgresql.auth.username }}
 - name: POSTGRES_PORT
-  value: {{ $.Values.postgresql.primary.service.port | quote }}
+  value: "5432"
 - name: POSTGRES_SSL_MODE
   value: {{ $.Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST

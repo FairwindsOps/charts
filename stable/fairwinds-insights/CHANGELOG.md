@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.2.0
+* Migrated fairwinds-insights to CloudNativePG
+
 ## 3.1.4
 * Add option to require SSO when accessing Admin API
 

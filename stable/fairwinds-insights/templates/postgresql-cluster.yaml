@@ -1,0 +1,41 @@
+{{- if .Values.postgresql.ephemeral }}
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: insights-postgres
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+spec:
+  instances: 1
+  postgresql:
+    parameters:
+      max_connections: "100"
+      shared_buffers: "256MB"
+      effective_cache_size: "1GB"
+      maintenance_work_mem: "64MB"
+      checkpoint_completion_target: "0.9"
+      wal_buffers: "16MB"
+      default_statistics_target: "100"
+      random_page_cost: "1.1"
+      effective_io_concurrency: "200"
+      work_mem: "4MB"
+      min_wal_size: "1GB"
+      max_wal_size: "4GB"
+      max_worker_processes: "8"
+      max_parallel_workers_per_gather: "2"
+      max_parallel_workers: "8"
+      max_parallel_maintenance_workers: "2"
+  bootstrap:
+    initdb:
+      database: {{ .Values.postgresql.auth.database }}
+      owner: {{ .Values.postgresql.auth.username }}
+      secret:
+        name: {{ .Values.postgresql.auth.existingSecret }}
+        key: {{ .Values.postgresql.auth.secretKeys.adminPasswordKey }}
+  storage:
+    size: 10Gi
+    storageClass: ""
+  monitoring:
+    enabled: true
+{{- end }}

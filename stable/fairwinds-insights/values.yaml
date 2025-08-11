@@ -479,15 +479,11 @@ ingress:
   extraPaths: {}
 
 postgresql:
-  fullnameOverride: insights-postgresql
-  # -- Set to `true` to run migrations after the upgrade
-  postMigrate: false
-  image:
-    registry: quay.io
-    repository: fairwinds/postgres-partman
-    tag: "16.0"
-  # -- Use the ephemeral postgresql chart by default
+  # -- Use the ephemeral postgresql cluster by default
   ephemeral: true
+  # -- Install CloudNativePG operator
+  operator:
+    install: true
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database
@@ -496,28 +492,15 @@ postgresql:
     certificatesSecret: fwinsights-postgresql-ca
     certFilename: tls.crt
     certKeyFilename: tls.key
-  postgresqlHost: insights-postgresql
+  # -- Host for postgresql (CloudNativePG cluster name)
+  postgresqlHost: insights-postgres
+  # -- Authentication configuration
   auth:
     username: postgres
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
     secretKeys:
       adminPasswordKey: postgresql-password
-  primary:
-    service:
-      # -- Port of the Postgres Database
-      port: 5432
-    persistence:
-      # -- Create Persistent Volume with Postgres
-      enabled: true
-    # -- Resources section for Postgres
-    resources:
-      limits:
-        cpu: 1
-        memory: 1Gi
-      requests:
-        cpu: 75m
-        memory: 256Mi
   # -- Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it
   readReplica:
     username:
@@ -812,7 +795,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal
-            host: insights-postgresql
+            host: insights-postgres
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
@@ -833,7 +816,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal_visibility
-            host: insights-postgresql
+            host: insights-postgres
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
