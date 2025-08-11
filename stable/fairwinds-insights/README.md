@@ -148,7 +148,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.fullnameOverride | string | `"insights-postgresql"` |  |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
-| postgresql.cluster | object | `{"bootstrap":{"initdb":{"database":"fairwinds_insights","owner":"postgres","secret":{"name":"fwinsights-postgresql"}}},"imageName":"quay.io/fairwinds/postgres-partman:16.0","instances":2,"name":"insights-postgresql","resources":{"limits":{"cpu":"1","memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}},"storage":{"size":"10Gi"},"superuserSecret":{"name":"fwinsights-postgresql"}}` | CloudNativePG configuration |
+| postgresql.cluster | object | `{"bootstrap":{"initdb":{"database":"fairwinds_insights","owner":"postgres","secret":{"name":"fwinsights-postgresql"}}},"certificates":{"clientCASecret":"fwinsights-postgresql-ca","replicationTLSSecret":"fwinsights-postgresql-ca","serverCASecret":"fwinsights-postgresql-ca","serverTLSSecret":"fwinsights-postgresql-ca"},"imageName":"quay.io/fairwinds/postgres-partman:16.0","instances":2,"name":"insights-postgresql","resources":{"limits":{"cpu":"1","memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}},"storage":{"size":"10Gi"},"superuserSecret":{"name":"fwinsights-postgresql"}}` | CloudNativePG configuration |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |
 | timescale.replicaCount | int | `1` |  |
