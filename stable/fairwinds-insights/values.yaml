@@ -501,7 +501,7 @@ postgresql:
     certFilename: tls.crt
     certKeyFilename: tls.key
   # -- Host for postgresql (CloudNativePG cluster name)
-  postgresqlHost: insights-postgres
+  postgresqlHost: insights-postgres-rw
   # -- Authentication configuration
   auth:
     username: postgres
