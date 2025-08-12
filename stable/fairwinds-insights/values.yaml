@@ -484,6 +484,14 @@ postgresql:
   # -- Install CloudNativePG operator
   operator:
     install: true
+    # -- CloudNativePG operator configuration
+    webhook:
+      mutating:
+        create: true
+      validating:
+        create: true
+    crds:
+      create: true
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database

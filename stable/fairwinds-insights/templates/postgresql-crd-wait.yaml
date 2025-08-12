@@ -1,0 +1,101 @@
+{{- if .Values.postgresql.ephemeral }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-postgresql-crd-wait
+  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "50"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: postgresql-crd-wait
+spec:
+  backoffLimit: 20
+  template:
+    spec:
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      restartPolicy: Never
+      containers:
+      - name: wait
+        image: "bitnami/kubectl:1.28"
+        command:
+        - /bin/bash
+        - -c
+        - |
+          set -e
+          echo "Waiting for CloudNativePG CRDs to be available..."
+          
+          # Wait for the main CRDs to be available
+          for crd in clusters.postgresql.cnpg.io backups.postgresql.cnpg.io scheduledbackups.postgresql.cnpg.io poolers.postgresql.cnpg.io; do
+            echo "Waiting for CRD: $crd"
+            kubectl wait --for=condition=established --timeout=300s crd/$crd
+            echo "CRD $crd is ready"
+          done
+          
+          # Additional wait to ensure CRDs are fully propagated
+          echo "Waiting additional time for CRDs to be fully propagated..."
+          sleep 30
+          
+          # Verify all CRDs are accessible
+          for crd in clusters.postgresql.cnpg.io backups.postgresql.cnpg.io scheduledbackups.postgresql.cnpg.io poolers.postgresql.cnpg.io; do
+            echo "Verifying CRD: $crd"
+            kubectl get crd $crd
+          done
+          
+          echo "All CloudNativePG CRDs are ready"
+          
+          # Create the PostgreSQL cluster
+          echo "Creating PostgreSQL cluster..."
+          cat <<EOF | kubectl apply -f -
+          apiVersion: postgresql.cnpg.io/v1
+          kind: Cluster
+          metadata:
+            name: insights-postgres
+            namespace: {{ .Release.Namespace }}
+            labels:
+              {{- include "fairwinds-insights.labels" . | nindent 14 }}
+          spec:
+            instances: 1
+            postgresql:
+              parameters:
+                max_connections: "100"
+                shared_buffers: "256MB"
+                effective_cache_size: "1GB"
+                maintenance_work_mem: "64MB"
+                checkpoint_completion_target: "0.9"
+                wal_buffers: "16MB"
+                default_statistics_target: "100"
+                random_page_cost: "1.1"
+                effective_io_concurrency: "200"
+                work_mem: "4MB"
+                min_wal_size: "1GB"
+                max_wal_size: "4GB"
+                max_worker_processes: "8"
+                max_parallel_workers_per_gather: "2"
+                max_parallel_workers: "8"
+                max_parallel_maintenance_workers: "2"
+            bootstrap:
+              initdb:
+                database: {{ .Values.postgresql.auth.database }}
+                owner: {{ .Values.postgresql.auth.username }}
+                secret:
+                  name: {{ .Values.postgresql.auth.existingSecret }}
+                  key: {{ .Values.postgresql.auth.secretKeys.adminPasswordKey }}
+            storage:
+              size: 10Gi
+              storageClass: ""
+            monitoring:
+              enabled: true
+          EOF
+          
+          echo "PostgreSQL cluster creation initiated"
+        securityContext:
+          runAsNonRoot: true
+          runAsUser: 1001
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+              - ALL
+{{- end }}

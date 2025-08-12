@@ -6,6 +6,70 @@
 
 See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-details/self-hosted/installation/) for complete documentation.
 
+## PostgreSQL Database
+
+This chart now uses CloudNativePG operator for PostgreSQL database management instead of the Bitnami PostgreSQL chart. The migration provides better Kubernetes-native PostgreSQL management with improved reliability and features.
+
+### Prerequisites
+
+- **For ephemeral PostgreSQL**: The CloudNativePG operator must be installed in the cluster (either via this chart with `postgresql.operator.install: true` or separately)
+- **For external PostgreSQL**: No operator required, just configure the connection details
+
+### Usage Scenarios
+
+1. **New Installation (Default)**: 
+   ```yaml
+   postgresql:
+     ephemeral: true
+     operator:
+       install: true
+   ```
+
+2. **Existing CloudNativePG Operator**:
+   ```yaml
+   postgresql:
+     ephemeral: true
+     operator:
+       install: false
+   ```
+   **Note**: The CloudNativePG operator must be installed separately before using this option.
+
+3. **External PostgreSQL**:
+   ```yaml
+   postgresql:
+     ephemeral: false
+     operator:
+       install: false
+     postgresqlHost: your-external-postgres-host
+   ```
+
+### Troubleshooting
+
+If you encounter the error "no matches for kind 'Cluster' in version 'postgresql.cnpg.io/v1'", it means the CloudNativePG operator is not installed. Either:
+- Set `postgresql.operator.install: true` to install the operator via this chart, or
+- Install the CloudNativePG operator separately before deploying this chart
+
+### Manual Cleanup (if needed)
+
+If you encounter conflicts with existing CloudNativePG resources during installation, you can run the provided cleanup script:
+
+```bash
+# Run the cleanup script
+./cleanup-cloudnative-pg.sh
+
+# Then proceed with your helm install
+helm install fairwinds-insights-test stable/fairwinds-insights \
+  --namespace fairwinds-insights-test \
+  --set postgresql.ephemeral=true \
+  --set postgresql.operator.install=true \
+  --wait --values ../../values.yaml --timeout 900s --debug --create-namespace
+```
+
+The cleanup script will:
+- Check for existing CloudNativePG webhook configurations and delete them if found
+- Check for existing CloudNativePG CRDs and delete them only if they have no resources
+- Provide clear feedback about what resources exist and what actions are taken
+
 ## Values
 
 | Key | Type | Default | Description |
