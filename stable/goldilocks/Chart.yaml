@@ -1,6 +1,6 @@
 apiVersion: v2
 appVersion: "v4.14.1"
-version: 9.2.0
+version: 10.0.0
 kubeVersion: ">= 1.22.0-0"
 description: |
   A Helm chart for running Fairwinds Goldilocks. See https://github.com/FairwindsOps/goldilocks
@@ -20,6 +20,6 @@ dependencies:
     repository: https://charts.fairwinds.com/stable
     condition: vpa.enabled
   - name: metrics-server
-    version: 7.2.*
-    repository: https://charts.bitnami.com/bitnami
+    version: 3.*.*
+    repository: https://kubernetes-sigs.github.io/metrics-server/
     condition: metrics-server.enabled
