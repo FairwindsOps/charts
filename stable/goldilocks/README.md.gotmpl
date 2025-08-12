@@ -23,6 +23,10 @@ Fairwinds has published a chart for installing VPA [in our stable repo](https://
 
 ## Major Version Upgrade Notes
 
+## Upgrading from v9.x.x to v10.x.x
+
+The only breaking change is to move the metrics-server sub-chart from bitnami to kubernetes-sigs. Generally we provide the sub-chart only as a convenience for testing. In production environments, metrics-server is a critical cluster component that should be managed separately. However in an abundance of caution, we are doing a major release to indicate this change.
+
 ## Upgrading from v6.x.x to v7.x.x
 
 In this change, the VPA helm chart was upgraded to the latest version, including a major bump. We recommend you to check [the VPA Helm chart changelog](https://github.com/FairwindsOps/charts/tree/master/stable/vpa#breaking-upgrading-from--v17x-to-200) to ensure a smooth upgrade.
