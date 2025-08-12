@@ -150,7 +150,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.operator.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
-| postgresql.postgresqlHost | string | `"insights-postgres"` | Host for postgresql (CloudNativePG cluster name) |
+| postgresql.postgresqlHost | string | `"insights-postgres-rw"` | Host for postgresql (CloudNativePG cluster name) |
 | postgresql.auth | object | `{"database":"fairwinds_insights","existingSecret":"fwinsights-postgresql","secretKeys":{"adminPasswordKey":"postgresql-password"},"username":"postgres"}` | Authentication configuration |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
