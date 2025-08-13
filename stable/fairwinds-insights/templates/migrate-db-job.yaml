@@ -8,6 +8,7 @@ metadata:
     "helm.sh/hook": "pre-install,pre-upgrade"
   {{- else }}
     "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "100"
   {{- end }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}

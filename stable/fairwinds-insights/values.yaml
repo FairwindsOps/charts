@@ -502,9 +502,14 @@ postgresql:
     certKeyFilename: tls.key
   # -- Host for postgresql (CloudNativePG cluster name)
   postgresqlHost: insights-postgres-rw
+  # -- Storage configuration for the PostgreSQL cluster
+  storage:
+    size: 10Gi
+    storageClass: standard
   # -- Authentication configuration
   auth:
     username: postgres
+    password: changeme
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
     secretKeys:

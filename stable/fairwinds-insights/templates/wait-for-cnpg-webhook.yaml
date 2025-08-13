@@ -1,0 +1,80 @@
+{{- if .Values.postgresql.ephemeral }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-wait-for-cnpg-webhook
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "10"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+      restartPolicy: Never
+      containers:
+      - name: wait-for-webhook
+        image: bitnami/kubectl:latest
+        command:
+        - /bin/bash
+        - -c
+        - |
+          set -e
+          echo "Waiting for CloudNativePG webhook to be ready..."
+          
+          # Wait for the webhook service to be available
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n {{ .Release.Namespace }} --timeout=300s
+          
+          # Wait for the webhook service to be ready
+          kubectl wait --for=condition=ready service cnpg-webhook-service -n {{ .Release.Namespace }} --timeout=300s
+          
+          # Test webhook connectivity
+          kubectl get crd clusters.postgresql.cnpg.io
+          
+          echo "CloudNativePG webhook is ready!"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+subjects:
+- kind: ServiceAccount
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  namespace: {{ .Release.Namespace }}
+{{- end }}

@@ -24,7 +24,7 @@ fi
 
 # List existing CloudNativePG CRDs
 echo "Checking for existing CloudNativePG CRDs..."
-for crd in clusters.postgresql.cnpg.io backups.postgresql.cnpg.io scheduledbackups.postgresql.cnpg.io poolers.postgresql.cnpg.io; do
+for crd in clusters.postgresql.cnpg.io backups.postgresql.cnpg.io scheduledbackups.postgresql.cnpg.io poolers.postgresql.cnpg.io clusterimagecatalogs.postgresql.cnpg.io imagecatalogs.postgresql.cnpg.io; do
     if kubectl get crd $crd 2>/dev/null; then
         echo "Found existing CRD: $crd"
         # Check if there are any resources using this CRD
