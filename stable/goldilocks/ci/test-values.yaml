@@ -4,9 +4,8 @@ vpa:
 
 metrics-server:
   enabled: true
-  extraArgs:
-    - --kubelet-insecure-tls
-    - --kubelet-preferred-address-types=InternalIP
+  args:
+    - "--kubelet-insecure-tls"
 
 controller:
   flags:

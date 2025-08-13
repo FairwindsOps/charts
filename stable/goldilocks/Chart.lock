@@ -3,7 +3,7 @@ dependencies:
   repository: https://charts.fairwinds.com/stable
   version: 4.5.0
 - name: metrics-server
-  repository: https://charts.bitnami.com/bitnami
-  version: 7.2.10
-digest: sha256:421c85776237d045f59f0d1dee55e7fe13b3d394369174666c81288a99f145f4
-generated: "2024-07-29T10:28:02.96546-06:00"
+  repository: https://kubernetes-sigs.github.io/metrics-server/
+  version: 3.13.0
+digest: sha256:0f44e79bb3a71a82e2fd4af312f5cc273c8f3540fc3747b6a06ed7c11eb31819
+generated: "2025-08-12T09:35:50.016072-06:00"
