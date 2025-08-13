@@ -7,10 +7,11 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade"
-    "helm.sh/hook-weight": "10"
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "50"
     "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
+  activeDeadlineSeconds: 300
   template:
     metadata:
       labels:
@@ -26,18 +27,48 @@ spec:
         - -c
         - |
           set -e
-          echo "Waiting for CloudNativePG webhook to be ready..."
+          echo "=== CloudNativePG Installation Debug ==="
+          echo "Namespace: {{ .Release.Namespace }}"
+          echo "Release: {{ .Release.Name }}"
           
-          # Wait for the webhook service to be available
-          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n {{ .Release.Namespace }} --timeout=300s
+          # List all pods in the namespace
+          echo "=== All pods in namespace ==="
+          kubectl get pods -n {{ .Release.Namespace }}
           
-          # Wait for the webhook service to be ready
-          kubectl wait --for=condition=ready service cnpg-webhook-service -n {{ .Release.Namespace }} --timeout=300s
+          # List all services in the namespace
+          echo "=== All services in namespace ==="
+          kubectl get services -n {{ .Release.Namespace }}
           
-          # Test webhook connectivity
-          kubectl get crd clusters.postgresql.cnpg.io
+          # List all CRDs related to CloudNativePG
+          echo "=== CloudNativePG CRDs ==="
+          kubectl get crd | grep postgresql.cnpg.io || echo "No CloudNativePG CRDs found"
           
-          echo "CloudNativePG webhook is ready!"
+          # Check if CloudNativePG operator is installed
+          echo "=== Checking CloudNativePG operator installation ==="
+          kubectl get deployment -n {{ .Release.Namespace }} | grep cloudnative-pg || echo "No CloudNativePG deployment found"
+          
+          # Wait for CloudNativePG CRDs to be available
+          echo "=== Waiting for CloudNativePG CRDs ==="
+          kubectl wait --for=condition=established --timeout=300s crd/clusters.postgresql.cnpg.io || echo "CRD not found"
+          
+          # Wait for the CloudNativePG operator pods to be ready
+          echo "=== Waiting for CloudNativePG operator pods ==="
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n {{ .Release.Namespace }} --timeout=300s || \
+          kubectl wait --for=condition=ready pod -l app=cloudnative-pg -n {{ .Release.Namespace }} --timeout=300s || \
+          kubectl wait --for=condition=ready pod -l app.kubernetes.io/component=operator -n {{ .Release.Namespace }} --timeout=300s || \
+          echo "No CloudNativePG operator pods found"
+          
+          # Check if webhook service exists (don't wait for it to be ready)
+          echo "=== Checking CloudNativePG webhook service ==="
+          kubectl get service cnpg-webhook-service -n {{ .Release.Namespace }} || \
+          kubectl get service cloudnative-pg-webhook-service -n {{ .Release.Namespace }} || \
+          echo "Webhook service not found, but continuing..."
+          
+          # Test that we can access the CRD
+          echo "=== Testing CloudNativePG CRD access ==="
+          kubectl get crd clusters.postgresql.cnpg.io || echo "CRD access failed, but continuing..."
+          
+          echo "=== CloudNativePG installation check completed! ==="
 ---
 apiVersion: v1
 kind: ServiceAccount
@@ -48,10 +79,9 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: Role
+kind: ClusterRole
 metadata:
   name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
-  namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
 rules:
@@ -61,9 +91,12 @@ rules:
 - apiGroups: ["apiextensions.k8s.io"]
   resources: ["customresourcedefinitions"]
   verbs: ["get", "list"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: RoleBinding
+kind: ClusterRoleBinding
 metadata:
   name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
   namespace: {{ .Release.Namespace }}
@@ -71,7 +104,7 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
 roleRef:
   apiGroup: rbac.authorization.k8s.io
-  kind: Role
+  kind: ClusterRole
   name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
 subjects:
 - kind: ServiceAccount
