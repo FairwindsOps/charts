@@ -1,0 +1,103 @@
+{{- if and .Values.postgresql.ephemeral .Values.postgresql.operator.install }}
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-cleanup-existing-crds
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "meta.helm.sh/release-name": {{ .Release.Name | quote }}
+    "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "10"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-crd-cleanup
+      restartPolicy: Never
+      containers:
+      - name: cleanup-crds
+        image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
+        command: ["sh"]
+        args:
+          - -c
+          - |
+            set -e
+            echo "=== Checking for existing CloudNativePG CRDs ==="
+            echo "Namespace: {{ .Release.Namespace }}"
+            echo "Release: {{ .Release.Name }}"
+            
+            # Check if CloudNativePG CRDs exist with different ownership
+            if kubectl get crd clusters.postgresql.cnpg.io >/dev/null 2>&1; then
+              echo "CloudNativePG CRDs exist, checking ownership..."
+              
+              # Get the current ownership metadata
+              current_release=$(kubectl get crd clusters.postgresql.cnpg.io -o jsonpath='{.metadata.annotations.meta\.helm\.sh/release-name}' 2>/dev/null || echo "")
+              current_namespace=$(kubectl get crd clusters.postgresql.cnpg.io -o jsonpath='{.metadata.annotations.meta\.helm\.sh/release-namespace}' 2>/dev/null || echo "")
+              
+              if [ "$current_release" != "{{ .Release.Name }}" ] || [ "$current_namespace" != "{{ .Release.Namespace }}" ]; then
+                echo "CRDs have different ownership metadata, updating them..."
+                
+                # Update the ownership metadata to match current release
+                kubectl patch crd clusters.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}"
+                kubectl patch crd backups.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}" 2>/dev/null || echo "backups CRD not found, skipping"
+                kubectl patch crd scheduledbackups.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}" 2>/dev/null || echo "scheduledbackups CRD not found, skipping"
+                kubectl patch crd poolers.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}" 2>/dev/null || echo "poolers CRD not found, skipping"
+                
+                echo "CRD ownership metadata updated successfully!"
+              else
+                echo "CRDs already have correct ownership metadata."
+              fi
+            else
+              echo "CloudNativePG CRDs don't exist yet, will be created by subchart."
+            fi
+            
+            echo "=== CRD cleanup completed! ==="
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-crd-cleanup
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-crd-cleanup
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+rules:
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["get", "patch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-crd-cleanup
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "fairwinds-insights.fullname" . }}-crd-cleanup
+subjects:
+- kind: ServiceAccount
+  name: {{ include "fairwinds-insights.fullname" . }}-crd-cleanup
+  namespace: {{ .Release.Namespace }}
+{{- end }}
