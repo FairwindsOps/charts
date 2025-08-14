@@ -506,6 +506,7 @@ postgresql:
     certKeyFilename: tls.key
   # -- Host for postgresql (CloudNativePG cluster name)
   postgresqlHost: insights-postgres-rw
+  port: 5432
   # -- Storage configuration for the PostgreSQL cluster
   storage:
     size: 10Gi
