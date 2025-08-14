@@ -6,8 +6,8 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
-      annotations:
-      "helm.sh/hook-delete-policy": "before-hook-creation"
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   instances: 1
   enableSuperuserAccess: true
