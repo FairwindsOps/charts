@@ -1,4 +1,57 @@
 {{- if .Values.postgresql.ephemeral }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "20"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "21"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+rules:
+- apiGroups: [""]
+  resources: ["pods", "services"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["get", "list"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "22"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+subjects:
+- kind: ServiceAccount
+  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
+  namespace: {{ .Release.Namespace }}
+---
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -65,57 +118,4 @@ spec:
           kubectl get crd clusters.postgresql.cnpg.io || echo "CRD access failed, but continuing..."
           
           echo "=== CloudNativePG installation check completed! ==="
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "20"
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "21"
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
-rules:
-- apiGroups: [""]
-  resources: ["pods", "services"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: ["apiextensions.k8s.io"]
-  resources: ["customresourcedefinitions"]
-  verbs: ["get", "list"]
-- apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["get", "list"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "22"
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
-subjects:
-- kind: ServiceAccount
-  name: {{ include "fairwinds-insights.fullname" . }}-wait-for-cnpg
-  namespace: {{ .Release.Namespace }}
 {{- end }}
