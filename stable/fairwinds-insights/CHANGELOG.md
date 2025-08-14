@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.2.0
+## 4.0.0
 * **BREAKING CHANGE**: Migrated from Bitnami PostgreSQL chart to CloudNativePG operator
   * Removed Bitnami PostgreSQL dependency
   * Added CloudNativePG operator as conditional dependency
