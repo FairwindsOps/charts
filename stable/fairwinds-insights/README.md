@@ -145,12 +145,17 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
+| postgresql.image.registry | string | `"quay.io"` |  |
+| postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
+| postgresql.image.tag | string | `"17.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
 | postgresql.operator | object | `{"crds":{"create":true},"install":true,"webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
 | postgresql.operator.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
 | postgresql.postgresqlHost | string | `"insights-postgres-rw"` | Host for postgresql (CloudNativePG cluster name) |
+| postgresql.port | int | `5432` |  |
+| postgresql.storage | object | `{"size":"10Gi","storageClass":"standard"}` | Storage configuration for the PostgreSQL cluster |
 | postgresql.auth | object | `{"database":"fairwinds_insights","existingSecret":"fwinsights-postgresql","secretKeys":{"adminPasswordKey":"postgresql-password"},"username":"postgres"}` | Authentication configuration |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
