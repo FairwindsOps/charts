@@ -22,6 +22,27 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
+      {{- if .Values.postgresql.ephemeral }}
+      initContainers:
+      - name: wait-for-postgresql
+        image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
+        command: ["sh"]
+        args:
+          - -c
+          - |
+            echo "Waiting for PostgreSQL cluster to be ready..."
+            kubectl wait --for=condition=ready cluster/postgresql.cnpg.io/insights-postgres --timeout=300s
+            echo "PostgreSQL cluster is ready!"
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+      {{- end }}
       containers:
       - name: fwinsights-db-migration
         image: "{{ .Values.migrationImage.repository }}:{{ include "fairwinds-insights.migrationImageTag" . }}"
