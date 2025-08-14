@@ -22,17 +22,6 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
-      {{- if .Values.postgresql.ephemeral }}
-        securityContext:
-          runAsUser: 1000
-          readOnlyRootFilesystem: true
-          allowPrivilegeEscalation: false
-          privileged: false
-          runAsNonRoot: true
-          capabilities:
-            drop:
-              - ALL
-      {{- end }}
       containers:
       - name: fwinsights-db-migration
         image: "{{ .Values.migrationImage.repository }}:{{ include "fairwinds-insights.migrationImageTag" . }}"
