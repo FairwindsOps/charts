@@ -1,4 +1,4 @@
-{{- if .Values.postgresql.ephemeral }}
+{{- if .Values.postgresql.operator.install}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -8,7 +8,7 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "50"
+    "helm.sh/hook-weight": "25"
     "helm.sh/hook-delete-policy": "before-hook-creation"
 spec:
   activeDeadlineSeconds: 300
