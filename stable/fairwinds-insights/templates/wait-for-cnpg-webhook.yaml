@@ -9,7 +9,8 @@ metadata:
   annotations:
     "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "25"
-    "helm.sh/hook-delete-policy": "hook-succeeded,before-hook-creation"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+    "helm.sh/hook-timeout": "300"
 spec:
   activeDeadlineSeconds: 300
   template:
