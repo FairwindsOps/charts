@@ -26,36 +26,48 @@ spec:
           - -c
           - |
             set -e
-            echo "=== Checking for existing CloudNativePG CRDs ==="
+            echo "=== Cleaning up existing CloudNativePG resources that might conflict ==="
             echo "Namespace: {{ .Release.Namespace }}"
             echo "Release: {{ .Release.Name }}"
             
-            # Check if CloudNativePG CRDs exist with different ownership
-            if kubectl get crd clusters.postgresql.cnpg.io >/dev/null 2>&1; then
-              echo "CloudNativePG CRDs exist, checking ownership..."
-              
-              # Get the current ownership metadata
-              current_release=$(kubectl get crd clusters.postgresql.cnpg.io -o jsonpath='{.metadata.annotations.meta\.helm\.sh/release-name}' 2>/dev/null || echo "")
-              current_namespace=$(kubectl get crd clusters.postgresql.cnpg.io -o jsonpath='{.metadata.annotations.meta\.helm\.sh/release-namespace}' 2>/dev/null || echo "")
-              
-              if [ "$current_release" != "{{ .Release.Name }}" ] || [ "$current_namespace" != "{{ .Release.Namespace }}" ]; then
-                echo "CRDs have different ownership metadata, updating them..."
-                
-                # Update the ownership metadata to match current release
-                kubectl patch crd clusters.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}"
-                kubectl patch crd backups.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}" 2>/dev/null || echo "backups CRD not found, skipping"
-                kubectl patch crd scheduledbackups.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}" 2>/dev/null || echo "scheduledbackups CRD not found, skipping"
-                kubectl patch crd poolers.postgresql.cnpg.io --type='merge' -p="{\"metadata\":{\"annotations\":{\"meta.helm.sh/release-name\":\"{{ .Release.Name }}\",\"meta.helm.sh/release-namespace\":\"{{ .Release.Namespace }}\"}}}" 2>/dev/null || echo "poolers CRD not found, skipping"
-                
-                echo "CRD ownership metadata updated successfully!"
-              else
-                echo "CRDs already have correct ownership metadata."
-              fi
+            # Check and list existing CloudNativePG resources
+            echo "Checking for existing CloudNativePG resources..."
+            
+            # List and delete specific webhook configurations that conflict
+            if kubectl get MutatingWebhookConfiguration cnpg-mutating-webhook-configuration 2>/dev/null; then
+                echo "Found existing cnpg-mutating-webhook-configuration, deleting..."
+                kubectl delete MutatingWebhookConfiguration cnpg-mutating-webhook-configuration --ignore-not-found=true
             else
-              echo "CloudNativePG CRDs don't exist yet, will be created by subchart."
+                echo "No existing cnpg-mutating-webhook-configuration found"
             fi
             
-            echo "=== CRD cleanup completed! ==="
+            if kubectl get ValidatingWebhookConfiguration cnpg-validating-webhook-configuration 2>/dev/null; then
+                echo "Found existing cnpg-validating-webhook-configuration, deleting..."
+                kubectl delete ValidatingWebhookConfiguration cnpg-validating-webhook-configuration --ignore-not-found=true
+            else
+                echo "No existing cnpg-validating-webhook-configuration found"
+            fi
+            
+            # List existing CloudNativePG CRDs
+            echo "Checking for existing CloudNativePG CRDs..."
+            for crd in clusters.postgresql.cnpg.io backups.postgresql.cnpg.io scheduledbackups.postgresql.cnpg.io poolers.postgresql.cnpg.io clusterimagecatalogs.postgresql.cnpg.io imagecatalogs.postgresql.cnpg.io; do
+                if kubectl get crd $crd 2>/dev/null; then
+                    echo "Found existing CRD: $crd"
+                    # Check if there are any resources using this CRD
+                    if kubectl get $crd --all-namespaces 2>/dev/null | grep -v "No resources found" > /dev/null; then
+                        echo "WARNING: CRD $crd has existing resources. Listing them:"
+                        kubectl get $crd --all-namespaces
+                        echo "Skipping deletion of CRD $crd to avoid data loss"
+                    else
+                        echo "CRD $crd has no resources, deleting..."
+                        kubectl delete crd $crd --ignore-not-found=true
+                    fi
+                else
+                    echo "No existing CRD: $crd"
+                fi
+            done
+            
+            echo "=== CloudNativePG cleanup completed successfully ==="
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
@@ -91,7 +103,16 @@ metadata:
 rules:
 - apiGroups: ["apiextensions.k8s.io"]
   resources: ["customresourcedefinitions"]
-  verbs: ["get", "patch"]
+  verbs: ["get", "list", "delete"]
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources: ["mutatingwebhookconfigurations", "validatingwebhookconfigurations"]
+  verbs: ["get", "list", "delete"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["get", "list"]
+- apiGroups: ["postgresql.cnpg.io"]
+  resources: ["clusters", "backups", "scheduledbackups", "poolers", "clusterimagecatalogs", "imagecatalogs"]
+  verbs: ["get", "list"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
