@@ -13,6 +13,7 @@ metadata:
 spec:
   instances: 1
   enableSuperuserAccess: true
+  imageName: {{ .Values.postgresql.image.registry }}/{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
   postgresql:
     parameters:
       max_connections: "100"

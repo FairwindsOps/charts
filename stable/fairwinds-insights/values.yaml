@@ -479,6 +479,10 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  image:
+    registry: quay.io
+    repository: fairwinds/postgres-partman
+    tag: "17.0"
   # -- Use the ephemeral postgresql cluster by default
   ephemeral: true
   # -- Install CloudNativePG operator
@@ -509,7 +513,6 @@ postgresql:
   # -- Authentication configuration
   auth:
     username: postgres
-    password: changeme
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
     secretKeys:
