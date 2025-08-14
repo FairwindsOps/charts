@@ -23,9 +23,6 @@ spec:
         - name: {{ . }}
       {{- end }}
       {{- if .Values.postgresql.ephemeral }}
-      initContainers:
-      - name: wait-for-postgresql
-        image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
