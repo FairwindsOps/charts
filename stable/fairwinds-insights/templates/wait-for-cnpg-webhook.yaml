@@ -7,8 +7,8 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade"
-    "helm.sh/hook-weight": "25"
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "50"
     "helm.sh/hook-timeout": "300"
 spec:
   activeDeadlineSeconds: 300
@@ -78,7 +78,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "20"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 ---
@@ -89,7 +89,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "21"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 rules:
@@ -111,7 +111,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "22"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 roleRef:
