@@ -8,7 +8,7 @@ metadata:
     "helm.sh/hook": "pre-install,pre-upgrade"
   {{- else }}
     "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "100"
+    "helm.sh/hook-weight": "200"
   {{- end }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
@@ -26,13 +26,6 @@ spec:
       initContainers:
       - name: wait-for-postgresql
         image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
-        command: ["sh"]
-        args:
-          - -c
-          - |
-            echo "Waiting for PostgreSQL cluster to be ready..."
-            kubectl wait --for=condition=ready cluster/postgresql.cnpg.io/insights-postgres --timeout=300s
-            echo "PostgreSQL cluster is ready!"
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
