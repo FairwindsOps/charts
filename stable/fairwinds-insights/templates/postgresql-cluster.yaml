@@ -1,4 +1,152 @@
-{{- if .Values.postgresql.ephemeral }}
+{{- if and .Values.postgresql.ephemeral .Values.postgresql.operator.install }}
+---
+# Case 1: Operator is being installed, so wait for it and create cluster
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-create-postgresql-cluster
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "meta.helm.sh/release-name": {{ .Release.Name | quote }}
+    "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "50"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
+spec:
+  backoffLimit: 10
+  template:
+    spec:
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+      restartPolicy: Never
+      containers:
+      - name: create-cluster
+        image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
+        command: ["sh"]
+        args:
+          - -c
+          - |
+            set -e
+            echo "=== Creating PostgreSQL Cluster (Operator Installation Mode) ==="
+            echo "Namespace: {{ .Release.Namespace }}"
+            echo "Release: {{ .Release.Name }}"
+            
+            # Wait for CloudNativePG CRDs to be available
+            echo "Waiting for CloudNativePG CRDs..."
+            kubectl wait --for=condition=established --timeout=300s crd/clusters.postgresql.cnpg.io
+            
+            # Wait for CloudNativePG operator deployment to be ready
+            echo "Waiting for CloudNativePG operator deployment..."
+            kubectl wait --for=condition=available --timeout=300s deployment -l app.kubernetes.io/name=cloudnative-pg -n {{ .Release.Namespace }}
+            
+            # Wait for CloudNativePG operator pods to be ready
+            echo "Waiting for CloudNativePG operator pods..."
+            kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n {{ .Release.Namespace }} --timeout=300s
+            
+            # Create the PostgreSQL cluster
+            echo "Creating PostgreSQL cluster..."
+            cat <<EOF | kubectl apply -f -
+            apiVersion: postgresql.cnpg.io/v1
+            kind: Cluster
+            metadata:
+              name: insights-postgres
+              namespace: {{ .Release.Namespace }}
+              labels:
+                {{- include "fairwinds-insights.labels" . | nindent 16 }}
+            spec:
+              instances: 1
+              enableSuperuserAccess: true
+              imageName: {{ .Values.postgresql.image.registry }}/{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
+              postgresql:
+                parameters:
+                  max_connections: "100"
+                  shared_buffers: "256MB"
+                  effective_cache_size: "1GB"
+                  maintenance_work_mem: "64MB"
+                  checkpoint_completion_target: "0.9"
+                  wal_buffers: "16MB"
+                  default_statistics_target: "100"
+                  random_page_cost: "1.1"
+                  effective_io_concurrency: "200"
+                  work_mem: "4MB"
+                  min_wal_size: "1GB"
+                  max_wal_size: "4GB"
+                  max_worker_processes: "8"
+                  max_parallel_workers_per_gather: "2"
+                  max_parallel_workers: "8"
+                  max_parallel_maintenance_workers: "2"
+                  password_encryption: "scram-sha-256"
+              bootstrap:
+                initdb:
+                  database: {{ .Values.postgresql.auth.database }}
+                  owner: {{ .Values.postgresql.auth.username }}
+                  secret:
+                    name: {{ .Values.postgresql.auth.existingSecret }}
+              superuserSecret:
+                name: {{ .Values.postgresql.auth.existingSecret }}
+              storage:
+                size: {{ .Values.postgresql.storage.size }}
+                storageClass: {{ .Values.postgresql.storage.storageClass }}
+            EOF
+            
+            echo "=== PostgreSQL cluster created successfully! ==="
+        securityContext:
+          runAsUser: 1000
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          capabilities:
+            drop:
+              - ALL
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+rules:
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["postgresql.cnpg.io"]
+  resources: ["clusters"]
+  verbs: ["create", "get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+subjects:
+- kind: ServiceAccount
+  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+  namespace: {{ .Release.Namespace }}
+{{- else if .Values.postgresql.ephemeral }}
+---
+# Case 2: Operator is not being installed, but ephemeral is true - create cluster directly
 apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
