@@ -1,4 +1,4 @@
-{{- if .Values.postgresql.operator.install}}
+{{- if .Values.postgresql.operator.install }}
 apiVersion: batch/v1
 kind: Job
 metadata:
