@@ -308,6 +308,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.postgresql.enabled | bool | `true` |  |
 | temporal.server.replicaCount | int | `1` |  |
 | temporal.server.config.logLevel | string | `"debug"` |  |
+| temporal.server.config.namespaces.create | bool | `true` |  |
+| temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
+| temporal.server.config.namespaces.namespace[0].retention | string | `"7d"` |  |
 | temporal.server.config.persistence.default.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |

@@ -806,6 +806,11 @@ temporal:
     replicaCount: 1
     config:
       logLevel: "debug"
+      namespaces:
+        create: true
+        namespace:
+          - name: fwinsights
+            retention: 7d
       persistence:
         default:
           driver: "sql"
