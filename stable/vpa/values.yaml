@@ -337,7 +337,7 @@ tests:
       drop:
         - ALL
   image:
-    # tests.image.repository -- An image used for testing containing bash, cat and kubectl
+    # tests.image.repository -- An image used for testing containing sh, cat and kubectl
     repository: rancher/kubectl
     # tests.image.tag -- An image tag for the tests image
     tag: "v1.33.4"
