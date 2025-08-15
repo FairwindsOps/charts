@@ -810,7 +810,7 @@ temporal:
         create: true
         namespace:
           - name: fwinsights
-            retention: 7d
+            retention: 3d
       persistence:
         default:
           driver: "sql"
