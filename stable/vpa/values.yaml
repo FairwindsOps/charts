@@ -337,10 +337,10 @@ tests:
       drop:
         - ALL
   image:
-    # tests.image.repository -- An image used for testing containing bash, cat and kubectl
-    repository: bitnami/kubectl
+    # tests.image.repository -- An image used for testing containing sh, cat and kubectl
+    repository: alpine/kubectl
     # tests.image.tag -- An image tag for the tests image
-    tag: ""
+    tag: "1.33.3"
     # tests.image.pullPolicy -- The pull policy for the tests image.
     pullPolicy: Always
 

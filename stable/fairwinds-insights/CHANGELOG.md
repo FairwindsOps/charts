@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.5
+* Change kubectl image from bitnami to alpine repository
+
 ## 3.1.4
 * Add option to require SSO when accessing Admin API
 
