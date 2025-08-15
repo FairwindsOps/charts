@@ -204,8 +204,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
 | migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
-| cronjobExecutor.image.repository | string | `"bitnami/kubectl"` |  |
-| cronjobExecutor.image.tag | string | `"1.22.8"` |  |
+| cronjobExecutor.image.repository | string | `"rancher/kubectl"` |  |
+| cronjobExecutor.image.tag | string | `"v1.31.12"` |  |
 | cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |

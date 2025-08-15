@@ -233,8 +233,8 @@ recommender:
 | admissionController.httpPort | int | `8000` | Port of the admission controller for the mutating webhooks |
 | admissionController.metricsPort | int | `8944` | Port of the admission controller where metrics can be received from |
 | tests.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The security context for the containers run as helm hook tests |
-| tests.image.repository | string | `"bitnami/kubectl"` | An image used for testing containing bash, cat and kubectl |
-| tests.image.tag | string | `""` | An image tag for the tests image |
+| tests.image.repository | string | `"rancher/kubectl"` | An image used for testing containing bash, cat and kubectl |
+| tests.image.tag | string | `"v1.31.12"` | An image tag for the tests image |
 | tests.image.pullPolicy | string | `"Always"` | The pull policy for the tests image. |
 | metrics-server | object | `{"enabled":false}` | configuration options for the [metrics server Helm chart](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server). See the projects [README.md](https://github.com/kubernetes-sigs/metrics-server/tree/master/charts/metrics-server#configuration) for all available options |
 | metrics-server.enabled | bool | `false` | Whether or not the metrics server Helm chart should be installed |
