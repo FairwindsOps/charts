@@ -2,16 +2,6 @@
 
 ## 4.0.0
 * **BREAKING CHANGE**: Migrated from Bitnami PostgreSQL chart to CloudNativePG operator
-  * Removed Bitnami PostgreSQL dependency
-  * Added CloudNativePG operator as conditional dependency
-  * Added PostgreSQL cluster template using CloudNativePG Cluster resource
-  * Updated PostgreSQL configuration structure
-  * Added `postgresql.operator.install` flag to control operator installation
-  * PostgreSQL cluster creation now requires CloudNativePG operator to be installed
-  * Updated connection configuration to use `insights-postgres` hostname
-  * Updated temporal configuration to use new PostgreSQL hostname
-  * Added comprehensive documentation and troubleshooting guide
-  * Added automatic cleanup of existing CloudNativePG resources to prevent installation conflicts
 
 ## 3.1.4
 * Add option to require SSO when accessing Admin API
