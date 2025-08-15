@@ -123,8 +123,13 @@ spec:
                   kubectl create namespace "$OPERATOR_NAMESPACE"
                 fi
                 
-                # Install CloudNativePG operator
+                # Install CloudNativePG operator using standard YAML manifest
+                echo "Installing CloudNativePG operator using standard YAML manifest..."
                 kubectl apply -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.0.yaml || true
+                
+                # Verify the installation as per CloudNativePG documentation
+                echo "Verifying CloudNativePG operator installation..."
+                kubectl get deploy -n cnpg-system cnpg-controller-manager
                 
                 # Wait for resources to be created
                 sleep 10
@@ -155,6 +160,10 @@ spec:
             
             # Wait for CloudNativePG operator pods to be ready
             kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE" --timeout=300s
+            
+            # Wait for webhook service to be ready
+            echo "Waiting for webhook service to be ready..."
+            kubectl wait --for=condition=available --timeout=120s deployment/cnpg-webhook-server -n cnpg-system || true
             
             # Create the PostgreSQL cluster
             echo "Creating PostgreSQL cluster..."
@@ -203,6 +212,8 @@ spec:
             EOF
             
             echo "=== PostgreSQL cluster created successfully! ==="
+            
+
             
         securityContext:
           runAsUser: 1000
