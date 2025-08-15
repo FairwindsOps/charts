@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.6
+* Add default temporal namespace for fwinsights
+
 ## 3.1.5
 * Change kubectl image from bitnami to alpine repository
 
