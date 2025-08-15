@@ -92,7 +92,7 @@ spec:
       restartPolicy: Never
       containers:
       - name: create-cluster
-        image: "alpine/kubectl:latest"
+        image: "alpine/kubectl:1.33.3"
         command: ["sh"]
         args:
           - -c
