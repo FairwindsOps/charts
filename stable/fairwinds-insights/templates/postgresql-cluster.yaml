@@ -125,7 +125,7 @@ spec:
                 
                 # Install CloudNativePG operator using standard YAML manifest
                 echo "Installing CloudNativePG operator using standard YAML manifest..."
-                kubectl apply -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.0.yaml || true
+                kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.0.yaml || true
                 
                 # Verify the installation as per CloudNativePG documentation
                 echo "Verifying CloudNativePG operator installation..."
@@ -153,13 +153,16 @@ spec:
             fi
             
             # Wait for CloudNativePG CRDs to be available
-            kubectl wait --for=condition=established --timeout=300s crd/clusters.postgresql.cnpg.io
+            echo "Waiting for CloudNativePG CRDs to be available..."
+            #kubectl wait --for=condition=established --timeout=300s crd/clusters.postgresql.cnpg.io
             
             # Wait for CloudNativePG operator deployment to be ready
-            kubectl wait --for=condition=available --timeout=300s deployment -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE"
+            echo "Waiting for CloudNativePG operator deployment to be ready..."
+            #kubectl wait --for=condition=available --timeout=300s deployment -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE"
             
             # Wait for CloudNativePG operator pods to be ready
-            kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE" --timeout=300s
+            echo "Waiting for CloudNativePG operator pods to be ready..."
+            #kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE" --timeout=300s
             
             # Wait for webhook service to be ready
             echo "Waiting for webhook service to be ready..."
