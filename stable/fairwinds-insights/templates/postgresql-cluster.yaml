@@ -1,5 +1,77 @@
 {{- if and .Values.postgresql.ephemeral .Values.postgresql.operator.install }}
 ---
+# Minimal RBAC for PostgreSQL cluster creation
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Release.Name }}-pg-creator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ .Release.Name }}-pg-creator
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+rules:
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["create", "get", "list", "watch", "update", "patch", "delete"]
+- apiGroups: ["apiextensions.k8s.io"]
+  resources: ["customresourcedefinitions"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["apps"]
+  resources: ["deployments", "statefulsets", "daemonsets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["pods"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["postgresql.cnpg.io"]
+  resources: ["clusters"]
+  verbs: ["create", "get", "list", "watch"]
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["clusterroles", "clusterrolebindings", "roles", "rolebindings"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete", "bind", "escalate"]
+- apiGroups: [""]
+  resources: ["serviceaccounts", "services", "configmaps", "secrets", "events"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources: ["mutatingwebhookconfigurations", "validatingwebhookconfigurations"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["coordination.k8s.io"]
+  resources: ["leases"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["events.k8s.io"]
+  resources: ["events"]
+  verbs: ["create", "patch"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["networkpolicies"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["policy"]
+  resources: ["poddisruptionbudgets"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+- apiGroups: ["autoscaling"]
+  resources: ["horizontalpodautoscalers"]
+  verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ .Release.Name }}-pg-creator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ .Release.Name }}-pg-creator
+subjects:
+- kind: ServiceAccount
+  name: {{ .Release.Name }}-pg-creator
+  namespace: {{ .Release.Namespace }}
+---
 # Case 1: Operator is being installed, so wait for it and create cluster
 apiVersion: batch/v1
 kind: Job
@@ -11,36 +83,80 @@ metadata:
   annotations:
     "meta.helm.sh/release-name": {{ .Release.Name | quote }}
     "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
+    "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "15"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 spec:
   backoffLimit: 10
   template:
     spec:
-      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+      serviceAccountName: {{ .Release.Name }}-pg-creator
       restartPolicy: Never
       containers:
       - name: create-cluster
-        image: "{{ .Values.cronjobExecutor.image.repository }}:{{ .Values.cronjobExecutor.image.tag }}"
+        image: "alpine/kubectl:latest"
         command: ["sh"]
         args:
           - -c
-          - |
+          - |+
             set -e
             echo "=== Creating PostgreSQL Cluster (Operator Installation Mode) ==="
             echo "Namespace: {{ .Release.Namespace }}"
             echo "Release: {{ .Release.Name }}"
+
+            # Determine operator namespace
+            OPERATOR_NAMESPACE="{{ .Values.postgresql.operator.namespace }}"
+            if [ -z "$OPERATOR_NAMESPACE" ]; then
+              OPERATOR_NAMESPACE="{{ .Release.Namespace }}"
+            fi
+            echo "Operator namespace: $OPERATOR_NAMESPACE"
+            
+            # Check if CloudNativePG operator is already installed in any namespace
+            EXISTING_OPERATOR=$(kubectl get deployment -l app.kubernetes.io/name=cloudnative-pg --all-namespaces --no-headers -o custom-columns=NAMESPACE:.metadata.namespace 2>/dev/null | head -1 || echo "")
+            
+            if [ -n "$EXISTING_OPERATOR" ]; then
+              echo "Using existing CloudNativePG operator in namespace: $EXISTING_OPERATOR"
+              OPERATOR_NAMESPACE="$EXISTING_OPERATOR"
+            else
+              echo "Installing CloudNativePG operator in namespace: $OPERATOR_NAMESPACE"
+                
+                # Create namespace if it doesn't exist
+                if ! kubectl get namespace "$OPERATOR_NAMESPACE" 2>/dev/null; then
+                  kubectl create namespace "$OPERATOR_NAMESPACE"
+                fi
+                
+                # Install CloudNativePG operator
+                kubectl apply -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.0.yaml || true
+                
+                # Wait for resources to be created
+                sleep 10
+              
+              # Check if the operator deployment exists
+              for i in {1..5}; do
+                if kubectl get deployment -n cnpg-system cnpg-controller-manager >/dev/null 2>&1; then
+                  echo "CloudNativePG operator installed successfully!"
+                  OPERATOR_NAMESPACE="cnpg-system"
+                  break
+                else
+                  sleep 5
+                fi
+              done
+              
+              # Final check
+              if ! kubectl get deployment -n cnpg-system cnpg-controller-manager >/dev/null 2>&1; then
+                echo "ERROR: Failed to install CloudNativePG operator"
+                exit 1
+              fi
+            fi
             
             # Wait for CloudNativePG CRDs to be available
-            echo "Waiting for CloudNativePG CRDs..."
             kubectl wait --for=condition=established --timeout=300s crd/clusters.postgresql.cnpg.io
             
             # Wait for CloudNativePG operator deployment to be ready
-            echo "Waiting for CloudNativePG operator deployment..."
-            kubectl wait --for=condition=available --timeout=300s deployment -l app.kubernetes.io/name=cloudnative-pg -n {{ .Release.Namespace }}
+            kubectl wait --for=condition=available --timeout=300s deployment -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE"
             
             # Wait for CloudNativePG operator pods to be ready
-            echo "Waiting for CloudNativePG operator pods..."
-            kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n {{ .Release.Namespace }} --timeout=300s
+            kubectl wait --for=condition=ready pod -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE" --timeout=300s
             
             # Create the PostgreSQL cluster
             echo "Creating PostgreSQL cluster..."
@@ -89,6 +205,7 @@ spec:
             EOF
             
             echo "=== PostgreSQL cluster created successfully! ==="
+            
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
@@ -102,46 +219,14 @@ spec:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
+  name: {{ .Release.Name }}-pg-creator
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-rules:
-- apiGroups: ["apiextensions.k8s.io"]
-  resources: ["customresourcedefinitions"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: ["apps"]
-  resources: ["deployments"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: [""]
-  resources: ["pods"]
-  verbs: ["get", "list", "watch"]
-- apiGroups: ["postgresql.cnpg.io"]
-  resources: ["clusters"]
-  verbs: ["create", "get", "list", "watch"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-roleRef:
-  apiGroup: rbac.authorization.k8s.io
-  kind: ClusterRole
-  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
-subjects:
-- kind: ServiceAccount
-  name: {{ include "fairwinds-insights.fullname" . }}-cluster-creator
-  namespace: {{ .Release.Namespace }}
+  annotations:
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 {{- else if .Values.postgresql.ephemeral }}
 ---
 # Case 2: Operator is not being installed, but ephemeral is true - create cluster directly

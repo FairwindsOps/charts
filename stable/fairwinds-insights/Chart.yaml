@@ -9,10 +9,6 @@ maintainers:
   - name: vitorvezani
   - name: jdesouza
 dependencies:
-  - name: cloudnative-pg
-    version: 0.21.0
-    repository: https://cloudnative-pg.github.io/charts
-    condition: postgresql.operator.install
   - name: minio
     version: 5.0.10
     repository: https://charts.min.io/
