@@ -488,8 +488,6 @@ postgresql:
   # -- Install CloudNativePG operator
   operator:
     install: true
-    # -- Namespace where CloudNativePG operator will be installed (defaults to release namespace)
-    namespace: "cnpg-operator"
     # -- CloudNativePG operator version to install
     version: "1.27.0"
     # -- CloudNativePG operator configuration
