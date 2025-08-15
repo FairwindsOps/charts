@@ -638,7 +638,7 @@ migrateHealthScoreJob:
 cronjobExecutor:
   image:
     repository: rancher/kubectl
-    tag: "v1.31.12"
+    tag: "v1.33.4"
   resources:
     limits:
       cpu: 100m
