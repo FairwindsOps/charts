@@ -202,8 +202,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
 | migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
-| cronjobExecutor.image.repository | string | `"bitnami/kubectl"` |  |
-| cronjobExecutor.image.tag | string | `"1.22.8"` |  |
+| cronjobExecutor.image.repository | string | `"alpine/kubectl"` |  |
+| cronjobExecutor.image.tag | string | `"1.33.3"` |  |
 | cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
@@ -306,6 +306,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.postgresql.enabled | bool | `true` |  |
 | temporal.server.replicaCount | int | `1` |  |
 | temporal.server.config.logLevel | string | `"debug"` |  |
+| temporal.server.config.namespaces.create | bool | `true` |  |
+| temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
+| temporal.server.config.namespaces.namespace[0].retention | string | `"3d"` |  |
 | temporal.server.config.persistence.default.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |

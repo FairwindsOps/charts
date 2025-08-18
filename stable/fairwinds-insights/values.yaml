@@ -658,8 +658,8 @@ migrateHealthScoreJob:
 
 cronjobExecutor:
   image:
-    repository: bitnami/kubectl
-    tag: "1.22.8"
+    repository: alpine/kubectl
+    tag: "1.33.3"
   resources:
     limits:
       cpu: 100m
@@ -827,6 +827,11 @@ temporal:
     replicaCount: 1
     config:
       logLevel: "debug"
+      namespaces:
+        create: true
+        namespace:
+          - name: fwinsights
+            retention: 3d
       persistence:
         default:
           driver: "sql"
