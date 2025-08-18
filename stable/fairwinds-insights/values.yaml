@@ -822,8 +822,8 @@ temporal:
             existingSecret: fwinsights-postgresql
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
             # it has a single key called `password`
-            maxConns: 20
-            maxIdleConns: 20
+            maxConns: 5
+            maxIdleConns: 3
             maxConnLifetime: "1h"
             tls:
               enabled: true
@@ -843,8 +843,8 @@ temporal:
             existingSecret: fwinsights-postgresql
             # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
             # it has a single key called `password`
-            maxConns: 20
-            maxIdleConns: 20
+            maxConns: 5
+            maxIdleConns: 3
             maxConnLifetime: "1h"
             tls:
               enabled: true

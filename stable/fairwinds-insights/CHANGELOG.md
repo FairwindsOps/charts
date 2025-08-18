@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.8
+* Lower Temporal max and maxIdle default connections
+
 ## 3.1.7
 * Bump Temporal chart to latest and use default log level
 
