@@ -805,7 +805,6 @@ temporal:
   server:
     replicaCount: 1
     config:
-      logLevel: "debug"
       namespaces:
         create: true
         namespace:
