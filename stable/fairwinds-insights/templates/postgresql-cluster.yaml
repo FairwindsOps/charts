@@ -184,6 +184,8 @@ spec:
               storage:
                 size: {{ .Values.postgresql.storage.size }}
                 storageClass: {{ .Values.postgresql.storage.storageClass }}
+              resources:
+{{- toYaml .Values.postgresql.resources | nindent 16 }}
             EOF
             
             echo "=== PostgreSQL cluster created successfully! ==="
@@ -241,4 +243,6 @@ spec:
   storage:
     size: {{ .Values.postgresql.storage.size }}
     storageClass: {{ .Values.postgresql.storage.storageClass }}
+  resources:
+{{- toYaml .Values.postgresql.resources | nindent 4 }}
 {{- end }}

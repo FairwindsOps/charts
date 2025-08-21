@@ -513,6 +513,14 @@ postgresql:
   storage:
     size: 10Gi
     storageClass: standard
+  # -- Resource configuration for the PostgreSQL cluster
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 75m
+      memory: 256Mi
   # -- Authentication configuration
   auth:
     username: postgres
