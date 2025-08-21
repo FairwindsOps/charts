@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.0
+* **BREAKING CHANGE**: Migrated from Bitnami PostgreSQL chart to CloudNativePG operator
+
 ## 3.1.8
 * Lower Temporal max and maxIdle default connections
 
