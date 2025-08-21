@@ -305,7 +305,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.mysql.enabled | bool | `false` |  |
 | temporal.postgresql.enabled | bool | `true` |  |
 | temporal.server.replicaCount | int | `1` |  |
-| temporal.server.config.logLevel | string | `"debug"` |  |
 | temporal.server.config.namespaces.create | bool | `true` |  |
 | temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
 | temporal.server.config.namespaces.namespace[0].retention | string | `"3d"` |  |
@@ -316,8 +315,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.default.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.default.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.default.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
-| temporal.server.config.persistence.default.sql.maxConns | int | `20` |  |
-| temporal.server.config.persistence.default.sql.maxIdleConns | int | `20` |  |
+| temporal.server.config.persistence.default.sql.maxConns | int | `5` |  |
+| temporal.server.config.persistence.default.sql.maxIdleConns | int | `3` |  |
 | temporal.server.config.persistence.default.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.default.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.default.sql.tls.enableHostVerification | bool | `false` |  |
@@ -330,8 +329,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.visibility.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.visibility.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.visibility.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
-| temporal.server.config.persistence.visibility.sql.maxConns | int | `20` |  |
-| temporal.server.config.persistence.visibility.sql.maxIdleConns | int | `20` |  |
+| temporal.server.config.persistence.visibility.sql.maxConns | int | `5` |  |
+| temporal.server.config.persistence.visibility.sql.maxIdleConns | int | `3` |  |
 | temporal.server.config.persistence.visibility.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.visibility.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.visibility.sql.tls.enableHostVerification | bool | `false` |  |

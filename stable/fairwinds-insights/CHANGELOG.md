@@ -3,6 +3,12 @@
 ## 4.0.0
 * **BREAKING CHANGE**: Migrated from Bitnami PostgreSQL chart to CloudNativePG operator
 
+## 3.1.8
+* Lower Temporal max and maxIdle default connections
+
+## 3.1.7
+* Bump Temporal chart to latest and use default log level
+
 ## 3.1.6
 * Add default temporal namespace for fwinsights
 

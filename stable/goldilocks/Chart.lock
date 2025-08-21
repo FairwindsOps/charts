@@ -1,9 +1,9 @@
 dependencies:
 - name: vpa
   repository: https://charts.fairwinds.com/stable
-  version: 4.5.0
+  version: 4.8.1
 - name: metrics-server
   repository: https://kubernetes-sigs.github.io/metrics-server/
   version: 3.13.0
-digest: sha256:0f44e79bb3a71a82e2fd4af312f5cc273c8f3540fc3747b6a06ed7c11eb31819
-generated: "2025-08-12T09:35:50.016072-06:00"
+digest: sha256:fee10eb48175073d599cd2d03ab3d3a967a15ce8716f399e097874d35f46c782
+generated: "2025-08-19T19:27:15.417689-04:00"
