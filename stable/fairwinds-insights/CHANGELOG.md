@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.1
+* Updated postgres storage
+
 ## 4.0.0
 * **BREAKING CHANGE**: Migrated from Bitnami PostgreSQL chart to CloudNativePG operator
 
