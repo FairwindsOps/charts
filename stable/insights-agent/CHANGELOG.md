@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.9.5
+* Bumped insights-right-sizer to v0.0.5-dev
+
 ## 4.9.4
 * Bumped polaris to 10.1
 
