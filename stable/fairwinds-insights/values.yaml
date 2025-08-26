@@ -511,8 +511,8 @@ postgresql:
   port: 5432
   # -- Storage configuration for the PostgreSQL cluster
   storage:
-    size: 10Gi
-    storageClass: standard
+    size: 15Gi
+    storageClass: gp3
   # -- Resource configuration for the PostgreSQL cluster
   resources:
     limits:
