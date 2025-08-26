@@ -526,6 +526,7 @@ postgresql:
     username: postgres
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
+    existingSuperUserSecret: fwinsights-postgresql-superuser
     secretKeys:
       adminPasswordKey: postgresql-password
   # -- PostgreSQL configuration parameters
