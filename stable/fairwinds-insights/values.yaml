@@ -512,7 +512,7 @@ postgresql:
   # -- Storage configuration for the PostgreSQL cluster
   storage:
     size: 15Gi
-    storageClass: gp3
+    storageClass: gp3-encrypted
   # -- Resource configuration for the PostgreSQL cluster
   resources:
     limits:
