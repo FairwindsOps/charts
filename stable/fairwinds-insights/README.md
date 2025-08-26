@@ -145,22 +145,21 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
-| postgresql.fullnameOverride | string | `"insights-postgresql"` |  |
-| postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
 | postgresql.image.registry | string | `"quay.io"` |  |
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
-| postgresql.image.tag | string | `"16.0"` |  |
-| postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql chart by default |
+| postgresql.image.tag | string | `"17.0"` |  |
+| postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
+| postgresql.operator | object | `{"crds":{"create":true},"install":true,"version":"1.27.0","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
+| postgresql.operator.version | string | `"1.27.0"` | CloudNativePG operator version to install |
+| postgresql.operator.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
-| postgresql.postgresqlHost | string | `"insights-postgresql"` |  |
-| postgresql.auth.username | string | `"postgres"` |  |
-| postgresql.auth.database | string | `"fairwinds_insights"` |  |
-| postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` |  |
-| postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
-| postgresql.primary.service.port | int | `5432` | Port of the Postgres Database |
-| postgresql.primary.persistence.enabled | bool | `true` | Create Persistent Volume with Postgres |
-| postgresql.primary.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Postgres |
+| postgresql.postgresqlHost | string | `"insights-postgres-rw"` | Host for postgresql (CloudNativePG cluster name) |
+| postgresql.port | int | `5432` |  |
+| postgresql.storage | object | `{"size":"10Gi","storageClass":"standard"}` | Storage configuration for the PostgreSQL cluster |
+| postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resource configuration for the PostgreSQL cluster |
+| postgresql.auth | object | `{"database":"fairwinds_insights","existingSecret":"fwinsights-postgresql","existingSuperUserSecret":"fwinsights-postgresql-superuser","secretKeys":{"adminPasswordKey":"postgresql-password"},"username":"postgres"}` | Authentication configuration |
+| postgresql.parameters | object | `{"checkpoint_completion_target":"0.9","default_statistics_target":"100","effective_cache_size":"1GB","effective_io_concurrency":"200","maintenance_work_mem":"64MB","max_connections":"100","max_parallel_maintenance_workers":"2","max_parallel_workers":"8","max_parallel_workers_per_gather":"2","max_wal_size":"4GB","max_worker_processes":"8","min_wal_size":"1GB","password_encryption":"scram-sha-256","random_page_cost":"1.1","shared_buffers":"256MB","wal_buffers":"16MB","work_mem":"4MB"}` | PostgreSQL configuration parameters |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.fullnameOverride | string | `"timescale"` |  |

@@ -479,15 +479,25 @@ ingress:
   extraPaths: {}
 
 postgresql:
-  fullnameOverride: insights-postgresql
-  # -- Set to `true` to run migrations after the upgrade
-  postMigrate: false
   image:
     registry: quay.io
     repository: fairwinds/postgres-partman
-    tag: "16.0"
-  # -- Use the ephemeral postgresql chart by default
+    tag: "17.0"
+  # -- Use the ephemeral postgresql cluster by default
   ephemeral: true
+  # -- Install CloudNativePG operator
+  operator:
+    install: true
+    # -- CloudNativePG operator version to install
+    version: "1.27.0"
+    # -- CloudNativePG operator configuration
+    webhook:
+      mutating:
+        create: true
+      validating:
+        create: true
+    crds:
+      create: true
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database
@@ -496,28 +506,48 @@ postgresql:
     certificatesSecret: fwinsights-postgresql-ca
     certFilename: tls.crt
     certKeyFilename: tls.key
-  postgresqlHost: insights-postgresql
+  # -- Host for postgresql (CloudNativePG cluster name)
+  postgresqlHost: insights-postgres-rw
+  port: 5432
+  # -- Storage configuration for the PostgreSQL cluster
+  storage:
+    size: 10Gi
+    storageClass: standard
+  # -- Resource configuration for the PostgreSQL cluster
+  resources:
+    limits:
+      cpu: 1
+      memory: 1Gi
+    requests:
+      cpu: 75m
+      memory: 256Mi
+  # -- Authentication configuration
   auth:
     username: postgres
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
+    existingSuperUserSecret: fwinsights-postgresql-superuser
     secretKeys:
       adminPasswordKey: postgresql-password
-  primary:
-    service:
-      # -- Port of the Postgres Database
-      port: 5432
-    persistence:
-      # -- Create Persistent Volume with Postgres
-      enabled: true
-    # -- Resources section for Postgres
-    resources:
-      limits:
-        cpu: 1
-        memory: 1Gi
-      requests:
-        cpu: 75m
-        memory: 256Mi
+  # -- PostgreSQL configuration parameters
+  parameters:
+    max_connections: "100"
+    shared_buffers: "256MB"
+    effective_cache_size: "1GB"
+    maintenance_work_mem: "64MB"
+    checkpoint_completion_target: "0.9"
+    wal_buffers: "16MB"
+    default_statistics_target: "100"
+    random_page_cost: "1.1"
+    effective_io_concurrency: "200"
+    work_mem: "4MB"
+    min_wal_size: "1GB"
+    max_wal_size: "4GB"
+    max_worker_processes: "8"
+    max_parallel_workers_per_gather: "2"
+    max_parallel_workers: "8"
+    max_parallel_maintenance_workers: "2"
+    password_encryption: "scram-sha-256"
   # -- Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it
   readReplica:
     username:

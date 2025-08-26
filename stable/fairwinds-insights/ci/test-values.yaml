@@ -18,6 +18,15 @@ deployments:
     pod-foo: pod-bar
 
 postgresql:
+  # Enable ephemeral PostgreSQL cluster
+  ephemeral: true
+  # Install CloudNativePG operator
+  operator:
+    install: true
+  # Storage configuration
+  storage:
+    size: 10Gi
+    storageClass: standard
   auth:
     password: "changeme"
 

@@ -4,11 +4,8 @@ metadata:
   name: migrate-database
   annotations:
     "helm.sh/hook-delete-policy": "before-hook-creation"
-  {{- if not (or .Values.postgresql.ephemeral .Values.postgresql.postMigrate) }}
-    "helm.sh/hook": "pre-install,pre-upgrade"
-  {{- else }}
     "helm.sh/hook": "post-install,post-upgrade"
-  {{- end }}
+    "helm.sh/hook-weight": "100"
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: migrate-db

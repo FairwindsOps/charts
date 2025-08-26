@@ -74,12 +74,18 @@ env:
 - name: POSTGRES_USER
   value: {{ $.Values.postgresql.auth.username }}
 - name: POSTGRES_PORT
-  value: {{ $.Values.postgresql.primary.service.port | quote }}
+  value: {{ $.Values.postgresql.port | quote }}
 - name: POSTGRES_SSL_MODE
   value: {{ $.Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST
   value: {{ $.Values.postgresql.postgresqlHost | default (printf "%s-%s" $.Release.Name "postgresql") }}
-{{- if $.Values.postgresql.readOnly }}
+{{- if $.Values.postgresql.ephemeral }}
+- name: POSTGRES_PASSWORD
+  valueFrom:
+    secretKeyRef:
+      name: {{ $.Values.postgresql.auth.existingSecret }}
+      key: password
+{{- else if $.Values.postgresql.readOnly }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
