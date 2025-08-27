@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.3
+* Reverted hook weight
+
 ## 4.0.2
 * Fixing CloudNativePG operator charts 
 
