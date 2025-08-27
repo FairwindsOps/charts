@@ -8,6 +8,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -15,6 +19,10 @@ metadata:
   name: {{ .Release.Name }}-pg-creator
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "2"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 rules:
 - apiGroups: [""]
   resources: ["namespaces"]
@@ -63,6 +71,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "3"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -83,6 +95,8 @@ metadata:
   annotations:
     "meta.helm.sh/release-name": {{ .Release.Name | quote }}
     "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "4"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 spec:
   backoffLimit: 10
@@ -105,7 +119,7 @@ spec:
             # Determine operator namespace
             OPERATOR_NAMESPACE="{{ .Values.postgresql.operator.namespace }}"
             if [ -z "$OPERATOR_NAMESPACE" ]; then
-              OPERATOR_NAMESPACE="{{ .Release.Namespace }}"
+              OPERATOR_NAMESPACE="cnpg-system"
             fi
             echo "Operator namespace: $OPERATOR_NAMESPACE"
             
@@ -152,9 +166,17 @@ spec:
               fi
             fi
             
-            # Wait for webhook service to be ready
-            echo "Waiting for webhook service to be ready..."
-            kubectl wait --for=condition=available --timeout=120s deployment/cnpg-webhook-server -n cnpg-system || true
+            # Wait for webhook server deployment to be ready
+            echo "Waiting for webhook server deployment to be ready..."
+            kubectl wait --for=condition=available --timeout=300s deployment/cnpg-controller-manager -n $OPERATOR_NAMESPACE
+            
+            # Check if PostgreSQL cluster already exists
+            echo "Checking if PostgreSQL cluster already exists..."
+            if kubectl get cluster insights-postgres -n {{ .Release.Namespace }} >/dev/null 2>&1; then
+              echo "PostgreSQL cluster 'insights-postgres' already exists in namespace {{ .Release.Namespace }}"
+              echo "Skipping cluster creation..."
+              exit 0
+            fi
             
             # Create the PostgreSQL cluster
             echo "Creating PostgreSQL cluster..."
@@ -183,7 +205,9 @@ spec:
                 name: {{ .Values.postgresql.auth.existingSecret }}
               storage:
                 size: {{ .Values.postgresql.storage.size }}
+                {{- if .Values.postgresql.storage.storageClass }}
                 storageClass: {{ .Values.postgresql.storage.storageClass }}
+                {{- end }}
               resources:
 {{- toYaml .Values.postgresql.resources | nindent 16 }}
             EOF

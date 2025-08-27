@@ -25,10 +25,10 @@ postgresql:
     install: true
   # Storage configuration
   storage:
-    size: 10Gi
-    storageClass: standard
+    size: 5Gi
   auth:
     password: "changeme"
+    superuserpassword: "changeme"
 
 dashboard:
   pdb:
@@ -37,11 +37,11 @@ dashboard:
     enabled: false
   resources:
     limits:
-      cpu: 1000m
-      memory: 1024Mi
+      cpu: 500m
+      memory: 512Mi
     requests:
       cpu: 50m
-      memory: 25Mi
+      memory: 128Mi
 
 api:
   pdb:
@@ -50,11 +50,11 @@ api:
     enabled: false
   resources:
     limits:
-      cpu: 1000m
-      memory: 1024Mi
+      cpu: 500m
+      memory: 512Mi
     requests:
       cpu: 50m
-      memory: 25Mi
+      memory: 128Mi
 
 alertsCronjob:
   schedules: []
@@ -77,3 +77,45 @@ resourcesRecommendationsCronjob:
 minio:
   persistence:
     enabled: false
+
+# Reduce cronjob resources for CI
+cronjobOptions:
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 200m
+      memory: 512Mi
+
+# Disable temporal for CI to reduce complexity
+temporal:
+  enabled: false
+
+# Add timeout configuration for CI
+timeout: 600s
+
+# Override specific cronjob resources for CI
+cronjobs:
+  costs-update:
+    command: cloud_costs_update
+    includeGitHubSecret: true
+    schedule: "15 */3 * * *"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
+
+  resources-recommendations:
+    command: resources_recommendations
+    schedule: "0 2 * * *"
+    resources:
+      requests:
+        cpu: 100m
+        memory: 256Mi
+      limits:
+        cpu: 200m
+        memory: 512Mi
