@@ -83,6 +83,7 @@ metadata:
   annotations:
     "meta.helm.sh/release-name": {{ .Release.Name | quote }}
     "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
+    "helm.sh/hook": "pre-install"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 spec:
   backoffLimit: 10
@@ -155,6 +156,14 @@ spec:
             # Wait for webhook server deployment to be ready
             echo "Waiting for webhook server deployment to be ready..."
             kubectl wait --for=condition=available --timeout=300s deployment/cnpg-webhook-server -n $OPERATOR_NAMESPACE
+            
+            # Check if PostgreSQL cluster already exists
+            echo "Checking if PostgreSQL cluster already exists..."
+            if kubectl get cluster insights-postgres -n {{ .Release.Namespace }} >/dev/null 2>&1; then
+              echo "PostgreSQL cluster 'insights-postgres' already exists in namespace {{ .Release.Namespace }}"
+              echo "Skipping cluster creation..."
+              exit 0
+            fi
             
             # Create the PostgreSQL cluster
             echo "Creating PostgreSQL cluster..."
