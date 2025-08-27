@@ -28,6 +28,7 @@ postgresql:
     size: 10Gi
   auth:
     password: "changeme"
+    superuserpassword: "changeme"
 
 dashboard:
   pdb:
