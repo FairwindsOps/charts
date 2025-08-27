@@ -105,7 +105,7 @@ spec:
             # Determine operator namespace
             OPERATOR_NAMESPACE="{{ .Values.postgresql.operator.namespace }}"
             if [ -z "$OPERATOR_NAMESPACE" ]; then
-              OPERATOR_NAMESPACE="{{ .Release.Namespace }}"
+              OPERATOR_NAMESPACE="cnpg-system"
             fi
             echo "Operator namespace: $OPERATOR_NAMESPACE"
             
@@ -154,7 +154,7 @@ spec:
             
             # Wait for webhook service to be ready
             echo "Waiting for webhook service to be ready..."
-            kubectl wait --for=condition=available --timeout=120s deployment/cnpg-webhook-server -n cnpg-system || true
+            kubectl wait --for=condition=available --timeout=300s deployment/cnpg-webhook-server -n cnpg-system
             
             # Create the PostgreSQL cluster
             echo "Creating PostgreSQL cluster..."
