@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.2
+* Fixing CloudNativePG operator charts 
+
 ## 4.0.1
 * Fixing CloudNativePG operator charts 
 
