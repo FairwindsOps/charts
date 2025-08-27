@@ -29,6 +29,7 @@ postgresql:
     storageClass: standard
   auth:
     password: "changeme"
+    superuserpassword: "changeme"
 
 dashboard:
   pdb:
