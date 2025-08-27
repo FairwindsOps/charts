@@ -180,7 +180,7 @@ spec:
                   secret:
                     name: {{ .Values.postgresql.auth.existingSecret }}
               superuserSecret:
-                name: {{ .Values.postgresql.auth.existingSuper }}
+                name: {{ .Values.postgresql.auth.existingSecret }}
               storage:
                 size: {{ .Values.postgresql.storage.size }}
                 storageClass: {{ .Values.postgresql.storage.storageClass }}
