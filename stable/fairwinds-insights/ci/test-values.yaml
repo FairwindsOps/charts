@@ -1,6 +1,6 @@
 rok8sCIRef: this-is-a-really-long-string-that-will-need-to-be-truncated
 sanitizedBranch: this-is-a-really-long-string-that-will-need-to-be-truncated
-fullnameOverride: this-is-a-really-long-string
+fullnameOverride: this-is-a-really-long-string-that-will-need-to-be-truncated
 
 ingress:
   enabled: true
