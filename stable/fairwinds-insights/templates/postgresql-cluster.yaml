@@ -154,7 +154,7 @@ spec:
             
             # Wait for webhook server deployment to be ready
             echo "Waiting for webhook server deployment to be ready..."
-            kubectl wait --for=condition=available --timeout=300s deployment/cnpg-webhook-server -n -n $OPERATOR_NAMESPACE
+            kubectl wait --for=condition=available --timeout=300s deployment/cnpg-webhook-server -n $OPERATOR_NAMESPACE
             
             # Create the PostgreSQL cluster
             echo "Creating PostgreSQL cluster..."
