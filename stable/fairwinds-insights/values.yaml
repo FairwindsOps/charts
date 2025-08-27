@@ -479,6 +479,7 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  # -- Set to `true` to run migrations after the upgrade
   postMigrate: false
   image:
     registry: quay.io
