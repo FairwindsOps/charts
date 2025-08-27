@@ -183,7 +183,9 @@ spec:
                 name: {{ .Values.postgresql.auth.existingSecret }}
               storage:
                 size: {{ .Values.postgresql.storage.size }}
+                {{- if .Values.postgresql.storage.storageClass }}
                 storageClass: {{ .Values.postgresql.storage.storageClass }}
+                {{- end }}
               resources:
 {{- toYaml .Values.postgresql.resources | nindent 16 }}
             EOF
