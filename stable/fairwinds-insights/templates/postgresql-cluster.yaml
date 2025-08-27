@@ -8,6 +8,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -15,6 +19,10 @@ metadata:
   name: {{ .Release.Name }}-pg-creator
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "2"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 rules:
 - apiGroups: [""]
   resources: ["namespaces"]
@@ -63,6 +71,10 @@ metadata:
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "3"
+    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
@@ -84,6 +96,7 @@ metadata:
     "meta.helm.sh/release-name": {{ .Release.Name | quote }}
     "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
     "helm.sh/hook": "pre-install"
+    "helm.sh/hook-weight": "4"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 spec:
   backoffLimit: 10
