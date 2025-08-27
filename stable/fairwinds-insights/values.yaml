@@ -580,7 +580,6 @@ timescale:
   postgresqlDatabase: postgres
   # -- Password for the Postgres Database
   password: postgres
-  superuserpassword: postgres
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
