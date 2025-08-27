@@ -479,6 +479,7 @@ ingress:
   extraPaths: {}
 
 postgresql:
+  postMigrate: false
   image:
     registry: quay.io
     repository: fairwinds/postgres-partman
