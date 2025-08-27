@@ -108,7 +108,7 @@ cronjobs:
       limits:
         cpu: 200m
         memory: 512Mi
-  
+
   resources-recommendations:
     command: resources_recommendations
     schedule: "0 2 * * *"
