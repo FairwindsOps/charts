@@ -26,7 +26,6 @@ postgresql:
   # Storage configuration
   storage:
     size: 10Gi
-    storageClass: standard
   auth:
     password: "changeme"
 
