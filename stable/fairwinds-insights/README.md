@@ -313,7 +313,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.default.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.default.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.default.sql.database | string | `"temporal"` |  |
-| temporal.server.config.persistence.default.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.default.sql.host | string | `"insights-postgres-rw"` |  |
 | temporal.server.config.persistence.default.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.default.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.default.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
@@ -327,7 +327,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.visibility.driver | string | `"sql"` |  |
 | temporal.server.config.persistence.visibility.sql.driver | string | `"postgres12"` |  |
 | temporal.server.config.persistence.visibility.sql.database | string | `"temporal_visibility"` |  |
-| temporal.server.config.persistence.visibility.sql.host | string | `"insights-postgresql"` |  |
+| temporal.server.config.persistence.visibility.sql.host | string | `"insights-postgres-rw"` |  |
 | temporal.server.config.persistence.visibility.sql.port | int | `5432` |  |
 | temporal.server.config.persistence.visibility.sql.user | string | `"postgres"` |  |
 | temporal.server.config.persistence.visibility.sql.existingSecret | string | `"fwinsights-postgresql"` |  |

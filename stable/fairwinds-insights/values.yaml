@@ -848,7 +848,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal
-            host: insights-postgresql
+            host: insights-postgres-rw
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
@@ -869,7 +869,7 @@ temporal:
           sql:
             driver: "postgres12"
             database: temporal_visibility
-            host: insights-postgresql
+            host: insights-postgres-rw
             port: 5432
             user: postgres
             existingSecret: fwinsights-postgresql
