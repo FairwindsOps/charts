@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.0.4
+* Fix temporal default postgres host
+
 ## 4.0.3
 * Reverted hook weight
 
