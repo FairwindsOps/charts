@@ -78,6 +78,10 @@ minio:
   persistence:
     enabled: false
 
+temporalDeployments:
+  delete-org-cluster-worker:
+    enabled: false
+
 # Reduce cronjob resources for CI
 cronjobOptions:
   resources:
