@@ -60,7 +60,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.sync-action-items-iac-files | object | `{"command":"sync_action_items_iac_files","schedule":"0 * * * *"}` | Options for the sync-action-items-iac-files cronjob. |
 | cronjobs.app-groups-cves-statistics | object | `{"command":"app_groups_cves_statistics","schedule":"0 9,21 * * *"}` | Options for the app_groups_cves_statistics cronjob. |
 | cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
-| cronjobs.cluster-deletion | object | `{"command":"cluster_deletion","schedule":"*/15 * * * *"}` | Options for the cluster_deletion cronjob |
 | cronjobs.refresh-jira-webhooks | object | `{"command":"refresh_jira_webhooks","schedule":"0 0 1,15 * *"}` | Options for the refresh_jira_webhooks cronjob |
 | cronjobs.utmstack-integration | object | `{"command":"utmstack_integration","schedule":"*/5 * * * *"}` | Options for the utmstack_integration cronjob |
 | selfHostedSecret | string | `nil` |  |
@@ -298,6 +297,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| temporalDeploymentOptions | object | `{"resources":{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"500m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324},"tolerations":[],"topologySpreadConstraints":[]}` | Default options for temporal deployments |
+| temporalDeployments | object | `{"delete-org-cluster-worker":{"command":"delete_organization_and_cluster_worker","enabled":true,"resources":{"limits":{"cpu":"800m","memory":"1024Mi"},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[],"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]}}` | Temporal worker deployments |
+| temporal.hostPort | string | `"insights-temporal-frontend:7233"` |  |
+| temporal.namespace | string | `"fwinsights"` |  |
 | temporal.enabled | bool | `false` |  |
 | temporal.fullnameOverride | string | `"insights-temporal"` |  |
 | temporal.cassandra.enabled | bool | `false` |  |
