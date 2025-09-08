@@ -41,7 +41,14 @@ spec:
           image: "{{ $.Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" $ }}"
           imagePullPolicy: Always
           command: ["{{ $options.command }}"]
-          {{- include "env" (dict "root" $) | indent 10 }}
+          {{- with $options.args }}
+          args:
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
+          {{- include "env" (dict "useReadReplica" ($options.useReadReplica | default $.Values.temporalDeploymentOptions.useReadReplica) "root" $) | indent 10 }}
+          {{- with $options.additionalEnv }}
+          {{- toYaml . | nindent 10 }}
+          {{- end }}
           resources:
             {{- toYaml (default $.Values.temporalDeploymentOptions.resources $options.resources) | nindent 12 }}
           securityContext:

@@ -816,6 +816,8 @@ repoScanJob:
 
 # -- Default options for temporal deployments
 temporalDeploymentOptions:
+  replicas: 1
+  useReadReplica: false
   resources:
     requests:
       cpu: 500m
@@ -832,14 +834,32 @@ temporalDeploymentOptions:
     capabilities:
       drop:
         - ALL
+  hpa:
+    enabled: false
+    min: 1
+    max: 3
+    metrics: []
+  pdb:
+    enabled: false
+    minAvailable: 1
   tolerations: []
   topologySpreadConstraints: []
+  args: []
+  additionalEnv: []
 
 # -- Temporal worker deployments
 temporalDeployments:
   delete-org-cluster-worker:
     enabled: true
     command: "delete_organization_and_cluster_worker"
+    replicas: 1
+    hpa:
+      enabled: false
+      min: 1
+      max: 1
+      metrics: []
+    pdb:
+      enabled: false
     resources:
       requests:
         cpu: 200m
@@ -863,6 +883,8 @@ temporalDeployments:
           matchLabels:
             app.kubernetes.io/component: delete-org-cluster-worker
             app.kubernetes.io/name: fairwinds-insights
+    args: []
+    additionalEnv: []
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
