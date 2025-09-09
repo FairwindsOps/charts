@@ -4,10 +4,10 @@ metadata:
   name: migrate-database
   annotations:
     "helm.sh/hook-delete-policy": "before-hook-creation"
-  {{- if not (or .Values.postgresql.ephemeral .Values.postgresql.postMigrate) }}
-    "helm.sh/hook": "pre-install,pre-upgrade"
-  {{- else }}
+  {{- if .Values.postgresql.postMigrate }}
     "helm.sh/hook": "post-install,post-upgrade"
+  {{- else }}
+    "helm.sh/hook": "pre-install,pre-upgrade"
   {{- end }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
