@@ -1,7 +1,6 @@
 {{ define "env" }}
 {{- $useReadReplica := .useReadReplica }}
 {{- $ := .root }}
-{{- $temporalNamespaces := $.Values.temporal.server.config.namespaces.namespace }}
 # Required values
 envFrom:
 - secretRef:
