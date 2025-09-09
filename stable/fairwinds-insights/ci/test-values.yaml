@@ -20,6 +20,8 @@ deployments:
 postgresql:
   # Enable ephemeral PostgreSQL cluster
   ephemeral: true
+  # -- Set to `true` to run migrations after the upgrade
+  postMigrate: true
   # Install CloudNativePG operator
   operator:
     install: true
