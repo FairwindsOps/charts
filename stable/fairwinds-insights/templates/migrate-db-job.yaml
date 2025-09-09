@@ -7,6 +7,7 @@ metadata:
   {{- if .Values.postgresql.postMigrate }}
     "helm.sh/hook": "post-install,post-upgrade"
   {{- else }}
+    "helm.sh/hook-weight": "10"
     "helm.sh/hook": "pre-install,pre-upgrade"
   {{- end }}
   labels:
