@@ -56,6 +56,8 @@ spec:
           volumeMounts:
           - name: tmp
             mountPath: /tmp
+          - name: go-cache
+            mountPath: /.cache
           - name: secrets
             mountPath: /var/run/secrets/github
           {{- if .Values.selfHostedSecret }}
@@ -79,6 +81,8 @@ spec:
       {{- end }}
       volumes:
       - name: tmp
+        emptyDir: {}
+      - name: go-cache
         emptyDir: {}
       - name: secrets
         secret:
