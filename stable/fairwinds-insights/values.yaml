@@ -855,7 +855,7 @@ temporalDeploymentOptions:
 # -- Temporal worker deployments
 temporalDeployments:
   delete-org-cluster-worker:
-    enabled: true
+    enabled: false
     command: "delete_organization_and_cluster_worker"
     replicas: 1
     hpa:
