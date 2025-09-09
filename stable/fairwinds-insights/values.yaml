@@ -220,11 +220,6 @@ cronjobs:
     command: cve_reports_email_sender
     schedule: "0 5 1 * *"
 
-  # -- Options for the cluster_deletion cronjob
-  cluster-deletion:
-    command: cluster_deletion
-    schedule: "*/15 * * * *"
-
   # -- Options for the refresh_jira_webhooks cronjob
   refresh-jira-webhooks:
     command: refresh_jira_webhooks

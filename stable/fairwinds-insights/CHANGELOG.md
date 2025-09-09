@@ -1,7 +1,9 @@
 # Changelog
 
-## 4.1.0
+## 5.0.0
+* Enable temporal by default
 * Add Temporal Workers Deployments options
+* Deletes `cluster-deletion` cron job in favor of temporal worker
 
 ## 4.0.4
 * Fix temporal default postgres host
