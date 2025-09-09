@@ -213,8 +213,8 @@ env:
 
 # Go environment variables for read-only filesystem compatibility
 - name: GOCACHE
-  value: /tmp/go-build-cache
+  value: /.cache/go-build
 - name: GOMODCACHE
-  value: /tmp/go-mod-cache
+  value: /.cache/go-mod
 
 {{ end }}

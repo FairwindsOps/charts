@@ -57,9 +57,9 @@ spec:
           - name: tmp
             mountPath: /tmp
           - name: go-build-cache
-            mountPath: /tmp/go-build-cache
+            mountPath: /.cache/go-build
           - name: go-mod-cache
-            mountPath: /tmp/go-mod-cache
+            mountPath: /.cache/go-mod
           - name: secrets
             mountPath: /var/run/secrets/github
           {{- if .Values.selfHostedSecret }}
