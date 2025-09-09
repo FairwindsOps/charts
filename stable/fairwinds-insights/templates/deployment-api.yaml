@@ -56,6 +56,10 @@ spec:
           volumeMounts:
           - name: tmp
             mountPath: /tmp
+          - name: go-build-cache
+            mountPath: /tmp/go-build-cache
+          - name: go-mod-cache
+            mountPath: /tmp/go-mod-cache
           - name: secrets
             mountPath: /var/run/secrets/github
           {{- if .Values.selfHostedSecret }}
@@ -79,6 +83,10 @@ spec:
       {{- end }}
       volumes:
       - name: tmp
+        emptyDir: {}
+      - name: go-build-cache
+        emptyDir: {}
+      - name: go-mod-cache
         emptyDir: {}
       - name: secrets
         secret:

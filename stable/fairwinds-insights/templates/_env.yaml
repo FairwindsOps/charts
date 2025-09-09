@@ -211,4 +211,10 @@ env:
 - name: CRON_JOB_IMAGE_TAG
   value: {{ include "fairwinds-insights.cronjobImageTag" $ | quote }}
 
+# Go environment variables for read-only filesystem compatibility
+- name: GOCACHE
+  value: /tmp/go-build-cache
+- name: GOMODCACHE
+  value: /tmp/go-mod-cache
+
 {{ end }}
