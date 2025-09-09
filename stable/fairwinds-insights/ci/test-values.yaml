@@ -20,8 +20,6 @@ deployments:
 postgresql:
   # Enable ephemeral PostgreSQL cluster
   ephemeral: true
-  # -- Set to `true` to run migrations after the upgrade
-  postMigrate: true
   # Install CloudNativePG operator
   operator:
     install: true
@@ -80,10 +78,6 @@ minio:
   persistence:
     enabled: false
 
-temporalDeployments:
-  delete-org-cluster-worker:
-    enabled: false
-
 # Reduce cronjob resources for CI
 cronjobOptions:
   resources:
@@ -93,10 +87,6 @@ cronjobOptions:
     limits:
       cpu: 200m
       memory: 512Mi
-
-# Disable temporal for CI to reduce complexity
-temporal:
-  enabled: false
 
 # Add timeout configuration for CI
 timeout: 600s

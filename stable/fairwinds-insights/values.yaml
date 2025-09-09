@@ -855,7 +855,7 @@ temporalDeploymentOptions:
 # -- Temporal worker deployments
 temporalDeployments:
   delete-org-cluster-worker:
-    enabled: false
+    enabled: true
     command: "delete_organization_and_cluster_worker"
     replicas: 1
     hpa:
@@ -907,7 +907,7 @@ temporal:
   hostPort: "insights-temporal-frontend:7233"
   namespace: "fwinsights"
   # custom values from temporal chart
-  enabled: false
+  enabled: true
   fullnameOverride: insights-temporal
   cassandra:
     enabled: false
