@@ -17,7 +17,7 @@ metadata:
     {{ toYaml . | nindent 4 }}
     {{- end }}
 spec:
-  replicas: {{ $options.replicas | default 1 }}
+  replicas: {{ $options.replicas | default $.Values.temporalDeploymentDefaults.replicas | default 1 }}
   selector:
     matchLabels:
       {{- include "fairwinds-insights.selectorLabels" $ | nindent 6 }}
@@ -45,23 +45,23 @@ spec:
           args:
           {{- toYaml . | nindent 10 }}
           {{- end }}
-          {{- include "env" (dict "useReadReplica" ($options.useReadReplica | default $.Values.temporalDeploymentOptions.useReadReplica) "root" $) | indent 10 }}
+          {{- include "env" (dict "useReadReplica" ($options.useReadReplica | default $.Values.temporalDeploymentDefaults.useReadReplica) "root" $) | indent 10 }}
           {{- with $options.additionalEnv }}
           {{- toYaml . | nindent 10 }}
           {{- end }}
           resources:
-            {{- toYaml (default $.Values.temporalDeploymentOptions.resources $options.resources) | nindent 12 }}
+            {{- toYaml (default $.Values.temporalDeploymentDefaults.resources $options.resources) | nindent 12 }}
           securityContext:
-            {{- toYaml (default $.Values.temporalDeploymentOptions.securityContext $options.securityContext) | nindent 12 }}
+            {{- toYaml (default $.Values.temporalDeploymentDefaults.securityContext $options.securityContext) | nindent 12 }}
       {{- with $options.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default $.Values.temporalDeploymentOptions.tolerations $options.tolerations) }}
+      {{- with (default $.Values.temporalDeploymentDefaults.tolerations $options.tolerations) }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default $.Values.temporalDeploymentOptions.topologySpreadConstraints $options.topologySpreadConstraints) }}
+      {{- with (default $.Values.temporalDeploymentDefaults.topologySpreadConstraints $options.topologySpreadConstraints) }}
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
