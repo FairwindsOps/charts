@@ -35,7 +35,7 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
-      serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
+      serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-insights
       containers:
         - name: fairwinds-insights
           image: "{{ $.Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" $ }}"
