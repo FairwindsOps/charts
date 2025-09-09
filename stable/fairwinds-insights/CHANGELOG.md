@@ -1,7 +1,8 @@
 # Changelog
 
-## 4.1.0
+## 5.0.0
 * Add Temporal Workers Deployments options
+* Remove `cronjobOptions.cluster-deletion`
 
 ## 4.0.4
 * Fix temporal default postgres host
