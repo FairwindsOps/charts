@@ -5,6 +5,9 @@
 * Add Temporal Workers Deployments options
 * Deletes `cluster-deletion` cron job in favor of temporal worker
 
+## 4.0.5
+* Fixed go 1.25 cache diretory
+
 ## 4.0.4
 * Fix temporal default postgres host
 
