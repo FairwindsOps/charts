@@ -58,6 +58,12 @@ spec:
             mountPath: /tmp
           - name: go-cache
             mountPath: /.cache
+          - name: go-build-cache
+            mountPath: /.cache/go-build
+          - name: go-mod-cache
+            mountPath: /.cache/go-mod
+          - name: goimports-cache
+            mountPath: /.cache/goimports
           - name: secrets
             mountPath: /var/run/secrets/github
           {{- if .Values.selfHostedSecret }}
@@ -83,6 +89,12 @@ spec:
       - name: tmp
         emptyDir: {}
       - name: go-cache
+        emptyDir: {}
+      - name: go-build-cache
+        emptyDir: {}
+      - name: go-mod-cache
+        emptyDir: {}
+      - name: goimports-cache
         emptyDir: {}
       - name: secrets
         secret:
