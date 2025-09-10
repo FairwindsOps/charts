@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.1
+* Update application version to 18.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 5.0.0
 * Enable temporal by default
 * Add Temporal Workers Deployments options
