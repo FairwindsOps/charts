@@ -604,8 +604,12 @@ timescale:
       cpu: 1
       memory: 1Gi
     requests:
-      cpu: 75m
-      memory: 256Mi
+      cpu: 500m
+      memory: 512Mi
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
 
 email:
   # -- How to send emails, valid values include memory, ses, and smtp
