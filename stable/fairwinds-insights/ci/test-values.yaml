@@ -29,6 +29,7 @@ postgresql:
   auth:
     password: "changeme"
     superuserpassword: "changeme"
+  preMigrate: false
 
 dashboard:
   pdb:

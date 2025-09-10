@@ -144,7 +144,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
-| postgresql.preMigrate | bool | `false` | Set to `true` to run migrations before the install, upgrade |
+| postgresql.preMigrate | bool | `true` | Set to `true` to run migrations before the install, upgrade |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the install, upgrade |
 | postgresql.image.registry | string | `"quay.io"` |  |
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |

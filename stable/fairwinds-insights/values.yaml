@@ -475,7 +475,7 @@ ingress:
 
 postgresql:
   # -- Set to `true` to run migrations before the install, upgrade
-  preMigrate: false
+  preMigrate: true
   # -- Set to `true` to run migrations after the install, upgrade
   postMigrate: false
   image:
