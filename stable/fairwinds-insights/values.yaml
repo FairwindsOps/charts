@@ -898,4 +898,4 @@ temporal:
     additionalVolumeMounts:
       - name: secret-with-certs
         mountPath: "/etc/temporal/tls"
-        readOnly: true
+        readOnly: true # test

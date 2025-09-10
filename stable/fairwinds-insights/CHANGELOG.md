@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.1.1
+* delete-me
+
 ## 4.1.0
 * Add support for `temporal.hostPort` and `temporal.namespace` 
 
