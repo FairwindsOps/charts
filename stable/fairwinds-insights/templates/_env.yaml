@@ -211,4 +211,10 @@ env:
 - name: CRON_JOB_IMAGE_TAG
   value: {{ include "fairwinds-insights.cronjobImageTag" $ | quote }}
 
+# temporal specific
+- name: TEMPORAL_HOST_PORT
+  value: {{ $.Values.temporal.hostPort | quote }}
+- name: TEMPORAL_NAMESPACE
+  value: {{ $.Values.temporal.namespace | quote }}
+
 {{ end }}
