@@ -301,7 +301,7 @@ dashboard:
           app.kubernetes.io/component: dashboard
           app.kubernetes.io/name: fairwinds-insights
   securityContext:
-    # -- The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile
+    # -- The user IDs to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile
     runAsUser: 101
 
 api:
@@ -898,4 +898,4 @@ temporal:
     additionalVolumeMounts:
       - name: secret-with-certs
         mountPath: "/etc/temporal/tls"
-        readOnly: true # test
+        readOnly: true
