@@ -1,0 +1,23 @@
+{{ range $name, $options := .Values.temporalDeployments }}
+{{ if and $options.enabled $options.pdb.enabled }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}-pdb
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $name }}-pdb
+spec:
+  {{- if $options.pdb.minAvailable }}
+  minAvailable: {{ $options.pdb.minAvailable }}
+  {{- end }}
+  {{- if $options.pdb.maxUnavailable }}
+  maxUnavailable: {{ $options.pdb.maxUnavailable }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" $ | nindent 6 }}
+      app.kubernetes.io/component: {{ $name }}
+---
+{{ end }}
+{{ end }}

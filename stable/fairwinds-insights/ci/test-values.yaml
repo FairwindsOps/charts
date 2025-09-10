@@ -88,10 +88,6 @@ cronjobOptions:
       cpu: 200m
       memory: 512Mi
 
-# Disable temporal for CI to reduce complexity
-temporal:
-  enabled: false
-
 # Add timeout configuration for CI
 timeout: 600s
 

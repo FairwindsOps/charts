@@ -1,0 +1,21 @@
+{{ range $name, $options := .Values.temporalDeployments }}
+{{ if and $options.enabled $options.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}-hpa
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $name }}-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
+  minReplicas: {{ $options.hpa.min | default $.Values.temporalDeploymentDefaults.hpa.min | default 1 }}
+  maxReplicas: {{ $options.hpa.max | default $.Values.temporalDeploymentDefaults.hpa.max | default 3 }}
+  metrics:
+    {{- toYaml (default $.Values.temporalDeploymentDefaults.hpa.metrics $options.hpa.metrics) | nindent 4 }}
+---
+{{ end }}
+{{ end }}

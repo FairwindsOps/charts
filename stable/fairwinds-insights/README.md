@@ -60,7 +60,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.sync-action-items-iac-files | object | `{"command":"sync_action_items_iac_files","schedule":"0 * * * *"}` | Options for the sync-action-items-iac-files cronjob. |
 | cronjobs.app-groups-cves-statistics | object | `{"command":"app_groups_cves_statistics","schedule":"0 9,21 * * *"}` | Options for the app_groups_cves_statistics cronjob. |
 | cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
-| cronjobs.cluster-deletion | object | `{"command":"cluster_deletion","schedule":"*/15 * * * *"}` | Options for the cluster_deletion cronjob |
 | cronjobs.refresh-jira-webhooks | object | `{"command":"refresh_jira_webhooks","schedule":"0 0 1,15 * *"}` | Options for the refresh_jira_webhooks cronjob |
 | cronjobs.utmstack-integration | object | `{"command":"utmstack_integration","schedule":"*/5 * * * *"}` | Options for the utmstack_integration cronjob |
 | selfHostedSecret | string | `nil` |  |
@@ -145,7 +144,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
-| postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the upgrade |
+| postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the install, upgrade |
 | postgresql.image.registry | string | `"quay.io"` |  |
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
 | postgresql.image.tag | string | `"17.0"` |  |
@@ -180,7 +179,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.loadBalancer.enabled | bool | `false` |  |
 | timescale.timescaledbTune | object | `{"enabled":false}` | Database tuning for timescale |
 | timescale.patroni | object | `{"log":{"level":"DEBUG"},"postgresql":{"create_replica_methods":[],"pgbackrest":{}}}` | Timescale patroni options |
-| timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resources section for Timescale |
+| timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"500m","memory":"512Mi"}}` | Resources section for Timescale |
+| timescale.rbac.create | bool | `true` |  |
+| timescale.serviceAccount.create | bool | `true` |  |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
@@ -298,9 +299,11 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| temporalDeploymentDefaults | object | `{"additionalEnv":[],"args":[],"hpa":{"enabled":true,"max":4,"metrics":[],"min":2},"pdb":{"enabled":false,"minAvailable":1},"resources":{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"500m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324},"tolerations":[],"topologySpreadConstraints":[],"useReadReplica":false}` | Default options for temporal deployments |
+| temporalDeployments | object | `{"delete-org-cluster-worker":{"additionalEnv":[],"args":[],"command":"delete_organization_and_cluster_worker","enabled":true,"hpa":{"max":1,"metrics":[],"min":1},"pdb":{"enabled":false},"resources":{"limits":{"cpu":"800m","memory":"1024Mi"},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[],"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]}}` | Temporal worker deployments |
 | temporal.hostPort | string | `"insights-temporal-frontend:7233"` |  |
 | temporal.namespace | string | `"fwinsights"` |  |
-| temporal.enabled | bool | `false` |  |
+| temporal.enabled | bool | `true` |  |
 | temporal.fullnameOverride | string | `"insights-temporal"` |  |
 | temporal.cassandra.enabled | bool | `false` |  |
 | temporal.prometheus.enabled | bool | `false` |  |

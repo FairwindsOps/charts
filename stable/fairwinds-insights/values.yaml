@@ -220,11 +220,6 @@ cronjobs:
     command: cve_reports_email_sender
     schedule: "0 5 1 * *"
 
-  # -- Options for the cluster_deletion cronjob
-  cluster-deletion:
-    command: cluster_deletion
-    schedule: "*/15 * * * *"
-
   # -- Options for the refresh_jira_webhooks cronjob
   refresh-jira-webhooks:
     command: refresh_jira_webhooks
@@ -479,7 +474,7 @@ ingress:
   extraPaths: {}
 
 postgresql:
-  # -- Set to `true` to run migrations after the upgrade
+  # -- Set to `true` to run migrations after the install, upgrade
   postMigrate: false
   image:
     registry: quay.io
@@ -607,8 +602,12 @@ timescale:
       cpu: 1
       memory: 1Gi
     requests:
-      cpu: 75m
-      memory: 256Mi
+      cpu: 500m
+      memory: 512Mi
+  rbac:
+    create: true
+  serviceAccount:
+    create: true
 
 email:
   # -- How to send emails, valid values include memory, ses, and smtp
@@ -819,12 +818,92 @@ repoScanJob:
           app.kubernetes.io/component: repo-scan-job
           app.kubernetes.io/name: fairwinds-insights
 
+# -- Default options for temporal deployments
+temporalDeploymentDefaults:
+  useReadReplica: false
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1024Mi
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
+  hpa:
+    enabled: true
+    min: 2
+    max: 4
+    metrics: []
+  pdb:
+    enabled: false
+    minAvailable: 1
+  tolerations: []
+  topologySpreadConstraints: []
+  args: []
+  additionalEnv: []
+
+# -- Temporal worker deployments
+temporalDeployments:
+  delete-org-cluster-worker:
+    enabled: true
+    command: "delete_organization_and_cluster_worker"
+    hpa:
+      min: 1
+      max: 1
+      metrics: []
+    pdb:
+      enabled: false
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 800m
+        memory: 1024Mi
+    tolerations: []
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: delete-org-cluster-worker
+            app.kubernetes.io/name: fairwinds-insights
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: delete-org-cluster-worker
+            app.kubernetes.io/name: fairwinds-insights
+    args: []
+    additionalEnv: []
+  # Example: Add more temporal workers like this:
+  # report-processor-worker:
+  #   enabled: false
+  #   command: "report_processor_worker"
+  #   resources:
+  #     limits:
+  #       cpu: 1000m
+  #       memory: 2048Mi
+  #     requests:
+  #       cpu: 200m
+  #       memory: 512Mi
+
 temporal:
   # fairwinds-insights specific values - this will be inject as an env vars into fairwinds insights deployments
   hostPort: "insights-temporal-frontend:7233"
   namespace: "fwinsights"
   # custom values from temporal chart
-  enabled: false
+  enabled: true
   fullnameOverride: insights-temporal
   cassandra:
     enabled: false
