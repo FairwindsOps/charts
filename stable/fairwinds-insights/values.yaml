@@ -820,6 +820,10 @@ repoScanJob:
           app.kubernetes.io/name: fairwinds-insights
 
 temporal:
+  # fairwinds-insights specific values - this will be inject as an env vars into fairwinds insights deployments
+  hostPort: "insights-temporal-frontend:7233"
+  namespace: "fwinsights"
+  # custom values from temporal chart
   enabled: false
   fullnameOverride: insights-temporal
   cassandra:
