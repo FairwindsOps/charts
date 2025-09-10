@@ -3,10 +3,14 @@ kind: Job
 metadata:
   name: migrate-database
   annotations:
-  {{- if .Values.postgresql.migration.hooks }}
-    "helm.sh/hook-delete-policy": {{ .Values.postgresql.migration.deletePolicy }}
-    "helm.sh/hook": {{ .Values.postgresql.migration.hooks }}
-    "helm.sh/hook-weight": {{ .Values.postgresql.migration.weight }}
+  {{- if .Values.postgresql.preMigrate }}
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "10"
+  {{- end }}
+  {{- if .Values.postgresql.postMigrate }}
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook": "post-install,post-upgrade"
   {{- end }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}

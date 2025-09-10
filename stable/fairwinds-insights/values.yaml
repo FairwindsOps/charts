@@ -474,10 +474,10 @@ ingress:
   extraPaths: {}
 
 postgresql:
-  migration:
-    hooks: ""
-    weight: 0
-    deletePolicy: ""
+  # -- Set to `true` to run migrations before the install, upgrade
+  preMigrate: true
+  # -- Set to `true` to run migrations after the install, upgrade
+  postMigrate: false
   image:
     registry: quay.io
     repository: fairwinds/postgres-partman
