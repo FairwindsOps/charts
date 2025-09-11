@@ -740,3 +740,38 @@ onDemandJobRunner:
     requests:
       cpu: 100m
       memory: 128Mi
+
+insights-event-watcher:
+  enabled: false
+  image:
+    repository: quay.io/fairwinds/insights-event-watcher
+    tag: "0.0"
+    pullPolicy: IfNotPresent
+  logLevel: "info"
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 50m
+      memory: 64Mi
+  podSecurityContext:
+    fsGroup: 1200
+    runAsUser: 1200
+    runAsNonRoot: true
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1200
+    runAsGroup: 1200
+  env: {}
+  extraVolumeMounts: []
+  extraVolumes: []
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  annotations: {}

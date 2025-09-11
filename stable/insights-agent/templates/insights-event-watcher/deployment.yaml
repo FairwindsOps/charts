@@ -1,0 +1,105 @@
+{{- if .Values.insights-event-watcher.enabled -}}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+  labels:
+    app: insights-agent
+    component: insights-event-watcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insights-agent
+      component: insights-event-watcher
+  template:
+    metadata:
+      labels:
+        app: insights-agent
+        component: insights-event-watcher
+      {{- with .Values.insights-event-watcher.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+      securityContext:
+        {{- toYaml .Values.insights-event-watcher.podSecurityContext | nindent 8 }}
+      containers:
+      - name: watcher
+        image: "{{ .Values.insights-event-watcher.image.repository }}:{{ .Values.insights-event-watcher.image.tag }}"
+        imagePullPolicy: {{ .Values.insights-event-watcher.image.pullPolicy }}
+        command: ["insights-event-watcher"]
+        args:
+        - --log-level={{ .Values.insights-event-watcher.logLevel }}
+        {{- if .Values.insights.host }}
+        - --insights-host=$(HOST)
+        {{- end }}
+        {{- if .Values.insights.organization }}
+        - --organization=$(ORGANIZATION)
+        {{- end }}
+        {{- if .Values.insights.cluster }}
+        - --cluster=$(CLUSTER)
+        {{- end }}
+        {{- if or .Values.insights.base64token .Values.insights.tokenSecretName }}
+        - --insights-token=$(TOKEN)
+        {{- end }}
+        workingDir: /opt/app
+        env:
+        {{ include "proxy-env-spec" . | indent 8 | trim }}
+        {{- if .Values.insights.host }}
+        - name: HOST
+          value: {{ .Values.insights.host | quote }}
+        {{- end }}
+        {{- if .Values.insights.organization }}
+        - name: ORGANIZATION
+          value: {{ .Values.insights.organization | quote }}
+        {{- end }}
+        {{- if .Values.insights.cluster }}
+        - name: CLUSTER
+          value: {{ .Values.insights.cluster | quote }}
+        {{- end }}
+        {{- if or .Values.insights.base64token .Values.insights.tokenSecretName }}
+        - name: TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+              name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+              name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+              key: token
+        {{- end }}
+          {{- range $key, $value := .Values.insights-event-watcher.env }}
+          - name: {{ $key }}
+            value: {{ $value | quote }}
+          {{- end }}
+        securityContext:
+          {{- toYaml .Values.insights-event-watcher.containerSecurityContext | nindent 10 }}
+        volumeMounts:
+        - name: output-volume
+          mountPath: /output
+        {{- with .Values.insights-event-watcher.extraVolumeMounts }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        resources:
+          {{- toYaml .Values.insights-event-watcher.resources | nindent 10 }}
+      volumes:
+      - name: output-volume
+        emptyDir: {}
+      {{- with .Values.insights-event-watcher.extraVolumes }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with .Values.insights-event-watcher.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.insights-event-watcher.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.insights-event-watcher.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}
