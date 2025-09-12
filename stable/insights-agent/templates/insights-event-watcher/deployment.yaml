@@ -34,19 +34,19 @@ spec:
         - --log-level={{ (index .Values "insights-event-watcher" "logLevel") }}
         {{- if .Values.insights.host }}
         - --insights-host
-        - $(FAIRWINDS_TOKEN)
+        - $(HOST)
         {{- end }}
         - --organization
         - $(ORGANIZATION)
         - --cluster
         - $(CLUSTER)
         - --insights-token 
-        - $(TOKEN)
+        - $(FAIRWINDS_TOKEN)
         workingDir: /opt/app
         env:
         {{ include "proxy-env-spec" . | indent 8 | trim }}
         {{- if (index .Values "insights" "host") }}
-        - name: FAIRWINDS_TOKEN
+        - name: HOST
           value: {{ .Values.insights.host | quote }}
         {{- end }}
         - name: ORGANIZATION
