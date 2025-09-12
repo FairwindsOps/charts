@@ -260,7 +260,7 @@ kube-bench:
   SkipVolumes: true
   image:
     repository: quay.io/fairwinds/fw-kube-bench
-    tag: 0.5
+    tag: 0.5.13
   aggregator:
     image:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
