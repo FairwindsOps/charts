@@ -103,7 +103,7 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-cloudcosts
   namespace: {{ .Release.Namespace }}
 {{- end }}
-{{- if .Values.insights-event-watcher.enabled }}
+{{- if (index .Values "insights-event-watcher" "enabled") }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
   namespace: {{ .Release.Namespace }}

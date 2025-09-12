@@ -1,4 +1,4 @@
-{{- if .Values.insights-event-watcher.enabled -}}
+{{- if (index .Values "insights-event-watcher" "enabled") }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -17,21 +17,21 @@ spec:
       labels:
         app: insights-agent
         component: insights-event-watcher
-      {{- with .Values.insights-event-watcher.annotations }}
+      {{- with (index .Values "insights-event-watcher" "annotations") }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
       serviceAccountName: {{ include "insights-agent.fullname" . }}-insights-event-watcher
       securityContext:
-        {{- toYaml .Values.insights-event-watcher.podSecurityContext | nindent 8 }}
+        {{- toYaml (index .Values "insights-event-watcher" "podSecurityContext") | nindent 8 }}
       containers:
       - name: watcher
-        image: "{{ .Values.insights-event-watcher.image.repository }}:{{ .Values.insights-event-watcher.image.tag }}"
-        imagePullPolicy: {{ .Values.insights-event-watcher.image.pullPolicy }}
+        image: "{{ (index .Values "insights-event-watcher" "image" "repository") }}:{{ (index .Values "insights-event-watcher" "image" "tag") }}"
+        imagePullPolicy: {{ (index .Values "insights-event-watcher" "image" "pullPolicy") }}
         command: ["insights-event-watcher"]
         args:
-        - --log-level={{ .Values.insights-event-watcher.logLevel }}
+        - --log-level={{ (index .Values "insights-event-watcher" "logLevel") }}
         {{- if .Values.insights.host }}
         - --insights-host=$(HOST)
         {{- end }}
@@ -47,7 +47,7 @@ spec:
         workingDir: /opt/app
         env:
         {{ include "proxy-env-spec" . | indent 8 | trim }}
-        {{- if .Values.insights.host }}
+        {{- if (index .Values "insights" "host") }}
         - name: HOST
           value: {{ .Values.insights.host | quote }}
         {{- end }}
@@ -70,35 +70,35 @@ spec:
               {{ end -}}
               key: token
         {{- end }}
-          {{- range $key, $value := .Values.insights-event-watcher.env }}
+          {{- range $key, $value := (index .Values "insights-event-watcher" "env") }}
           - name: {{ $key }}
             value: {{ $value | quote }}
           {{- end }}
         securityContext:
-          {{- toYaml .Values.insights-event-watcher.containerSecurityContext | nindent 10 }}
+          {{- toYaml (index .Values "insights-event-watcher" "containerSecurityContext") | nindent 10 }}
         volumeMounts:
         - name: output-volume
           mountPath: /output
-        {{- with .Values.insights-event-watcher.extraVolumeMounts }}
+        {{- with (index .Values "insights-event-watcher" "extraVolumeMounts") }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
         resources:
-          {{- toYaml .Values.insights-event-watcher.resources | nindent 10 }}
+          {{- toYaml (index .Values "insights-event-watcher" "resources") | nindent 10 }}
       volumes:
       - name: output-volume
         emptyDir: {}
-      {{- with .Values.insights-event-watcher.extraVolumes }}
+      {{- with (index .Values "insights-event-watcher" "extraVolumes") }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
-      {{- with .Values.insights-event-watcher.nodeSelector }}
+      {{- with (index .Values "insights-event-watcher" "nodeSelector") }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.insights-event-watcher.affinity }}
+      {{- with (index .Values "insights-event-watcher" "affinity") }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.insights-event-watcher.tolerations }}
+      {{- with (index .Values "insights-event-watcher" "tolerations") }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
