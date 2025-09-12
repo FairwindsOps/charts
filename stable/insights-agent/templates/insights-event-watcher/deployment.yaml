@@ -34,7 +34,7 @@ spec:
         - --log-level={{ (index .Values "insights-event-watcher" "logLevel") }}
         {{- if .Values.insights.host }}
         - --insights-host
-        - $(HOST)
+        - $(FAIRWINDS_TOKEN)
         {{- end }}
         - --organization
         - $(ORGANIZATION)
@@ -46,14 +46,14 @@ spec:
         env:
         {{ include "proxy-env-spec" . | indent 8 | trim }}
         {{- if (index .Values "insights" "host") }}
-        - name: HOST
+        - name: FAIRWINDS_TOKEN
           value: {{ .Values.insights.host | quote }}
         {{- end }}
         - name: ORGANIZATION
           value: {{ required "You must set an organization" .Values.insights.organization | quote }}
         - name: CLUSTER
           value: {{ required "You must set a cluster" .Values.insights.cluster | quote }}
-        - name: TOKEN
+        - name: FAIRWINDS_TOKEN
           valueFrom:
             secretKeyRef:
               {{ if .Values.insights.tokenSecretName -}}
