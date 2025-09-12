@@ -35,15 +35,11 @@ spec:
         {{- if .Values.insights.host }}
         - --insights-host=$(HOST)
         {{- end }}
-        {{- if .Values.insights.organization }}
-        - --organization=$(ORGANIZATION)
-        {{- end }}
-        {{- if .Values.insights.cluster }}
-        - --cluster=$(CLUSTER)
-        {{- end }}
-        {{- if or .Values.insights.base64token .Values.insights.tokenSecretName }}
+        - --organization
+        - {{ required "You must set an organization" .Values.insights.organization | quote }}
+        - --cluster
+        - {{ required "You must set a cluster" .Values.insights.cluster | quote }}
         - --insights-token=$(TOKEN)
-        {{- end }}
         workingDir: /opt/app
         env:
         {{ include "proxy-env-spec" . | indent 8 | trim }}
@@ -51,15 +47,10 @@ spec:
         - name: HOST
           value: {{ .Values.insights.host | quote }}
         {{- end }}
-        {{- if .Values.insights.organization }}
         - name: ORGANIZATION
-          value: {{ .Values.insights.organization | quote }}
-        {{- end }}
-        {{- if .Values.insights.cluster }}
+          value: {{ required "You must set an organization" .Values.insights.organization | quote }}
         - name: CLUSTER
-          value: {{ .Values.insights.cluster | quote }}
-        {{- end }}
-        {{- if or .Values.insights.base64token .Values.insights.tokenSecretName }}
+          value: {{ required "You must set a cluster" .Values.insights.cluster | quote }}
         - name: TOKEN
           valueFrom:
             secretKeyRef:
@@ -69,7 +60,6 @@ spec:
               name: {{ include "insights-agent.fullname" . }}-token
               {{ end -}}
               key: token
-        {{- end }}
           {{- range $key, $value := (index .Values "insights-event-watcher" "env") }}
           - name: {{ $key }}
             value: {{ $value | quote }}
