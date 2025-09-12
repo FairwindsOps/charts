@@ -1,4 +1,4 @@
-{{- if and (index .Values "insights-event-watcher" "enabled") (not .Values.rbac.disabled) -}}
+{{- if (index .Values "insights-event-watcher" "enabled") }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
