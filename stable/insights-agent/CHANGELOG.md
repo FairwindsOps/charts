@@ -1,5 +1,8 @@
 # Changelog
 
+## 4.10.0
+* Added insights event watcher  
+
 ## 4.9.5
 * Bumped insights-right-sizer to v0.0.5-dev
 
