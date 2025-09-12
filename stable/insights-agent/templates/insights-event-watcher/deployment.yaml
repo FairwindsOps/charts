@@ -33,13 +33,15 @@ spec:
         args:
         - --log-level={{ (index .Values "insights-event-watcher" "logLevel") }}
         {{- if .Values.insights.host }}
-        - --insights-host=$(HOST)
+        - --insights-host
+        - $(HOST)
         {{- end }}
         - --organization
-        - {{ required "You must set an organization" .Values.insights.organization | quote }}
+        - $(ORGANIZATION)
         - --cluster
-        - {{ required "You must set a cluster" .Values.insights.cluster | quote }}
-        - --insights-token=$(TOKEN)
+        - $(CLUSTER)
+        - --insights-token 
+        - $(TOKEN)
         workingDir: /opt/app
         env:
         {{ include "proxy-env-spec" . | indent 8 | trim }}
