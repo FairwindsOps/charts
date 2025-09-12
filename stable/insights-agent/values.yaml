@@ -746,7 +746,7 @@ insights-event-watcher:
   image:
     repository: quay.io/fairwinds/insights-event-watcher
     tag: "0.0"
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
   logLevel: "info"
   resources:
     limits:
