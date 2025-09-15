@@ -267,18 +267,11 @@ kube-bench:
       tag: 0.3
     resources:
       requests:
-        cpu: 500m
-        memory: 1Gi
-      limits:
-        cpu: 500m
-        memory: 1Gi
+        cpu: 100m
+        memory: 128Mi
   resources:
-    requests:
-      cpu: 500m
-      memory: 1Gi
-    limits:
-      cpu: 500m
-      memory: 1Gi
+      cpu: 100m
+      memory: 128Mi
 
 trivy:
   enabled: false
