@@ -18,10 +18,6 @@ volumes:
   hostPath:
     path: "/etc/systemd"
     type: Directory
-- name: etc-systemd-system-kubelet-service-d
-  hostPath:
-    path: "/etc/systemd/system/kubelet.service.d"
-    type: Directory
 - name: etc-kubernetes
   hostPath:
     path: "/etc/kubernetes"
@@ -59,9 +55,6 @@ containers:
     readOnly: true
   - name: etc-systemd
     mountPath: /etc/systemd
-    readOnly: true
-  - name: etc-systemd-system-kubelet-service-d
-    mountPath: /etc/systemd/system/kubelet.service.d
     readOnly: true
   - name: etc-kubernetes
     mountPath: /etc/kubernetes
