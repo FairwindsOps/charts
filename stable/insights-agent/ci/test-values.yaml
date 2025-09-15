@@ -44,6 +44,8 @@ test:
 
 kube-bench:
   enabled: true
+  image:
+    tag: js-kube-revert
 
 polaris:
   enabled: true
