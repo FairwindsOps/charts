@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.0
+* Fix CI pipeline for kube-bench
+ 
 ## 4.9.5
 * Bumped insights-right-sizer to v0.0.5-dev
 

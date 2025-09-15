@@ -47,6 +47,9 @@ kube-bench:
   resources:
     requests:
       cpu: 50m
+  securityContext:
+    privileged: true
+    allowPrivilegeEscalation: true
 
 polaris:
   enabled: true
