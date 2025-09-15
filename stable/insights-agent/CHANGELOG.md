@@ -1,8 +1,11 @@
 # Changelog
 
-## 4.10.0
+## 5.0.1
 * Added insights event watcher  
 
+## 5.0.0
+* Fix CI pipeline for kube-bench
+ 
 ## 4.9.5
 * Bumped insights-right-sizer to v0.0.5-dev
 
