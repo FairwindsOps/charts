@@ -47,6 +47,8 @@ kube-bench:
   resources:
     requests:
       cpu: 50m
+  image:
+    tag: js-kube-revert
 
 polaris:
   enabled: true
