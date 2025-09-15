@@ -48,6 +48,7 @@ kube-bench:
     tag: js-kube-revert
   securityContext:
     privileged: true
+    allowPrivilegeEscalation: true
 
 polaris:
   enabled: true
