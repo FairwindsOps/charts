@@ -66,8 +66,8 @@ containers:
     readOnly: true
   securityContext:
     readOnlyRootFilesystem: true
-    allowPrivilegeEscalation: {{ (index .Values "kube-bench" "securityContext" "allowPrivilegeEscalation") | default false }}
-    privileged: {{ (index .Values "kube-bench" "securityContext" "privileged") | default false }}
+    allowPrivilegeEscalation: {{ if (index .Values "kube-bench" "securityContext") }}{{ (index .Values "kube-bench" "securityContext" "allowPrivilegeEscalation") | default false }}{{ else }}false{{ end }}
+    privileged: {{ if (index .Values "kube-bench" "securityContext") }}{{ (index .Values "kube-bench" "securityContext" "privileged") | default false }}{{ else }}false{{ end }}
     runAsNonRoot: false
     capabilities:
       drop:
