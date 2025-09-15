@@ -55,7 +55,7 @@ executors:
     docker:
       - image: quay.io/reactiveops/ci-images:v12-buster
   ci-images-xlarge:
-    resource_class: xlarge
+    resource_class: 2xlarge
     docker:
       - image: quay.io/reactiveops/ci-images:v12-buster
 
