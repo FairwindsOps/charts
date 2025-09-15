@@ -44,9 +44,6 @@ test:
 
 kube-bench:
   enabled: true
-  resources:
-    requests:
-      cpu: 50m
   image:
     tag: js-kube-revert
 
