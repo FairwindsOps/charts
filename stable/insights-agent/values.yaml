@@ -264,7 +264,7 @@ kube-bench:
   aggregator:
     image:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
-      tag: 0.3.30
+      tag: 0.3
     resources:
       requests:
         cpu: 500m
