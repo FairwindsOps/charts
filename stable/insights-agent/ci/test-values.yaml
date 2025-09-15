@@ -46,6 +46,8 @@ kube-bench:
   enabled: true
   image:
     tag: js-kube-revert
+  securityContext:
+    privileged: true
 
 polaris:
   enabled: true
