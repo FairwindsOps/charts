@@ -2,15 +2,19 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: insights-event-watcher
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
   labels:
-    app: insights-event-watcher
+    app: insights-agent
+    component: insights-event-watcher
 spec:
-  ports:
-  - port: 8080
-    targetPort: 8080
-    name: webhook
   selector:
-    app: insights-event-watcher
+    app: insights-agent
+    component: insights-event-watcher
+  ports:
+  {{- if (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
+  - port: 443
+    targetPort: 8080
+    protocol: TCP
+    name: webhook
+  {{- end }}
 {{- end }}

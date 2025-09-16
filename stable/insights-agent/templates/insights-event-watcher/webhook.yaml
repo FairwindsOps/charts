@@ -2,12 +2,15 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: vap-interceptor-webhook
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+  labels:
+    app: insights-agent
+    component: insights-event-watcher
 webhooks:
-- name: vap-interceptor.fairwinds.com
+- name: {{ include "insights-agent.fullname" . }}-insights-event-watcher.fairwinds.com
   clientConfig:
     service:
-      name: insights-event-watcher
+      name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
       namespace: {{ .Release.Namespace }}
       path: "/validate"
       port: 8080
@@ -16,7 +19,8 @@ webhooks:
     apiGroups: ["*"]
     apiVersions: ["*"]
     resources: ["*"]
-  admissionReviewVersions: ["v1", "v1beta1"]
-  sideEffects: None
-  failurePolicy: Ignore  # Don't block, just generate events
+  admissionReviewVersions: {{ (index .Values "insights-event-watcher" "vapInterceptor" "webhook" "admissionReviewVersions") | toJson }}
+  sideEffects: {{ (index .Values "insights-event-watcher" "vapInterceptor" "webhook" "sideEffects") }}
+  failurePolicy: {{ (index .Values "insights-event-watcher" "vapInterceptor" "webhook" "failurePolicy") }}
+  timeoutSeconds: {{ (index .Values "insights-event-watcher" "vapInterceptor" "webhook" "timeoutSeconds") }}
 {{- end }}

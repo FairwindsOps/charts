@@ -2,34 +2,46 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: insights-event-watcher
-  namespace: {{ .Release.Namespace }}
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
   labels:
-    app: insights-event-watcher
+    app: insights-agent
+    component: insights-event-watcher
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: insights-event-watcher
+      app: insights-agent
+      component: insights-event-watcher
   template:
     metadata:
       labels:
-        app: insights-event-watcher
+        app: insights-agent
+        component: insights-event-watcher
       {{- with (index .Values "insights-event-watcher" "annotations") }}
       annotations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
-      serviceAccountName: insights-event-watcher
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-insights-event-watcher
       securityContext:
         {{- toYaml (index .Values "insights-event-watcher" "podSecurityContext") | nindent 8 }}
       containers:
       - name: insights-event-watcher
         image: "{{ (index .Values "insights-event-watcher" "image" "repository") }}:{{ (index .Values "insights-event-watcher" "image" "tag") }}"
         imagePullPolicy: {{ (index .Values "insights-event-watcher" "image" "pullPolicy") }}
-        command: ["/usr/local/bin/insights-event-watcher"]
+        command: ["insights-event-watcher"]
         args:
-        - "--log-level={{ (index .Values "insights-event-watcher" "logLevel") }}"
+        - --log-level={{ (index .Values "insights-event-watcher" "logLevel") }}
+        {{- if .Values.insights.host }}
+        - --insights-host
+        - $(HOST)
+        {{- end }}
+        - --organization
+        - $(ORGANIZATION)
+        - --cluster
+        - $(CLUSTER)
+        - --insights-token 
+        - $(FAIRWINDS_TOKEN)
         {{- if (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
         - "--enable-vap-interceptor=true"
         - "--vap-interceptor-port=8080"
@@ -84,13 +96,11 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
         resources:
-          requests:
-            memory: "64Mi"
-            cpu: "50m"
-          limits:
-            memory: "128Mi"
-            cpu: "100m"
+          {{- toYaml (index .Values "insights-event-watcher" "resources") | nindent 10 }}
         {{- if (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
+        ports:
+        - containerPort: 8080
+          name: webhook
         livenessProbe:
           httpGet:
             path: /health
@@ -129,5 +139,4 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      restartPolicy: Always
 {{- end }}
