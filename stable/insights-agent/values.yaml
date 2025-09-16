@@ -778,3 +778,26 @@ insights-event-watcher:
   tolerations: []
   affinity: {}
   annotations: {}
+  # VAP Interceptor functionality integrated into watcher
+  vapInterceptor:
+    # vapInterceptor.enabled -- Enable VAP interceptor webhook functionality in the watcher
+    enabled: false
+    # vapInterceptor.webhook -- Webhook configuration
+    webhook:
+      # webhook.failurePolicy -- Failure policy for the ValidatingAdmissionWebhook (Ignore, Fail)
+      failurePolicy: Ignore
+      # webhook.timeoutSeconds -- Timeout for webhook requests
+      timeoutSeconds: 5
+      # webhook.sideEffects -- Side effects of the webhook (None, NoneOnDryRun)
+      sideEffects: None
+      # webhook.admissionReviewVersions -- Supported admission review versions
+      admissionReviewVersions: ["v1", "v1beta1"]
+    # vapInterceptor.certManager -- Configuration for cert-manager integration
+    certManager:
+      # certManager.enabled -- Enable cert-manager integration for TLS certificates
+      enabled: false
+      # certManager.issuer -- cert-manager issuer name
+      issuer: ""
+      # certManager.issuerKind -- cert-manager issuer kind (Issuer, ClusterIssuer)
+      issuerKind: "ClusterIssuer"
+

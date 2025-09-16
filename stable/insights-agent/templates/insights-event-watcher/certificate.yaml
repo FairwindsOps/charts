@@ -1,0 +1,17 @@
+{{- if and (index .Values "insights-event-watcher" "enabled") (index .Values "insights-event-watcher" "vapInterceptor" "enabled") (index .Values "insights-event-watcher" "vapInterceptor" "certManager" "enabled") }}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+  labels:
+    app: insights-agent
+    component: insights-event-watcher
+spec:
+  secretName: {{ include "insights-agent.fullname" . }}-insights-event-watcher-webhook-certs
+  issuerRef:
+    name: {{ required "insights-event-watcher.vapInterceptor.certManager.issuer is required when certManager.enabled is true" (index .Values "insights-event-watcher" "vapInterceptor" "certManager" "issuer") }}
+    kind: {{ (index .Values "insights-event-watcher" "vapInterceptor" "certManager" "issuerKind") }}
+  dnsNames:
+  - {{ include "insights-agent.fullname" . }}-insights-event-watcher.{{ .Release.Namespace }}.svc
+  - {{ include "insights-agent.fullname" . }}-insights-event-watcher.{{ .Release.Namespace }}.svc.cluster.local
+{{- end }}

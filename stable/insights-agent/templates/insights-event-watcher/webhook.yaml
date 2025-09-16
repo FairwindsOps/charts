@@ -1,0 +1,22 @@
+{{- if and (index .Values "insights-event-watcher" "enabled") (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: vap-interceptor-webhook
+webhooks:
+- name: vap-interceptor.fairwinds.com
+  clientConfig:
+    service:
+      name: insights-event-watcher
+      namespace: {{ .Release.Namespace }}
+      path: "/validate"
+      port: 8080
+  rules:
+  - operations: ["CREATE", "UPDATE"]
+    apiGroups: ["*"]
+    apiVersions: ["*"]
+    resources: ["*"]
+  admissionReviewVersions: ["v1", "v1beta1"]
+  sideEffects: None
+  failurePolicy: Ignore  # Don't block, just generate events
+{{- end }}
