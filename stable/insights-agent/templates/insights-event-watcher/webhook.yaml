@@ -16,10 +16,13 @@ webhooks:
       port: 8080
   rules:
   - operations: ["CREATE", "UPDATE"]
-    apiGroups: ["*"]
-    apiVersions: ["*"]
-    resources: ["*"]
-  admissionReviewVersions: ["v1", "v1beta1"]
-  sideEffects: None
-  failurePolicy: Ignore
+    apiGroups: ["admissionregistration.k8s.io"]
+    apiVersions: ["v1", "v1beta1"]
+    resources: ["validatingadmissionpolicybindings"]
+  admissionReviewVersions:
+  - "v1"
+  - "v1beta1"
+  sideEffects: {{ (index .Values "insights-event-watcher" "vapInterceptor" "webhook" "sideEffects") | default "None" }}
+  failurePolicy: {{ (index .Values "insights-event-watcher" "vapInterceptor" "webhook" "failurePolicy") | default "Fail" }}
+  timeoutSeconds: {{ (index .Values "insights-event-watcher" "vapInterceptor" "webhook" "timeoutSeconds") | default 5 }}
 {{- end }}

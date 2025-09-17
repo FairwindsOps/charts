@@ -745,10 +745,10 @@ onDemandJobRunner:
       memory: 128Mi
 
 insights-event-watcher:
-  enabled: false
+  enabled: true
   image:
     repository: quay.io/fairwinds/insights-event-watcher
-    tag: "0.0"
+    tag: "js-watcher"
     pullPolicy: Always
   logLevel: "info"
   resources:
@@ -781,7 +781,7 @@ insights-event-watcher:
   # VAP Interceptor functionality integrated into watcher
   vapInterceptor:
     # vapInterceptor.enabled -- Enable VAP interceptor webhook functionality in the watcher
-    enabled: false
+    enabled: true
     # vapInterceptor.webhook -- Webhook configuration
     webhook:
       # webhook.failurePolicy -- Failure policy for the ValidatingAdmissionWebhook (Ignore, Fail)

@@ -105,14 +105,14 @@ spec:
           httpGet:
             path: /health
             port: 8080
-            scheme: HTTPS
+            scheme: HTTP
           initialDelaySeconds: 10
           periodSeconds: 10
         readinessProbe:
           httpGet:
             path: /health
             port: 8080
-            scheme: HTTPS
+            scheme: HTTP
           initialDelaySeconds: 5
           periodSeconds: 5
         {{- end }}
