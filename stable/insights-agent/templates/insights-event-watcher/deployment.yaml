@@ -33,97 +33,34 @@ spec:
         args:
         - --log-level={{ (index .Values "insights-event-watcher" "logLevel") }}
         {{- if .Values.insights.host }}
-        - --insights-host
-        - $(HOST)
+        - --insights-host={{ .Values.insights.host }}
         {{- end }}
-        - --organization
-        - $(ORGANIZATION)
-        - --cluster
-        - $(CLUSTER)
-        - --insights-token 
-        - $(FAIRWINDS_TOKEN)
-        {{- if (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
-        - "--enable-vap-interceptor=true"
-        - "--vap-interceptor-port=8080"
-        {{- end }}
-        {{- if .Values.insights.host }}
-        - "--insights-host={{ .Values.insights.host }}"
-        {{- end }}
-        - "--organization={{ required "You must set an organization" .Values.insights.organization }}"
-        - "--cluster={{ required "You must set a cluster" .Values.insights.cluster }}"
-        - "--insights-token={{ .Values.insights.token | default "your-token" }}"
-        ports:
-        - containerPort: 8080
-          name: webhook
+        - --organization={{ required "You must set an organization" .Values.insights.organization }}
+        - --cluster={{ required "You must set a cluster" .Values.insights.cluster }}
+        - --insights-token={{ .Values.insights.token | default "your-token" }}
         env:
         - name: NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
         {{ include "proxy-env-spec" . | indent 8 | trim }}
-        {{- if (index .Values "insights" "host") }}
-        - name: HOST
-          value: {{ .Values.insights.host | quote }}
+        {{- range $key, $value := (index .Values "insights-event-watcher" "env") }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
         {{- end }}
-        - name: ORGANIZATION
-          value: {{ required "You must set an organization" .Values.insights.organization | quote }}
-        - name: CLUSTER
-          value: {{ required "You must set a cluster" .Values.insights.cluster | quote }}
-        - name: FAIRWINDS_TOKEN
-          valueFrom:
-            secretKeyRef:
-              {{ if .Values.insights.tokenSecretName -}}
-              name: {{ .Values.insights.tokenSecretName }}
-              {{ else -}}
-              name: {{ include "insights-agent.fullname" . }}-token
-              {{ end -}}
-              key: token
-          {{- range $key, $value := (index .Values "insights-event-watcher" "env") }}
-          - name: {{ $key }}
-            value: {{ $value | quote }}
-          {{- end }}
         securityContext:
           {{- toYaml (index .Values "insights-event-watcher" "containerSecurityContext") | nindent 10 }}
         volumeMounts:
         - name: output-volume
           mountPath: /output
-        {{- if (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
-        - name: webhook-certs
-          mountPath: /certs
-          readOnly: true
-        {{- end }}
         {{- with (index .Values "insights-event-watcher" "extraVolumeMounts") }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
         resources:
           {{- toYaml (index .Values "insights-event-watcher" "resources") | nindent 10 }}
-        {{- if (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
-        ports:
-        - containerPort: 8080
-          name: webhook
-        livenessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-            scheme: HTTP
-          initialDelaySeconds: 10
-          periodSeconds: 10
-        readinessProbe:
-          httpGet:
-            path: /health
-            port: 8080
-            scheme: HTTP
-          initialDelaySeconds: 5
-          periodSeconds: 5
-        {{- end }}
       volumes:
       - name: output-volume
         emptyDir: {}
-      {{- if (index .Values "insights-event-watcher" "vapInterceptor" "enabled") }}
-      - name: webhook-certs
-        secret:
-          secretName: {{ include "insights-agent.fullname" . }}-insights-event-watcher-webhook-certs
-      {{- end }}
       {{- with (index .Values "insights-event-watcher" "extraVolumes") }}
       {{- toYaml . | nindent 6 }}
       {{- end }}

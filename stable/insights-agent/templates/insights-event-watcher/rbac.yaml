@@ -19,13 +19,13 @@ rules:
 - apiGroups: ["kyverno.io"]
   resources: ["policies", "clusterpolicies"]
   verbs: ["get", "list", "watch"]
-# Permissions for VAP interceptor
+# Additional permissions for event creation (if needed for future features)
 - apiGroups: [""]
   resources: ["events"]
-  verbs: ["create", "get", "list", "watch"]
+  verbs: ["create"]
 - apiGroups: ["admissionregistration.k8s.io"]
   resources: ["validatingadmissionpolicies", "validatingadmissionpolicybindings"]
-  verbs: ["get", "list", "watch"]
+  verbs: ["get", "list", "watch", "create"]
 - apiGroups: ["*"]
   resources: ["*"]
   verbs: ["get", "list", "watch"]

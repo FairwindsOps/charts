@@ -42,6 +42,41 @@ There are several different report types which can be enabled and configured:
 
 See below for configuration details.
 
+## Insights Event Watcher
+
+The insights-event-watcher is a real-time Kubernetes event monitoring component that watches for policy violations and sends them to Fairwinds Insights. It includes several advanced features:
+
+### Features
+
+- **Policy Violation Detection**: Automatically detects and processes policy violations that block resource installation
+- **Automatic Policy Duplication**: Creates audit duplicates of ValidatingAdmissionPolicy resources with Deny-only actions
+- **Multi-format Support**: Handles both ValidatingAdmissionPolicy and regular Kyverno policy events
+- **Real-time Processing**: Processes events as they occur in the cluster
+- **Insights Integration**: Sends blocked policy violations directly to Fairwinds Insights API
+
+### Automatic Policy Duplication
+
+The watcher automatically creates audit duplicates of ValidatingAdmissionPolicies that have only "Deny" actions:
+
+- **Smart Detection**: Only creates audit duplicates for policies with Deny-only bindings
+- **Audit Policy Creation**: Creates `{policy-name}-insights-audit` policies with Audit-only actions
+- **Audit Binding Creation**: Creates `{binding-name}-insights-audit` bindings pointing to audit policies
+- **Lifecycle Management**: Handles ADDED, MODIFIED, and DELETED events for policies
+- **Startup Check**: Automatically checks existing policies on startup and creates audit duplicates as needed
+
+### Policy Violation Processing
+
+The watcher processes various types of policy violation events:
+
+- **ValidatingAdmissionPolicy events**: `[policy-name] fail; description` format
+- **Kyverno policy events**: `policy namespace/policy-name fail: description` format
+- **Blocked Detection**: Only sends violations that contain `(blocked)` in the message
+- **Real-time Processing**: Captures and processes events as they occur in the cluster
+
+### Usage
+
+The watcher runs as a deployment and requires appropriate RBAC permissions to watch events and create audit policies. It integrates seamlessly with the Insights API to send blocked policy violations.
+
 ## Fleet Installation
 If you're installing the Insights Agent across a large fleet of clusters,
 it can be tedious to use the UI to create each cluster, then copy out the
@@ -140,6 +175,14 @@ Parameter | Description | Default
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
+`insights-event-watcher.enabled` | Enable the insights-event-watcher component | `true`
+`insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
+`insights-event-watcher.image.tag` | Tag for the insights-event-watcher image | `js-watcher`
+`insights-event-watcher.logLevel` | Log level for the watcher (debug, info, warn, error) | `info`
+`insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
+`insights-event-watcher.vapDuplicator.enabled` | Enable automatic creation of audit duplicates for ValidatingAdmissionPolicies | `true`
+`insights-event-watcher.vapDuplicator.auditPolicySuffix` | Suffix to add to audit policy names | `-insights-audit`
+`insights-event-watcher.vapDuplicator.auditBindingSuffix` | Suffix to add to audit binding names | `-insights-audit`
 
 ## Breaking Changes
 

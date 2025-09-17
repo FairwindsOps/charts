@@ -778,26 +778,12 @@ insights-event-watcher:
   tolerations: []
   affinity: {}
   annotations: {}
-  # VAP Interceptor functionality integrated into watcher
-  vapInterceptor:
-    # vapInterceptor.enabled -- Enable VAP interceptor webhook functionality in the watcher
+  # VAP Duplicator functionality for automatic audit policy creation
+  vapDuplicator:
+    # vapDuplicator.enabled -- Enable automatic creation of audit duplicates for ValidatingAdmissionPolicies
     enabled: true
-    # vapInterceptor.webhook -- Webhook configuration
-    webhook:
-      # webhook.failurePolicy -- Failure policy for the ValidatingAdmissionWebhook (Ignore, Fail)
-      failurePolicy: Ignore
-      # webhook.timeoutSeconds -- Timeout for webhook requests
-      timeoutSeconds: 5
-      # webhook.sideEffects -- Side effects of the webhook (None, NoneOnDryRun)
-      sideEffects: None
-      # webhook.admissionReviewVersions -- Supported admission review versions
-      admissionReviewVersions: ["v1", "v1beta1"]
-    # vapInterceptor.certManager -- Configuration for cert-manager integration
-    certManager:
-      # certManager.enabled -- Enable cert-manager integration for TLS certificates
-      enabled: false
-      # certManager.issuer -- cert-manager issuer name
-      issuer: ""
-      # certManager.issuerKind -- cert-manager issuer kind (Issuer, ClusterIssuer)
-      issuerKind: "ClusterIssuer"
+    # vapDuplicator.auditPolicySuffix -- Suffix to add to audit policy names (default: "-insights-audit")
+    auditPolicySuffix: "-insights-audit"
+    # vapDuplicator.auditBindingSuffix -- Suffix to add to audit binding names (default: "-insights-audit")
+    auditBindingSuffix: "-insights-audit"
 
