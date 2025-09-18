@@ -18,11 +18,9 @@ rules:
   verbs: ["get", "list", "watch"]
 - apiGroups: ["kyverno.io"]
   resources: ["policies", "clusterpolicies"]
-  verbs: ["get", "list", "watch"]
-# ValidatingAdmissionPolicy permissions for automatic audit policy duplication
-- apiGroups: ["admissionregistration.k8s.io"]
-  resources: ["validatingadmissionpolicies", "validatingadmissionpolicybindings"]
   verbs: ["get", "list", "watch", "create", "update", "delete"]
+# Note: ValidatingAdmissionPolicy resources are now managed by Kyverno
+# when we create ClusterPolicies with validationFailureAction: Audit
 - apiGroups: ["*"]
   resources: ["*"]
   verbs: ["get", "list", "watch"]

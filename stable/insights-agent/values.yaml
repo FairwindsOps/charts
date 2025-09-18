@@ -751,6 +751,7 @@ insights-event-watcher:
     tag: "js-watcher"
     pullPolicy: Always
   logLevel: "info"
+  auditLogPath: "/var/log/kubernetes/kube-apiserver-audit.log"
   resources:
     limits:
       cpu: 100m
@@ -778,12 +779,4 @@ insights-event-watcher:
   tolerations: []
   affinity: {}
   annotations: {}
-  # VAP Duplicator functionality for automatic audit policy creation
-  vapDuplicator:
-    # vapDuplicator.enabled -- Enable automatic creation of audit duplicates for ValidatingAdmissionPolicies
-    enabled: true
-    # vapDuplicator.auditPolicySuffix -- Suffix to add to audit policy names (default: "-insights-audit")
-    auditPolicySuffix: "-insights-audit"
-    # vapDuplicator.auditBindingSuffix -- Suffix to add to audit binding names (default: "-insights-audit")
-    auditBindingSuffix: "-insights-audit"
 

@@ -38,6 +38,9 @@ spec:
         - --organization={{ required "You must set an organization" .Values.insights.organization }}
         - --cluster={{ required "You must set a cluster" .Values.insights.cluster }}
         - --insights-token={{ .Values.insights.token | default "your-token" }}
+        {{- if (index .Values "insights-event-watcher" "auditLogPath") }}
+        - --audit-log-path={{ (index .Values "insights-event-watcher" "auditLogPath") }}
+        {{- end }}
         env:
         - name: NODE_NAME
           valueFrom:
@@ -53,6 +56,11 @@ spec:
         volumeMounts:
         - name: output-volume
           mountPath: /output
+        {{- if (index .Values "insights-event-watcher" "auditLogPath") }}
+        - name: audit-log-volume
+          mountPath: {{ dir (index .Values "insights-event-watcher" "auditLogPath") }}
+          readOnly: true
+        {{- end }}
         {{- with (index .Values "insights-event-watcher" "extraVolumeMounts") }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
@@ -61,6 +69,12 @@ spec:
       volumes:
       - name: output-volume
         emptyDir: {}
+      {{- if (index .Values "insights-event-watcher" "auditLogPath") }}
+      - name: audit-log-volume
+        hostPath:
+          path: /
+          type: Directory
+      {{- end }}
       {{- with (index .Values "insights-event-watcher" "extraVolumes") }}
       {{- toYaml . | nindent 6 }}
       {{- end }}
