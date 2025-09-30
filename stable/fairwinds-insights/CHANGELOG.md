@@ -1,8 +1,5 @@
 # Changelog
 
-## 5.0.2
-* Fixed CI pipeline
-
 ## 5.0.1
 * Update application version to 18.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
