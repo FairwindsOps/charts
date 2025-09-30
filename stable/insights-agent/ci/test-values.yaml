@@ -47,7 +47,7 @@ kube-bench:
   resources:
     requests:
       cpu: 50m
-  securityContext:
+  containerSecurityContext:
     privileged: true
     allowPrivilegeEscalation: true
 
