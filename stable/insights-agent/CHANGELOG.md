@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.2
+* Removed default values for kube-bench
+
 ## 5.0.1
 * Added default values for kube-bench
 
