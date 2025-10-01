@@ -273,9 +273,6 @@ kube-bench:
     requests:
       cpu: 100m
       memory: 128Mi
-  securityContext:
-    allowPrivilegeEscalation: false
-    privileged: false
 
 trivy:
   enabled: false
