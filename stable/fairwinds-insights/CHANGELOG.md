@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.0.3
+* Adds and enable `general-worker` temporal deployment
+
 ## 5.0.2
 * Update application version to 18.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
