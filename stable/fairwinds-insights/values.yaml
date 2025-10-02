@@ -885,11 +885,7 @@ temporalDeployments:
             app.kubernetes.io/component: delete-org-cluster-worker
             app.kubernetes.io/name: fairwinds-insights
     args: []
-    additionalEnv:
-      - name: POSTGRES_MAX_IDLE_CONNS
-        value: 2
-      - name: POSTGRES_MAX_OPEN_CONNS
-        value: 2
+    additionalEnv: []
   general-worker:
     enabled: true
     command: "general_worker"
@@ -923,11 +919,7 @@ temporalDeployments:
             app.kubernetes.io/component: general-worker
             app.kubernetes.io/name: fairwinds-insights
     args: []
-    additionalEnv:
-      - name: POSTGRES_MAX_IDLE_CONNS
-        value: 3
-      - name: POSTGRES_MAX_OPEN_CONNS
-        value: 6
+    additionalEnv: []
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
