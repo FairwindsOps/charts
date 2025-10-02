@@ -886,6 +886,40 @@ temporalDeployments:
             app.kubernetes.io/name: fairwinds-insights
     args: []
     additionalEnv: []
+  general-worker:
+    enabled: true
+    command: "general_worker"
+    hpa:
+      min: 1
+      max: 1
+      metrics: []
+    pdb:
+      enabled: false
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 800m
+        memory: 1024Mi
+    tolerations: []
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: general-worker
+            app.kubernetes.io/name: fairwinds-insights
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: general-worker
+            app.kubernetes.io/name: fairwinds-insights
+    args: []
+    additionalEnv: []
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
