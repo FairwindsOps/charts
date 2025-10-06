@@ -3,7 +3,7 @@ Gemini is now installed!
 To start using Gemini, create a SnapshotGroup. You can use an
 existing PVC, or ask Gemini to create one for you.
 
-apiVersion: gemini.fairwinds.com/v1beta1
+apiVersion: gemini.fairwinds.com/v1
 kind: SnapshotGroup
 metadata:
   name: test-volume
