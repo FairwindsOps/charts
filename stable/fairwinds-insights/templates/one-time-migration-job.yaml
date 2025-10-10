@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: one-time-migration
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-weight": "1"
+    "helm.sh/hook": "post-install,post-upgrade"
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: one-time-migration
+spec:
+  backoffLimit: 5
+  template:
+    spec:
+      restartPolicy: Never
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      containers:
+      - name: fwinsights-one-time-migration
+        image: "{{ .Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" . }}"
+        imagePullPolicy: Always
+        command: ["one_time_migration"]
+        resources:
+          {{- toYaml .Values.oneTimeMigration.resources | nindent 10 }}
+        {{- include "env" (dict "root" .) | indent 8 }}
+        {{- with .Values.oneTimeMigration.additionalEnv }}
+          {{- toYaml . | nindent 8 }}
+        {{- end }}
+        securityContext:
+          readOnlyRootFilesystem: true
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: false
+          runAsUser: {{ .Values.oneTimeMigration.securityContext.runAsUser }}
+          capabilities:
+            drop:
+              - ALL

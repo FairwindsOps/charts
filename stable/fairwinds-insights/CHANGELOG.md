@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.0
+* Adds and enable `one-time-migration` job to helm hook
+
 ## 5.0.3
 * Adds and enable `general-worker` temporal deployment
 
