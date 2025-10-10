@@ -4,12 +4,8 @@ metadata:
   name: one-time-migration
   annotations:
     "helm.sh/hook-delete-policy": "before-hook-creation"
-    "helm.sh/hook-weight": "1" # run after the database migration job
-  {{- if not (or .Values.postgresql.ephemeral .Values.postgresql.postMigrate) }}
-    "helm.sh/hook": "pre-install,pre-upgrade"
-  {{- else }}
+    "helm.sh/hook-weight": "1"
     "helm.sh/hook": "post-install,post-upgrade"
-  {{- end }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: one-time-migration
