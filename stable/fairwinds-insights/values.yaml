@@ -443,6 +443,25 @@ dbMigration:
     # -- The user ID to run the database migration job under.
     runAsUser: 10324
 
+oneTimeMigration:
+  # -- Resources for the one time migration job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  securityContext:
+    # -- The user ID to run the migration job under.
+    runAsUser: 10324
+  # -- Additional environment variables for the one time migration job.
+  additionalEnv:
+    - name: POSTGRES_MAX_IDLE_CONNS
+      value: "1"
+    - name: POSTGRES_MAX_OPEN_CONNS
+      value: "1"
+
 service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
