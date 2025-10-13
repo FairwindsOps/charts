@@ -104,12 +104,6 @@ cronjobs:
     command: action_items_statistics
     schedule: "15 * * * *"
 
-  # -- Options for the realtime alerts job
-  alerts-realtime:
-    command: notifications_digest
-    interval: 10m
-    schedule: "5/10 * * * *"
-
   # -- Options for the benchmark job
   benchmark:
     command: benchmark
@@ -156,12 +150,6 @@ cronjobs:
     command: hubspot_sync
     schedule: ""
     useReadReplica: true
-
-  # -- Options for digest notifications job
-  notifications-digest:
-    command: notifications_digest
-    schedule: "0 16 * * *"
-    interval: 24h
 
   # -- Options for the resources recommendations job
   resources-recommendations:
