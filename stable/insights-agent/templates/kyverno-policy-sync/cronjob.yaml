@@ -1,0 +1,44 @@
+{{- if (index .Values "kyverno-policy-sync").enabled -}}
+{{- $_ := set . "Label" "kyverno-policy-sync" }}
+{{- $_ := set . "Config" (index .Values "kyverno-policy-sync") }}
+{{- include "cronjob" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            - name: FAIRWINDS_INSIGHTS_HOST
+              value: {{ .Values.insights.host | quote }}
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{ if .Values.insights.tokenSecretName -}}
+                  name: {{ .Values.insights.tokenSecretName }}
+                  {{ else -}}
+                  name: {{ include "insights-agent.fullname" . }}-token
+                  {{ end -}}
+                  key: token
+            - name: FAIRWINDS_ORG
+              value: {{ .Values.insights.organization | quote }}
+            - name: FAIRWINDS_CLUSTER
+              value: {{ .Values.insights.cluster | quote }}
+            - name: DRY_RUN
+              value: {{ (index .Values "kyverno-policy-sync").config.dryRun | quote }}
+            - name: VALIDATE_POLICIES
+              value: {{ (index .Values "kyverno-policy-sync").config.validatePolicies | quote }}
+            - name: LOCK_TIMEOUT
+              value: {{ (index .Values "kyverno-policy-sync").config.lockTimeout | quote }}
+            - name: LOG_LEVEL
+              value: {{ (index .Values "kyverno-policy-sync").config.logLevel | quote }}
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: {{ .Chart.Version | quote }}
+            {{ include "security-context" . | indent 12 | trim }}
+{{- end -}}
