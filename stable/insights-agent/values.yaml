@@ -721,6 +721,9 @@ kyverno-policy-sync:
     requests:
       cpu: 500m
       memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
   # kyverno-policy-sync configuration
   config:
     # kyverno-policy-sync.config.dryRun -- Enable dry-run mode for policy sync (default: false)
