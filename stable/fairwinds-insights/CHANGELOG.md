@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.0
+* Remove `cronjobs.alerts-realtime` and `notifications-digest` cronjobs in favor or temporal schedulers approach.
+
 ## 5.1.0
 * Adds and enable `one-time-migration` job to helm hook
 
