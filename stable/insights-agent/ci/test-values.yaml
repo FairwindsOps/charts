@@ -189,3 +189,6 @@ right-sizer-vpa:
       insecureSkipTLSVerify: true
     args:
       - "--kubelet-insecure-tls"
+
+kyverno-policy-sync:
+  enabled: true
