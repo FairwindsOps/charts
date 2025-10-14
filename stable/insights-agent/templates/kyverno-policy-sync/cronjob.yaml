@@ -1,0 +1,75 @@
+{{- if (index .Values "kyverno-policy-sync").enabled -}}
+{{- $_ := set . "Label" "kyverno-policy-sync" }}
+{{- $_ := set . "Config" (index .Values "kyverno-policy-sync") }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ .Label }}
+  labels:
+    app: insights-agent
+  annotations:
+    polaris.fairwinds.com/memoryLimitsMissing-exempt: "true"
+    polaris.fairwinds.com/cpuLimitsMissing-exempt: "true"
+spec:
+  schedule: {{ (index .Values "kyverno-policy-sync").schedule | quote }}
+  concurrencyPolicy: Forbid
+  failedJobsHistoryLimit: 2
+  successfulJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      backoffLimit: 1
+      activeDeadlineSeconds: {{ (index .Values "kyverno-policy-sync").timeout }}
+      template:
+        metadata:
+          labels:
+            app.kubernetes.io/name: {{ .Label }}
+            app.kubernetes.io/part-of: {{ include "insights-agent.fullname" . }}
+          annotations:
+            cluster-autoscaler.kubernetes.io/safe-to-evict: "true"
+        spec:
+          restartPolicy: Never
+          serviceAccountName: {{ include "insights-agent.fullname" . }}-{{ .Label }}
+          containers:
+          - name: {{ .Label }}
+            image: "{{ (index .Values "kyverno-policy-sync").image.repository }}:{{ (index .Values "kyverno-policy-sync").image.tag }}"
+            imagePullPolicy: Always
+            resources:
+              {{- toYaml (index .Values "kyverno-policy-sync").resources | nindent 14 }}
+            securityContext:
+              readOnlyRootFilesystem: true
+              allowPrivilegeEscalation: false
+              privileged: false
+              runAsNonRoot: true
+              runAsUser: 1200
+              runAsGroup: 1200
+              capabilities:
+                drop:
+                  - ALL
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            - name: FAIRWINDS_INSIGHTS_HOST
+              value: {{ .Values.insights.host | quote }}
+            - name: FAIRWINDS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{ if .Values.insights.tokenSecretName -}}
+                  name: {{ .Values.insights.tokenSecretName }}
+                  {{ else -}}
+                  name: {{ include "insights-agent.fullname" . }}-token
+                  {{ end -}}
+                  key: token
+            - name: FAIRWINDS_ORG
+              value: {{ .Values.insights.organization | quote }}
+            - name: FAIRWINDS_CLUSTER
+              value: {{ .Values.insights.cluster | quote }}
+            - name: DRY_RUN
+              value: {{ (index .Values "kyverno-policy-sync").config.dryRun | quote }}
+            - name: VALIDATE_POLICIES
+              value: {{ (index .Values "kyverno-policy-sync").config.validatePolicies | quote }}
+            - name: LOCK_TIMEOUT
+              value: {{ (index .Values "kyverno-policy-sync").config.lockTimeout | quote }}
+            - name: LOG_LEVEL
+              value: {{ (index .Values "kyverno-policy-sync").config.logLevel | quote }}
+            - name: FAIRWINDS_AGENT_CHART_VERSION
+              value: {{ .Chart.Version | quote }}
+{{- end -}}

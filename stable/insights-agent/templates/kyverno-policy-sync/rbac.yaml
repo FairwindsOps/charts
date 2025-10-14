@@ -1,0 +1,38 @@
+{{- if and (index .Values "kyverno-policy-sync").enabled (not .Values.rbac.disabled) -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-kyverno-policy-sync
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: insights-agent
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-kyverno-policy-sync
+  labels:
+    app: insights-agent
+rules:
+- apiGroups: ["kyverno.io"]
+  resources: ["clusterpolicies", "policies"]
+  verbs: ["get", "list", "create", "update", "patch", "delete"]
+- apiGroups: [""]
+  resources: ["configmaps"]
+  verbs: ["get", "list", "create", "update", "patch", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-kyverno-policy-sync
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-kyverno-policy-sync
+subjects:
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-kyverno-policy-sync
+  namespace: {{ .Release.Namespace }}
+{{- end -}}

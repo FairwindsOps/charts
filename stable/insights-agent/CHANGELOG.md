@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.0
+* Support for both on-demand and scheduled Kyverno policy synchronization
+
 ## 5.0.2
 * Removed default values for kube-bench
 
