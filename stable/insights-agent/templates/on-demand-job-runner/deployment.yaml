@@ -53,18 +53,6 @@ spec:
               key: token
         - name: POLL_INTERVAL
           value: {{ .Values.onDemandJobRunner.pollInterval | quote }}
-        {{- if .Values.onDemandJobRunner.kyvernoPolicySync.enabled }}
-        - name: KYVERNO_POLICY_SYNC_ENABLED
-          value: {{ .Values.onDemandJobRunner.kyvernoPolicySync.enabled | quote }}
-        - name: KYVERNO_POLICY_SYNC_DRY_RUN
-          value: {{ .Values.onDemandJobRunner.kyvernoPolicySync.dryRun | quote }}
-        - name: KYVERNO_POLICY_SYNC_VALIDATE_POLICIES
-          value: {{ .Values.onDemandJobRunner.kyvernoPolicySync.validatePolicies | quote }}
-        - name: KYVERNO_POLICY_SYNC_LOCK_TIMEOUT
-          value: {{ .Values.onDemandJobRunner.kyvernoPolicySync.lockTimeout | quote }}
-        - name: KYVERNO_POLICY_SYNC_LOG_LEVEL
-          value: {{ .Values.onDemandJobRunner.kyvernoPolicySync.logLevel | quote }}
-        {{- end }}
         {{- with .Values.onDemandJobRunner.containerSecurityContext }}
         securityContext:
           {{- toYaml . | nindent 12 }}

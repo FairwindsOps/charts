@@ -762,15 +762,3 @@ onDemandJobRunner:
     requests:
       cpu: 100m
       memory: 128Mi
-  # kyverno-policy-sync configuration for on-demand jobs
-  kyvernoPolicySync:
-    # kyvernoPolicySync.enabled -- Enable Kyverno policy sync functionality in on-demand job runner
-    enabled: false
-    # kyvernoPolicySync.dryRun -- Enable dry-run mode for policy sync (default: false)
-    dryRun: false
-    # kyvernoPolicySync.validatePolicies -- Enable policy validation using Kyverno CLI (default: true)
-    validatePolicies: true
-    # kyvernoPolicySync.lockTimeout -- Lock timeout for preventing concurrent operations (default: "30m")
-    lockTimeout: "10m"
-    # kyvernoPolicySync.logLevel -- Log level for on-demand sync (default: "info")
-    logLevel: "info"

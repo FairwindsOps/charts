@@ -34,26 +34,4 @@ roleRef:
   kind: Role
   name: {{ include "insights-agent.fullname" . }}-on-demand-job-runner-role
   apiGroup: rbac.authorization.k8s.io
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-on-demand-job-runner-cluster-role
-rules:
-- apiGroups: ["kyverno.io"]
-  resources: ["clusterpolicies"]
-  verbs: ["get", "list", "create", "update", "patch", "delete"]
----
-apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRoleBinding
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-on-demand-job-runner-cluster-role-binding
-subjects:
-- kind: ServiceAccount
-  name: {{ include "insights-agent.fullname" . }}-on-demand-job-runner-sa
-  namespace: {{ .Release.Namespace }}
-roleRef:
-  kind: ClusterRole
-  name: {{ include "insights-agent.fullname" . }}-on-demand-job-runner-cluster-role
-  apiGroup: rbac.authorization.k8s.io
 {{- end -}}
