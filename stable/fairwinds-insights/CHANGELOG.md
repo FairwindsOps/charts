@@ -1,7 +1,10 @@
 # Changelog
 
+## 5.3.0
+* Add `additionalEnvVars` on the `api` and defaults for `POSTGRES_MAX_IDLE_CONNS` and `POSTGRES_MAX_OPEN_CONNS`
+
 ## 5.2.0
-* Remove `cronjobs.alerts-realtime` and `notifications-digest` cronjobs in favor or temporal schedulers approach.
+* Remove `cronjobs.alerts-realtime` and `cronjobs.notifications-digest` cronjobs in favor or temporal schedulers approach.
 
 ## 5.1.0
 * Adds and enable `one-time-migration` job to helm hook
