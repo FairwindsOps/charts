@@ -106,6 +106,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
 | api.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | api.service.type | string | `nil` | Service type for Open API server |
+| api.additionalEnvVars[0].name | string | `"POSTGRES_MAX_IDLE_CONNS"` |  |
+| api.additionalEnvVars[0].value | string | `"5"` |  |
+| api.additionalEnvVars[1].name | string | `"POSTGRES_MAX_OPEN_CONNS"` |  |
+| api.additionalEnvVars[1].value | string | `"15"` |  |
 | openApi.port | int | `8080` | Port for the Open API server to listen on. |
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
