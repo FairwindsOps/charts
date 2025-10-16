@@ -1,7 +1,13 @@
 # Changelog
 
-## 5.0.2
+## 5.2.o
 * Added insights event watcher  
+
+## 5.1.0
+* Support for both on-demand and scheduled Kyverno policy synchronization
+
+## 5.0.2
+* Removed default values for kube-bench
 
 ## 5.0.1
 * Added default values for kube-bench

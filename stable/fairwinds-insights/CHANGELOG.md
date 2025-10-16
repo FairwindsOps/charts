@@ -1,5 +1,20 @@
 # Changelog
 
+## 5.3.0
+* Add `additionalEnvVars` on the `api` and defaults for `POSTGRES_MAX_IDLE_CONNS` and `POSTGRES_MAX_OPEN_CONNS`
+
+## 5.2.0
+* Remove `cronjobs.alerts-realtime` and `cronjobs.notifications-digest` cronjobs in favor or temporal schedulers approach.
+
+## 5.1.0
+* Adds and enable `one-time-migration` job to helm hook
+
+## 5.0.3
+* Adds and enable `general-worker` temporal deployment
+
+## 5.0.2
+* Update application version to 18.1. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 5.0.1
 * Update application version to 18.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 

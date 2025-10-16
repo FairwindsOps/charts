@@ -104,12 +104,6 @@ cronjobs:
     command: action_items_statistics
     schedule: "15 * * * *"
 
-  # -- Options for the realtime alerts job
-  alerts-realtime:
-    command: notifications_digest
-    interval: 10m
-    schedule: "5/10 * * * *"
-
   # -- Options for the benchmark job
   benchmark:
     command: benchmark
@@ -156,12 +150,6 @@ cronjobs:
     command: hubspot_sync
     schedule: ""
     useReadReplica: true
-
-  # -- Options for digest notifications job
-  notifications-digest:
-    command: notifications_digest
-    schedule: "0 16 * * *"
-    interval: 24h
 
   # -- Options for the resources recommendations job
   resources-recommendations:
@@ -365,6 +353,11 @@ api:
   service:
     # -- Service type for Open API server
     type:
+  additionalEnvVars:
+    - name: POSTGRES_MAX_IDLE_CONNS
+      value: "5"
+    - name: POSTGRES_MAX_OPEN_CONNS
+      value: "15"
 
 openApi:
   # -- Port for the Open API server to listen on.
@@ -442,6 +435,25 @@ dbMigration:
   securityContext:
     # -- The user ID to run the database migration job under.
     runAsUser: 10324
+
+oneTimeMigration:
+  # -- Resources for the one time migration job.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  securityContext:
+    # -- The user ID to run the migration job under.
+    runAsUser: 10324
+  # -- Additional environment variables for the one time migration job.
+  additionalEnv:
+    - name: POSTGRES_MAX_IDLE_CONNS
+      value: "1"
+    - name: POSTGRES_MAX_OPEN_CONNS
+      value: "1"
 
 service:
   # -- Port to be used for the API and Dashboard services.
@@ -885,7 +897,49 @@ temporalDeployments:
             app.kubernetes.io/component: delete-org-cluster-worker
             app.kubernetes.io/name: fairwinds-insights
     args: []
-    additionalEnv: []
+    additionalEnv:
+      - name: POSTGRES_MAX_IDLE_CONNS
+        value: "2"
+      - name: POSTGRES_MAX_OPEN_CONNS
+        value: "2"
+  general-worker:
+    enabled: true
+    command: "general_worker"
+    hpa:
+      min: 1
+      max: 1
+      metrics: []
+    pdb:
+      enabled: false
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 800m
+        memory: 1024Mi
+    tolerations: []
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: general-worker
+            app.kubernetes.io/name: fairwinds-insights
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: general-worker
+            app.kubernetes.io/name: fairwinds-insights
+    args: []
+    additionalEnv:
+      - name: POSTGRES_MAX_IDLE_CONNS
+        value: "3"
+      - name: POSTGRES_MAX_OPEN_CONNS
+        value: "6"
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false

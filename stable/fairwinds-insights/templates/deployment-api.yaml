@@ -39,6 +39,9 @@ spec:
             containerPort: {{ .Values.api.port }}
             protocol: TCP
           {{- include "env" (dict "root" .) | indent 10 }}
+          {{- with .Values.api.additionalEnvVars }}
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
           livenessProbe:
             httpGet:
               path: /livez

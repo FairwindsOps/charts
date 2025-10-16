@@ -42,14 +42,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobOptions.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Default resources for cronjobs |
 | cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *"}` | Options for the action-items filters refresher job. |
 | cronjobs.action-items-statistics | object | `{"command":"action_items_statistics","schedule":"15 * * * *"}` | Options for the action item stats job |
-| cronjobs.alerts-realtime | object | `{"command":"notifications_digest","interval":"10m","schedule":"5/10 * * * *"}` | Options for the realtime alerts job |
 | cronjobs.benchmark | object | `{"command":"benchmark","schedule":""}` | Options for the benchmark job |
 | cronjobs.update-tickets | object | `{"command":"update_tickets","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"0 * * * *"}` | Options for the update tickets job. |
 | cronjobs.costs-update | object | `{"command":"cloud_costs_update","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"15 */3 * * *"}` | Options for the cloud costs update job |
 | cronjobs.database-cleanup | object | `{"command":"database_cleanup","schedule":"0 0 * * *"}` | Options for the database cleanup job. |
 | cronjobs.email | object | `{"command":"email_digest","schedule":""}` | Options for the email digest job. |
 | cronjobs.hubspot | object | `{"command":"hubspot_sync","schedule":"","useReadReplica":true}` | Options for the hubspot job. |
-| cronjobs.notifications-digest | object | `{"command":"notifications_digest","interval":"24h","schedule":"0 16 * * *"}` | Options for digest notifications job |
 | cronjobs.resources-recommendations | object | `{"command":"resources_recommendations","resources":{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}},"schedule":"0 2 * * *"}` | Options for the resources recommendations job |
 | cronjobs.saml | object | `{"command":"refresh_saml_metadata","schedule":"0 * * * *"}` | Options for the SAML sync job |
 | cronjobs.slack-channels | object | `{"command":"slack_channels_local_refresher","schedule":"0/15 * * * *"}` | Options for the slack channels job. |
@@ -108,6 +106,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.securityContext.runAsUser | int | `10324` | The user ID to run the API server under. |
 | api.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | api.service.type | string | `nil` | Service type for Open API server |
+| api.additionalEnvVars[0].name | string | `"POSTGRES_MAX_IDLE_CONNS"` |  |
+| api.additionalEnvVars[0].value | string | `"5"` |  |
+| api.additionalEnvVars[1].name | string | `"POSTGRES_MAX_OPEN_CONNS"` |  |
+| api.additionalEnvVars[1].value | string | `"15"` |  |
 | openApi.port | int | `8080` | Port for the Open API server to listen on. |
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
@@ -132,6 +134,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.service.type | string | `nil` | Service type for Open API server |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
+| oneTimeMigration.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"256Mi"}}` | Resources for the one time migration job. |
+| oneTimeMigration.securityContext.runAsUser | int | `10324` | The user ID to run the migration job under. |
+| oneTimeMigration.additionalEnv | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Additional environment variables for the one time migration job. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"ClusterIP"` | Service type for the API and Dashboard services |
 | service.annotations | string | `nil` | Annotations for the services |
@@ -300,7 +305,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"repo-scan-job"` |  |
 | repoScanJob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | temporalDeploymentDefaults | object | `{"additionalEnv":[],"args":[],"hpa":{"enabled":true,"max":4,"metrics":[],"min":2},"pdb":{"enabled":false,"minAvailable":1},"resources":{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"500m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324},"tolerations":[],"topologySpreadConstraints":[],"useReadReplica":false}` | Default options for temporal deployments |
-| temporalDeployments | object | `{"delete-org-cluster-worker":{"additionalEnv":[],"args":[],"command":"delete_organization_and_cluster_worker","enabled":true,"hpa":{"max":1,"metrics":[],"min":1},"pdb":{"enabled":false},"resources":{"limits":{"cpu":"800m","memory":"1024Mi"},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[],"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]}}` | Temporal worker deployments |
+| temporalDeployments | object | `{"delete-org-cluster-worker":{"additionalEnv":[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"2"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"2"}],"args":[],"command":"delete_organization_and_cluster_worker","enabled":true,"hpa":{"max":1,"metrics":[],"min":1},"pdb":{"enabled":false},"resources":{"limits":{"cpu":"800m","memory":"1024Mi"},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[],"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"delete-org-cluster-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]},"general-worker":{"additionalEnv":[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"3"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"6"}],"args":[],"command":"general_worker","enabled":true,"hpa":{"max":1,"metrics":[],"min":1},"pdb":{"enabled":false},"resources":{"limits":{"cpu":"800m","memory":"1024Mi"},"requests":{"cpu":"200m","memory":"256Mi"}},"tolerations":[],"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"general-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"general-worker","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]}}` | Temporal worker deployments |
 | temporal.hostPort | string | `"insights-temporal-frontend:7233"` |  |
 | temporal.namespace | string | `"fwinsights"` |  |
 | temporal.enabled | bool | `true` |  |

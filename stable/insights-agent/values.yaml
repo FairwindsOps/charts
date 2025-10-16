@@ -273,9 +273,6 @@ kube-bench:
     requests:
       cpu: 100m
       memory: 128Mi
-  securityContext:
-    allowPrivilegeEscalation: false
-    privileged: false
 
 trivy:
   enabled: false
@@ -712,6 +709,31 @@ kyverno:
       memory: 128Mi
   timeout: 300
   mountTmp: true
+
+kyverno-policy-sync:
+  enabled: false
+  schedule: "rand * * * *"
+  timeout: 600
+  image:
+    repository: quay.io/fairwinds/kyverno-policy-sync
+    tag: "0.1"
+  resources:
+    requests:
+      cpu: 500m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+  # kyverno-policy-sync configuration
+  config:
+    # kyverno-policy-sync.config.dryRun -- Enable dry-run mode for policy sync (default: false)
+    dryRun: false
+    # kyverno-policy-sync.config.validatePolicies -- Enable policy validation using Kyverno CLI (default: true)
+    validatePolicies: true
+    # kyverno-policy-sync.config.lockTimeout -- Lock timeout for preventing concurrent operations (default: "10m")
+    lockTimeout: "10m"
+    # kyverno-policy-sync.config.logLevel -- Log level (debug, info, warn, error) (default: "info")
+    logLevel: "info"
 
 onDemandJobRunner:
   enabled: true
