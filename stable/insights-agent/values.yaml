@@ -773,14 +773,28 @@ insights-event-watcher:
     tag: "js-watcher"
     pullPolicy: Always
   logLevel: "info"
+  # Local audit log (for Kind/local clusters)
   auditLogPath: "/var/log/kubernetes/kube-apiserver-audit.log"
+  # CloudWatch configuration (for EKS)
+  cloudwatch:
+    enabled: false
+    logGroupName: "/aws/eks/production-eks/cluster"
+    region: "us-west-2"
+    filterPattern: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
+    batchSize: 100
+    pollInterval: "30s"
+    maxMemoryMB: 512
+  # Service account annotations for IRSA
+  serviceAccount:
+    annotations:
+      # eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/production-eks_cloudwatch_watcher"
   resources:
     limits:
-      cpu: 100m
-      memory: 128Mi
+      cpu: 500m
+      memory: 1Gi
     requests:
-      cpu: 50m
-      memory: 64Mi
+      cpu: 100m
+      memory: 256Mi
   podSecurityContext:
     fsGroup: 1200
     runAsUser: 1200

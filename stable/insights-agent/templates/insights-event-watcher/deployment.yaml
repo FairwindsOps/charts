@@ -38,14 +38,29 @@ spec:
         - --organization={{ required "You must set an organization" .Values.insights.organization }}
         - --cluster={{ required "You must set a cluster" .Values.insights.cluster }}
         - --insights-token={{ .Values.insights.token | default "your-token" }}
+        {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
+        - --log-source=cloudwatch
+        - --cloudwatch-log-group={{ (index .Values "insights-event-watcher" "cloudwatch" "logGroupName") }}
+        - --cloudwatch-region={{ (index .Values "insights-event-watcher" "cloudwatch" "region") }}
+        - --cloudwatch-filter-pattern={{ (index .Values "insights-event-watcher" "cloudwatch" "filterPattern") }}
+        - --cloudwatch-batch-size={{ (index .Values "insights-event-watcher" "cloudwatch" "batchSize") }}
+        - --cloudwatch-poll-interval={{ (index .Values "insights-event-watcher" "cloudwatch" "pollInterval") }}
+        - --cloudwatch-max-memory={{ (index .Values "insights-event-watcher" "cloudwatch" "maxMemoryMB") }}
+        {{- else }}
+        - --log-source=local
         {{- if (index .Values "insights-event-watcher" "auditLogPath") }}
         - --audit-log-path={{ (index .Values "insights-event-watcher" "auditLogPath") }}
+        {{- end }}
         {{- end }}
         env:
         - name: NODE_NAME
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
+        - name: AWS_REGION
+          value: {{ (index .Values "insights-event-watcher" "cloudwatch" "region") }}
+        {{- end }}
         {{ include "proxy-env-spec" . | indent 8 | trim }}
         {{- range $key, $value := (index .Values "insights-event-watcher" "env") }}
         - name: {{ $key }}
