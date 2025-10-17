@@ -779,7 +779,7 @@ insights-event-watcher:
   cloudwatch:
     enabled: false
     logGroupName: ""
-    region: "us-west-2"
+    region: ""
     filterPattern: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
     batchSize: 100
     pollInterval: "30s"
