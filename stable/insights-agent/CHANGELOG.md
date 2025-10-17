@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.1.1
+* Updated Kyverno policy synchronization schedule
+
 ## 5.1.0
 * Support for both on-demand and scheduled Kyverno policy synchronization
 

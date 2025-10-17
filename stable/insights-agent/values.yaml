@@ -712,7 +712,7 @@ kyverno:
 
 kyverno-policy-sync:
   enabled: false
-  schedule: "rand * * * *"
+  schedule: "0/30 * * * *"
   timeout: 600
   image:
     repository: quay.io/fairwinds/kyverno-policy-sync
