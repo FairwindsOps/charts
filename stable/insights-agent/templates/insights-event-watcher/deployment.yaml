@@ -37,7 +37,8 @@ spec:
         {{- end }}
         - --organization={{ required "You must set an organization" .Values.insights.organization }}
         - --cluster={{ required "You must set a cluster" .Values.insights.cluster }}
-        - --insights-token={{ .Values.insights.token | default "your-token" }}
+        - --health-port={{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
+        - --shutdown-timeout={{ (index .Values "insights-event-watcher" "shutdownTimeout") | default "30s" }}
         {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
         - --log-source=cloudwatch
         - --cloudwatch-log-group={{ (index .Values "insights-event-watcher" "cloudwatch" "logGroupName") }}
@@ -57,6 +58,15 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: spec.nodeName
+        - name: FAIRWINDS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+              name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+              name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+              key: token
         {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
         - name: AWS_REGION
           value: {{ (index .Values "insights-event-watcher" "cloudwatch" "region") }}
@@ -82,14 +92,20 @@ spec:
         resources:
           {{- toYaml (index .Values "insights-event-watcher" "resources") | nindent 10 }}
         livenessProbe:
-          exec:
-            command:
-            - /bin/sh
-            - -c
-            - "ps aux | grep -v grep | grep insights-event-watcher"
+          httpGet:
+            path: /healthz
+            port: {{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
           initialDelaySeconds: 30
           periodSeconds: 10
           timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: {{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
           failureThreshold: 3
       volumes:
       - name: output-volume

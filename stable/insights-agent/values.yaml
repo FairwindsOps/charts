@@ -773,6 +773,10 @@ insights-event-watcher:
     tag: "0.1"
     pullPolicy: Always
   logLevel: "info"
+  # Health check port for liveness/readiness probes
+  healthPort: 8080
+  # Graceful shutdown timeout
+  shutdownTimeout: "30s"
   # Local audit log (for Kind/local clusters) example: "/var/log/kubernetes/kube-apiserver-audit.log"
   auditLogPath: ""
   # CloudWatch configuration (for EKS)
