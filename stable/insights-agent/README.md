@@ -42,6 +42,15 @@ There are several different report types which can be enabled and configured:
 
 See below for configuration details.
 
+## Fleet Installation
+If you're installing the Insights Agent across a large fleet of clusters,
+it can be tedious to use the UI to create each cluster, then copy out the
+cluster's access token.
+
+To better serve customers with a large number of clusters, we've created a flow
+that allows you to easily deploy the Insights Agent across your fleet.
+[Read more here](https://insights.docs.fairwinds.com/features/in-cluster-scanning/#fleet-installation)
+
 ## Configuration
 Parameter | Description | Default
 --------- | ----------- | -------
