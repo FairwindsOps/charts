@@ -777,6 +777,12 @@ insights-event-watcher:
   healthPort: 8080
   # Graceful shutdown timeout
   shutdownTimeout: "30s"
+  # Performance tuning options
+  eventBufferSize: 1000
+  httpTimeoutSeconds: 30
+  rateLimitPerMinute: 60
+  # Console mode - print events to console instead of sending to Insights (useful for debugging)
+  consoleMode: false
   # Local audit log (for Kind/local clusters) example: "/var/log/kubernetes/kube-apiserver-audit.log"
   auditLogPath: ""
   # CloudWatch configuration (for EKS)
