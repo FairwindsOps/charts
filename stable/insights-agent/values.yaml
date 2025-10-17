@@ -767,7 +767,7 @@ onDemandJobRunner:
       memory: 128Mi
 
 insights-event-watcher:
-  enabled: true
+  enabled: false
   image:
     repository: quay.io/fairwinds/insights-event-watcher
     tag: "js-watcher"
