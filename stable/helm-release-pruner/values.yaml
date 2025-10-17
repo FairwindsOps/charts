@@ -4,7 +4,7 @@ image:
   # image.repository -- Repo for image that the job runs on
   repository: quay.io/fairwinds/helm-release-pruner
   # image.tag -- The image tag to use
-  tag: v3.3.0
+  tag: v3.4.0
   # image.pullPolicy -- The image pull policy. We do not recommend changing this
   pullPolicy: Always
 
