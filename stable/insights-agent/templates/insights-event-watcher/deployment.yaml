@@ -44,7 +44,6 @@ spec:
         - --log-path={{ (index .Values "insights-event-watcher" "auditLogPath") }}
         {{- end }}
         {{- end }}
-        - --api-key=$(FAIRWINDS_TOKEN)
         {{- if .Values.insights.host }}
         - --host={{ .Values.insights.host }}
         {{- end }}
