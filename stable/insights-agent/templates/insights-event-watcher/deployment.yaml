@@ -29,8 +29,8 @@ spec:
       - name: insights-event-watcher
         image: "{{ (index .Values "insights-event-watcher" "image" "repository") }}:{{ (index .Values "insights-event-watcher" "image" "tag") }}"
         imagePullPolicy: {{ (index .Values "insights-event-watcher" "image" "pullPolicy") }}
-        command:
-        - insights-event-watcher
+        command: ["insights-event-watcher"]
+        args:
         {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
         - cloudwatch
         - --log-group={{ (index .Values "insights-event-watcher" "cloudwatch" "logGroupName") }}
