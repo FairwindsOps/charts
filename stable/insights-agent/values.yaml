@@ -773,13 +773,16 @@ insights-event-watcher:
     tag: "0.1"
     pullPolicy: Always
   logLevel: "info"
-  # Local audit log (for Kind/local clusters)
-  auditLogPath: "" # example: "/var/log/kubernetes/kube-apiserver-audit.log"
+  # Local audit log (for Kind/local clusters) example: "/var/log/kubernetes/kube-apiserver-audit.log"
+  auditLogPath: ""
   # CloudWatch configuration (for EKS)
   cloudwatch:
     enabled: false
-    logGroupName: "" # example: "/aws/eks/production/cluster"
-    region: "" # example: "us-east-1"
+    # CloudWatch log group name example: "/aws/eks/production/cluster"
+    logGroupName: ""
+    # CloudWatch region example: "us-east-1"
+    region: ""
+    # CloudWatch filter pattern example: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
     filterPattern: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
     batchSize: 100
     pollInterval: "30s"
