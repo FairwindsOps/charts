@@ -815,4 +815,3 @@ insights-event-watcher:
   tolerations: []
   affinity: {}
   annotations: {}
-
