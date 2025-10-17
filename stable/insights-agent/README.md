@@ -44,14 +44,18 @@ See below for configuration details.
 
 ## Insights Event Watcher
 
-The insights-event-watcher is a real-time Kubernetes event monitoring component that watches for policy violations and sends them to Fairwinds Insights. It includes several advanced features:
+The insights-event-watcher is a real-time Kubernetes event monitoring component that watches for **ValidatingAdmissionPolicy violations** and sends them to Fairwinds Insights. It includes several advanced features:
 
 ### Features
 
+- **ValidatingAdmissionPolicy Focus**: Primary focus on ValidatingAdmissionPolicy violations from EKS CloudWatch logs
+- **CloudWatch Integration**: Real-time processing of EKS audit logs from AWS CloudWatch
+- **Dual Log Sources**: Supports both local audit logs (Kind/local) and CloudWatch logs (EKS)
 - **Policy Violation Detection**: Automatically detects and processes policy violations that block resource installation
-- **Automatic Policy Duplication**: Creates audit duplicates of Kyverno ClusterPolicies with Enforce actions
-- **Multi-format Support**: Handles both Kyverno ClusterPolicy and regular policy events
-- **Real-time Processing**: Processes events as they occur in the cluster
+- **Multi-format Support**: Handles both ValidatingAdmissionPolicy and regular Kyverno policy events
+- **Real-time Processing**: Processes events as they occur in the cluster (no historical data)
+- **Performance Optimized**: Configurable batch sizes, memory limits, and CloudWatch filtering
+- **IRSA Support**: Uses IAM Roles for Service Accounts for secure AWS access
 - **Insights Integration**: Sends blocked policy violations directly to Fairwinds Insights API
 
 ### Automatic Policy Duplication
@@ -76,28 +80,37 @@ The watcher processes various types of policy violation events:
 
 The watcher runs as a deployment and requires appropriate RBAC permissions to watch events and create audit policies. It integrates seamlessly with the Insights API to send blocked policy violations.
 
-### Audit Log Monitoring
+### Log Source Configuration
 
-The watcher supports monitoring Kubernetes audit logs for additional policy violation detection:
+The watcher supports two log sources for policy violation detection:
 
-- **Audit Log Path**: Set `insights-event-watcher.auditLogPath` to the path of your Kubernetes audit log file
-- **Automatic Mounting**: When audit log path is provided, the deployment automatically mounts the audit log directory
-- **Real-time Processing**: The watcher monitors audit logs in real-time for policy violations
-- **Enhanced Detection**: Audit log monitoring provides additional coverage beyond Kubernetes events
-
-Example configuration:
+#### Local Mode (Kind/Local Clusters)
 ```yaml
 insights-event-watcher:
   enabled: true
-  auditLogPath: "/var/log/audit/audit.log"  # Default audit log path
+  auditLogPath: "/var/log/kubernetes/kube-apiserver-audit.log"
 ```
 
-To disable audit log monitoring:
+#### CloudWatch Mode (EKS Clusters)
 ```yaml
 insights-event-watcher:
   enabled: true
-  auditLogPath: ""  # Disable audit log monitoring
+  cloudwatch:
+    enabled: true
+    logGroupName: "/aws/eks/production-eks/cluster"
+    region: "us-west-2"
+    filterPattern: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 }"
+    batchSize: 100
+    pollInterval: "30s"
+    maxMemoryMB: 512
+  serviceAccount:
+    annotations:
+      eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/production-eks_cloudwatch_watcher"
 ```
+
+### IAM Setup for CloudWatch
+
+For EKS clusters, you need to create IAM roles with CloudWatch Logs permissions. See the [CloudWatch Integration Guide](../../plugins/watcher/CLOUDWATCH_INTEGRATION.md) for detailed setup instructions.
 
 ## Fleet Installation
 If you're installing the Insights Agent across a large fleet of clusters,
@@ -201,10 +214,16 @@ Parameter | Description | Default
 `insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
 `insights-event-watcher.image.tag` | Tag for the insights-event-watcher image | `js-watcher`
 `insights-event-watcher.logLevel` | Log level for the watcher (debug, info, warn, error) | `info`
-`insights-event-watcher.auditLogPath` | Path to Kubernetes audit log file (optional). If provided, the watcher will monitor audit logs for policy violations | `"/var/log/audit/audit.log"`
+`insights-event-watcher.auditLogPath` | Path to Kubernetes audit log file (optional). Used in local mode | `"/var/log/kubernetes/kube-apiserver-audit.log"`
+`insights-event-watcher.cloudwatch.enabled` | Enable CloudWatch log processing for EKS clusters | `false`
+`insights-event-watcher.cloudwatch.logGroupName` | CloudWatch log group name for EKS audit logs | `"/aws/eks/production-eks/cluster"`
+`insights-event-watcher.cloudwatch.region` | AWS region for CloudWatch logs | `"us-west-2"`
+`insights-event-watcher.cloudwatch.filterPattern` | CloudWatch filter pattern for log events | `"{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 }"`
+`insights-event-watcher.cloudwatch.batchSize` | Number of log events to process in each batch | `100`
+`insights-event-watcher.cloudwatch.pollInterval` | Interval between CloudWatch log polls | `"30s"`
+`insights-event-watcher.cloudwatch.maxMemoryMB` | Maximum memory usage in MB for CloudWatch processing | `512`
+`insights-event-watcher.serviceAccount.annotations` | Annotations to add to the service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for IRSA | `nil`
 `insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
-`insights-event-watcher.clusterPolicyDuplicator.enabled` | Enable automatic creation of audit duplicates for Kyverno ClusterPolicies | `true`
-`insights-event-watcher.clusterPolicyDuplicator.auditPolicySuffix` | Suffix to add to audit policy names | `-insights-audit`
 
 ## Breaking Changes
 
