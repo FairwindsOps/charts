@@ -39,6 +39,12 @@ spec:
         - --cluster={{ required "You must set a cluster" .Values.insights.cluster }}
         - --health-port={{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
         - --shutdown-timeout={{ (index .Values "insights-event-watcher" "shutdownTimeout") | default "30s" }}
+        - --event-buffer-size={{ (index .Values "insights-event-watcher" "eventBufferSize") | default 1000 }}
+        - --http-timeout-seconds={{ (index .Values "insights-event-watcher" "httpTimeoutSeconds") | default 30 }}
+        - --rate-limit-per-minute={{ (index .Values "insights-event-watcher" "rateLimitPerMinute") | default 60 }}
+        {{- if (index .Values "insights-event-watcher" "consoleMode") }}
+        - --console-mode
+        {{- end }}
         {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
         - --log-source=cloudwatch
         - --cloudwatch-log-group={{ (index .Values "insights-event-watcher" "cloudwatch" "logGroupName") }}
