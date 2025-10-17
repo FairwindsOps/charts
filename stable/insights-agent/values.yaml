@@ -770,7 +770,7 @@ insights-event-watcher:
   enabled: false
   image:
     repository: quay.io/fairwinds/insights-event-watcher
-    tag: "js-watcher"
+    tag: "0.1"
     pullPolicy: Always
   logLevel: "info"
   # Local audit log (for Kind/local clusters)
