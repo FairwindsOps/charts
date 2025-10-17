@@ -778,7 +778,7 @@ insights-event-watcher:
   # CloudWatch configuration (for EKS)
   cloudwatch:
     enabled: false
-    logGroupName: "/aws/eks/production-eks/cluster"
+    logGroupName: ""
     region: "us-west-2"
     filterPattern: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
     batchSize: 100
