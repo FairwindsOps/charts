@@ -1,0 +1,137 @@
+{{- if (index .Values "insights-event-watcher" "enabled") }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+  labels:
+    app: insights-agent
+    component: insights-event-watcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: insights-agent
+      component: insights-event-watcher
+  template:
+    metadata:
+      labels:
+        app: insights-agent
+        component: insights-event-watcher
+      {{- with (index .Values "insights-event-watcher" "annotations") }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+      securityContext:
+        {{- toYaml (index .Values "insights-event-watcher" "podSecurityContext") | nindent 8 }}
+      containers:
+      - name: insights-event-watcher
+        image: "{{ (index .Values "insights-event-watcher" "image" "repository") }}:{{ (index .Values "insights-event-watcher" "image" "tag") }}"
+        imagePullPolicy: {{ (index .Values "insights-event-watcher" "image" "pullPolicy") }}
+        command: ["insights-event-watcher"]
+        args:
+        {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
+        - cloudwatch
+        - --log-group={{ (index .Values "insights-event-watcher" "cloudwatch" "logGroupName") }}
+        - --region={{ (index .Values "insights-event-watcher" "cloudwatch" "region") }}
+        {{- if (index .Values "insights-event-watcher" "cloudwatch" "filterPattern") }}
+        - --filter-pattern={{ (index .Values "insights-event-watcher" "cloudwatch" "filterPattern") }}
+        {{- end }}
+        {{- else }}
+        - audit
+        {{- if (index .Values "insights-event-watcher" "auditLogPath") }}
+        - --log-path={{ (index .Values "insights-event-watcher" "auditLogPath") }}
+        {{- end }}
+        {{- end }}
+        {{- if .Values.insights.host }}
+        - --host={{ .Values.insights.host }}
+        {{- end }}
+        - --buffer-size={{ (index .Values "insights-event-watcher" "eventBufferSize") | default 1000 }}
+        - --http-timeout={{ (index .Values "insights-event-watcher" "httpTimeoutSeconds") | default 30 }}
+        - --rate-limit={{ (index .Values "insights-event-watcher" "rateLimitPerMinute") | default 60 }}
+        {{- if (index .Values "insights-event-watcher" "consoleMode") }}
+        - --console
+        {{- end }}
+        {{- if (index .Values "insights-event-watcher" "logLevel") | default "info" | eq "debug" }}
+        - --verbose
+        {{- end }}
+        env:
+        - name: NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: FAIRWINDS_TOKEN
+          valueFrom:
+            secretKeyRef:
+              {{ if .Values.insights.tokenSecretName -}}
+              name: {{ .Values.insights.tokenSecretName }}
+              {{ else -}}
+              name: {{ include "insights-agent.fullname" . }}-token
+              {{ end -}}
+              key: token
+        {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
+        - name: AWS_REGION
+          value: {{ (index .Values "insights-event-watcher" "cloudwatch" "region") }}
+        {{- end }}
+        {{ include "proxy-env-spec" . | indent 8 | trim }}
+        {{- range $key, $value := (index .Values "insights-event-watcher" "env") }}
+        - name: {{ $key }}
+          value: {{ $value | quote }}
+        {{- end }}
+        securityContext:
+          {{- toYaml (index .Values "insights-event-watcher" "containerSecurityContext") | nindent 10 }}
+        volumeMounts:
+        - name: output-volume
+          mountPath: /output
+        {{- if (index .Values "insights-event-watcher" "auditLogPath") }}
+        - name: audit-log-volume
+          mountPath: {{ dir (index .Values "insights-event-watcher" "auditLogPath") }}
+          readOnly: true
+        {{- end }}
+        {{- with (index .Values "insights-event-watcher" "extraVolumeMounts") }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        resources:
+          {{- toYaml (index .Values "insights-event-watcher" "resources") | nindent 10 }}
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: {{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          timeoutSeconds: 5
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: {{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
+          initialDelaySeconds: 5
+          periodSeconds: 5
+          timeoutSeconds: 3
+          failureThreshold: 3
+      volumes:
+      - name: output-volume
+        emptyDir: {}
+      {{- if (index .Values "insights-event-watcher" "auditLogPath") }}
+      - name: audit-log-volume
+        hostPath:
+          path: {{ dir (index .Values "insights-event-watcher" "auditLogPath") }}
+          type: Directory
+      {{- end }}
+      {{- with (index .Values "insights-event-watcher" "extraVolumes") }}
+      {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- with (index .Values "insights-event-watcher" "nodeSelector") }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (index .Values "insights-event-watcher" "affinity") }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (index .Values "insights-event-watcher" "tolerations") }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

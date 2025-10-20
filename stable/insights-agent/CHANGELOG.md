@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.0
+* Added insights event watcher
+
 ## 5.1.1
 * Updated Kyverno policy synchronization schedule
 

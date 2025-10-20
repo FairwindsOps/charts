@@ -765,3 +765,66 @@ onDemandJobRunner:
     requests:
       cpu: 100m
       memory: 128Mi
+
+insights-event-watcher:
+  enabled: false
+  image:
+    repository: quay.io/fairwinds/insights-event-watcher
+    tag: "0.1"
+    pullPolicy: Always
+  logLevel: "info"
+  # Health check port for liveness/readiness probes
+  healthPort: 8080
+  # Graceful shutdown timeout
+  shutdownTimeout: "30s"
+  # Performance tuning options
+  eventBufferSize: 1000
+  httpTimeoutSeconds: 30
+  rateLimitPerMinute: 60
+  # Console mode - print events to console instead of sending to Insights (useful for debugging)
+  consoleMode: false
+  # Local audit log (for Kind/local clusters) example: "/var/log/kubernetes/kube-apiserver-audit.log"
+  auditLogPath: ""
+  # CloudWatch configuration (for EKS)
+  cloudwatch:
+    enabled: false
+    # CloudWatch log group name example: "/aws/eks/production/cluster"
+    logGroupName: ""
+    # CloudWatch region example: "us-east-1"
+    region: ""
+    # CloudWatch filter pattern example: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
+    filterPattern: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
+    batchSize: 100
+    pollInterval: "30s"
+    maxMemoryMB: 512
+  # Service account annotations for IRSA
+  serviceAccount:
+    annotations:
+      # eks.amazonaws.com/role-arn: "arn:aws:iam::ACCOUNT_ID:role/production-eks_cloudwatch_watcher"
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 100m
+      memory: 256Mi
+  podSecurityContext:
+    fsGroup: 1200
+    runAsUser: 1200
+    runAsNonRoot: true
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    runAsUser: 1200
+    runAsGroup: 1200
+  env: {}
+  extraVolumeMounts: []
+  extraVolumes: []
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  annotations: {}
