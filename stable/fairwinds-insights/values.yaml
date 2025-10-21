@@ -861,6 +861,7 @@ temporalDeploymentDefaults:
   topologySpreadConstraints: []
   args: []
   additionalEnv: []
+  volumeMounts: []
 
 # -- Temporal worker deployments
 temporalDeployments:
@@ -940,6 +941,11 @@ temporalDeployments:
         value: "3"
       - name: POSTGRES_MAX_OPEN_CONNS
         value: "6"
+    volumeMounts:
+      - name: secrets
+        mountPath: /var/run/secrets/github
+      - name: repositories
+        mountPath: /app/repositories
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
