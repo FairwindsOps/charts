@@ -1,4 +1,6 @@
+{{- if not .Values.rbac.disabled }}
 {{ range $name, $options := .Values.temporalDeployments }}
+{{- if $options.enabled }}
 {{ if (and $options.rbac $options.rbac.enabled) | default $.Values.temporalDeploymentDefaults.rbac.enabled }}
 apiVersion: v1
 kind: ServiceAccount
@@ -6,7 +8,7 @@ metadata:
   name: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
   labels:
     app: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
-  {{ with .Values.rbac.serviceAccount.annotations }}
+  {{ with $.Values.rbac.serviceAccount.annotations }}
   annotations:
   {{-   range $key, $value := . }}
     {{ $key }}: {{ $value | quote }}
@@ -38,7 +40,9 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
-  namespace: {{ .Release.Namespace }}
+  namespace: {{ $.Release.Namespace }}
 ---
+{{- end }}
+{{- end }}
 {{- end }}
 {{- end }}

@@ -859,6 +859,9 @@ temporalDeploymentDefaults:
     minAvailable: 1
   rbac:
     enabled: false
+    serviceAccount:
+      # -- Annotations to add to the service account
+      annotations: {}
   tolerations: []
   topologySpreadConstraints: []
   args: []
