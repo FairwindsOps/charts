@@ -122,4 +122,4 @@ temporalDeployments:
       - name: secrets
         secret:
           secretName: github-secrets
-          optional: true # should be optional on ci test
+          optional: true
