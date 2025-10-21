@@ -1,5 +1,5 @@
 {{ range $name, $options := .Values.temporalDeployments }}
-{{ if $options.rbac.enabled | default $.Values.temporalDeploymentDefaults.rbac.enabled }}
+{{ if (and $options.rbac $options.rbac.enabled) | default $.Values.temporalDeploymentDefaults.rbac.enabled }}
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -19,9 +19,10 @@ metadata:
   name: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
   labels:
     app: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
-{{- if $options.rbac.rules | default $.Values.temporalDeploymentDefaults.rbac.rules }}
+{{- $rules := (and $options.rbac $options.rbac.rules) | default $.Values.temporalDeploymentDefaults.rbac.rules }}
+{{- if $rules }}
 rules:
-{{- toYaml ($options.rbac.rules | default $.Values.temporalDeploymentDefaults.rbac.rules) | nindent 2 }}
+{{- toYaml $rules | nindent 2 }}
 {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
