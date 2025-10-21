@@ -81,10 +81,12 @@ spec:
         {{- end }}
         securityContext:
           {{- toYaml (index .Values "insights-event-watcher" "containerSecurityContext") | nindent 10 }}
+        {{- if (index .Values "insights-event-watcher" "healthChecks" "enabled") | default true }}
         ports:
         - name: health
           containerPort: {{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
           protocol: TCP
+        {{- end }}
         volumeMounts:
         - name: output-volume
           mountPath: /output
