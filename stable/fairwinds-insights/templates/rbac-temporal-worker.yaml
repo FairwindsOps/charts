@@ -1,0 +1,43 @@
+{{ range $name, $options := .Values.temporalDeployments }}
+{{ if $options.rbac.enabled }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+  labels:
+    app: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+  {{ with .Values.rbac.serviceAccount.annotations }}
+  annotations:
+  {{-   range $key, $value := . }}
+    {{ $key }}: {{ $value | quote }}
+  {{-   end }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+  labels:
+    app: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+{{- if $options.rbac.rules }}
+rules:
+{{- toYaml $options.rbac.rules | nindent 2 }}
+{{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+  labels:
+    app: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "fairwinds-insights.fullname" . }}-{{ $name }}
+  namespace: {{ .Release.Namespace }}
+---
+{{- end }}
+{{- end }}
