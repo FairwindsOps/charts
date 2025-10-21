@@ -862,6 +862,7 @@ temporalDeploymentDefaults:
   args: []
   additionalEnv: []
   volumeMounts: []
+  volumes: []
 
 # -- Temporal worker deployments
 temporalDeployments:
@@ -944,8 +945,10 @@ temporalDeployments:
     volumeMounts:
       - name: secrets
         mountPath: /var/run/secrets/github
-      - name: repositories
-        mountPath: /app/repositories
+    volumes:
+      - name: secrets
+        secret:
+          secretName: github-secrets
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
