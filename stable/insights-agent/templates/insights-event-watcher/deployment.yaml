@@ -81,6 +81,12 @@ spec:
         {{- end }}
         securityContext:
           {{- toYaml (index .Values "insights-event-watcher" "containerSecurityContext") | nindent 10 }}
+        {{- if (index .Values "insights-event-watcher" "healthChecks" "enabled") | default true }}
+        ports:
+        - name: health
+          containerPort: {{ (index .Values "insights-event-watcher" "healthPort") | default 8080 }}
+          protocol: TCP
+        {{- end }}
         volumeMounts:
         - name: output-volume
           mountPath: /output
@@ -94,6 +100,7 @@ spec:
         {{- end }}
         resources:
           {{- toYaml (index .Values "insights-event-watcher" "resources") | nindent 10 }}
+        {{- if (index .Values "insights-event-watcher" "healthChecks" "enabled") | default true }}
         livenessProbe:
           httpGet:
             path: /healthz
@@ -110,6 +117,7 @@ spec:
           periodSeconds: 5
           timeoutSeconds: 3
           failureThreshold: 3
+        {{- end }}
       volumes:
       - name: output-volume
         emptyDir: {}

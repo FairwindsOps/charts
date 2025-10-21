@@ -773,6 +773,9 @@ insights-event-watcher:
     tag: "0.1"
     pullPolicy: Always
   logLevel: "info"
+  # Health check configuration
+  healthChecks:
+    enabled: true
   # Health check port for liveness/readiness probes
   healthPort: 8080
   # Graceful shutdown timeout
