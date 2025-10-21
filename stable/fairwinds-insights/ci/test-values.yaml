@@ -115,11 +115,3 @@ cronjobs:
       limits:
         cpu: 200m
         memory: 512Mi
-
-temporalDeployments:
-  general-worker:
-    volumes:
-      - name: secrets
-        secret:
-          secretName: github-secrets
-          optional: true

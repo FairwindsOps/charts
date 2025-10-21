@@ -949,6 +949,7 @@ temporalDeployments:
       - name: secrets
         secret:
           secretName: github-secrets
+          optional: true
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
