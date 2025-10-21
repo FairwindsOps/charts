@@ -73,7 +73,6 @@ spec:
           value: {{ .Values.insights.cluster | quote }}
         - name: FAIRWINDS_HOSTNAME
           value: {{ .Values.insights.host | quote }}
-          {{ include "ssl-cert-file-env-spec" . | indent 8 | trim }}
         {{- if (index .Values "insights-event-watcher" "cloudwatch" "enabled") }}
         - name: AWS_REGION
           value: {{ (index .Values "insights-event-watcher" "cloudwatch" "region") }}
