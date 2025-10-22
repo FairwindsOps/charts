@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.0
+* Adds and enable `github-worker` temporal deployment
+
 ## 5.3.1
 * Add support for `volumes` and `volumeMounts` on the `temporalDeployments`
 
