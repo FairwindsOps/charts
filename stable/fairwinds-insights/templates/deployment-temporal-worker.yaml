@@ -35,7 +35,11 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
+      {{- if (and $options.rbac $options.rbac.enabled) | default $.Values.temporalDeploymentDefaults.rbac.enabled }}
+      serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
+      {{- else }}
       serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-insights
+      {{- end }}
       containers:
         - name: fairwinds-insights
           image: "{{ $.Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" $ }}"
