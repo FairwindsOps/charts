@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.1
+* Use the correct service-account on custom RBAC definition for temporal deployments
+
 ## 5.4.0
 * Adds and enable `github-worker` temporal deployment
 
