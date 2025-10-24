@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.2
+* Remove deployments that were moved to temporal workflows (`repo-scan-job` and `automated-pr-job`)
+
 ## 5.4.1
 * Use the correct service-account on custom RBAC definition for temporal deployments
 

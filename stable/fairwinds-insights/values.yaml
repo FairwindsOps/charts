@@ -739,97 +739,6 @@ reportjob:
           app.kubernetes.io/name: fairwinds-insights
   terminationGracePeriodSeconds: 600
 
-automatedPullRequestJob:
-  enabled: true
-  hpa:
-    enabled: true
-    min: 2
-    max: 4
-    metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          target:
-            type: Utilization
-            averageUtilization: 80
-      - type: Resource
-        resource:
-          name: memory
-          target:
-            type: Utilization
-            averageUtilization: 80
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  nodeSelector: {}
-  tolerations: []
-  # topologySpreadConstraints -- Default TopologySpreadConstraints for the automatedPullRequestJob Deployment.
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: topology.kubernetes.io/zone
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: automated-pr-job
-          app.kubernetes.io/name: fairwinds-insights
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: automated-pr-job
-          app.kubernetes.io/name: fairwinds-insights
-
-repoScanJob:
-  enabled: false
-  insightsCIVersion: "5.9"
-  hpa:
-    enabled: true
-    min: 2
-    max: 6
-    metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          target:
-            type: Utilization
-            averageUtilization: 75
-      - type: Resource
-        resource:
-          name: memory
-          target:
-            type: Utilization
-            averageUtilization: 75
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  nodeSelector: {}
-  tolerations: []
-  # topologySpreadConstraints -- Default TopologySpreadConstraints for the repoScanJob.
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: topology.kubernetes.io/zone
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: repo-scan-job
-          app.kubernetes.io/name: fairwinds-insights
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: repo-scan-job
-          app.kubernetes.io/name: fairwinds-insights
-
 # -- Default options for temporal deployments
 temporalDeploymentDefaults:
   useReadReplica: false
@@ -985,6 +894,8 @@ temporalDeployments:
         value: "2"
       - name: POSTGRES_MAX_OPEN_CONNS
         value: "2"
+      - name: INSIGHTS_CI_IMAGE_VERSION
+        value: "5.9"
     volumeMounts:
       - name: secrets
         mountPath: /var/run/secrets/github
