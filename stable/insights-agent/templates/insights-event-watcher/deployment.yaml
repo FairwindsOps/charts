@@ -50,6 +50,13 @@ spec:
         {{- if (index .Values "insights-event-watcher" "consoleMode") }}
         - --console
         {{- end }}
+        - --poll-interval={{ (index .Values "insights-event-watcher" "pollInterval") | default "15s" }}
+        {{- if (index .Values "insights-event-watcher" "cloudwatch" "maxMemoryMB") }}
+        - --max-memory={{ (index .Values "insights-event-watcher" "cloudwatch" "maxMemoryMB") }}
+        {{- end }}
+        {{- if (index .Values "insights-event-watcher" "cloudwatch" "batchSize") }}
+        - --batch-size={{ (index .Values "insights-event-watcher" "cloudwatch" "batchSize") }}
+        {{- end }}
         {{- if (index .Values "insights-event-watcher" "logLevel") | default "info" | eq "debug" }}
         - --verbose
         {{- end }}
