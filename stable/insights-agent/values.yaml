@@ -797,7 +797,7 @@ insights-event-watcher:
     region: ""
     # CloudWatch filter pattern example: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
     filterPattern: "{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 && $.requestURI = \"/api/v1/*\" }"
-    batchSize: 100
+    batchSize: 1000
     pollInterval: "30s"
     maxMemoryMB: 512
   # Service account annotations for IRSA
