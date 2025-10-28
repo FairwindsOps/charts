@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.3
+* Fix insights event watcher parameters
+
 ## 5.2.2
 * Fix insights event watcher
 
