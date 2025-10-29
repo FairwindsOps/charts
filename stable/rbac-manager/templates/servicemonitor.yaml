@@ -4,9 +4,7 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: {{ template "rbac-manager.fullname" . }}
-  {{- if .Values.serviceMonitor.namespace }}
-  namespace: {{ .Values.serviceMonitor.namespace }}
-  {{- end }}
+  namespace: {{ .Values.serviceMonitor.namespace | default .Release.Namespace }}
   labels:
     app: {{ template "rbac-manager.name" . }}
     chart: {{ template "rbac-manager.chart" . }}
