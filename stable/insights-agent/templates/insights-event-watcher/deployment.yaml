@@ -51,9 +51,6 @@ spec:
         - --console
         {{- end }}
         - --poll-interval={{ (index .Values "insights-event-watcher" "pollInterval") | default "15s" }}
-        {{- if (index .Values "insights-event-watcher" "cloudwatch" "batchSize") }}
-        - --batch-size={{ (index .Values "insights-event-watcher" "cloudwatch" "batchSize") }}
-        {{- end }}
         {{- if (index .Values "insights-event-watcher" "logLevel") | default "info" | eq "debug" }}
         - --verbose
         {{- end }}
