@@ -50,6 +50,16 @@ spec:
             {{ include "vpa.webhook.secret" . }} \
             -o=jsonpath="{.data.ca}")
 
+          # Get CA bundle if using cert-manager
+          if [ -z "$SECRET_CABUNDLE" ]
+          then
+            SECRET_CABUNDLE=$(kubectl \
+              get secret \
+              -n {{ .Release.Namespace }} \
+              {{ include "vpa.webhook.secret" . }} \
+              -o=jsonpath="{.data.ca\.crt}")
+          fi
+
           # Get configured CA bundle
           WEBHOOK_CABUNDLE=$(kubectl \
             get mutatingwebhookconfigurations.admissionregistration.k8s.io \
