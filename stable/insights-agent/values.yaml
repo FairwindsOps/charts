@@ -784,6 +784,7 @@ insights-event-watcher:
   eventBufferSize: 1000
   httpTimeoutSeconds: 30
   rateLimitPerMinute: 60
+  pollInterval: "15s"
   # Console mode - print events to console instead of sending to Insights (useful for debugging)
   consoleMode: false
   # Local audit log (for Kind/local clusters) example: "/var/log/kubernetes/kube-apiserver-audit.log"
