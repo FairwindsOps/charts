@@ -739,97 +739,6 @@ reportjob:
           app.kubernetes.io/name: fairwinds-insights
   terminationGracePeriodSeconds: 600
 
-automatedPullRequestJob:
-  enabled: true
-  hpa:
-    enabled: true
-    min: 2
-    max: 4
-    metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          target:
-            type: Utilization
-            averageUtilization: 80
-      - type: Resource
-        resource:
-          name: memory
-          target:
-            type: Utilization
-            averageUtilization: 80
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  nodeSelector: {}
-  tolerations: []
-  # topologySpreadConstraints -- Default TopologySpreadConstraints for the automatedPullRequestJob Deployment.
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: topology.kubernetes.io/zone
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: automated-pr-job
-          app.kubernetes.io/name: fairwinds-insights
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: automated-pr-job
-          app.kubernetes.io/name: fairwinds-insights
-
-repoScanJob:
-  enabled: false
-  insightsCIVersion: "5.9"
-  hpa:
-    enabled: true
-    min: 2
-    max: 6
-    metrics:
-      - type: Resource
-        resource:
-          name: cpu
-          target:
-            type: Utilization
-            averageUtilization: 75
-      - type: Resource
-        resource:
-          name: memory
-          target:
-            type: Utilization
-            averageUtilization: 75
-  resources:
-    limits:
-      cpu: 500m
-      memory: 1024Mi
-    requests:
-      cpu: 80m
-      memory: 128Mi
-  nodeSelector: {}
-  tolerations: []
-  # topologySpreadConstraints -- Default TopologySpreadConstraints for the repoScanJob.
-  topologySpreadConstraints:
-    - maxSkew: 1
-      topologyKey: topology.kubernetes.io/zone
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: repo-scan-job
-          app.kubernetes.io/name: fairwinds-insights
-    - maxSkew: 1
-      topologyKey: kubernetes.io/hostname
-      whenUnsatisfiable: ScheduleAnyway
-      labelSelector:
-        matchLabels:
-          app.kubernetes.io/component: repo-scan-job
-          app.kubernetes.io/name: fairwinds-insights
-
 # -- Default options for temporal deployments
 temporalDeploymentDefaults:
   useReadReplica: false
@@ -857,10 +766,17 @@ temporalDeploymentDefaults:
   pdb:
     enabled: false
     minAvailable: 1
+  rbac:
+    enabled: false
+    serviceAccount:
+      # -- Annotations to add to the service account
+      annotations: {}
   tolerations: []
   topologySpreadConstraints: []
   args: []
   additionalEnv: []
+  volumeMounts: []
+  volumes: []
 
 # -- Temporal worker deployments
 temporalDeployments:
@@ -906,8 +822,8 @@ temporalDeployments:
     enabled: true
     command: "general_worker"
     hpa:
-      min: 1
-      max: 1
+      min: 2
+      max: 2
       metrics: []
     pdb:
       enabled: false
@@ -940,6 +856,72 @@ temporalDeployments:
         value: "3"
       - name: POSTGRES_MAX_OPEN_CONNS
         value: "6"
+  github-worker:
+    enabled: true
+    command: "github_worker"
+    hpa:
+      min: 2
+      max: 2
+      metrics: []
+    pdb:
+      enabled: false
+    resources:
+      requests:
+        cpu: 200m
+        memory: 256Mi
+      limits:
+        cpu: 400m
+        memory: 512Mi
+    tolerations: []
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: github-worker
+            app.kubernetes.io/name: fairwinds-insights
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: github-worker
+            app.kubernetes.io/name: fairwinds-insights
+    args: []
+    additionalEnv:
+      - name: POSTGRES_MAX_IDLE_CONNS
+        value: "2"
+      - name: POSTGRES_MAX_OPEN_CONNS
+        value: "2"
+      - name: INSIGHTS_CI_IMAGE_VERSION
+        value: "5.9"
+    volumeMounts:
+      - name: secrets
+        mountPath: /var/run/secrets/github
+    volumes:
+      - name: secrets
+        secret:
+          secretName: github-secrets
+          optional: true
+    rbac:
+      enabled: true
+      rules:
+        - apiGroups: ["batch"]
+          resources: ["jobs"]
+          verbs: ["get", "create", "delete"]
+        - apiGroups: [""]
+          resources: ["pods/log"]
+          verbs: ["get"]
+        - apiGroups: [""]
+          resources: ["pods"]
+          verbs: ["list", "get"]
+        - apiGroups: [""]
+          resources: ["events"]
+          verbs: ["list", "get"]
+        - apiGroups: [""]
+          resources: ["secrets", "configmaps"]
+          verbs: ["create", "delete"]
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false

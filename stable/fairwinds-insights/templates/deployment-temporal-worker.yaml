@@ -35,7 +35,11 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
+      {{- if (and $options.rbac $options.rbac.enabled) | default $.Values.temporalDeploymentDefaults.rbac.enabled }}
+      serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
+      {{- else }}
       serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-insights
+      {{- end }}
       containers:
         - name: fairwinds-insights
           image: "{{ $.Values.apiImage.repository }}:{{ include "fairwinds-insights.apiImageTag" $ }}"
@@ -53,6 +57,10 @@ spec:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.resources $options.resources) | nindent 12 }}
           securityContext:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.securityContext $options.securityContext) | nindent 12 }}
+          {{- with (default $.Values.temporalDeploymentDefaults.volumeMounts $options.volumeMounts) }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
       {{- with $options.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -63,6 +71,10 @@ spec:
       {{- end }}
       {{- with (default $.Values.temporalDeploymentDefaults.topologySpreadConstraints $options.topologySpreadConstraints) }}
       topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with (default $.Values.temporalDeploymentDefaults.volumes $options.volumes) }}
+      volumes:
         {{- toYaml . | nindent 8 }}
       {{- end }}
 ---

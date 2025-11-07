@@ -1,10 +1,22 @@
 # Changelog
 
+## 5.4.2
+* Remove deployments that were moved to temporal workflows (`repo-scan-job` and `automated-pr-job`)
+
+## 5.4.1
+* Use the correct service-account on custom RBAC definition for temporal deployments
+
+## 5.4.0
+* Adds and enable `github-worker` temporal deployment
+
+## 5.3.1
+* Add support for `volumes` and `volumeMounts` on the `temporalDeployments`
+
 ## 5.3.0
 * Add `additionalEnvVars` on the `api` and defaults for `POSTGRES_MAX_IDLE_CONNS` and `POSTGRES_MAX_OPEN_CONNS`
 
 ## 5.2.0
-* Remove `cronjobs.alerts-realtime` and `cronjobs.notifications-digest` cronjobs in favor or temporal schedulers approach.
+* Remove `cronjobs.alerts-realtime` and `cronjobs.notifications-digest` cronjobs in favor or temporal schedulers approach
 
 ## 5.1.0
 * Adds and enable `one-time-migration` job to helm hook

@@ -1,0 +1,42 @@
+{{- if (index .Values "insights-event-watcher" "enabled") }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+  labels:
+    app: insights-agent
+    component: insights-event-watcher
+rules:
+# Kubernetes events - CRITICAL for policy violation detection
+- apiGroups: [""]
+  resources: ["events"]
+  verbs: ["get", "list", "watch"]
+# ValidatingAdmissionPolicy resources - PRIMARY FOCUS
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources: ["validatingadmissionpolicies", "validatingadmissionpolicybindings"]
+  verbs: ["get", "list", "watch"]
+# Kyverno policy resources (secondary)
+- apiGroups: ["wgpolicyk8s.io"]
+  resources: ["policyreports", "clusterpolicyreports"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["kyverno.io"]
+  resources: ["policies", "clusterpolicies"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+  labels:
+    app: insights-agent
+    component: insights-event-watcher
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+subjects:
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-insights-event-watcher
+  namespace: {{ .Release.Namespace }}
+{{- end }}

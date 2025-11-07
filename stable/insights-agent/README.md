@@ -140,6 +140,24 @@ Parameter | Description | Default
 `awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
 `awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
 `awscosts.workgroup` | Athena work group that used to run the queries | ""
+`insights-event-watcher.enabled` | Enable the insights-event-watcher component | `true`
+`insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
+`insights-event-watcher.image.tag` | Tag for the insights-event-watcher image | `0.1`
+`insights-event-watcher.logLevel` | Log level for the watcher (debug, info, warn, error) | `info`
+`insights-event-watcher.eventBufferSize` | Size of the event processing buffer | `1000`
+`insights-event-watcher.httpTimeoutSeconds` | HTTP client timeout in seconds | `30`
+`insights-event-watcher.rateLimitPerMinute` | Maximum API calls per minute | `60`
+`insights-event-watcher.consoleMode` | Print events to console instead of sending to Insights (useful for debugging) | `false`
+`insights-event-watcher.auditLogPath` | Path to Kubernetes audit log file (optional). Used in local mode | `"/var/log/kubernetes/kube-apiserver-audit.log"`
+`insights-event-watcher.cloudwatch.enabled` | Enable CloudWatch log processing for EKS clusters | `false`
+`insights-event-watcher.cloudwatch.logGroupName` | CloudWatch log group name for EKS audit logs | `"/aws/eks/production-eks/cluster"`
+`insights-event-watcher.cloudwatch.region` | AWS region for CloudWatch logs | `"us-west-2"`
+`insights-event-watcher.cloudwatch.filterPattern` | CloudWatch filter pattern for log events | `"{ $.stage = \"ResponseComplete\" && $.responseStatus.code >= 400 }"`
+`insights-event-watcher.cloudwatch.batchSize` | Number of log events to process in each batch | `100`
+`insights-event-watcher.cloudwatch.pollInterval` | Interval between CloudWatch log polls | `"30s"`
+`insights-event-watcher.cloudwatch.maxMemoryMB` | Maximum memory usage in MB for CloudWatch processing | `512`
+`insights-event-watcher.serviceAccount.annotations` | Annotations to add to the service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for IRSA | `nil`
+`insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
 
 ## Breaking Changes
 

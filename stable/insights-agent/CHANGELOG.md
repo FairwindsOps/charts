@@ -1,5 +1,26 @@
 # Changelog
 
+## 5.2.5
+* Removed insights event watcher parameter
+
+## 5.2.4
+* Removed insights event watcher parameter
+
+## 5.2.3
+* Fix insights event watcher parameters
+
+## 5.2.2
+* Fix insights event watcher
+
+## 5.2.1
+* Fix insights event watcher
+
+## 5.2.0
+* Added insights event watcher
+
+## 5.1.1
+* Updated Kyverno policy synchronization schedule
+
 ## 5.1.0
 * Support for both on-demand and scheduled Kyverno policy synchronization
 
