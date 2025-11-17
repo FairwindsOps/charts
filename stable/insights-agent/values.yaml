@@ -781,7 +781,7 @@ insights-event-watcher:
   # Graceful shutdown timeout
   shutdownTimeout: "30s"
   # Performance tuning options
-  eventBufferSize: 1000
+  eventBufferSize: 10000
   httpTimeoutSeconds: 30
   rateLimitPerMinute: 60
   pollInterval: "15s"
@@ -808,10 +808,10 @@ insights-event-watcher:
   resources:
     limits:
       cpu: 500m
-      memory: 1Gi
+      memory: 3Gi
     requests:
-      cpu: 100m
-      memory: 256Mi
+      cpu: 500m
+      memory: 3Gi
   podSecurityContext:
     fsGroup: 1200
     runAsUser: 1200
