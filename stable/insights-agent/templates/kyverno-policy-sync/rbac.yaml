@@ -15,7 +15,7 @@ metadata:
     app: insights-agent
 rules:
 - apiGroups: ["kyverno.io"]
-  resources: ["clusterpolicies", "policies"]
+  resources: ["clusterpolicies", "policies", "validatingadmissionpolicies", "validatingpolicies"]
   verbs: ["get", "list", "create", "update", "patch", "delete"]
 - apiGroups: [""]
   resources: ["configmaps"]

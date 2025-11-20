@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.7
+* Added missing rbac for kyverno policies sync
+
 ## 5.2.6
 * Increased resources for insights event watcher
 
