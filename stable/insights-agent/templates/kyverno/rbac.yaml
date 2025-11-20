@@ -23,7 +23,6 @@ rules:
   - clusterpolicyreports
   - clusterpolicyreports/status
   - validatingadmissionpolicies
-  - validatingpolicies
   verbs:
   - get
   - list
@@ -58,7 +57,6 @@ rules:
     - admissionregistration.k8s.io
   resources:
     - validatingadmissionpolicies
-    - validatingpolicies
   verbs:
     - get
     - list
