@@ -15,7 +15,10 @@ metadata:
     app: insights-agent
 rules:
 - apiGroups: ["kyverno.io"]
-  resources: ["clusterpolicies", "policies", "validatingadmissionpolicies", "validatingpolicies"]
+  resources: ["clusterpolicies", "policies", "validatingpolicies"]
+  verbs: ["get", "list", "create", "update", "patch", "delete"]
+- apiGroups: ["admissionregistration.k8s.io"]
+  resources: ["validatingadmissionpolicies"]
   verbs: ["get", "list", "create", "update", "patch", "delete"]
 - apiGroups: [""]
   resources: ["configmaps"]
