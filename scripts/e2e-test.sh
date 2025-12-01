@@ -38,7 +38,50 @@ pre_test_script () {
 
 run_tests () {
     printf "Running e2e tests...\n"
-    ct install --config scripts/ct.yaml --debug --print-config --upgrade --helm-extra-args "--timeout 600s"
+    
+    # First, try to identify changed charts to see if ct list-changed works
+    # If it fails, ct install will also fail, so we can provide a better error message
+    set +o errexit
+    CHANGED_CHARTS="$(ct list-changed --config scripts/ct.yaml 2>&1)"
+    LIST_CHANGED_EXIT=$?
+    set -o errexit
+    
+    if [ $LIST_CHANGED_EXIT -ne 0 ] || echo "$CHANGED_CHARTS" | grep -qE "(Error|error|failed|segmentation|fault)"; then
+        printf "Error: ct list-changed failed, which means ct install will also fail.\n"
+        printf "This is likely due to a segmentation fault in the chart-testing tool.\n"
+        printf "Output from ct list-changed:\n%s\n" "$CHANGED_CHARTS"
+        printf "\nPossible solutions:\n"
+        printf "1. Update chart-testing to the latest version\n"
+        printf "2. Check your git repository state (ensure origin/master is accessible)\n"
+        printf "3. Try running: git fetch origin master\n"
+        printf "4. Check if there are any corrupted git objects\n"
+        exit 1
+    fi
+    
+    # If no charts changed, skip installation
+    if [ -z "$CHANGED_CHARTS" ]; then
+        printf "No changed charts detected. Skipping installation tests.\n"
+        exit 0
+    fi
+    
+    printf "Changed charts detected: %s\n" "$CHANGED_CHARTS"
+    printf "Running ct install...\n"
+    
+    # Now run ct install - wrap in error handling in case it still fails
+    set +o errexit
+    ct install --config scripts/ct.yaml --debug --upgrade --helm-extra-args "--timeout 600s" 2>&1
+    CT_INSTALL_EXIT=$?
+    set -o errexit
+    
+    if [ $CT_INSTALL_EXIT -ne 0 ]; then
+        printf "Error: ct install failed with exit code %d\n" "$CT_INSTALL_EXIT"
+        printf "This may be due to a segmentation fault in the chart-testing tool.\n"
+        printf "\nPossible solutions:\n"
+        printf "1. Update chart-testing to the latest version\n"
+        printf "2. Check your git repository state\n"
+        printf "3. Try running: git fetch origin master\n"
+        exit 1
+    fi
 }
 
 if [ "$OPERATION" = "setup" ]; then
