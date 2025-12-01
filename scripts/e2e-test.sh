@@ -76,16 +76,14 @@ run_tests () {
     if [ $CT_INSTALL_EXIT -ne 0 ]; then
         if echo "$CT_INSTALL_OUTPUT" | grep -qE "(bus error|segmentation|fault)"; then
             printf "\n⚠️  Bus error or segmentation fault detected in ct install.\n"
-            printf "This is a known bug in chart-testing (v3.14.0) when used with Git 2.52.0.\n"
-            printf "The issue is an ABI incompatibility between chart-testing and newer Git versions.\n"
+            printf "This is a known bug in chart-testing (v3.14.0) due to ABI incompatibility.\n"
             printf "\nThe following charts were identified for testing:\n"
             printf "  %s\n" "$CHANGED_CHARTS"
             printf "\nUnfortunately, ct install cannot proceed due to this bug.\n"
             printf "\nWorkarounds:\n"
             printf "1. Report this issue: https://github.com/helm/chart-testing/issues\n"
-            printf "   Include: chart-testing v3.14.0, git 2.52.0, and this bus error\n"
-            printf "2. Consider downgrading Git to 2.49.1 (the version in the chart-testing Docker image)\n"
-            printf "3. Wait for a fix in chart-testing or try downgrading to v3.11.0 or earlier\n\n"
+            printf "   Include: chart-testing v3.14.0, git version, and this error\n"
+            printf "2. Wait for a fix in chart-testing or try downgrading to v3.11.0 or earlier\n\n"
             exit 1
         else
             printf "Error: ct install failed with exit code %d\n" "$CT_INSTALL_EXIT"

@@ -13,7 +13,7 @@ references:
         apk --no-cache add aws-cli
         echo 'Install needed packages'
         apk --no-cache add bash jq curl yq
-        echo 'Git version check (will be upgraded in install_git_2_52 step if needed)'
+        echo 'Git version: Using version from Docker image (compatible with chart-testing)'
 
   check_changelog: &check_changelog
     run:
@@ -40,7 +40,7 @@ references:
   kind_configuration_helm3: &kind_configuration_helm3
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
-    command_runner_image: quay.io/helmpack/chart-testing:v3.14.0
+    command_runner_image: quay.io/helmpack/chart-testing:v3.11.0
     requires:
       - lint-scripts
       - lint-charts
@@ -50,46 +50,6 @@ references:
         only: /.*/
       tags:
         ignore: /.*/
-
-  install_git_2_52: &install_git_2_52
-    run:
-      name: Install Git 2.52.0
-      command: |
-        echo "Current git version: $(git --version)"
-        if [ "$(git --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)" != "2.52.0" ]; then
-          echo "Upgrading git to 2.52.0..."
-          if command -v apk >/dev/null 2>&1; then
-            # Alpine Linux
-            apk --no-cache add build-base curl-dev expat-dev gettext-dev openssl-dev zlib-dev perl autoconf && \
-            cd /tmp && \
-            curl -L https://github.com/git/git/archive/v2.52.0.tar.gz -o git-2.52.0.tar.gz && \
-            tar -xzf git-2.52.0.tar.gz && \
-            cd git-2.52.0 && \
-            make configure && \
-            ./configure --prefix=/usr && \
-            make -j"$(nproc)" && \
-            make install && \
-            git --version
-          elif command -v apt-get >/dev/null 2>&1; then
-            # Debian/Ubuntu
-            apt-get update && \
-            apt-get install -y build-essential libcurl4-openssl-dev libexpat-dev gettext libssl-dev zlib1g-dev autoconf && \
-            cd /tmp && \
-            curl -L https://github.com/git/git/archive/v2.52.0.tar.gz -o git-2.52.0.tar.gz && \
-            tar -xzf git-2.52.0.tar.gz && \
-            cd git-2.52.0 && \
-            make configure && \
-            ./configure --prefix=/usr && \
-            make -j"$(nproc)" && \
-            make install && \
-            git --version
-          else
-            echo "Unknown package manager, skipping git upgrade"
-          fi
-          echo "Git version after upgrade: $(git --version)"
-        else
-          echo "Git 2.52.0 already installed"
-        fi
 
 executors:
   ci-images:
@@ -138,11 +98,10 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.14.0
+      - image: quay.io/helmpack/chart-testing:v3.11.0
     steps:
       - checkout
       - *setup_environment
-      - *install_git_2_52
       - run:
           name: lint
           command: |
@@ -152,11 +111,10 @@ jobs:
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.14.0
+      - image: quay.io/helmpack/chart-testing:v3.11.0
     steps:
       - checkout
       - *setup_environment
-      - *install_git_2_52
       - *install_vault_alpine
       - rok8s/get_vault_aws_credentials:
           vault_path: fairwindsops/sts/charts-docs
