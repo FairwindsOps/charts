@@ -49,9 +49,10 @@ get_changed_charts_git() {
     fi
     
     # Get changed files in chart directories
+    # Compare MERGE_BASE to HEAD (not working directory)
     # Note: CHART_DIRS is intentionally unquoted to allow word splitting for git diff
     # shellcheck disable=SC2086
-    CHANGED_FILES=$(git diff --find-renames --name-only "$MERGE_BASE" -- $CHART_DIRS 2>/dev/null || echo "")
+    CHANGED_FILES=$(git diff --find-renames --name-only "$MERGE_BASE" HEAD -- $CHART_DIRS 2>/dev/null || echo "")
     
     if [ -z "$CHANGED_FILES" ]; then
         # Return empty string (not exit code 0) to indicate no changes
