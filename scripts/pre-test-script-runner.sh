@@ -39,14 +39,18 @@ get_changed_charts_git() {
   CHANGED_FILES=$(git diff --find-renames --name-only "$MERGE_BASE" -- $CHART_DIRS 2>/dev/null || echo "")
   
   if [ -z "$CHANGED_FILES" ]; then
+    # Return empty string (not exit code 0) to indicate no changes
     return 0
   fi
   
   # Extract unique chart directories
+  # Output the chart directories, one per line (matching ct list-changed format)
   printf "%s\n" "$CHANGED_FILES" | \
     grep -E "^($(echo "$CHART_DIRS" | tr ' ' '|'))/[^/]+/" | \
     sed -E 's|^([^/]+/[^/]+)/.*|\1|' | \
-    sort -u
+    sort -u | \
+    tr '\n' ' ' | \
+    sed 's/[[:space:]]*$//'
 }
 
 # Capture both stdout and stderr, temporarily disable errexit to handle failures gracefully
