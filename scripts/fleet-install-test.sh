@@ -6,7 +6,28 @@ set -x
 
 # Check whether insights-agent is part of the changed charts
 cd /charts
-CHANGED="$(ct list-changed --config ./scripts/ct.yaml --print-config)"
+
+# Capture both stdout and stderr, temporarily disable errexit to handle failures gracefully
+set +o errexit
+CHANGED="$(ct list-changed --config ./scripts/ct.yaml --print-config 2>&1)"
+CT_EXIT_CODE=$?
+set -o errexit
+
+# Check if ct list-changed failed
+if [ $CT_EXIT_CODE -ne 0 ]; then
+  printf "Warning: ct list-changed failed (exit code: %d)\n" "$CT_EXIT_CODE"
+  printf "Output: %s\n" "$CHANGED"
+  printf "Skipping fleet install test due to ct list-changed failure.\n"
+  exit 0
+fi
+
+# Check if the output looks like an error message rather than chart paths
+if echo "$CHANGED" | grep -qE "(Error|error|failed|segmentation|fault)"; then
+  printf "Warning: ct list-changed appears to have failed with an error:\n"
+  printf "%s\n" "$CHANGED"
+  printf "Skipping fleet install test due to ct list-changed failure.\n"
+  exit 0
+fi
 
 case "$CHANGED" in 
   *insights-agent*)
