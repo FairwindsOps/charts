@@ -22,26 +22,50 @@ CI_DIR="ci"
 SCRIPT_NAME="pre-test-script.sh"
 SCRIPT="$CI_DIR/$SCRIPT_NAME"
 
+# Helper function to get changed charts using git directly (fallback when ct fails)
+get_changed_charts_git() {
+  TARGET_BRANCH="${1:-origin/master}"
+  CHART_DIRS="${2:-stable incubator}"
+  
+  # Get merge base
+  MERGE_BASE=$(git merge-base "$TARGET_BRANCH" HEAD 2>/dev/null || echo "")
+  if [ -z "$MERGE_BASE" ]; then
+    return 1
+  fi
+  
+  # Get changed files in chart directories
+  CHANGED_FILES=$(git diff --find-renames --name-only "$MERGE_BASE" -- $CHART_DIRS 2>/dev/null || echo "")
+  
+  if [ -z "$CHANGED_FILES" ]; then
+    return 0
+  fi
+  
+  # Extract unique chart directories
+  printf "%s\n" "$CHANGED_FILES" | \
+    grep -E "^($(echo $CHART_DIRS | tr ' ' '|'))/[^/]+/" | \
+    sed -E 's|^([^/]+/[^/]+)/.*|\1|' | \
+    sort -u
+}
+
 # Capture both stdout and stderr, temporarily disable errexit to handle failures gracefully
+# Note: Explicitly specifying --target-branch may help avoid segmentation faults
 set +o errexit
-CHANGED="$(ct list-changed --config scripts/ct.yaml 2>&1)"
+CHANGED="$(ct list-changed --config scripts/ct.yaml --target-branch master 2>&1)"
 CT_EXIT_CODE=$?
 set -o errexit
 
 # Check if ct list-changed failed
-if [ $CT_EXIT_CODE -ne 0 ]; then
-  printf "Warning: ct list-changed failed (exit code: %d)\n" "$CT_EXIT_CODE"
-  printf "Output: %s\n" "$CHANGED"
-  printf "Skipping pre-test scripts due to ct list-changed failure.\n"
-  exit 0
-fi
-
-# Check if the output looks like an error message rather than chart paths
-if echo "$CHANGED" | grep -qE "(Error|error|failed|segmentation|fault)"; then
-  printf "Warning: ct list-changed appears to have failed with an error:\n"
-  printf "%s\n" "$CHANGED"
-  printf "Skipping pre-test scripts due to ct list-changed failure.\n"
-  exit 0
+if [ $CT_EXIT_CODE -ne 0 ] || echo "$CHANGED" | grep -qE "(Error|error|failed|segmentation|fault)"; then
+  printf "Warning: ct list-changed failed. Using git-based fallback...\n"
+  CHANGED="$(get_changed_charts_git origin/master "stable incubator")"
+  GIT_FALLBACK_EXIT=$?
+  
+  if [ $GIT_FALLBACK_EXIT -ne 0 ] || [ -z "$CHANGED" ]; then
+    printf "No changed charts detected. Skipping pre-test scripts.\n"
+    exit 0
+  fi
+  
+  printf "Changed charts detected via git: %s\n" "$CHANGED"
 fi
 
 # If CHANGED is empty, there are no changed charts, so skip

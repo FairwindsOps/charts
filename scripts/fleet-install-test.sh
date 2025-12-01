@@ -8,8 +8,9 @@ set -x
 cd /charts
 
 # Capture both stdout and stderr, temporarily disable errexit to handle failures gracefully
+# Note: Explicitly specifying --target-branch may help avoid segmentation faults
 set +o errexit
-CHANGED="$(ct list-changed --config ./scripts/ct.yaml 2>&1)"
+CHANGED="$(ct list-changed --config ./scripts/ct.yaml --target-branch master 2>&1)"
 CT_EXIT_CODE=$?
 set -o errexit
 
