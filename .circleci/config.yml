@@ -13,18 +13,7 @@ references:
         apk --no-cache add aws-cli
         echo 'Install needed packages'
         apk --no-cache add bash jq curl yq
-        echo 'Upgrade git to 2.52.0'
-        apk --no-cache add build-base curl-dev expat-dev gettext-dev openssl-dev zlib-dev perl && \
-        cd /tmp && \
-        curl -L https://github.com/git/git/archive/v2.52.0.tar.gz -o git-2.52.0.tar.gz && \
-        tar -xzf git-2.52.0.tar.gz && \
-        cd git-2.52.0 && \
-        make configure && \
-        ./configure --prefix=/usr && \
-        make -j$(nproc) && \
-        make install && \
-        git --version && \
-        echo "Git upgraded to $(git --version)"
+        echo 'Git version check (will be upgraded in install_git_2_52 step if needed)'
 
   check_changelog: &check_changelog
     run:
