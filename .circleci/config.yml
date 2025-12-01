@@ -13,7 +13,6 @@ references:
         apk --no-cache add aws-cli
         echo 'Install needed packages'
         apk --no-cache add bash jq curl yq
-        echo 'Git version: Using version from Docker image (compatible with chart-testing)'
 
   check_changelog: &check_changelog
     run:
