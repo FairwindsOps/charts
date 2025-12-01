@@ -6,26 +6,7 @@ set -x
 
 # Check whether insights-agent is part of the changed charts
 cd /charts
-
-# Try ct first, fall back to git if it fails
-set +o errexit
-CHANGED="$(ct list-changed --config ./scripts/ct.yaml --target-branch master 2>&1)"
-CT_EXIT=$?
-set -o errexit
-
-if [ $CT_EXIT -ne 0 ] || echo "$CHANGED" | grep -qE "(Error|error|failed|segmentation|fault)"; then
-  # Fallback to git-based detection
-  MERGE_BASE=$(git merge-base origin/master HEAD 2>/dev/null || echo "")
-  if [ -n "$MERGE_BASE" ]; then
-    CHANGED_FILES=$(git diff --find-renames --name-only "$MERGE_BASE" HEAD -- stable incubator 2>/dev/null || echo "")
-    if [ -n "$CHANGED_FILES" ]; then
-      CHANGED=$(echo "$CHANGED_FILES" | grep -E "^(stable|incubator)/[^/]+/" | sed -E 's|^([^/]+/[^/]+)/.*|\1|' | sort -u | tr '\n' ' ' | sed 's/[[:space:]]*$//')
-    fi
-  fi
-fi
-
-# Filter out any config output, keep only chart paths
-CHANGED=$(echo "$CHANGED" | grep -E "^(stable|incubator)/[^/]+$" | tr '\n' ' ' | sed 's/[[:space:]]*$//')
+CHANGED="$(ct list-changed --config ./scripts/ct.yaml --print-config)"
 
 case "$CHANGED" in 
   *insights-agent*)
