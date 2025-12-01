@@ -49,6 +49,8 @@ get_changed_charts_git() {
     fi
     
     # Get changed files in chart directories
+    # Note: CHART_DIRS is intentionally unquoted to allow word splitting for git diff
+    # shellcheck disable=SC2086
     CHANGED_FILES=$(git diff --find-renames --name-only "$MERGE_BASE" -- $CHART_DIRS 2>/dev/null || echo "")
     
     if [ -z "$CHANGED_FILES" ]; then
@@ -57,7 +59,7 @@ get_changed_charts_git() {
     
     # Extract unique chart directories (e.g., stable/chart-name or incubator/chart-name)
     printf "%s\n" "$CHANGED_FILES" | \
-        grep -E "^($(echo $CHART_DIRS | tr ' ' '|'))/[^/]+/" | \
+        grep -E "^($(echo "$CHART_DIRS" | tr ' ' '|'))/[^/]+/" | \
         sed -E 's|^([^/]+/[^/]+)/.*|\1|' | \
         sort -u
 }
