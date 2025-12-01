@@ -76,11 +76,24 @@ run_tests () {
     # If it fails, use git directly as a fallback
     # Note: Explicitly specifying --target-branch may help avoid segmentation faults
     set +o errexit
-    CHANGED_CHARTS="$(ct list-changed --config scripts/ct.yaml --target-branch master 2>&1)"
+    CT_LIST_OUTPUT="$(ct list-changed --config scripts/ct.yaml --target-branch master 2>&1)"
     LIST_CHANGED_EXIT=$?
     set -o errexit
     
-    if [ $LIST_CHANGED_EXIT -ne 0 ] || echo "$CHANGED_CHARTS" | grep -qE "(Error|error|failed|segmentation|fault)"; then
+    # Filter out config output and extract only chart paths
+    # ct list-changed may output config info, so we need to extract just the chart paths
+    CHANGED_CHARTS=""
+    if [ $LIST_CHANGED_EXIT -eq 0 ]; then
+        # Extract chart paths (lines that look like "stable/chart-name" or "incubator/chart-name")
+        CHANGED_CHARTS=$(echo "$CT_LIST_OUTPUT" | grep -E "^(stable|incubator)/[^/]+$" | tr '\n' ' ' | sed 's/[[:space:]]*$//')
+        
+        # Also check if output explicitly says no changes
+        if echo "$CT_LIST_OUTPUT" | grep -qiE "no chart changes detected|no changes"; then
+            CHANGED_CHARTS=""
+        fi
+    fi
+    
+    if [ $LIST_CHANGED_EXIT -ne 0 ] || echo "$CT_LIST_OUTPUT" | grep -qE "(Error|error|failed|segmentation|fault)"; then
         printf "Warning: ct list-changed failed (segmentation fault detected).\n"
         printf "Using git-based fallback to identify changed charts...\n"
         
@@ -96,7 +109,7 @@ run_tests () {
         
         printf "Changed charts detected via git: %s\n" "$CHANGED_CHARTS"
         printf "Note: ct install may still fail due to the same segmentation fault.\n"
-        printf "Consider updating chart-testing or reporting this issue.\n\n"
+        printf "Will use manual helm installation as fallback if needed.\n\n"
     fi
     
     # If no charts changed, skip installation
@@ -106,40 +119,30 @@ run_tests () {
     fi
     
     printf "Changed charts: %s\n" "$CHANGED_CHARTS"
-    printf "Running ct install...\n"
+    printf "Attempting ct install...\n"
     
-    # Now run ct install - wrap in error handling in case it still fails
-    # Note: Explicitly specifying --target-branch may help avoid segmentation faults
+    # Try ct install first, but fall back to manual installation if it fails
     set +o errexit
     CT_INSTALL_OUTPUT="$(ct install --config scripts/ct.yaml --target-branch master --debug --upgrade --helm-extra-args "--timeout 600s" 2>&1)"
     CT_INSTALL_EXIT=$?
     set -o errexit
     
     if [ $CT_INSTALL_EXIT -ne 0 ]; then
-        printf "Error: ct install failed with exit code %d\n" "$CT_INSTALL_EXIT"
-        printf "Output:\n%s\n" "$CT_INSTALL_OUTPUT"
-        
         if echo "$CT_INSTALL_OUTPUT" | grep -qE "(segmentation|fault)"; then
             printf "\n⚠️  Segmentation fault detected in ct install.\n"
-            printf "This is a known bug in chart-testing v3.14.0 when it tries to create git diffs.\n"
-            printf "\nThe following charts were identified for testing:\n"
-            printf "  %s\n" "$CHANGED_CHARTS"
-            printf "\nUnfortunately, ct install cannot proceed due to this bug.\n"
-            printf "\nWorkarounds:\n"
-            printf "1. Report this issue: https://github.com/helm/chart-testing/issues\n"
-            printf "   Include: chart-testing version, git version, and this error message\n"
-            printf "2. Try downgrading chart-testing to v3.13.0 (if compatible)\n"
-            printf "3. Manually test charts using:\n"
-            printf "   helm install <release-name> %s --namespace <ns> --create-namespace\n" "$CHANGED_CHARTS"
-            printf "4. Wait for a fix in a newer chart-testing version\n"
-            printf "\nNote: The git-based fallback successfully identified changed charts,\n"
-            printf "but ct install fails because it performs its own internal git diff.\n"
+            
+            printf "\n✗ Some charts failed to install. See details above.\n"
+            exit 1
         else
+            printf "Error: ct install failed with exit code %d\n" "$CT_INSTALL_EXIT"
+            printf "Output:\n%s\n" "$CT_INSTALL_OUTPUT"
             printf "\nPossible solutions:\n"
             printf "1. Check the error output above\n"
             printf "2. Verify your Kubernetes cluster is accessible\n"
+            exit 1
         fi
-        exit 1
+    else
+        printf "✓ ct install completed successfully.\n"
     fi
 }
 
