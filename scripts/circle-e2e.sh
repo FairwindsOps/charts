@@ -12,7 +12,7 @@ echo "Current git version: $(git --version)"
 CURRENT_GIT_VERSION=$(git --version | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -1)
 if [ "$CURRENT_GIT_VERSION" != "2.52.0" ]; then
   echo "Upgrading git to 2.52.0..."
-  apk --no-cache add build-base curl-dev expat-dev gettext-dev openssl-dev zlib-dev perl
+  apk --no-cache add build-base curl-dev expat-dev gettext-dev openssl-dev zlib-dev perl autoconf
   cd /tmp
   curl -L https://github.com/git/git/archive/v2.52.0.tar.gz -o git-2.52.0.tar.gz
   tar -xzf git-2.52.0.tar.gz

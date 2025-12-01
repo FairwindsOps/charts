@@ -60,7 +60,7 @@ references:
           echo "Upgrading git to 2.52.0..."
           if command -v apk >/dev/null 2>&1; then
             # Alpine Linux
-            apk --no-cache add build-base curl-dev expat-dev gettext-dev openssl-dev zlib-dev perl && \
+            apk --no-cache add build-base curl-dev expat-dev gettext-dev openssl-dev zlib-dev perl autoconf && \
             cd /tmp && \
             curl -L https://github.com/git/git/archive/v2.52.0.tar.gz -o git-2.52.0.tar.gz && \
             tar -xzf git-2.52.0.tar.gz && \
@@ -73,7 +73,7 @@ references:
           elif command -v apt-get >/dev/null 2>&1; then
             # Debian/Ubuntu
             apt-get update && \
-            apt-get install -y build-essential libcurl4-openssl-dev libexpat-dev gettext libssl-dev zlib1g-dev && \
+            apt-get install -y build-essential libcurl4-openssl-dev libexpat-dev gettext libssl-dev zlib1g-dev autoconf && \
             cd /tmp && \
             curl -L https://github.com/git/git/archive/v2.52.0.tar.gz -o git-2.52.0.tar.gz && \
             tar -xzf git-2.52.0.tar.gz && \
