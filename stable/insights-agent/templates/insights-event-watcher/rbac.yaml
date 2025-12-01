@@ -16,7 +16,7 @@ rules:
 - apiGroups: ["admissionregistration.k8s.io"]
   resources: ["validatingadmissionpolicies", "validatingadmissionpolicybindings"]
   verbs: ["get", "list", "watch"]
-# Kyverno policy resources (secondary)
+# Kyverno policy resources for policy reports (secondary)
 - apiGroups: ["wgpolicyk8s.io"]
   resources: ["policyreports", "clusterpolicyreports"]
   verbs: ["get", "list", "watch"]
