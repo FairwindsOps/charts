@@ -53,11 +53,11 @@ references:
 executors:
   ci-images:
     docker:
-      - image: quay.io/reactiveops/ci-images:v14.1-bullseye
+      - image: quay.io/reactiveops/ci-images:v14.3-bullseye
   ci-images-xlarge:
     resource_class: xlarge
     docker:
-      - image: quay.io/reactiveops/ci-images:v14.1-bullseye
+      - image: quay.io/reactiveops/ci-images:v14.3-bullseye
 
 jobs:
   check-helm-docs:
@@ -97,7 +97,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.13.0
+      - image: quay.io/helmpack/chart-testing:v3.14.0
     steps:
       - checkout
       - *setup_environment
@@ -110,7 +110,7 @@ jobs:
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.13.0
+      - image: quay.io/helmpack/chart-testing:v3.14.0
     steps:
       - checkout
       - *setup_environment
