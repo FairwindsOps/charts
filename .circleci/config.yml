@@ -67,7 +67,7 @@ references:
             cd git-2.52.0 && \
             make configure && \
             ./configure --prefix=/usr && \
-            make -j$(nproc) && \
+            make -j"$(nproc)" && \
             make install && \
             git --version
           elif command -v apt-get >/dev/null 2>&1; then
@@ -80,7 +80,7 @@ references:
             cd git-2.52.0 && \
             make configure && \
             ./configure --prefix=/usr && \
-            make -j$(nproc) && \
+            make -j"$(nproc)" && \
             make install && \
             git --version
           else

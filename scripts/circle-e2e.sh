@@ -19,7 +19,7 @@ if [ "$CURRENT_GIT_VERSION" != "2.52.0" ]; then
   cd git-2.52.0
   make configure
   ./configure --prefix=/usr
-  make -j$(nproc)
+  make -j"$(nproc)"
   make install
   echo "Git upgraded to: $(git --version)"
 fi
