@@ -31,9 +31,9 @@ references:
       command: |
         apk --update add curl yq
         cd /tmp
-        curl -LO https://releases.hashicorp.com/vault/1.13.2/vault_1.13.2_linux_amd64.zip
-        sha256sum vault_1.13.2_linux_amd64.zip | grep f7930279de8381de7c532164b4a4408895d9606c0d24e2e9d2f9acb5dfe99b3c
-        unzip vault_1.13.2_linux_amd64.zip
+        curl -LO https://releases.hashicorp.com/vault/1.21.1/vault_1.21.1_linux_amd64.zip
+        sha256sum vault_1.21.1_linux_amd64.zip | grep 4088617653eba4ea341b6166130239fcbe42edc7839c7f7c6209d280948769c7
+        unzip vault_1.21.1_linux_amd64.zip
         mv vault /usr/bin/vault
 
   kind_configuration_helm3: &kind_configuration_helm3
@@ -68,8 +68,8 @@ jobs:
           name: Install helm-docs
           command: |
             cd /tmp
-            curl -LO https://github.com/norwoodj/helm-docs/releases/download/v1.11.0/helm-docs_1.11.0_Linux_x86_64.tar.gz
-            tar -zxvf helm-docs_1.11.0_Linux_x86_64.tar.gz
+            curl -LO https://github.com/norwoodj/helm-docs/releases/download/v1.14.2/helm-docs_1.14.2_Linux_x86_64.tar.gz
+            tar -zxvf helm-docs_1.14.2_Linux_x86_64.tar.gz
             mv helm-docs /usr/local/bin/helm-docs
             chmod +x /usr/local/bin/helm-docs
       - run:
@@ -80,7 +80,7 @@ jobs:
       - *check_changelog
   lint-scripts:
     docker:
-      - image: koalaman/shellcheck-alpine:v0.7.0
+      - image: koalaman/shellcheck-alpine:v0.11.0
     steps:
       - checkout
       - run:
