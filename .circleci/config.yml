@@ -97,7 +97,7 @@ jobs:
             done
   lint-charts:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.14.0
+      - image: quay.io/helmpack/chart-testing:v3.12.0
     steps:
       - checkout
       - *setup_environment
@@ -110,7 +110,7 @@ jobs:
 
   sync:
     docker:
-      - image: quay.io/helmpack/chart-testing:v3.14.0
+      - image: quay.io/helmpack/chart-testing:v3.12.0
     steps:
       - checkout
       - *setup_environment
