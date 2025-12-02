@@ -100,28 +100,35 @@ run_tests () {
     echo "================================================================================"
     
     # Workaround for partial clone + SSH authentication issues
-    # If we have a partial clone and SSH remote, try to pre-fetch necessary objects
+    # If we have a partial clone and SSH remote, try to automatically convert to HTTPS
     PARTIAL_CLONE=$(git config --get remote.origin.partialclonefilter 2>&1 || echo "")
     IS_SSH_REMOTE=$(git remote get-url origin 2>&1 | grep -q '@' && echo "yes" || echo "no")
+    CURRENT_REMOTE=$(git remote get-url origin 2>&1)
     
-    if [ -n "$PARTIAL_CLONE" ] && [ "$IS_SSH_REMOTE" = "yes" ] && [ -n "$MERGE_BASE" ]; then
+    if [ -n "$PARTIAL_CLONE" ] && [ "$IS_SSH_REMOTE" = "yes" ]; then
         echo "================================================================================"
-        echo "WORKAROUND: Attempting to pre-fetch objects for merge base commit"
+        echo "AUTOMATIC WORKAROUND: Converting SSH remote to HTTPS"
         echo "================================================================================"
-        echo "This is a partial clone with SSH remote. Pre-fetching tree and blob objects"
-        echo "for merge base commit to avoid promisor remote errors during worktree creation."
+        echo "Detected partial clone with SSH remote that will fail during worktree creation."
+        echo "Automatically converting remote URL from SSH to HTTPS to avoid authentication issues."
         echo ""
-        echo "Attempting to fetch tree objects for commit: $MERGE_BASE"
-        # Try to fetch the tree objects for the merge base commit
-        # This uses git fetch with depth=1 to get the commit and its tree
-        # Note: This may still fail if SSH is not configured, but it's worth trying
-        git fetch --depth=1 origin "$MERGE_BASE" 2>&1 | head -10 || echo "  Pre-fetch failed (SSH authentication may be required)"
-        echo ""
-        echo "If pre-fetch fails, the worktree creation will also fail."
-        echo "Solutions:"
-        echo "  1. Configure SSH keys/host keys in CI environment"
-        echo "  2. Convert remote URL to HTTPS: git remote set-url origin https://github.com/FairwindsOps/charts.git"
-        echo "  3. Use a full clone instead of partial clone"
+        echo "Current remote: $CURRENT_REMOTE"
+        
+        # Extract org/repo from SSH URL (git@github.com:org/repo.git) or HTTPS URL
+        if echo "$CURRENT_REMOTE" | grep -q 'git@github.com:'; then
+            # Convert git@github.com:org/repo.git to https://github.com/org/repo.git
+            NEW_REMOTE=$(echo "$CURRENT_REMOTE" | sed 's|git@github.com:\(.*\)|https://github.com/\1|')
+            echo "New remote: $NEW_REMOTE"
+            git remote set-url origin "$NEW_REMOTE" 2>&1
+            if [ $? -eq 0 ]; then
+                echo "✓ Successfully converted remote to HTTPS"
+                echo "  This will allow Git to fetch blob objects without SSH authentication"
+            else
+                echo "✗ Failed to convert remote URL"
+            fi
+        else
+            echo "  Remote URL format not recognized, skipping conversion"
+        fi
         echo "================================================================================"
     fi
     
