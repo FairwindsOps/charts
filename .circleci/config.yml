@@ -63,13 +63,11 @@ jobs:
   check-helm-docs:
     executor: ci-images
     steps:
+      - checkout:
+          method: full
       - run:
-          name: Full Git Clone
-          command: |
-            git init
-            git remote add origin $CIRCLE_REPOSITORY_URL
-            git fetch origin --depth=1000
-            git checkout $CIRCLE_BRANCH
+          name: Fetch 200 commits
+          command: git fetch --depth=200
       - run:
           name: Install helm-docs
           command: |
@@ -88,7 +86,8 @@ jobs:
     docker:
       - image: koalaman/shellcheck-alpine:v0.7.0
     steps:
-      - checkout
+      - checkout:
+          method: full
       - run:
           name: lint
           command: |
@@ -105,7 +104,8 @@ jobs:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
-      - checkout
+      - checkout:
+          method: full
       - *setup_environment
       - run:
           name: lint
@@ -118,7 +118,8 @@ jobs:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
-      - checkout
+      - checkout:
+          method: full
       - *setup_environment
       - *install_vault_alpine
       - rok8s/get_vault_aws_credentials:
