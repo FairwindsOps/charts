@@ -55,7 +55,7 @@ executors:
     docker:
       - image: quay.io/reactiveops/ci-images:v14.1-bullseye
   ci-images-xlarge:
-    resource_class: large
+    resource_class: xlarge
     docker:
       - image: quay.io/reactiveops/ci-images:v14.1-bullseye
 
