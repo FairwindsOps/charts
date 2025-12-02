@@ -35,8 +35,13 @@ echo "Disk space:"
 df -h . 2>&1 || echo "  df command failed"
 echo ""
 echo "Chart-testing version: $(ct version 2>&1 || echo 'ct version command failed')"
-echo "Chart-testing binary location: $(which ct 2>&1 || echo 'ct not in PATH')"
-echo "Chart-testing binary info: $(file $(which ct 2>&1) 2>&1 || echo 'N/A')"
+echo "Chart-testing binary location: $(command -v ct 2>&1 || echo 'ct not in PATH')"
+CT_BINARY=$(command -v ct 2>&1 || echo '')
+if [ -n "$CT_BINARY" ]; then
+    echo "Chart-testing binary info: $(file "$CT_BINARY" 2>&1 || echo 'N/A')"
+else
+    echo "Chart-testing binary info: N/A (binary not found)"
+fi
 echo ""
 echo "Git branch: $(git branch --show-current 2>&1 || echo 'N/A')"
 echo "Git commit: $(git rev-parse HEAD 2>&1 || echo 'N/A')"
