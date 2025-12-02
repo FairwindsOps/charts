@@ -63,8 +63,10 @@ jobs:
   check-helm-docs:
     executor: ci-images
     steps:
-      - checkout:
-          method: full
+      - run:
+          name: Checkout via HTTPS
+          command: |
+            git clone https://github.com/FairwindsOps/charts.git .
       - run:
           name: Fetch 200 commits
           command: git fetch --depth=200
@@ -86,8 +88,10 @@ jobs:
     docker:
       - image: koalaman/shellcheck-alpine:v0.7.0
     steps:
-      - checkout:
-          method: full
+      - run:
+          name: Checkout via HTTPS
+          command: |
+            git clone https://github.com/FairwindsOps/charts.git .
       - run:
           name: lint
           command: |
@@ -104,8 +108,10 @@ jobs:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
-      - checkout:
-          method: full
+      - run:
+          name: Checkout via HTTPS
+          command: |
+            git clone https://github.com/FairwindsOps/charts.git .
       - *setup_environment
       - run:
           name: lint
@@ -113,13 +119,14 @@ jobs:
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
             ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug --print-config
-
   sync:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
-      - checkout:
-          method: full
+      - run:
+          name: Checkout via HTTPS
+          command: |
+            git clone https://github.com/FairwindsOps/charts.git .
       - *setup_environment
       - *install_vault_alpine
       - rok8s/get_vault_aws_credentials:
