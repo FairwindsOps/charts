@@ -63,10 +63,13 @@ jobs:
   check-helm-docs:
     executor: ci-images
     steps:
-      - checkout
       - run:
-          name: Fetch 200 commits
-          command: git fetch --depth=200
+          name: Full Git Clone
+          command: |
+            git init
+            git remote add origin $CIRCLE_REPOSITORY_URL
+            git fetch origin --depth=1000
+            git checkout $CIRCLE_BRANCH
       - run:
           name: Install helm-docs
           command: |
