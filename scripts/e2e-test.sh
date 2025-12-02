@@ -119,8 +119,7 @@ run_tests () {
             # Convert git@github.com:org/repo.git to https://github.com/org/repo.git
             NEW_REMOTE=$(echo "$CURRENT_REMOTE" | sed 's|git@github.com:\(.*\)|https://github.com/\1|')
             echo "New remote: $NEW_REMOTE"
-            git remote set-url origin "$NEW_REMOTE" 2>&1
-            if [ $? -eq 0 ]; then
+            if git remote set-url origin "$NEW_REMOTE" 2>&1; then
                 echo "✓ Successfully converted remote to HTTPS"
                 echo "  This will allow Git to fetch blob objects without SSH authentication"
             else
