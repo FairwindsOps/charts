@@ -88,10 +88,7 @@ jobs:
     docker:
       - image: koalaman/shellcheck-alpine:v0.7.0
     steps:
-      - run:
-          name: Checkout via HTTPS
-          command: |
-            git clone https://github.com/FairwindsOps/charts.git .
+      - checkout
       - run:
           name: lint
           command: |
