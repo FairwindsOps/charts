@@ -97,6 +97,33 @@ run_tests () {
     echo "Git configuration that might affect worktree creation:"
     git config --get-regexp '^(remote|fetch|worktree)' 2>&1 | head -10 || echo "  No relevant config found"
     echo "================================================================================"
+    
+    # Workaround for partial clone + SSH authentication issues
+    # If we have a partial clone and SSH remote, try to pre-fetch necessary objects
+    PARTIAL_CLONE=$(git config --get remote.origin.partialclonefilter 2>&1 || echo "")
+    IS_SSH_REMOTE=$(git remote get-url origin 2>&1 | grep -q '@' && echo "yes" || echo "no")
+    
+    if [ -n "$PARTIAL_CLONE" ] && [ "$IS_SSH_REMOTE" = "yes" ] && [ -n "$MERGE_BASE" ]; then
+        echo "================================================================================"
+        echo "WORKAROUND: Attempting to pre-fetch objects for merge base commit"
+        echo "================================================================================"
+        echo "This is a partial clone with SSH remote. Pre-fetching tree and blob objects"
+        echo "for merge base commit to avoid promisor remote errors during worktree creation."
+        echo ""
+        echo "Attempting to fetch tree objects for commit: $MERGE_BASE"
+        # Try to fetch the tree objects for the merge base commit
+        # This uses git fetch with depth=1 to get the commit and its tree
+        # Note: This may still fail if SSH is not configured, but it's worth trying
+        git fetch --depth=1 origin "$MERGE_BASE" 2>&1 | head -10 || echo "  Pre-fetch failed (SSH authentication may be required)"
+        echo ""
+        echo "If pre-fetch fails, the worktree creation will also fail."
+        echo "Solutions:"
+        echo "  1. Configure SSH keys/host keys in CI environment"
+        echo "  2. Convert remote URL to HTTPS: git remote set-url origin https://github.com/FairwindsOps/charts.git"
+        echo "  3. Use a full clone instead of partial clone"
+        echo "================================================================================"
+    fi
+    
     echo "Running ct install command..."
     echo "Command: ct install --config scripts/ct.yaml --debug --print-config --upgrade --helm-extra-args '--timeout 600s'"
     echo "================================================================================"
@@ -114,6 +141,40 @@ run_tests () {
     if [ $CT_INSTALL_EXIT_CODE -ne 0 ]; then
         echo "ERROR: ct install failed with exit code $CT_INSTALL_EXIT_CODE"
         echo ""
+        
+        # Check if this is the known partial clone + SSH issue
+        if [ -n "$PARTIAL_CLONE" ] && [ "$IS_SSH_REMOTE" = "yes" ]; then
+            echo "================================================================================"
+            echo "IDENTIFIED ISSUE: Partial Clone + SSH Authentication Failure"
+            echo "================================================================================"
+            echo "This repository is a partial clone (filter: $PARTIAL_CLONE) with an SSH remote."
+            echo "When chart-testing tries to create a worktree for the previous revision,"
+            echo "Git needs to fetch blob objects on-demand from the promisor remote."
+            echo "However, SSH authentication is failing, preventing the fetch."
+            echo ""
+            echo "Error details:"
+            echo "  - Partial clone filter: $PARTIAL_CLONE"
+            echo "  - Remote URL: $(git remote get-url origin 2>&1)"
+            echo "  - SSH keys found: $SSH_KEY_COUNT"
+            echo ""
+            echo "SOLUTIONS:"
+            echo "  1. Configure SSH authentication in CI:"
+            echo "     - Add SSH keys to CI environment"
+            echo "     - Add GitHub host key to known_hosts"
+            echo ""
+            echo "  2. Convert remote to HTTPS (if public repo or token available):"
+            echo "     git remote set-url origin https://github.com/FairwindsOps/charts.git"
+            echo ""
+            echo "  3. Use a full clone instead of partial clone:"
+            echo "     git config --unset remote.origin.partialclonefilter"
+            echo "     git fetch --unshallow  # if shallow clone"
+            echo "     # Or re-clone without --filter=blob:none"
+            echo ""
+            echo "  4. Pre-fetch necessary objects before running ct install"
+            echo "================================================================================"
+            echo ""
+        fi
+        
         echo "Post-failure diagnostic information:"
         echo "  - Current worktrees:"
         git worktree list 2>&1 || echo "    git worktree list failed"
