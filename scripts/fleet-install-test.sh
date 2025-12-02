@@ -29,7 +29,7 @@ CT_STDERR=$(cat "$TMP_STDERR" 2>&1 || echo "")
 rm -f "$TMP_STDERR"
 set -o errexit
 
-# Check for segfault or other errors
+# Check for segfault or other errors in exit code, stdout, or stderr
 if [ $CT_EXIT_CODE -ne 0 ]; then
     echo "ERROR: ct list-changed failed with exit code $CT_EXIT_CODE"
     echo "STDOUT: $CHANGED_OUTPUT"
@@ -37,10 +37,18 @@ if [ $CT_EXIT_CODE -ne 0 ]; then
     exit 1
 fi
 
-# Check if output contains error messages (even if exit code was 0)
+# Check if output or stderr contains error messages (even if exit code was 0)
 if echo "$CHANGED_OUTPUT" | grep -qi "failed\|error\|segmentation\|core dumped"; then
     echo "ERROR: ct list-changed output contains error indicators"
-    echo "Output: $CHANGED_OUTPUT"
+    echo "STDOUT: $CHANGED_OUTPUT"
+    echo "STDERR: $CT_STDERR"
+    exit 1
+fi
+
+if echo "$CT_STDERR" | grep -qi "failed\|error\|segmentation\|core dumped"; then
+    echo "ERROR: ct list-changed stderr contains error indicators"
+    echo "STDOUT: $CHANGED_OUTPUT"
+    echo "STDERR: $CT_STDERR"
     exit 1
 fi
 
