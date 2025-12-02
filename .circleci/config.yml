@@ -65,9 +65,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch 200 commits
-          command: git fetch --depth=200
-      - run:
           name: Install helm-docs
           command: |
             cd /tmp
