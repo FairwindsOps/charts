@@ -82,6 +82,11 @@ jobs:
     docker:
       - image: koalaman/shellcheck-alpine:v0.7.0
     steps:
+      - run:
+          name: Install git and openssh for checkout
+          command: |
+            apk update
+            apk add --no-cache git openssh-client
       - checkout
       - run:
           name: lint
