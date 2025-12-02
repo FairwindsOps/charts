@@ -45,11 +45,29 @@ run_tests () {
     PARTIAL_CLONE=$(git config --get remote.origin.partialclonefilter 2>&1 || echo "")
     CURRENT_REMOTE=$(git remote get-url origin 2>&1)
     
-    if [ -n "$PARTIAL_CLONE" ] && echo "$CURRENT_REMOTE" | grep -q 'git@github.com:'; then
-        # Convert git@github.com:org/repo.git to https://github.com/org/repo.git
-        NEW_REMOTE=$(echo "$CURRENT_REMOTE" | sed 's|git@github.com:\(.*\)|https://github.com/\1|')
-        if git remote set-url origin "$NEW_REMOTE" 2>&1; then
-            echo "Converted SSH remote to HTTPS for partial clone compatibility"
+    if [ -n "$PARTIAL_CLONE" ] && [ "$IS_SSH_REMOTE" = "yes" ]; then
+        echo "================================================================================"
+        echo "AUTOMATIC WORKAROUND: Converting SSH remote to HTTPS"
+        echo "================================================================================"
+        echo "Detected partial clone with SSH remote that will fail during worktree creation."
+        echo "Automatically converting remote URL from SSH to HTTPS to avoid authentication issues."
+        echo ""
+        echo "Current remote: $CURRENT_REMOTE"
+        
+        # Extract org/repo from SSH URL (git@github.com:org/repo.git) or HTTPS URL
+        if echo "$CURRENT_REMOTE" | grep -q 'git@github.com:'; then
+            # Convert git@github.com:org/repo.git to https://github.com/org/repo.git
+            NEW_REMOTE=$(echo "$CURRENT_REMOTE" | sed 's|git@github.com:\(.*\)|https://github.com/\1|')
+            echo "New remote: $NEW_REMOTE"
+            git remote set-url origin "$NEW_REMOTE" 2>&1
+            if [ $? -eq 0 ]; then
+                echo "✓ Successfully converted remote to HTTPS"
+                echo "  This will allow Git to fetch blob objects without SSH authentication"
+            else
+                echo "✗ Failed to convert remote URL"
+            fi
+        else
+            echo "  Remote URL format not recognized, skipping conversion"
         fi
     fi
     
