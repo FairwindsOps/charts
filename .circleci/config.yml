@@ -65,6 +65,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Unshallow Git Clone
+          command: git fetch --unshallow
+      - run:
           name: Install helm-docs
           command: |
             cd /tmp
