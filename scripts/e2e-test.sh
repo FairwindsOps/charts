@@ -82,6 +82,7 @@ run_tests () {
     git ls-remote origin "$TARGET_BRANCH" 2>&1 | head -3 || echo "    Cannot access remote (this may be expected)"
     echo ""
     echo "Checking SSH configuration (if using SSH remote):"
+    SSH_KEY_COUNT=0
     if git remote get-url origin 2>&1 | grep -q '@'; then
         echo "  Remote uses SSH"
         SSH_KEY_COUNT=$(find ~/.ssh -name 'id_*' -type f 2>/dev/null | wc -l || echo '0')
