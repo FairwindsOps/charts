@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.11
+* Fixing kyverno RBACs
+
 ## 5.2.10
 * Added missing rbac for kyverno policies sync
 
