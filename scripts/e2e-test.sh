@@ -48,6 +48,11 @@ run_tests () {
     echo "Git commit: $(git rev-parse HEAD 2>&1 || echo 'N/A')"
     echo "Git remote origin URL: $(git remote get-url origin 2>&1 || echo 'N/A')"
     echo ""
+    echo "Checking if this is a partial clone:"
+    git config --get remote.origin.partialclonefilter 2>&1 || echo "  No partial clone filter configured"
+    git remote show origin 2>&1 | grep -E "(blob|filter|partial)" || echo "  No partial clone indicators in remote"
+    echo "  Remote fetch config: $(git config --get remote.origin.fetch 2>&1 || echo 'N/A')"
+    echo ""
     echo "Checking git worktree status:"
     git worktree list 2>&1 || echo "  git worktree list failed"
     echo ""
@@ -65,20 +70,29 @@ run_tests () {
     echo ""
     echo "Checking git object availability:"
     echo "  Local objects: $(git count-objects -v 2>&1 | grep -E '^(count|size)' || echo 'N/A')"
+    echo "  Checking if this is a partial clone (promisor remote):"
+    if git config --get remote.origin.partialclonefilter >/dev/null 2>&1; then
+        echo "    WARNING: This is a partial clone with filter: $(git config --get remote.origin.partialclonefilter)"
+        echo "    This means blob objects are not stored locally and must be fetched on-demand"
+        echo "    The 'promisor remote' error occurs when Git tries to fetch missing blobs"
+    else
+        echo "    Not a partial clone (all objects should be local)"
+    fi
     echo "  Checking if we can access remote objects:"
     git ls-remote origin "$TARGET_BRANCH" 2>&1 | head -3 || echo "    Cannot access remote (this may be expected)"
     echo ""
     echo "Checking SSH configuration (if using SSH remote):"
-    if echo "$(git remote get-url origin 2>&1)" | grep -q '@'; then
+    if git remote get-url origin 2>&1 | grep -q '@'; then
         echo "  Remote uses SSH"
-        echo "  SSH keys available: $(ls -la ~/.ssh/id_* 2>&1 | wc -l || echo '0') keys found"
+        SSH_KEY_COUNT=$(find ~/.ssh -name 'id_*' -type f 2>/dev/null | wc -l || echo '0')
+        echo "  SSH keys available: $SSH_KEY_COUNT keys found"
         echo "  SSH config: $(test -f ~/.ssh/config && echo 'exists' || echo 'not found')"
     else
         echo "  Remote does not use SSH"
     fi
     echo ""
     echo "Checking existing worktrees that might conflict:"
-    ls -la ct-previous-revision* 2>&1 | head -10 || echo "  No existing worktrees found"
+    find . -maxdepth 1 -name 'ct-previous-revision*' -type d 2>&1 | head -10 || echo "  No existing worktrees found"
     echo ""
     echo "Git configuration that might affect worktree creation:"
     git config --get-regexp '^(remote|fetch|worktree)' 2>&1 | head -10 || echo "  No relevant config found"
@@ -105,7 +119,7 @@ run_tests () {
         git worktree list 2>&1 || echo "    git worktree list failed"
         echo ""
         echo "  - Failed worktree directories:"
-        ls -la ct-previous-revision* 2>&1 | head -10 || echo "    No worktree directories found"
+        find . -maxdepth 1 -name 'ct-previous-revision*' -type d 2>&1 | head -10 || echo "    No worktree directories found"
         echo ""
         echo "  - Git status:"
         git status --short 2>&1 | head -20 || echo "    git status failed"
