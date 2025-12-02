@@ -6,7 +6,31 @@ set -x
 
 # Check whether insights-agent is part of the changed charts
 cd /charts
-CHANGED="$(ct list-changed --config ./scripts/ct.yaml --print-config)"
+
+# Workaround for partial clone + SSH authentication issues
+# Convert SSH remote to HTTPS if needed to prevent promisor remote errors
+PARTIAL_CLONE=$(git config --get remote.origin.partialclonefilter 2>&1 || echo "")
+CURRENT_REMOTE=$(git remote get-url origin 2>&1)
+if [ -n "$PARTIAL_CLONE" ] && echo "$CURRENT_REMOTE" | grep -q 'git@github.com:'; then
+    NEW_REMOTE=$(echo "$CURRENT_REMOTE" | sed 's|git@github.com:\(.*\)|https://github.com/\1|')
+    git remote set-url origin "$NEW_REMOTE" 2>&1 || true
+fi
+
+# Capture ct list-changed output and check for errors
+set +o errexit
+CHANGED_OUTPUT=$(ct list-changed --config ./scripts/ct.yaml --print-config 2>&1)
+CT_EXIT_CODE=$?
+set -o errexit
+
+# Check for segfault or other errors
+if [ $CT_EXIT_CODE -ne 0 ] || echo "$CHANGED_OUTPUT" | grep -qi "failed\|error\|segmentation\|core dumped"; then
+    echo "ERROR: ct list-changed failed"
+    echo "Exit code: $CT_EXIT_CODE"
+    echo "Output: $CHANGED_OUTPUT"
+    exit 1
+fi
+
+CHANGED="$CHANGED_OUTPUT"
 
 case "$CHANGED" in 
   *insights-agent*)
