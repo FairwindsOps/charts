@@ -64,7 +64,7 @@ jobs:
     executor: ci-images
     steps:
       - checkout:
-        method: full
+          method: full
       - run:
           name: Install helm-docs
           command: |
@@ -84,7 +84,7 @@ jobs:
       - image: koalaman/shellcheck-alpine:v0.7.0
     steps:
       - checkout:
-        method: full
+          method: full
       - run:
           name: lint
           command: |
@@ -102,7 +102,7 @@ jobs:
       - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
       - checkout:
-        method: full
+          method: full
       - *setup_environment
       - run:
           name: lint
@@ -116,7 +116,7 @@ jobs:
       - image: quay.io/helmpack/chart-testing:v3.13.0
     steps:
       - checkout:
-        method: full
+          method: full
       - *setup_environment
       - *install_vault_alpine
       - rok8s/get_vault_aws_credentials:
