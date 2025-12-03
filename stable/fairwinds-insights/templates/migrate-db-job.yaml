@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: migrate-database
   annotations:
-    "helm.sh/hook-delete-policy": "hook-succeeded,hook-failed"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
   {{- if not (or .Values.postgresql.ephemeral .Values.postgresql.postMigrate) }}
     "helm.sh/hook": "pre-install,pre-upgrade"
   {{- else }}

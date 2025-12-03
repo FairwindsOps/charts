@@ -3,7 +3,7 @@ kind: Job
 metadata:
   name: one-time-migration
   annotations:
-    "helm.sh/hook-delete-policy": "hook-succeeded,hook-failed"
+    "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook-weight": "1"
     "helm.sh/hook": "post-install,post-upgrade"
   labels:
