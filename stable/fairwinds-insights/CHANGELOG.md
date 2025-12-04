@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.3
+* Added `ttlSecondsAfterFinished` to `one-time-migration` and `migrate-db` jobs.
+
 ## 5.4.2
 * Remove deployments that were moved to temporal workflows (`repo-scan-job` and `automated-pr-job`)
 

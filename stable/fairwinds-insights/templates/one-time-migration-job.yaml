@@ -10,6 +10,7 @@ metadata:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: one-time-migration
 spec:
+  ttlSecondsAfterFinished: 3600
   backoffLimit: 5
   template:
     spec:
