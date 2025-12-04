@@ -1,7 +1,7 @@
 # Changelog
 
 ## 5.4.3
-* Replaced `"helm.sh/hook-delete-policy": "before-hook-creation"` with `"helm.sh/hook-delete-policy": "hook-succeeded,hook-failed"` for `one-time-migration` and `migrate-db` jobs.
+* Added `ttlSecondsAfterFinished` to `one-time-migration` and `migrate-db` jobs.
 
 ## 5.4.2
 * Remove deployments that were moved to temporal workflows (`repo-scan-job` and `automated-pr-job`)
