@@ -1,5 +1,6 @@
 job:
   debug: true
+  dryRun: false # If true, will only log candidates for removal and not remove them. Set to false for actual pruning.
 pruneProfiles:
 - olderThan: "3 days ago"
   helmReleaseFilter: "^fwinsights-"
