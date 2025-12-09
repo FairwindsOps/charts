@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.4
+* Bump insights-agent version to `5.2.0`
+
 ## 5.4.3
 * Added `ttlSecondsAfterFinished` to `one-time-migration` and `migrate-db` jobs.
 
