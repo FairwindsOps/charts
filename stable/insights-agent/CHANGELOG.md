@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.2.12
+* Adds kyverno-policies-sync k8s leases RBACs support
+
 ## 5.2.11
 * Fixing kyverno RBACs
 
