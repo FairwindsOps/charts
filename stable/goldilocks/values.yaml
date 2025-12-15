@@ -161,6 +161,27 @@ dashboard:
     #    hosts:
     #      - chart-example.local
 
+  httpRoute:
+    # dashboard.httpRoute.enabled -- Enables an HTTPRoute object for the dashboard (Gateway API).
+    enabled: false
+    # dashboard.httpRoute.annotations -- Extra annotations for the HTTPRoute
+    annotations: {}
+    # dashboard.httpRoute.labels -- Extra labels for the HTTPRoute
+    labels: {}
+    # dashboard.httpRoute.parentRefs -- Parent references for the HTTPRoute (required when enabled)
+    parentRefs: []
+      # - name: gateway
+      #   namespace: gateway-namespace
+      #   sectionName: https
+    # dashboard.httpRoute.hostnames -- Hostnames for the HTTPRoute
+    hostnames: []
+      # - chart-example.local
+    # dashboard.httpRoute.matches -- Matching rules for the HTTPRoute
+    matches:
+      - path:
+          type: PathPrefix
+          value: /
+
   # dashboard.resources -- A resources block for the dashboard.
   resources:
     limits: {}
