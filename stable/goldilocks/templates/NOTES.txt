@@ -5,6 +5,10 @@
   http{{ if $.Values.dashboard.ingress.tls }}s{{ end }}://{{ $host.host }}{{ . }}
   {{- end }}
 {{- end }}
+{{- else if .Values.dashboard.httpRoute.enabled }}
+{{- range .Values.dashboard.httpRoute.hostnames }}
+  {{ . }}
+{{- end }}
 {{- else if contains "NodePort" .Values.dashboard.service.type }}
   export NODE_PORT=$(kubectl get --namespace {{ .Release.Namespace }} -o jsonpath="{.spec.ports[0].nodePort}" services {{ include "goldilocks.fullname" . }})
   export NODE_IP=$(kubectl get nodes --namespace {{ .Release.Namespace }} -o jsonpath="{.items[0].status.addresses[0].address}")
