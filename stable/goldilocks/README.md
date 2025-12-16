@@ -124,6 +124,12 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | dashboard.ingress.hosts[0].paths[0].type | string | `"ImplementationSpecific"` |  |
 | dashboard.ingress.tls | list | `[]` |  |
+| dashboard.httpRoute.enabled | bool | `false` | Enables an HTTPRoute object for the dashboard (Gateway API). |
+| dashboard.httpRoute.annotations | object | `{}` | Extra annotations for the HTTPRoute |
+| dashboard.httpRoute.labels | object | `{}` | Extra labels for the HTTPRoute |
+| dashboard.httpRoute.parentRefs | list | `[]` | Parent references for the HTTPRoute (required when enabled) |
+| dashboard.httpRoute.hostnames | list | `[]` | Hostnames for the HTTPRoute |
+| dashboard.httpRoute.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matching rules for the HTTPRoute |
 | dashboard.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | A resources block for the dashboard. |
 | dashboard.podSecurityContext | object | `{"seccompProfile":{"type":"RuntimeDefault"}}` | Defines the podSecurityContext for the dashboard pod |
 | dashboard.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the dashboard container |
