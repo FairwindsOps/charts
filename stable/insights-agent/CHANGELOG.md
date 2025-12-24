@@ -1,5 +1,8 @@
 # Changelog
 
+# 5.3.0
+* Upgraded all plugins to the latest versions with Kubernetes client libraries v0.35.0
+
 ## 5.2.12
 * Adds kyverno-policies-sync k8s leases RBACs support
 
