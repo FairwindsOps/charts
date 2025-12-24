@@ -29,7 +29,7 @@ rbac:
 uploader:
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.5"
+    tag: "0.6"
   imagePullSecret: ""
   sendFailures: true
   resources:
@@ -69,7 +69,7 @@ installReporter:
   ttl: 300
   image:
     repository: quay.io/fairwinds/insights-uploader
-    tag: "0.5"
+    tag: "0.6"
   resources:
     requests:
       cpu: 100m
@@ -161,7 +161,7 @@ opa:
   timeout: 300
   image:
     repository: quay.io/fairwinds/fw-opa
-    tag: "3.0"
+    tag: "3.1"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -212,7 +212,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.6"
+    tag: "2.7"
   resources:
     requests:
       cpu: 100m
@@ -245,7 +245,7 @@ rbac-reporter:
   timeout: 300
   image:
     repository: quay.io/fairwinds/rbac-reporter
-    tag: "1.3"
+    tag: "1.4"
   resources:
     requests:
       cpu: 100m
@@ -260,11 +260,11 @@ kube-bench:
   SkipVolumes: true
   image:
     repository: quay.io/fairwinds/fw-kube-bench
-    tag: 0.5
+    tag: "0.6"
   aggregator:
     image:
       repository: quay.io/fairwinds/fw-kube-bench-aggregator
-      tag: 0.3
+      tag: "0.4"
     resources:
       requests:
         cpu: 100m
@@ -293,7 +293,7 @@ trivy:
     TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1,public.ecr.aws/aquasecurity/trivy-java-db:1,docker.io/aquasec/trivy-java-db:1
   image:
     repository: quay.io/fairwinds/fw-trivy
-    tag: "0.33"
+    tag: "0.34"
   serviceAccount:
     annotations:
   resources:
@@ -335,7 +335,7 @@ prometheus-metrics:
   sKipKsmNonZeroMetricsCheck: true
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.5"
+    tag: "1.6"
   resources:
     requests:
       cpu: 100m
@@ -545,7 +545,7 @@ right-sizer:
     # This image is for the controller, the agent only runs the Insights uploader.
     image:
       repository: quay.io/fairwinds/right-sizer
-      tag: 0.5
+      tag: "0.6"
       pullPolicy: Always
 
     # oom-detection.stateconfigmapname -- The name of a ConfigMap where controller
@@ -649,7 +649,7 @@ falco:
     port: 3031
   image:
     repository: quay.io/fairwinds/falco-agent
-    tag: "0.3"
+    tag: "0.4"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -702,7 +702,7 @@ kyverno:
   schedule: "rand * * * *"
   image:
     repository: quay.io/fairwinds/kyverno
-    tag: "0.4"
+    tag: "0.5"
   resources:
     requests:
       cpu: 100m
@@ -716,7 +716,7 @@ kyverno-policy-sync:
   timeout: 600
   image:
     repository: quay.io/fairwinds/kyverno-policy-sync
-    tag: "0.1"
+    tag: "0.2"
   resources:
     requests:
       cpu: 500m
@@ -740,7 +740,7 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: quay.io/fairwinds/on-demand-job-runner
-    tag: "0.1"
+    tag: "0.2"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -770,7 +770,7 @@ insights-event-watcher:
   enabled: false
   image:
     repository: quay.io/fairwinds/insights-event-watcher
-    tag: "0.1"
+    tag: "0.2"
     pullPolicy: Always
   logLevel: "info"
   # Health check configuration
