@@ -38,6 +38,7 @@ spec:
             EXISTS=$(curl -s -o $CLUSTER_FILE -w "%{http_code}" "$CLUSTER_URL?showToken=true" -H "$AUTH_HEADER")
             if [[ $EXISTS -eq 404 ]]; then
               echo "Creating cluster..."
+              echo "URL: $CLUSTER_URL"
               curl -f -X POST "$CLUSTER_URL" -H "$AUTH_HEADER" -o $CLUSTER_FILE
             else
               echo "Cluster already exists"
