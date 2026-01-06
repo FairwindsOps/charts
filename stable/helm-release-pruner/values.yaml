@@ -52,6 +52,7 @@ pruneProfiles: []
 #     namespaceFilter: "^feature-.+"
 #     helmReleaseNegateFilter: "-permanent$"
 #     namespaceNegateFilter: "-permanent$"
+#     preserveNamespace: false
 
 rbac_manager:
   # rbac_manager.enabled -- If true, creates an RbacDefinition to manage access
