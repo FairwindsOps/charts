@@ -333,6 +333,13 @@ prometheus-metrics:
   managedPrometheusClusterName: ""
   skipNonZeroMetricsCheck: false
   sKipKsmNonZeroMetricsCheck: true
+  # Bearer token for authentication (for Mimir or other secured backends)
+  # Use bearerTokenSecretName for production instead of inline bearerToken
+  bearerToken: ""
+  bearerTokenSecretName: ""
+  bearerTokenSecretKey: "token"
+  # Tenant ID for multi-tenant backends like Grafana Mimir (sets X-Scope-OrgID header)
+  tenantId: ""
   image:
     repository: quay.io/fairwinds/prometheus-collector
     tag: "1.6"

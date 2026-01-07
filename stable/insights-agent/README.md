@@ -127,6 +127,10 @@ Parameter | Description | Default
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
 `prometheus-metrics.installPrometheusServer` | Install a new Prometheus server instance for the prometheus report | false
 `prometheus-metrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
+`prometheus-metrics.bearerToken` | Bearer token for Prometheus authentication (not recommended for production, use bearerTokenSecretName instead) | `""`
+`prometheus-metrics.bearerTokenSecretName` | Name of an existing Secret containing the bearer token for Prometheus authentication | `""`
+`prometheus-metrics.bearerTokenSecretKey` | Key within the secret containing the bearer token | `"token"`
+`prometheus-metrics.tenantId` | Tenant ID for multi-tenant Prometheus backends like Grafana Mimir (sets `X-Scope-OrgID` header) | `""`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
 `awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
