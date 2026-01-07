@@ -1,5 +1,29 @@
 # Changelog
 
+## 5.3.0
+* Upgraded all plugins to the latest versions with Kubernetes client libraries v0.35.0
+
+## 5.2.12
+* Adds kyverno-policies-sync k8s leases RBACs support
+
+## 5.2.11
+* Fixing kyverno RBACs
+
+## 5.2.10
+* Added missing rbac for kyverno policies sync
+
+## 5.2.9
+* Added missing rbac for kyverno policies sync
+
+## 5.2.8
+* Added missing rbac for kyverno policies sync
+
+## 5.2.7
+* Added missing rbac for kyverno policies sync
+
+## 5.2.6
+* Increased resources for insights event watcher
+
 ## 5.2.5
 * Removed insights event watcher parameter
 
