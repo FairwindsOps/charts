@@ -342,7 +342,7 @@ prometheus-metrics:
   tenantId: ""
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.6"
+    tag: "1.7"
   resources:
     requests:
       cpu: 100m
