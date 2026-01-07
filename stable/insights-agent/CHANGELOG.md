@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.3.2
+* Bumped prometheus plugin to 1.7
+
 ## 5.3.1
 * Added multi-tenant Prometheus support (Grafana Mimir) with `tenantId` configuration
 
