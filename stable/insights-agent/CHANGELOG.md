@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.3.1
+* Added multi-tenant Prometheus support (Grafana Mimir) with `tenantId` configuration
+
 ## 5.3.0
 * Upgraded all plugins to the latest versions with Kubernetes client libraries v0.35.0
 

@@ -27,6 +27,20 @@ spec:
               value: {{ (index .Values "prometheus-metrics"  "skipNonZeroMetricsCheck") | quote }}
             - name: SKIP_KSM_NON_ZERO_METRICS_CHECK
               value: {{ (index .Values "prometheus-metrics"  "sKipKsmNonZeroMetricsCheck") | quote }}
+            {{- if (index .Values "prometheus-metrics" "bearerTokenSecretName") }}
+            - name: PROMETHEUS_BEARER_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ (index .Values "prometheus-metrics" "bearerTokenSecretName") }}
+                  key: {{ (index .Values "prometheus-metrics" "bearerTokenSecretKey") | default "token" }}
+            {{- else if (index .Values "prometheus-metrics" "bearerToken") }}
+            - name: PROMETHEUS_BEARER_TOKEN
+              value: {{ (index .Values "prometheus-metrics" "bearerToken") | quote }}
+            {{- end }}
+            {{- if (index .Values "prometheus-metrics" "tenantId") }}
+            - name: PROMETHEUS_TENANT_ID
+              value: {{ (index .Values "prometheus-metrics" "tenantId") | quote }}
+            {{- end }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
