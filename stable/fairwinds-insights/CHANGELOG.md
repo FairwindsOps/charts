@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.5
+* Update application version to 18.2. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 5.4.4
 * Bump insights-agent version to `5.2.0`
 
