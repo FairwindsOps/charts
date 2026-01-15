@@ -26,3 +26,12 @@ dependencies:
   repository: https://aquasecurity.github.io/helm-charts/
   condition: trivy.server.installTrivyServer
   alias: trivy-server
+- name: dcgm-exporter
+  version: '3.6.*'
+  repository: https://nvidia.github.io/dcgm-exporter/helm-charts
+  condition: dcgm-exporter.enabled
+- name: device-metrics-exporter
+  version: '1.*'
+  repository: https://rocm.github.io/device-metrics-exporter
+  condition: amd-device-metrics-exporter.enabled
+  alias: amd-device-metrics-exporter
