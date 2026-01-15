@@ -24,6 +24,38 @@ pruneProfiles:
     maxReleasesToKeep: 10
 ```
 
+## Cleaning Up Orphan Namespaces
+
+After `helm uninstall`, some resources may remain in the namespace that were created outside of Helm (e.g., secrets from SOPS, operators, or CI/CD pipelines). This can leave "orphan" namespaces that have no Helm releases but still contain resources.
+
+To clean up these orphan namespaces, enable the `cleanupOrphanNamespaces` feature:
+
+```yaml
+job:
+  dryRun: false
+
+pruneProfiles:
+  - olderThan: "7 days ago"
+    helmReleaseFilter: "^fwinsights-"
+    namespaceFilter: "^fwinsights-"
+
+cleanupOrphanNamespaces:
+  enabled: true
+  namespacePatterns:
+    - "^fwinsights-"
+  excludePatterns:
+    - "-main$"
+    - "-production$"
+```
+
+This will:
+1. Run the normal Helm release pruning first
+2. Find namespaces matching the patterns that have NO Helm releases
+3. Delete all remaining secrets in those orphan namespaces
+4. Delete the orphan namespaces
+
+**Note:** This feature respects the `job.dryRun` setting. Set `dryRun: true` first to see what would be deleted.
+
 ## Upgrading
 
 ### v3.0.0
@@ -60,6 +92,9 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | job.nodeSelector | object | `{}` | The job nodeSelector |
 | job.tolerations | list | `[]` | The job tolerations |
 | pruneProfiles | list | `[]` | Filters to use to find purge candidates. See example usage in values.yaml for details |
+| cleanupOrphanNamespaces.enabled | bool | `false` | If true, will clean up namespaces that have no Helm releases but still contain resources |
+| cleanupOrphanNamespaces.namespacePatterns | list | `[]` | List of regex patterns to match namespace names for cleanup |
+| cleanupOrphanNamespaces.excludePatterns | list | `[]` | List of regex patterns to exclude namespaces from cleanup |
 | rbac_manager.enabled | bool | `false` | If true, creates an RbacDefinition to manage access |
 | rbac_manager.namespaceLabel | string | `""` | Label to match namespaces to grant access to |
 | fullnameOverride | string | `""` | A template override for fullname |

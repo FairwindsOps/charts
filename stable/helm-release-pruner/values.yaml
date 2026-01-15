@@ -53,6 +53,18 @@ pruneProfiles: []
 #     helmReleaseNegateFilter: "-permanent$"
 #     namespaceNegateFilter: "-permanent$"
 
+cleanupOrphanNamespaces:
+  # cleanupOrphanNamespaces.enabled -- If true, will clean up namespaces that have no Helm releases but still contain resources (e.g., secrets created outside of Helm)
+  enabled: false
+  # cleanupOrphanNamespaces.namespacePatterns -- List of regex patterns to match namespace names for cleanup
+  namespacePatterns: []
+  #   - "^fwinsights-"
+  #   - "^feature-.+"
+  # cleanupOrphanNamespaces.excludePatterns -- List of regex patterns to exclude namespaces from cleanup
+  excludePatterns: []
+  #   - "-main$"
+  #   - "-production$"
+
 rbac_manager:
   # rbac_manager.enabled -- If true, creates an RbacDefinition to manage access
   enabled: false

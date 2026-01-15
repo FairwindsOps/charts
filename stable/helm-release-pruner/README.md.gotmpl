@@ -24,6 +24,37 @@ pruneProfiles:
     maxReleasesToKeep: 10
 ```
 
+## Cleaning Up Orphan Namespaces
+
+After `helm uninstall`, some resources may remain in the namespace that were created outside of Helm (e.g., secrets from SOPS, operators, or CI/CD pipelines). This can leave "orphan" namespaces that have no Helm releases but still contain resources.
+
+To clean up these orphan namespaces, enable the `cleanupOrphanNamespaces` feature:
+
+```yaml
+job:
+  dryRun: false
+
+pruneProfiles:
+  - olderThan: "7 days ago"
+    helmReleaseFilter: "^fwinsights-"
+    namespaceFilter: "^fwinsights-"
+
+cleanupOrphanNamespaces:
+  enabled: true
+  namespacePatterns:
+    - "^fwinsights-"
+  excludePatterns:
+    - "-main$"
+    - "-production$"
+```
+
+This will:
+1. Run the normal Helm release pruning first
+2. Find namespaces matching the patterns that have NO Helm releases
+3. Delete all remaining secrets in those orphan namespaces
+4. Delete the orphan namespaces
+
+**Note:** This feature respects the `job.dryRun` setting. Set `dryRun: true` first to see what would be deleted.
 
 ## Upgrading
 
