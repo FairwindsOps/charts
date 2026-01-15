@@ -1,0 +1,7 @@
+job:
+  dryRun: false
+pruneProfiles:
+- olderThan: "3 days ago"
+  helmReleaseFilter: "^test-"
+  namespaceFilter: "^test-"
+  preserveNamespace: true
