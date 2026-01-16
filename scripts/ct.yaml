@@ -14,3 +14,5 @@ chart-repos:
   - "metrics-server=https://kubernetes-sigs.github.io/metrics-server"
   - "temporal=https://go.temporal.io/helm-charts"
   - "aquasecurity=https://aquasecurity.github.io/helm-charts"
+  - "nvidia=https://nvidia.github.io/dcgm-exporter/helm-charts"
+  - "rocm=https://rocm.github.io/device-metrics-exporter"

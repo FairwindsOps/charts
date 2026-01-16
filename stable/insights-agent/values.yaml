@@ -431,6 +431,12 @@ dcgm-exporter:
   # If using the bundled prometheus server, set to false.
   serviceMonitor:
     enabled: false
+  # dcgm-exporter.service -- Service configuration for DCGM Exporter
+  service:
+    # dcgm-exporter.service.annotations -- Annotations for Prometheus auto-discovery
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9400"
   # dcgm-exporter.arguments -- Command line arguments for dcgm-exporter
   arguments:
     - "-f"
@@ -450,6 +456,12 @@ amd-device-metrics-exporter:
   # amd-device-metrics-exporter.enabled -- Enable AMD Device Metrics Exporter for GPU utilization metrics.
   # Only enable on clusters with AMD GPUs (MI200, MI300, etc.)
   enabled: false
+  # amd-device-metrics-exporter.service -- Service configuration for AMD Device Metrics Exporter
+  service:
+    # amd-device-metrics-exporter.service.annotations -- Annotations for Prometheus auto-discovery
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "5000"
   # amd-device-metrics-exporter.resources -- Resource requests and limits
   resources:
     requests:

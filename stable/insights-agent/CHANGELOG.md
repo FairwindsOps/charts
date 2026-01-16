@@ -1,6 +1,9 @@
 # Changelog
 
-# 5.4.0
+## 5.4.1
+* Improving pruner namespace deletion
+
+## 5.4.0
 * Support to collect GPU utilization
 
 ## 5.3.2
