@@ -92,7 +92,7 @@ Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage acces
 | job.nodeSelector | object | `{}` | The job nodeSelector |
 | job.tolerations | list | `[]` | The job tolerations |
 | pruneProfiles | list | `[]` | Filters to use to find purge candidates. See example usage in values.yaml for details |
-| cleanupOrphanNamespaces.enabled | bool | `false` | If true, will clean up namespaces that have no Helm releases but still contain resources |
+| cleanupOrphanNamespaces.enabled | bool | `false` | If true, will clean up namespaces that have no Helm releases but still contain resources (e.g., secrets created outside of Helm) |
 | cleanupOrphanNamespaces.namespacePatterns | list | `[]` | List of regex patterns to match namespace names for cleanup |
 | cleanupOrphanNamespaces.excludePatterns | list | `[]` | List of regex patterns to exclude namespaces from cleanup |
 | rbac_manager.enabled | bool | `false` | If true, creates an RbacDefinition to manage access |
