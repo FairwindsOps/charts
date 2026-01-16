@@ -62,7 +62,7 @@ spec:
 
             {{ end }}
             {{- if .Values.cleanupOrphanNamespaces.enabled }}
-              echo "=== Cleaning up orphan namespaces (no Helm releases but resources remain) ==="
+              echo "=== Cleaning up orphan namespaces (no Helm releases) ==="
               
               # Get all namespaces
               for ns in $(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}'); do
@@ -88,33 +88,13 @@ spec:
                   RELEASE_COUNT=$(helm list -n "$ns" -q 2>/dev/null | wc -l)
                   
                   if [ "$RELEASE_COUNT" -eq 0 ]; then
-                    # No Helm releases - check if namespace has any resources
-                    SECRET_COUNT=$(kubectl get secrets -n "$ns" --no-headers 2>/dev/null | wc -l)
-                    
-                    if [ "$SECRET_COUNT" -gt 0 ]; then
-                      echo "Found orphan namespace: $ns (no Helm releases, $SECRET_COUNT secrets remaining)"
-                      
-                      {{- if $.Values.job.dryRun }}
-                      echo "  [DRY-RUN] Would delete all secrets in namespace $ns:"
-                      kubectl get secrets -n "$ns" --no-headers 2>/dev/null | awk '{print "    - " $1}'
-                      echo "  [DRY-RUN] Would delete namespace $ns"
-                      {{- else }}
-                      echo "  Deleting all secrets in namespace $ns..."
-                      kubectl delete secrets --all -n "$ns" --timeout=60s 2>/dev/null || true
-                      
-                      echo "  Deleting namespace $ns..."
-                      kubectl delete namespace "$ns" --timeout=120s 2>/dev/null || true
-                      {{- end }}
-                    else
-                      # No secrets either - try to delete the empty namespace
-                      echo "Found empty orphan namespace: $ns (no Helm releases, no secrets)"
-                      {{- if $.Values.job.dryRun }}
-                      echo "  [DRY-RUN] Would delete namespace $ns"
-                      {{- else }}
-                      echo "  Deleting namespace $ns..."
-                      kubectl delete namespace "$ns" --timeout=120s 2>/dev/null || true
-                      {{- end }}
-                    fi
+                    echo "Found orphan namespace with no Helm releases: $ns"
+                    {{- if $.Values.job.dryRun }}
+                    echo "  [DRY-RUN] Would delete namespace $ns"
+                    {{- else }}
+                    echo "  Deleting namespace $ns..."
+                    kubectl delete namespace "$ns" --timeout=120s 2>/dev/null || true
+                    {{- end }}
                   fi
                 fi
               done

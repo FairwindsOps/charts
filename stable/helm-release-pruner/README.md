@@ -51,8 +51,7 @@ cleanupOrphanNamespaces:
 This will:
 1. Run the normal Helm release pruning first
 2. Find namespaces matching the patterns that have NO Helm releases
-3. Delete all remaining secrets in those orphan namespaces
-4. Delete the orphan namespaces
+3. Delete those orphan namespaces (which cascades to delete all resources within them)
 
 **Note:** This feature respects the `job.dryRun` setting. Set `dryRun: true` first to see what would be deleted.
 
