@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.0
+* Support to collect GPU utilization
+
 ## 5.3.2
 * Bumped prometheus plugin to 1.7
 

@@ -349,6 +349,11 @@ prometheus-metrics:
       memory: 128Mi
   serviceAccount:
     annotations:
+  # GPU Metrics: GPU requests/limits are collected automatically via kube-state-metrics.
+  # For GPU utilization metrics, install the appropriate vendor exporter:
+  #   - NVIDIA: Enable dcgm-exporter (see below) or install DCGM Exporter separately
+  #   - AMD: Install AMD SMI Exporter (amd_smi_utilization_percentage metric)
+  #   - Intel: Install Intel GPU Plugin (intel_gpu_engine_render_active metric)
 
 prometheus:
   kubeStateMetrics:
@@ -395,6 +400,83 @@ prometheus:
       capabilities:
         drop:
           - ALL
+
+# GPU Metrics Support
+# -------------------
+# Insights supports GPU metrics from multiple vendors:
+#
+# Supported GPU/Accelerator Resource Types (via kube-state-metrics):
+#   - nvidia.com/gpu, nvidia.com/gpu.shared (NVIDIA, including time-sliced)
+#   - amd.com/gpu (AMD)
+#   - intel.com/gpu (Intel)
+#   - habana.ai/gaudi (Intel Habana Gaudi)
+#   - k8s.amazonaws.com/vgpu (AWS vGPU)
+#   - google.com/tpu (Google TPU)
+#
+# GPU Utilization Metrics (requires vendor-specific exporter):
+#   - NVIDIA: DCGM Exporter (DCGM_FI_DEV_GPU_UTIL)
+#   - AMD: AMD SMI Exporter (amd_smi_utilization_percentage)
+#   - Intel: Intel GPU Plugin (intel_gpu_engine_render_active)
+#
+# GPU requests/limits are collected automatically from kube-state-metrics.
+# GPU utilization requires the appropriate vendor exporter to be installed.
+
+# NVIDIA DCGM Exporter for GPU utilization metrics
+# See: https://nvidia.github.io/dcgm-exporter/
+dcgm-exporter:
+  # dcgm-exporter.enabled -- Enable NVIDIA DCGM Exporter for GPU utilization metrics.
+  # Only enable on clusters with NVIDIA GPUs.
+  enabled: false
+  # dcgm-exporter.serviceMonitor -- Enable ServiceMonitor for Prometheus Operator.
+  # If using the bundled prometheus server, set to false.
+  serviceMonitor:
+    enabled: false
+  # dcgm-exporter.service -- Service configuration for DCGM Exporter
+  service:
+    # dcgm-exporter.service.annotations -- Annotations for Prometheus auto-discovery
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "9400"
+  # dcgm-exporter.arguments -- Command line arguments for dcgm-exporter
+  arguments:
+    - "-f"
+    - "/etc/dcgm-exporter/dcp-metrics-included.csv"
+  # dcgm-exporter.resources -- Resource requests and limits
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# AMD ROCm Device Metrics Exporter for GPU utilization metrics
+# See: https://github.com/ROCm/device-metrics-exporter
+amd-device-metrics-exporter:
+  # amd-device-metrics-exporter.enabled -- Enable AMD Device Metrics Exporter for GPU utilization metrics.
+  # Only enable on clusters with AMD GPUs (MI200, MI300, etc.)
+  enabled: false
+  # amd-device-metrics-exporter.service -- Service configuration for AMD Device Metrics Exporter
+  service:
+    # amd-device-metrics-exporter.service.annotations -- Annotations for Prometheus auto-discovery
+    annotations:
+      prometheus.io/scrape: "true"
+      prometheus.io/port: "5000"
+  # amd-device-metrics-exporter.resources -- Resource requests and limits
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+# Intel GPU Metrics
+# -----------------
+# Intel does not provide an official standalone Prometheus exporter helm chart.
+# For Intel GPU metrics, install Intel XPU Manager or Intel GPU Plugin separately.
+# The prometheus-collector will scrape intel_gpu_engine_render_active metrics
+# if available from your Intel GPU monitoring solution.
 
 admission:
   enabled: false
