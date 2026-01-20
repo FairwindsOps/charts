@@ -52,6 +52,7 @@ pruneProfiles: []
 #     namespaceFilter: "^feature-.+"
 #     helmReleaseNegateFilter: "-permanent$"
 #     namespaceNegateFilter: "-permanent$"
+#     preserveNamespace: false
 
 cleanupOrphanNamespaces:
   # cleanupOrphanNamespaces.enabled -- If true, will clean up namespaces that have no Helm releases but still contain resources (e.g., secrets created outside of Helm)
