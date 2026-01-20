@@ -56,6 +56,9 @@ spec:
                 {{- if .maxReleasesToKeep }}
                 --max-releases-to-keep={{ .maxReleasesToKeep | quote }} \
                 {{- end }}
+                {{- if .preserveNamespace }}
+                --preserve-namespace \
+                {{- end }}
                 {{- if $.Values.job.dryRun }}
                 --dry-run \
                 {{- end }}
