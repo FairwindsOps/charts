@@ -1,12 +1,9 @@
-job:
+# CI test values
+pruner:
+  dryRun: false
   debug: true
-  dryRun: false  # If true, will only log candidates for removal and not remove them. Set to false for actual pruning.
-pruneProfiles:
-- olderThan: "3 days ago"
-  helmReleaseFilter: "^fwinsights-"
-  namespaceFilter: "^fwinsights-"
-  maxReleasesToKeep: 40
-- olderThan: "4 days ago"
-  helmReleaseFilter: "^fwinsights-"
+  interval: "1h"
+  olderThan: "3d"
+  releaseFilter: "^fwinsights-"
   namespaceFilter: "^fwinsights-"
   maxReleasesToKeep: 40
