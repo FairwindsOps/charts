@@ -212,7 +212,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.7"
+    tag: "2.8"
   resources:
     requests:
       cpu: 100m
@@ -342,7 +342,7 @@ prometheus-metrics:
   tenantId: ""
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.7"
+    tag: "1.8"
   resources:
     requests:
       cpu: 100m
