@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.1
+* Bumped plugins to support to collect GPU utilization
+
 ## 5.4.0
 * Support to collect GPU utilization
 
