@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.4.2
+* Cloud-costs: add Azure provider support (subscription + Service Principal credentials via secret)
+* Cloud-costs: add FOCUS format option for AWS/GCP (`cloudcosts.format`, `cloudcosts.gcp.focusview`)
+* Cloud-costs: bump default image to 1.0.0 (Azure + FOCUS)
+* README: rename `awscosts` to `cloudcosts` and document Azure/FOCUS options
+
 ## 5.4.1
 * Bumped plugins to support to collect GPU utilization
 

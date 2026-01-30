@@ -522,9 +522,27 @@ cloudcosts:
   enabled: false
   secretName: cloudcosts
   tagkey: ""
-  provider: aws  # aws or gcp
+  tagvalue: ""
+  # format: "standard" or "focus" (AWS/GCP only; Azure always uses FOCUS)
+  format: "standard"
+  days: 5
+  provider: aws  # aws, gcp, or azure
   aws:
     tagprefix: "resource_tags_user_"
+  gcp:
+    projectname: ""
+    dataset: ""
+    billingaccount: ""
+    table: ""
+    # focusview: BigQuery FOCUS view name (e.g. project.dataset.focus_view); required when format is focus
+    focusview: ""
+  azure:
+    # subscription: Azure subscription ID (required when provider is azure)
+    subscription: ""
+    # Optional: set clientId, clientSecret, tenantId to create a secret; otherwise use existing secret with keys AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID
+    clientId: ""
+    clientSecret: ""
+    tenantId: ""
   schedule: "rand * * * *"
   timeout: 300
   image:
