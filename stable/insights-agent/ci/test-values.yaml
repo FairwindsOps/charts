@@ -148,6 +148,7 @@ cloudcosts:
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
   days: 10
+  format: standard  # or "focus" for AWS/GCP FOCUS format
   aws:
     accessKeyId: someAccessID
     secretAccessKey: someAccessKey
@@ -156,6 +157,19 @@ cloudcosts:
     table: fairwinds_insights_cur_report
     catalog: AwsDataCatalog
     workgroup: cur_athena_workgroup
+  # Example for Azure (use existing secret with AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID, or set clientId/clientSecret/tenantId):
+  # provider: azure
+  # azure:
+  #   subscription: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  # Example for GCP FOCUS format:
+  # provider: gcp
+  # format: focus
+  # gcp:
+  #   projectname: my-project
+  #   dataset: billing_export
+  #   billingaccount: "XXXXXX-XXXXXX-XXXXXX"
+  #   table: ""
+  #   focusview: "my-project.billing_export.focus_view"
 
 # Falco does not work well with KIND cluster
 falco:

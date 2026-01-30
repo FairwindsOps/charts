@@ -17,10 +17,43 @@ spec:
           - name: gcplogs
             emptyDir: {}
           {{- end }}
-          {{- if eq .Values.cloudcosts.provider "aws" }}        
+          {{- if eq .Values.cloudcosts.provider "aws" }}
           - name: creds
             emptyDir: {}
-          {{- end }}  
+          {{- end }}
+          {{- if eq .Values.cloudcosts.provider "azure" }}
+          - name: azureconfig
+            emptyDir: {}
+          {{- end }}
+          {{- if eq .Values.cloudcosts.provider "azure" }}
+          initContainers:
+          - name: azure-login
+            image: "{{ .Values.cloudcosts.image.repository }}:{{ .Values.cloudcosts.image.tag }}"
+            env:
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.cloudcosts.secretName }}
+                  key: AZURE_CLIENT_ID
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.cloudcosts.secretName }}
+                  key: AZURE_CLIENT_SECRET
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.cloudcosts.secretName }}
+                  key: AZURE_TENANT_ID
+            volumeMounts:
+            - name: azureconfig
+              mountPath: /azureconfig
+            command: ["/bin/sh", "-ec"]
+            args:
+              - |
+                export AZURE_CONFIG_DIR=/azureconfig
+                az login --service-principal -u "$AZURE_CLIENT_ID" -p "$AZURE_CLIENT_SECRET" --tenant "$AZURE_TENANT_ID"
+          {{- end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if eq .Values.cloudcosts.provider "aws" }}
@@ -55,11 +88,15 @@ spec:
               - --workgroup
               - {{ required "You must set cloudcosts.aws.workgroup, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.aws.workgroup }}
               - --tagprefix
-              - {{ .Values.cloudcosts.aws.tagprefix }}              
+              - {{ .Values.cloudcosts.aws.tagprefix }}
               - --tagkey
               - {{ required "You must set cloudcosts.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagkey }}
               - --tagvalue
               - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagvalue }}
+              {{- if eq (default "standard" .Values.cloudcosts.format) "focus" }}
+              - --format
+              - focus
+              {{- end }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
@@ -68,7 +105,7 @@ spec:
             - name: gcpconfig
               mountPath: /.config/gcloud/credentials
             - name: gcplogs
-              mountPath: /.config/gcloud              
+              mountPath: /.config/gcloud
             command: ["./cloud-costs.sh"]
             args:
               - --provider
@@ -87,6 +124,58 @@ spec:
               - {{ .Values.cloudcosts.gcp.billingaccount }}
               - --table
               - {{ .Values.cloudcosts.gcp.table }}
+              {{- if eq (default "standard" .Values.cloudcosts.format) "focus" }}
+              - --format
+              - focus
+              {{- if .Values.cloudcosts.gcp.focusview }}
+              - --focusview
+              - {{ .Values.cloudcosts.gcp.focusview }}
+              {{- end }}
+              {{- end }}
+              {{- if .Values.cloudcosts.days }}
+              - --days
+              - "{{ .Values.cloudcosts.days }}"
+              {{- end }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+            {{- end }}
+          {{- if eq .Values.cloudcosts.provider "azure" }}
+          {{- $azure := .Values.cloudcosts.azure | default dict }}
+            - name: azureconfig
+              mountPath: /azureconfig
+            env:
+            - name: AZURE_CONFIG_DIR
+              value: /azureconfig
+            - name: AZURE_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.cloudcosts.secretName }}
+                  key: AZURE_CLIENT_ID
+            - name: AZURE_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.cloudcosts.secretName }}
+                  key: AZURE_CLIENT_SECRET
+            - name: AZURE_TENANT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.cloudcosts.secretName }}
+                  key: AZURE_TENANT_ID
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            command: ["./cloud-costs.sh"]
+            args:
+              - --provider
+              - azure
+              - --subscription
+              - {{ required "You must set cloudcosts.azure.subscription when provider is azure" $azure.subscription }}
+              {{- if .Values.cloudcosts.tagkey }}
+              - --tagkey
+              - {{ .Values.cloudcosts.tagkey }}
+              {{- end }}
+              {{- if .Values.cloudcosts.tagvalue }}
+              - --tagvalue
+              - {{ .Values.cloudcosts.tagvalue }}
+              {{- end }}
               {{- if .Values.cloudcosts.days }}
               - --days
               - "{{ .Values.cloudcosts.days }}"

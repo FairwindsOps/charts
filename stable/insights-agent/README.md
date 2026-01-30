@@ -38,7 +38,7 @@ There are several different report types which can be enabled and configured:
 * `opa`
 * `prometheus-metrics`
 * `admission`
-* `awscosts`
+* `cloudcosts` (AWS, GCP, or Azure; optional FOCUS format)
 
 See below for configuration details.
 
@@ -133,17 +133,29 @@ Parameter | Description | Default
 `prometheus-metrics.tenantId` | Tenant ID for multi-tenant Prometheus backends like Grafana Mimir (sets `X-Scope-OrgID` header) | `""`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
-`awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
-`awscosts.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
-`awscosts.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
-`awscosts.region` | AWS region where costs was defined | ""
-`awscosts.database` | AWS database where Athena table was created | ""
-`awscosts.table` | AWS database Athena table for AWS costs | ""
-`awscosts.catalog` | AWS database catalog for AWS costs | ""
-`awscosts.serviceAccount.annotations` | Annotations to add to the awscosts service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing aws | nil
-`awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
-`awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
-`awscosts.workgroup` | Athena work group that used to run the queries | ""
+`cloudcosts.enabled` | Enable the cloud-costs report (AWS, GCP, or Azure) | false
+`cloudcosts.provider` | Cloud provider: `aws`, `gcp`, or `azure` | aws
+`cloudcosts.secretName` | Kubernetes Secret name for provider credentials | ""
+`cloudcosts.tagkey` | Tag key to filter resources (e.g. kubernetes-cluster) | ""
+`cloudcosts.tagvalue` | Tag value to filter resources | ""
+`cloudcosts.format` | Output format: `standard` or `focus` (AWS/GCP only; Azure always uses FOCUS) | standard
+`cloudcosts.days` | Number of days to query | 5
+`cloudcosts.aws.region` | AWS region for Athena | ""
+`cloudcosts.aws.database` | Athena database name | ""
+`cloudcosts.aws.table` | Athena table name | ""
+`cloudcosts.aws.catalog` | Athena catalog | ""
+`cloudcosts.aws.workgroup` | Athena workgroup | ""
+`cloudcosts.aws.tagprefix` | Tag prefix for AWS CUR (e.g. resource_tags_user_) | resource_tags_user_
+`cloudcosts.gcp.projectname` | GCP project name | ""
+`cloudcosts.gcp.dataset` | BigQuery dataset name | ""
+`cloudcosts.gcp.billingaccount` | GCP billing account ID | ""
+`cloudcosts.gcp.table` | BigQuery table path (optional) | ""
+`cloudcosts.gcp.focusview` | BigQuery FOCUS view name (required when format is focus) | ""
+`cloudcosts.azure.subscription` | Azure subscription ID (required when provider is azure) | ""
+`cloudcosts.azure.clientId` | Azure Service Principal client ID (optional; or use existing secret) | ""
+`cloudcosts.azure.clientSecret` | Azure Service Principal client secret | ""
+`cloudcosts.azure.tenantId` | Azure tenant ID | ""
+`cloudcosts.serviceAccount.annotations` | Annotations for the cloud-costs service account, e.g. `eks.amazonaws.com/role-arn` for IRSA (AWS) | nil
 `insights-event-watcher.enabled` | Enable the insights-event-watcher component | `true`
 `insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
 `insights-event-watcher.image.tag` | Tag for the insights-event-watcher image | `0.1`
