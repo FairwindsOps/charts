@@ -140,6 +140,7 @@ spec:
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
           {{- if eq .Values.cloudcosts.provider "azure" }}
+          {{- $azure := .Values.cloudcosts.azure | default dict }}
             - name: azureconfig
               mountPath: /azureconfig
             env:
@@ -166,7 +167,7 @@ spec:
               - --provider
               - azure
               - --subscription
-              - {{ required "You must set cloudcosts.azure.subscription when provider is azure" .Values.cloudcosts.azure.subscription }}
+              - {{ required "You must set cloudcosts.azure.subscription when provider is azure" $azure.subscription }}
               {{- if .Values.cloudcosts.tagkey }}
               - --tagkey
               - {{ .Values.cloudcosts.tagkey }}
