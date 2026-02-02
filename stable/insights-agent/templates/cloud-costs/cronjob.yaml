@@ -21,6 +21,24 @@ spec:
           - name: creds
             emptyDir: {}
           {{- end }}
+          {{- if eq .Values.cloudcosts.provider "azure" }}
+          - name: azureconfig
+            emptyDir: {}
+          {{- end }}
+          {{- if eq .Values.cloudcosts.provider "azure" }}
+          initContainers:
+          - name: az-login
+            image: "{{ .Values.cloudcosts.image.repository }}:{{ .Values.cloudcosts.image.tag }}"
+            imagePullPolicy: Always
+            command: ["sh", "-c", "az login --identity -u \"$AZURE_CLIENT_ID\" --output none"]
+            env:
+            - name: AZURE_CONFIG_DIR
+              value: /tmp/.azure
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            volumeMounts:
+            - name: azureconfig
+              mountPath: /tmp/.azure
+          {{- end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if eq .Values.cloudcosts.provider "aws" }}
@@ -108,7 +126,11 @@ spec:
             {{- end }}
           {{- if eq .Values.cloudcosts.provider "azure" }}
           {{- $azure := .Values.cloudcosts.azure | default dict }}
+            - name: azureconfig
+              mountPath: /tmp/.azure
             env:
+            - name: AZURE_CONFIG_DIR
+              value: /tmp/.azure
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             command: ["./cloud-costs.sh"]
             args:
