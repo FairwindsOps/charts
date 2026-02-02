@@ -53,6 +53,9 @@ metadata:
     {{- with .Config.jobLabels }}
     {{- toYaml . | nindent 4 }}
     {{- end }}
+    {{- if and (eq .Label "cloudcosts") (eq .Config.provider "azure") }}
+    azure.workload.identity/use: "true"
+    {{- end }}
     app.kubernetes.io/name: {{ .Label }}
     app.kubernetes.io/part-of: {{ include "insights-agent.fullname" . }}
   annotations:

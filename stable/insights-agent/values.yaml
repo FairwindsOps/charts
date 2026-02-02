@@ -539,10 +539,11 @@ cloudcosts:
   azure:
     # subscription: Azure subscription ID (required when provider is azure)
     subscription: ""
-    # Optional: set clientId, clientSecret, tenantId to create a secret; otherwise use existing secret with keys AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID
-    clientId: ""
-    clientSecret: ""
-    tenantId: ""
+    # Workload Identity: Azure AD app (or user-assigned managed identity) client ID and tenant ID.
+    # Cluster must have Azure AD Workload Identity (e.g. AKS workload identity) and federated credential configured.
+    workloadIdentity:
+      clientId: ""   # required when provider is azure
+      tenantId: ""   # optional; webhook can infer from cluster
   schedule: "rand * * * *"
   timeout: 300
   image:

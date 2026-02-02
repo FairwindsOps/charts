@@ -157,10 +157,13 @@ cloudcosts:
     table: fairwinds_insights_cur_report
     catalog: AwsDataCatalog
     workgroup: cur_athena_workgroup
-  # Example for Azure (use existing secret with AZURE_CLIENT_ID, AZURE_CLIENT_SECRET, AZURE_TENANT_ID, or set clientId/clientSecret/tenantId):
+  # Example for Azure (Azure AD Workload Identity; cluster must have workload identity and federated credential):
   # provider: azure
   # azure:
   #   subscription: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  #   workloadIdentity:
+  #     clientId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+  #     tenantId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
   # Example for GCP FOCUS format:
   # provider: gcp
   # format: focus

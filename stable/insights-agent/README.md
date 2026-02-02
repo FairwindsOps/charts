@@ -135,7 +135,7 @@ Parameter | Description | Default
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
 `cloudcosts.enabled` | Enable the cloud-costs report (AWS, GCP, or Azure) | false
 `cloudcosts.provider` | Cloud provider: `aws`, `gcp`, or `azure` | aws
-`cloudcosts.secretName` | Kubernetes Secret name for provider credentials | ""
+`cloudcosts.secretName` | Kubernetes Secret name for provider credentials (AWS only; Azure uses Workload Identity, no secret) | ""
 `cloudcosts.tagkey` | Tag key to filter resources (e.g. kubernetes-cluster) | ""
 `cloudcosts.tagvalue` | Tag value to filter resources | ""
 `cloudcosts.format` | Output format: `standard` or `focus` (AWS/GCP only; Azure always uses FOCUS) | standard
@@ -152,9 +152,8 @@ Parameter | Description | Default
 `cloudcosts.gcp.table` | BigQuery table path (optional) | ""
 `cloudcosts.gcp.focusview` | BigQuery FOCUS view name (required when format is focus) | ""
 `cloudcosts.azure.subscription` | Azure subscription ID (required when provider is azure) | ""
-`cloudcosts.azure.clientId` | Azure Service Principal client ID (optional; or use existing secret) | ""
-`cloudcosts.azure.clientSecret` | Azure Service Principal client secret | ""
-`cloudcosts.azure.tenantId` | Azure tenant ID | ""
+`cloudcosts.azure.workloadIdentity.clientId` | Azure AD Workload Identity: client ID of the Azure AD app or user-assigned managed identity (required when provider is azure) | ""
+`cloudcosts.azure.workloadIdentity.tenantId` | Azure AD Workload Identity: tenant ID (optional; webhook can infer from cluster) | ""
 `cloudcosts.serviceAccount.annotations` | Annotations for the cloud-costs service account, e.g. `eks.amazonaws.com/role-arn` for IRSA (AWS) | nil
 `insights-event-watcher.enabled` | Enable the insights-event-watcher component | `true`
 `insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
