@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.4
+* Azure login
+
 ## 5.4.3
 * Azure cloud costs to support Workload Identity
 
