@@ -1,6 +1,9 @@
 # Changelog
 
 ## 5.4.5
+* Azure login is broken
+
+## 5.4.5
 * Azure login is hanging
 
 ## 5.4.4
