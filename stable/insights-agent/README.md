@@ -153,7 +153,7 @@ Parameter | Description | Default
 `cloudcosts.gcp.focusview` | BigQuery FOCUS view name (required when format is focus) | ""
 `cloudcosts.azure.subscription` | Azure subscription ID (required when provider is azure) | ""
 `cloudcosts.azure.workloadIdentity.clientId` | Azure AD Workload Identity: client ID of the Azure AD app or user-assigned managed identity (required when provider is azure) | ""
-`cloudcosts.azure.workloadIdentity.tenantId` | Azure AD Workload Identity: tenant ID (optional; webhook can infer from cluster) | ""
+`cloudcosts.azure.workloadIdentity.tenantId` | Azure AD Workload Identity: tenant ID (required when provider is azure) | ""
 `cloudcosts.serviceAccount.annotations` | Annotations for the cloud-costs service account, e.g. `eks.amazonaws.com/role-arn` for IRSA (AWS) | nil
 `insights-event-watcher.enabled` | Enable the insights-event-watcher component | `true`
 `insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
@@ -173,6 +173,48 @@ Parameter | Description | Default
 `insights-event-watcher.cloudwatch.maxMemoryMB` | Maximum memory usage in MB for CloudWatch processing | `512`
 `insights-event-watcher.serviceAccount.annotations` | Annotations to add to the service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for IRSA | `nil`
 `insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
+
+### Azure Workload Identity: Creating the federated credential (cloud-costs)
+
+When using `cloudcosts` with `provider: azure`, the chart uses [Azure AD Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) (federated credential). You must create an **App registration** (or user-assigned managed identity) in Microsoft Entra ID and add a **federated identity credential** that matches your AKS cluster and the cloud-costs service account.
+
+1. **Create an App registration** (or use an existing one) in [Microsoft Entra ID](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade). Note the **Application (client) ID** and **Directory (tenant) ID**; set these as `cloudcosts.azure.workloadIdentity.clientId` and `cloudcosts.azure.workloadIdentity.tenantId`.
+
+2. **Get your AKS cluster OIDC issuer URL** (use the exact value, including a trailing slash if present):
+
+   ```bash
+   az aks show --name <cluster-name> --resource-group <resource-group> \
+     --query "oidcIssuerProfile.issuerUrl" -o tsv
+   ```
+
+3. **Create a federated identity credential** on the App registration with the same issuer, and subject/audience below. In Azure Portal: **App registrations** → your app → **Certificates & secrets** → **Federated credentials** → **Add credential**. Or with Azure CLI (replace `<app-object-id>`, `<issuer-url>`, and `<credential-name>`):
+
+   ```bash
+   az ad app federated-credential create \
+     --id <app-object-id> \
+     --parameters '{
+       "name": "<credential-name>",
+       "issuer": "<issuer-url>",
+       "subject": "system:serviceaccount:insights-agent:insights-agent-cloudcosts",
+       "description": "AKS workload identity for insights-agent cloud-costs",
+       "audiences": ["api://AzureADTokenExchange"]
+     }'
+   ```
+
+   - **Subject** must be exactly: `system:serviceaccount:insights-agent:insights-agent-cloudcosts` (namespace `insights-agent`, service account `insights-agent-cloudcosts`). If you install the agent in a different namespace, change the subject to `system:serviceaccount:<namespace>:insights-agent-cloudcosts`.
+   - **Issuer** must match the URL from step 2 exactly (including or excluding a trailing slash as returned).
+   - **Audiences**: `api://AzureADTokenExchange`.
+
+4. **Assign RBAC** so the identity can read cost data. Grant the app's service principal at least **Reader** and **Cost Management Reader** on the subscription:
+
+   ```bash
+   az role assignment create --role "Reader" \
+     --assignee <client-id> --scope /subscriptions/<subscription-id>
+   az role assignment create --role "Cost Management Reader" \
+     --assignee <client-id> --scope /subscriptions/<subscription-id>
+   ```
+
+   Use the same **client ID** as `cloudcosts.azure.workloadIdentity.clientId` and your subscription ID as `cloudcosts.azure.subscription`.
 
 ## Breaking Changes
 
