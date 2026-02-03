@@ -30,10 +30,17 @@ spec:
           - name: az-login
             image: "{{ .Values.cloudcosts.image.repository }}:{{ .Values.cloudcosts.image.tag }}"
             imagePullPolicy: Always
-            command: ["sh", "-c", "az login --identity -u \"$AZURE_CLIENT_ID\" --output none"]
+            command: ["sh", "-c", "az login --identity --client-id \"$AZURE_CLIENT_ID\" --output none"]
             env:
             - name: AZURE_CONFIG_DIR
               value: /tmp/.azure
+            {{- $wi := .Values.cloudcosts.azure.workloadIdentity | default dict }}
+            - name: AZURE_CLIENT_ID
+              value: {{ required "cloudcosts.azure.workloadIdentity.clientId is required when provider is azure" $wi.clientId | quote }}
+            {{- if $wi.tenantId }}
+            - name: AZURE_TENANT_ID
+              value: {{ $wi.tenantId | quote }}
+            {{- end }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             volumeMounts:
             - name: azureconfig
