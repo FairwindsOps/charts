@@ -543,7 +543,7 @@ cloudcosts:
     # Cluster must have Azure AD Workload Identity (e.g. AKS workload identity) and federated credential configured.
     workloadIdentity:
       clientId: ""   # required when provider is azure
-      tenantId: ""   # optional; webhook can infer from cluster
+      tenantId: ""   # required when provider is azure (for federated-token login)
   schedule: "rand * * * *"
   timeout: 300
   image:
