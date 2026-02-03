@@ -24,8 +24,6 @@ spec:
           {{- if eq .Values.cloudcosts.provider "azure" }}
           - name: azureconfig
             emptyDir: {}
-          {{- end }}
-          {{- if eq .Values.cloudcosts.provider "azure" }}
           initContainers:
           - name: az-login
             image: "{{ .Values.cloudcosts.image.repository }}:{{ .Values.cloudcosts.image.tag }}"
