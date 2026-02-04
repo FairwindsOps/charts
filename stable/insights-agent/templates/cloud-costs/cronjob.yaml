@@ -28,7 +28,7 @@ spec:
           - name: az-login
             image: "{{ .Values.cloudcosts.image.repository }}:{{ .Values.cloudcosts.image.tag }}"
             imagePullPolicy: Always
-            command: ["sh", "-c", "az login --federated-token \"$(cat $AZURE_FEDERATED_TOKEN_FILE)\" --service-principal -u $AZURE_CLIENT_ID -t $AZURE_TENANT_ID --output none"]
+            command: ["sh", "-c", "az login --federated-token \"$(cat $AZURE_FEDERATED_TOKEN_FILE)\" --service-principal -u $AZURE_CLIENT_ID -t $AZURE_TENANT_ID --output none && chmod -R a+rwX /tmp/.azure"]
             env:
             - name: AZURE_CONFIG_DIR
               value: /tmp/.azure

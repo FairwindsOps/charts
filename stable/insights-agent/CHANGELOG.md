@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.7
+* Fix Azure dir permission
+
 ## 5.4.6
 * Azure login is broken
 
