@@ -57,7 +57,7 @@ options:
   # -- The name of your organization. This will pre-populate Insights with an organization.
   organizationName:
   # -- When true, the chart creates and manages a Secret with session/encryption keys.
-  # NOTE: Use only for testing or demo. When false, you must provide the secret (see existingSecret or create one named secretName).
+  # NOTE: Use only for testing or demo. When false, you must provide the secret (see options.existingSecret).
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: false
