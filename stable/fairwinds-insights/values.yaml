@@ -65,7 +65,7 @@ options:
   # Used for testing to auto-generate keys. When existingSecret is set, this value is ignored.
   secretName: fwinsights-secrets
   # -- Name of an existing Secret containing application environment variables (session keys, etc.).
-  # NOTE: When set, the chart does NOT create or manage this secret. Workloads use it via envFrom.
+  # NOTE: When set, the chart does NOT create or manage this secret. The secret must be a list of POSIX-compatible environment variables which will be read using envFrom.
   # NOTE: The secret must exist before install/upgrade. Create it with Sealed Secrets, External Secrets, or kubectl.
   # The secret is used with envFrom: each key becomes an environment variable name. Expected keys (base64-encoded in secret data, or use stringData):
   #   Required: COOKIE_HASH_KEY, COOKIE_BLOCK_KEY, SESSION_AUTH_KEY, SESSION_ENCRYPTION_KEY, AES_BASE64_CYPHER_KEY
