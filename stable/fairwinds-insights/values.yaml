@@ -69,6 +69,7 @@ options:
   # NOTE: The secret must exist before install/upgrade. Create it with Sealed Secrets, External Secrets, or kubectl.
   #   Required: COOKIE_HASH_KEY, COOKIE_BLOCK_KEY, SESSION_AUTH_KEY, SESSION_ENCRYPTION_KEY, AES_BASE64_CYPHER_KEY
   #   Optional (e.g. for SES, RDS, S3): AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+  #   See https://insights.docs.fairwinds.com/technical-details/self-hosted/installation/#quickstart
   existingSecret: ""
 
   # This adds an empty low-priority pod, so we don't have
