@@ -57,19 +57,15 @@ options:
   # -- The name of your organization. This will pre-populate Insights with an organization.
   organizationName:
   # -- When true, the chart creates and manages a Secret with session/encryption keys.
-  # NOTE: Use only for testing or demo. When false, you must provide the secret (see options.existingSecret).
+  # NOTE: Use only for testing or demo. When false, you must provide the secret (see options.existingSecret or create one named secretName).
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: false
   # -- Name of the secret used for application env vars (session keys, etc.).
   # Used for testing to auto-generate keys. When existingSecret is set, this value is ignored.
   secretName: fwinsights-secrets
-  # -- Name of an existing Secret containing application environment variables (session keys, etc.).
-  # NOTE: When set, the chart does NOT create or manage this secret. The secret must be a list of POSIX-compatible environment variables which will be read using envFrom.
-  # NOTE: The secret must exist before install/upgrade. Create it with Sealed Secrets, External Secrets, or kubectl.
-  #   Required: COOKIE_HASH_KEY, COOKIE_BLOCK_KEY, SESSION_AUTH_KEY, SESSION_ENCRYPTION_KEY, AES_BASE64_CYPHER_KEY
-  #   Optional (e.g. for SES, RDS, S3): AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
-  #   See https://insights.docs.fairwinds.com/technical-details/self-hosted/installation/#quickstart
+  # -- Name of an existing Secret containing application environment variables (session keys, etc.). When set, the chart does NOT create or manage this secret; it must exist before install/upgrade. See https://insights.docs.fairwinds.com/technical-details/self-hosted/installation/#quickstart
+  # NOTE: The secret is used with envFrom (each key becomes an env var). Required keys: COOKIE_HASH_KEY, COOKIE_BLOCK_KEY, SESSION_AUTH_KEY, SESSION_ENCRYPTION_KEY, AES_BASE64_CYPHER_KEY. Optional (e.g. SES, RDS, S3): AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY.
   existingSecret: ""
 
   # This adds an empty low-priority pod, so we don't have
