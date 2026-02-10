@@ -1,7 +1,7 @@
 # Changelog
 
 ## 5.5.0
-* Added existingSecret parameter for insights secret
+* Added `existingSecret` parameter for insights secret
 
 ## 5.4.6
 * Bump insights-agent version to `5.3.0`
