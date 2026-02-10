@@ -62,7 +62,7 @@ options:
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: false
   # -- Name of the secret used for application env vars (session keys, etc.).
-  # When autogenerateKeys is true, the chart creates this secret. When existingSecret is set, this value is ignored for envFrom.
+  # Used for testing to auto-generate keys. When existingSecret is set, this value is ignored.
   secretName: fwinsights-secrets
   # -- Name of an existing Secret containing application environment variables (session keys, etc.).
   # NOTE: When set, the chart does NOT create or manage this secret. Workloads use it via envFrom.
