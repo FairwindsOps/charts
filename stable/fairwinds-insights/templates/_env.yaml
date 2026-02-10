@@ -1,10 +1,10 @@
 {{ define "env" }}
 {{- $useReadReplica := .useReadReplica }}
 {{- $ := .root }}
-# Required values
+# Required values: use existingSecret when set (user-managed), otherwise secretName (chart-managed or user-created)
 envFrom:
 - secretRef:
-    name: {{ $.Values.options.secretName }}
+    name: {{ if $.Values.options.existingSecret }}{{ $.Values.options.existingSecret }}{{ else }}{{ $.Values.options.secretName }}{{ end }}
 env:
 - name: FAIRWINDS_HOST
   {{- if $.Values.options.host }}

@@ -31,9 +31,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
 | options.adminEmail | string | `nil` | An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account. |
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
-| options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
+| options.autogenerateKeys | bool | `false` | When true, chart creates and manages the application secret (testing/demo only). When false, use existingSecret or create a secret named options.secretName. |
 | options.migrateHealthScore | bool | `false` | Run the job to migrate health scores to a new format |
-| options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
+| options.secretName | string | `"fwinsights-secrets"` | Name of the secret used when chart creates it (autogenerateKeys) or when you create it yourself. Ignored for envFrom when options.existingSecret is set. |
+| options.existingSecret | string | `""` | Name of a pre-existing secret for application env vars. When set, chart does not create or manage any application secret; see values.yaml for required secret keys (envFrom). |
 | options.overprovisioning.enabled | bool | `false` |  |
 | options.overprovisioning.cpu | string | `"1000m"` |  |
 | options.overprovisioning.memory | string | `"1Gi"` |  |

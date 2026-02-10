@@ -56,12 +56,21 @@ options:
   adminEmail:
   # -- The name of your organization. This will pre-populate Insights with an organization.
   organizationName:
-  # -- Autogenerate keys for session tracking. For testing/demo purposes only
+  # -- When true, the chart creates and manages a Secret with session/encryption keys.
+  # NOTE: Use only for testing or demo. When false, you must provide the secret (see existingSecret or create one named secretName).
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: false
-  # -- Name of the secret where session keys and other secrets are stored
+  # -- Name of the secret used for application env vars (session keys, etc.).
+  # When autogenerateKeys is true, the chart creates this secret. When existingSecret is set, this value is ignored for envFrom.
   secretName: fwinsights-secrets
+  # -- Name of an existing Secret containing application environment variables (session keys, etc.).
+  # NOTE: When set, the chart does NOT create or manage this secret. Workloads use it via envFrom.
+  # NOTE: The secret must exist before install/upgrade. Create it with Sealed Secrets, External Secrets, or kubectl.
+  # The secret is used with envFrom: each key becomes an environment variable name. Expected keys (base64-encoded in secret data, or use stringData):
+  #   Required: COOKIE_HASH_KEY, COOKIE_BLOCK_KEY, SESSION_AUTH_KEY, SESSION_ENCRYPTION_KEY, AES_BASE64_CYPHER_KEY
+  #   Optional (e.g. for SES): AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY
+  existingSecret: ""
 
   # This adds an empty low-priority pod, so we don't have
   # to wait for cluster-autoscaler with each deployment
