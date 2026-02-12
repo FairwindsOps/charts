@@ -132,6 +132,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
+| dbMigration.disableHook | bool | `false` | Disable the hook for the database migration job. Set to true to disable the hook. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
 | oneTimeMigration.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"256Mi"}}` | Resources for the one time migration job. |
