@@ -27,6 +27,37 @@ spec:
       imagePullSecrets:
         - name: {{ . }}
       {{- end }}
+      initContainers:
+      - name: wait-for-databases
+        image: postgres:18-alpine
+        command:
+        - sh
+        - -c
+        - |
+          set -e
+          PG_HOST="{{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}"
+          PG_PORT="{{ .Values.postgresql.port | default 5432 }}"
+          TS_HOST="{{ .Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}"
+          TS_PORT="{{ .Values.timescale.service.primary.port | default 5433 }}"
+          TIMEOUT="{{ .Values.dbMigration.waitTimeout | default 600 }}"
+          wait_for() {
+            local host=$1 port=$2 name=$3
+            if [ "$TIMEOUT" -eq 0 ]; then
+              echo "Waiting for $name at $host:$port (no timeout)..."
+              until pg_isready -h "$host" -p "$port" 2>/dev/null; do sleep 2; done
+            else
+              MAX_ATTEMPTS=$((TIMEOUT / 2))
+              echo "Waiting for $name at $host:$port (timeout ${TIMEOUT}s)..."
+              for i in $(seq 1 $MAX_ATTEMPTS); do
+                if pg_isready -h "$host" -p "$port" 2>/dev/null; then break; fi
+                if [ $i -eq $MAX_ATTEMPTS ]; then echo "Timeout waiting for $name"; exit 1; fi
+                sleep 2
+              done
+            fi
+            echo "$name is ready"
+          }
+          wait_for "$PG_HOST" "$PG_PORT" "PostgreSQL"
+          wait_for "$TS_HOST" "$TS_PORT" "Timescale"
       containers:
       - name: fwinsights-db-migration
         image: "{{ .Values.migrationImage.repository }}:{{ include "fairwinds-insights.migrationImageTag" . }}"
