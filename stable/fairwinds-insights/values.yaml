@@ -424,6 +424,8 @@ openApi:
     type:
 
 dbMigration:
+  # -- Disable the hook for the database migration job. Set to true to disable the hook.
+  disableHook: false
   # -- Resources for the database migration job.
   resources:
     limits:
