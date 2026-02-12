@@ -1,8 +1,8 @@
 # Changelog
 
 ## 5.5.0
-* Added `dbMigration.disableHook` (default `false`) to run database migration as a normal Job instead of a Helm hook.
 * Fixed migration running before Timescale subchart when `timescale.ephemeral` is true; migration now runs post-install/post-upgrade in that case.
+* Added `dbMigration.overrideHook` to control the Helm hook: `""` (default, no override), `none` (no hook, run as normal Job), or comma-separated values (post-install, post-upgrade, pre-install, pre-upgrade).
 
 ## 5.4.6
 * Bump insights-agent version to `5.3.0`

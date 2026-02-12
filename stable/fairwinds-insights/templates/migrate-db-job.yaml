@@ -5,8 +5,10 @@ metadata:
   annotations:
     "helm.sh/hook-delete-policy": "before-hook-creation"
   {{- $usePostHook := or .Values.postgresql.ephemeral .Values.timescale.ephemeral .Values.postgresql.postMigrate -}}
-  {{- if .Values.dbMigration.disableHook }}
+  {{- if eq .Values.dbMigration.overrideHook "none" }}
     {{/* No hook - Job runs as normal resource */}}
+  {{- else if .Values.dbMigration.overrideHook }}
+    "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
   {{- else if $usePostHook }}
     "helm.sh/hook": "post-install,post-upgrade"
   {{- else }}
