@@ -145,12 +145,6 @@ cronjobs:
     command: email_digest
     schedule: ""
 
-  # -- Options for the hubspot job.
-  hubspot:
-    command: hubspot_sync
-    schedule: ""
-    useReadReplica: true
-
   # -- Options for the resources recommendations job
   resources-recommendations:
     command: resources_recommendations
