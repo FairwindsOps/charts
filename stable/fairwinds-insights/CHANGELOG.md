@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.4.7
+* Remove HubSpot integration (`cronjobs.hubspot`)
+
 ## 5.4.6
 * Bump insights-agent version to `5.3.0`
 
