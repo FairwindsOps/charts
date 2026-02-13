@@ -29,7 +29,7 @@ spec:
       {{- end }}
       initContainers:
       - name: wait-for-databases
-        image: postgres:18-alpine
+        image: alpine/psql:18.1
         command:
         - sh
         - -c
