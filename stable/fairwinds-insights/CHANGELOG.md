@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.5.0
+* Add support for `ingress.className` (default: `""`)
+
 ## 5.4.7
 * Remove HubSpot integration (`cronjobs.hubspot`)
 

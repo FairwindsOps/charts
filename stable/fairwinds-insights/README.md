@@ -142,6 +142,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | sanitizedBranch | string | `nil` | Prefix to use on hostname. Generally not needed. |
 | sanitizedPrefixMaxLength | int | `12` | Maximum length for hostname prefix. |
 | ingress.enabled | bool | `false` | Enable Ingress |
+| ingress.className | string | `""` | Ingress class name (e.g. nginx, traefik). When set, adds spec.ingressClassName to all Ingress resources. |
 | ingress.tls | bool | `true` | Enable TLS |
 | ingress.hostedZones | list | `[]` | Hostnames to use for Ingress |
 | ingress.annotations | object | `{}` | Annotations to add to the API and Dashboard ingresses. |

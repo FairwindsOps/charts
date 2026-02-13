@@ -13,6 +13,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{ end }}
 spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
@@ -66,6 +69,9 @@ metadata:
     {{ end }}
     {{- end }}
 spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
@@ -101,6 +107,9 @@ metadata:
     {{ end }}
     {{- end }}
 spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
@@ -142,6 +151,9 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{ end }}
 spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
@@ -202,6 +214,9 @@ metadata:
     {{ end }}
     {{- end }}
 spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
@@ -241,6 +256,9 @@ metadata:
     {{ end }}
     {{- end }}
 spec:
+{{- if .Values.ingress.className }}
+  ingressClassName: {{ .Values.ingress.className | quote }}
+{{- end }}
 {{- if .Values.ingress.tls }}
   tls:
     - secretName: {{ $fullName }}-cert
