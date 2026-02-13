@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.6.0
+* Fixed migration running before Timescale subchart when `timescale.ephemeral` is true; migration now runs post-install/post-upgrade in that case.
+* Added `dbMigration.overrideHook` to control the Helm hook: `""` (default, no override), `none` (no hook, run as normal Job), or comma-separated values (post-install, post-upgrade, pre-install, pre-upgrade).
+* Added `init-container` for `migrate-db-job` that tests the database connection before running the migration, this avoids backoffLimit being reached before the database is fully setup
+
 ## 5.5.0
 * Add support for `ingress.className` (default: `""`)
 

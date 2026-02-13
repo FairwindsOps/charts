@@ -418,6 +418,12 @@ openApi:
     type:
 
 dbMigration:
+  # -- Override the Helm hook for the database migration job.
+  # Values: "" (no override, use default based on ephemeral/postMigrate config), "none" (no hook - run as normal Job),
+  # or one of: post-install, post-upgrade, pre-install, pre-upgrade (comma-separated for multiple).
+  overrideHook: ""
+  # -- Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout.
+  waitTimeout: 600
   # -- Resources for the database migration job.
   resources:
     limits:
