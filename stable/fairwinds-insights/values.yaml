@@ -472,6 +472,8 @@ sanitizedPrefixMaxLength: 12
 ingress:
   # -- Enable Ingress
   enabled: false
+  # -- Ingress class name (e.g. nginx, traefik). When set, adds spec.ingressClassName to all Ingress resources.
+  className: ""
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
