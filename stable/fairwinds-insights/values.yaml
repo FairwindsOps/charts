@@ -740,6 +740,7 @@ reportjob:
           app.kubernetes.io/component: reportjob
           app.kubernetes.io/name: fairwinds-insights
   terminationGracePeriodSeconds: 600
+  additionalEnvVars: []
 
 # -- Default options for temporal deployments
 temporalDeploymentDefaults:
