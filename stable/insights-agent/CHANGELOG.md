@@ -1,6 +1,5 @@
 # Changelog
 
-
 ## 5.5.0
 * Bumped cloudcosts to 1.0
 
