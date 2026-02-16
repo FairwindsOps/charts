@@ -548,7 +548,7 @@ cloudcosts:
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
-    tag: "1.0 "
+    tag: "1.0"
   serviceAccount:
     annotations:
   resources:
