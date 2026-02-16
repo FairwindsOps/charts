@@ -124,6 +124,8 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.ingress.hosts[0].paths[0].path | string | `"/"` |  |
 | dashboard.ingress.hosts[0].paths[0].type | string | `"ImplementationSpecific"` |  |
 | dashboard.ingress.tls | list | `[]` |  |
+| dashboard.healthCheckPolicy.enabled | bool | `false` | Enables a GKE HealthCheckPolicy for the dashboard service. Only applicable when using GKE Gateway API (httpRoute.enabled: true). Required because the dashboard returns 301 on `/`, which GKE LB treats as unhealthy. |
+| dashboard.healthCheckPolicy.requestPath | string | `"/health"` | The path the GKE load balancer health check will use |
 | dashboard.httpRoute.enabled | bool | `false` | Enables an HTTPRoute object for the dashboard (Gateway API). |
 | dashboard.httpRoute.annotations | object | `{}` | Extra annotations for the HTTPRoute |
 | dashboard.httpRoute.labels | object | `{}` | Extra labels for the HTTPRoute |
