@@ -955,8 +955,8 @@ temporalSchedulers: []
 # -- Job that creates/updates Temporal schedules from temporalSchedulers
 temporalSchedulersJob:
   image:
-    repository: temporalio/cli
-    tag: "0.17.0"
+    repository: temporalio/admin-tools
+    tag: "1.29.1-tctl-1.18.4-cli-1.5"
   resources:
     requests:
       cpu: 50m

@@ -43,43 +43,17 @@ spec:
             {{- end }}
 
             {{- range .Values.temporalSchedulers }}
-            SCHEDULE_ID='{{ .name }}'
-            SCHED_ARGS="--schedule-id $SCHEDULE_ID --task-queue '{{ .taskQueue }}' --type '{{ .workflowType }}'"
-            {{- if .workflowId }}
-            SCHED_ARGS="$SCHED_ARGS --workflow-id '{{ .workflowId }}'"
-            {{- end }}
-            {{- if .cron }}
-            SCHED_ARGS="$SCHED_ARGS --cron '{{ .cron }}'"
-            {{- end }}
-            {{- if .calendar }}
-            SCHED_ARGS="$SCHED_ARGS --calendar '{{ .calendar }}'"
-            {{- end }}
-            {{- if .interval }}
-            SCHED_ARGS="$SCHED_ARGS --interval '{{ .interval }}'"
-            {{- end }}
-            {{- if .overlapPolicy }}
-            SCHED_ARGS="$SCHED_ARGS --overlap-policy {{ .overlapPolicy }}"
-            {{- end }}
-            {{- if .input }}
-            unset INPUT_JSON
-            INPUT_JSON='{{ .input | toJson | replace "'" "'\\''" }}'
-            {{- end }}
+            SCHEDULE_ID={{ .name }}
 
             if temporal schedule describe $BASE_ARGS --schedule-id $SCHEDULE_ID >/dev/null 2>&1; then
+              SCHED_CMD=update
               echo "Updating schedule $SCHEDULE_ID"
-              {{- if .input }}
-              temporal schedule update $BASE_ARGS $SCHED_ARGS --input "$INPUT_JSON"
-              {{- else }}
-              temporal schedule update $BASE_ARGS $SCHED_ARGS
-              {{- end }}
             else
+              SCHED_CMD=create
               echo "Creating schedule $SCHEDULE_ID"
-              {{- if .input }}
-              temporal schedule create $BASE_ARGS $SCHED_ARGS --input "$INPUT_JSON"
-              {{- else }}
-              temporal schedule create $BASE_ARGS $SCHED_ARGS
-              {{- end }}
             fi
+            
+            temporal schedule $SCHED_CMD $BASE_ARGS --schedule-id=$SCHEDULE_ID --task-queue='{{ .taskQueue }}' --type='{{ .workflowType }}'{{ if .workflowId }} --workflow-id='{{ .workflowId }}'{{ end }}{{ if .cron }} --cron='{{ .cron }}'{{ end }}{{ if .calendar }} --calendar='{{ .calendar }}'{{ end }}{{ if .interval }} --interval='{{ .interval }}'{{ end }}{{ if .overlapPolicy }} --overlap-policy={{ .overlapPolicy }}{{ end }}{{ if .input }} --input '{{ .input | toJson | replace "'" "'\\''" }}'{{ end }}
             {{- end }}
         env:
         - name: TEMPORAL_HOST_PORT
