@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.7.1
+* Move `config.*.js` to the correct path `/static/config.js`
+
 ## 5.7.0
 * Add `reportjob.additionalEnvVars` for report job-specific environment variable overrides
 
