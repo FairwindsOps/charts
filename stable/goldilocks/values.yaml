@@ -161,6 +161,20 @@ dashboard:
     #    hosts:
     #      - chart-example.local
 
+  healthCheckPolicy:
+    # dashboard.healthCheckPolicy.enabled -- Enables a GKE HealthCheckPolicy for the dashboard service. Only applicable when using GKE Gateway API (httpRoute.enabled: true). Required because the dashboard returns 301 on `/`, which GKE LB treats as unhealthy.
+    enabled: false
+    # dashboard.healthCheckPolicy.requestPath -- The path the GKE load balancer health check will use
+    requestPath: /health
+    # dashboard.healthCheckPolicy.checkIntervalSec -- How often (in seconds) to send a health check
+    # checkIntervalSec: 15
+    # dashboard.healthCheckPolicy.timeoutSec -- How long (in seconds) to wait before claiming failure
+    # timeoutSec: 15
+    # dashboard.healthCheckPolicy.healthyThreshold -- Number of consecutive successes before considering healthy
+    # healthyThreshold: 1
+    # dashboard.healthCheckPolicy.unhealthyThreshold -- Number of consecutive failures before considering unhealthy
+    # unhealthyThreshold: 2
+
   httpRoute:
     # dashboard.httpRoute.enabled -- Enables an HTTPRoute object for the dashboard (Gateway API).
     enabled: false
