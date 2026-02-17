@@ -7,7 +7,7 @@ image:
   # image.tag -- Image tag (defaults to appVersion)
   tag: ""
   # image.pullPolicy -- Image pull policy
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 # imagePullSecrets -- Image pull secrets
 imagePullSecrets: []
