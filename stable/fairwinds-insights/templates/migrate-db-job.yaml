@@ -37,8 +37,12 @@ spec:
           set -e
           PG_HOST="{{ .Values.postgresql.postgresqlHost | default (printf "%s-%s" .Release.Name "postgresql") }}"
           PG_PORT="{{ .Values.postgresql.port | default 5432 }}"
+          {{- if .Values.timescale.ephemeral }}
+          TS_HOST="{{ .Values.timescale.postgresqlHost | default (printf "%s-timescale-rw" (include "fairwinds-insights.fullname" .)) }}"
+          {{- else }}
           TS_HOST="{{ .Values.timescale.postgresqlHost | default (printf "%s-%s" .Release.Name "timescale") }}"
-          TS_PORT="{{ .Values.timescale.service.primary.port | default 5433 }}"
+          {{- end }}
+          TS_PORT="{{ .Values.timescale.port | default 5432 }}"
           TIMEOUT="{{ .Values.dbMigration.waitTimeout | default 600 }}"
           wait_for() {
             local host=$1 port=$2 name=$3
