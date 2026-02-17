@@ -27,6 +27,6 @@
 /stable/fairwinds-insights/ @sudermanjr @jdesouza @vitorvezani
 /stable/insights-admission/ @sudermanjr @jdesouza @vitorvezani
 /stable/insights-agent/ @sudermanjr @jdesouza @vitorvezani
-/stable/helm-release-pruner/ @sudermanjr
+/stable/helm-release-pruner/ @sudermanjr @jdesouza @vitorvezani
 /stable/vpa/ @sudermanjr
 
