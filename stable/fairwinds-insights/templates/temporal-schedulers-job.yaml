@@ -43,6 +43,9 @@ spec:
             {{- end }}
 
             {{- range .Values.temporalSchedulers }}
+            {{- if not (or .cron .calendar .interval) }}
+            {{- fail (printf "temporalSchedulers: scheduler '%s' must specify at least one of cron, calendar, or interval" .name) }}
+            {{- end }}
             SCHEDULE_ID={{ .name }}
 
             if temporal schedule describe $BASE_ARGS --schedule-id $SCHEDULE_ID >/dev/null 2>&1; then
