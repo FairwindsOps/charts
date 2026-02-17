@@ -1,0 +1,46 @@
+{{- if .Values.serviceAccount.create }}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "helm-release-pruner.serviceAccountName" . }}
+  labels:
+    {{- include "helm-release-pruner.labels" . | nindent 4 }}
+  {{- with .Values.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+---
+{{- if .Values.rbac.create }}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "helm-release-pruner.fullname" . }}
+  labels:
+    {{- include "helm-release-pruner.labels" . | nindent 4 }}
+rules:
+  # List and delete Helm releases (stored as secrets by default)
+  # If using HELM_DRIVER=configmap, you may need to add "configmaps" as well
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["list", "get", "delete"]
+  # List and delete namespaces (for empty namespace cleanup)
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["list", "get", "delete"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "helm-release-pruner.fullname" . }}
+  labels:
+    {{- include "helm-release-pruner.labels" . | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: {{ include "helm-release-pruner.fullname" . }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "helm-release-pruner.serviceAccountName" . }}
+    namespace: {{ .Release.Namespace }}
+{{- end }}
