@@ -2,39 +2,132 @@
 
 {{ template "chart.description" . }}
 
-One use-case for this chart is purging ephemeral release releases after a period of inactivity.
+## Overview
 
-## Example usage values file
+This chart deploys helm-release-pruner, a Go-based daemon that automatically deletes old Helm releases based on configurable filters. It runs as a Deployment that continuously prunes at configurable intervals.
 
-The following values will purge all releases matching `^feature-.+-web$`
-in namespace matching `^feature-.+` older than 7 days. It will also only
-keep the 10 newest releases.
+## Features
 
-`job.dryRun` can be toggled to output matches without deleting anything.
+- Delete releases older than a specified age
+- Keep only the N most recent releases globally
+- Filter releases by name and namespace using regex patterns
+- Exclude releases and namespaces using regex patterns
+- Clean up empty namespaces after release deletion
+- Clean up orphaned namespaces (namespaces with no Helm releases)
+- Prometheus metrics for monitoring
+- Health endpoints for Kubernetes probes
 
+## Example Usage
+
+### Basic Usage
+
+Prune feature branch releases older than 2 weeks, checking every hour:
+
+```yaml
+pruner:
+  dryRun: false
+  interval: "1h"
+  olderThan: "2w"
+  releaseFilter: "^feature-.+-web$"
+  namespaceFilter: "^feature-.+"
+
+serviceMonitor:
+  enabled: true
 ```
+
+### With Release Count Limit
+
+Keep only the 10 most recent matching releases:
+
+```yaml
+pruner:
+  dryRun: false
+  olderThan: "14d"
+  releaseFilter: "^feature-.+"
+  maxReleasesToKeep: 10
+```
+
+### Orphan Namespace Cleanup
+
+Clean up namespaces that have no Helm releases:
+
+```yaml
+pruner:
+  dryRun: false
+  olderThan: "2w"
+  namespaceFilter: "^feature-.+"
+  cleanupOrphanNamespaces: true
+  orphanNamespaceFilter: "^feature-.+"
+```
+
+## Duration Formats
+
+The `olderThan` and `interval` values support:
+- Go durations: `1h`, `30m`, `336h`
+- Days: `14d` (14 days)
+- Weeks: `2w` (2 weeks)
+
+## Prometheus Metrics
+
+The following metrics are exposed on `/metrics`:
+
+| Metric | Type | Description |
+|--------|------|-------------|
+| `helm_pruner_releases_deleted_total` | Counter | Total releases deleted |
+| `helm_pruner_namespaces_deleted_total` | Counter | Total namespaces deleted |
+| `helm_pruner_cycle_duration_seconds` | Histogram | Duration of prune cycles |
+| `helm_pruner_cycle_failures_total` | Counter | Failed prune cycles |
+| `helm_pruner_releases_scanned_total` | Counter | Total releases scanned |
+
+## Health Endpoints
+
+| Endpoint | Description |
+|----------|-------------|
+| `/healthz` | Liveness probe - returns 200 if running |
+| `/readyz` | Readiness probe - returns 200 after initialization |
+| `/metrics` | Prometheus metrics |
+
+## Upgrading
+
+### From v3.x (Bash) to v4.x (Go)
+
+v4.0.0 is a major rewrite from Bash to Go with significant changes:
+
+| Change | v3.x (Bash) | v4.x (Go) |
+|--------|-------------|-----------|
+| Deployment | CronJob | Deployment (daemon) |
+| Duration format | `"7 days ago"` | `7d`, `1w`, `168h` |
+| Release filter | `helmReleaseFilter` | `releaseFilter` |
+| Exclude filter | `helmReleaseNegateFilter` | `releaseExclude` |
+| Namespace exclude | `namespaceNegateFilter` | `namespaceExclude` |
+| Health endpoints | None | `/healthz`, `/readyz`, `/metrics` |
+| Prometheus metrics | None | Supported |
+| Orphan NS cleanup | Not supported | Supported |
+
+**Migration example:**
+
+v3.x values:
+```yaml
 job:
   schedule: "0 */4 * * *"
-  dryRun: False
+  dryRun: false
 
 pruneProfiles:
   - olderThan: "7 days ago"
-    helmReleaseFilter: "^feature-.+-web$"
+    helmReleaseFilter: "^feature-.+"
     namespaceFilter: "^feature-.+"
     maxReleasesToKeep: 10
 ```
 
-
-## Upgrading
-
-### v3.0.0
-
-This version is only compatible with Helm3. Update to this once you have upgraded helm.
-
-In addition, this version moves the image to the Fairwinds repository in Quay. See the values section for the new location.
-
-### v1.0.0
-
-Chart version 1.0.0 introduced RBacDefinitions with rbac-manager to manage access.  This is disabled by default.  If enabled with the `rbac_manager.enabled`, the release should be purged and re-installed to ensure helm manages the resources.
+v4.x values:
+```yaml
+pruner:
+  dryRun: false
+  interval: "4h"
+  olderThan: "7d"
+  releaseFilter: "^feature-.+"
+  namespaceFilter: "^feature-.+"
+  maxReleasesToKeep: 10
+```
 
 {{ template "chart.valuesSection" . }}

@@ -1,7 +1,7 @@
-job:
+# CI test values with namespace preservation
+pruner:
   dryRun: false
-pruneProfiles:
-- olderThan: "3 days ago"
-  helmReleaseFilter: "^test-"
+  olderThan: "3d"
+  releaseFilter: "^test-"
   namespaceFilter: "^test-"
   preserveNamespace: true
