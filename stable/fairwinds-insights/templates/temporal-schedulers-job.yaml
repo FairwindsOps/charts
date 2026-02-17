@@ -1,0 +1,96 @@
+{{- if (gt (len .Values.temporalSchedulers) 0) }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-temporal-schedulers
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+    "helm.sh/hook-weight": "5"
+    "helm.sh/hook": "post-install,post-upgrade"
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: temporal-schedulers
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 3
+  template:
+    spec:
+      restartPolicy: Never
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      containers:
+      - name: temporal-schedulers
+        image: "{{ .Values.temporalSchedulersJob.image.repository }}:{{ .Values.temporalSchedulersJob.image.tag }}"
+        imagePullPolicy: Always
+        command: ["/bin/sh", "-c"]
+        args:
+          - |
+            set -e
+            BASE_ARGS="--address $TEMPORAL_HOST_PORT --namespace $TEMPORAL_NAMESPACE"
+            {{- if .Values.temporalSchedulersJob.apiKey.existingSecret }}
+            BASE_ARGS="$BASE_ARGS --api-key ${TEMPORAL_API_KEY}"
+            {{- end }}
+            {{- if .Values.temporalSchedulersJob.tls.enabled }}
+            BASE_ARGS="$BASE_ARGS --tls --tls-ca-path /etc/temporal-scheduler-tls/{{ .Values.temporalSchedulersJob.tls.caFilename }} --tls-cert-path /etc/temporal-scheduler-tls/{{ .Values.temporalSchedulersJob.tls.certFilename }} --tls-key-path /etc/temporal-scheduler-tls/{{ .Values.temporalSchedulersJob.tls.keyFilename }}"
+            {{- if .Values.temporalSchedulersJob.tls.disableHostVerification }}
+            BASE_ARGS="$BASE_ARGS --tls-disable-host-verification"
+            {{- end }}
+            {{- if .Values.temporalSchedulersJob.tls.serverName }}
+            BASE_ARGS="$BASE_ARGS --tls-server-name {{ .Values.temporalSchedulersJob.tls.serverName | quote }}"
+            {{- end }}
+            {{- end }}
+
+            {{- range .Values.temporalSchedulers }}
+            {{- if not (or .cron .calendar .interval) }}
+            {{- fail (printf "temporalSchedulers: scheduler '%s' must specify at least one of cron, calendar, or interval" .name) }}
+            {{- end }}
+            SCHEDULE_ID={{ .name }}
+
+            if temporal schedule describe $BASE_ARGS --schedule-id $SCHEDULE_ID >/dev/null 2>&1; then
+              SCHED_CMD=update
+              echo "Updating schedule $SCHEDULE_ID"
+            else
+              SCHED_CMD=create
+              echo "Creating schedule $SCHEDULE_ID"
+            fi
+            
+            temporal schedule $SCHED_CMD $BASE_ARGS --schedule-id=$SCHEDULE_ID --task-queue='{{ .taskQueue }}' --type='{{ .workflowType }}'{{ if .workflowId }} --workflow-id='{{ .workflowId }}'{{ end }}{{ if .cron }} --cron='{{ .cron }}'{{ end }}{{ if .calendar }} --calendar='{{ .calendar }}'{{ end }}{{ if .interval }} --interval='{{ .interval }}'{{ end }}{{ if .overlapPolicy }} --overlap-policy={{ .overlapPolicy }}{{ end }}{{ if .input }} --input '{{ .input | toJson | replace "'" "'\\''" }}'{{ end }}
+            {{- end }}
+        env:
+        - name: TEMPORAL_HOST_PORT
+          value: {{ .Values.temporal.hostPort | quote }}
+        - name: TEMPORAL_NAMESPACE
+          value: {{ .Values.temporal.namespace | quote }}
+        {{- if .Values.temporalSchedulersJob.apiKey.existingSecret }}
+        - name: TEMPORAL_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.temporalSchedulersJob.apiKey.existingSecret }}
+              key: {{ .Values.temporalSchedulersJob.apiKey.existingSecretKey | default "api-key" }}
+        {{- end }}
+        {{- if and .Values.temporalSchedulersJob.tls.enabled .Values.temporalSchedulersJob.tls.existingSecret }}
+        volumeMounts:
+        - name: temporal-scheduler-tls
+          mountPath: /etc/temporal-scheduler-tls
+          readOnly: true
+        {{- end }}
+        resources:
+          {{- toYaml .Values.temporalSchedulersJob.resources | nindent 10 }}
+        securityContext:
+          readOnlyRootFilesystem: false
+          allowPrivilegeEscalation: false
+          privileged: false
+          runAsNonRoot: true
+          runAsUser: 65534
+          capabilities:
+            drop:
+              - ALL
+      {{- if and .Values.temporalSchedulersJob.tls.enabled .Values.temporalSchedulersJob.tls.existingSecret }}
+      volumes:
+      - name: temporal-scheduler-tls
+        secret:
+          secretName: {{ .Values.temporalSchedulersJob.tls.existingSecret }}
+      {{- end }}
+{{- end }}
