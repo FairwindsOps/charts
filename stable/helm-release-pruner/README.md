@@ -135,7 +135,7 @@ pruner:
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.repository | string | `"quay.io/fairwinds/helm-release-pruner"` | Image repository |
-| image.tag | string | `"4.0.0-rc.1"` | Image tag (defaults to appVersion) |
+| image.tag | string | `"4.0"` | Image tag (defaults to appVersion) |
 | image.pullPolicy | string | `"Always"` | Image pull policy |
 | imagePullSecrets | list | `[]` | Image pull secrets |
 | nameOverride | string | `""` | Override the chart name |
