@@ -1,5 +1,30 @@
 # Changelog
 
+## 5.5.0
+* Bumped cloudcosts to 1.0
+
+## 5.4.7
+* Fix Azure dir permission
+
+## 5.4.6
+* Azure login is broken
+
+## 5.4.5
+* Azure login is hanging
+
+## 5.4.4
+* Azure login
+
+## 5.4.3
+* Azure cloud costs to support Workload Identity
+
+## 5.4.2
+* Cloud-costs: add Azure provider support (subscription + Service Principal credentials via secret)
+* Cloud-costs: add FOCUS format option for AWS/GCP (`cloudcosts.format`, `cloudcosts.gcp.focusview`)
+
+## 5.4.1
+* Bumped plugins to support to collect GPU utilization
+
 ## 5.4.0
 * Support to collect GPU utilization
 

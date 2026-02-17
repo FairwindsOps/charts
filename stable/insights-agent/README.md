@@ -38,7 +38,7 @@ There are several different report types which can be enabled and configured:
 * `opa`
 * `prometheus-metrics`
 * `admission`
-* `awscosts`
+* `cloudcosts` (AWS, GCP, or Azure; optional FOCUS format)
 
 See below for configuration details.
 
@@ -133,17 +133,28 @@ Parameter | Description | Default
 `prometheus-metrics.tenantId` | Tenant ID for multi-tenant Prometheus backends like Grafana Mimir (sets `X-Scope-OrgID` header) | `""`
 `nova.logLevel` | The klog log-level to use when running Nova | `3`
 `pluto.targetVersions` | The versions to target, e.g. `k8s=1.21.0` | Defaults to current Kubernetes version
-`awscosts.secretName` | Kubernetes Secret name where AWS creds will be stored | ""
-`awscosts.awsAccessKeyId` | AWS access Key ID for AWS costs | ""
-`awscosts.awsSecretAccessKey` | AWS access key secrect for AWS costs | ""
-`awscosts.region` | AWS region where costs was defined | ""
-`awscosts.database` | AWS database where Athena table was created | ""
-`awscosts.table` | AWS database Athena table for AWS costs | ""
-`awscosts.catalog` | AWS database catalog for AWS costs | ""
-`awscosts.serviceAccount.annotations` | Annotations to add to the awscosts service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing aws | nil
-`awscosts.tagkey` | Tag used to identify cluster nodes. Example: Kops uses 'kubernetes_cluster'.  | ""
-`awscosts.tagvalue` | Tag value used to identify a cluster given a tag key. | ""
-`awscosts.workgroup` | Athena work group that used to run the queries | ""
+`cloudcosts.enabled` | Enable the cloud-costs report (AWS, GCP, or Azure) | false
+`cloudcosts.provider` | Cloud provider: `aws`, `gcp`, or `azure` | aws
+`cloudcosts.secretName` | Kubernetes Secret name for provider credentials (AWS only; Azure uses Workload Identity, no secret) | ""
+`cloudcosts.tagkey` | Tag key to filter resources (e.g. kubernetes-cluster) | ""
+`cloudcosts.tagvalue` | Tag value to filter resources | ""
+`cloudcosts.format` | Output format: `standard` or `focus` (AWS/GCP only; Azure always uses FOCUS) | standard
+`cloudcosts.days` | Number of days to query | 5
+`cloudcosts.aws.region` | AWS region for Athena | ""
+`cloudcosts.aws.database` | Athena database name | ""
+`cloudcosts.aws.table` | Athena table name | ""
+`cloudcosts.aws.catalog` | Athena catalog | ""
+`cloudcosts.aws.workgroup` | Athena workgroup | ""
+`cloudcosts.aws.tagprefix` | Tag prefix for AWS CUR (e.g. resource_tags_user_) | resource_tags_user_
+`cloudcosts.gcp.projectname` | GCP project name | ""
+`cloudcosts.gcp.dataset` | BigQuery dataset name | ""
+`cloudcosts.gcp.billingaccount` | GCP billing account ID | ""
+`cloudcosts.gcp.table` | BigQuery table path (optional) | ""
+`cloudcosts.gcp.focusview` | BigQuery FOCUS view name (required when format is focus) | ""
+`cloudcosts.azure.subscription` | Azure subscription ID (required when provider is azure) | ""
+`cloudcosts.azure.workloadIdentity.clientId` | Azure AD Workload Identity: client ID of the Azure AD app or user-assigned managed identity (required when provider is azure) | ""
+`cloudcosts.azure.workloadIdentity.tenantId` | Azure AD Workload Identity: tenant ID (required when provider is azure) | ""
+`cloudcosts.serviceAccount.annotations` | Annotations for the cloud-costs service account, e.g. `eks.amazonaws.com/role-arn` for IRSA (AWS) | nil
 `insights-event-watcher.enabled` | Enable the insights-event-watcher component | `true`
 `insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
 `insights-event-watcher.image.tag` | Tag for the insights-event-watcher image | `0.1`
@@ -162,6 +173,48 @@ Parameter | Description | Default
 `insights-event-watcher.cloudwatch.maxMemoryMB` | Maximum memory usage in MB for CloudWatch processing | `512`
 `insights-event-watcher.serviceAccount.annotations` | Annotations to add to the service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for IRSA | `nil`
 `insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
+
+### Azure Workload Identity: Creating the federated credential (cloud-costs)
+
+When using `cloudcosts` with `provider: azure`, the chart uses [Azure AD Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) (federated credential). You must create an **App registration** (or user-assigned managed identity) in Microsoft Entra ID and add a **federated identity credential** that matches your AKS cluster and the cloud-costs service account.
+
+1. **Create an App registration** (or use an existing one) in [Microsoft Entra ID](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade). Note the **Application (client) ID** and **Directory (tenant) ID**; set these as `cloudcosts.azure.workloadIdentity.clientId` and `cloudcosts.azure.workloadIdentity.tenantId`.
+
+2. **Get your AKS cluster OIDC issuer URL** (use the exact value, including a trailing slash if present):
+
+   ```bash
+   az aks show --name <cluster-name> --resource-group <resource-group> \
+     --query "oidcIssuerProfile.issuerUrl" -o tsv
+   ```
+
+3. **Create a federated identity credential** on the App registration with the same issuer, and subject/audience below. In Azure Portal: **App registrations** → your app → **Certificates & secrets** → **Federated credentials** → **Add credential**. Or with Azure CLI (replace `<app-object-id>`, `<issuer-url>`, and `<credential-name>`):
+
+   ```bash
+   az ad app federated-credential create \
+     --id <app-object-id> \
+     --parameters '{
+       "name": "<credential-name>",
+       "issuer": "<issuer-url>",
+       "subject": "system:serviceaccount:insights-agent:insights-agent-cloudcosts",
+       "description": "AKS workload identity for insights-agent cloud-costs",
+       "audiences": ["api://AzureADTokenExchange"]
+     }'
+   ```
+
+   - **Subject** must be exactly: `system:serviceaccount:insights-agent:insights-agent-cloudcosts` (namespace `insights-agent`, service account `insights-agent-cloudcosts`). If you install the agent in a different namespace, change the subject to `system:serviceaccount:<namespace>:insights-agent-cloudcosts`.
+   - **Issuer** must match the URL from step 2 exactly (including or excluding a trailing slash as returned).
+   - **Audiences**: `api://AzureADTokenExchange`.
+
+4. **Assign RBAC** so the identity can read cost data. Grant the app's service principal at least **Reader** and **Cost Management Reader** on the subscription:
+
+   ```bash
+   az role assignment create --role "Reader" \
+     --assignee <client-id> --scope /subscriptions/<subscription-id>
+   az role assignment create --role "Cost Management Reader" \
+     --assignee <client-id> --scope /subscriptions/<subscription-id>
+   ```
+
+   Use the same **client ID** as `cloudcosts.azure.workloadIdentity.clientId` and your subscription ID as `cloudcosts.azure.subscription`.
 
 ## Breaking Changes
 

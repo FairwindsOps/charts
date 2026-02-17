@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.7.1
+* Move `config.*.js` to the correct path `/static/config.js`
+
+## 5.7.0
+* Add `reportjob.additionalEnvVars` for report job-specific environment variable overrides
+
+## 5.6.0
+* Fixed migration running before Timescale subchart when `timescale.ephemeral` is true; migration now runs post-install/post-upgrade in that case.
+* Added `dbMigration.overrideHook` to control the Helm hook: `""` (default, no override), `none` (no hook, run as normal Job), or comma-separated values (post-install, post-upgrade, pre-install, pre-upgrade).
+* Added `init-container` for `migrate-db-job` that tests the database connection before running the migration, this avoids backoffLimit being reached before the database is fully setup
+
+## 5.5.0
+* Add support for `ingress.className` (default: `""`)
+
+## 5.4.7
+* Remove HubSpot integration (`cronjobs.hubspot`)
+
 ## 5.4.6
 * Bump insights-agent version to `5.3.0`
 

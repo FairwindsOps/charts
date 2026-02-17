@@ -145,12 +145,6 @@ cronjobs:
     command: email_digest
     schedule: ""
 
-  # -- Options for the hubspot job.
-  hubspot:
-    command: hubspot_sync
-    schedule: ""
-    useReadReplica: true
-
   # -- Options for the resources recommendations job
   resources-recommendations:
     command: resources_recommendations
@@ -424,6 +418,12 @@ openApi:
     type:
 
 dbMigration:
+  # -- Override the Helm hook for the database migration job.
+  # Values: "" (no override, use default based on ephemeral/postMigrate config), "none" (no hook - run as normal Job),
+  # or one of: post-install, post-upgrade, pre-install, pre-upgrade (comma-separated for multiple).
+  overrideHook: ""
+  # -- Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout.
+  waitTimeout: 600
   # -- Resources for the database migration job.
   resources:
     limits:
@@ -472,6 +472,8 @@ sanitizedPrefixMaxLength: 12
 ingress:
   # -- Enable Ingress
   enabled: false
+  # -- Ingress class name (e.g. nginx, traefik). When set, adds spec.ingressClassName to all Ingress resources.
+  className: ""
   # -- Enable TLS
   tls: true
   # -- Hostnames to use for Ingress
@@ -738,6 +740,7 @@ reportjob:
           app.kubernetes.io/component: reportjob
           app.kubernetes.io/name: fairwinds-insights
   terminationGracePeriodSeconds: 600
+  additionalEnvVars: []
 
 # -- Default options for temporal deployments
 temporalDeploymentDefaults:

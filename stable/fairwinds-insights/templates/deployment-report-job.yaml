@@ -39,6 +39,9 @@ spec:
           imagePullPolicy: Always
           command: ["report_job"]
           {{- include "env" (dict "root" .) | indent 10 }}
+          {{- with .Values.reportjob.additionalEnvVars }}
+            {{- toYaml . | nindent 10 }}
+          {{- end }}
           volumeMounts:
             - name: secrets
               mountPath: /var/run/secrets/github

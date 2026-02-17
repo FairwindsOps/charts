@@ -5,8 +5,15 @@ metadata:
   name: {{ include "insights-agent.fullname" . }}-cloudcosts
   labels:
     app: insights-agent
-  {{- with .Values.cloudcosts.serviceAccount.annotations }}
   annotations:
+    {{- with .Values.cloudcosts.serviceAccount.annotations }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
+    {{- if eq .Values.cloudcosts.provider "azure" }}
+    {{- $wi := .Values.cloudcosts.azure.workloadIdentity | default dict }}
+    azure.workload.identity/client-id: {{ required "cloudcosts.azure.workloadIdentity.clientId is required when provider is azure" $wi.clientId }}
+    {{- if $wi.tenantId }}
+    azure.workload.identity/tenant-id: {{ $wi.tenantId }}
+    {{- end }}
+    {{- end }}
 {{- end -}}

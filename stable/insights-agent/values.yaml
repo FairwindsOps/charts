@@ -212,7 +212,7 @@ workloads:
   timeout: 300
   image:
     repository: quay.io/fairwinds/workloads
-    tag: "2.7"
+    tag: "2.8"
   resources:
     requests:
       cpu: 100m
@@ -342,7 +342,7 @@ prometheus-metrics:
   tenantId: ""
   image:
     repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.7"
+    tag: "1.8"
   resources:
     requests:
       cpu: 100m
@@ -522,14 +522,33 @@ cloudcosts:
   enabled: false
   secretName: cloudcosts
   tagkey: ""
-  provider: aws  # aws or gcp
+  tagvalue: ""
+  # format: "standard" or "focus" (AWS/GCP only; Azure always uses FOCUS)
+  format: "standard"
+  days: 5
+  provider: aws  # aws, gcp, or azure
   aws:
     tagprefix: "resource_tags_user_"
+  gcp:
+    projectname: ""
+    dataset: ""
+    billingaccount: ""
+    table: ""
+    # focusview: BigQuery FOCUS view name (e.g. project.dataset.focus_view); required when format is focus
+    focusview: ""
+  azure:
+    # subscription: Azure subscription ID (required when provider is azure)
+    subscription: ""
+    # Workload Identity: Azure AD app (or user-assigned managed identity) client ID and tenant ID.
+    # Cluster must have Azure AD Workload Identity (e.g. AKS workload identity) and federated credential configured.
+    workloadIdentity:
+      clientId: ""   # required when provider is azure
+      tenantId: ""   # required when provider is azure (for federated-token login)
   schedule: "rand * * * *"
   timeout: 300
   image:
     repository: quay.io/fairwinds/cloud-costs
-    tag: "0.3"
+    tag: "1.0"
   serviceAccount:
     annotations:
   resources:
