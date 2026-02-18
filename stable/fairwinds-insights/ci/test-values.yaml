@@ -115,3 +115,11 @@ cronjobs:
       limits:
         cpu: 200m
         memory: 512Mi
+
+temporalSchedulers:
+  - name: daily-report
+    workflowType: DailyReportWorkflow
+    taskQueue: reports
+    cron: "0 0 * * *"
+    input:
+      reportType: summary

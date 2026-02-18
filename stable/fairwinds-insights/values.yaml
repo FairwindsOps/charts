@@ -937,6 +937,46 @@ temporalDeployments:
   #       cpu: 200m
   #       memory: 512Mi
 
+# -- Temporal workflow schedules (created via CLI on install/upgrade). Empty by default.
+# Each schedule is created or updated idempotently. Input will be passed to the workflow as a JSON object.
+# Example:
+# temporalSchedulers:
+#   - name: my-report-schedule
+#     workflowType: MyReportWorkflow
+#     taskQueue: my-task-queue
+#     cron: "0 * 1 * *"
+#     overlapPolicy: Skip
+#     input:
+#       RecipientEmails:
+#         - user1@example.com
+#         - user2@example.com
+temporalSchedulers: []
+
+# -- Job that creates/updates Temporal schedules from temporalSchedulers
+temporalSchedulersJob:
+  image:
+    repository: temporalio/admin-tools
+    tag: "1.29.1-tctl-1.18.4-cli-1.5"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 128Mi
+    limits:
+      cpu: 200m
+      memory: 256Mi
+  apiKey:
+    existingSecret: ""
+    existingSecretKey: api-key
+  tls:
+    enabled: false
+    existingSecret: temporal-frontend-client-certs
+    caFilename: ca.crt
+    certFilename: tls.crt
+    keyFilename: tls.key
+    # -- Disable host verification if using internal cluster connections where cert CN/SAN doesn't match service DNS
+    disableHostVerification: false
+    serverName: ""
+
 temporal:
   # fairwinds-insights specific values - this will be inject as an env vars into fairwinds insights deployments
   hostPort: "insights-temporal-frontend:7233"
