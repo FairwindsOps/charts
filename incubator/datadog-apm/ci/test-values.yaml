@@ -18,7 +18,6 @@ clusterAgent:
   image:
     repository: public.ecr.aws/datadog/agent
     pullPolicy: Always
-    # -- Overrides the image tag whose default is {{ .Chart.AppVersion }}
     tag: ""
   command:
     - trace-agent
