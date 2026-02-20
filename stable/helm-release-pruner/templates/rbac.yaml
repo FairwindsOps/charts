@@ -48,6 +48,10 @@ rules:
   - apiGroups: ["networking.k8s.io"]
     resources: ["ingresses", "networkpolicies"]
     verbs: ["list", "get", "delete"]
+  # AWS Load Balancer Controller (TargetGroupBindings for Ingress/LoadBalancer Services)
+  - apiGroups: ["elbv2.k8s.aws"]
+    resources: ["targetgroupbindings"]
+    verbs: ["list", "get", "delete"]
   # Namespaced RBAC (charts may create Role/RoleBinding)
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["roles", "rolebindings"]
@@ -58,6 +62,10 @@ rules:
     verbs: ["list", "get", "delete"]
   - apiGroups: ["autoscaling"]
     resources: ["horizontalpodautoscalers"]
+    verbs: ["list", "get", "delete"]
+  # CloudNativePG (clusters.postgresql.cnpg.io, clusterimagecatalogs.postgresql.cnpg.io)
+  - apiGroups: ["postgresql.cnpg.io"]
+    resources: ["clusters", "clusterimagecatalogs"]
     verbs: ["list", "get", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
