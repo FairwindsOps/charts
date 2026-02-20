@@ -21,10 +21,11 @@ metadata:
 rules:
   # Permissions for the pruner to delete release metadata, run helm uninstall (delete
   # all resources belonging to a release), and optionally clean up empty namespaces.
-  # Helm release storage (secrets by default; configmaps if HELM_DRIVER=configmap)
+  # Helm release storage (secrets by default; configmaps if HELM_DRIVER=configmap).
+  # patch/update needed for Helm hooks (e.g. post-delete) that modify resources during uninstall.
   - apiGroups: [""]
     resources: ["secrets", "configmaps"]
-    verbs: ["list", "get", "delete"]
+    verbs: ["list", "get", "delete", "patch", "update"]
   # Namespaces (for empty / orphan namespace cleanup)
   - apiGroups: [""]
     resources: ["namespaces"]
