@@ -19,17 +19,23 @@ metadata:
   labels:
     {{- include "helm-release-pruner.labels" . | nindent 4 }}
 rules:
+  # Permissions for the pruner to delete release metadata, run helm uninstall (delete
+  # all resources belonging to a release), and optionally clean up empty namespaces.
   # Helm release storage (secrets by default; configmaps if HELM_DRIVER=configmap)
   - apiGroups: [""]
     resources: ["secrets", "configmaps"]
     verbs: ["list", "get", "delete"]
-  # Namespaces (for empty namespace cleanup)
+  # Namespaces (for empty / orphan namespace cleanup)
   - apiGroups: [""]
     resources: ["namespaces"]
     verbs: ["list", "get", "delete"]
-  # Core resources that Helm charts create (required for uninstall to succeed)
+  # Core resources (required for helm uninstall to succeed)
   - apiGroups: [""]
-    resources: ["pods", "services", "serviceaccounts", "persistentvolumeclaims"]
+    resources: ["pods", "services", "endpoints", "serviceaccounts", "persistentvolumeclaims"]
+    verbs: ["list", "get", "delete"]
+  # EndpointSlices (created with Services in 1.21+)
+  - apiGroups: ["discovery.k8s.io"]
+    resources: ["endpointslices"]
     verbs: ["list", "get", "delete"]
   # Workloads
   - apiGroups: ["apps"]
@@ -46,7 +52,7 @@ rules:
   - apiGroups: ["rbac.authorization.k8s.io"]
     resources: ["roles", "rolebindings"]
     verbs: ["list", "get", "delete"]
-  # Common optional resources
+  # Policy and autoscaling (common chart resources)
   - apiGroups: ["policy"]
     resources: ["poddisruptionbudgets"]
     verbs: ["list", "get", "delete"]
