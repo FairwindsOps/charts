@@ -19,14 +19,39 @@ metadata:
   labels:
     {{- include "helm-release-pruner.labels" . | nindent 4 }}
 rules:
-  # List and delete Helm releases (stored as secrets by default)
-  # If using HELM_DRIVER=configmap, you may need to add "configmaps" as well
+  # Helm release storage (secrets by default; configmaps if HELM_DRIVER=configmap)
   - apiGroups: [""]
-    resources: ["secrets"]
+    resources: ["secrets", "configmaps"]
     verbs: ["list", "get", "delete"]
-  # List and delete namespaces (for empty namespace cleanup)
+  # Namespaces (for empty namespace cleanup)
   - apiGroups: [""]
     resources: ["namespaces"]
+    verbs: ["list", "get", "delete"]
+  # Core resources that Helm charts create (required for uninstall to succeed)
+  - apiGroups: [""]
+    resources: ["pods", "services", "serviceaccounts", "persistentvolumeclaims"]
+    verbs: ["list", "get", "delete"]
+  # Workloads
+  - apiGroups: ["apps"]
+    resources: ["deployments", "replicasets", "statefulsets", "daemonsets"]
+    verbs: ["list", "get", "delete"]
+  - apiGroups: ["batch"]
+    resources: ["jobs", "cronjobs"]
+    verbs: ["list", "get", "delete"]
+  # Networking
+  - apiGroups: ["networking.k8s.io"]
+    resources: ["ingresses", "networkpolicies"]
+    verbs: ["list", "get", "delete"]
+  # Namespaced RBAC (charts may create Role/RoleBinding)
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources: ["roles", "rolebindings"]
+    verbs: ["list", "get", "delete"]
+  # Common optional resources
+  - apiGroups: ["policy"]
+    resources: ["poddisruptionbudgets"]
+    verbs: ["list", "get", "delete"]
+  - apiGroups: ["autoscaling"]
+    resources: ["horizontalpodautoscalers"]
     verbs: ["list", "get", "delete"]
 ---
 apiVersion: rbac.authorization.k8s.io/v1
