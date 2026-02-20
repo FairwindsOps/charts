@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: v4.0.2
+appVersion: v4.0.3
 description: A Go-based daemon for automatically deleting old Helm releases. Runs continuously in your cluster and prunes stale releases at configurable intervals. Supports filtering by release name, namespace, age, or count with regex patterns.
 name: helm-release-pruner
-version: 4.0.2
+version: 4.0.3
 kubeVersion: ">= 1.22.0-0"
 type: application
 maintainers:
