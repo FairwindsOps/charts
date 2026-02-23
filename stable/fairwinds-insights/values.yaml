@@ -571,46 +571,35 @@ encryption:
     cypherKey:
 
 timescale:
-  fullnameOverride: timescale
-  replicaCount: 1
-  clusterName: timescale
-  # -- Use the ephemeral Timescale chart by default
+  # -- Use the ephemeral Timescale CNPG cluster
   ephemeral: true
-  pdb:
-    # -- Use pdb enabled by default
-    enabled: true
-    # -- Min timescale pdb replicas
-    minReplicas: 1
   # -- SSL mode for connecting to the database
   sslMode: require
-  # -- Host for timescale
-  postgresqlHost: timescale
+  # -- Host for timescale. When ephemeral is true, defaults to <fullname>-timescale-rw
+  postgresqlHost: ""
   # -- Username to connect to Timescale with
   postgresqlUsername: postgres
-  # -- Name of the Postgres Database
-  postgresqlDatabase: postgres
-  # -- Password for the Postgres Database
-  password: postgres
-  secrets:
-    certificateSecretName: fwinsights-timescale-ca
-    credentialsSecretName: fwinsights-timescale
-  service:
-    # -- Port of the Timescale Database
-    primary:
-      port: 5433
-  loadBalancer:
-    enabled: false
-  # -- Database tuning for timescale
-  timescaledbTune:
-    enabled: false
-  # -- Timescale patroni options
-  patroni:
-    log:
-      level: DEBUG
-    postgresql:
-      create_replica_methods: []
-      pgbackrest: {}
-  # -- Resources section for Timescale
+  # -- Name of the Timescale Database
+  postgresqlDatabase: fairwinds_insights
+  # -- Port of the Timescale Database
+  port: 5432
+  # -- Password for the Timescale database (auto-generated if not set)
+  password:
+  image:
+    # -- TimescaleDB HA image
+    name: timescale/timescaledb-ha
+    # -- TimescaleDB image tag
+    tag: pg18
+    # -- PostgreSQL major version for CNPG ImageCatalog
+    major: 18
+  # -- Number of CNPG instances
+  instances: 1
+  # -- Storage configuration for the TimescaleDB cluster
+  storage:
+    size: 10Gi
+    storageClass: standard
+    resizeInUseVolumes: true
+  # -- Resource configuration for the TimescaleDB cluster
   resources:
     limits:
       cpu: 1
@@ -618,10 +607,21 @@ timescale:
     requests:
       cpu: 500m
       memory: 512Mi
-  rbac:
-    create: true
-  serviceAccount:
-    create: true
+  # -- PostgreSQL parameters for TimescaleDB
+  parameters: {}
+  # -- Post-init SQL to run after database creation
+  postInitApplicationSQL:
+    - CREATE EXTENSION IF NOT EXISTS timescaledb CASCADE
+    - CREATE EXTENSION IF NOT EXISTS timescaledb_toolkit CASCADE
+  # -- Authentication secrets
+  auth:
+    existingSecret: fwinsights-timescale
+    existingSuperUserSecret: fwinsights-timescale-superuser
+  tls:
+    enabled: true
+    certificatesSecret: fwinsights-timescale-ca
+    certFilename: tls.crt
+    certKeyFilename: tls.key
 
 email:
   # -- How to send emails, valid values include memory, ses, and smtp

@@ -100,10 +100,3 @@ app.kubernetes.io/name: {{ include "fairwinds-insights.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{- define "secrets_certificate" -}}
-"fwinsights-timescale-ca"
-{{- end -}}
-
-{{- define "secrets_credentials" -}}
-"fwinsights-timescale"
-{{- end -}}
