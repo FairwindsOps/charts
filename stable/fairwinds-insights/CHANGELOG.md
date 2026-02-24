@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.9.0
+## 6.0.0
 * Bumped timescale to pg17.7-ts2.24.0-all
 
 ## 5.8.0
