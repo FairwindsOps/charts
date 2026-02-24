@@ -1,0 +1,39 @@
+{{- if and .Values.dashboard.enabled .Values.dashboard.httpRoute.enabled .Values.dashboard.healthCheckPolicy.enabled }}
+{{- $fullName := include "goldilocks.fullname" . -}}
+apiVersion: networking.gke.io/v1
+kind: HealthCheckPolicy
+metadata:
+  name: {{ $fullName }}-dashboard
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: {{ include "goldilocks.name" . }}
+    helm.sh/chart: {{ include "goldilocks.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+    app.kubernetes.io/component: dashboard
+spec:
+  default:
+    config:
+      type: HTTP
+      httpHealthCheck:
+        requestPath: {{ .Values.dashboard.healthCheckPolicy.requestPath | default "/health" }}
+        {{- with .Values.dashboard.healthCheckPolicy.port }}
+        port: {{ . }}
+        {{- end }}
+    {{- with .Values.dashboard.healthCheckPolicy.checkIntervalSec }}
+    checkIntervalSec: {{ . }}
+    {{- end }}
+    {{- with .Values.dashboard.healthCheckPolicy.timeoutSec }}
+    timeoutSec: {{ . }}
+    {{- end }}
+    {{- with .Values.dashboard.healthCheckPolicy.healthyThreshold }}
+    healthyThreshold: {{ . }}
+    {{- end }}
+    {{- with .Values.dashboard.healthCheckPolicy.unhealthyThreshold }}
+    unhealthyThreshold: {{ . }}
+    {{- end }}
+  targetRef:
+    group: ""
+    kind: Service
+    name: {{ $fullName }}-dashboard
+{{- end }}
