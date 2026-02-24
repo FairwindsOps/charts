@@ -4,6 +4,9 @@ kind: Service
 metadata:
   name: {{ include "vpa.fullname" . }}-webhook
   namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/component: admission-controller
+    {{- include "vpa.labels" . | nindent 4 }}
 spec:
   ports:
     - port: 443
