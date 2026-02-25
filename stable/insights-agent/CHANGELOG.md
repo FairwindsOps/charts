@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.5.1
+* Removed support for FOCUS for AWS and GCP
+
 ## 5.5.0
 * Bumped cloudcosts to 1.0
 
