@@ -81,10 +81,6 @@ spec:
               - {{ required "You must set cloudcosts.tagkey, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagkey }}
               - --tagvalue
               - {{ required "You must set cloudcosts.tagvalue, please see https://insights.docs.fairwinds.com/technical-details/reports/aws-costs/#agent-configuration" .Values.cloudcosts.tagvalue }}
-              {{- if eq (default "standard" .Values.cloudcosts.format) "focus" }}
-              - --format
-              - focus
-              {{- end }}
             {{ include "security-context" . | indent 12 | trim }}
           {{ include "uploaderContainer" . | indent 10 | trim }}
             {{- end }}
@@ -112,14 +108,6 @@ spec:
               - {{ .Values.cloudcosts.gcp.billingaccount }}
               - --table
               - {{ .Values.cloudcosts.gcp.table }}
-              {{- if eq (default "standard" .Values.cloudcosts.format) "focus" }}
-              - --format
-              - focus
-              {{- if .Values.cloudcosts.gcp.focusview }}
-              - --focusview
-              - {{ .Values.cloudcosts.gcp.focusview }}
-              {{- end }}
-              {{- end }}
               {{- if .Values.cloudcosts.days }}
               - --days
               - "{{ .Values.cloudcosts.days }}"
