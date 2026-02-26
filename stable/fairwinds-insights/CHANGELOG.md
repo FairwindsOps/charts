@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.0.0
+* Bumped timescale to pg17.7-ts2.24.0-all
+
 ## 5.8.0
 * Add `temporalSchedulers` and `temporalSchedulersJob` for codifying Temporal workflow schedules in values. A post-install/post-upgrade Job creates or updates each schedule via the Temporal CLI. Supports cron, calendar, interval, overlapPolicy, workflowId, input, TLS/mTLS, and API key auth.
 
