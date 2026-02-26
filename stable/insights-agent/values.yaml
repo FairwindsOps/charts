@@ -423,10 +423,18 @@ prometheus:
 
 # NVIDIA DCGM Exporter for GPU utilization metrics
 # See: https://nvidia.github.io/dcgm-exporter/
+# In clusters where only some nodes have NVIDIA GPUs, set nodeSelector (and tolerations if needed)
+# so the DaemonSet runs only on GPU nodes; otherwise pods on non-GPU nodes fail with NVML not found.
 dcgm-exporter:
   # dcgm-exporter.enabled -- Enable NVIDIA DCGM Exporter for GPU utilization metrics.
   # Only enable on clusters with NVIDIA GPUs.
   enabled: false
+  # dcgm-exporter.nodeSelector -- Run only on nodes that have NVIDIA GPUs (required in mixed clusters).
+  # Default targets nodes with the common NVIDIA device plugin label; change if your GPU nodes use a different label.
+  nodeSelector:
+    nvidia.com/gpu.present: "true"
+  # dcgm-exporter.tolerations -- Tolerations for GPU nodes (if those nodes have taints).
+  tolerations: []
   # dcgm-exporter.serviceMonitor -- Enable ServiceMonitor for Prometheus Operator.
   # If using the bundled prometheus server, set to false.
   serviceMonitor:

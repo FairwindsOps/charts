@@ -176,36 +176,70 @@ Parameter | Description | Default
 
 ### Azure Workload Identity: Creating the federated credential (cloud-costs)
 
-When using `cloudcosts` with `provider: azure`, the chart uses [Azure AD Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview) (federated credential). You must create an **App registration** (or user-assigned managed identity) in Microsoft Entra ID and add a **federated identity credential** that matches your AKS cluster and the cloud-costs service account.
+When `cloudcosts` uses `provider: azure`, the chart uses [Azure AD Workload Identity](https://learn.microsoft.com/en-us/azure/aks/workload-identity-overview). Azure trusts a token from your AKS cluster only if the app has a **federated identity credential** whose **issuer** exactly matches that cluster’s OIDC issuer. If the issuer does not match (e.g. wrong cluster, or cluster was recreated), authentication will fail even when your Helm values are correct.
 
-1. **Create an App registration** (or use an existing one) in [Microsoft Entra ID](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade). Note the **Application (client) ID** and **Directory (tenant) ID**; set these as `cloudcosts.azure.workloadIdentity.clientId` and `cloudcosts.azure.workloadIdentity.tenantId`.
+**Terminology:**
 
-2. **Get your AKS cluster OIDC issuer URL** (use the exact value, including a trailing slash if present):
+- **Application (client) ID** — Used in Helm as `cloudcosts.azure.workloadIdentity.clientId` and in `--assignee` for RBAC. Shown in Azure Portal under the app’s “Overview”.
+- **Object ID** — The app’s object ID in Entra ID. Required by `az ad app federated-credential create --id`. Not the same as client ID. Get it with: `az ad app show --id <client-id> --query id -o tsv`.
+- **OIDC issuer** — A unique URL per AKS cluster (e.g. `https://eastus.oic.prod-aks.azure.com/.../.../`). The federated credential’s **Issuer** field must match this value exactly (including trailing slash if the cluster returns one).
+
+**Steps**
+
+1. **Create an App registration** (or use an existing one) in [Microsoft Entra ID](https://portal.azure.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade). From the app’s **Overview**, note:
+   - **Application (client) ID** → `cloudcosts.azure.workloadIdentity.clientId`
+   - **Directory (tenant) ID** → `cloudcosts.azure.workloadIdentity.tenantId`
+
+2. **Enable Workload Identity on the AKS cluster** where you will install the chart (if not already enabled). The cluster needs both OIDC issuer and Workload Identity so pods can receive the federated token.
+
+   ```bash
+   az aks update --name <cluster-name> --resource-group <resource-group> \
+     --enable-oidc-issuer --enable-workload-identity
+   ```
+
+   Wait for the update to finish. For new clusters, use `az aks create` with `--enable-oidc-issuer` and `--enable-workload-identity`.
+
+3. **Get the OIDC issuer URL for that same cluster.** Use the exact string (including or excluding a trailing slash exactly as returned).
 
    ```bash
    az aks show --name <cluster-name> --resource-group <resource-group> \
      --query "oidcIssuerProfile.issuerUrl" -o tsv
    ```
 
-3. **Create a federated identity credential** on the App registration with the same issuer, and subject/audience below. In Azure Portal: **App registrations** → your app → **Certificates & secrets** → **Federated credentials** → **Add credential**. Or with Azure CLI (replace `<app-object-id>`, `<issuer-url>`, and `<credential-name>`):
+4. **Create a federated identity credential** on the app, so Azure trusts tokens from this cluster for this service account.
+
+   - **In Azure Portal:** **App registrations** → your app → **Certificates & secrets** → **Federated credentials** → **Add credential**. Set Issuer = URL from step 3, Subject and Audiences as below.
+   - **With Azure CLI:** You must pass the app’s **Object ID** to `--id` (not the client ID). Example, replacing `<cluster-name>`, `<resource-group>`, and `<client-id>`:
 
    ```bash
+   # Get the app's Object ID (replace <client-id> with your Application (client) ID)
+   APP_OBJECT_ID=$(az ad app show --id <client-id> --query id -o tsv)
+
+   # Get the cluster's OIDC issuer (same cluster where you will install the chart)
+   ISSUER_URL=$(az aks show --name <cluster-name> --resource-group <resource-group> \
+     --query "oidcIssuerProfile.issuerUrl" -o tsv)
+
+   # Create the federated credential
    az ad app federated-credential create \
-     --id <app-object-id> \
-     --parameters '{
-       "name": "<credential-name>",
-       "issuer": "<issuer-url>",
-       "subject": "system:serviceaccount:insights-agent:insights-agent-cloudcosts",
-       "description": "AKS workload identity for insights-agent cloud-costs",
-       "audiences": ["api://AzureADTokenExchange"]
-     }'
+     --id "$APP_OBJECT_ID" \
+     --parameters "{
+       \"name\": \"insights-agent-cloudcosts-<cluster-name>\",
+       \"issuer\": \"$ISSUER_URL\",
+       \"subject\": \"system:serviceaccount:insights-agent:insights-agent-cloudcosts\",
+       \"description\": \"AKS workload identity for insights-agent cloud-costs\",
+       \"audiences\": [\"api://AzureADTokenExchange\"]
+     }"
    ```
 
-   - **Subject** must be exactly: `system:serviceaccount:insights-agent:insights-agent-cloudcosts` (namespace `insights-agent`, service account `insights-agent-cloudcosts`). If you install the agent in a different namespace, change the subject to `system:serviceaccount:<namespace>:insights-agent-cloudcosts`.
-   - **Issuer** must match the URL from step 2 exactly (including or excluding a trailing slash as returned).
-   - **Audiences**: `api://AzureADTokenExchange`.
+   **Federated credential fields:**
 
-4. **Assign RBAC** so the identity can read cost data. Grant the app's service principal at least **Reader** and **Cost Management Reader** on the subscription:
+   | Field      | Value |
+   |-----------|--------|
+   | **Subject** | `system:serviceaccount:insights-agent:insights-agent-cloudcosts` (default namespace `insights-agent`). If you install in another namespace, use `system:serviceaccount:<namespace>:insights-agent-cloudcosts`. |
+   | **Issuer**  | The URL from step 3, character-for-character (including trailing slash if present). **Each AKS cluster has a different issuer.** You need one federated credential per cluster; reuse the same app but add a new credential with that cluster’s issuer. |
+   | **Audiences** | `api://AzureADTokenExchange` |
+
+5. **Assign RBAC** so the identity can read cost data. Use the **client ID** (not Object ID) as `--assignee`:
 
    ```bash
    az role assignment create --role "Reader" \
@@ -214,7 +248,27 @@ When using `cloudcosts` with `provider: azure`, the chart uses [Azure AD Workloa
      --assignee <client-id> --scope /subscriptions/<subscription-id>
    ```
 
-   Use the same **client ID** as `cloudcosts.azure.workloadIdentity.clientId` and your subscription ID as `cloudcosts.azure.subscription`.
+   Use the same **client ID** as `cloudcosts.azure.workloadIdentity.clientId` and the subscription ID as `cloudcosts.azure.subscription`.
+
+**Verify (if cloud-costs fails to authenticate):**
+
+- Confirm the app has a federated credential whose **Issuer** exactly matches the cluster where the chart is installed: run step 3 for that cluster and compare to the credential in **App registrations** → app → **Federated credentials**.
+- Confirm **Subject** matches your install: `system:serviceaccount:<namespace>:insights-agent-cloudcosts` (default namespace is `insights-agent`).
+- Confirm Helm values use **Application (client) ID** and **Directory (tenant) ID** from the app’s Overview, and that RBAC was granted for that client ID on the subscription.
+
+### GPU metrics (dcgm-exporter) on clusters with mixed node types
+
+If your cluster has both **NVIDIA GPU nodes** and **non-GPU nodes**, set `dcgm-exporter.nodeSelector` (and `dcgm-exporter.tolerations` if your GPU nodes are tainted) so the DCGM Exporter DaemonSet runs only on GPU nodes. Otherwise pods on non-GPU nodes will crash with `ERROR_LIBRARY_NOT_FOUND` (NVML not present).
+
+Example (match the label your GPU nodes use, e.g. from the NVIDIA device plugin or Node Feature Discovery):
+
+```yaml
+dcgm-exporter:
+  enabled: true
+  nodeSelector:
+    nvidia.com/gpu.present: "true"
+  # tolerations: []   # add if GPU nodes have taints
+```
 
 ## Breaking Changes
 
