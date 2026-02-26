@@ -148,7 +148,6 @@ cloudcosts:
   tagkey: kubernetes_cluster
   tagvalue: staging.internal.reactiveops.com
   days: 10
-  format: standard  # or "focus" for AWS/GCP FOCUS format
   aws:
     accessKeyId: someAccessID
     secretAccessKey: someAccessKey
@@ -164,15 +163,13 @@ cloudcosts:
   #   workloadIdentity:
   #     clientId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
   #     tenantId: "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
-  # Example for GCP FOCUS format:
+  # Example for GCP:
   # provider: gcp
-  # format: focus
   # gcp:
   #   projectname: my-project
   #   dataset: billing_export
   #   billingaccount: "XXXXXX-XXXXXX-XXXXXX"
   #   table: ""
-  #   focusview: "my-project.billing_export.focus_view"
 
 # Falco does not work well with KIND cluster
 falco:
