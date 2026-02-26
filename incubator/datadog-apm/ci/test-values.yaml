@@ -14,14 +14,14 @@ datadog:
   site: datadoghq.com
 
 clusterAgent:
+  useInitContainersForConfig: true
   image:
-    repository: datadog/agent
+    repository: public.ecr.aws/datadog/agent
     pullPolicy: Always
-    # -- Overrides the image tag whose default is {{ .Chart.AppVersion }}
     tag: ""
   command:
     - trace-agent
-    - --config=/etc/datadog-agent/datadog-cluster.yaml
+    - --config=/etc/datadog-agent/datadog.yaml
   enabled: true
   # -- DATADOG_CLUSTER_AGENT_TOKEN
   token: XXXYYYXXXYYYXXXYYYXXXYYYXXX=
