@@ -256,17 +256,27 @@ When `cloudcosts` uses `provider: azure`, the chart uses [Azure AD Workload Iden
 - Confirm **Subject** matches your install: `system:serviceaccount:<namespace>:insights-agent-cloudcosts` (default namespace is `insights-agent`).
 - Confirm Helm values use **Application (client) ID** and **Directory (tenant) ID** from the app’s Overview, and that RBAC was granted for that client ID on the subscription.
 
-### GPU metrics (dcgm-exporter) on clusters with mixed node types
+### GPU metrics (dcgm-exporter, amd-device-metrics-exporter) on clusters with mixed node types
 
-If your cluster has both **NVIDIA GPU nodes** and **non-GPU nodes**, set `dcgm-exporter.nodeSelector` (and `dcgm-exporter.tolerations` if your GPU nodes are tainted) so the DCGM Exporter DaemonSet runs only on GPU nodes. Otherwise pods on non-GPU nodes will crash with `ERROR_LIBRARY_NOT_FOUND` (NVML not present).
+If your cluster has **GPU nodes** and **non-GPU nodes** (or both NVIDIA and AMD GPU nodes), set the exporter’s `nodeSelector` (and `tolerations` if GPU nodes are tainted) so each DaemonSet runs only on the matching GPU nodes.
 
-Example (match the label your GPU nodes use, e.g. from the NVIDIA device plugin or Node Feature Discovery):
+**NVIDIA (dcgm-exporter)** — Default `nodeSelector` is `nvidia.com/gpu.present: "true"`. Override if your NVIDIA GPU nodes use a different label (e.g. from NFD or cloud provider):
 
 ```yaml
 dcgm-exporter:
   enabled: true
   nodeSelector:
     nvidia.com/gpu.present: "true"
+  # tolerations: []   # add if GPU nodes have taints
+```
+
+**AMD (amd-device-metrics-exporter)** — Default `nodeSelector` is `feature.node.kubernetes.io/amd-gpu: "true"` (Node Feature Discovery). Override if your AMD GPU nodes use a different label:
+
+```yaml
+amd-device-metrics-exporter:
+  enabled: true
+  nodeSelector:
+    feature.node.kubernetes.io/amd-gpu: "true"
   # tolerations: []   # add if GPU nodes have taints
 ```
 

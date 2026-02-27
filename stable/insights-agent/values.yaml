@@ -460,10 +460,18 @@ dcgm-exporter:
 
 # AMD ROCm Device Metrics Exporter for GPU utilization metrics
 # See: https://github.com/ROCm/device-metrics-exporter
+# In clusters where only some nodes have AMD GPUs, set nodeSelector (and tolerations if needed)
+# so the DaemonSet runs only on AMD GPU nodes.
 amd-device-metrics-exporter:
   # amd-device-metrics-exporter.enabled -- Enable AMD Device Metrics Exporter for GPU utilization metrics.
   # Only enable on clusters with AMD GPUs (MI200, MI300, etc.)
   enabled: false
+  # amd-device-metrics-exporter.nodeSelector -- Run only on nodes that have AMD GPUs (required in mixed clusters).
+  # Default uses NFD label; change if your AMD GPU nodes use a different label.
+  nodeSelector:
+    feature.node.kubernetes.io/amd-gpu: "true"
+  # amd-device-metrics-exporter.tolerations -- Tolerations for AMD GPU nodes (if those nodes have taints).
+  tolerations: []
   # amd-device-metrics-exporter.service -- Service configuration for AMD Device Metrics Exporter
   service:
     # amd-device-metrics-exporter.service.annotations -- Annotations for Prometheus auto-discovery
