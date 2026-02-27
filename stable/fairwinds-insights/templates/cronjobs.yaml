@@ -29,6 +29,10 @@ spec:
                 - --interval={{ . }}
               {{- end }}
               {{- include "env" (dict "useReadReplica" $options.useReadReplica "root" $) | indent 14 }}
+              {{- $envVars := concat (default list $.Values.cronjobOptions.additionalEnvVars) ($options.additionalEnvVars | default list) }}
+              {{- with $envVars }}
+              {{- toYaml . | nindent 14 }}
+              {{- end }}
               imagePullPolicy: Always
               resources:
                 {{- toYaml (default $.Values.cronjobOptions.resources $options.resources) | nindent 16 }}
