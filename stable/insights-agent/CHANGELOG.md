@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.5.2
+* Add nodeSelector to dcgm-exporter and amd-device-metrics-exporter
+
 ## 5.5.1
 * Removed support for FOCUS for AWS and GCP
 
