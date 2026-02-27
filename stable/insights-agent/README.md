@@ -256,31 +256,51 @@ When `cloudcosts` uses `provider: azure`, the chart uses [Azure AD Workload Iden
 - Confirm **Subject** matches your install: `system:serviceaccount:<namespace>:insights-agent-cloudcosts` (default namespace is `insights-agent`).
 - Confirm Helm values use **Application (client) ID** and **Directory (tenant) ID** from the app’s Overview, and that RBAC was granted for that client ID on the subscription.
 
-### GPU metrics (dcgm-exporter, amd-device-metrics-exporter) on clusters with mixed node types
+### GPU metrics (dcgm-exporter, amd-device-metrics-exporter) on clusters with mixed or no GPU nodes
 
-If your cluster has **GPU nodes** and **non-GPU nodes** (or both NVIDIA and AMD GPU nodes), set the exporter’s `nodeSelector` (and `tolerations` if GPU nodes are tainted) so each DaemonSet runs only on the matching GPU nodes.
+You can use **nodeSelector**, **node affinity** (`affinity.nodeAffinity`), and **tolerations**—alone or together—to control where the GPU exporter runs. The default **nodeSelector** uses **Azure AKS**-friendly labels: **NVIDIA** `accelerator: nvidia` (common on AKS GPU node pools). Use **node affinity** for advanced scheduling (e.g. multiple node selector terms or preferred rules). Use **tolerations** when your GPU nodes have taints. Example with **nodeAffinity**:
 
-**NVIDIA (dcgm-exporter)** — Default `nodeSelector` is `nvidia.com/gpu.present: "true"`. Override if your NVIDIA GPU nodes use a different label (e.g. from NFD or cloud provider):
+```yaml
+dcgm-exporter:
+  enabled: true
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: accelerator
+                operator: In
+                values:
+                  - nvidia
+```
+
+**NVIDIA (dcgm-exporter)** — Override `nodeSelector` for your cloud:
+- **Azure AKS:** `accelerator: nvidia` (default)
+- **GKE:** `cloud.google.com/gke-accelerator: "true"`
+- **EKS:** `k8s.amazonaws.com/accelerator: nvidia` (or your GPU type label)
+- **Other / NVIDIA device plugin:** `nvidia.com/gpu.present: "true"`
 
 ```yaml
 dcgm-exporter:
   enabled: true
   nodeSelector:
-    nvidia.com/gpu.present: "true"
-  # tolerations: []   # add if GPU nodes have taints
+    accelerator: nvidia   # Azure AKS (default). GKE: cloud.google.com/gke-accelerator: "true". EKS: k8s.amazonaws.com/accelerator: nvidia. NVIDIA device plugin: nvidia.com/gpu.present: "true"
+  # affinity: {}   # optional: node affinity (e.g. nodeAffinity) for advanced scheduling
+  # tolerations: []   # required if GPU nodes have taints
 ```
 
-**AMD (amd-device-metrics-exporter)** — Default `nodeSelector` is `feature.node.kubernetes.io/amd-gpu: "true"` (Node Feature Discovery). Override if your AMD GPU nodes use a different label:
+**AMD (amd-device-metrics-exporter)** — Default `nodeSelector`: `amd.com/gpu: "true"`. For GKE (AMD GPU nodes) use `feature.node.kubernetes.io/amd-gpu: "true"`. Override if your AMD GPU nodes use a different label:
 
 ```yaml
 amd-device-metrics-exporter:
   enabled: true
   nodeSelector:
-    feature.node.kubernetes.io/amd-gpu: "true"
-  # tolerations: []   # add if GPU nodes have taints
+    amd.com/gpu: "true"   # GKE (AMD): feature.node.kubernetes.io/amd-gpu: "true"
+  # affinity: {}   # optional: node affinity (e.g. nodeAffinity) for advanced scheduling
+  # tolerations: []   # required if GPU nodes have taints
 ```
 
-## Breaking Changes
+Only apply the GPU label to nodes that actually have the driver installed; otherwise pods will crash.
 
 ### Version 4.0
 The 4.0 release of insights-agent contains breaking changes to `right-sizer`. This component has been rebranded to refer to Insights automated right sizing. The `right-sizer` prior to this release will be referred to as `oom-detection` going forward. These will be further consolidated in a future release to avoid confusion.
