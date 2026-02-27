@@ -92,6 +92,12 @@ cronjobOptions:
     limits:
       cpu: 250m
       memory: 512Mi
+  # -- Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars)
+  additionalEnvVars:
+    - name: POSTGRES_MAX_IDLE_CONNS
+      value: "1"
+    - name: POSTGRES_MAX_OPEN_CONNS
+      value: "1"
 
 cronjobs:
   # -- Options for the action-items filters refresher job.
