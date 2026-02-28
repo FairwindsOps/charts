@@ -28,6 +28,9 @@ spec:
       {{- else }}
       serviceAccountName: {{ .Values.rbac.serviceAccountName }}
       {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
       containers:
       - command:
         - gemini

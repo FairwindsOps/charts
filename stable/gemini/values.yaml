@@ -53,3 +53,6 @@ additionalPodLabels: {}
 # additionalPodAnnotations -- Additional annotations added on pod
 additionalPodAnnotations: {}
   # key: value
+
+# priorityClassName -- Priority class name for the pod
+priorityClassName:
