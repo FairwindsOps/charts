@@ -137,9 +137,33 @@ spec:
                   kubectl create namespace "$OPERATOR_NAMESPACE"
                 fi
                 
+                # Resolve operator version (support "latest" via GitHub API)
+                OPERATOR_VERSION="{{ .Values.postgresql.operator.version }}"
+                DEFAULT_CNPG_VERSION="{{ .Values.postgresql.operator.defaultVersion | default "1.28.1" }}"
+                if [ "$OPERATOR_VERSION" = "latest" ]; then
+                  echo "Resolving latest CloudNativePG operator version..."
+                  CNPG_VERSION=""
+                  if command -v wget >/dev/null 2>&1; then
+                    CNPG_VERSION=$(wget -qO- https://api.github.com/repos/cloudnative-pg/cloudnative-pg/releases/latest 2>/dev/null | grep '"tag_name"' | head -1 | sed -E 's/.*"v([^"]+)".*/\1/' || true)
+                  fi
+                  if [ -z "$CNPG_VERSION" ] && command -v curl >/dev/null 2>&1; then
+                    CNPG_VERSION=$(curl -sSL https://api.github.com/repos/cloudnative-pg/cloudnative-pg/releases/latest 2>/dev/null | grep '"tag_name"' | head -1 | sed -E 's/.*"v([^"]+)".*/\1/' || true)
+                  fi
+                  if [ -z "$CNPG_VERSION" ]; then
+                    echo "Could not resolve latest from GitHub API, using default: $DEFAULT_CNPG_VERSION"
+                    CNPG_VERSION="$DEFAULT_CNPG_VERSION"
+                  else
+                    echo "Using CloudNativePG operator version: $CNPG_VERSION"
+                  fi
+                else
+                  CNPG_VERSION="$OPERATOR_VERSION"
+                fi
+                CNPG_BRANCH="${CNPG_VERSION%.*}"
+                MANIFEST_URL="https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-${CNPG_BRANCH}/releases/cnpg-${CNPG_VERSION}.yaml"
+                
                 # Install CloudNativePG operator using standard YAML manifest
                 echo "Installing CloudNativePG operator using standard YAML manifest..."
-                kubectl apply --server-side -f https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-1.27/releases/cnpg-1.27.0.yaml || true
+                kubectl apply --server-side -f "$MANIFEST_URL" || true
                 
                 # Verify the installation as per CloudNativePG documentation
                 echo "Verifying CloudNativePG operator installation..."
