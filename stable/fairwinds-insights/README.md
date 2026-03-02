@@ -40,6 +40,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.ssoRequiredForAdminAPI | bool | `false` | Whether to require SSO for the admin API |
 | cronjobOptions.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | Default security context for cronjobs |
 | cronjobOptions.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Default resources for cronjobs |
+| cronjobOptions.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars) |
 | cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *"}` | Options for the action-items filters refresher job. |
 | cronjobs.action-items-statistics | object | `{"command":"action_items_statistics","schedule":"15 * * * *"}` | Options for the action item stats job |
 | cronjobs.benchmark | object | `{"command":"benchmark","schedule":""}` | Options for the benchmark job |

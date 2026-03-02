@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.1.0
+* Add support for `cronjobOptions.additionalEnvVars` and `cronjobs.<name>.additionalEnvVars`
+
 ## 6.0.0
 * Bumped timescale to pg17.7-ts2.24.0-all
 
