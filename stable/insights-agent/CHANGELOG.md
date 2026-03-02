@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.5.3
+* Improve GPU exporters install
+
 ## 5.5.2
 * Add nodeSelector to dcgm-exporter and amd-device-metrics-exporter
 

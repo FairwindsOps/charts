@@ -423,16 +423,19 @@ prometheus:
 
 # NVIDIA DCGM Exporter for GPU utilization metrics
 # See: https://nvidia.github.io/dcgm-exporter/
-# In clusters where only some nodes have NVIDIA GPUs, set nodeSelector (and tolerations if needed)
-# so the DaemonSet runs only on GPU nodes; otherwise pods on non-GPU nodes fail with NVML not found.
+# Scheduling: nodeSelector, affinity (e.g. nodeAffinity), and tolerations are supported—use as needed for your GPU nodes.
+# Default nodeSelector uses the label common on Azure AKS GPU node pools.
+# For GKE GPU node pools use: cloud.google.com/gke-accelerator: "true"
+# For EKS GPU nodes use: k8s.amazonaws.com/accelerator: nvidia (or your GPU type label)
+# For non-Azure / NVIDIA device plugin use: nvidia.com/gpu.present: "true"
 dcgm-exporter:
   # dcgm-exporter.enabled -- Enable NVIDIA DCGM Exporter for GPU utilization metrics.
-  # Only enable on clusters with NVIDIA GPUs.
   enabled: false
-  # dcgm-exporter.nodeSelector -- Run only on nodes that have NVIDIA GPUs (required in mixed clusters).
-  # Default targets nodes with the common NVIDIA device plugin label; change if your GPU nodes use a different label.
+  # dcgm-exporter.nodeSelector -- Run only on GPU nodes. Azure AKS: accelerator=nvidia. GKE: cloud.google.com/gke-accelerator: "true". EKS: k8s.amazonaws.com/accelerator: nvidia. NVIDIA device plugin: nvidia.com/gpu.present: "true".
   nodeSelector:
-    nvidia.com/gpu.present: "true"
+    accelerator: nvidia
+  # dcgm-exporter.affinity -- Pod affinity (e.g. nodeAffinity) for advanced scheduling. Subchart supports full affinity spec; use for multiple terms or preferredDuringScheduling.
+  affinity: {}
   # dcgm-exporter.tolerations -- Tolerations for GPU nodes (if those nodes have taints).
   tolerations: []
   # dcgm-exporter.serviceMonitor -- Enable ServiceMonitor for Prometheus Operator.
@@ -460,16 +463,17 @@ dcgm-exporter:
 
 # AMD ROCm Device Metrics Exporter for GPU utilization metrics
 # See: https://github.com/ROCm/device-metrics-exporter
-# In clusters where only some nodes have AMD GPUs, set nodeSelector (and tolerations if needed)
-# so the DaemonSet runs only on AMD GPU nodes.
+# Scheduling: nodeSelector, affinity (e.g. nodeAffinity), and tolerations are supported—use as needed for your GPU nodes.
+# Default nodeSelector uses amd.com/gpu.
+# For GKE (AMD GPU nodes) use: feature.node.kubernetes.io/amd-gpu: "true"
 amd-device-metrics-exporter:
   # amd-device-metrics-exporter.enabled -- Enable AMD Device Metrics Exporter for GPU utilization metrics.
-  # Only enable on clusters with AMD GPUs (MI200, MI300, etc.)
   enabled: false
-  # amd-device-metrics-exporter.nodeSelector -- Run only on nodes that have AMD GPUs (required in mixed clusters).
-  # Default uses NFD label; change if your AMD GPU nodes use a different label.
+  # amd-device-metrics-exporter.nodeSelector -- Run only on AMD GPU nodes. GKE: feature.node.kubernetes.io/amd-gpu: "true".
   nodeSelector:
-    feature.node.kubernetes.io/amd-gpu: "true"
+    amd.com/gpu: "true"
+  # amd-device-metrics-exporter.affinity -- Pod affinity (e.g. nodeAffinity) for advanced scheduling.
+  affinity: {}
   # amd-device-metrics-exporter.tolerations -- Tolerations for AMD GPU nodes (if those nodes have taints).
   tolerations: []
   # amd-device-metrics-exporter.service -- Service configuration for AMD Device Metrics Exporter
