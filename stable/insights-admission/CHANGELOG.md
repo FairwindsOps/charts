@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.2
+* Bumped admission
+
 ## 1.11.1
 * Bumped admission
 

@@ -53,11 +53,11 @@ references:
 executors:
   ci-images:
     docker:
-      - image: quay.io/reactiveops/ci-images:v14.1-bullseye
+      - image: quay.io/reactiveops/ci-images:v15-cimg-24.04
   ci-images-xlarge:
     resource_class: xlarge
     docker:
-      - image: quay.io/reactiveops/ci-images:v14.1-bullseye
+      - image: quay.io/reactiveops/ci-images:v15-cimg-24.04
 
 jobs:
   check-helm-docs:
