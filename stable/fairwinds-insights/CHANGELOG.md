@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.2.0
+* Bumped Temporal sub-chart to 0.73.2
+
 ## 6.1.1
 * Bumped CNPG
 
