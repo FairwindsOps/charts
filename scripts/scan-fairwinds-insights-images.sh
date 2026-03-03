@@ -1,11 +1,21 @@
 #! /bin/bash
 # Scans all container images referenced by the stable/fairwinds-insights Helm chart
-# (including subcharts: temporal, timescale, minio). Non-blocking: writes marker files
-# so CI can notify without failing the job.
+# (including subcharts: temporal, timescale, minio) for CRITICAL/HIGH vulnerabilities using Trivy.
 #
 # Usage: ./scripts/scan-fairwinds-insights-images.sh
-# Requires: helm, trivy, docker (or podman). Run from repo root.
+# Requires: helm, trivy (or TRIVY_IMAGE), docker. Run from repo root.
 set -eo pipefail
+
+# Use Trivy via Docker when TRIVY_IMAGE is set (e.g. CI) or when trivy is not in PATH
+run_trivy() {
+  if [[ -n "${TRIVY_IMAGE:-}" ]]; then
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "$TRIVY_IMAGE" image "$@"
+  elif command -v trivy &>/dev/null; then
+    trivy image "$@"
+  else
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "${TRIVY_IMAGE:-aquasec/trivy:latest}" image "$@"
+  fi
+}
 
 REPO_ROOT="${REPO_ROOT:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 CHART_DIR="$REPO_ROOT/stable/fairwinds-insights"
@@ -56,7 +66,7 @@ while IFS= read -r image; do
     continue
   fi
   set +e
-  trivy image --exit-code 123 --severity CRITICAL,HIGH "$image"
+  run_trivy --exit-code 123 --severity CRITICAL,HIGH "$image"
   exitcode=$?
   set -e
   if [[ $exitcode -eq 123 ]]; then
@@ -65,7 +75,7 @@ while IFS= read -r image; do
   echo "Done with $image"
 done <<< "$IMAGES"
 
-# Write markers for CI (non-blocking notification)
+# Write markers for CI: notify step uses this when job fails (no job requires this one)
 if (( ${#have_vulns[@]} != 0 )); then
   echo "The following images have vulnerabilities:"
   : > "$LIST_FILE"

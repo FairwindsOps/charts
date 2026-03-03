@@ -140,7 +140,10 @@ jobs:
             helm version
       - setup_remote_docker:
           docker_layer_caching: false
-      - run: bash scripts/install-trivy.sh
+      - run:
+          name: Install Trivy
+          command: |
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
       - run:
           name: Scan fairwinds-insights chart images
           command: bash scripts/scan-fairwinds-insights-images.sh
