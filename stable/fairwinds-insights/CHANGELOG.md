@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.2.1
+* Bumped kubectl to 1.35.2
+* Bumped alpine/psql to 18.2
+
 ## 6.2.0
 * Bumped Temporal sub-chart to 0.73.2
 
