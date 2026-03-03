@@ -58,6 +58,13 @@ Return secret name to be used based on provided values.
 {{- end -}}
 
 {{/*
+Return the cluster-agent image (repository:tag) for main and init containers.
+*/}}
+{{- define "clusterAgent.image" -}}
+{{- .Values.clusterAgent.image.repository }}:{{ default .Chart.AppVersion .Values.clusterAgent.image.tag }}
+{{- end -}}
+
+{{/*
 Correct `clusterAgent.metricsProvider.service.port` if Kubernetes <= 1.15
 */}}
 {{- define "clusterAgent.metricsProvider.port" -}}

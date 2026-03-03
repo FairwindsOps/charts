@@ -40,6 +40,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.ssoRequiredForAdminAPI | bool | `false` | Whether to require SSO for the admin API |
 | cronjobOptions.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | Default security context for cronjobs |
 | cronjobOptions.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Default resources for cronjobs |
+| cronjobOptions.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars) |
 | cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *"}` | Options for the action-items filters refresher job. |
 | cronjobs.action-items-statistics | object | `{"command":"action_items_statistics","schedule":"15 * * * *"}` | Options for the action item stats job |
 | cronjobs.benchmark | object | `{"command":"benchmark","schedule":""}` | Options for the benchmark job |
@@ -156,8 +157,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
 | postgresql.image.tag | string | `"17.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
-| postgresql.operator | object | `{"crds":{"create":true},"install":true,"version":"1.27.0","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
-| postgresql.operator.version | string | `"1.27.0"` | CloudNativePG operator version to install |
+| postgresql.operator | object | `{"crds":{"create":true},"defaultVersion":"1.28.1","install":true,"version":"latest","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
+| postgresql.operator.version | string | `"latest"` | CloudNativePG operator version to install (use "latest" to resolve from GitHub at install time) |
+| postgresql.operator.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
 | postgresql.operator.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |

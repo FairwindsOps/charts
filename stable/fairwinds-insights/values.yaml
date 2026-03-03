@@ -92,6 +92,12 @@ cronjobOptions:
     limits:
       cpu: 250m
       memory: 512Mi
+  # -- Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars)
+  additionalEnvVars:
+    - name: POSTGRES_MAX_IDLE_CONNS
+      value: "1"
+    - name: POSTGRES_MAX_OPEN_CONNS
+      value: "1"
 
 cronjobs:
   # -- Options for the action-items filters refresher job.
@@ -499,8 +505,10 @@ postgresql:
   # -- Install CloudNativePG operator
   operator:
     install: true
-    # -- CloudNativePG operator version to install
-    version: "1.27.0"
+    # -- CloudNativePG operator version to install (use "latest" to resolve from GitHub at install time)
+    version: "latest"
+    # -- Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails
+    defaultVersion: "1.28.1"
     # -- CloudNativePG operator configuration
     webhook:
       mutating:

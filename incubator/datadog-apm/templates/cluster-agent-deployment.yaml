@@ -75,9 +75,38 @@ spec:
       dnsConfig:
 {{ toYaml .Values.clusterAgent.dnsConfig | indent 8 }}
       {{- end }}
+      {{- if .Values.clusterAgent.useInitContainersForConfig }}
+      initContainers:
+      - name: init-volume
+        image: "{{ include "clusterAgent.image" . }}"
+        imagePullPolicy: {{ .Values.clusterAgent.image.pullPolicy }}
+        command: ["bash", "-c"]
+        args:
+          - cp -r /etc/datadog-agent /opt
+        volumeMounts:
+          - name: config
+            mountPath: /opt/datadog-agent
+            readOnly: false
+        resources:
+          {}
+      - name: init-config
+        image: "{{ include "clusterAgent.image" . }}"
+        imagePullPolicy: {{ .Values.clusterAgent.image.pullPolicy }}
+        command:
+          - bash
+          - -c
+        args:
+          - for script in $(find /etc/cont-init.d/ -type f -name '*.sh' | sort) ; do bash $script ; done
+        volumeMounts:
+          - name: config
+            mountPath: /etc/datadog-agent
+            readOnly: false
+        resources:
+          {}
+      {{- end }}
       containers:
       - name: cluster-agent
-        image: "{{ .Values.clusterAgent.image.repository }}:{{ default .Chart.AppVersion .Values.clusterAgent.image.tag }}"
+        image: "{{ include "clusterAgent.image" . }}"
         {{- with .Values.clusterAgent.command }}
         command: {{ range . }}
           - {{ . | quote }}
@@ -164,7 +193,7 @@ spec:
                 name: {{ template "clusterAgent.tokenSecretName" . }}
                 key: token
           - name: DD_KUBE_RESOURCES_NAMESPACE
-            value: {{ .Release.Namespace }}
+            value: {{ default .Release.Namespace .Values.clusterAgent.kubeResourcesNamespace | quote }}
           - name: DD_HOSTNAME
             valueFrom:
               fieldRef:
@@ -191,6 +220,14 @@ spec:
         readinessProbe:
 {{ toYaml .Values.clusterAgent.readinessProbe | indent 10 }}
         volumeMounts:
+{{- if .Values.clusterAgent.useInitContainersForConfig }}
+          - name: config
+            mountPath: /etc/datadog-agent
+            readOnly: false
+          - name: tmpdir
+            mountPath: /tmp
+            readOnly: false
+{{- else }}
 {{- if .Values.clusterAgent.volumeMounts }}
 {{ toYaml .Values.clusterAgent.volumeMounts | indent 10 }}
 {{- end }}
@@ -204,8 +241,19 @@ spec:
             mountPath: /etc/datadog-agent/datadog-cluster.yaml
             subPath: datadog-cluster.yaml
             readOnly: true
-{{- end}}
+{{- end }}
+{{- end }}
       volumes:
+{{- if .Values.clusterAgent.useInitContainersForConfig }}
+        - name: config
+          emptyDir: {}
+        - name: tmpdir
+          emptyDir: {}
+        - hostPath:
+            path: /var/run/datadog
+            type: DirectoryOrCreate
+          name: apmsocket
+{{- else }}
 {{- if .Values.clusterAgent.confd }}
         - name: confd
           configMap:
@@ -215,10 +263,10 @@ spec:
         - name: cluster-agent-yaml
           configMap:
             name: {{ template "datadog-apm.fullname" . }}-cluster-agent-config
-{{- end}}
-
+{{- end }}
 {{- if .Values.clusterAgent.volumes }}
 {{ toYaml .Values.clusterAgent.volumes | indent 8 }}
+{{- end }}
 {{- end }}
       {{- if .Values.clusterAgent.tolerations }}
       tolerations:
