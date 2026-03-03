@@ -4,6 +4,7 @@
 * Bumped kubectl to 1.35.2
 * Bumped alpine/psql to 18.2
 * Bumped swaggerapi/swagger-ui to v5.32.0
+* Bumped minio to 5.4.0
 
 ## 6.2.0
 * Bumped Temporal sub-chart to 0.73.2
