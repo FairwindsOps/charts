@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.2.2
+* Bumped missing kubectl reference to 1.35.2
+
 ## 6.2.1
 * Bumped kubectl to 1.35.2
 * Bumped alpine/psql to 18.2
