@@ -123,13 +123,58 @@ jobs:
           name: sync
           command: scripts/sync.sh
 
+  # Scans all images from stable/fairwinds-insights (subcharts: temporal, timescale, minio; main chart: postgres, openapi, etc.).
+  # Fails when vulns are found (so CI shows red) but does not block merging (no job requires this one).
+  # Set SLACK_WEBHOOK_URL for Slack notifications on master.
+  scan_for_vulnerabilities:
+    executor: ci-images
+    resource_class: medium
+    steps:
+      - checkout
+      - run:
+          name: Install Helm and jq
+          command: |
+            sudo apt-get update -qq && sudo apt-get install -y -qq jq
+            curl -sSfL https://get.helm.sh/helm-v3.17.0-linux-amd64.tar.gz | tar xz
+            sudo mv linux-amd64/helm /usr/local/bin/helm
+            helm version
+      - setup_remote_docker:
+          docker_layer_caching: false
+      - run:
+          name: Install Trivy
+          command: |
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin
+      - run:
+          name: Scan fairwinds-insights chart images
+          command: bash scripts/scan-fairwinds-insights-images.sh
+      - run:
+          name: Notify Slack (vulnerabilities found)
+          when: on_fail
+          command: |
+            if [[ "$CIRCLE_BRANCH" != "master" ]]; then exit 0; fi
+            if [[ -n "${SLACK_WEBHOOK_URL:-}" ]] && [[ -f .scan-found-vulns ]]; then
+              vulns_list=$(cat .scan-vulns-list 2>/dev/null || echo "See job logs.")
+              payload=$(jq -n --arg list "$vulns_list" '{text: ("One or more fairwinds-insights chart images have vulnerabilities!\n\n" + $list)}')
+              curl -sS -X POST -H 'Content-type: application/json' --data "$payload" "$SLACK_WEBHOOK_URL" || true
+            fi
+      - run:
+          name: Notify Slack (all clean)
+          when: on_success
+          command: |
+            if [[ "$CIRCLE_BRANCH" != "master" ]]; then exit 0; fi
+            if [[ -n "${SLACK_WEBHOOK_URL:-}" ]]; then
+              curl -sS -X POST -H 'Content-type: application/json' --data '{"text": ":tada: All fairwinds-insights chart images are clean!"}' "$SLACK_WEBHOOK_URL" || true
+            fi
+
 workflows:
   version: 2
+  # scan_for_vulnerabilities fails when vulns found but does not block (no job requires it).
   test-and-sync:
     jobs:
       - check-helm-docs
       - lint-scripts
       - lint-charts
+      - scan_for_vulnerabilities
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.32"
           kind_node_image: "kindest/node:v1.32.11@sha256:5fc52d52a7b9574015299724bd68f183702956aa4a2116ae75a63cb574b35af8"
@@ -167,3 +212,14 @@ workflows:
             branches:
               only:
                 - master
+
+  check_vulnerabilities:
+    triggers:
+      - schedule:
+          cron: "0 12 * * *"
+          filters:
+            branches:
+              only:
+                - master
+    jobs:
+      - scan_for_vulnerabilities
