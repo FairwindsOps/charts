@@ -18,9 +18,15 @@ if [[ ! -d "$CHART_DIR" ]]; then
   exit 1
 fi
 
+echo "Adding Helm repos for chart dependencies..."
+helm repo add minio https://charts.min.io/ --force-update
+helm repo add fairwinds-incubator https://charts.fairwinds.com/incubator --force-update
+helm repo add temporal https://go.temporal.io/helm-charts --force-update
+helm repo update
+
 echo "Building chart dependencies and rendering manifests..."
 cd "$CHART_DIR"
-helm dependency build --skip-refresh
+helm dependency build
 # Render with default values so we get temporal, postgres, openapi, etc.
 RENDERED=$(helm template release . --namespace fwinsights 2>/dev/null)
 cd "$REPO_ROOT"
