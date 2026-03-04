@@ -2,7 +2,7 @@
 
 ## 6.2.2
 * Bumped missing kubectl reference to 1.35.2
-* Pin MinIO subchart images to tags that exist on quay.io (RELEASE.2024-12-18T13-15-44Z, RELEASE.2024-11-21T17-21-54Z); subchart 5.4.0 defaults to a 2025 tag that is not found
+* Pin MinIO subchart images: server RELEASE.2024-07-10T18-41-49Z.hotfix.2127e0d56, mc client RELEASE.2025-08-13T08-35-41Z (subchart 5.4.0 server default tag not found on quay.io)
 
 ## 6.2.1
 * Bumped kubectl to 1.35.2
