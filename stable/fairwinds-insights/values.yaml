@@ -662,6 +662,14 @@ reportStorage:
 minio:
   # -- Install Minio
   install: true
+  # -- Override MinIO server image tag (subchart default is RELEASE.2024-12-18T13-15-44Z)
+  image:
+    repository: quay.io/minio/minio
+    tag: RELEASE.2025-10-15T17-29-55Z
+  # -- Override MinIO client (mc) image tag used for bucket init (subchart default is RELEASE.2024-11-21T17-21-54Z)
+  mcImage:
+    repository: quay.io/minio/mc
+    tag: RELEASE.2025-08-13T08-35-41Z
   # -- Create the following buckets for the newly installed Minio
   buckets:
     - name: reports
