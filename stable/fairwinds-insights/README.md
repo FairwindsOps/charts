@@ -204,8 +204,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportStorage.minioHost | string | `nil` | Hostname to use for Minio |
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
 | minio.install | bool | `true` | Install Minio |
-| minio.image | object | `{"repository":"quay.io/minio/minio","tag":"RELEASE.2025-10-15T17-29-55Z"}` | Override MinIO server image tag (subchart default is RELEASE.2024-12-18T13-15-44Z) |
-| minio.mcImage | object | `{"repository":"quay.io/minio/mc","tag":"RELEASE.2025-08-13T08-35-41Z"}` | Override MinIO client (mc) image tag used for bucket init (subchart default is RELEASE.2024-11-21T17-21-54Z) |
+| minio.image.repository | string | `"quay.io/minio/minio"` |  |
+| minio.image.tag | string | `"RELEASE.2024-12-18T13-15-44Z"` |  |
+| minio.mcImage.repository | string | `"quay.io/minio/mc"` |  |
+| minio.mcImage.tag | string | `"RELEASE.2024-11-21T17-21-54Z"` |  |
 | minio.buckets | list | `[{"name":"reports","policy":"none","purge":false}]` | Create the following buckets for the newly installed Minio |
 | minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
 | minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
