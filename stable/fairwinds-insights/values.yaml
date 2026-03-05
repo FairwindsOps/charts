@@ -662,6 +662,13 @@ reportStorage:
 minio:
   # -- Install Minio
   install: true
+  # Pin to tags that exist on quay.io (subchart 5.4.0 defaults to a 2025 tag that is not found)
+  image:
+    repository: quay.io/minio/minio
+    tag: RELEASE.2024-07-10T18-41-49Z.hotfix.2127e0d56
+  mcImage:
+    repository: quay.io/minio/mc
+    tag: RELEASE.2025-08-13T08-35-41Z
   # -- Create the following buckets for the newly installed Minio
   buckets:
     - name: reports
