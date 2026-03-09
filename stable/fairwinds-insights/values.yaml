@@ -793,8 +793,14 @@ temporalDeploymentDefaults:
   topologySpreadConstraints: []
   args: []
   additionalEnv: []
-  volumeMounts: []
-  volumes: []
+  volumeMounts:
+    - name: secrets
+      mountPath: /var/run/secrets/github
+  volumes:
+    - name: secrets
+      secret:
+        secretName: github-secrets
+        optional: true
 
 # -- Temporal worker deployments
 temporalDeployments:
@@ -914,14 +920,6 @@ temporalDeployments:
         value: "2"
       - name: INSIGHTS_CI_IMAGE_VERSION
         value: "5.9"
-    volumeMounts:
-      - name: secrets
-        mountPath: /var/run/secrets/github
-    volumes:
-      - name: secrets
-        secret:
-          secretName: github-secrets
-          optional: true
     rbac:
       enabled: true
       rules:
