@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.2.4
+* Bumping images for fixing vulnerabilities
+
 ## 6.2.3
 * Include github volume mounts and secrets configuration for temporal deployments by default
 
