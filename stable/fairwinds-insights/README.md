@@ -205,7 +205,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
 | minio.install | bool | `true` | Install Minio |
 | minio.image.repository | string | `"quay.io/minio/minio"` |  |
-| minio.image.tag | string | `"RELEASE.2025-10-15T17-29-55Z"` |  |
+| minio.image.tag | string | `"RELEASE.2024-07-10T18-41-49Z.hotfix.2127e0d56"` |  |
 | minio.mcImage.repository | string | `"quay.io/minio/mc"` |  |
 | minio.mcImage.tag | string | `"RELEASE.2025-08-13T08-35-41Z"` |  |
 | minio.buckets | list | `[{"name":"reports","policy":"none","purge":false}]` | Create the following buckets for the newly installed Minio |
