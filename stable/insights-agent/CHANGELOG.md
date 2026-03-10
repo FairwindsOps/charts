@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.6.0
+* Major bump on dependencies
+
 ## 5.5.4
 * Pin device-metrics-exporter-charts at v1.4.1 as v1.4.2 has a bug
 
