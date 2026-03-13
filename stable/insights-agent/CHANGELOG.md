@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.6.1
+* Added GPU monitor config
+
 ## 5.6.0
 * Major bump on dependencies
 
