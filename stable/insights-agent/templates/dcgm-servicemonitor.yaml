@@ -21,9 +21,8 @@ spec:
     matchLabels:
       app.kubernetes.io/name: dcgm-exporter
   endpoints:
-    - port: "9400"
-      path: /metrics
-      interval: 30s
+    {{- $endpoints := (index .Values "dcgm-exporter").serviceMonitor.endpoints }}
+    {{- toYaml (default (list (dict "port" "9400" "path" "/metrics" "interval" "30s")) $endpoints) | nindent 4 }}
   namespaceSelector:
     matchNames:
       - {{ .Release.Namespace }}

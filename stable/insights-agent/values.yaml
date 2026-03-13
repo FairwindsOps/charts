@@ -460,6 +460,11 @@ dcgm-exporter:
     enabled: false
     labels:
       release: fw-prometheus  # match your kube-prometheus-stack release
+    # dcgm-exporter.serviceMonitor.endpoints -- ServiceMonitor scrape endpoints (port must match service).
+    endpoints:
+      - port: "9400"
+        path: /metrics
+        interval: 30s
   # dcgm-exporter.service -- Service configuration for DCGM Exporter
   service:
     # dcgm-exporter.service.annotations -- Annotations for Prometheus auto-discovery
