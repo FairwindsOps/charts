@@ -457,9 +457,9 @@ dcgm-exporter:
   # the chart creates a ServiceMonitor so Prometheus Operator scrapes DCGM. Add labels here so
   # your Prometheus selects it (e.g. release: fw-prometheus to match serviceMonitorSelector).
   serviceMonitor:
-    enabled: false    
+    enabled: false
     labels:
-      release: fw-prometheus # match your kube-prometheus-stack release
+      release: fw-prometheus  # match your kube-prometheus-stack release
   # dcgm-exporter.service -- Service configuration for DCGM Exporter
   service:
     # dcgm-exporter.service.annotations -- Annotations for Prometheus auto-discovery
