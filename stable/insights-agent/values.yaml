@@ -400,6 +400,21 @@ prometheus:
       capabilities:
         drop:
           - ALL
+  # extraScrapeConfigs: when using the bundled Prometheus server and dcgm-exporter (or
+  # amd-device-metrics-exporter), add a scrape job so GPU metrics are collected even if
+  # annotation-based discovery does not pick them up. Uncomment and set when dcgm-exporter.enabled
+  # (and/or installPrometheusServer) is true. Use the FQDN if Prometheus runs in another namespace.
+  # extraScrapeConfigs: |
+  #   - job_name: dcgm-exporter
+  #     metrics_path: /metrics
+  #     static_configs:
+  #       - targets:
+  #           - insights-agent-dcgm-exporter.insights-agent.svc.cluster.local:9400
+  #     relabel_configs:
+  #       - source_labels: [__address__]
+  #         target_label: instance
+  #       - replacement: dcgm-exporter
+  #         target_label: job
 
 # GPU Metrics Support
 # -------------------
@@ -438,10 +453,13 @@ dcgm-exporter:
   affinity: {}
   # dcgm-exporter.tolerations -- Tolerations for GPU nodes (if those nodes have taints).
   tolerations: []
-  # dcgm-exporter.serviceMonitor -- Enable ServiceMonitor for Prometheus Operator.
-  # If using the bundled prometheus server, set to false.
+  # dcgm-exporter.serviceMonitor -- When using external Prometheus (e.g. kube-prometheus-stack),
+  # the chart creates a ServiceMonitor so Prometheus Operator scrapes DCGM. Add labels here so
+  # your Prometheus selects it (e.g. release: fw-prometheus to match serviceMonitorSelector).
   serviceMonitor:
-    enabled: false
+    enabled: false    
+    labels:
+      release: fw-prometheus # match your kube-prometheus-stack release
   # dcgm-exporter.service -- Service configuration for DCGM Exporter
   service:
     # dcgm-exporter.service.annotations -- Annotations for Prometheus auto-discovery
