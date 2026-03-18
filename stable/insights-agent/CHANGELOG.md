@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.6.2
+* Pinned amd-device-metrics-exporter to v1.4.1 to avoid a bug
+
 ## 5.6.1
 * Added GPU monitor config
 
