@@ -13,7 +13,7 @@ run_trivy() {
   elif command -v trivy &>/dev/null; then
     trivy image "$@"
   else
-    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "${TRIVY_IMAGE:-aquasec/trivy:latest}" image "$@"
+    docker run --rm -v /var/run/docker.sock:/var/run/docker.sock "${TRIVY_IMAGE:-aquasec/trivy:v0.69.3}" image "$@"
   fi
 }
 
