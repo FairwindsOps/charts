@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.2.4
+* Update insights CI version to 6.2
+
 ## 6.2.3
 * Include github volume mounts and secrets configuration for temporal deployments by default
 

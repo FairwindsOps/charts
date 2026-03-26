@@ -1,0 +1,30 @@
+{{- if and (index .Values "dcgm-exporter").enabled (index .Values "prometheus-metrics" "installPrometheusServer" | not) }}
+# ServiceMonitor for DCGM Exporter when using an external Prometheus (e.g. kube-prometheus-stack).
+# Ensures Prometheus Operator scrapes the DCGM metrics endpoint. When using the bundled
+# Prometheus server (installPrometheusServer: true), annotation-based discovery is used instead.
+#
+# If your Prometheus only discovers ServiceMonitors with a specific label (e.g. release: fw-prometheus),
+# add that label under metadata.labels so this ServiceMonitor is selected.
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-dcgm-exporter
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: dcgm-exporter
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    {{- with (index .Values "dcgm-exporter").serviceMonitor.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: dcgm-exporter
+  endpoints:
+    {{- $endpoints := (index .Values "dcgm-exporter").serviceMonitor.endpoints }}
+    {{- toYaml (default (list (dict "port" "9400" "path" "/metrics" "interval" "30s")) $endpoints) | nindent 4 }}
+  namespaceSelector:
+    matchNames:
+      - {{ .Release.Namespace }}
+---
+{{- end }}
