@@ -1,9 +1,5 @@
 # Changelog
 
-## 6.2.5
-* Pin timescaledb-single subchart to `0.35.1` (latest patch on the 0.35 line)
-* Set `options.agentChartTargetVersion` to `5.6.3` for the insights-agent chart release
-
 ## 6.2.4
 * Update insights CI version to 6.2
 
