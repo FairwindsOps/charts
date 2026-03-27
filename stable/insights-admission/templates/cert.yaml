@@ -25,6 +25,10 @@ spec:
   secretName: {{ include "insights-admission.fullname" . }}
   duration: 2160h0m0s
   renewBefore: 360h0m0s
+  {{- if eq (include "insights-admission.certManagerCertificateIsV1" . | trim) "true" }}
+  privateKey:
+    rotationPolicy: {{ .Values.privateKeyRotationPolicy }}
+  {{- end }}
 ---
 {{- if .Values.certManagerApiVersion }}
 apiVersion: {{ .Values.certManagerApiVersion }}

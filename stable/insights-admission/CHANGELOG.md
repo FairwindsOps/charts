@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.11.3
+* Set explicit `spec.privateKey.rotationPolicy` on the cert-manager Certificate for cert-manager v1.18.0+ compatibility (configurable via `privateKeyRotationPolicy`).
+
 ## 1.11.2
 * Bumped admission
 
