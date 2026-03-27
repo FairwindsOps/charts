@@ -83,3 +83,17 @@ Create the name of the ConfigMap to use
 {{- printf "%s-%s" (include "insights-admission.fullname" .) (default "configmap" .Values.insights.configmap.suffix) }}
 {{- end }}
 {{- end }}
+
+{{/*
+True when the Certificate uses cert-manager.io/v1 (spec.privateKey.rotationPolicy is only valid on v1).
+*/}}
+{{- define "insights-admission.certManagerCertificateIsV1" -}}
+{{- $api := default "" .Values.certManagerApiVersion -}}
+{{- if $api -}}
+{{- if eq $api "cert-manager.io/v1" -}}true{{- else -}}false{{- end -}}
+{{- else if .Capabilities.APIVersions.Has "cert-manager.io/v1" -}}
+true
+{{- else -}}
+false
+{{- end -}}
+{{- end -}}
