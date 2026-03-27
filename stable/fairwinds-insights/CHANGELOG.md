@@ -2,6 +2,7 @@
 
 ## 6.2.5
 * Bumped swagger-ui lib
+* Bumped alpine/psql to 18.3
 
 ## 6.2.4
 * Update insights CI version to 6.2

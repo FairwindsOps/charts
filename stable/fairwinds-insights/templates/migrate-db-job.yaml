@@ -29,7 +29,7 @@ spec:
       {{- end }}
       initContainers:
       - name: wait-for-databases
-        image: alpine/psql:18.2
+        image: alpine/psql:18.3
         command:
         - sh
         - -c
