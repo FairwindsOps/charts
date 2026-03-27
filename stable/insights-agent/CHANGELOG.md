@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.3.0
+## 5.6.3
 * Bumped goldilocks subchart to `10.3.*`, prometheus to `28.14.*`, and dcgm-exporter to `4.8.1`
 
 ## 5.6.2
