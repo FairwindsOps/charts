@@ -22,7 +22,7 @@ spec:
       containers:
         - name: create-bucket
           image: "{{ .Values.rustfs.bucketJob.awsCliImage.repository }}:{{ .Values.rustfs.bucketJob.awsCliImage.tag }}"
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name: AWS_ACCESS_KEY_ID
               valueFrom:
