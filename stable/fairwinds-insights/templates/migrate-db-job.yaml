@@ -2,18 +2,18 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: migrate-database
-  annotations:
-    "helm.sh/hook-delete-policy": "before-hook-creation"
   {{- $usePostHook := or .Values.postgresql.ephemeral .Values.timescale.ephemeral .Values.postgresql.postMigrate -}}
   {{- if eq .Values.dbMigration.overrideHook "none" }}
-    {{/* No hook - Job runs as normal resource */}}
   {{- else if .Values.dbMigration.overrideHook }}
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
     "helm.sh/hook-weight": "2"
   {{- else if $usePostHook }}
-    "helm.sh/hook": "post-install,post-upgrade"
-    "helm.sh/hook-weight": "2"
+  {{- /* Ephemeral DB / postMigrate: normal Job (no Helm hook). With helm --wait, post-install hooks run only after Deployments become Ready; app pods often need migrations first, which deadlocks. The wait-for-databases initContainer gates on PostgreSQL and Timescale. To restore hook behavior, set dbMigration.overrideHook (e.g. post-install,post-upgrade). */}}
   {{- else }}
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-weight": "10"
   {{- end }}

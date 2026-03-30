@@ -1,6 +1,7 @@
 # Changelog
 
 ## 7.0.0
+* **BREAKING:** For ephemeral PostgreSQL/Timescale (and when `postgresql.postMigrate` is true), the `migrate-database` Job no longer uses Helm `post-install`/`post-upgrade` hooks and is installed as a normal Job. This prevents a deadlock with `helm install/upgrade --wait` (and similar GitOps health waits) where post-install hooks run only after Deployments are Ready while those pods may require schema migrations first. The Job still waits for both databases via its init container. To restore hook-based ordering, set `dbMigration.overrideHook` (for example `post-install,post-upgrade`).
 * **BREAKING:** Removed the MinIO Helm subchart. In-cluster report storage uses the official **[RustFS](https://charts.rustfs.com/)** subchart (see `Chart.yaml` for the pinned version) with `reportStorage.strategy: s3_compatible`. The S3 API base URL is **`http://{release}-{rustfs.nameOverride}-svc:{rustfs.service.endpoint.port}`** (defaults: `nameOverride` `fw-rustfs`, port `9000`). The application must support `REPORT_STORAGE_STRATEGY=s3_compatible`, `REPORT_STORAGE_S3_ENDPOINT`, `REPORT_STORAGE_S3_ACCESS_KEY_ID`, and `REPORT_STORAGE_S3_SECRET_ACCESS_KEY`. The chart sets those from the RustFS Secret keys **`RUSTFS_ACCESS_KEY`** and **`RUSTFS_SECRET_KEY`**. For an **external** S3-compatible endpoint, set `rustfs.install: false`, `reportStorage.s3Endpoint`, and `reportStorage.s3CredentialsSecret` using keys **`accessKeyId`** and **`secretAccessKey`**.
 
 ## 6.2.4
