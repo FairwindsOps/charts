@@ -425,7 +425,7 @@ openApi:
 
 dbMigration:
   # -- Override the Helm hook for the database migration job.
-  # Values: "" (no override): when postgresql.ephemeral, timescale.ephemeral, or postgresql.postMigrate is true, the Job has no hook (avoids `helm install --wait` deadlock with post-install hooks). Otherwise pre-install/pre-upgrade with hook-weight 10 (after CNPG pre-install hooks). Set "none" for no hook always, or a hook list to override (e.g. post-install,post-upgrade).
+  # Values: "" (no override): when postgresql.ephemeral, timescale.ephemeral, or postgresql.postMigrate is true, the Job has no hook (avoids deadlock: post-install hooks run only after other resources are Ready). Use helm --wait --wait-for-jobs so this Job is waited on. Otherwise pre-install/pre-upgrade with hook-weight 10 (after CNPG pre-install hooks). Set "none" for no hook always, or a hook list to override (e.g. post-install,post-upgrade).
   overrideHook: ""
   # -- Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout.
   waitTimeout: 600
@@ -745,6 +745,7 @@ rustfs:
     name: ""
     dataStorageSize: 50Gi
     logStorageSize: 1Gi
+  # Create-bucket is a normal release Job (not a post-install hook) so the bucket exists during helm --wait with app Deployments; see README dbMigration / --wait-for-jobs.
   bucketJob:
     awsCliImage:
       repository: amazon/aws-cli

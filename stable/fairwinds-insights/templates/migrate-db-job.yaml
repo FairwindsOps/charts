@@ -9,7 +9,7 @@ metadata:
     "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
   {{- else if $usePostHook }}
-  {{- /* Ephemeral / postMigrate default: no Helm hook (plain Job). With `helm install --wait`, post-install hooks run only after Deployments are Ready; app pods need migrations first → deadlock. The wait-for-databases initContainer gates on PostgreSQL and Timescale. To use a hook instead, set dbMigration.overrideHook (e.g. post-install,post-upgrade). */ -}}
+  {{- /* Ephemeral / postMigrate default: no Helm hook (plain Job). Helm waits for non-hook resources before post-install hooks; a post-install migrate would run after Deployments must be Ready, which can deadlock if apps need a migrated schema. Plain Job + `helm install --wait --wait-for-jobs` (see chart README) ensures migrate completes in the same wait phase. Post-install jobs (e.g. rustfs bucket) must not be the only place that creates deps API readiness needs — rustfs bucket is also a plain Job for that reason. */ -}}
   {{- else }}
   annotations:
     "helm.sh/hook-delete-policy": "before-hook-creation"
@@ -43,13 +43,14 @@ spec:
           TS_PORT="{{ .Values.timescale.service.primary.port | default 5433 }}"
           TIMEOUT="{{ .Values.dbMigration.waitTimeout | default 600 }}"
           wait_for() {
-            local host=$1 port=$2 name=$3
+            local host=$1 port=$2 name=$3 sslmode=$4
+            export PGSSLMODE="$sslmode"
             if [ "$TIMEOUT" -eq 0 ]; then
-              echo "Waiting for $name at $host:$port (no timeout)..."
+              echo "Waiting for $name at $host:$port (PGSSLMODE=$sslmode, no timeout)..."
               until pg_isready -h "$host" -p "$port" 2>/dev/null; do sleep 2; done
             else
               MAX_ATTEMPTS=$((TIMEOUT / 2))
-              echo "Waiting for $name at $host:$port (timeout ${TIMEOUT}s)..."
+              echo "Waiting for $name at $host:$port (PGSSLMODE=$sslmode, timeout ${TIMEOUT}s)..."
               for i in $(seq 1 $MAX_ATTEMPTS); do
                 if pg_isready -h "$host" -p "$port" 2>/dev/null; then break; fi
                 if [ $i -eq $MAX_ATTEMPTS ]; then echo "Timeout waiting for $name"; exit 1; fi
@@ -58,8 +59,8 @@ spec:
             fi
             echo "$name is ready"
           }
-          wait_for "$PG_HOST" "$PG_PORT" "PostgreSQL"
-          wait_for "$TS_HOST" "$TS_PORT" "Timescale"
+          wait_for "$PG_HOST" "$PG_PORT" "PostgreSQL" "{{ .Values.postgresql.sslMode | default "prefer" }}"
+          wait_for "$TS_HOST" "$TS_PORT" "Timescale" "{{ .Values.timescale.sslMode | default "prefer" }}"
       containers:
       - name: fwinsights-db-migration
         image: "{{ .Values.migrationImage.repository }}:{{ include "fairwinds-insights.migrationImageTag" . }}"

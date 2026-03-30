@@ -2,15 +2,12 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: {{ include "fairwinds-insights.rustfsFullname" . }}-create-bucket
+  name: {{ include "fairwinds-insights.rustfsFullname" . }}-create-bucket-{{ .Release.Revision }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
     app.kubernetes.io/component: rustfs
-  annotations:
-    helm.sh/hook: post-install,post-upgrade
-    helm.sh/hook-weight: "25"
-    helm.sh/hook-delete-policy: before-hook-creation,hook-succeeded
 spec:
+  ttlSecondsAfterFinished: 3600
   backoffLimit: 6
   template:
     metadata:
