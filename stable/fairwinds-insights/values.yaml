@@ -648,19 +648,19 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `s3_compatible` (REPORT_STORAGE_S3_* e.g. RustFS), or `local`
+  # -- How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `rustfs` (REPORT_STORAGE_S3_* e.g. RustFS), or `local`
   strategy: minio
-  # -- Bucket name for minio, s3, s3_compatible, or local
+  # -- Bucket name for minio, s3, rustfs, or local
   bucket: reports
   # -- Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients)
   region: us-east-1
   # -- Hostname to use for Minio when strategy is `minio`
   minioHost:
-  # -- Full URL for S3-compatible API when strategy is `s3_compatible` and not using in-cluster RustFS
+  # -- Full URL for S3-compatible API when strategy is `rustfs` and not using in-cluster RustFS
   s3Endpoint:
-  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `s3_compatible` and `rustfs.install` is false
+  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false
   s3CredentialsSecret:
-  # -- Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `s3_compatible` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores.
+  # -- Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `rustfs` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores.
   s3MinIOCompat: false
   # -- Directory to store files in for local.
   fixturesDir:
@@ -695,7 +695,7 @@ minio:
 
 # RustFS subchart (https://charts.rustfs.com/) — values pass through; see upstream chart for full schema.
 rustfs:
-  # -- Install RustFS (set `reportStorage.strategy: s3_compatible` to use it from the app; can be enabled beside MinIO during migration)
+  # -- Install RustFS (set `reportStorage.strategy: rustfs` to use it from the app; can be enabled beside MinIO during migration)
   install: false
   nameOverride: fw-rustfs
   fullnameOverride: ""

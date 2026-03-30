@@ -85,7 +85,7 @@ rustfs:
     logStorageSize: 256Mi
 
 reportStorage:
-  strategy: s3_compatible
+  strategy: rustfs
 
 # Reduce cronjob resources for CI
 cronjobOptions:
