@@ -40,11 +40,14 @@ cd "$CHART_DIR"
 helm dependency build
 # Render with default values so we get temporal, postgres, openapi, etc.
 RENDERED=$(helm template release . --namespace fwinsights 2>/dev/null)
+# RustFS and the bucket-creation hook are behind rustfs.install (default false); render again
+# with it enabled so Trivy still scans rustfs/rustfs, init images, and bucketJob aws-cli.
+RENDERED_RUSTFS=$(helm template release . --namespace fwinsights --set rustfs.install=true 2>/dev/null)
 cd "$REPO_ROOT"
 
 echo "Extracting image references..."
 # Extract image: and imageName: values; trim leading/trailing whitespace and quotes
-IMAGES=$(echo "$RENDERED" | grep -E '^\s+(image|imageName):' | sed -E 's/^[[:space:]]*(image|imageName):[[:space:]]*//' | sed -E 's/^["'\'']|["'\'']$//g' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sort -u)
+IMAGES=$(printf '%s\n%s\n' "$RENDERED" "$RENDERED_RUSTFS" | grep -E '^\s+(image|imageName):' | sed -E 's/^[[:space:]]*(image|imageName):[[:space:]]*//' | sed -E 's/^["'\'']|["'\'']$//g' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sort -u)
 if [[ -z "$IMAGES" ]]; then
   echo "No images found in rendered chart" >&2
   exit 1
