@@ -9,10 +9,13 @@ metadata:
     {{/* No hook - Job runs as normal resource */}}
   {{- else if .Values.dbMigration.overrideHook }}
     "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
+    "helm.sh/hook-weight": "10"
   {{- else if $usePostHook }}
     "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": "10"
   {{- else }}
     "helm.sh/hook": "pre-install,pre-upgrade"
+    "helm.sh/hook-weight": "10"
   {{- end }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
