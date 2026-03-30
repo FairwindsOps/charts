@@ -3,6 +3,10 @@
 ## 6.3.0
 * Add optional **[RustFS](https://charts.rustfs.com/)** subchart (`rustfs.install`). Set `reportStorage.strategy: s3_compatible` to use `REPORT_STORAGE_S3_*` env vars; in-cluster endpoint defaults to `http://{release}-{rustfs.nameOverride}-svc:{port}` (see `values.yaml`). External S3-compatible storage: `rustfs.install: false`, `reportStorage.s3Endpoint`, and `reportStorage.s3CredentialsSecret` (`accessKeyId` / `secretAccessKey`). MinIO remains the default (`strategy: minio`). Post-install Job creates the report bucket when RustFS is installed.
 
+## 6.2.5
+* Bumped swagger-ui lib
+* Bumped alpine/psql to 18.3
+
 ## 6.2.4
 * Update insights CI version to 6.2
 

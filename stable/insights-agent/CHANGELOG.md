@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.6.3
+* Bumped goldilocks subchart to `10.3.*`, prometheus to `28.14.*`, and dcgm-exporter to `4.8.1`
+
 ## 5.6.2
 * Pinned amd-device-metrics-exporter to v1.4.1 to avoid a bug
 
