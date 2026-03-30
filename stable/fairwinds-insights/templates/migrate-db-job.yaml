@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: migrate-database
+  name: migrate-database-{{ .Release.Revision }}
   {{- $usePostHook := or .Values.postgresql.ephemeral .Values.timescale.ephemeral .Values.postgresql.postMigrate -}}
   {{- if eq .Values.dbMigration.overrideHook "none" }}
   {{- else if .Values.dbMigration.overrideHook }}
