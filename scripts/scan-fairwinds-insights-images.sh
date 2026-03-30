@@ -1,6 +1,6 @@
 #! /bin/bash
 # Scans all container images referenced by the stable/fairwinds-insights Helm chart
-# (including subcharts: temporal, timescale, minio) for CRITICAL/HIGH vulnerabilities using Trivy.
+# (including subcharts: temporal, timescale) and chart-defined images (e.g. RustFS) for CRITICAL/HIGH vulnerabilities using Trivy.
 #
 # Usage: ./scripts/scan-fairwinds-insights-images.sh
 # Requires: helm, trivy (or TRIVY_IMAGE), docker. Run from repo root.
@@ -29,9 +29,9 @@ if [[ ! -d "$CHART_DIR" ]]; then
 fi
 
 echo "Adding Helm repos for chart dependencies..."
-helm repo add minio https://charts.min.io/ --force-update
 helm repo add fairwinds-incubator https://charts.fairwinds.com/incubator --force-update
 helm repo add temporal https://go.temporal.io/helm-charts --force-update
+helm repo add rustfs https://charts.rustfs.com/ --force-update
 helm repo update
 
 echo "Building chart dependencies and rendering manifests..."

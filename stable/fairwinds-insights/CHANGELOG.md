@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.0.0
+* **BREAKING:** Removed the MinIO Helm subchart. In-cluster report storage uses the official **[RustFS](https://charts.rustfs.com/)** subchart (see `Chart.yaml` for the pinned version) with `reportStorage.strategy: s3_compatible`. The S3 API base URL is **`http://{release}-{rustfs.nameOverride}-svc:{rustfs.service.endpoint.port}`** (defaults: `nameOverride` `fw-rustfs`, port `9000`). The application must support `REPORT_STORAGE_STRATEGY=s3_compatible`, `REPORT_STORAGE_S3_ENDPOINT`, `REPORT_STORAGE_S3_ACCESS_KEY_ID`, and `REPORT_STORAGE_S3_SECRET_ACCESS_KEY`. The chart sets those from the RustFS Secret keys **`RUSTFS_ACCESS_KEY`** and **`RUSTFS_SECRET_KEY`**. For an **external** S3-compatible endpoint, set `rustfs.install: false`, `reportStorage.s3Endpoint`, and `reportStorage.s3CredentialsSecret` using keys **`accessKeyId`** and **`secretAccessKey`**.
+
 ## 6.2.4
 * Update insights CI version to 6.2
 

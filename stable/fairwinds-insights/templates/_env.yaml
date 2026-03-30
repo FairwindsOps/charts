@@ -139,24 +139,26 @@ env:
 # Report Storage
 - name: REPORT_STORAGE_STRATEGY
   value: {{ $.Values.reportStorage.strategy }}
-{{ if eq $.Values.reportStorage.strategy "minio" -}}
-{{ if $.Values.reportStorage.minioHost -}}
-- name: MINIO_HOST
-  value: {{ $.Values.reportStorage.minioHost }}
-{{ else }}
-- name: MINIO_HOST
-  value: {{ printf "%s-%s" $.Release.Name "fw-minio:9000" }}
-{{ end -}}
-- name: MINIO_ACCESS_KEY_ID
+{{ if eq $.Values.reportStorage.strategy "s3_compatible" -}}
+{{- if $.Values.reportStorage.s3Endpoint }}
+- name: REPORT_STORAGE_S3_ENDPOINT
+  value: {{ $.Values.reportStorage.s3Endpoint | quote }}
+{{- else if $.Values.rustfs.install }}
+- name: REPORT_STORAGE_S3_ENDPOINT
+  value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" $) ($.Values.rustfs.service.endpoint.port | int) | quote }}
+{{- else }}
+{{- fail "reportStorage.s3Endpoint is required when reportStorage.strategy is s3_compatible and rustfs.install is false" }}
+{{- end }}
+- name: REPORT_STORAGE_S3_ACCESS_KEY_ID
   valueFrom:
     secretKeyRef:
-      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
-      key: rootUser                
-- name: MINIO_SECRET_ACCESS_KEY
+      name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required when reportStorage.strategy is s3_compatible and rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
+      key: {{ if $.Values.rustfs.install }}RUSTFS_ACCESS_KEY{{ else }}accessKeyId{{ end }}
+- name: REPORT_STORAGE_S3_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
-      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
-      key: rootPassword
+      name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required when reportStorage.strategy is s3_compatible and rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
+      key: {{ if $.Values.rustfs.install }}RUSTFS_SECRET_KEY{{ else }}secretAccessKey{{ end }}
 {{ else if eq $.Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
   value: {{ $.Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}

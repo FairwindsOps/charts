@@ -123,7 +123,7 @@ jobs:
           name: sync
           command: scripts/sync.sh
 
-  # Scans all images from stable/fairwinds-insights (subcharts: temporal, timescale, minio; main chart: postgres, openapi, etc.).
+  # Scans all images from stable/fairwinds-insights (subcharts: temporal, timescale; main chart: postgres, openapi, rustfs, etc.).
   # Fails when vulns are found (so CI shows red) but does not block merging (no job requires this one).
   # Set SLACK_WEBHOOK_URL for Slack notifications on master.
   scan_for_vulnerabilities:
