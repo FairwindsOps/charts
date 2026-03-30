@@ -1,11 +1,11 @@
 dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
-  version: '6.5.*'
+  version: '10.3.*'
   condition: goldilocks.enabled
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: '28.13.0'
+  version: '28.14.*'
   condition: prometheus-metrics.installPrometheusServer
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
@@ -27,7 +27,7 @@ dependencies:
   condition: trivy.server.installTrivyServer
   alias: trivy-server
 - name: dcgm-exporter
-  version: '4.8.*'
+  version: '4.8.1'
   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
   condition: dcgm-exporter.enabled
 - name: device-metrics-exporter-charts
