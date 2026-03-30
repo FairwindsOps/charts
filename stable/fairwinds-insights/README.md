@@ -132,7 +132,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
-| dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. Values: "" (no override): when postgresql.ephemeral, timescale.ephemeral, or postgresql.postMigrate is true, the Job has no hook (avoids deadlock: post-install hooks run only after other resources are Ready, while apps may need migrations first). Use `helm install/upgrade --wait --wait-for-jobs` so Helm waits for this Job to finish. Otherwise pre-install/pre-upgrade with hook-weight 10 (after CNPG pre-install hooks). Set "none" for no hook always, or a hook list to override (e.g. post-install,post-upgrade). |
+| dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. Values: "" (no override): when postgresql.ephemeral, timescale.ephemeral, or postgresql.postMigrate is true, the Job has no hook (avoids deadlock: post-install hooks run only after other resources are Ready). Use helm --wait --wait-for-jobs so this Job is waited on. Otherwise pre-install/pre-upgrade with hook-weight 10 (after CNPG pre-install hooks). Set "none" for no hook always, or a hook list to override (e.g. post-install,post-upgrade). |
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
@@ -247,7 +247,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | rustfs.storageclass.name | string | `""` |  |
 | rustfs.storageclass.dataStorageSize | string | `"50Gi"` |  |
 | rustfs.storageclass.logStorageSize | string | `"1Gi"` |  |
-| rustfs.bucketJob.awsCliImage.repository | string | `"amazon/aws-cli"` | Create-bucket runs as a normal release Job (name suffix `-create-bucket-<revision>`), not a post-install hook, so the bucket exists during `helm --wait` alongside app workloads that use report storage. |
+| rustfs.bucketJob.awsCliImage.repository | string | `"amazon/aws-cli"` |  |
 | rustfs.bucketJob.awsCliImage.tag | string | `"2.34.19"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
