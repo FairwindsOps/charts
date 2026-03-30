@@ -227,12 +227,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | rustfs.mode.standalone.existingClaim.dataClaim | string | `""` |  |
 | rustfs.mode.standalone.existingClaim.logsClaim | string | `""` |  |
 | rustfs.mode.distributed.enabled | bool | `false` |  |
-| rustfs.image.rustfs.repository | string | `"rustfs/rustfs"` |  |
-| rustfs.image.rustfs.tag | string | `"latest"` |  |
 | rustfs.image.rustfs.pullPolicy | string | `"Always"` |  |
-| rustfs.image.initImage.repository | string | `"busybox"` |  |
-| rustfs.image.initImage.tag | string | `"stable"` |  |
-| rustfs.image.initImage.pullPolicy | string | `"IfNotPresent"` |  |
+| rustfs.image.initImage.pullPolicy | string | `"Always"` |  |
 | rustfs.secret.existingSecret | string | `""` |  |
 | rustfs.secret.rustfs.access_key | string | `"rustfsadmin"` |  |
 | rustfs.secret.rustfs.secret_key | string | `"rustfsadmin"` |  |
@@ -250,7 +246,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | rustfs.storageclass.name | string | `""` |  |
 | rustfs.storageclass.dataStorageSize | string | `"50Gi"` |  |
 | rustfs.storageclass.logStorageSize | string | `"1Gi"` |  |
-| rustfs.bucketJob | object | `{"awsCliImage":{"repository":"amazon/aws-cli","tag":"2.27.0"}}` | Parent chart only: Job image to create reportStorage.bucket via S3 API |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |

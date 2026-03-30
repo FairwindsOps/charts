@@ -713,13 +713,9 @@ rustfs:
       enabled: false
   image:
     rustfs:
-      repository: rustfs/rustfs
-      tag: latest
       pullPolicy: Always
     initImage:
-      repository: busybox
-      tag: "stable"
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
   secret:
     existingSecret: ""
     rustfs:
@@ -748,11 +744,6 @@ rustfs:
     name: ""
     dataStorageSize: 50Gi
     logStorageSize: 1Gi
-  # -- Parent chart only: Job image to create reportStorage.bucket via S3 API
-  bucketJob:
-    awsCliImage:
-      repository: amazon/aws-cli
-      tag: "2.27.0"
 
 migrateHealthScoreJob:
   resources:
