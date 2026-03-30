@@ -177,6 +177,10 @@ env:
     secretKeyRef:
       name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required when reportStorage.strategy is s3_compatible and rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
       key: {{ if $.Values.rustfs.install }}RUSTFS_SECRET_KEY{{ else }}secretAccessKey{{ end }}
+{{- if $.Values.reportStorage.s3MinIOCompat }}
+- name: REPORT_STORAGE_S3_MINIO_COMPAT
+  value: "true"
+{{- end }}
 {{ else if eq $.Values.reportStorage.strategy "local" -}}
 - name: REPORT_STORAGE_DIR
   value: {{ $.Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}

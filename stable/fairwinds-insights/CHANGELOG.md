@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.3.1
+* `reportStorage.s3MinIOCompat`: when `true` and `strategy: s3_compatible`, sets `REPORT_STORAGE_S3_MINIO_COMPAT` for gateways that require Content-MD5 on batched deletes (default `false` for RustFS). Clarify supported `reportStorage.strategy` values in `values.yaml` / README: `minio`, `s3`, `s3_compatible`, `local`.
+
 ## 6.3.0
 * Add optional **[RustFS](https://charts.rustfs.com/)** subchart (`rustfs.install`). Set `reportStorage.strategy: s3_compatible` to use `REPORT_STORAGE_S3_*` env vars; in-cluster endpoint defaults to `http://{release}-{rustfs.nameOverride}-svc:{port}` (see `values.yaml`). External S3-compatible storage: `rustfs.install: false`, `reportStorage.s3Endpoint`, and `reportStorage.s3CredentialsSecret` (`accessKeyId` / `secretAccessKey`). MinIO remains the default (`strategy: minio`). Post-install Job creates the report bucket when RustFS is installed.
 
