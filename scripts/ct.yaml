@@ -4,6 +4,7 @@ chart-dirs:
   - stable
   - incubator
 chart-repos:
+  - "minio=https://charts.min.io/"
   - "jetstack=https://charts.jetstack.io"
   - "fairwinds-stable=https://charts.fairwinds.com/stable"
   - "fairwinds-incubator=https://charts.fairwinds.com/incubator"

@@ -74,10 +74,18 @@ resourcesRecommendationsCronjob:
   enabled: true
   schedules: []
 
+minio:
+  persistence:
+    enabled: false
+
 rustfs:
+  install: true
   storageclass:
     dataStorageSize: 256Mi
     logStorageSize: 256Mi
+
+reportStorage:
+  strategy: s3_compatible
 
 # Reduce cronjob resources for CI
 cronjobOptions:

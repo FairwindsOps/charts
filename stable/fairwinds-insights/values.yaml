@@ -648,12 +648,14 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files: `s3` (AWS), `s3_compatible` (e.g. in-cluster RustFS), or `local`
-  strategy: s3_compatible
-  # -- Bucket name for S3, s3_compatible, or local strategies
+  # -- How to store report files: `minio` (in-cluster MinIO; default for current Insights), `s3_compatible` (e.g. in-cluster RustFS), or `local`
+  strategy: minio
+  # -- Bucket name for minio, s3_compatible, or local strategies
   bucket: reports
   # -- Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients)
   region: us-east-1
+  # -- Hostname (host:port) for MinIO when strategy is `minio` and not using the default in-cluster service name
+  minioHost:
   # -- Full URL for S3-compatible API when not using in-chart RustFS (e.g. https://rustfs.example.com). Ignored when rustfs.install is true unless set (then overrides auto-generated in-cluster URL).
   s3Endpoint:
   # -- Secret containing `accessKeyId` and `secretAccessKey` when strategy is s3_compatible and rustfs.install is false
@@ -661,9 +663,34 @@ reportStorage:
   # -- Directory to store files in for local.
   fixturesDir:
 
+minio:
+  # -- Install the MinIO subchart (typical when reportStorage.strategy is `minio`)
+  install: true
+  # Pin to tags that exist on quay.io (subchart 5.4.0 defaults to a 2025 tag that is not found)
+  image:
+    repository: quay.io/minio/minio
+    tag: RELEASE.2024-07-10T18-41-49Z.hotfix.2127e0d56
+  mcImage:
+    repository: quay.io/minio/mc
+    tag: RELEASE.2025-08-13T08-35-41Z
+  # -- Create the following buckets for the newly installed Minio
+  buckets:
+    - name: reports
+      policy: none
+      purge: false
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  nameOverride: fw-minio
+  persistence:
+    enabled: true
+  replicas: 1
+  mode: standalone
+
 # RustFS subchart (https://charts.rustfs.com/) — values are passed through; see upstream chart for full schema.
 rustfs:
-  # -- Install RustFS when reportStorage.strategy is s3_compatible
+  # -- Install RustFS (defaults `true` with MinIO during transition; set `false` if you only need MinIO). Use `reportStorage.strategy: s3_compatible` to point the app at RustFS.
   install: true
   nameOverride: fw-rustfs
   fullnameOverride: ""

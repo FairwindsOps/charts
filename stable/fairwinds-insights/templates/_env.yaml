@@ -139,7 +139,25 @@ env:
 # Report Storage
 - name: REPORT_STORAGE_STRATEGY
   value: {{ $.Values.reportStorage.strategy }}
-{{ if eq $.Values.reportStorage.strategy "s3_compatible" -}}
+{{ if eq $.Values.reportStorage.strategy "minio" -}}
+{{ if $.Values.reportStorage.minioHost -}}
+- name: MINIO_HOST
+  value: {{ $.Values.reportStorage.minioHost }}
+{{ else }}
+- name: MINIO_HOST
+  value: {{ printf "%s-%s:9000" $.Release.Name $.Values.minio.nameOverride }}
+{{ end -}}
+- name: MINIO_ACCESS_KEY_ID
+  valueFrom:
+    secretKeyRef:
+      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
+      key: rootUser
+- name: MINIO_SECRET_ACCESS_KEY
+  valueFrom:
+    secretKeyRef:
+      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
+      key: rootPassword
+{{ else if eq $.Values.reportStorage.strategy "s3_compatible" -}}
 {{- if $.Values.reportStorage.s3Endpoint }}
 - name: REPORT_STORAGE_S3_ENDPOINT
   value: {{ $.Values.reportStorage.s3Endpoint | quote }}
