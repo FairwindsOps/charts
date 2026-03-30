@@ -29,6 +29,7 @@ if [[ ! -d "$CHART_DIR" ]]; then
 fi
 
 echo "Adding Helm repos for chart dependencies..."
+helm repo add minio https://charts.min.io/ --force-update
 helm repo add fairwinds-incubator https://charts.fairwinds.com/incubator --force-update
 helm repo add temporal https://go.temporal.io/helm-charts --force-update
 helm repo add rustfs https://charts.rustfs.com/ --force-update
