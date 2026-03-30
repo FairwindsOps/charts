@@ -63,6 +63,7 @@ setup_helm_client() {
 	helm repo add prometheus-community "$PROMETHEUS_REPO_URL"
 	helm repo add rustfs "$RUSTFS_REPO_URL"
 	helm repo add bitnami "$BITNAMI_REPO_URL"
+	helm repo add minio "$MINIO_REPO_URL"
 	helm repo add falco "$FALCO_REPO_URL"
 	helm repo add metrics-server "$METRICS_SERVER_REPO_URL"
 	helm repo add temporal "$TEMPORAL_REPO_URL"
