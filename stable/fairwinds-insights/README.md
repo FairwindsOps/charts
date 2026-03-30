@@ -246,6 +246,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | rustfs.storageclass.name | string | `""` |  |
 | rustfs.storageclass.dataStorageSize | string | `"50Gi"` |  |
 | rustfs.storageclass.logStorageSize | string | `"1Gi"` |  |
+| rustfs.bucketJob.awsCliImage.repository | string | `"amazon/aws-cli"` |  |
+| rustfs.bucketJob.awsCliImage.tag | string | `"2.34.19"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
