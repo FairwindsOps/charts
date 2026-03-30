@@ -1,9 +1,5 @@
 # Changelog
 
-## 6.3.0
-* **BREAKING:** For ephemeral PostgreSQL/Timescale (and when `postgresql.postMigrate` is true), the `migrate-database` Job no longer uses Helm `post-install`/`post-upgrade` hooks and is installed as a normal Job. This prevents a deadlock with `helm install/upgrade --wait` (and similar GitOps health waits) where post-install hooks run only after Deployments are Ready while those pods may require schema migrations first. The Job still waits for both databases via its init container. To restore hook-based ordering, set `dbMigration.overrideHook` (for example `post-install,post-upgrade`).
-* **MinIO retained:** The MinIO subchart remains the default in-cluster object store (`reportStorage.strategy: minio`, `MINIO_*` env vars). The **[RustFS](https://charts.rustfs.com/)** subchart is available in parallel: set `rustfs.install: true` and `reportStorage.strategy: s3_compatible` to use S3-compatible env vars (`REPORT_STORAGE_S3_*`) from RustFS or an external endpoint (`reportStorage.s3Endpoint` / `reportStorage.s3CredentialsSecret` with keys `accessKeyId` / `secretAccessKey` when `rustfs.install` is false). You can enable both subcharts during migration while keeping `strategy: minio` until the application fully supports RustFS.
-
 ## 6.2.4
 * Update insights CI version to 6.2
 

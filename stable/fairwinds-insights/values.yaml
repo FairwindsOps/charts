@@ -648,23 +648,19 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files: `minio` (in-cluster MinIO; default for current Insights), `s3_compatible` (e.g. in-cluster RustFS), or `local`
+  # -- How to store report files, valid values include minio, s3, and local
   strategy: minio
-  # -- Bucket name for minio, s3_compatible, or local strategies
+  # -- Name of the bucket to use for minio or s3
   bucket: reports
-  # -- Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients)
+  # -- AWS region to use for S3
   region: us-east-1
-  # -- Hostname (host:port) for MinIO when strategy is `minio` and not using the default in-cluster service name
+  # -- Hostname to use for Minio
   minioHost:
-  # -- Full URL for S3-compatible API when not using in-chart RustFS (e.g. https://rustfs.example.com). Ignored when rustfs.install is true unless set (then overrides auto-generated in-cluster URL).
-  s3Endpoint:
-  # -- Secret containing `accessKeyId` and `secretAccessKey` when strategy is s3_compatible and rustfs.install is false
-  s3CredentialsSecret:
   # -- Directory to store files in for local.
   fixturesDir:
 
 minio:
-  # -- Install the MinIO subchart (typical when reportStorage.strategy is `minio`)
+  # -- Install Minio
   install: true
   # Pin to tags that exist on quay.io (subchart 5.4.0 defaults to a 2025 tag that is not found)
   image:
@@ -678,78 +674,18 @@ minio:
     - name: reports
       policy: none
       purge: false
+  # -- Resources for Minio
   resources:
     requests:
       cpu: 50m
       memory: 256Mi
+  # -- nameOverride to shorten names of Minio resources
   nameOverride: fw-minio
   persistence:
+    # -- Create a persistent volume for Minio
     enabled: true
   replicas: 1
   mode: standalone
-
-# RustFS subchart (https://charts.rustfs.com/) — values are passed through; see upstream chart for full schema.
-rustfs:
-  # -- Install RustFS (defaults `true` with MinIO during transition; set `false` if you only need MinIO). Use `reportStorage.strategy: s3_compatible` to point the app at RustFS.
-  install: true
-  nameOverride: fw-rustfs
-  fullnameOverride: ""
-  replicaCount: 1
-  mode:
-    standalone:
-      enabled: true
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxSurge: 0
-          maxUnavailable: 1
-      existingClaim:
-        dataClaim: ""
-        logsClaim: ""
-    distributed:
-      enabled: false
-  image:
-    rustfs:
-      repository: rustfs/rustfs
-      tag: latest
-      pullPolicy: Always
-    initImage:
-      repository: busybox
-      tag: "stable"
-      pullPolicy: IfNotPresent
-  secret:
-    existingSecret: ""
-    rustfs:
-      access_key: rustfsadmin
-      secret_key: rustfsadmin
-  ingress:
-    enabled: false
-  service:
-    type: ClusterIP
-    endpoint:
-      port: 9000
-      nodePort: 32000
-    console:
-      port: 9001
-      nodePort: 32001
-  podLabels: {}
-  resources:
-    requests:
-      cpu: 50m
-      memory: 256Mi
-  affinity:
-    podAntiAffinity:
-      enabled: false
-    nodeAffinity: {}
-  storageclass:
-    name: ""
-    dataStorageSize: 50Gi
-    logStorageSize: 1Gi
-  # -- Parent chart only: Job image to create reportStorage.bucket via S3 API
-  bucketJob:
-    awsCliImage:
-      repository: amazon/aws-cli
-      tag: "2.27.0"
 migrateHealthScoreJob:
   resources:
     limits:

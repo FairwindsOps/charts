@@ -4,12 +4,11 @@ chart-dirs:
   - stable
   - incubator
 chart-repos:
-  - "minio=https://charts.min.io/"
   - "jetstack=https://charts.jetstack.io"
   - "fairwinds-stable=https://charts.fairwinds.com/stable"
   - "fairwinds-incubator=https://charts.fairwinds.com/incubator"
   - "bitnami=https://charts.bitnami.com/bitnami"
-  - "rustfs=https://charts.rustfs.com/"
+  - "minio=https://charts.min.io/"
   - "prometheus-community=https://prometheus-community.github.io/helm-charts"
   - "falcosecurity=https://falcosecurity.github.io/charts"
   - "metrics-server=https://kubernetes-sigs.github.io/metrics-server"
