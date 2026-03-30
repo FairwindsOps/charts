@@ -648,14 +648,18 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files, valid values include minio, s3, and local
+  # -- How to store report files: `minio`, `s3_compatible` (e.g. in-cluster RustFS or other S3 API), or `local`
   strategy: minio
-  # -- Name of the bucket to use for minio or s3
+  # -- Bucket name for minio, s3_compatible, or local
   bucket: reports
-  # -- AWS region to use for S3
+  # -- Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients)
   region: us-east-1
-  # -- Hostname to use for Minio
+  # -- Hostname to use for Minio when strategy is `minio`
   minioHost:
+  # -- Full URL for S3-compatible API when strategy is `s3_compatible` and not using in-cluster RustFS
+  s3Endpoint:
+  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `s3_compatible` and `rustfs.install` is false
+  s3CredentialsSecret:
   # -- Directory to store files in for local.
   fixturesDir:
 
@@ -686,6 +690,70 @@ minio:
     enabled: true
   replicas: 1
   mode: standalone
+
+# RustFS subchart (https://charts.rustfs.com/) — values pass through; see upstream chart for full schema.
+rustfs:
+  # -- Install RustFS (set `reportStorage.strategy: s3_compatible` to use it from the app; can be enabled beside MinIO during migration)
+  install: false
+  nameOverride: fw-rustfs
+  fullnameOverride: ""
+  replicaCount: 1
+  mode:
+    standalone:
+      enabled: true
+      strategy:
+        type: RollingUpdate
+        rollingUpdate:
+          maxSurge: 0
+          maxUnavailable: 1
+      existingClaim:
+        dataClaim: ""
+        logsClaim: ""
+    distributed:
+      enabled: false
+  image:
+    rustfs:
+      repository: rustfs/rustfs
+      tag: latest
+      pullPolicy: Always
+    initImage:
+      repository: busybox
+      tag: "stable"
+      pullPolicy: IfNotPresent
+  secret:
+    existingSecret: ""
+    rustfs:
+      access_key: rustfsadmin
+      secret_key: rustfsadmin
+  ingress:
+    enabled: false
+  service:
+    type: ClusterIP
+    endpoint:
+      port: 9000
+      nodePort: 32000
+    console:
+      port: 9001
+      nodePort: 32001
+  podLabels: {}
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  affinity:
+    podAntiAffinity:
+      enabled: false
+    nodeAffinity: {}
+  storageclass:
+    name: ""
+    dataStorageSize: 50Gi
+    logStorageSize: 1Gi
+  # -- Parent chart only: Job image to create reportStorage.bucket via S3 API
+  bucketJob:
+    awsCliImage:
+      repository: amazon/aws-cli
+      tag: "2.27.0"
+
 migrateHealthScoreJob:
   resources:
     limits:

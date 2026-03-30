@@ -198,10 +198,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | email.smtpUsername | string | `nil` | Username for SMTP strategy |
 | email.smtpPort | string | `nil` | Port for SMTP strategy |
 | email.awsRegion | string | `nil` | Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret. |
-| reportStorage.strategy | string | `"minio"` | How to store report files, valid values include minio, s3, and local |
-| reportStorage.bucket | string | `"reports"` | Name of the bucket to use for minio or s3 |
-| reportStorage.region | string | `"us-east-1"` | AWS region to use for S3 |
-| reportStorage.minioHost | string | `nil` | Hostname to use for Minio |
+| reportStorage.strategy | string | `"minio"` | How to store report files: `minio`, `s3_compatible` (e.g. in-cluster RustFS or other S3 API), or `local` |
+| reportStorage.bucket | string | `"reports"` | Bucket name for minio, s3_compatible, or local |
+| reportStorage.region | string | `"us-east-1"` | Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients) |
+| reportStorage.minioHost | string | `nil` | Hostname to use for Minio when strategy is `minio` |
+| reportStorage.s3Endpoint | string | `nil` | Full URL for S3-compatible API when strategy is `s3_compatible` and not using in-cluster RustFS |
+| reportStorage.s3CredentialsSecret | string | `nil` | Secret with `accessKeyId` and `secretAccessKey` when strategy is `s3_compatible` and `rustfs.install` is false |
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
 | minio.install | bool | `true` | Install Minio |
 | minio.image.repository | string | `"quay.io/minio/minio"` |  |
@@ -214,6 +216,41 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
 | minio.replicas | int | `1` |  |
 | minio.mode | string | `"standalone"` |  |
+| rustfs.install | bool | `false` | Install RustFS (set `reportStorage.strategy: s3_compatible` to use it from the app; can be enabled beside MinIO during migration) |
+| rustfs.nameOverride | string | `"fw-rustfs"` |  |
+| rustfs.fullnameOverride | string | `""` |  |
+| rustfs.replicaCount | int | `1` |  |
+| rustfs.mode.standalone.enabled | bool | `true` |  |
+| rustfs.mode.standalone.strategy.type | string | `"RollingUpdate"` |  |
+| rustfs.mode.standalone.strategy.rollingUpdate.maxSurge | int | `0` |  |
+| rustfs.mode.standalone.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
+| rustfs.mode.standalone.existingClaim.dataClaim | string | `""` |  |
+| rustfs.mode.standalone.existingClaim.logsClaim | string | `""` |  |
+| rustfs.mode.distributed.enabled | bool | `false` |  |
+| rustfs.image.rustfs.repository | string | `"rustfs/rustfs"` |  |
+| rustfs.image.rustfs.tag | string | `"latest"` |  |
+| rustfs.image.rustfs.pullPolicy | string | `"Always"` |  |
+| rustfs.image.initImage.repository | string | `"busybox"` |  |
+| rustfs.image.initImage.tag | string | `"stable"` |  |
+| rustfs.image.initImage.pullPolicy | string | `"IfNotPresent"` |  |
+| rustfs.secret.existingSecret | string | `""` |  |
+| rustfs.secret.rustfs.access_key | string | `"rustfsadmin"` |  |
+| rustfs.secret.rustfs.secret_key | string | `"rustfsadmin"` |  |
+| rustfs.ingress.enabled | bool | `false` |  |
+| rustfs.service.type | string | `"ClusterIP"` |  |
+| rustfs.service.endpoint.port | int | `9000` |  |
+| rustfs.service.endpoint.nodePort | int | `32000` |  |
+| rustfs.service.console.port | int | `9001` |  |
+| rustfs.service.console.nodePort | int | `32001` |  |
+| rustfs.podLabels | object | `{}` |  |
+| rustfs.resources.requests.cpu | string | `"50m"` |  |
+| rustfs.resources.requests.memory | string | `"256Mi"` |  |
+| rustfs.affinity.podAntiAffinity.enabled | bool | `false` |  |
+| rustfs.affinity.nodeAffinity | object | `{}` |  |
+| rustfs.storageclass.name | string | `""` |  |
+| rustfs.storageclass.dataStorageSize | string | `"50Gi"` |  |
+| rustfs.storageclass.logStorageSize | string | `"1Gi"` |  |
+| rustfs.bucketJob | object | `{"awsCliImage":{"repository":"amazon/aws-cli","tag":"2.27.0"}}` | Parent chart only: Job image to create reportStorage.bucket via S3 API |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
