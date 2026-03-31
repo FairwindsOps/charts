@@ -198,7 +198,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | email.smtpUsername | string | `nil` | Username for SMTP strategy |
 | email.smtpPort | string | `nil` | Port for SMTP strategy |
 | email.awsRegion | string | `nil` | Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret. |
-| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (MINIO_*), `s3` (AWS default SDK credentials, or set `rustfs.install` / `s3Endpoint` + `s3CredentialsSecret` to use REPORT_STORAGE_S3_* like RustFS), `rustfs` (same S3-compatible env as that `s3` path), or `local` |
+| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (MINIO_*), `s3` (AWS S3 via default SDK credentials only), `rustfs` or in-cluster RustFS / external endpoint (chart emits `REPORT_STORAGE_S3_*` and sets `REPORT_STORAGE_STRATEGY=rustfs` for those paths—required by Insights `pkg/files/s3.go`), or `local` |
 | reportStorage.bucket | string | `"reports"` | Bucket name for minio, s3, rustfs, or local |
 | reportStorage.region | string | `"us-east-1"` | Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients) |
 | reportStorage.minioHost | string | `nil` | Hostname to use for Minio when strategy is `minio` |

@@ -646,7 +646,7 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files: `minio` (MINIO_*), `s3` (AWS default SDK credentials, or set `rustfs.install` / `s3Endpoint` + `s3CredentialsSecret` to use REPORT_STORAGE_S3_* like RustFS), `rustfs` (same S3-compatible env as that `s3` path), or `local`
+  # -- How to store report files: `minio` (MINIO_*), `s3` (AWS S3 via default SDK credentials only), `rustfs` or in-cluster RustFS / external endpoint (chart emits `REPORT_STORAGE_S3_*` and sets `REPORT_STORAGE_STRATEGY=rustfs` for those paths—required by Insights `pkg/files/s3.go`), or `local`
   strategy: minio
   # -- Bucket name for minio, s3, rustfs, or local
   bucket: reports
@@ -719,7 +719,7 @@ rustfs:
     requests:
       cpu: 50m
       memory: 256Mi
-  # -- Create-bucket uses a normal release Job (not a Helm hook). Use `helm install|upgrade --wait --wait-for-jobs` so it finishes before the release succeeds; see README `dbMigration.overrideHook`. Omit to use chart defaults (amazon/aws-cli:2.34.19).
+  # -- Create-bucket uses a normal release Job (not a Helm hook). Use `helm install|upgrade --wait --wait-for-jobs` so it finishes before the release succeeds. Omit to use chart defaults (amazon/aws-cli:2.34.19).
   bucketJob:
     awsCliImage:
       repository: amazon/aws-cli
