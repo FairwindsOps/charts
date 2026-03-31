@@ -218,20 +218,21 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.replicas | int | `1` |  |
 | minio.mode | string | `"standalone"` |  |
 | rustfs.install | bool | `false` |  |
-| rustfs.createBucket | bool | `true` | When `rustfs.install` is true, run a release Job to create `reportStorage.bucket`. Set false to manage the bucket yourself. |
 | rustfs.nameOverride | string | `"fw-rustfs"` |  |
 | rustfs.replicaCount | int | `1` |  |
 | rustfs.mode.standalone.enabled | bool | `true` |  |
 | rustfs.mode.distributed.enabled | bool | `false` |  |
 | rustfs.ingress.enabled | bool | `false` |  |
 | rustfs.affinity.podAntiAffinity.enabled | bool | `false` |  |
+| rustfs.service.endpoint.port | int | `9000` |  |
 | rustfs.storageclass.name | string | `""` |  |
 | rustfs.storageclass.dataStorageSize | string | `"50Gi"` |  |
 | rustfs.storageclass.logStorageSize | string | `"1Gi"` |  |
 | rustfs.resources.requests.cpu | string | `"50m"` |  |
 | rustfs.resources.requests.memory | string | `"256Mi"` |  |
-| rustfs.bucketJob.awsCliImage.repository | string | `"amazon/aws-cli"` |  |
-| rustfs.bucketJob.awsCliImage.tag | string | `"2.34.19"` |  |
+| rustfs.createBucketJob.enabled | bool | `true` |  |
+| rustfs.createBucketJob.repository | string | `"amazon/aws-cli"` |  |
+| rustfs.createBucketJob.tag | string | `"2.34.19"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |

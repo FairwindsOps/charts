@@ -135,13 +135,3 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "fairwinds-insights.rustfsServiceName" -}}
 {{- printf "%s-svc" (include "fairwinds-insights.rustfsFullname" .) }}
 {{- end }}
-
-{{/* Defaults align with rustfs subchart service port and create-bucket Job image when omitted from values. */}}
-{{- define "fairwinds-insights.rustfsEndpointPort" -}}
-{{- dig "service" "endpoint" "port" 9000 (.Values.rustfs | default dict) | int }}
-{{- end }}
-
-{{- define "fairwinds-insights.rustfsBucketJobImage" -}}
-{{- $r := .Values.rustfs | default dict }}
-{{- printf "%s:%s" (dig "bucketJob" "awsCliImage" "repository" "amazon/aws-cli" $r) (dig "bucketJob" "awsCliImage" "tag" "2.34.19" $r) }}
-{{- end }}

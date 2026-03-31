@@ -167,7 +167,7 @@ env:
   value: {{ $.Values.reportStorage.s3Endpoint | quote }}
 {{- else if $.Values.rustfs.install }}
 - name: REPORT_STORAGE_S3_ENDPOINT
-  value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" $) (include "fairwinds-insights.rustfsEndpointPort" $) | quote }}
+  value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" $) $.Values.rustfs.service.endpoint.port | quote }}
 {{- else }}
 {{- fail "reportStorage.s3Endpoint is required for S3-compatible storage when rustfs.install is false (strategies rustfs or s3)" }}
 {{- end }}

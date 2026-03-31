@@ -692,13 +692,11 @@ minio:
   mode: standalone
 
 # RustFS subchart (https://charts.rustfs.com/) — for **local/self-hosted** installs as the in-cluster **MinIO replacement**. Set `rustfs.install: true` (and `minio.install: false` to avoid two brokers). If `reportStorage.strategy` is still the default `minio`, the chart emits `REPORT_STORAGE_STRATEGY=rustfs` and `REPORT_STORAGE_S3_*` automatically.
-# Any other `rustfs.*` keys merge into the upstream chart (`helm show values rustfs/rustfs` for the full schema).
-# Upstream defaults assume distributed mode (4 replicas) and enable Ingress; the overrides below keep a single-node, in-cluster endpoint comparable to bundled MinIO. Do **not** rely on bare upstream defaults for this use case.
+# Keys below merge into the upstream chart (`helm show values rustfs/rustfs`); `createBucketJob` is used only by this chart’s create-bucket Job.
+# Upstream defaults assume distributed mode (4 replicas) and enable Ingress; the overrides below keep a single-node, in-cluster endpoint comparable to bundled MinIO.
 rustfs:
   # -- Install RustFS in-cluster (with `reportStorage.strategy: rustfs` and `minio.install: false`). Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
   install: false
-  # -- When `rustfs.install` is true, run a release Job to create `reportStorage.bucket`. Set false to manage the bucket yourself.
-  createBucket: true
   nameOverride: fw-rustfs
   replicaCount: 1
   mode:
@@ -711,6 +709,9 @@ rustfs:
   affinity:
     podAntiAffinity:
       enabled: false
+  service:
+    endpoint:
+      port: 9000
   storageclass:
     name: ""
     dataStorageSize: 50Gi
@@ -719,11 +720,10 @@ rustfs:
     requests:
       cpu: 50m
       memory: 256Mi
-  # -- Create-bucket uses a normal release Job (not a Helm hook). Use `helm install|upgrade --wait --wait-for-jobs` so it finishes before the release succeeds. Omit to use chart defaults (amazon/aws-cli:2.34.19).
-  bucketJob:
-    awsCliImage:
-      repository: amazon/aws-cli
-      tag: "2.34.19"
+  createBucketJob:
+    enabled: true
+    repository: amazon/aws-cli
+    tag: "2.34.19"
 
 migrateHealthScoreJob:
   resources:
