@@ -647,7 +647,7 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `rustfs` (REPORT_STORAGE_S3_* e.g. RustFS), or `local`
+  # -- How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `rustfs` (REPORT_STORAGE_S3_* for RustFS as in-cluster MinIO replacement in local/self-hosted installs), or `local`
   strategy: minio
   # -- Bucket name for minio, s3, rustfs, or local
   bucket: reports
@@ -655,9 +655,9 @@ reportStorage:
   region: us-east-1
   # -- Hostname to use for Minio when strategy is `minio`
   minioHost:
-  # -- Full URL for S3-compatible API when strategy is `rustfs` and not using in-cluster RustFS
+  # -- Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (same local/self-hosted use case; still set `minio.install: false`)
   s3Endpoint:
-  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false
+  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external RustFS)
   s3CredentialsSecret:
   # -- Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `rustfs` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores.
   s3MinIOCompat: false
@@ -692,9 +692,9 @@ minio:
   replicas: 1
   mode: standalone
 
-# RustFS subchart (https://charts.rustfs.com/) — values pass through; see upstream chart for full schema.
+# RustFS subchart (https://charts.rustfs.com/) — for **local/self-hosted** installs as the in-cluster **MinIO replacement**. Set `minio.install: false`, `rustfs.install: true`, and `reportStorage.strategy: rustfs`. Values pass through; see upstream chart for full schema.
 rustfs:
-  # -- Install RustFS (set `reportStorage.strategy: rustfs` to use it from the app; can be enabled beside MinIO during migration)
+  # -- Install RustFS in-cluster (with `reportStorage.strategy: rustfs` and `minio.install: false`). Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
   install: false
   nameOverride: fw-rustfs
   fullnameOverride: ""
@@ -745,7 +745,7 @@ rustfs:
     name: ""
     dataStorageSize: 50Gi
     logStorageSize: 1Gi
-  # Create-bucket is a normal release Job (not a post-install hook) so the bucket exists during helm --wait with app Deployments; see README dbMigration / --wait-for-jobs.
+  # -- Create-bucket uses a normal release Job (not a Helm hook). Use `helm install|upgrade --wait --wait-for-jobs` so it finishes before the release succeeds; see README `dbMigration.overrideHook`.
   bucketJob:
     awsCliImage:
       repository: amazon/aws-cli

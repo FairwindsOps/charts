@@ -75,6 +75,7 @@ resourcesRecommendationsCronjob:
   schedules: []
 
 minio:
+  install: false
   persistence:
     enabled: false
 

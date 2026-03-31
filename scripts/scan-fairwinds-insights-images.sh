@@ -1,6 +1,6 @@
 #! /bin/bash
 # Scans all container images referenced by the stable/fairwinds-insights Helm chart
-# (including subcharts: temporal, timescale) and chart-defined images (e.g. RustFS) for CRITICAL/HIGH vulnerabilities using Trivy.
+# (default values: MinIO; conditional subcharts e.g. temporal, timescale; plus a second render with RustFS enabled) for CRITICAL/HIGH vulnerabilities using Trivy.
 #
 # Usage: ./scripts/scan-fairwinds-insights-images.sh
 # Requires: helm, trivy (or TRIVY_IMAGE), docker. Run from repo root.
@@ -38,10 +38,10 @@ helm repo update
 echo "Building chart dependencies and rendering manifests..."
 cd "$CHART_DIR"
 helm dependency build
-# Render with default values so we get temporal, postgres, openapi, etc.
-RENDERED=$(helm template release . --namespace fwinsights 2>/dev/null)
-# RustFS and the bucket-creation hook are behind rustfs.install (default false); render again
-RENDERED_RUSTFS=$(helm template release . --namespace fwinsights --set rustfs.install=true 2>/dev/null)
+# Render with default values so we get MinIO, temporal, postgres, openapi, etc.
+RENDERED=$(helm template release . --namespace fwinsights)
+# RustFS (and its bucket-creation Job) are behind rustfs.install (default false); render again for those images
+RENDERED_RUSTFS=$(helm template release . --namespace fwinsights --set rustfs.install=true)
 cd "$REPO_ROOT"
 
 echo "Extracting image references..."

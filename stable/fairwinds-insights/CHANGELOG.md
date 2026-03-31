@@ -1,7 +1,7 @@
 # Changelog
 
 ## 6.3.0
-* Add optional **[RustFS](https://charts.rustfs.com/)** subchart (`rustfs.install`). Set `reportStorage.strategy: rustfs` to use `REPORT_STORAGE_S3_*` env vars; in-cluster endpoint defaults to `http://{release}-{rustfs.nameOverride}-svc:{port}` (see `values.yaml`). External S3-compatible storage: `rustfs.install: false`, `reportStorage.s3Endpoint`, and `reportStorage.s3CredentialsSecret` (`accessKeyId` / `secretAccessKey`). MinIO remains the default (`strategy: minio`). Post-install Job creates the report bucket when RustFS is installed.
+* Add optional **[RustFS](https://charts.rustfs.com/)** subchart for **local and self-hosted** deployments as an **in-cluster MinIO replacement**: set `minio.install: false`, `rustfs.install: true`, and `reportStorage.strategy: rustfs` to use `REPORT_STORAGE_S3_*` (in-cluster endpoint defaults to `http://{release}-{rustfs.nameOverride}-svc:{port}`; see `values.yaml`). External RustFS in the same scenarios: keep `minio.install: false`, set `reportStorage.s3Endpoint` and `reportStorage.s3CredentialsSecret` (`accessKeyId` / `secretAccessKey`) with `rustfs.install: false`. MinIO remains the default (`strategy: minio`, `minio.install: true`). Template install fails if `reportStorage.strategy` is `rustfs` while `minio.install` is still true. When `rustfs.install` is true, a normal release Job (not a Helm hook) creates the report bucket; use `helm install|upgrade --wait --wait-for-jobs` so that Job finishes before Helm succeeds, or the app may start before the bucket exists.
 
 ## 6.2.5
 * Bumped swagger-ui lib

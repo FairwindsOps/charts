@@ -198,12 +198,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | email.smtpUsername | string | `nil` | Username for SMTP strategy |
 | email.smtpPort | string | `nil` | Port for SMTP strategy |
 | email.awsRegion | string | `nil` | Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret. |
-| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `rustfs` (REPORT_STORAGE_S3_* e.g. RustFS), or `local` |
+| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `rustfs` (REPORT_STORAGE_S3_* for RustFS as in-cluster MinIO replacement in local/self-hosted installs), or `local` |
 | reportStorage.bucket | string | `"reports"` | Bucket name for minio, s3, rustfs, or local |
 | reportStorage.region | string | `"us-east-1"` | Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients) |
 | reportStorage.minioHost | string | `nil` | Hostname to use for Minio when strategy is `minio` |
-| reportStorage.s3Endpoint | string | `nil` | Full URL for S3-compatible API when strategy is `rustfs` and not using in-cluster RustFS |
-| reportStorage.s3CredentialsSecret | string | `nil` | Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false |
+| reportStorage.s3Endpoint | string | `nil` | Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (same local/self-hosted use case; still set `minio.install: false`) |
+| reportStorage.s3CredentialsSecret | string | `nil` | Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external RustFS) |
 | reportStorage.s3MinIOCompat | bool | `false` | Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `rustfs` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores. |
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
 | minio.install | bool | `true` | Install Minio |
@@ -217,7 +217,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
 | minio.replicas | int | `1` |  |
 | minio.mode | string | `"standalone"` |  |
-| rustfs.install | bool | `false` | Install RustFS (set `reportStorage.strategy: rustfs` to use it from the app; can be enabled beside MinIO during migration) |
+| rustfs.install | bool | `false` |  |
 | rustfs.nameOverride | string | `"fw-rustfs"` |  |
 | rustfs.fullnameOverride | string | `""` |  |
 | rustfs.replicaCount | int | `1` |  |
