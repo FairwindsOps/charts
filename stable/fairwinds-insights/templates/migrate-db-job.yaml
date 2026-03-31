@@ -1,21 +1,18 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: migrate-database-{{ .Release.Revision }}
+  name: migrate-database
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
   {{- $usePostHook := or .Values.postgresql.ephemeral .Values.timescale.ephemeral .Values.postgresql.postMigrate -}}
   {{- if eq .Values.dbMigration.overrideHook "none" }}
+  {{/* No hook - Job runs as normal resource */}}
   {{- else if .Values.dbMigration.overrideHook }}
-  annotations:
-    "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
   {{- else if $usePostHook }}
-  annotations:
     "helm.sh/hook": "post-install,post-upgrade"
   {{- else }}
-  annotations:
-    "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook": "pre-install,pre-upgrade"
-    "helm.sh/hook-weight": "10"
   {{- end }}
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
