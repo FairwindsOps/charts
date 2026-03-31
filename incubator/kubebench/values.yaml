@@ -1,6 +1,6 @@
 image:
   repository: aquasec/kube-bench
-  tag: latest
+  tag: v0.15.0
   pullPolicy: Always
 
 cron:

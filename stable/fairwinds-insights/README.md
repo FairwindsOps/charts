@@ -157,8 +157,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
 | postgresql.image.tag | string | `"17.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
-| postgresql.operator | object | `{"crds":{"create":true},"defaultVersion":"1.28.1","install":true,"version":"latest","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
-| postgresql.operator.version | string | `"latest"` | CloudNativePG operator version to install (use "latest" to resolve from GitHub at install time) |
+| postgresql.operator | object | `{"crds":{"create":true},"defaultVersion":"1.28.1","install":true,"version":"1.28.1","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
+| postgresql.operator.version | string | `"1.28.1"` | CloudNativePG operator version to install |
 | postgresql.operator.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
 | postgresql.operator.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
