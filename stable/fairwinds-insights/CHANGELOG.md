@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.2.6
+* Removed latest tag
+
 ## 6.2.5
 * Bumped swagger-ui lib
 * Bumped alpine/psql to 18.3
