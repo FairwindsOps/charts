@@ -1,4 +1,0 @@
-{{- /* RustFS is the in-cluster replacement for MinIO when reportStorage.strategy is rustfs; do not install both. */ -}}
-{{- if and (eq .Values.reportStorage.strategy "rustfs") .Values.minio.install }}
-{{- fail "reportStorage.strategy is rustfs but minio.install is true: set minio.install to false (RustFS replaces in-cluster MinIO for local and self-hosted deployments)" }}
-{{- end }}
