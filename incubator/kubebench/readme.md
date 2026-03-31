@@ -8,8 +8,8 @@ This chart installs a CronJob that will run kube-bench on a regular basis and up
 | Parameter      | Description                | Default    |
 |:---------------|:---------------------------|:-----------|
 | image.repository | kube-bench docker repo | aquasec/kube-bench |
-| image.tag | kube-bench image tag | latest |
-| image.pullPolicy | pull policy for the kubebench image | Always |
+| image.tag | kube-bench image tag | v0.15.0 |
+| image.pullPolicy | pull policy for the kubebench image | IfNotPresent |
 | cron.schedule | Cron schedule to run kube-bench | `30 8 * * 1` |
 | exporter.image.repository | docker repo for the exporter that exports the results to datadog | quay.io/reactiveops/kubebench-exporter |
 | exporter.image.tag | exporter image tag | v1.0 |
