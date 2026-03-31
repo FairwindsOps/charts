@@ -132,7 +132,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
-| dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. Values: "" (no override): when postgresql.ephemeral, timescale.ephemeral, or postgresql.postMigrate is true, the Job has no hook (avoids deadlock: post-install hooks run only after other resources are Ready). Use helm --wait --wait-for-jobs so this Job is waited on. Otherwise pre-install/pre-upgrade with hook-weight 10 (after CNPG pre-install hooks). Set "none" for no hook always, or a hook list to override (e.g. post-install,post-upgrade). |
+| dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. |
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
