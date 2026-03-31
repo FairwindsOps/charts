@@ -505,7 +505,7 @@ postgresql:
   # -- Install CloudNativePG operator
   operator:
     install: true
-    # -- CloudNativePG operator version to install (set to "latest" to resolve from GitHub at install time)
+    # -- CloudNativePG operator version to install
     version: "1.28.1"
     # -- Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails
     defaultVersion: "1.28.1"
