@@ -137,9 +137,11 @@ env:
 {{- end }}
 
 # Report Storage
+{{- /* In-cluster RustFS with legacy defaults (strategy still "minio"): use S3-compat env and effective strategy rustfs so the app reads REPORT_STORAGE_S3_* */}}
+{{- $reportStorageS3Compat := or (eq $.Values.reportStorage.strategy "rustfs") (and (eq $.Values.reportStorage.strategy "s3") (or $.Values.rustfs.install $.Values.reportStorage.s3Endpoint)) (and $.Values.rustfs.install (eq $.Values.reportStorage.strategy "minio")) }}
 - name: REPORT_STORAGE_STRATEGY
-  value: {{ $.Values.reportStorage.strategy }}
-{{ if eq $.Values.reportStorage.strategy "minio" -}}
+  value: {{ ternary "rustfs" $.Values.reportStorage.strategy (and $.Values.rustfs.install (eq $.Values.reportStorage.strategy "minio")) | quote }}
+{{ if and (eq $.Values.reportStorage.strategy "minio") (not $.Values.rustfs.install) -}}
 {{ if $.Values.reportStorage.minioHost -}}
 - name: MINIO_HOST
   value: {{ $.Values.reportStorage.minioHost }}
@@ -157,25 +159,25 @@ env:
     secretKeyRef:
       name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
       key: rootPassword
-{{ else if eq $.Values.reportStorage.strategy "rustfs" -}}
+{{ else if $reportStorageS3Compat -}}
 {{- if $.Values.reportStorage.s3Endpoint }}
 - name: REPORT_STORAGE_S3_ENDPOINT
   value: {{ $.Values.reportStorage.s3Endpoint | quote }}
 {{- else if $.Values.rustfs.install }}
 - name: REPORT_STORAGE_S3_ENDPOINT
-  value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" $) ($.Values.rustfs.service.endpoint.port | int) | quote }}
+  value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" $) (include "fairwinds-insights.rustfsEndpointPort" $) | quote }}
 {{- else }}
-{{- fail "reportStorage.s3Endpoint is required when reportStorage.strategy is rustfs and rustfs.install is false" }}
+{{- fail "reportStorage.s3Endpoint is required for S3-compatible storage when rustfs.install is false (strategies rustfs or s3)" }}
 {{- end }}
 - name: REPORT_STORAGE_S3_ACCESS_KEY_ID
   valueFrom:
     secretKeyRef:
-      name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required when reportStorage.strategy is rustfs and rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
+      name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required for external S3-compatible storage when rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
       key: {{ if $.Values.rustfs.install }}RUSTFS_ACCESS_KEY{{ else }}accessKeyId{{ end }}
 - name: REPORT_STORAGE_S3_SECRET_ACCESS_KEY
   valueFrom:
     secretKeyRef:
-      name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required when reportStorage.strategy is rustfs and rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
+      name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required for external S3-compatible storage when rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
       key: {{ if $.Values.rustfs.install }}RUSTFS_SECRET_KEY{{ else }}secretAccessKey{{ end }}
 {{- if $.Values.reportStorage.s3MinIOCompat }}
 - name: REPORT_STORAGE_S3_MINIO_COMPAT

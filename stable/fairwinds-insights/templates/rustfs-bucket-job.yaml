@@ -18,7 +18,7 @@ spec:
       restartPolicy: Never
       containers:
         - name: create-bucket
-          image: "{{ .Values.rustfs.bucketJob.awsCliImage.repository }}:{{ .Values.rustfs.bucketJob.awsCliImage.tag }}"
+          image: {{ include "fairwinds-insights.rustfsBucketJobImage" . | quote }}
           imagePullPolicy: Always
           env:
             - name: AWS_ACCESS_KEY_ID
@@ -36,7 +36,7 @@ spec:
             - name: BUCKET
               value: {{ .Values.reportStorage.bucket | quote }}
             - name: ENDPOINT
-              value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" .) (.Values.rustfs.service.endpoint.port | int) | quote }}
+              value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" .) (include "fairwinds-insights.rustfsEndpointPort" .) | quote }}
           command:
             - /bin/sh
             - -ec

@@ -198,7 +198,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | email.smtpUsername | string | `nil` | Username for SMTP strategy |
 | email.smtpPort | string | `nil` | Port for SMTP strategy |
 | email.awsRegion | string | `nil` | Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret. |
-| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `rustfs` (REPORT_STORAGE_S3_* for RustFS as in-cluster MinIO replacement in local/self-hosted installs), or `local` |
+| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (MINIO_*), `s3` (AWS credentials, or S3-compatible via `rustfs.install` / `s3Endpoint` + secrets — same as `rustfs`), `rustfs` (REPORT_STORAGE_S3_*), or `local` |
 | reportStorage.bucket | string | `"reports"` | Bucket name for minio, s3, rustfs, or local |
 | reportStorage.region | string | `"us-east-1"` | Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients) |
 | reportStorage.minioHost | string | `nil` | Hostname to use for Minio when strategy is `minio` |
@@ -220,35 +220,17 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | rustfs.install | bool | `false` |  |
 | rustfs.createBucket | bool | `true` | When `rustfs.install` is true, run a release Job to create `reportStorage.bucket`. Set false to manage the bucket yourself. |
 | rustfs.nameOverride | string | `"fw-rustfs"` |  |
-| rustfs.fullnameOverride | string | `""` |  |
-| rustfs.replicaCount | int | `1` |  |
+| rustfs.replicaCount | int | `1` | Overrides upstream default (4) for single-node installs |
 | rustfs.mode.standalone.enabled | bool | `true` |  |
-| rustfs.mode.standalone.strategy.type | string | `"RollingUpdate"` |  |
-| rustfs.mode.standalone.strategy.rollingUpdate.maxSurge | int | `0` |  |
-| rustfs.mode.standalone.strategy.rollingUpdate.maxUnavailable | int | `1` |  |
-| rustfs.mode.standalone.existingClaim.dataClaim | string | `""` |  |
-| rustfs.mode.standalone.existingClaim.logsClaim | string | `""` |  |
-| rustfs.mode.distributed.enabled | bool | `false` |  |
-| rustfs.image.rustfs.pullPolicy | string | `"Always"` |  |
-| rustfs.image.initImage.pullPolicy | string | `"Always"` |  |
-| rustfs.secret.existingSecret | string | `""` |  |
-| rustfs.secret.rustfs.access_key | string | `"rustfsadmin"` |  |
-| rustfs.secret.rustfs.secret_key | string | `"rustfsadmin"` |  |
-| rustfs.ingress.enabled | bool | `false` |  |
-| rustfs.service.type | string | `"ClusterIP"` |  |
-| rustfs.service.endpoint.port | int | `9000` |  |
-| rustfs.service.endpoint.nodePort | int | `32000` |  |
-| rustfs.service.console.port | int | `9001` |  |
-| rustfs.service.console.nodePort | int | `32001` |  |
-| rustfs.podLabels | object | `{}` |  |
-| rustfs.resources.requests.cpu | string | `"50m"` |  |
-| rustfs.resources.requests.memory | string | `"256Mi"` |  |
+| rustfs.mode.distributed.enabled | bool | `false` | Upstream defaults use distributed mode |
+| rustfs.ingress.enabled | bool | `false` | Upstream defaults enable Ingress; disabled for in-cluster use |
 | rustfs.affinity.podAntiAffinity.enabled | bool | `false` |  |
-| rustfs.affinity.nodeAffinity | object | `{}` |  |
 | rustfs.storageclass.name | string | `""` |  |
 | rustfs.storageclass.dataStorageSize | string | `"50Gi"` |  |
 | rustfs.storageclass.logStorageSize | string | `"1Gi"` |  |
-| rustfs.bucketJob.awsCliImage.repository | string | `"amazon/aws-cli"` |  |
+| rustfs.resources.requests.cpu | string | `"50m"` |  |
+| rustfs.resources.requests.memory | string | `"256Mi"` |  |
+| rustfs.bucketJob.awsCliImage.repository | string | `"amazon/aws-cli"` | Create-bucket Job image (parent chart only; omit keys to use these defaults) |
 | rustfs.bucketJob.awsCliImage.tag | string | `"2.34.19"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |

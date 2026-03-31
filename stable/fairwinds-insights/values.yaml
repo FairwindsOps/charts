@@ -646,7 +646,7 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files: `minio` (default; MINIO_* env), `s3` (AWS), `rustfs` (REPORT_STORAGE_S3_* for RustFS as in-cluster MinIO replacement in local/self-hosted installs), or `local`
+  # -- How to store report files: `minio` (MINIO_*), `s3` (AWS default SDK credentials, or set `rustfs.install` / `s3Endpoint` + `s3CredentialsSecret` to use REPORT_STORAGE_S3_* like RustFS), `rustfs` (same S3-compatible env as that `s3` path), or `local`
   strategy: minio
   # -- Bucket name for minio, s3, rustfs, or local
   bucket: reports
@@ -691,62 +691,35 @@ minio:
   replicas: 1
   mode: standalone
 
-# RustFS subchart (https://charts.rustfs.com/) — for **local/self-hosted** installs as the in-cluster **MinIO replacement**. Set `minio.install: false`, `rustfs.install: true`, and `reportStorage.strategy: rustfs`. Values pass through; see upstream chart for full schema.
+# RustFS subchart (https://charts.rustfs.com/) — for **local/self-hosted** installs as the in-cluster **MinIO replacement**. Set `rustfs.install: true` (and `minio.install: false` to avoid two brokers). If `reportStorage.strategy` is still the default `minio`, the chart emits `REPORT_STORAGE_STRATEGY=rustfs` and `REPORT_STORAGE_S3_*` automatically.
+# Any other `rustfs.*` keys merge into the upstream chart (`helm show values rustfs/rustfs` for the full schema).
+# Upstream defaults assume distributed mode (4 replicas) and enable Ingress; the overrides below keep a single-node, in-cluster endpoint comparable to bundled MinIO. Do **not** rely on bare upstream defaults for this use case.
 rustfs:
   # -- Install RustFS in-cluster (with `reportStorage.strategy: rustfs` and `minio.install: false`). Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
   install: false
   # -- When `rustfs.install` is true, run a release Job to create `reportStorage.bucket`. Set false to manage the bucket yourself.
   createBucket: true
   nameOverride: fw-rustfs
-  fullnameOverride: ""
   replicaCount: 1
   mode:
     standalone:
       enabled: true
-      strategy:
-        type: RollingUpdate
-        rollingUpdate:
-          maxSurge: 0
-          maxUnavailable: 1
-      existingClaim:
-        dataClaim: ""
-        logsClaim: ""
     distributed:
       enabled: false
-  image:
-    rustfs:
-      pullPolicy: Always
-    initImage:
-      pullPolicy: Always
-  secret:
-    existingSecret: ""
-    rustfs:
-      access_key: rustfsadmin
-      secret_key: rustfsadmin
   ingress:
     enabled: false
-  service:
-    type: ClusterIP
-    endpoint:
-      port: 9000
-      nodePort: 32000
-    console:
-      port: 9001
-      nodePort: 32001
-  podLabels: {}
-  resources:
-    requests:
-      cpu: 50m
-      memory: 256Mi
   affinity:
     podAntiAffinity:
       enabled: false
-    nodeAffinity: {}
   storageclass:
     name: ""
     dataStorageSize: 50Gi
     logStorageSize: 1Gi
-  # -- Create-bucket uses a normal release Job (not a Helm hook). Use `helm install|upgrade --wait --wait-for-jobs` so it finishes before the release succeeds; see README `dbMigration.overrideHook`.
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  # -- Create-bucket uses a normal release Job (not a Helm hook). Use `helm install|upgrade --wait --wait-for-jobs` so it finishes before the release succeeds; see README `dbMigration.overrideHook`. Omit to use chart defaults (amazon/aws-cli:2.34.19).
   bucketJob:
     awsCliImage:
       repository: amazon/aws-cli
