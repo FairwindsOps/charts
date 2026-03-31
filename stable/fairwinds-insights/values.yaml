@@ -696,6 +696,8 @@ minio:
 rustfs:
   # -- Install RustFS in-cluster (with `reportStorage.strategy: rustfs` and `minio.install: false`). Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
   install: false
+  # -- When `rustfs.install` is true, run a release Job to create `reportStorage.bucket`. Set false to manage the bucket yourself.
+  createBucket: true
   nameOverride: fw-rustfs
   fullnameOverride: ""
   replicaCount: 1

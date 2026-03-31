@@ -1,4 +1,4 @@
-{{- if .Values.rustfs.install }}
+{{- if and .Values.rustfs.install .Values.rustfs.createBucket }}
 apiVersion: batch/v1
 kind: Job
 metadata:

@@ -218,6 +218,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.replicas | int | `1` |  |
 | minio.mode | string | `"standalone"` |  |
 | rustfs.install | bool | `false` |  |
+| rustfs.createBucket | bool | `true` | When `rustfs.install` is true, run a release Job to create `reportStorage.bucket`. Set false to manage the bucket yourself. |
 | rustfs.nameOverride | string | `"fw-rustfs"` |  |
 | rustfs.fullnameOverride | string | `""` |  |
 | rustfs.replicaCount | int | `1` |  |
