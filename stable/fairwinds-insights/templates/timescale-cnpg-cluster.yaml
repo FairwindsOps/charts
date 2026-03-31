@@ -1,0 +1,55 @@
+{{- if .Values.timescale.ephemeral }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: ImageCatalog
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-timescaledb-images
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+spec:
+  images:
+    - major: {{ .Values.timescale.image.major }}
+      image: {{ .Values.timescale.image.name }}:{{ .Values.timescale.image.tag }}
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-timescale
+  namespace: {{ .Release.Namespace }}
+spec:
+  instances: {{ .Values.timescale.instances | default 1 }}
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ImageCatalog
+    name: {{ include "fairwinds-insights.fullname" . }}-timescaledb-images
+    major: {{ .Values.timescale.image.major }}
+  enableSuperuserAccess: true
+  superuserSecret:
+    name: {{ .Values.timescale.auth.existingSuperUserSecret }}
+  imagePullPolicy: Always
+  postgresql:
+    shared_preload_libraries:
+      - timescaledb
+  bootstrap:
+    initdb:
+      database: {{ .Values.timescale.postgresqlDatabase }}
+      {{- if .Values.timescale.postInitApplicationSQL }}
+      postInitApplicationSQL:
+        {{- toYaml .Values.timescale.postInitApplicationSQL | nindent 8 }}
+      {{- end }}
+  postgresUID: 1000
+  postgresGID: 1000
+  storage:
+    {{- if .Values.timescale.storage.resizeInUseVolumes }}
+    resizeInUseVolumes: {{ .Values.timescale.storage.resizeInUseVolumes }}
+    {{- end }}
+    size: {{ .Values.timescale.storage.size }}
+    {{- if .Values.timescale.storage.storageClass }}
+    storageClass: {{ .Values.timescale.storage.storageClass }}
+    {{- end }}
+  {{- if .Values.timescale.resources }}
+  resources:
+    {{- toYaml .Values.timescale.resources | nindent 4 }}
+  {{- end }}
+{{- end }}
