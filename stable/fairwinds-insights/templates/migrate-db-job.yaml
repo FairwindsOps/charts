@@ -9,7 +9,7 @@ metadata:
     "helm.sh/hook-delete-policy": "before-hook-creation"
     "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
   {{- else if $usePostHook }}
-      "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook": "post-install,post-upgrade"
   {{- else }}
   annotations:
     "helm.sh/hook-delete-policy": "before-hook-creation"
