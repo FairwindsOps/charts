@@ -6,7 +6,7 @@ metadata:
     "helm.sh/hook-delete-policy": "before-hook-creation"
   {{- $usePostHook := or .Values.postgresql.ephemeral .Values.timescale.ephemeral .Values.postgresql.postMigrate -}}
   {{- if eq .Values.dbMigration.overrideHook "none" }}
-  {{/* No hook - Job runs as normal resource */}}
+    {{/* No hook - Job runs as normal resource */}}
   {{- else if .Values.dbMigration.overrideHook }}
     "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
   {{- else if $usePostHook }}
@@ -41,14 +41,13 @@ spec:
           TS_PORT="{{ .Values.timescale.service.primary.port | default 5433 }}"
           TIMEOUT="{{ .Values.dbMigration.waitTimeout | default 600 }}"
           wait_for() {
-            local host=$1 port=$2 name=$3 sslmode=$4
-            export PGSSLMODE="$sslmode"
+            local host=$1 port=$2 name=$3
             if [ "$TIMEOUT" -eq 0 ]; then
-              echo "Waiting for $name at $host:$port (PGSSLMODE=$sslmode, no timeout)..."
+              echo "Waiting for $name at $host:$port (no timeout)..."
               until pg_isready -h "$host" -p "$port" 2>/dev/null; do sleep 2; done
             else
               MAX_ATTEMPTS=$((TIMEOUT / 2))
-              echo "Waiting for $name at $host:$port (PGSSLMODE=$sslmode, timeout ${TIMEOUT}s)..."
+              echo "Waiting for $name at $host:$port (timeout ${TIMEOUT}s)..."
               for i in $(seq 1 $MAX_ATTEMPTS); do
                 if pg_isready -h "$host" -p "$port" 2>/dev/null; then break; fi
                 if [ $i -eq $MAX_ATTEMPTS ]; then echo "Timeout waiting for $name"; exit 1; fi
@@ -57,8 +56,8 @@ spec:
             fi
             echo "$name is ready"
           }
-          wait_for "$PG_HOST" "$PG_PORT" "PostgreSQL" "{{ .Values.postgresql.sslMode | default "prefer" }}"
-          wait_for "$TS_HOST" "$TS_PORT" "Timescale" "{{ .Values.timescale.sslMode | default "prefer" }}"
+          wait_for "$PG_HOST" "$PG_PORT" "PostgreSQL"
+          wait_for "$TS_HOST" "$TS_PORT" "Timescale"
       containers:
       - name: fwinsights-db-migration
         image: "{{ .Values.migrationImage.repository }}:{{ include "fairwinds-insights.migrationImageTag" . }}"
