@@ -139,7 +139,9 @@ env:
 # Report Storage
 {{- $reportStrat := $.Values.reportStorage.strategy }}
 {{- if not (has $reportStrat (list "rustfs" "s3" "local")) }}{{ fail "reportStorage.strategy must be rustfs, s3, or local" }}{{ end }}
-{{- $useS3CompatEnv := or (eq $reportStrat "rustfs") (and (eq $reportStrat "s3") (or $.Values.rustfs.install $.Values.reportStorage.s3Endpoint)) }}
+{{- /* or with mixed nil/string returns a string; ternary/if need a real bool */}}
+{{- $hasS3CompatBackend := or ($.Values.rustfs.install | default false) (not (empty ($.Values.reportStorage.s3Endpoint | default ""))) }}
+{{- $useS3CompatEnv := or (eq $reportStrat "rustfs") (and (eq $reportStrat "s3") $hasS3CompatBackend) }}
 - name: REPORT_STORAGE_STRATEGY
   value: {{ ternary "rustfs" $reportStrat $useS3CompatEnv | quote }}
 {{ if $useS3CompatEnv -}}
