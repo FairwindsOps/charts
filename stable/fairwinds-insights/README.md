@@ -198,26 +198,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | email.smtpUsername | string | `nil` | Username for SMTP strategy |
 | email.smtpPort | string | `nil` | Port for SMTP strategy |
 | email.awsRegion | string | `nil` | Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret. |
-| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (MINIO_*), `s3` (AWS S3 via default SDK credentials only), `rustfs` or in-cluster RustFS / external endpoint (chart emits `REPORT_STORAGE_S3_*` and sets `REPORT_STORAGE_STRATEGY=rustfs` for those paths—required by Insights `pkg/files/s3.go`), or `local` |
-| reportStorage.bucket | string | `"reports"` | Bucket name for minio, s3, rustfs, or local |
+| reportStorage.strategy | string | `"rustfs"` | How to store report files: `rustfs` (in-cluster RustFS or external S3-compatible API via `s3Endpoint`; chart sets `REPORT_STORAGE_S3_*` and `REPORT_STORAGE_STRATEGY=rustfs` per Insights `pkg/files/s3.go`), `s3` (AWS S3 via default SDK credentials when no in-cluster RustFS / no custom endpoint), or `local` |
+| reportStorage.bucket | string | `"reports"` | Bucket name for rustfs, s3, or local |
 | reportStorage.region | string | `"us-east-1"` | Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients) |
-| reportStorage.minioHost | string | `nil` | Hostname to use for Minio when strategy is `minio` |
-| reportStorage.s3Endpoint | string | `nil` | Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (same local/self-hosted use case; still set `minio.install: false`) |
-| reportStorage.s3CredentialsSecret | string | `nil` | Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external RustFS) |
-| reportStorage.s3MinIOCompat | bool | `false` | Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `rustfs` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores. |
+| reportStorage.s3Endpoint | string | `nil` | Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (required when `rustfs.install` is false) |
+| reportStorage.s3CredentialsSecret | string | `nil` | Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external S3-compatible storage) |
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
-| minio.install | bool | `true` | Install Minio |
-| minio.image.repository | string | `"quay.io/minio/minio"` |  |
-| minio.image.tag | string | `"RELEASE.2024-07-10T18-41-49Z.hotfix.2127e0d56"` |  |
-| minio.mcImage.repository | string | `"quay.io/minio/mc"` |  |
-| minio.mcImage.tag | string | `"RELEASE.2025-08-13T08-35-41Z"` |  |
-| minio.buckets | list | `[{"name":"reports","policy":"none","purge":false}]` | Create the following buckets for the newly installed Minio |
-| minio.resources | object | `{"requests":{"cpu":"50m","memory":"256Mi"}}` | Resources for Minio |
-| minio.nameOverride | string | `"fw-minio"` | nameOverride to shorten names of Minio resources |
-| minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
-| minio.replicas | int | `1` |  |
-| minio.mode | string | `"standalone"` |  |
-| rustfs.install | bool | `false` |  |
+| rustfs.install | bool | `true` |  |
 | rustfs.nameOverride | string | `"fw-rustfs"` |  |
 | rustfs.replicaCount | int | `1` |  |
 | rustfs.mode.standalone.enabled | bool | `true` |  |

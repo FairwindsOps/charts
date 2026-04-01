@@ -25,7 +25,6 @@ readonly INCUBATOR_REPO_URL=https://charts.fairwinds.com/incubator/
 readonly TEMPORAL_REPO_URL=https://go.temporal.io/helm-charts/
 readonly JETSTACK_REPO_URL=https://charts.jetstack.io
 readonly PROMETHEUS_REPO_URL=https://prometheus-community.github.io/helm-charts
-readonly MINIO_REPO_URL=https://charts.min.io/
 readonly RUSTFS_REPO_URL=https://charts.rustfs.com/
 readonly BITNAMI_REPO_URL=https://charts.bitnami.com/bitnami
 readonly FALCO_REPO_URL=https://falcosecurity.github.io/charts
@@ -63,7 +62,6 @@ setup_helm_client() {
 	helm repo add prometheus-community "$PROMETHEUS_REPO_URL"
 	helm repo add rustfs "$RUSTFS_REPO_URL"
 	helm repo add bitnami "$BITNAMI_REPO_URL"
-	helm repo add minio "$MINIO_REPO_URL"
 	helm repo add falco "$FALCO_REPO_URL"
 	helm repo add metrics-server "$METRICS_SERVER_REPO_URL"
 	helm repo add temporal "$TEMPORAL_REPO_URL"

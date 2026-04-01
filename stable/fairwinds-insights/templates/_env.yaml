@@ -137,31 +137,12 @@ env:
 {{- end }}
 
 # Report Storage
-{{- /* Insights: MINIO_* only when strategy=minio and not using in-cluster RustFS; S3-compatible endpoints use REPORT_STORAGE_S3_* with REPORT_STORAGE_STRATEGY=rustfs (pkg/files/s3.go). */}}
-{{- if and (eq $.Values.reportStorage.strategy "rustfs") $.Values.minio.install }}{{ fail "reportStorage.strategy is rustfs but minio.install is true: set minio.install false for S3-compatible report storage" }}{{ end }}
-{{- $useMinIOEnv := and (eq $.Values.reportStorage.strategy "minio") (not $.Values.rustfs.install) }}
-{{- $useS3CompatEnv := or (eq $.Values.reportStorage.strategy "rustfs") (and (eq $.Values.reportStorage.strategy "s3") (or $.Values.rustfs.install $.Values.reportStorage.s3Endpoint)) (and $.Values.rustfs.install (eq $.Values.reportStorage.strategy "minio")) }}
+{{- $reportStrat := $.Values.reportStorage.strategy }}
+{{- if not (has $reportStrat (list "rustfs" "s3" "local")) }}{{ fail "reportStorage.strategy must be rustfs, s3, or local" }}{{ end }}
+{{- $useS3CompatEnv := or (eq $reportStrat "rustfs") (and (eq $reportStrat "s3") (or $.Values.rustfs.install $.Values.reportStorage.s3Endpoint)) }}
 - name: REPORT_STORAGE_STRATEGY
-  value: {{ ternary "rustfs" $.Values.reportStorage.strategy $useS3CompatEnv | quote }}
-{{ if $useMinIOEnv -}}
-{{ if $.Values.reportStorage.minioHost -}}
-- name: MINIO_HOST
-  value: {{ $.Values.reportStorage.minioHost }}
-{{ else }}
-- name: MINIO_HOST
-  value: {{ printf "%s-%s" $.Release.Name "fw-minio:9000" }}
-{{ end -}}
-- name: MINIO_ACCESS_KEY_ID
-  valueFrom:
-    secretKeyRef:
-      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
-      key: rootUser                
-- name: MINIO_SECRET_ACCESS_KEY
-  valueFrom:
-    secretKeyRef:
-      name: {{ printf "%s-%s" $.Release.Name $.Values.minio.nameOverride }}
-      key: rootPassword
-{{ else if $useS3CompatEnv -}}
+  value: {{ ternary "rustfs" $reportStrat $useS3CompatEnv | quote }}
+{{ if $useS3CompatEnv -}}
 {{- if $.Values.reportStorage.s3Endpoint }}
 - name: REPORT_STORAGE_S3_ENDPOINT
   value: {{ $.Values.reportStorage.s3Endpoint | quote }}
@@ -181,11 +162,7 @@ env:
     secretKeyRef:
       name: {{ if $.Values.rustfs.install }}{{ include "fairwinds-insights.rustfsCredentialsSecretName" $ }}{{ else }}{{ required "reportStorage.s3CredentialsSecret is required for external S3-compatible storage when rustfs.install is false" $.Values.reportStorage.s3CredentialsSecret }}{{ end }}
       key: {{ if $.Values.rustfs.install }}RUSTFS_SECRET_KEY{{ else }}secretAccessKey{{ end }}
-{{- if $.Values.reportStorage.s3MinIOCompat }}
-- name: REPORT_STORAGE_S3_MINIO_COMPAT
-  value: "true"
-{{- end }}
-{{ else if eq $.Values.reportStorage.strategy "local" -}}
+{{ else if eq $reportStrat "local" -}}
 - name: REPORT_STORAGE_DIR
   value: {{ $.Values.reportStorage.fixturesDir | default "/db-migrations/fixtures/files" }}
 {{ end -}}
