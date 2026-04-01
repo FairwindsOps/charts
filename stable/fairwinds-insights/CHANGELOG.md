@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.0.1
+* Bug fix for rustfs config
+
 ## 7.0.0
 * **BREAKING:** Removed the bundled object-storage subchart in favor of **[RustFS](https://charts.rustfs.com/)** only. Defaults are `rustfs.install: true` and `reportStorage.strategy: rustfs`. `reportStorage.strategy` must be `rustfs`, `s3`, or `local` (invalid values fail template). Dropped legacy report-storage values tied to the old subchart and the optional S3 batch-delete compat toggle. For providers that need Content-MD5 on batched deletes, set the compatibility env var via `additionalEnvironmentVariables` if your Insights version supports it.
 
