@@ -1,0 +1,54 @@
+{{- if and .Values.rustfs.install .Values.rustfs.createBucketJob.enabled }}
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ include "fairwinds-insights.rustfsFullname" . }}-create-bucket-{{ .Release.Revision }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: rustfs
+spec:
+  ttlSecondsAfterFinished: 3600
+  backoffLimit: 6
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: rustfs
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: create-bucket
+          image: {{ printf "%s:%s" .Values.rustfs.createBucketJob.repository .Values.rustfs.createBucketJob.tag | quote }}
+          imagePullPolicy: Always
+          env:
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "fairwinds-insights.rustfsCredentialsSecretName" . }}
+                  key: RUSTFS_ACCESS_KEY
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "fairwinds-insights.rustfsCredentialsSecretName" . }}
+                  key: RUSTFS_SECRET_KEY
+            - name: AWS_DEFAULT_REGION
+              value: {{ .Values.reportStorage.region | quote }}
+            - name: BUCKET
+              value: {{ .Values.reportStorage.bucket | quote }}
+            - name: ENDPOINT
+              value: {{ printf "http://%s:%v" (include "fairwinds-insights.rustfsServiceName" .) .Values.rustfs.service.endpoint.port | quote }}
+          command:
+            - /bin/sh
+            - -ec
+            - |
+              i=0
+              while [ "$i" -lt 60 ]; do
+                if aws s3api list-buckets --endpoint-url "$ENDPOINT" >/dev/null 2>&1; then
+                  break
+                fi
+                i=$((i + 1))
+                sleep 2
+              done
+              aws s3api head-bucket --bucket "$BUCKET" --endpoint-url "$ENDPOINT" 2>/dev/null || \
+                aws s3api create-bucket --bucket "$BUCKET" --endpoint-url "$ENDPOINT"
+{{- end }}

@@ -425,8 +425,6 @@ openApi:
 
 dbMigration:
   # -- Override the Helm hook for the database migration job.
-  # Values: "" (no override, use default based on ephemeral/postMigrate config), "none" (no hook - run as normal Job),
-  # or one of: post-install, post-upgrade, pre-install, pre-upgrade (comma-separated for multiple).
   overrideHook: ""
   # -- Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout.
   waitTimeout: 600
@@ -648,14 +646,20 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files, valid values include minio, s3, and local
+  # -- How to store report files: `minio` (MINIO_*), `s3` (AWS S3 via default SDK credentials only), `rustfs` or in-cluster RustFS / external endpoint (chart emits `REPORT_STORAGE_S3_*` and sets `REPORT_STORAGE_STRATEGY=rustfs` for those paths—required by Insights `pkg/files/s3.go`), or `local`
   strategy: minio
-  # -- Name of the bucket to use for minio or s3
+  # -- Bucket name for minio, s3, rustfs, or local
   bucket: reports
-  # -- AWS region to use for S3
+  # -- Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients)
   region: us-east-1
-  # -- Hostname to use for Minio
+  # -- Hostname to use for Minio when strategy is `minio`
   minioHost:
+  # -- Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (same local/self-hosted use case; still set `minio.install: false`)
+  s3Endpoint:
+  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external RustFS)
+  s3CredentialsSecret:
+  # -- Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `rustfs` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores.
+  s3MinIOCompat: false
   # -- Directory to store files in for local.
   fixturesDir:
 
@@ -686,6 +690,41 @@ minio:
     enabled: true
   replicas: 1
   mode: standalone
+
+# RustFS subchart (https://charts.rustfs.com/) — for **local/self-hosted** installs as the in-cluster **MinIO replacement**. Set `rustfs.install: true` (and `minio.install: false` to avoid two brokers). If `reportStorage.strategy` is still the default `minio`, the chart emits `REPORT_STORAGE_STRATEGY=rustfs` and `REPORT_STORAGE_S3_*` automatically.
+# Keys below merge into the upstream chart (`helm show values rustfs/rustfs`); `createBucketJob` is used only by this chart’s create-bucket Job.
+# Upstream defaults assume distributed mode (4 replicas) and enable Ingress; the overrides below keep a single-node, in-cluster endpoint comparable to bundled MinIO.
+rustfs:
+  # -- Install RustFS in-cluster (with `reportStorage.strategy: rustfs` and `minio.install: false`). Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
+  install: false
+  nameOverride: fw-rustfs
+  replicaCount: 1
+  mode:
+    standalone:
+      enabled: true
+    distributed:
+      enabled: false
+  ingress:
+    enabled: false
+  affinity:
+    podAntiAffinity:
+      enabled: false
+  service:
+    endpoint:
+      port: 9000
+  storageclass:
+    name: ""
+    dataStorageSize: 50Gi
+    logStorageSize: 1Gi
+  resources:
+    requests:
+      cpu: 50m
+      memory: 256Mi
+  createBucketJob:
+    enabled: true
+    repository: amazon/aws-cli
+    tag: "2.34.19"
+
 migrateHealthScoreJob:
   resources:
     limits:

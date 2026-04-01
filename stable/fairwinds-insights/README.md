@@ -132,7 +132,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
-| dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. Values: "" (no override, use default based on ephemeral/postMigrate config), "none" (no hook - run as normal Job), or one of: post-install, post-upgrade, pre-install, pre-upgrade (comma-separated for multiple). |
+| dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. |
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
@@ -198,10 +198,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | email.smtpUsername | string | `nil` | Username for SMTP strategy |
 | email.smtpPort | string | `nil` | Port for SMTP strategy |
 | email.awsRegion | string | `nil` | Region for SES strategy, AWS_ACCESS_KEY_ID, and AWS_SECRET_ACCESS_KEY will need to be provided in the fwinsights-secrets secret. |
-| reportStorage.strategy | string | `"minio"` | How to store report files, valid values include minio, s3, and local |
-| reportStorage.bucket | string | `"reports"` | Name of the bucket to use for minio or s3 |
-| reportStorage.region | string | `"us-east-1"` | AWS region to use for S3 |
-| reportStorage.minioHost | string | `nil` | Hostname to use for Minio |
+| reportStorage.strategy | string | `"minio"` | How to store report files: `minio` (MINIO_*), `s3` (AWS S3 via default SDK credentials only), `rustfs` or in-cluster RustFS / external endpoint (chart emits `REPORT_STORAGE_S3_*` and sets `REPORT_STORAGE_STRATEGY=rustfs` for those paths—required by Insights `pkg/files/s3.go`), or `local` |
+| reportStorage.bucket | string | `"reports"` | Bucket name for minio, s3, rustfs, or local |
+| reportStorage.region | string | `"us-east-1"` | Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients) |
+| reportStorage.minioHost | string | `nil` | Hostname to use for Minio when strategy is `minio` |
+| reportStorage.s3Endpoint | string | `nil` | Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (same local/self-hosted use case; still set `minio.install: false`) |
+| reportStorage.s3CredentialsSecret | string | `nil` | Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external RustFS) |
+| reportStorage.s3MinIOCompat | bool | `false` | Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `rustfs` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores. |
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
 | minio.install | bool | `true` | Install Minio |
 | minio.image.repository | string | `"quay.io/minio/minio"` |  |
@@ -214,6 +217,22 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | minio.persistence.enabled | bool | `true` | Create a persistent volume for Minio |
 | minio.replicas | int | `1` |  |
 | minio.mode | string | `"standalone"` |  |
+| rustfs.install | bool | `false` |  |
+| rustfs.nameOverride | string | `"fw-rustfs"` |  |
+| rustfs.replicaCount | int | `1` |  |
+| rustfs.mode.standalone.enabled | bool | `true` |  |
+| rustfs.mode.distributed.enabled | bool | `false` |  |
+| rustfs.ingress.enabled | bool | `false` |  |
+| rustfs.affinity.podAntiAffinity.enabled | bool | `false` |  |
+| rustfs.service.endpoint.port | int | `9000` |  |
+| rustfs.storageclass.name | string | `""` |  |
+| rustfs.storageclass.dataStorageSize | string | `"50Gi"` |  |
+| rustfs.storageclass.logStorageSize | string | `"1Gi"` |  |
+| rustfs.resources.requests.cpu | string | `"50m"` |  |
+| rustfs.resources.requests.memory | string | `"256Mi"` |  |
+| rustfs.createBucketJob.enabled | bool | `true` |  |
+| rustfs.createBucketJob.repository | string | `"amazon/aws-cli"` |  |
+| rustfs.createBucketJob.tag | string | `"2.34.19"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |

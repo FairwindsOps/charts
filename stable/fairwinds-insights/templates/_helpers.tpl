@@ -107,3 +107,31 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "secrets_credentials" -}}
 "fwinsights-timescale"
 {{- end -}}
+
+{{/* Names must stay in sync with the rustfs subchart's rustfs.fullname / rustfs.secretName / service metadata.name (.fullname-svc). */}}
+{{- define "fairwinds-insights.rustfsFullname" -}}
+{{- $r := .Values.rustfs | default dict }}
+{{- if $r.fullnameOverride }}
+{{- $r.fullnameOverride | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- $name := default "rustfs" $r.nameOverride }}
+{{- if contains $name .Release.Name }}
+{{- .Release.Name | trunc 63 | trimSuffix "-" }}
+{{- else }}
+{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "fairwinds-insights.rustfsCredentialsSecretName" -}}
+{{- $existing := dig "secret" "existingSecret" "" (.Values.rustfs | default dict) }}
+{{- if $existing }}
+{{- $existing }}
+{{- else }}
+{{- printf "%s-secret" (include "fairwinds-insights.rustfsFullname" .) }}
+{{- end }}
+{{- end }}
+
+{{- define "fairwinds-insights.rustfsServiceName" -}}
+{{- printf "%s-svc" (include "fairwinds-insights.rustfsFullname" .) }}
+{{- end }}
