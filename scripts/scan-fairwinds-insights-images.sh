@@ -1,6 +1,6 @@
 #! /bin/bash
 # Scans all container images referenced by the stable/fairwinds-insights Helm chart
-# (default values: MinIO; conditional subcharts e.g. temporal, timescale; plus a second render with RustFS enabled) for CRITICAL/HIGH vulnerabilities using Trivy.
+# (default values: RustFS and other conditional subcharts e.g. temporal, timescale) for CRITICAL/HIGH vulnerabilities using Trivy.
 #
 # Usage: ./scripts/scan-fairwinds-insights-images.sh
 # Requires: helm, trivy (or TRIVY_IMAGE), docker. Run from repo root.
@@ -29,7 +29,6 @@ if [[ ! -d "$CHART_DIR" ]]; then
 fi
 
 echo "Adding Helm repos for chart dependencies..."
-helm repo add minio https://charts.min.io/ --force-update
 helm repo add fairwinds-incubator https://charts.fairwinds.com/incubator --force-update
 helm repo add temporal https://go.temporal.io/helm-charts --force-update
 helm repo add rustfs https://charts.rustfs.com/ --force-update
@@ -38,15 +37,13 @@ helm repo update
 echo "Building chart dependencies and rendering manifests..."
 cd "$CHART_DIR"
 helm dependency build
-# Render with default values so we get MinIO, temporal, postgres, openapi, etc.
+# Render with default values (includes in-cluster RustFS when rustfs.install is true).
 RENDERED=$(helm template release . --namespace fwinsights)
-# RustFS (and its bucket-creation Job) are behind rustfs.install (default false); render again for those images
-RENDERED_RUSTFS=$(helm template release . --namespace fwinsights --set rustfs.install=true)
 cd "$REPO_ROOT"
 
 echo "Extracting image references..."
 # Extract image: and imageName: values; trim leading/trailing whitespace and quotes
-IMAGES=$(printf '%s\n%s\n' "$RENDERED" "$RENDERED_RUSTFS" | grep -E '^\s+(image|imageName):' | sed -E 's/^[[:space:]]*(image|imageName):[[:space:]]*//' | sed -E 's/^["'\'']|["'\'']$//g' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sort -u)
+IMAGES=$(echo "$RENDERED" | grep -E '^\s+(image|imageName):' | sed -E 's/^[[:space:]]*(image|imageName):[[:space:]]*//' | sed -E 's/^["'\'']|["'\'']$//g' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//' | sort -u)
 if [[ -z "$IMAGES" ]]; then
   echo "No images found in rendered chart" >&2
   exit 1

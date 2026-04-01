@@ -646,57 +646,24 @@ email:
   awsRegion:
 
 reportStorage:
-  # -- How to store report files: `minio` (MINIO_*), `s3` (AWS S3 via default SDK credentials only), `rustfs` or in-cluster RustFS / external endpoint (chart emits `REPORT_STORAGE_S3_*` and sets `REPORT_STORAGE_STRATEGY=rustfs` for those paths—required by Insights `pkg/files/s3.go`), or `local`
-  strategy: minio
-  # -- Bucket name for minio, s3, rustfs, or local
+  # -- How to store report files: `rustfs` (in-cluster RustFS or external S3-compatible API via `s3Endpoint`; chart sets `REPORT_STORAGE_S3_*` and `REPORT_STORAGE_STRATEGY=rustfs` per Insights `pkg/files/s3.go`), `s3` (AWS S3 via default SDK credentials when no in-cluster RustFS / no custom endpoint), or `local`
+  strategy: rustfs
+  # -- Bucket name for rustfs, s3, or local
   bucket: reports
   # -- Region for REPORT_STORAGE_REGION (AWS SDK / S3-compatible clients)
   region: us-east-1
-  # -- Hostname to use for Minio when strategy is `minio`
-  minioHost:
-  # -- Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (same local/self-hosted use case; still set `minio.install: false`)
+  # -- Full URL for S3-compatible API when strategy is `rustfs` and RustFS runs outside the cluster (required when `rustfs.install` is false)
   s3Endpoint:
-  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external RustFS)
+  # -- Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external S3-compatible storage)
   s3CredentialsSecret:
-  # -- Set true to send `REPORT_STORAGE_S3_MINIO_COMPAT` for `rustfs` (Content-MD5 on batched deletes). Leave false for RustFS and most S3-compatible stores.
-  s3MinIOCompat: false
   # -- Directory to store files in for local.
   fixturesDir:
 
-minio:
-  # -- Install Minio
-  install: true
-  # Pin to tags that exist on quay.io (subchart 5.4.0 defaults to a 2025 tag that is not found)
-  image:
-    repository: quay.io/minio/minio
-    tag: RELEASE.2024-07-10T18-41-49Z.hotfix.2127e0d56
-  mcImage:
-    repository: quay.io/minio/mc
-    tag: RELEASE.2025-08-13T08-35-41Z
-  # -- Create the following buckets for the newly installed Minio
-  buckets:
-    - name: reports
-      policy: none
-      purge: false
-  # -- Resources for Minio
-  resources:
-    requests:
-      cpu: 50m
-      memory: 256Mi
-  # -- nameOverride to shorten names of Minio resources
-  nameOverride: fw-minio
-  persistence:
-    # -- Create a persistent volume for Minio
-    enabled: true
-  replicas: 1
-  mode: standalone
-
-# RustFS subchart (https://charts.rustfs.com/) — for **local/self-hosted** installs as the in-cluster **MinIO replacement**. Set `rustfs.install: true` (and `minio.install: false` to avoid two brokers). If `reportStorage.strategy` is still the default `minio`, the chart emits `REPORT_STORAGE_STRATEGY=rustfs` and `REPORT_STORAGE_S3_*` automatically.
-# Keys below merge into the upstream chart (`helm show values rustfs/rustfs`); `createBucketJob` is used only by this chart’s create-bucket Job.
-# Upstream defaults assume distributed mode (4 replicas) and enable Ingress; the overrides below keep a single-node, in-cluster endpoint comparable to bundled MinIO.
+# RustFS subchart (https://charts.rustfs.com/) — default in-cluster object storage for self-hosted installs. Keys merge into the upstream chart (`helm show values rustfs/rustfs`); `createBucketJob` is used only by this chart’s create-bucket Job.
+# Upstream defaults assume distributed mode (4 replicas) and enable Ingress; the overrides below keep a single-node, in-cluster endpoint.
 rustfs:
-  # -- Install RustFS in-cluster (with `reportStorage.strategy: rustfs` and `minio.install: false`). Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
-  install: false
+  # -- Install RustFS in-cluster for report storage. Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
+  install: true
   nameOverride: fw-rustfs
   replicaCount: 1
   mode:

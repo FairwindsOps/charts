@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.0.0
+* **BREAKING:** Removed the bundled object-storage subchart in favor of **[RustFS](https://charts.rustfs.com/)** only. Defaults are `rustfs.install: true` and `reportStorage.strategy: rustfs`. `reportStorage.strategy` must be `rustfs`, `s3`, or `local` (invalid values fail template). Dropped legacy report-storage values tied to the old subchart and the optional S3 batch-delete compat toggle. For providers that need Content-MD5 on batched deletes, set the compatibility env var via `additionalEnvironmentVariables` if your Insights version supports it.
+
 ## 6.3.0
 * Add optional **[RustFS](https://charts.rustfs.com/)** subchart as an in-cluster **MinIO replacement** for self-hosted installs: set `minio.install: false`, `rustfs.install: true`, and `reportStorage.strategy: rustfs` (or external RustFS via `reportStorage.s3Endpoint` and `reportStorage.s3CredentialsSecret` with `rustfs.install: false`). The chart fails if `reportStorage.strategy` is `rustfs` while `minio.install` is true. Optional create-bucket Job (`rustfs.createBucketJob`); use `helm install|upgrade --wait --wait-for-jobs` if you rely on it.
 
