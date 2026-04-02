@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.0.3
+* Update application version to 18.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 7.0.2
 * Bug fix for rustfs config
 
