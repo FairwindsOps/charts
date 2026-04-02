@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.0.2
+* Bug fix for rustfs config
+
 ## 7.0.1
 * Bug fix for rustfs config
 
