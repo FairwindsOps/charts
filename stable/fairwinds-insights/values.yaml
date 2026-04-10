@@ -761,6 +761,8 @@ reportjob:
           app.kubernetes.io/component: reportjob
           app.kubernetes.io/name: fairwinds-insights
   terminationGracePeriodSeconds: 600
+  # When true, sets ENABLE_APP_GROUP_HEALTH_FOR_REPORT_WORKFLOW on report_job so it enqueues the app-group health Temporal workflow after legacy cluster TS scores (requires general_worker).
+  appGroupHealthForReportWorkflowEnabled: false
   additionalEnvVars: []
 
 # -- Default options for temporal deployments

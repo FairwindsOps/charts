@@ -261,6 +261,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"reportjob"` |  |
 | reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | reportjob.terminationGracePeriodSeconds | int | `600` |  |
+| reportjob.appGroupHealthForReportWorkflowEnabled | bool | `false` |  |
 | reportjob.additionalEnvVars | list | `[]` |  |
 | temporalDeploymentDefaults | object | `{"additionalEnv":[],"args":[],"hpa":{"enabled":true,"max":4,"metrics":[],"min":2},"pdb":{"enabled":false,"minAvailable":1},"rbac":{"enabled":false,"serviceAccount":{"annotations":{}}},"resources":{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"500m","memory":"512Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324},"tolerations":[],"topologySpreadConstraints":[],"useReadReplica":false,"volumeMounts":[{"mountPath":"/var/run/secrets/github","name":"secrets"}],"volumes":[{"name":"secrets","secret":{"optional":true,"secretName":"github-secrets"}}]}` | Default options for temporal deployments |
 | temporalDeploymentDefaults.rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
