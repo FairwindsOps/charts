@@ -944,17 +944,45 @@ temporalDeployments:
         - apiGroups: [""]
           resources: ["secrets", "configmaps"]
           verbs: ["create", "delete"]
-  # Example: Add more temporal workers like this:
-  # report-processor-worker:
-  #   enabled: false
-  #   command: "report_processor_worker"
-  #   resources:
-  #     limits:
-  #       cpu: 1000m
-  #       memory: 2048Mi
-  #     requests:
-  #       cpu: 200m
-  #       memory: 512Mi
+  # Polls health_scores.wq: app-group health scores after report snapshots (and future report workflows).
+  report-worker:
+    enabled: true
+    command: "report_worker"
+    hpa:
+      min: 1
+      max: 2
+      metrics: []
+    pdb:
+      enabled: false
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 1000m
+        memory: 2Gi
+    tolerations: []
+    topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: topology.kubernetes.io/zone
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: report-worker
+            app.kubernetes.io/name: fairwinds-insights
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: ScheduleAnyway
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: report-worker
+            app.kubernetes.io/name: fairwinds-insights
+    args: []
+    additionalEnv:
+      - name: POSTGRES_MAX_IDLE_CONNS
+        value: "3"
+      - name: POSTGRES_MAX_OPEN_CONNS
+        value: "6"
 
 # -- Temporal workflow schedules (created via CLI on install/upgrade). Empty by default.
 # Each schedule is created or updated idempotently. Input will be passed to the workflow as a JSON object.
