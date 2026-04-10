@@ -39,6 +39,8 @@ spec:
           imagePullPolicy: Always
           command: ["report_job"]
           {{- include "env" (dict "root" .) | indent 10 }}
+          - name: ENABLE_APP_GROUP_HEALTH_FOR_REPORT_WORKFLOW
+            value: {{ .Values.reportjob.appGroupHealthForReportWorkflowEnabled | quote }}
           {{- with .Values.reportjob.additionalEnvVars }}
             {{- toYaml . | nindent 10 }}
           {{- end }}
