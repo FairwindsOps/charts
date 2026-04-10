@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.0.4
+* Added temporal report-worker
+
 ## 7.0.3
 * Update application version to 18.3. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
