@@ -37,6 +37,13 @@ rules:
   - watch
   # delete is required only for for 'patronictl remove'
   - delete
+# Patroni creates a headless Service backing the DCS Endpoints object so the
+# control plane does not garbage-collect the leader endpoint. See upstream
+# https://github.com/zalando/patroni/blob/master/kubernetes/patroni_k8s.yaml
+- apiGroups: [""]
+  resources: ["services"]
+  verbs:
+  - create
 - apiGroups: [""]
   resources: ["pods"]
   verbs:

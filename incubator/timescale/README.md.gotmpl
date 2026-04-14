@@ -5,7 +5,8 @@
 
 # timescaledb-single
 
-![Version: 0.21.0](https://img.shields.io/badge/Version-0.21.0-informational?style=flat-square) ![AppVersion: 0.21.0](https://img.shields.io/badge/AppVersion-0.21.0-informational?style=flat-square)
+{{ template "chart.versionBadge" . }}
+{{ template "chart.appVersionBadge" . }}
 
 TimescaleDB HA Deployment.
 
@@ -17,6 +18,8 @@ TimescaleDB HA Deployment.
 * <https://github.com/timescale/timescaledb-docker-ha>
 * <https://github.com/zalando/patroni>
 
-## Values
+## Patroni and RBAC
+
+When `rbac.create` is true, the chart grants the Patroni `ServiceAccount` permission to create **Services** in the release namespace. Patroni creates a headless Service next to the Kubernetes DCS Endpoints so the control plane does not remove the leader endpoint; this matches [Patroni’s upstream Kubernetes RBAC](https://github.com/zalando/patroni/blob/master/kubernetes/patroni_k8s.yaml). Without `services` `create`, bootstrap can fail with HTTP 403 on `POST .../services` and Postgres never becomes ready.
 
 {{ template "chart.valuesSection" . }}
