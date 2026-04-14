@@ -1,5 +1,8 @@
 # Changelog
 
+## 7.1.0
+* Add optional `outboxWorker` Deployment with configurable scheduling, resources, and extra volumes.
+
 ## 7.0.4
 * Added flag to app groups score
 

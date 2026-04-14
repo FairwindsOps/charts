@@ -765,6 +765,69 @@ reportjob:
   appGroupHealthForReportWorkflowEnabled: false
   additionalEnvVars: []
 
+# -- Deploy the outbox worker
+outboxWorker:
+  # -- Enable the outbox-worker Deployment
+  enabled: true
+  # -- Number of replicas
+  replicas: 1
+  image:
+    # -- Overrides `apiImage.repository` when set (non-empty)
+    repository: ""
+    # -- Overrides the API image tag when set (non-empty); otherwise uses `fairwinds-insights.apiImageTag`
+    tag: ""
+  # -- Container image pull policy
+  imagePullPolicy: Always
+  # -- Container entrypoint command (Insights API worker), e.g. same style as `report_job`
+  command:
+    - outbox_worker
+  # -- Optional args for the container
+  args: []
+  # -- When true, `env` uses the PostgreSQL read replica settings where applicable
+  useReadReplica: false
+  # -- Resource requests and limits for the outbox worker container
+  resources:
+    limits:
+      cpu: 100m
+      memory: 128Mi
+    requests:
+      cpu: 100m
+      memory: 128Mi
+  # -- Container security context for the outbox worker
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    runAsUser: 10324
+    capabilities:
+      drop:
+        - ALL
+  # -- Extra environment variables for the outbox worker container
+  additionalEnvVars: []
+  # -- nodeSelector for the outbox worker pod
+  nodeSelector: {}
+  # -- Tolerations for the outbox worker pod
+  tolerations: []
+  # -- Topology spread constraints for the outbox worker pod
+  topologySpreadConstraints: []
+  # -- Optional pod affinity (set to a mapping to enable)
+  affinity: null
+  # -- Extra volumes for the pod (e.g. emptyDir). No GitHub secret volume is added by default.
+  volumes: []
+  # -- Volume mounts matching `outboxWorker.volumes`
+  volumeMounts: []
+  # -- Optional init containers
+  initContainers: []
+  # -- Pod termination grace period (seconds)
+  terminationGracePeriodSeconds: 600
+  # -- Optional priority class name for the pod
+  priorityClassName: ""
+  # -- Extra annotations on the Deployment (merged with Polaris annotations)
+  annotations: {}
+  # -- Extra annotations on the pod template
+  podAnnotations: {}
+
 # -- Default options for temporal deployments
 temporalDeploymentDefaults:
   useReadReplica: false
