@@ -515,6 +515,8 @@ postgresql:
         create: true
     crds:
       create: true
+    # -- Per-cluster timeout for `kubectl wait --for=condition=Ready` on each CNPG Cluster in the pre-install hook (PostgreSQL and Timescale when ephemeral). Keeps the hook from finishing before both databases accept connections.
+    clusterReadyTimeoutSeconds: 600
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database
@@ -577,46 +579,53 @@ encryption:
     cypherKey:
 
 timescale:
-  fullnameOverride: timescale
-  replicaCount: 1
-  clusterName: timescale
-  # -- Use the ephemeral Timescale chart by default
+  # -- Provision TimescaleDB with CloudNativePG in-cluster (same pattern as `postgresql.ephemeral`). Breaking change: the legacy timescaledb-single subchart is no longer part of this chart.
   ephemeral: true
-  pdb:
-    # -- Use pdb enabled by default
-    enabled: true
-    # -- Min timescale pdb replicas
-    minReplicas: 1
   # -- SSL mode for connecting to the database
   sslMode: require
-  # -- Host for timescale
-  postgresqlHost: timescale
+  # -- Host for Timescale (CloudNativePG read-write service)
+  postgresqlHost: insights-timescale-rw
   # -- Username to connect to Timescale with
   postgresqlUsername: postgres
-  # -- Name of the Postgres Database
+  # -- Name of the Postgres database
   postgresqlDatabase: postgres
-  # -- Password for the Postgres Database
-  password: postgres
+  # -- App user password for ephemeral CNPG (random if unset)
+  password: ""
+  # -- Superuser password for ephemeral CNPG (random if unset)
+  superuserpassword: ""
+  image:
+    # -- Optional registry prefix; leave empty for Docker Hub short form `timescale/timescaledb-ha:tag`
+    registry: ""
+    repository: timescale/timescaledb-ha
+    tag: pg17.9-ts2.25.1-all
+  # -- PostgreSQL major version for ClusterImageCatalog + imageCatalogRef (must match the image)
+  imageCatalog:
+    major: 17
+  # -- Container UID/GID for Timescale HA image (CNPG; often 1000 for timescaledb-ha)
+  postgresUID: 1000
+  postgresGID: 1000
+  # -- Libraries loaded at server start; required before bootstrap postInitSQL can run `CREATE EXTENSION timescaledb` (see CloudNativePG Timescale examples).
+  sharedPreloadLibraries:
+    - timescaledb
+  # -- PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` is set via sharedPreloadLibraries above)
+  parameters:
+    max_connections: "100"
+  storage:
+    size: 10Gi
+    storageClass: standard
+  auth:
+    existingSecret: fwinsights-timescale
+    existingSuperUserSecret: fwinsights-timescale-superuser
+    secretKeys:
+      adminPasswordKey: postgresql-password
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
   service:
-    # -- Port of the Timescale Database
     primary:
-      port: 5433
+      port: 5432
   loadBalancer:
     enabled: false
-  # -- Database tuning for timescale
-  timescaledbTune:
-    enabled: false
-  # -- Timescale patroni options
-  patroni:
-    log:
-      level: DEBUG
-    postgresql:
-      create_replica_methods: []
-      pgbackrest: {}
-  # -- Resources section for Timescale
   resources:
     limits:
       cpu: 1
@@ -624,10 +633,6 @@ timescale:
     requests:
       cpu: 500m
       memory: 512Mi
-  rbac:
-    create: true
-  serviceAccount:
-    create: true
 
 email:
   # -- How to send emails, valid values include memory, ses, and smtp

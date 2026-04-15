@@ -1,6 +1,7 @@
-{{- if and .Values.postgresql.ephemeral .Values.postgresql.operator.install }}
+{{- $cnpgOperatorJob := and .Values.postgresql.operator.install (or .Values.postgresql.ephemeral .Values.timescale.ephemeral) }}
+{{- if $cnpgOperatorJob }}
 ---
-# Minimal RBAC for PostgreSQL cluster creation
+# Minimal RBAC for PostgreSQL / Timescale cluster creation
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -9,7 +10,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-weight": "1"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 ---
@@ -20,7 +21,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-weight": "2"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 rules:
@@ -37,8 +38,8 @@ rules:
   resources: ["pods"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["postgresql.cnpg.io"]
-  resources: ["clusters"]
-  verbs: ["create", "get", "list", "watch"]
+  resources: ["clusters", "clusterimagecatalogs"]
+  verbs: ["create", "get", "list", "watch", "update", "patch"]
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["clusterroles", "clusterrolebindings", "roles", "rolebindings"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete", "bind", "escalate"]
@@ -72,7 +73,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-weight": "3"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 roleRef:
@@ -84,7 +85,6 @@ subjects:
   name: {{ .Release.Name }}-pg-creator
   namespace: {{ .Release.Namespace }}
 ---
-# Case 1: Operator is being installed, so wait for it and create cluster
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -95,7 +95,7 @@ metadata:
   annotations:
     "meta.helm.sh/release-name": {{ .Release.Name | quote }}
     "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "pre-install,pre-upgrade"
     "helm.sh/hook-weight": "4"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 spec:
@@ -112,32 +112,28 @@ spec:
           - -c
           - |+
             set -e
-            echo "=== Creating PostgreSQL Cluster (Operator Installation Mode) ==="
+            echo "=== Creating CloudNativePG cluster(s) (operator install mode) ==="
             echo "Namespace: {{ .Release.Namespace }}"
             echo "Release: {{ .Release.Name }}"
 
-            # Determine operator namespace
             OPERATOR_NAMESPACE="{{ .Values.postgresql.operator.namespace }}"
             if [ -z "$OPERATOR_NAMESPACE" ]; then
               OPERATOR_NAMESPACE="cnpg-system"
             fi
             echo "Operator namespace: $OPERATOR_NAMESPACE"
-            
-            # Check if CloudNativePG operator is already installed in any namespace
+
             EXISTING_OPERATOR=$(kubectl get deployment -l app.kubernetes.io/name=cloudnative-pg --all-namespaces --no-headers -o custom-columns=NAMESPACE:.metadata.namespace 2>/dev/null | head -1 || echo "")
-            
+
             if [ -n "$EXISTING_OPERATOR" ]; then
               echo "Using existing CloudNativePG operator in namespace: $EXISTING_OPERATOR"
               OPERATOR_NAMESPACE="$EXISTING_OPERATOR"
             else
               echo "Installing CloudNativePG operator in namespace: $OPERATOR_NAMESPACE"
-                
-                # Create namespace if it doesn't exist
+
                 if ! kubectl get namespace "$OPERATOR_NAMESPACE" 2>/dev/null; then
                   kubectl create namespace "$OPERATOR_NAMESPACE"
                 fi
-                
-                # Resolve operator version (support "latest" via GitHub API)
+
                 OPERATOR_VERSION="{{ .Values.postgresql.operator.version }}"
                 DEFAULT_CNPG_VERSION="{{ .Values.postgresql.operator.defaultVersion | default "1.28.1" }}"
                 if [ "$OPERATOR_VERSION" = "latest" ]; then
@@ -160,19 +156,15 @@ spec:
                 fi
                 CNPG_BRANCH="${CNPG_VERSION%.*}"
                 MANIFEST_URL="https://raw.githubusercontent.com/cloudnative-pg/cloudnative-pg/release-${CNPG_BRANCH}/releases/cnpg-${CNPG_VERSION}.yaml"
-                
-                # Install CloudNativePG operator using standard YAML manifest
+
                 echo "Installing CloudNativePG operator using standard YAML manifest..."
                 kubectl apply --server-side -f "$MANIFEST_URL" || true
-                
-                # Verify the installation as per CloudNativePG documentation
+
                 echo "Verifying CloudNativePG operator installation..."
                 kubectl get deploy -n cnpg-system cnpg-controller-manager
-                
-                # Wait for resources to be created
+
                 sleep 10
-              
-              # Check if the operator deployment exists
+
               for i in {1..5}; do
                 if kubectl get deployment -n cnpg-system cnpg-controller-manager >/dev/null 2>&1; then
                   echo "CloudNativePG operator installed successfully!"
@@ -182,64 +174,73 @@ spec:
                   sleep 5
                 fi
               done
-              
-              # Final check
+
               if ! kubectl get deployment -n cnpg-system cnpg-controller-manager >/dev/null 2>&1; then
                 echo "ERROR: Failed to install CloudNativePG operator"
                 exit 1
               fi
             fi
-            
-            # Wait for webhook server deployment to be ready
+
             echo "Waiting for webhook server deployment to be ready..."
             kubectl wait --for=condition=available --timeout=300s deployment/cnpg-controller-manager -n $OPERATOR_NAMESPACE
-            
-            # Check if PostgreSQL cluster already exists
-            echo "Checking if PostgreSQL cluster already exists..."
-            if kubectl get cluster insights-postgres -n {{ .Release.Namespace }} >/dev/null 2>&1; then
-              echo "PostgreSQL cluster 'insights-postgres' already exists in namespace {{ .Release.Namespace }}"
-              echo "Skipping cluster creation..."
-              exit 0
-            fi
-            
-            # Create the PostgreSQL cluster
-            echo "Creating PostgreSQL cluster..."
-            cat <<EOF | kubectl apply -f -
-            apiVersion: postgresql.cnpg.io/v1
-            kind: Cluster
-            metadata:
-              name: insights-postgres
-              namespace: {{ .Release.Namespace }}
-              labels:
-                {{- include "fairwinds-insights.labels" . | nindent 16 }}
-            spec:
-              instances: 1
-              enableSuperuserAccess: true
-              imageName: {{ .Values.postgresql.image.registry }}/{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
-              postgresql:
-                parameters:
-{{- toYaml .Values.postgresql.parameters | nindent 18 }}
-              bootstrap:
-                initdb:
-                  database: {{ .Values.postgresql.auth.database }}
-                  owner: {{ .Values.postgresql.auth.username }}
-                  secret:
-                    name: {{ .Values.postgresql.auth.existingSecret }}
-              superuserSecret:
-                name: {{ .Values.postgresql.auth.existingSecret }}
-              storage:
-                size: {{ .Values.postgresql.storage.size }}
-                {{- if .Values.postgresql.storage.storageClass }}
-                storageClass: {{ .Values.postgresql.storage.storageClass }}
-                {{- end }}
-              resources:
-{{- toYaml .Values.postgresql.resources | nindent 16 }}
-            EOF
-            
-            echo "=== PostgreSQL cluster created successfully! ==="
-            
 
-            
+            {{- if .Values.postgresql.ephemeral }}
+            echo "Checking PostgreSQL cluster insights-postgres..."
+            if kubectl get cluster insights-postgres -n {{ .Release.Namespace }} >/dev/null 2>&1; then
+              echo "PostgreSQL cluster 'insights-postgres' already exists, skipping create"
+            else
+              echo "Creating PostgreSQL cluster..."
+              cat <<EOF | kubectl apply -f -
+{{ include "fairwinds-insights.cnpg.postgresCluster" (dict "root" . "mode" "job") | trim | indent 12 }}
+            EOF
+            fi
+            {{- end }}
+
+            {{- if .Values.timescale.ephemeral }}
+            echo "Applying ClusterImageCatalog for TimescaleDB..."
+            cat <<EOF | kubectl apply -f -
+{{ include "fairwinds-insights.cnpg.timescaleClusterImageCatalog" (dict "root" . "mode" "job") | trim | indent 12 }}
+            EOF
+            echo "Checking Timescale cluster insights-timescale..."
+            if kubectl get cluster insights-timescale -n {{ .Release.Namespace }} >/dev/null 2>&1; then
+              echo "Timescale cluster 'insights-timescale' already exists, skipping create"
+            else
+              echo "Creating Timescale cluster..."
+              cat <<EOF | kubectl apply -f -
+{{ include "fairwinds-insights.cnpg.timescaleCluster" (dict "root" . "mode" "job") | trim | indent 12 }}
+            EOF
+            fi
+            {{- end }}
+
+            READY_TIMEOUT="{{ .Values.postgresql.operator.clusterReadyTimeoutSeconds | default 600 }}s"
+            NS="{{ .Release.Namespace }}"
+            describe_on_fail() {
+              echo "--- kubectl describe cluster/$1 (last status) ---"
+              kubectl describe cluster "$1" -n "$NS" 2>/dev/null | tail -40 || true
+            }
+            {{- if and .Values.postgresql.ephemeral .Values.timescale.ephemeral }}
+            echo "Waiting for insights-postgres and insights-timescale to be Ready in parallel (each timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-postgres -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" &
+            _wait_pg=$!
+            kubectl wait cluster insights-timescale -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" &
+            _wait_ts=$!
+            _wait_rc=0
+            wait $_wait_pg || { echo "Timed out or failed: insights-postgres not Ready"; describe_on_fail insights-postgres; _wait_rc=1; }
+            wait $_wait_ts || { echo "Timed out or failed: insights-timescale not Ready"; describe_on_fail insights-timescale; _wait_rc=1; }
+            if [ "$_wait_rc" -ne 0 ]; then
+              echo "If a cluster was left over from a broken install, delete it and its PVCs, then retry: kubectl delete cluster insights-postgres insights-timescale -n $NS"
+              exit 1
+            fi
+            {{- else if .Values.postgresql.ephemeral }}
+            echo "Waiting for insights-postgres to be Ready (timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-postgres -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" || { describe_on_fail insights-postgres; echo "Stuck cluster: delete Cluster + PVCs or fix secrets, then retry."; exit 1; }
+            {{- else if .Values.timescale.ephemeral }}
+            echo "Waiting for insights-timescale to be Ready (timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-timescale -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" || { describe_on_fail insights-timescale; echo "Stuck cluster: delete Cluster + PVCs or fix secrets, then retry."; exit 1; }
+            {{- end }}
+
+            echo "=== CloudNativePG cluster job finished ==="
+
         securityContext:
           runAsUser: 1000
           readOnlyRootFilesystem: true
@@ -249,48 +250,14 @@ spec:
           capabilities:
             drop:
               - ALL
+{{- end }}
+{{- if and .Values.postgresql.ephemeral (not .Values.postgresql.operator.install) }}
 ---
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: {{ .Release.Name }}-pg-creator
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade"
-    "helm.sh/hook-weight": "5"
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
-{{- else if .Values.postgresql.ephemeral }}
+{{ include "fairwinds-insights.cnpg.postgresCluster" (dict "root" . "mode" "helm") }}
+{{- end }}
+{{- if and .Values.timescale.ephemeral (not .Values.postgresql.operator.install) }}
 ---
-# Case 2: Operator is not being installed, but ephemeral is true - create cluster directly
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: insights-postgres
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook-delete-policy": "before-hook-creation"
-spec:
-  instances: 1
-  enableSuperuserAccess: true
-  imageName: {{ .Values.postgresql.image.registry }}/{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
-  postgresql:
-    parameters:
-{{- toYaml .Values.postgresql.parameters | nindent 6 }}
-  bootstrap:
-    initdb:
-      database: {{ .Values.postgresql.auth.database }}
-      owner: {{ .Values.postgresql.auth.username }}
-      secret:
-        name: {{ .Values.postgresql.auth.existingSecret }}
-  superuserSecret:
-    name: {{ .Values.postgresql.auth.existingSuperUserSecret }}
-  storage:
-    size: {{ .Values.postgresql.storage.size }}
-    storageClass: {{ .Values.postgresql.storage.storageClass }}
-  resources:
-{{- toYaml .Values.postgresql.resources | nindent 4 }}
+{{ include "fairwinds-insights.cnpg.timescaleClusterImageCatalog" (dict "root" . "mode" "helm") }}
+---
+{{ include "fairwinds-insights.cnpg.timescaleCluster" (dict "root" . "mode" "helm") }}
 {{- end }}

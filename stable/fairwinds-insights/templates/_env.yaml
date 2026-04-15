@@ -105,7 +105,7 @@ env:
 - name: TIMESCALE_USER
   value: {{ $.Values.timescale.postgresqlUsername }}
 - name: TIMESCALE_PORT
-  value: {{ $.Values.timescale.service.primary.port | quote }}
+  value: {{ $.Values.timescale.service.primary.port | default 5432 | quote }}
 - name: TIMESCALE_SSL_MODE
   value: {{ $.Values.timescale.sslMode | default "require" }}
 - name: TIMESCALE_HOST
@@ -114,8 +114,8 @@ env:
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ $.Values.timescale.secrets.credentialsSecretName }}
-      key: PATRONI_SUPERUSER_PASSWORD
+      name: {{ $.Values.timescale.auth.existingSecret }}
+      key: {{ $.Values.timescale.auth.secretKeys.adminPasswordKey }}
 {{- else }}
 - name: TIMESCALE_PASSWORD
   valueFrom:

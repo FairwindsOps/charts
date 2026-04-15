@@ -30,6 +30,10 @@ postgresql:
     password: "changeme"
     superuserpassword: "changeme"
 
+timescale:
+  password: "changeme"
+  superuserpassword: "changeme"
+
 dashboard:
   pdb:
     enabled: false

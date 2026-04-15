@@ -108,6 +108,23 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 "fwinsights-timescale"
 {{- end -}}
 
+{{/* TimescaleDB HA image ref; omit registry for standard Docker Hub form (timescale/timescaledb-ha:tag). */}}
+{{- define "fairwinds-insights.timescaleImage" -}}
+{{- $reg := .Values.timescale.image.registry | default "" | trim -}}
+{{- $repo := required "timescale.image.repository is required" .Values.timescale.image.repository -}}
+{{- $tag := required "timescale.image.tag is required" .Values.timescale.image.tag -}}
+{{- if $reg -}}
+{{- printf "%s/%s:%s" $reg $repo $tag -}}
+{{- else -}}
+{{- printf "%s:%s" $repo $tag -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Cluster-scoped CNPG catalog for TimescaleDB (required because Timescale image tags fail spec.imageName validation). */}}
+{{- define "fairwinds-insights.timescaleClusterImageCatalog" -}}
+{{- printf "%s-insights-timescale-catalog" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{/* Names must stay in sync with the rustfs subchart's rustfs.fullname / rustfs.secretName / service metadata.name (.fullname-svc). */}}
 {{- define "fairwinds-insights.rustfsFullname" -}}
 {{- $r := .Values.rustfs | default dict }}

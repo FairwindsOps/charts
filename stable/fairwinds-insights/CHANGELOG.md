@@ -1,7 +1,10 @@
 # Changelog
 
-## 7.1.0
+## 8.0.0
 * Add optional `outboxWorker` Deployment with configurable scheduling, resources, and extra volumes.
+* **Migration guide:** [MIGRATION-7-to-8.md](./MIGRATION-7-to-8.md) (from chart 7.x).
+* **BREAKING:** Ephemeral TimescaleDB is provisioned with **CloudNativePG** (`Cluster` `insights-timescale`), mirroring PostgreSQL. The **`timescaledb-single` subchart is removed** from this chart. Defaults: `timescale.postgresqlHost` is `insights-timescale-rw`, `timescale.service.primary.port` is `5432`. Install the legacy Timescale Helm chart separately if you still need Patroni/`timescaledb-single`. Ephemeral Timescale uses the same auth pattern as PostgreSQL: app credentials in `timescale.auth.existingSecret` (default `fwinsights-timescale`) and superuser in `timescale.auth.existingSuperUserSecret` (default `fwinsights-timescale-superuser`); both Secrets are created by the chart when `timescale.ephemeral` is true unless you point these keys at your own Secrets.
+* **Bug fix:** The pre-install Job that applies the PostgreSQL CNPG `Cluster` manifest now sets `superuserSecret.name` to `postgresql.auth.existingSuperUserSecret`. Previously the Job incorrectly reused `postgresql.auth.existingSecret` for the superuser reference (the non-Job `Cluster` template already used `existingSuperUserSecret`). Operators who rely on distinct app vs superuser Secrets should see correct behavior on fresh installs; existing clusters are unchanged unless the `Cluster` is reapplied.
 
 ## 7.0.4
 * Added flag to app groups score

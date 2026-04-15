@@ -123,7 +123,7 @@ jobs:
           name: sync
           command: scripts/sync.sh
 
-  # Scans fairwinds-insights images: default render includes RustFS and other conditional subcharts (e.g. temporal, timescale).
+  # Scans fairwinds-insights images: default render includes RustFS and other conditional subcharts (e.g. temporal).
   # Fails when vulns are found (so CI shows red) but does not block merging (no job requires this one).
   # Set SLACK_WEBHOOK_URL for Slack notifications on master.
   scan_for_vulnerabilities:
