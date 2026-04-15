@@ -178,7 +178,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres database |
 | timescale.password | string | `""` | App user password for ephemeral CNPG (random if unset) |
 | timescale.superuserpassword | string | `""` | Superuser password for ephemeral CNPG (random if unset) |
-| timescale.image.registry | string | `"docker.io"` |  |
+| timescale.image.registry | string | `""` | Optional registry prefix; empty uses short form `timescale/timescaledb-ha:tag` |
 | timescale.image.repository | string | `"timescale/timescaledb-ha"` |  |
 | timescale.image.tag | string | `"pg17.9-ts2.25.1-all"` |  |
 | timescale.parameters | object | `{"max_connections":"100","shared_preload_libraries":"timescaledb"}` | PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` must include timescaledb) |

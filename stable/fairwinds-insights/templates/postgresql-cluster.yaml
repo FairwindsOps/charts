@@ -241,7 +241,7 @@ spec:
             spec:
               instances: 1
               enableSuperuserAccess: true
-              imageName: {{ .Values.timescale.image.registry }}/{{ .Values.timescale.image.repository }}:{{ .Values.timescale.image.tag }}
+              imageName: {{ include "fairwinds-insights.timescaleImage" . }}
               postgresql:
                 parameters:
 {{- toYaml .Values.timescale.parameters | nindent 18 }}
@@ -336,7 +336,7 @@ metadata:
 spec:
   instances: 1
   enableSuperuserAccess: true
-  imageName: {{ .Values.timescale.image.registry }}/{{ .Values.timescale.image.repository }}:{{ .Values.timescale.image.tag }}
+  imageName: {{ include "fairwinds-insights.timescaleImage" . }}
   postgresql:
     parameters:
 {{- toYaml .Values.timescale.parameters | nindent 6 }}

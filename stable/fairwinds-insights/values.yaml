@@ -592,7 +592,8 @@ timescale:
   # -- Superuser password for ephemeral CNPG (random if unset)
   superuserpassword: ""
   image:
-    registry: docker.io
+    # -- Optional registry prefix; leave empty for Docker Hub short form `timescale/timescaledb-ha:tag`
+    registry: ""
     repository: timescale/timescaledb-ha
     tag: pg17.9-ts2.25.1-all
   # -- PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` must include timescaledb)
