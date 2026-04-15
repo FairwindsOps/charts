@@ -266,6 +266,16 @@ spec:
             fi
             {{- end }}
 
+            READY_TIMEOUT="{{ .Values.postgresql.operator.clusterReadyTimeoutSeconds | default 600 }}s"
+            {{- if .Values.postgresql.ephemeral }}
+            echo "Waiting for PostgreSQL cluster insights-postgres to be Ready (condition=Ready, timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-postgres -n {{ .Release.Namespace }} --for=condition=Ready --timeout="$READY_TIMEOUT"
+            {{- end }}
+            {{- if .Values.timescale.ephemeral }}
+            echo "Waiting for Timescale cluster insights-timescale to be Ready (condition=Ready, timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-timescale -n {{ .Release.Namespace }} --for=condition=Ready --timeout="$READY_TIMEOUT"
+            {{- end }}
+
             echo "=== CloudNativePG cluster job finished ==="
 
         securityContext:

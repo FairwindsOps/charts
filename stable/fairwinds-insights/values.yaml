@@ -515,6 +515,8 @@ postgresql:
         create: true
     crds:
       create: true
+    # -- Per-cluster timeout for `kubectl wait --for=condition=Ready` on each CNPG Cluster in the pre-install hook (PostgreSQL and Timescale when ephemeral). Keeps the hook from finishing before both databases accept connections.
+    clusterReadyTimeoutSeconds: 600
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database

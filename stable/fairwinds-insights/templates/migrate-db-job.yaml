@@ -56,8 +56,15 @@ spec:
             fi
             echo "$name is ready"
           }
-          wait_for "$PG_HOST" "$PG_PORT" "PostgreSQL"
-          wait_for "$TS_HOST" "$TS_PORT" "Timescale"
+          # Wait for PostgreSQL and Timescale in parallel (same timeout policy); both must succeed
+          wait_for "$PG_HOST" "$PG_PORT" "PostgreSQL" &
+          _pg_pid=$!
+          wait_for "$TS_HOST" "$TS_PORT" "Timescale" &
+          _ts_pid=$!
+          _err=0
+          wait $_pg_pid || _err=1
+          wait $_ts_pid || _err=1
+          exit $_err
       containers:
       - name: fwinsights-db-migration
         image: "{{ .Values.migrationImage.repository }}:{{ include "fairwinds-insights.migrationImageTag" . }}"
