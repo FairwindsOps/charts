@@ -262,6 +262,12 @@ spec:
                 name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
                 major: {{ .Values.timescale.imageCatalog.major }}
               postgresql:
+{{- if .Values.timescale.sharedPreloadLibraries }}
+                shared_preload_libraries:
+{{- range .Values.timescale.sharedPreloadLibraries }}
+                  - {{ . }}
+{{- end }}
+{{- end }}
                 parameters:
 {{- toYaml .Values.timescale.parameters | nindent 18 }}
               bootstrap:
@@ -403,6 +409,12 @@ spec:
     name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
     major: {{ .Values.timescale.imageCatalog.major }}
   postgresql:
+{{- if .Values.timescale.sharedPreloadLibraries }}
+    shared_preload_libraries:
+{{- range .Values.timescale.sharedPreloadLibraries }}
+      - {{ . }}
+{{- end }}
+{{- end }}
     parameters:
 {{- toYaml .Values.timescale.parameters | nindent 6 }}
   bootstrap:
