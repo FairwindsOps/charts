@@ -191,35 +191,7 @@ spec:
             else
               echo "Creating PostgreSQL cluster..."
               cat <<EOF | kubectl apply -f -
-            apiVersion: postgresql.cnpg.io/v1
-            kind: Cluster
-            metadata:
-              name: insights-postgres
-              namespace: {{ .Release.Namespace }}
-              labels:
-                {{- include "fairwinds-insights.labels" . | nindent 16 }}
-            spec:
-              instances: 1
-              enableSuperuserAccess: true
-              imageName: {{ .Values.postgresql.image.registry }}/{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
-              postgresql:
-                parameters:
-{{- toYaml .Values.postgresql.parameters | nindent 18 }}
-              bootstrap:
-                initdb:
-                  database: {{ .Values.postgresql.auth.database }}
-                  owner: {{ .Values.postgresql.auth.username }}
-                  secret:
-                    name: {{ .Values.postgresql.auth.existingSecret }}
-              superuserSecret:
-                name: {{ .Values.postgresql.auth.existingSuperUserSecret }}
-              storage:
-                size: {{ .Values.postgresql.storage.size }}
-                {{- if .Values.postgresql.storage.storageClass }}
-                storageClass: {{ .Values.postgresql.storage.storageClass }}
-                {{- end }}
-              resources:
-{{- toYaml .Values.postgresql.resources | nindent 16 }}
+{{ include "fairwinds-insights.cnpg.postgresCluster" (dict "root" . "mode" "job") | trim | indent 12 }}
             EOF
             fi
             {{- end }}
@@ -227,16 +199,7 @@ spec:
             {{- if .Values.timescale.ephemeral }}
             echo "Applying ClusterImageCatalog for TimescaleDB..."
             cat <<EOF | kubectl apply -f -
-            apiVersion: postgresql.cnpg.io/v1
-            kind: ClusterImageCatalog
-            metadata:
-              name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
-              labels:
-                {{- include "fairwinds-insights.labels" . | nindent 16 }}
-            spec:
-              images:
-                - major: {{ .Values.timescale.imageCatalog.major }}
-                  image: {{ include "fairwinds-insights.timescaleImage" . }}
+{{ include "fairwinds-insights.cnpg.timescaleClusterImageCatalog" (dict "root" . "mode" "job") | trim | indent 12 }}
             EOF
             echo "Checking Timescale cluster insights-timescale..."
             if kubectl get cluster insights-timescale -n {{ .Release.Namespace }} >/dev/null 2>&1; then
@@ -244,49 +207,7 @@ spec:
             else
               echo "Creating Timescale cluster..."
               cat <<EOF | kubectl apply -f -
-            apiVersion: postgresql.cnpg.io/v1
-            kind: Cluster
-            metadata:
-              name: insights-timescale
-              namespace: {{ .Release.Namespace }}
-              labels:
-                {{- include "fairwinds-insights.labels" . | nindent 16 }}
-            spec:
-              instances: 1
-              enableSuperuserAccess: true
-              postgresUID: {{ .Values.timescale.postgresUID }}
-              postgresGID: {{ .Values.timescale.postgresGID }}
-              imageCatalogRef:
-                apiGroup: postgresql.cnpg.io
-                kind: ClusterImageCatalog
-                name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
-                major: {{ .Values.timescale.imageCatalog.major }}
-              postgresql:
-{{- if .Values.timescale.sharedPreloadLibraries }}
-                shared_preload_libraries:
-{{- range .Values.timescale.sharedPreloadLibraries }}
-                  - {{ . }}
-{{- end }}
-{{- end }}
-                parameters:
-{{- toYaml .Values.timescale.parameters | nindent 18 }}
-              bootstrap:
-                initdb:
-                  database: {{ .Values.timescale.postgresqlDatabase }}
-                  owner: {{ .Values.timescale.postgresqlUsername }}
-                  secret:
-                    name: {{ .Values.timescale.auth.existingSecret }}
-                  postInitSQL:
-                    - CREATE EXTENSION IF NOT EXISTS timescaledb;
-              superuserSecret:
-                name: {{ .Values.timescale.auth.existingSuperUserSecret }}
-              storage:
-                size: {{ .Values.timescale.storage.size }}
-                {{- if .Values.timescale.storage.storageClass }}
-                storageClass: {{ .Values.timescale.storage.storageClass }}
-                {{- end }}
-              resources:
-{{- toYaml .Values.timescale.resources | nindent 16 }}
+{{ include "fairwinds-insights.cnpg.timescaleCluster" (dict "root" . "mode" "job") | trim | indent 12 }}
             EOF
             fi
             {{- end }}
@@ -332,94 +253,11 @@ spec:
 {{- end }}
 {{- if and .Values.postgresql.ephemeral (not .Values.postgresql.operator.install) }}
 ---
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: insights-postgres
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook-delete-policy": "before-hook-creation"
-spec:
-  instances: 1
-  enableSuperuserAccess: true
-  imageName: {{ .Values.postgresql.image.registry }}/{{ .Values.postgresql.image.repository }}:{{ .Values.postgresql.image.tag }}
-  postgresql:
-    parameters:
-{{- toYaml .Values.postgresql.parameters | nindent 6 }}
-  bootstrap:
-    initdb:
-      database: {{ .Values.postgresql.auth.database }}
-      owner: {{ .Values.postgresql.auth.username }}
-      secret:
-        name: {{ .Values.postgresql.auth.existingSecret }}
-  superuserSecret:
-    name: {{ .Values.postgresql.auth.existingSuperUserSecret }}
-  storage:
-    size: {{ .Values.postgresql.storage.size }}
-    storageClass: {{ .Values.postgresql.storage.storageClass }}
-  resources:
-{{- toYaml .Values.postgresql.resources | nindent 4 }}
+{{ include "fairwinds-insights.cnpg.postgresCluster" (dict "root" . "mode" "helm") }}
 {{- end }}
 {{- if and .Values.timescale.ephemeral (not .Values.postgresql.operator.install) }}
 ---
-apiVersion: postgresql.cnpg.io/v1
-kind: ClusterImageCatalog
-metadata:
-  name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook-delete-policy": "before-hook-creation"
-spec:
-  images:
-    - major: {{ .Values.timescale.imageCatalog.major }}
-      image: {{ include "fairwinds-insights.timescaleImage" . }}
+{{ include "fairwinds-insights.cnpg.timescaleClusterImageCatalog" (dict "root" . "mode" "helm") }}
 ---
-apiVersion: postgresql.cnpg.io/v1
-kind: Cluster
-metadata:
-  name: insights-timescale
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook-delete-policy": "before-hook-creation"
-spec:
-  instances: 1
-  enableSuperuserAccess: true
-  postgresUID: {{ .Values.timescale.postgresUID }}
-  postgresGID: {{ .Values.timescale.postgresGID }}
-  imageCatalogRef:
-    apiGroup: postgresql.cnpg.io
-    kind: ClusterImageCatalog
-    name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
-    major: {{ .Values.timescale.imageCatalog.major }}
-  postgresql:
-{{- if .Values.timescale.sharedPreloadLibraries }}
-    shared_preload_libraries:
-{{- range .Values.timescale.sharedPreloadLibraries }}
-      - {{ . }}
-{{- end }}
-{{- end }}
-    parameters:
-{{- toYaml .Values.timescale.parameters | nindent 6 }}
-  bootstrap:
-    initdb:
-      database: {{ .Values.timescale.postgresqlDatabase }}
-      owner: {{ .Values.timescale.postgresqlUsername }}
-      secret:
-        name: {{ .Values.timescale.auth.existingSecret }}
-      postInitSQL:
-        - CREATE EXTENSION IF NOT EXISTS timescaledb;
-  superuserSecret:
-    name: {{ .Values.timescale.auth.existingSuperUserSecret }}
-  storage:
-    size: {{ .Values.timescale.storage.size }}
-    {{- if .Values.timescale.storage.storageClass }}
-    storageClass: {{ .Values.timescale.storage.storageClass }}
-    {{- end }}
-  resources:
-{{- toYaml .Values.timescale.resources | nindent 4 }}
+{{ include "fairwinds-insights.cnpg.timescaleCluster" (dict "root" . "mode" "helm") }}
 {{- end }}
