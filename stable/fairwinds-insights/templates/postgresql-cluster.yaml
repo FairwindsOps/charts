@@ -10,7 +10,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "1"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 ---
@@ -21,7 +21,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "2"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 rules:
@@ -73,7 +73,7 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "3"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 roleRef:
@@ -95,7 +95,7 @@ metadata:
   annotations:
     "meta.helm.sh/release-name": {{ .Release.Name | quote }}
     "meta.helm.sh/release-namespace": {{ .Release.Namespace | quote }}
-    "helm.sh/hook": "pre-install"
+    "helm.sh/hook": "post-install,post-upgrade"
     "helm.sh/hook-weight": "4"
     "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 spec:
@@ -329,18 +329,6 @@ spec:
           capabilities:
             drop:
               - ALL
----
-apiVersion: v1
-kind: ServiceAccount
-metadata:
-  name: {{ .Release.Name }}-pg-creator
-  namespace: {{ .Release.Namespace }}
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    "helm.sh/hook": "pre-install,pre-upgrade"
-    "helm.sh/hook-weight": "5"
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
 {{- end }}
 {{- if and .Values.postgresql.ephemeral (not .Values.postgresql.operator.install) }}
 ---

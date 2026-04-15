@@ -11,6 +11,7 @@ metadata:
     "helm.sh/hook": {{ .Values.dbMigration.overrideHook | quote }}
   {{- else if $usePostHook }}
     "helm.sh/hook": "post-install,post-upgrade"
+    "helm.sh/hook-weight": {{ .Values.dbMigration.hookWeight | default "10" | quote }}
   {{- else }}
     "helm.sh/hook": "pre-install,pre-upgrade"
   {{- end }}
