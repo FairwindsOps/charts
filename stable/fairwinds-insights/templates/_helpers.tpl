@@ -120,6 +120,11 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end -}}
 {{- end -}}
 
+{{/* Cluster-scoped CNPG catalog for TimescaleDB (required because Timescale image tags fail spec.imageName validation). */}}
+{{- define "fairwinds-insights.timescaleClusterImageCatalog" -}}
+{{- printf "%s-insights-timescale-catalog" .Release.Name | trunc 63 | trimSuffix "-" -}}
+{{- end -}}
+
 {{/* Names must stay in sync with the rustfs subchart's rustfs.fullname / rustfs.secretName / service metadata.name (.fullname-svc). */}}
 {{- define "fairwinds-insights.rustfsFullname" -}}
 {{- $r := .Values.rustfs | default dict }}

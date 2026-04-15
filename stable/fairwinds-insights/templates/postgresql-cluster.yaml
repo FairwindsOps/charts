@@ -38,8 +38,8 @@ rules:
   resources: ["pods"]
   verbs: ["get", "list", "watch"]
 - apiGroups: ["postgresql.cnpg.io"]
-  resources: ["clusters"]
-  verbs: ["create", "get", "list", "watch"]
+  resources: ["clusters", "clusterimagecatalogs"]
+  verbs: ["create", "get", "list", "watch", "update", "patch"]
 - apiGroups: ["rbac.authorization.k8s.io"]
   resources: ["clusterroles", "clusterrolebindings", "roles", "rolebindings"]
   verbs: ["get", "list", "watch", "create", "update", "patch", "delete", "bind", "escalate"]
@@ -225,6 +225,19 @@ spec:
             {{- end }}
 
             {{- if .Values.timescale.ephemeral }}
+            echo "Applying ClusterImageCatalog for TimescaleDB..."
+            cat <<EOF | kubectl apply -f -
+            apiVersion: postgresql.cnpg.io/v1
+            kind: ClusterImageCatalog
+            metadata:
+              name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
+              labels:
+                {{- include "fairwinds-insights.labels" . | nindent 16 }}
+            spec:
+              images:
+                - major: {{ .Values.timescale.imageCatalog.major }}
+                  image: {{ include "fairwinds-insights.timescaleImage" . }}
+            EOF
             echo "Checking Timescale cluster insights-timescale..."
             if kubectl get cluster insights-timescale -n {{ .Release.Namespace }} >/dev/null 2>&1; then
               echo "Timescale cluster 'insights-timescale' already exists, skipping create"
@@ -241,7 +254,13 @@ spec:
             spec:
               instances: 1
               enableSuperuserAccess: true
-              imageName: {{ include "fairwinds-insights.timescaleImage" . }}
+              postgresUID: {{ .Values.timescale.postgresUID }}
+              postgresGID: {{ .Values.timescale.postgresGID }}
+              imageCatalogRef:
+                apiGroup: postgresql.cnpg.io
+                kind: ClusterImageCatalog
+                name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
+                major: {{ .Values.timescale.imageCatalog.major }}
               postgresql:
                 parameters:
 {{- toYaml .Values.timescale.parameters | nindent 18 }}
@@ -267,13 +286,30 @@ spec:
             {{- end }}
 
             READY_TIMEOUT="{{ .Values.postgresql.operator.clusterReadyTimeoutSeconds | default 600 }}s"
-            {{- if .Values.postgresql.ephemeral }}
-            echo "Waiting for PostgreSQL cluster insights-postgres to be Ready (condition=Ready, timeout=$READY_TIMEOUT)..."
-            kubectl wait cluster insights-postgres -n {{ .Release.Namespace }} --for=condition=Ready --timeout="$READY_TIMEOUT"
-            {{- end }}
-            {{- if .Values.timescale.ephemeral }}
-            echo "Waiting for Timescale cluster insights-timescale to be Ready (condition=Ready, timeout=$READY_TIMEOUT)..."
-            kubectl wait cluster insights-timescale -n {{ .Release.Namespace }} --for=condition=Ready --timeout="$READY_TIMEOUT"
+            NS="{{ .Release.Namespace }}"
+            describe_on_fail() {
+              echo "--- kubectl describe cluster/$1 (last status) ---"
+              kubectl describe cluster "$1" -n "$NS" 2>/dev/null | tail -40 || true
+            }
+            {{- if and .Values.postgresql.ephemeral .Values.timescale.ephemeral }}
+            echo "Waiting for insights-postgres and insights-timescale to be Ready in parallel (each timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-postgres -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" &
+            _wait_pg=$!
+            kubectl wait cluster insights-timescale -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" &
+            _wait_ts=$!
+            _wait_rc=0
+            wait $_wait_pg || { echo "Timed out or failed: insights-postgres not Ready"; describe_on_fail insights-postgres; _wait_rc=1; }
+            wait $_wait_ts || { echo "Timed out or failed: insights-timescale not Ready"; describe_on_fail insights-timescale; _wait_rc=1; }
+            if [ "$_wait_rc" -ne 0 ]; then
+              echo "If a cluster was left over from a broken install, delete it and its PVCs, then retry: kubectl delete cluster insights-postgres insights-timescale -n $NS"
+              exit 1
+            fi
+            {{- else if .Values.postgresql.ephemeral }}
+            echo "Waiting for insights-postgres to be Ready (timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-postgres -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" || { describe_on_fail insights-postgres; echo "Stuck cluster: delete Cluster + PVCs or fix secrets, then retry."; exit 1; }
+            {{- else if .Values.timescale.ephemeral }}
+            echo "Waiting for insights-timescale to be Ready (timeout=$READY_TIMEOUT)..."
+            kubectl wait cluster insights-timescale -n "$NS" --for=condition=Ready --timeout="$READY_TIMEOUT" || { describe_on_fail insights-timescale; echo "Stuck cluster: delete Cluster + PVCs or fix secrets, then retry."; exit 1; }
             {{- end }}
 
             echo "=== CloudNativePG cluster job finished ==="
@@ -335,6 +371,19 @@ spec:
 {{- if and .Values.timescale.ephemeral (not .Values.postgresql.operator.install) }}
 ---
 apiVersion: postgresql.cnpg.io/v1
+kind: ClusterImageCatalog
+metadata:
+  name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook-delete-policy": "before-hook-creation"
+spec:
+  images:
+    - major: {{ .Values.timescale.imageCatalog.major }}
+      image: {{ include "fairwinds-insights.timescaleImage" . }}
+---
+apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: insights-timescale
@@ -346,7 +395,13 @@ metadata:
 spec:
   instances: 1
   enableSuperuserAccess: true
-  imageName: {{ include "fairwinds-insights.timescaleImage" . }}
+  postgresUID: {{ .Values.timescale.postgresUID }}
+  postgresGID: {{ .Values.timescale.postgresGID }}
+  imageCatalogRef:
+    apiGroup: postgresql.cnpg.io
+    kind: ClusterImageCatalog
+    name: {{ include "fairwinds-insights.timescaleClusterImageCatalog" . }}
+    major: {{ .Values.timescale.imageCatalog.major }}
   postgresql:
     parameters:
 {{- toYaml .Values.timescale.parameters | nindent 6 }}

@@ -598,9 +598,14 @@ timescale:
     registry: ""
     repository: timescale/timescaledb-ha
     tag: pg17.9-ts2.25.1-all
-  # -- PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` must include timescaledb)
+  # -- PostgreSQL major version for ClusterImageCatalog + imageCatalogRef (must match the image)
+  imageCatalog:
+    major: 17
+  # -- Container UID/GID for Timescale HA image (CNPG; often 1000 for timescaledb-ha)
+  postgresUID: 1000
+  postgresGID: 1000
+  # -- PostgreSQL parameters for the Timescale CNPG cluster (do not set shared_preload_libraries; the Timescale image manages it and CNPG rejects overriding it)
   parameters:
-    shared_preload_libraries: timescaledb
     max_connections: "100"
   storage:
     size: 10Gi
