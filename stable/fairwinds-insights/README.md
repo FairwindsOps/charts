@@ -133,6 +133,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
 | dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. |
+| dbMigration.hookWeight | string | `"10"` | Hook weight when using the default post-install hook (must run after the CNPG cluster creation job, weight 4). |
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
@@ -184,7 +185,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.imageCatalog | object | `{"major":17}` | PostgreSQL major version for ClusterImageCatalog + imageCatalogRef (must match the image) |
 | timescale.postgresUID | int | `1000` | Container UID/GID for Timescale HA image (CNPG; often 1000 for timescaledb-ha) |
 | timescale.postgresGID | int | `1000` |  |
-| timescale.parameters | object | `{"max_connections":"100"}` | PostgreSQL parameters for the Timescale CNPG cluster (do not set shared_preload_libraries; the Timescale image manages it and CNPG rejects overriding it) |
+| timescale.sharedPreloadLibraries | list | `["timescaledb"]` | Libraries loaded at server start; required before bootstrap postInitSQL can run `CREATE EXTENSION timescaledb` (see CloudNativePG Timescale examples). |
+| timescale.parameters | object | `{"max_connections":"100"}` | PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` is set via sharedPreloadLibraries above) |
 | timescale.storage.size | string | `"10Gi"` |  |
 | timescale.storage.storageClass | string | `"standard"` |  |
 | timescale.auth.existingSecret | string | `"fwinsights-timescale"` |  |
