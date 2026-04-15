@@ -6,6 +6,10 @@
 
 See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-details/self-hosted/installation/) for complete documentation.
 
+## Upgrading from chart 7.x to 8.x
+
+Chart 8.0.0 replaces ephemeral **TimescaleDB** (`timescaledb-single`) with **CloudNativePG** and changes defaults (host, port, auth). See **[MIGRATION-7-to-8.md](./MIGRATION-7-to-8.md)** for breaking changes, values to remove, and upgrade steps.
+
 ## Values
 
 | Key | Type | Default | Description |
