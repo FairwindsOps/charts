@@ -171,22 +171,30 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.parameters | object | `{"checkpoint_completion_target":"0.9","default_statistics_target":"100","effective_cache_size":"1GB","effective_io_concurrency":"200","maintenance_work_mem":"64MB","max_connections":"100","max_parallel_maintenance_workers":"2","max_parallel_workers":"8","max_parallel_workers_per_gather":"2","max_wal_size":"4GB","max_worker_processes":"8","min_wal_size":"1GB","password_encryption":"scram-sha-256","random_page_cost":"1.1","shared_buffers":"256MB","wal_buffers":"16MB","work_mem":"4MB"}` | PostgreSQL configuration parameters |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
-| timescale.ephemeral | bool | `true` | Provision TimescaleDB with CloudNativePG in-cluster (same idea as `postgresql.ephemeral`) |
+| timescale.ephemeral | bool | `true` | Provision TimescaleDB with CloudNativePG in-cluster (same pattern as `postgresql.ephemeral`). Breaking change: the legacy timescaledb-single subchart is no longer part of this chart. |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlHost | string | `"insights-timescale-rw"` | Host for Timescale (CloudNativePG read-write service) |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
 | timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres database |
 | timescale.password | string | `""` | App user password for ephemeral CNPG (random if unset) |
 | timescale.superuserpassword | string | `""` | Superuser password for ephemeral CNPG (random if unset) |
-| timescale.image | object | `{"registry":"docker.io","repository":"timescale/timescaledb-ha","tag":"pg17.9-ts2.25.1-all"}` | TimescaleDB HA image for the CNPG cluster |
-| timescale.parameters | object | `{"max_connections":"100","shared_preload_libraries":"timescaledb"}` | PostgreSQL parameters for the Timescale CNPG cluster |
-| timescale.storage | object | `{"size":"10Gi","storageClass":"standard"}` | Storage for the Timescale CNPG cluster |
-| timescale.auth | object | `{"existingSecret":"fwinsights-timescale","existingSuperUserSecret":"fwinsights-timescale-superuser","secretKeys":{"adminPasswordKey":"postgresql-password"}}` | Authentication for CNPG Timescale |
+| timescale.image.registry | string | `"docker.io"` |  |
+| timescale.image.repository | string | `"timescale/timescaledb-ha"` |  |
+| timescale.image.tag | string | `"pg17.9-ts2.25.1-all"` |  |
+| timescale.parameters | object | `{"max_connections":"100","shared_preload_libraries":"timescaledb"}` | PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` must include timescaledb) |
+| timescale.storage.size | string | `"10Gi"` |  |
+| timescale.storage.storageClass | string | `"standard"` |  |
+| timescale.auth.existingSecret | string | `"fwinsights-timescale"` |  |
+| timescale.auth.existingSuperUserSecret | string | `"fwinsights-timescale-superuser"` |  |
+| timescale.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
-| timescale.service.primary | object | `{"port":5432}` | Port for Timescale connections |
+| timescale.service.primary.port | int | `5432` |  |
 | timescale.loadBalancer.enabled | bool | `false` |  |
-| timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"500m","memory":"512Mi"}}` | Resources for the Timescale CNPG cluster |
+| timescale.resources.limits.cpu | int | `1` |  |
+| timescale.resources.limits.memory | string | `"1Gi"` |  |
+| timescale.resources.requests.cpu | string | `"500m"` |  |
+| timescale.resources.requests.memory | string | `"512Mi"` |  |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
