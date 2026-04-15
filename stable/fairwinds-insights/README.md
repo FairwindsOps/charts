@@ -157,7 +157,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
 | postgresql.image.tag | string | `"17.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
-| postgresql.operator | object | `{"crds":{"create":true},"defaultVersion":"1.28.1","install":true,"version":"1.28.1","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
+| postgresql.operator | object | `{"clusterReadyTimeoutSeconds":600,"crds":{"create":true},"defaultVersion":"1.28.1","install":true,"version":"1.28.1","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
 | postgresql.operator.version | string | `"1.28.1"` | CloudNativePG operator version to install |
 | postgresql.operator.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
 | postgresql.operator.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
@@ -178,10 +178,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres database |
 | timescale.password | string | `""` | App user password for ephemeral CNPG (random if unset) |
 | timescale.superuserpassword | string | `""` | Superuser password for ephemeral CNPG (random if unset) |
-| timescale.image.registry | string | `""` | Optional registry prefix; empty uses short form `timescale/timescaledb-ha:tag` |
+| timescale.image.registry | string | `""` | Optional registry prefix; leave empty for Docker Hub short form `timescale/timescaledb-ha:tag` |
 | timescale.image.repository | string | `"timescale/timescaledb-ha"` |  |
 | timescale.image.tag | string | `"pg17.9-ts2.25.1-all"` |  |
-| timescale.parameters | object | `{"max_connections":"100","shared_preload_libraries":"timescaledb"}` | PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` must include timescaledb) |
+| timescale.imageCatalog | object | `{"major":17}` | PostgreSQL major version for ClusterImageCatalog + imageCatalogRef (must match the image) |
+| timescale.postgresUID | int | `1000` | Container UID/GID for Timescale HA image (CNPG; often 1000 for timescaledb-ha) |
+| timescale.postgresGID | int | `1000` |  |
+| timescale.parameters | object | `{"max_connections":"100"}` | PostgreSQL parameters for the Timescale CNPG cluster (do not set shared_preload_libraries; the Timescale image manages it and CNPG rejects overriding it) |
 | timescale.storage.size | string | `"10Gi"` |  |
 | timescale.storage.storageClass | string | `"standard"` |  |
 | timescale.auth.existingSecret | string | `"fwinsights-timescale"` |  |
