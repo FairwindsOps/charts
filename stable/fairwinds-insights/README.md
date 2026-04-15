@@ -133,7 +133,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
 | dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. |
-| dbMigration.hookWeight | string | `"10"` | Hook weight when using the default post-install hook (must run after the CNPG cluster creation job, weight 4). |
+| dbMigration.hookWeight | string | `"10"` | Hook weight when using the default post-install hook (runs after main workload manifests; clusters are created in pre-install). |
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
