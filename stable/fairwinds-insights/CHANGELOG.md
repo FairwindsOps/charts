@@ -2,6 +2,7 @@
 
 ## 7.1.0
 * Add optional `outboxWorker` Deployment with configurable scheduling, resources, and extra volumes.
+* **BREAKING:** Ephemeral TimescaleDB is provisioned with **CloudNativePG** (`Cluster` `insights-timescale`), mirroring PostgreSQL. The **`timescaledb-single` subchart is removed** from this chart. Defaults: `timescale.postgresqlHost` is `insights-timescale-rw`, `timescale.service.primary.port` is `5432`. Install the legacy Timescale Helm chart separately if you still need Patroni/`timescaledb-single`.
 
 ## 7.0.4
 * Added flag to app groups score

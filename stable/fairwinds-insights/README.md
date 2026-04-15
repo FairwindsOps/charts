@@ -171,26 +171,22 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.parameters | object | `{"checkpoint_completion_target":"0.9","default_statistics_target":"100","effective_cache_size":"1GB","effective_io_concurrency":"200","maintenance_work_mem":"64MB","max_connections":"100","max_parallel_maintenance_workers":"2","max_parallel_workers":"8","max_parallel_workers_per_gather":"2","max_wal_size":"4GB","max_worker_processes":"8","min_wal_size":"1GB","password_encryption":"scram-sha-256","random_page_cost":"1.1","shared_buffers":"256MB","wal_buffers":"16MB","work_mem":"4MB"}` | PostgreSQL configuration parameters |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
-| timescale.fullnameOverride | string | `"timescale"` |  |
-| timescale.replicaCount | int | `1` |  |
-| timescale.clusterName | string | `"timescale"` |  |
-| timescale.ephemeral | bool | `true` | Use the ephemeral Timescale chart by default |
-| timescale.pdb.enabled | bool | `true` | Use pdb enabled by default |
-| timescale.pdb.minReplicas | int | `1` | Min timescale pdb replicas |
+| timescale.ephemeral | bool | `true` | Provision TimescaleDB with CloudNativePG in-cluster (same idea as `postgresql.ephemeral`) |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
-| timescale.postgresqlHost | string | `"timescale"` | Host for timescale |
+| timescale.postgresqlHost | string | `"insights-timescale-rw"` | Host for Timescale (CloudNativePG read-write service) |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
-| timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres Database |
-| timescale.password | string | `"postgres"` | Password for the Postgres Database |
+| timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres database |
+| timescale.password | string | `""` | App user password for ephemeral CNPG (random if unset) |
+| timescale.superuserpassword | string | `""` | Superuser password for ephemeral CNPG (random if unset) |
+| timescale.image | object | `{"registry":"docker.io","repository":"timescale/timescaledb-ha","tag":"pg17.9-ts2.25.1-all"}` | TimescaleDB HA image for the CNPG cluster |
+| timescale.parameters | object | `{"max_connections":"100","shared_preload_libraries":"timescaledb"}` | PostgreSQL parameters for the Timescale CNPG cluster |
+| timescale.storage | object | `{"size":"10Gi","storageClass":"standard"}` | Storage for the Timescale CNPG cluster |
+| timescale.auth | object | `{"existingSecret":"fwinsights-timescale","existingSuperUserSecret":"fwinsights-timescale-superuser","secretKeys":{"adminPasswordKey":"postgresql-password"}}` | Authentication for CNPG Timescale |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
 | timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
-| timescale.service.primary | object | `{"port":5433}` | Port of the Timescale Database |
+| timescale.service.primary | object | `{"port":5432}` | Port for Timescale connections |
 | timescale.loadBalancer.enabled | bool | `false` |  |
-| timescale.timescaledbTune | object | `{"enabled":false}` | Database tuning for timescale |
-| timescale.patroni | object | `{"log":{"level":"DEBUG"},"postgresql":{"create_replica_methods":[],"pgbackrest":{}}}` | Timescale patroni options |
-| timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"500m","memory":"512Mi"}}` | Resources section for Timescale |
-| timescale.rbac.create | bool | `true` |  |
-| timescale.serviceAccount.create | bool | `true` |  |
+| timescale.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"500m","memory":"512Mi"}}` | Resources for the Timescale CNPG cluster |
 | email.strategy | string | `"memory"` | How to send emails, valid values include memory, ses, and smtp |
 | email.sender | string | `nil` | Email address that emails will come from |
 | email.recipient | string | `nil` | Email address to send notifications of new user signups. |
