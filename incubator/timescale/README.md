@@ -25,6 +25,8 @@ TimescaleDB HA Deployment (legacy Patroni-based chart; retained for reference on
 
 ## Values
 
+## Values
+
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | replicaCount | int | `3` |  |
