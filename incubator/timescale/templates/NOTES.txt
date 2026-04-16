@@ -2,6 +2,13 @@
 This file and its contents are licensed under the Apache License 2.0.
 Please see the included NOTICE for copyright information and LICENSE for a copy of the license.
 */}}
+
+***********************************************************************
+* WARNING: This chart is DEPRECATED and ARCHIVED.                    *
+* Fairwinds uses CloudNativePG (CNPG) for Postgres/Timescale now.   *
+* This chart is unmaintained and may be removed from the repo later.*
+***********************************************************************
+
 TimescaleDB can be accessed via port 5432 on the following DNS name from within your cluster:
 {{ template "clusterName" . }}.{{ .Release.Namespace }}.svc.cluster.local
 
