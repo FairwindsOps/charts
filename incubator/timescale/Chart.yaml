@@ -3,9 +3,14 @@
 
 apiVersion: v1
 name: timescaledb-single
-description: 'TimescaleDB HA Deployment.'
+description: >-
+  DEPRECATED and archived: Fairwinds now uses CloudNativePG (CNPG) for PostgreSQL
+  and TimescaleDB workloads. This chart is no longer maintained, may receive no
+  updates or security fixes, and may be removed from this repository in a future
+  release. Prefer CNPG-based deployments for new installs.
+deprecated: true
 appVersion: 0.34.1  # Added to make linter happy
-version: 0.35.1
+version: 0.35.2
 icon: https://cdn.iconscout.com/icon/free/png-256/timescaledb-1958407-1651618.png
 
 # appVersion specifies the version of the software, which can vary wildly,
@@ -18,6 +23,3 @@ sources:
   - https://github.com/timescale/helm-charts
   - https://github.com/timescale/timescaledb-docker-ha
   - https://github.com/zalando/patroni
-maintainers:
-  - name: TimescaleDB
-    email: support@timescale.com

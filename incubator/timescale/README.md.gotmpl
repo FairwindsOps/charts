@@ -1,3 +1,9 @@
+## Archived and deprecated
+
+This Helm chart is **deprecated** and **archived**. Fairwinds now uses **CloudNativePG (CNPG)** for PostgreSQL and TimescaleDB workloads and **will no longer maintain** this chart. It may be **removed from this repository in a future release**. Do not use it for new deployments; migrate existing installs to a CNPG-based approach when practical.
+
+---
+
 <div align="center">
 <a href="https://github.com/FairwindsOps/goldilocks"><img src="logo.svg" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
 <br>
@@ -5,9 +11,9 @@
 
 # timescaledb-single
 
-![Version: 0.21.0](https://img.shields.io/badge/Version-0.21.0-informational?style=flat-square) ![AppVersion: 0.21.0](https://img.shields.io/badge/AppVersion-0.21.0-informational?style=flat-square)
+![Version: 0.35.2](https://img.shields.io/badge/Version-0.35.2-informational?style=flat-square) ![AppVersion: 0.34.1](https://img.shields.io/badge/AppVersion-0.34.1-informational?style=flat-square)
 
-TimescaleDB HA Deployment.
+TimescaleDB HA Deployment (legacy Patroni-based chart; retained for reference only).
 
 **Homepage:** <https://github.com/timescale/helm-charts>
 
