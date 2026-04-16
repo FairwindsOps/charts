@@ -57,9 +57,16 @@ spec:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.resources $options.resources) | nindent 12 }}
           securityContext:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.securityContext $options.securityContext) | nindent 12 }}
-          {{- with (default $.Values.temporalDeploymentDefaults.volumeMounts $options.volumeMounts) }}
+          {{- $volumeMounts := default $.Values.temporalDeploymentDefaults.volumeMounts $options.volumeMounts }}
+          {{- if or $volumeMounts $.Values.selfHostedSecret }}
           volumeMounts:
+            {{- with $volumeMounts }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
+            {{- if $.Values.selfHostedSecret }}
+            - name: self-hosted-secret
+              mountPath: /var/run/secrets/self-hosted
+            {{- end }}
           {{- end }}
       {{- with $options.nodeSelector }}
       nodeSelector:
@@ -73,9 +80,17 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with (default $.Values.temporalDeploymentDefaults.volumes $options.volumes) }}
+      {{- $volumes := default $.Values.temporalDeploymentDefaults.volumes $options.volumes }}
+      {{- if or $volumes $.Values.selfHostedSecret }}
       volumes:
+        {{- with $volumes }}
         {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- if $.Values.selfHostedSecret }}
+        - name: self-hosted-secret
+          secret:
+            secretName: {{ $.Values.selfHostedSecret }}
+        {{- end }}
       {{- end }}
 ---
 {{ end }}
