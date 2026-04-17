@@ -47,6 +47,12 @@ spec:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
           {{- end }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
+            backend:
+              serviceName: {{ $fullName }}-mcp
+              servicePort: http
+          {{- end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             backend:
               serviceName: {{ $fullName }}-dashboard
@@ -132,6 +138,12 @@ spec:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
           {{- end }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
+            backend:
+              serviceName: {{ $fullName }}-mcp
+              servicePort: http
+          {{- end }}
           - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
             backend:
               serviceName: {{ $fullName }}-dashboard
@@ -185,6 +197,15 @@ spec:
             backend:
               service:
                 name: {{ $fullName }}-api
+                port:
+                  name: http
+          {{- end }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-mcp
                 port:
                   name: http
           {{- end }}
@@ -281,6 +302,15 @@ spec:
             backend:
               service:
                 name: {{ $fullName }}-open-api
+                port:
+                  name: http
+          {{- end }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ $fullName }}-mcp
                 port:
                   name: http
           {{- end }}

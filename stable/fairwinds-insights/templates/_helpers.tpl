@@ -152,3 +152,16 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- define "fairwinds-insights.rustfsServiceName" -}}
 {{- printf "%s-svc" (include "fairwinds-insights.rustfsFullname" .) }}
 {{- end }}
+
+{{/* Base URL for the Insights API as seen by the MCP server (self-hosted vs SaaS). */}}
+{{- define "fairwinds-insights.mcp.fairwindsApiBaseUrl" -}}
+{{- if .Values.mcp.fairwindsApiBaseUrl -}}
+{{- .Values.mcp.fairwindsApiBaseUrl -}}
+{{- else if .Values.options.host -}}
+{{- .Values.options.host -}}
+{{- else if gt (len .Values.ingress.hostedZones) 0 -}}
+{{- printf "https://%s%s" (include "fairwinds-insights.sanitizedPrefix" .) (index .Values.ingress.hostedZones 0) -}}
+{{- else -}}
+https://insights.fairwinds.com
+{{- end -}}
+{{- end -}}

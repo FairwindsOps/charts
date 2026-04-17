@@ -132,6 +132,40 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
+| mcp | object | `{"additionalEnvVars":[],"affinity":{},"automountServiceAccountToken":false,"deploymentAnnotations":{},"enabled":false,"envFrom":[],"extraVolumeMounts":[],"extraVolumes":[],"fairwindsApiBaseUrl":"","hpa":{"enabled":false,"max":3,"metrics":[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"}],"min":1},"image":{"pullPolicy":"Always","repository":"quay.io/fairwinds/insights-mcp-server","tag":"latest"},"ingress":{"enabled":false},"initContainers":[],"livenessProbe":{"failureThreshold":3,"initialDelaySeconds":15,"periodSeconds":20,"tcpSocket":{"port":"http"},"timeoutSeconds":5},"nodeSelector":{},"pdb":{"enabled":false,"minReplicas":1},"podAnnotations":{},"podLabels":{},"podSecurityContext":{"fsGroup":1001},"port":8080,"priorityClassName":"","readinessProbe":{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"tcpSocket":{"port":"http"},"timeoutSeconds":3},"replicas":1,"resources":{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"256Mi"}},"revisionHistoryLimit":10,"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":1001},"serverType":"streamable","service":{"annotations":{},"nodePort":null,"port":8080,"type":"ClusterIP"},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"tolerations":[],"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"mcp","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"mcp","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]}` | [Fairwinds Insights MCP server](https://quay.io/repository/fairwinds/insights-mcp-server) — Model Context Protocol bridge to the Insights API. **Disabled by default.**Transport `MCP_SERVER_TYPE` must be `sse` or `streamable` in-cluster (`stdio` is for local clients). Env vars and behavior follow the upstream server; the image defaults include `FAIRWINDS_API_BASE_URL` (override with `mcp.fairwindsApiBaseUrl` or rely on `options.host` / `ingress.hostedZones`). When `ingress.enabled` is true, `/mcp` is routed on the main Ingress to the MCP service. |
+| mcp.enabled | bool | `false` | Deploy the Insights MCP server workload |
+| mcp.image.repository | string | `"quay.io/fairwinds/insights-mcp-server"` | Container image repository |
+| mcp.image.tag | string | `"latest"` | Image tag (`latest` matches the published default; pin a digest or version for production) |
+| mcp.image.pullPolicy | string | `"Always"` | Image pull policy |
+| mcp.replicas | int | `1` | Pod replica count (ignored at runtime when `hpa.enabled` is true) |
+| mcp.serverType | string | `"streamable"` | `MCP_SERVER_TYPE`: `stdio` (local), `sse`, or `streamable` — use `sse` or `streamable` in Kubernetes |
+| mcp.port | int | `8080` | `MCP_SERVER_PORT` / container listen port |
+| mcp.fairwindsApiBaseUrl | string | `""` | `FAIRWINDS_API_BASE_URL` — Insights API base URL for the MCP server. If empty, uses `options.host`, else the first `ingress.hostedZones` with `https://`, else the SaaS default. |
+| mcp.additionalEnvVars | list | `[]` | Extra environment variables for the MCP container (appended after built-in env) |
+| mcp.envFrom | list | `[]` | Optional `envFrom` (ConfigMaps / Secrets) for bulk env injection |
+| mcp.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Container resources |
+| mcp.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":1001}` | Container security context (`mcp` image runs as UID 1001) |
+| mcp.podSecurityContext | object | `{"fsGroup":1001}` | Pod-level security context |
+| mcp.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":15,"periodSeconds":20,"tcpSocket":{"port":"http"},"timeoutSeconds":5}` | Liveness probe (TCP avoids hanging on SSE paths) |
+| mcp.readinessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"tcpSocket":{"port":"http"},"timeoutSeconds":3}` | Readiness probe |
+| mcp.extraVolumeMounts | list | `[]` | Mount extra volumes (e.g. custom CA) |
+| mcp.initContainers | list | `[]` | Optional init containers |
+| mcp.pdb.enabled | bool | `false` | PodDisruptionBudget for the MCP Deployment |
+| mcp.pdb.minReplicas | int | `1` | Minimum available pods (map to PDB `minAvailable`) |
+| mcp.hpa.enabled | bool | `false` | HorizontalPodAutoscaler for the MCP Deployment |
+| mcp.service.type | string | `"ClusterIP"` | Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`) |
+| mcp.service.port | int | `8080` | Service port exposed to clients (targets the container `http` port) |
+| mcp.service.annotations | object | `{}` | Service annotations (e.g. cloud LB internal annotations) |
+| mcp.service.nodePort | string | `nil` | `nodePort` when `type` is `NodePort` |
+| mcp.ingress.enabled | bool | `false` | Enable the MCP ingress |
+| mcp.nodeSelector | object | `{}` | Node selector for MCP pods |
+| mcp.tolerations | list | `[]` | Tolerations for MCP pods |
+| mcp.affinity | object | `{}` | Affinity for MCP pods |
+| mcp.podAnnotations | object | `{}` | Pod annotations |
+| mcp.podLabels | object | `{}` | Extra labels on the pod template |
+| mcp.deploymentAnnotations | object | `{}` | Annotations on the Deployment |
+| mcp.priorityClassName | string | `""` | Priority class name |
+| mcp.automountServiceAccountToken | bool | `false` | Disable service account token mount if the workload does not need the Kubernetes API |
 | dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. |
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
