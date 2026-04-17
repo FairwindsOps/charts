@@ -1,0 +1,26 @@
+{{- if .Values.insightsMCP.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-insights-mcp
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: insights-mcp
+  {{- with .Values.insightsMCP.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ .Values.insightsMCP.service.type }}
+  ports:
+    - port: {{ .Values.insightsMCP.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+      {{- if and (eq .Values.insightsMCP.service.type "NodePort") .Values.insightsMCP.service.nodePort }}
+      nodePort: {{ .Values.insightsMCP.service.nodePort }}
+      {{- end }}
+  selector:
+    {{- include "fairwinds-insights.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: insights-mcp
+{{- end }}

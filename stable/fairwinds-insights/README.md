@@ -132,6 +132,43 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | openApi.ingress.enabled | bool | `true` | Enable the Open API ingress |
 | openApi.service.type | string | `nil` | Service type for Open API server |
+| insightsMCP | object | `{"additionalEnvVars":[],"affinity":{},"automountServiceAccountToken":false,"deploymentAnnotations":{},"enabled":false,"envFrom":[],"extraVolumeMounts":[],"extraVolumes":[],"fairwindsApiBaseUrl":"","hpa":{"enabled":false,"max":3,"metrics":[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"}],"min":1},"image":{"pullPolicy":"Always","repository":"quay.io/fairwinds/insights-mcp-server","tag":"latest"},"ingress":{"annotations":{},"enabled":false,"hosts":[],"paths":[{"path":"/sse","pathType":"Prefix"},{"path":"/message","pathType":"Prefix"}],"tls":false,"tlsSecretName":""},"initContainers":[],"livenessProbe":{"failureThreshold":3,"initialDelaySeconds":15,"periodSeconds":20,"tcpSocket":{"port":"http"},"timeoutSeconds":5},"nodeSelector":{},"pdb":{"enabled":false,"minReplicas":1},"podAnnotations":{},"podLabels":{},"podSecurityContext":{"fsGroup":1001},"port":8080,"priorityClassName":"","readinessProbe":{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"tcpSocket":{"port":"http"},"timeoutSeconds":3},"replicas":1,"resources":{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"50m","memory":"128Mi"}},"revisionHistoryLimit":10,"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":1001},"serverType":"sse","service":{"annotations":{},"nodePort":null,"port":8080,"type":"ClusterIP"},"strategy":{"rollingUpdate":{"maxSurge":1,"maxUnavailable":0},"type":"RollingUpdate"},"tolerations":[],"topologySpreadConstraints":[{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"insights-mcp","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"topology.kubernetes.io/zone","whenUnsatisfiable":"ScheduleAnyway"},{"labelSelector":{"matchLabels":{"app.kubernetes.io/component":"insights-mcp","app.kubernetes.io/name":"fairwinds-insights"}},"maxSkew":1,"topologyKey":"kubernetes.io/hostname","whenUnsatisfiable":"ScheduleAnyway"}]}` | [Fairwinds Insights MCP server](https://quay.io/repository/fairwinds/insights-mcp-server) — Model Context Protocol bridge to the Insights API. **Disabled by default.**Transport `MCP_SERVER_TYPE` must be `sse` or `streamable` in-cluster (`stdio` is for local clients). Env vars and behavior follow the upstream server; the image defaults include `FAIRWINDS_API_BASE_URL` (override with `insightsMCP.fairwindsApiBaseUrl` or rely on `options.host` / ingress hostname). |
+| insightsMCP.enabled | bool | `false` | Deploy the Insights MCP server workload |
+| insightsMCP.image.repository | string | `"quay.io/fairwinds/insights-mcp-server"` | Container image repository |
+| insightsMCP.image.tag | string | `"latest"` | Image tag (`latest` matches the published default; pin a digest or version for production) |
+| insightsMCP.image.pullPolicy | string | `"Always"` | Image pull policy |
+| insightsMCP.replicas | int | `1` | Pod replica count (ignored at runtime when `hpa.enabled` is true) |
+| insightsMCP.serverType | string | `"sse"` | `MCP_SERVER_TYPE`: `stdio` (local), `sse`, or `streamable` — use `sse` or `streamable` in Kubernetes |
+| insightsMCP.port | int | `8080` | `MCP_SERVER_PORT` / container listen port |
+| insightsMCP.fairwindsApiBaseUrl | string | `""` | `FAIRWINDS_API_BASE_URL` — Insights API base URL for the MCP server. If empty, uses `options.host`, else the first `ingress.hostedZones` entry with `https://`, else the SaaS default. |
+| insightsMCP.additionalEnvVars | list | `[]` | Extra environment variables for the MCP container (appended after built-in env) |
+| insightsMCP.envFrom | list | `[]` | Optional `envFrom` (ConfigMaps / Secrets) for bulk env injection |
+| insightsMCP.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"50m","memory":"128Mi"}}` | Container resources |
+| insightsMCP.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":1001}` | Container security context (`insights-mcp` image runs as UID 1001) |
+| insightsMCP.podSecurityContext | object | `{"fsGroup":1001}` | Pod-level security context |
+| insightsMCP.livenessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":15,"periodSeconds":20,"tcpSocket":{"port":"http"},"timeoutSeconds":5}` | Liveness probe (TCP avoids hanging on SSE paths) |
+| insightsMCP.readinessProbe | object | `{"failureThreshold":3,"initialDelaySeconds":5,"periodSeconds":10,"tcpSocket":{"port":"http"},"timeoutSeconds":3}` | Readiness probe |
+| insightsMCP.extraVolumeMounts | list | `[]` | Mount extra volumes (e.g. custom CA) |
+| insightsMCP.initContainers | list | `[]` | Optional init containers |
+| insightsMCP.pdb.enabled | bool | `false` | PodDisruptionBudget for the MCP Deployment |
+| insightsMCP.pdb.minReplicas | int | `1` | Minimum available pods (map to PDB `minAvailable`) |
+| insightsMCP.hpa.enabled | bool | `false` | HorizontalPodAutoscaler for the MCP Deployment |
+| insightsMCP.service.type | string | `"ClusterIP"` | Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`) |
+| insightsMCP.service.port | int | `8080` | Service port exposed to clients (targets the container `http` port) |
+| insightsMCP.service.annotations | object | `{}` | Service annotations (e.g. cloud LB internal annotations) |
+| insightsMCP.service.nodePort | string | `nil` | `nodePort` when `type` is `NodePort` |
+| insightsMCP.ingress.enabled | bool | `false` | Create a dedicated `Ingress` for the MCP service (paths below; SSE commonly uses `/sse` and `/message`) |
+| insightsMCP.ingress.hosts | list | `[]` | Explicit hostnames (overrides `ingress.hostedZones` when non-empty) |
+| insightsMCP.ingress.annotations | object | `{}` | Ingress annotations (consider disabling buffering for SSE, e.g. `nginx.ingress.kubernetes.io/proxy-buffering: "off"`) |
+| insightsMCP.ingress.tls | bool | `false` | TLS for this Ingress (uses `tlsSecretName` or the chart default `<fullname>-cert` pattern) |
+| insightsMCP.nodeSelector | object | `{}` | Node selector for MCP pods |
+| insightsMCP.tolerations | list | `[]` | Tolerations for MCP pods |
+| insightsMCP.affinity | object | `{}` | Affinity for MCP pods |
+| insightsMCP.podAnnotations | object | `{}` | Pod annotations |
+| insightsMCP.podLabels | object | `{}` | Extra labels on the pod template |
+| insightsMCP.deploymentAnnotations | object | `{}` | Annotations on the Deployment |
+| insightsMCP.priorityClassName | string | `""` | Priority class name |
+| insightsMCP.automountServiceAccountToken | bool | `false` | Disable service account token mount if the workload does not need the Kubernetes API |
 | dbMigration.overrideHook | string | `""` | Override the Helm hook for the database migration job. |
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |

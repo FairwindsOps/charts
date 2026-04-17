@@ -1,0 +1,126 @@
+{{- if .Values.insightsMCP.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-insights-mcp
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: insights-mcp
+    {{- if .Values.deployments.additionalLabels }}
+    {{- toYaml .Values.deployments.additionalLabels | nindent 4 }}
+    {{- end }}
+  {{- with .Values.insightsMCP.deploymentAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.insightsMCP.replicas }}
+  revisionHistoryLimit: {{ .Values.insightsMCP.revisionHistoryLimit }}
+  {{- with .Values.insightsMCP.strategy }}
+  strategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: insights-mcp
+  template:
+    metadata:
+      labels:
+        {{- include "fairwinds-insights.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: insights-mcp
+        {{- if .Values.deployments.additionalPodLabels }}
+        {{- toYaml .Values.deployments.additionalPodLabels | nindent 8 }}
+        {{- end }}
+        {{- with .Values.insightsMCP.podLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.insightsMCP.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.image.pullSecret }}
+      imagePullSecrets:
+        - name: {{ . }}
+      {{- end }}
+      serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
+      automountServiceAccountToken: {{ .Values.insightsMCP.automountServiceAccountToken }}
+      {{- with .Values.insightsMCP.priorityClassName }}
+      priorityClassName: {{ . }}
+      {{- end }}
+      {{- with .Values.insightsMCP.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.insightsMCP.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.insightsMCP.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.insightsMCP.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.insightsMCP.topologySpreadConstraints }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- if .Values.insightsMCP.initContainers }}
+      initContainers:
+        {{- toYaml .Values.insightsMCP.initContainers | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: insights-mcp
+          image: "{{ .Values.insightsMCP.image.repository }}:{{ .Values.insightsMCP.image.tag | default .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.insightsMCP.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: {{ .Values.insightsMCP.port }}
+              protocol: TCP
+          {{- with .Values.insightsMCP.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          env:
+            - name: MCP_SERVER_TYPE
+              value: {{ .Values.insightsMCP.serverType | quote }}
+            - name: MCP_SERVER_PORT
+              value: {{ .Values.insightsMCP.port | quote }}
+            - name: FAIRWINDS_API_BASE_URL
+              value: {{ include "fairwinds-insights.insightsMCP.fairwindsApiBaseUrl" . | quote }}
+            {{- with .Values.insightsMCP.additionalEnvVars }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- with .Values.insightsMCP.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.insightsMCP.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.insightsMCP.startupProbe }}
+          startupProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.insightsMCP.resources | nindent 12 }}
+          securityContext:
+            {{- toYaml .Values.insightsMCP.securityContext | nindent 12 }}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+            {{- with .Values.insightsMCP.extraVolumeMounts }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+        {{- with .Values.insightsMCP.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+{{- end }}

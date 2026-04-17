@@ -1,0 +1,18 @@
+{{- if and .Values.insightsMCP.enabled .Values.insightsMCP.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-insights-mcp-hpa
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: insights-mcp
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "fairwinds-insights.fullname" . }}-insights-mcp
+  minReplicas: {{ .Values.insightsMCP.hpa.min }}
+  maxReplicas: {{ .Values.insightsMCP.hpa.max }}
+  metrics:
+  {{- toYaml .Values.insightsMCP.hpa.metrics | nindent 4 }}
+{{- end }}

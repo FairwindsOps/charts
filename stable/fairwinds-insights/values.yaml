@@ -423,6 +423,159 @@ openApi:
     # -- Service type for Open API server
     type:
 
+# -- [Fairwinds Insights MCP server](https://quay.io/repository/fairwinds/insights-mcp-server) — Model Context Protocol bridge to the Insights API. **Disabled by default.**Transport `MCP_SERVER_TYPE` must be `sse` or `streamable` in-cluster (`stdio` is for local clients). Env vars and behavior follow the upstream server; the image defaults include `FAIRWINDS_API_BASE_URL` (override with `insightsMCP.fairwindsApiBaseUrl` or rely on `options.host` / ingress hostname).
+insightsMCP:
+  # -- Deploy the Insights MCP server workload
+  enabled: false
+  image:
+    # -- Container image repository
+    repository: quay.io/fairwinds/insights-mcp-server
+    # -- Image tag (`latest` matches the published default; pin a digest or version for production)
+    tag: latest
+    # -- Image pull policy
+    pullPolicy: Always
+  # -- Pod replica count (ignored at runtime when `hpa.enabled` is true)
+  replicas: 1
+  # -- `MCP_SERVER_TYPE`: `stdio` (local), `sse`, or `streamable` — use `sse` or `streamable` in Kubernetes
+  serverType: sse
+  # -- `MCP_SERVER_PORT` / container listen port
+  port: 8080
+  # -- `FAIRWINDS_API_BASE_URL` — Insights API base URL for the MCP server. If empty, uses `options.host`, else the first `ingress.hostedZones` entry with `https://`, else the SaaS default.
+  fairwindsApiBaseUrl: ""
+  # -- Extra environment variables for the MCP container (appended after built-in env)
+  additionalEnvVars: []
+  # -- Optional `envFrom` (ConfigMaps / Secrets) for bulk env injection
+  envFrom: []
+  # -- Container resources
+  resources:
+    limits:
+      cpu: 500m
+      memory: 512Mi
+    requests:
+      cpu: 50m
+      memory: 128Mi
+  # -- Container security context (`insights-mcp` image runs as UID 1001)
+  securityContext:
+    readOnlyRootFilesystem: true
+    allowPrivilegeEscalation: false
+    privileged: false
+    runAsNonRoot: true
+    runAsUser: 1001
+    capabilities:
+      drop:
+        - ALL
+  # -- Pod-level security context
+  podSecurityContext:
+    fsGroup: 1001
+  # -- Liveness probe (TCP avoids hanging on SSE paths)
+  livenessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 15
+    periodSeconds: 20
+    timeoutSeconds: 5
+    failureThreshold: 3
+  # -- Readiness probe
+  readinessProbe:
+    tcpSocket:
+      port: http
+    initialDelaySeconds: 5
+    periodSeconds: 10
+    timeoutSeconds: 3
+    failureThreshold: 3
+  # -- Optional startup probe (e.g. set `tcpSocket.port: http` and `failureThreshold` for slow starts)
+  # startupProbe: {}
+  # -- Mount extra volumes (e.g. custom CA)
+  extraVolumeMounts: []
+  extraVolumes: []
+  # -- Optional init containers
+  initContainers: []
+  pdb:
+    # -- PodDisruptionBudget for the MCP Deployment
+    enabled: false
+    # -- Minimum available pods (map to PDB `minAvailable`)
+    minReplicas: 1
+  hpa:
+    # -- HorizontalPodAutoscaler for the MCP Deployment
+    enabled: false
+    min: 1
+    max: 3
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 75
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 80
+  service:
+    # -- Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`)
+    type: ClusterIP
+    # -- Service port exposed to clients (targets the container `http` port)
+    port: 8080
+    # -- Service annotations (e.g. cloud LB internal annotations)
+    annotations: {}
+    # -- `nodePort` when `type` is `NodePort`
+    nodePort:
+  ingress:
+    # -- Create a dedicated `Ingress` for the MCP service (paths below; SSE commonly uses `/sse` and `/message`)
+    enabled: false
+    # -- Explicit hostnames (overrides `ingress.hostedZones` when non-empty)
+    hosts: []
+    paths:
+      - path: /sse
+        pathType: Prefix
+      - path: /message
+        pathType: Prefix
+    # -- Ingress annotations (consider disabling buffering for SSE, e.g. `nginx.ingress.kubernetes.io/proxy-buffering: "off"`)
+    annotations: {}
+    # -- TLS for this Ingress (uses `tlsSecretName` or the chart default `<fullname>-cert` pattern)
+    tls: false
+    tlsSecretName: ""
+  # -- Node selector for MCP pods
+  nodeSelector: {}
+  # -- Tolerations for MCP pods
+  tolerations: []
+  # -- Affinity for MCP pods
+  affinity: {}
+  # topologySpreadConstraints -- Spread MCP pods across zones/nodes
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: insights-mcp
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: insights-mcp
+          app.kubernetes.io/name: fairwinds-insights
+  # -- Pod annotations
+  podAnnotations: {}
+  # -- Extra labels on the pod template
+  podLabels: {}
+  # -- Annotations on the Deployment
+  deploymentAnnotations: {}
+  # -- Priority class name
+  priorityClassName: ""
+  revisionHistoryLimit: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  # -- Disable service account token mount if the workload does not need the Kubernetes API
+  automountServiceAccountToken: false
+
 dbMigration:
   # -- Override the Helm hook for the database migration job.
   overrideHook: ""

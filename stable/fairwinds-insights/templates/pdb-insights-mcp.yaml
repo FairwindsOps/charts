@@ -1,0 +1,15 @@
+{{- if and .Values.insightsMCP.enabled .Values.insightsMCP.pdb.enabled }}
+apiVersion: {{ ternary "policy/v1" "policy/v1beta1" (semverCompare ">=1.21.0-0" .Capabilities.KubeVersion.Version) }}
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-insights-mcp-pdb
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: insights-mcp
+spec:
+  minAvailable: {{ .Values.insightsMCP.pdb.minReplicas }}
+  selector:
+    matchLabels:
+      {{- include "fairwinds-insights.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: insights-mcp
+{{- end }}
