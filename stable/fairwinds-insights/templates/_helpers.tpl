@@ -154,9 +154,9 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/* Base URL for the Insights API as seen by the MCP server (self-hosted vs SaaS). */}}
-{{- define "fairwinds-insights.insightsMCP.fairwindsApiBaseUrl" -}}
-{{- if .Values.insightsMCP.fairwindsApiBaseUrl -}}
-{{- .Values.insightsMCP.fairwindsApiBaseUrl -}}
+{{- define "fairwinds-insights.mcp.fairwindsApiBaseUrl" -}}
+{{- if .Values.mcp.fairwindsApiBaseUrl -}}
+{{- .Values.mcp.fairwindsApiBaseUrl -}}
 {{- else if .Values.options.host -}}
 {{- .Values.options.host -}}
 {{- else if gt (len .Values.ingress.hostedZones) 0 -}}

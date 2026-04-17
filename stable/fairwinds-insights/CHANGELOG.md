@@ -1,7 +1,7 @@
 # Changelog
 
 ## 8.1.0
-* Add optional **Insights MCP server** Deployment (`insightsMCP`, disabled by default)
+* Add optional **Insights MCP server** Deployment (`mcp`, disabled by default)
 
 ## 8.0.1
 * Mount the self-hosted TLS secret (`selfHostedSecret`) on **Temporal worker** pods at `/var/run/secrets/self-hosted`, matching the API deployment. Workers use the same `env` template (`FAIRWINDS_CERTIFICATE_LOCATION`), so without this mount `current.pem` was missing at runtime.

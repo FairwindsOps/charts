@@ -423,8 +423,8 @@ openApi:
     # -- Service type for Open API server
     type:
 
-# -- [Fairwinds Insights MCP server](https://quay.io/repository/fairwinds/insights-mcp-server) — Model Context Protocol bridge to the Insights API. **Disabled by default.**Transport `MCP_SERVER_TYPE` must be `sse` or `streamable` in-cluster (`stdio` is for local clients). Env vars and behavior follow the upstream server; the image defaults include `FAIRWINDS_API_BASE_URL` (override with `insightsMCP.fairwindsApiBaseUrl` or rely on `options.host` / ingress hostname).
-insightsMCP:
+# -- [Fairwinds Insights MCP server](https://quay.io/repository/fairwinds/insights-mcp-server) — Model Context Protocol bridge to the Insights API. **Disabled by default.**Transport `MCP_SERVER_TYPE` must be `sse` or `streamable` in-cluster (`stdio` is for local clients). Env vars and behavior follow the upstream server; the image defaults include `FAIRWINDS_API_BASE_URL` (override with `mcp.fairwindsApiBaseUrl` or rely on `options.host` / `ingress.hostedZones`). When `ingress.enabled` is true, `/mcp` is routed on the main Ingress to the MCP service.
+mcp:
   # -- Deploy the Insights MCP server workload
   enabled: false
   image:
@@ -437,10 +437,10 @@ insightsMCP:
   # -- Pod replica count (ignored at runtime when `hpa.enabled` is true)
   replicas: 1
   # -- `MCP_SERVER_TYPE`: `stdio` (local), `sse`, or `streamable` — use `sse` or `streamable` in Kubernetes
-  serverType: sse
+  serverType: streamable
   # -- `MCP_SERVER_PORT` / container listen port
   port: 8080
-  # -- `FAIRWINDS_API_BASE_URL` — Insights API base URL for the MCP server. If empty, uses `options.host`, else the first `ingress.hostedZones` entry with `https://`, else the SaaS default.
+  # -- `FAIRWINDS_API_BASE_URL` — Insights API base URL for the MCP server. If empty, uses `options.host`, else the first `ingress.hostedZones` with `https://`, else the SaaS default.
   fairwindsApiBaseUrl: ""
   # -- Extra environment variables for the MCP container (appended after built-in env)
   additionalEnvVars: []
@@ -448,13 +448,13 @@ insightsMCP:
   envFrom: []
   # -- Container resources
   resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
     limits:
       cpu: 500m
       memory: 512Mi
-    requests:
-      cpu: 50m
-      memory: 128Mi
-  # -- Container security context (`insights-mcp` image runs as UID 1001)
+  # -- Container security context (`mcp` image runs as UID 1001)
   securityContext:
     readOnlyRootFilesystem: true
     allowPrivilegeEscalation: false
@@ -523,20 +523,8 @@ insightsMCP:
     # -- `nodePort` when `type` is `NodePort`
     nodePort:
   ingress:
-    # -- Create a dedicated `Ingress` for the MCP service (paths below; SSE commonly uses `/sse` and `/message`)
+    # -- Enable the MCP ingress
     enabled: false
-    # -- Explicit hostnames (overrides `ingress.hostedZones` when non-empty)
-    hosts: []
-    paths:
-      - path: /sse
-        pathType: Prefix
-      - path: /message
-        pathType: Prefix
-    # -- Ingress annotations (consider disabling buffering for SSE, e.g. `nginx.ingress.kubernetes.io/proxy-buffering: "off"`)
-    annotations: {}
-    # -- TLS for this Ingress (uses `tlsSecretName` or the chart default `<fullname>-cert` pattern)
-    tls: false
-    tlsSecretName: ""
   # -- Node selector for MCP pods
   nodeSelector: {}
   # -- Tolerations for MCP pods
@@ -550,14 +538,14 @@ insightsMCP:
       whenUnsatisfiable: ScheduleAnyway
       labelSelector:
         matchLabels:
-          app.kubernetes.io/component: insights-mcp
+          app.kubernetes.io/component: mcp
           app.kubernetes.io/name: fairwinds-insights
     - maxSkew: 1
       topologyKey: kubernetes.io/hostname
       whenUnsatisfiable: ScheduleAnyway
       labelSelector:
         matchLabels:
-          app.kubernetes.io/component: insights-mcp
+          app.kubernetes.io/component: mcp
           app.kubernetes.io/name: fairwinds-insights
   # -- Pod annotations
   podAnnotations: {}
