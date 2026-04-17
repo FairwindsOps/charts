@@ -47,7 +47,7 @@ spec:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
           {{- end }}
-          {{- if and .Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
           - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
             backend:
               serviceName: {{ $fullName }}-mcp
@@ -138,7 +138,7 @@ spec:
               serviceName: {{ $fullName }}-open-api
               servicePort: http
           {{- end }}
-          {{- if and .Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
           - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
             backend:
               serviceName: {{ $fullName }}-mcp
@@ -200,7 +200,7 @@ spec:
                 port:
                   name: http
           {{- end }}
-          {{- if and .Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
           - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
             pathType: Prefix
             backend:
@@ -305,7 +305,7 @@ spec:
                 port:
                   name: http
           {{- end }}
-          {{- if and .Values.mcp.enabled $.Values.mcp.ingress.enabled }}
+          {{- if and $.Values.mcp.enabled $.Values.mcp.ingress.enabled }}
           - path: {{ $.Values.ingress.starPaths | ternary "/mcp/*" "/mcp" }}
             pathType: Prefix
             backend:
