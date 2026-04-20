@@ -517,7 +517,7 @@ mcp:
     # -- Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`)
     type: ClusterIP
     # -- Service port exposed to clients (targets the container `http` port)
-    port: 8080
+    port: 80
     # -- Service annotations (e.g. cloud LB internal annotations)
     annotations: {}
     # -- `nodePort` when `type` is `NodePort`

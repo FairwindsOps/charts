@@ -1,5 +1,8 @@
 # Changelog
 
+## 8.1.1
+* Update MCP service configuration
+
 ## 8.1.0
 * Add optional **Insights MCP server** Deployment (`mcp`, disabled by default)
 
