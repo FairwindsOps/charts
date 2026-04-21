@@ -515,9 +515,9 @@ mcp:
             averageUtilization: 80
   service:
     # -- Service type (`ClusterIP`, `NodePort`, or `LoadBalancer`)
-    type: ClusterIP
+    type:
     # -- Service port exposed to clients (targets the container `http` port)
-    port: 80
+    port:
     # -- Service annotations (e.g. cloud LB internal annotations)
     annotations: {}
     # -- `nodePort` when `type` is `NodePort`
@@ -604,7 +604,7 @@ service:
   # -- Port to be used for the API and Dashboard services.
   port: 80
   # -- Service type for the API and Dashboard services
-  type: ClusterIP
+  type: NodePort
   # -- Annotations for the services
   annotations:
 

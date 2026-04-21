@@ -1,5 +1,8 @@
 # Changelog
 
+## 8.1.2
+* Remove default values for `mcp.service.type` and `mcp.service.port`
+
 ## 8.1.1
 * Update MCP service configuration
 
