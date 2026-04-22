@@ -1,5 +1,8 @@
 # Changelog
 
+## 8.1.3
+* Bumped images for fixing vulnerabilities 
+
 ## 8.1.2
 * Remove default values for `mcp.service.type` and `mcp.service.port`
 

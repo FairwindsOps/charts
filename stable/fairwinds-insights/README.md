@@ -24,7 +24,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
-| openApiImage.tag | string | `"v5.32.1"` | Overrides tag for the Open API server, defaults to image.tag |
+| openApiImage.tag | string | `"v5.32.4"` | Overrides tag for the Open API server, defaults to image.tag |
 | options.agentChartTargetVersion | string | `"5.3.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
@@ -261,7 +261,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | rustfs.resources.requests.memory | string | `"256Mi"` |  |
 | rustfs.createBucketJob.enabled | bool | `true` |  |
 | rustfs.createBucketJob.repository | string | `"amazon/aws-cli"` |  |
-| rustfs.createBucketJob.tag | string | `"2.34.19"` |  |
+| rustfs.createBucketJob.tag | string | `"2.34.31"` |  |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
