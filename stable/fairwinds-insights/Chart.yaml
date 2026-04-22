@@ -10,7 +10,7 @@ maintainers:
   - name: jdesouza
 dependencies:
   - name: rustfs
-    version: 0.0.90
+    version: 0.0.93
     repository: https://charts.rustfs.com/
     condition: rustfs.install
   - name: temporal
