@@ -4,6 +4,7 @@
 * Pinned CI test image to `python:3.14.4-alpine3.23`
 * Bumped CI test image default to `python:3.13-alpine`
 * Bumped CI test image default from `python:3.10-alpine` to `python:3.12-alpine`
+* Bumped image from alpine/kubectl:1.35.3 to alpine/kubectl:1.35.4
 
 ## 1.12.0
 * Set explicit `spec.privateKey.rotationPolicy` on the cert-manager Certificate for cert-manager v1.18.0+ compatibility (configurable via `privateKeyRotationPolicy`).
