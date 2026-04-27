@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.6.4
+* Bumped workloads plugin to `2.9` and prometheus-collector to `1.9`
+
 ## 5.6.3
 * Bumped goldilocks subchart to `10.3.*`, prometheus to `28.14.*`, and dcgm-exporter to `4.8.1`
 

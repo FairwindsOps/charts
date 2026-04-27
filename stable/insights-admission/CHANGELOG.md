@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.12.3
+* Pinned CI test image to `python:3.14.4-alpine3.23` (latest `library/python` patch + Alpine variant on Docker Hub)
+
+## 1.12.2
+* Bumped CI test image default to `python:3.13-alpine`
+
+## 1.12.1
+* Bumped CI test image default from `python:3.10-alpine` to `python:3.12-alpine`
+
 ## 1.12.0
 * Set explicit `spec.privateKey.rotationPolicy` on the cert-manager Certificate for cert-manager v1.18.0+ compatibility (configurable via `privateKeyRotationPolicy`).
 

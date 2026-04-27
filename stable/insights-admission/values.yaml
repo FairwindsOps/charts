@@ -253,4 +253,4 @@ test:
   enabled: false
   image:
     repository: "python"
-    tag: "3.10-alpine"
+    tag: "3.14.4-alpine3.23"
