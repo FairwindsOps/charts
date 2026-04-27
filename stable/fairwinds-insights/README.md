@@ -267,7 +267,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
 | migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
 | cronjobExecutor.image.repository | string | `"alpine/kubectl"` |  |
-| cronjobExecutor.image.tag | string | `"1.35.3"` |  |
+| cronjobExecutor.image.tag | string | `"1.35.4"` |  |
 | cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |

@@ -1,5 +1,8 @@
 # Changelog
 
+## 8.1.4
+* Bumped image from `alpine/kubectl:1.35.3` to `alpine/kubectl:1.35.4`
+
 ## 8.1.3
 * Bumped images for fixing vulnerabilities 
 
