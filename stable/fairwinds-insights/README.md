@@ -384,13 +384,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.datastores.visibility.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
 | temporal.server.additionalVolumes[0].name | string | `"secret-with-certs"` |  |
 | temporal.server.additionalVolumes[0].secret.secretName | string | `"fwinsights-postgresql-ca"` |  |
-| temporal.server.additionalVolumes[0].secret.defaultMode | int | `384` |  |
+| temporal.server.additionalVolumes[0].secret.defaultMode | int | `365` |  |
 | temporal.server.additionalVolumeMounts[0].name | string | `"secret-with-certs"` |  |
 | temporal.server.additionalVolumeMounts[0].mountPath | string | `"/etc/temporal/tls"` |  |
 | temporal.server.additionalVolumeMounts[0].readOnly | bool | `true` |  |
 | temporal.admintools.additionalVolumes[0].name | string | `"secret-with-certs"` |  |
 | temporal.admintools.additionalVolumes[0].secret.secretName | string | `"fwinsights-postgresql-ca"` |  |
-| temporal.admintools.additionalVolumes[0].secret.defaultMode | int | `384` |  |
+| temporal.admintools.additionalVolumes[0].secret.defaultMode | int | `365` |  |
 | temporal.admintools.additionalVolumeMounts[0].name | string | `"secret-with-certs"` |  |
 | temporal.admintools.additionalVolumeMounts[0].mountPath | string | `"/etc/temporal/tls"` |  |
 | temporal.admintools.additionalVolumeMounts[0].readOnly | bool | `true` |  |
