@@ -1214,6 +1214,9 @@ temporal:
   # custom values from temporal chart (v1.x: no bundled DB subcharts; persistence uses raw server config under datastores)
   enabled: true
   fullnameOverride: insights-temporal
+  schema:
+    # Set to true to use Helm hooks for schema creation. In certain environments, enabling Helm hooks can cause database creation to fail and block installation.
+    useHelmHooks: false
   # Temporal server 1.30+ images — disable legacy shims (https://github.com/temporalio/helm-charts/blob/main/UPGRADING.md)
   shims:
     dockerize: false
