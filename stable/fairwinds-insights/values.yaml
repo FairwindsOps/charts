@@ -1217,6 +1217,9 @@ temporal:
   schema:
     # Set to true to use Helm hooks for schema creation. In certain environments, enabling Helm hooks can cause database creation to fail and block installation.
     useHelmHooks: false
+    securityContext:
+      fsGroup: 1000
+      runAsUser: 1000
   # Temporal server 1.30+ images — disable legacy shims (https://github.com/temporalio/helm-charts/blob/main/UPGRADING.md)
   shims:
     dockerize: false
@@ -1283,7 +1286,7 @@ temporal:
       - name: secret-with-certs
         secret:
           secretName: fwinsights-postgresql-ca
-          defaultMode: 0555
+          defaultMode: 0600
 
     additionalVolumeMounts:
       - name: secret-with-certs
@@ -1296,7 +1299,7 @@ temporal:
       - name: secret-with-certs
         secret:
           secretName: fwinsights-postgresql-ca
-          defaultMode: 0555
+          defaultMode: 0600
     additionalVolumeMounts:
       - name: secret-with-certs
         mountPath: "/etc/temporal/tls"
