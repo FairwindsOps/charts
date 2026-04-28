@@ -1283,7 +1283,7 @@ temporal:
       - name: secret-with-certs
         secret:
           secretName: fwinsights-postgresql-ca
-          defaultMode: 0600
+          defaultMode: 0555
 
     additionalVolumeMounts:
       - name: secret-with-certs
@@ -1296,7 +1296,7 @@ temporal:
       - name: secret-with-certs
         secret:
           secretName: fwinsights-postgresql-ca
-          defaultMode: 0600
+          defaultMode: 0555
     additionalVolumeMounts:
       - name: secret-with-certs
         mountPath: "/etc/temporal/tls"
