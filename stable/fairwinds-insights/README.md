@@ -338,6 +338,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.namespace | string | `"fwinsights"` |  |
 | temporal.enabled | bool | `true` |  |
 | temporal.fullnameOverride | string | `"insights-temporal"` |  |
+| temporal.schema.useHelmHooks | bool | `false` |  |
 | temporal.shims.dockerize | bool | `false` |  |
 | temporal.shims.elasticsearchTool | bool | `false` |  |
 | temporal.server.replicaCount | int | `1` |  |
