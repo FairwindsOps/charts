@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.0.0
+* **BREAKING (Temporal subchart):** Bumped **`temporal`** from **0.73.2** to **1.1.1**.
+* **Migration guide:** [MIGRATION-8-to-9.md](./MIGRATION-8-to-9.md) (from chart 8.x when using bundled Temporal).
+
 ## 8.1.4
 * Bumped image from `alpine/kubectl:1.35.3` to `alpine/kubectl:1.35.4`
 
