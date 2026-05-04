@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.0.1
+* Upgrade `temporalSchedulersJob` to use image `temporalio/admin-tools:1.30.4.1`
+
 ## 9.0.0
 * **BREAKING (Temporal subchart):** Bumped **`temporal`** from **0.73.2** to **1.2.0**.
 * **Migration guide:** [MIGRATION-8-to-9.md](./MIGRATION-8-to-9.md) (from chart 8.x when using bundled Temporal).

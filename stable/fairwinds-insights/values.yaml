@@ -1186,7 +1186,7 @@ temporalSchedulers: []
 temporalSchedulersJob:
   image:
     repository: temporalio/admin-tools
-    tag: "1.29.1-tctl-1.18.4-cli-1.5"
+    tag: "1.30.4.1"
   resources:
     requests:
       cpu: 50m
