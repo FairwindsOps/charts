@@ -1,6 +1,6 @@
 # Migrating fairwinds-insights Helm chart from 8.x to 9.x
 
-Chart **9.0.0** bumps the bundled **[Temporal Helm chart](https://github.com/temporalio/helm-charts)** dependency from **0.73.2** to **1.1.1** and aligns defaults with **Temporal server 1.30.x** and the **Temporal UI** image used by that subchart. Read this before upgrading production if `temporal.enabled` is `true` or you override `temporal.*` values.
+Chart **9.0.0** bumps the bundled **[Temporal Helm chart](https://github.com/temporalio/helm-charts)** dependency from **0.73.2** to **1.2.0** and aligns defaults with **Temporal server 1.30.x** and the **Temporal UI** image used by that subchart. Read this before upgrading production if `temporal.enabled` is `true` or you override `temporal.*` values.
 
 For a concise list of release changes, see [CHANGELOG.md](./CHANGELOG.md).
 
@@ -10,10 +10,10 @@ Upstream background (generic Temporal chart behavior): [UPGRADING.md](https://gi
 
 | Area | Chart 8.x | Chart 9.x |
 |------|-----------|-----------|
-| Temporal subchart | **0.73.2** | **1.1.1** |
+| Temporal subchart | **0.73.2** | **1.2.0** |
 | Server config delivery | Dockerize-style ConfigMap (`insights-temporal-dockerize-config`, `.Env.TEMPORAL_STORE_PASSWORD` in template) | Native config template (`insights-temporal-config`, `TEMPORAL_DEFAULT_STORE_PASSWORD`) |
 | Legacy shims | Effectively dockerize path with 1.29-era images | Defaults set **`shims.dockerize: false`** and **`shims.elasticsearchTool: false`** for Temporal **1.30+** |
-| Default server / admin-tools image line | Temporal **1.29.1** (per 0.73.2 defaults) | Temporal **1.30.3** (per 1.1.1 defaults) |
+| Default server / admin-tools image line | Temporal **1.29.1** (per 0.73.2 defaults) | Temporal **1.30.3** (per 1.2.0 defaults) |
 | Internal frontend Service | **0.73.x** could render `insights-temporal-internal-frontend` | Often **not** rendered unless you enable **`server.internal-frontend`** in Temporal values; main client path remains **`insights-temporal-frontend:7233`** |
 | Probes | Older defaults | Frontend **gRPC readiness** and Temporal Web **`/healthz`** readiness are common in 1.x subchart defaults |
 | Insights app ↔ Temporal | `temporal.hostPort` / `temporal.namespace` unchanged in principle | Still **`insights-temporal-frontend:7233`** and namespace **`fwinsights`** in chart defaults |
