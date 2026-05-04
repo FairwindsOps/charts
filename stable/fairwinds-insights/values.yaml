@@ -1211,21 +1211,19 @@ temporal:
   # fairwinds-insights specific values - this will be inject as an env vars into fairwinds insights deployments
   hostPort: "insights-temporal-frontend:7233"
   namespace: "fwinsights"
-  # custom values from temporal chart
+  # custom values from temporal chart (v1.x: no bundled DB subcharts; persistence uses raw server config under datastores)
   enabled: true
   fullnameOverride: insights-temporal
-  cassandra:
-    enabled: false
-  prometheus:
-    enabled: false
-  elasticsearch:
-    enabled: false
-  grafana:
-    enabled: false
-  mysql:
-    enabled: false
-  postgresql:
-    enabled: true
+  schema:
+    # Set to true to use Helm hooks for schema creation. In certain environments, enabling Helm hooks can cause database creation to fail and block installation.
+    useHelmHooks: false
+    securityContext:
+      fsGroup: 1000
+      runAsUser: 1000
+  # Temporal server 1.30+ images — disable legacy shims (https://github.com/temporalio/helm-charts/blob/main/UPGRADING.md)
+  shims:
+    dockerize: false
+    elasticsearchTool: false
   server:
     replicaCount: 1
     config:
@@ -1235,47 +1233,54 @@ temporal:
           - name: fwinsights
             retention: 3d
       persistence:
-        default:
-          driver: "sql"
-          sql:
-            driver: "postgres12"
-            database: temporal
-            host: insights-postgres-rw
-            port: 5432
-            user: postgres
-            existingSecret: fwinsights-postgresql
-            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
-            # it has a single key called `password`
-            maxConns: 5
-            maxIdleConns: 3
-            maxConnLifetime: "1h"
-            tls:
-              enabled: true
-              enableHostVerification: false
-              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-              certFile: /etc/temporal/tls/tls.crt
-              keyFile: /etc/temporal/tls/tls.key
-
-        visibility:
-          driver: "sql"
-          sql:
-            driver: "postgres12"
-            database: temporal_visibility
-            host: insights-postgres-rw
-            port: 5432
-            user: postgres
-            existingSecret: fwinsights-postgresql
-            # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
-            # it has a single key called `password`
-            maxConns: 5
-            maxIdleConns: 3
-            maxConnLifetime: "1h"
-            tls:
-              enabled: true
-              enableHostVerification: false
-              # Here we assumed that caFile, certFile, keyFile are stored in one secret mounted as 'secret-with-certs' (see: server.additionalVolumes and server.additionalVolumeMounts sections).
-              certFile: /etc/temporal/tls/tls.crt
-              keyFile: /etc/temporal/tls/tls.key
+        defaultStore: default
+        visibilityStore: visibility
+        # Must match the value from the initial Temporal deployment (default in pre-1.0 chart was 512).
+        numHistoryShards: 512
+        datastores:
+          default:
+            sql:
+              # Databases are expected to exist; schema job still runs when manageSchema is true.
+              createDatabase: true
+              manageSchema: true
+              pluginName: postgres12
+              driverName: postgres12
+              databaseName: temporal
+              connectAddr: "insights-postgres-rw:5432"
+              connectProtocol: tcp
+              user: postgres
+              existingSecret: fwinsights-postgresql
+              # for a production deployment use this instead of `password` and provision the secret beforehand e.g. with a sealed secret
+              secretKey: password
+              maxConns: 5
+              maxIdleConns: 3
+              maxConnLifetime: "1h"
+              tls:
+                enabled: true
+                enableHostVerification: false
+                # cert/key stored in secret-with-certs (server + admintools volume mounts below).
+                certFile: /etc/temporal/tls/tls.crt
+                keyFile: /etc/temporal/tls/tls.key
+          visibility:
+            sql:
+              createDatabase: true
+              manageSchema: true
+              pluginName: postgres12
+              driverName: postgres12
+              databaseName: temporal_visibility
+              connectAddr: "insights-postgres-rw:5432"
+              connectProtocol: tcp
+              user: postgres
+              existingSecret: fwinsights-postgresql
+              secretKey: password
+              maxConns: 5
+              maxIdleConns: 3
+              maxConnLifetime: "1h"
+              tls:
+                enabled: true
+                enableHostVerification: false
+                certFile: /etc/temporal/tls/tls.crt
+                keyFile: /etc/temporal/tls/tls.key
 
     additionalVolumes:
       - name: secret-with-certs
@@ -1283,6 +1288,18 @@ temporal:
           secretName: fwinsights-postgresql-ca
           defaultMode: 0600
 
+    additionalVolumeMounts:
+      - name: secret-with-certs
+        mountPath: "/etc/temporal/tls"
+        readOnly: true
+
+  # Schema / create-database init jobs use admintools.* mounts (not server.*).
+  admintools:
+    additionalVolumes:
+      - name: secret-with-certs
+        secret:
+          secretName: fwinsights-postgresql-ca
+          defaultMode: 0600
     additionalVolumeMounts:
       - name: secret-with-certs
         mountPath: "/etc/temporal/tls"
