@@ -23,8 +23,8 @@ dashboardImage:
   # -- Overrides tag for the dashboard, defaults to image.tag
   tag:
 apiImage:
-  # -- Docker image repository for the API server
-  repository: quay.io/fairwinds/insights-api
+  # -- Docker image repository for the API server (default is GCR; Fairwinds SaaS deploys typically override this; see FairwindsOps/Insights release pipeline)
+  repository: gcr.io/fairwinds-ops/insights-api
   # -- Overrides tag for the API server, defaults to image.tag
   tag:
 migrationImage:

@@ -17,7 +17,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | polaris.config | string | `nil` | Configuration for Polaris |
 | dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
 | dashboardImage.tag | string | `nil` | Overrides tag for the dashboard, defaults to image.tag |
-| apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
+| apiImage.repository | string | `"gcr.io/fairwinds-ops/insights-api"` | Docker image repository for the API server (default is GCR; Fairwinds SaaS deploys typically override this; see FairwindsOps/Insights release pipeline) |
 | apiImage.tag | string | `nil` | Overrides tag for the API server, defaults to image.tag |
 | migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
 | migrationImage.tag | string | `nil` | Overrides tag for the migration image, defaults to image.tag |
