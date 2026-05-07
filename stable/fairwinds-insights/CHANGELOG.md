@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.1.0
+* Add temporal deployment `report-job-worker` to be able to process worker using temporal
+
 ## 9.0.1
 * Upgrade `temporalSchedulersJob` to use image `temporalio/admin-tools:1.30.4.1`
 
