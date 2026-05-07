@@ -14,7 +14,7 @@ mergeConfig: false
 
 image:
   # image.repository -- Image repo
-  repository: quay.io/fairwinds/polaris
+  repository: us-docker.pkg.dev/fairwinds-ops/oss/polaris
   # image.tag -- The Polaris Image tag to use. Defaults to the Chart's AppVersion
   tag: ""
   # image.pullPolicy -- Image pull policy

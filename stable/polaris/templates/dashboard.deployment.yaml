@@ -82,7 +82,7 @@ spec:
         {{- if .Values.mergeConfig }}
         - --merge-config
         {{- end }}
-        image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
+        image: '{{.Values.image.repository}}:{{ include "polaris.imageTag" . }}'
         imagePullPolicy: '{{.Values.image.pullPolicy}}'
         name: dashboard
         ports:

@@ -5,6 +5,11 @@ All notable changes to this Helm chart will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this chart adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 6.0.0
+* **Breaking:** Default container image is now `us-docker.pkg.dev/fairwinds-ops/oss/polaris`; `quay.io/fairwinds/polaris` is deprecated upstream as of Polaris [v10.2.0](https://github.com/FairwindsOps/polaris/releases/tag/v10.2.0). Set `image.repository` (and `image.tag` if needed) to remain on Quay while you migrate.
+* Update Polaris to 10.2.0.
+* Add support for `appVersion` be written with or without a leading `v` when `image.tag` is unset.
+
 ## 5.17.0
 * Removed the switch for networking apiVersion and default to networking/v1
 

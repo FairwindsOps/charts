@@ -39,7 +39,7 @@ the 0.10.0 version of this chart will only work on kubernetes 1.14.0+
 | configUrl | string | `nil` | Use a config from an accessible URL source.  NOTE: `config` & `configUrl` are mutually exclusive.  Setting `configURL` will take precedence over `config`.  Only one may be used. configUrl: https://example.com/config.yaml |
 | additionalExemptions | string | `nil` | List of additional exemptions to append to the exemptions given in `config` |
 | mergeConfig | bool | `false` | If the config should be merged with the default config. See https://github.com/FairwindsOps/polaris/pull/1075 |
-| image.repository | string | `"quay.io/fairwinds/polaris"` | Image repo |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/polaris"` | Image repo |
 | image.tag | string | `""` | The Polaris Image tag to use. Defaults to the Chart's AppVersion |
 | image.pullPolicy | string | `"Always"` | Image pull policy |
 | image.pullSecrets | list | `[]` | Image pull secrets |

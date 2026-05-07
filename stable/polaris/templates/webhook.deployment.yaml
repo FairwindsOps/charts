@@ -55,7 +55,7 @@ spec:
             {{- if .Values.webhook.logLevel }}
             - --log-level={{ .Values.webhook.logLevel }}
             {{- end }}
-          image: '{{.Values.image.repository}}:{{.Values.image.tag | default .Chart.AppVersion }}'
+          image: '{{.Values.image.repository}}:{{ include "polaris.imageTag" . }}'
           imagePullPolicy: '{{.Values.image.pullPolicy}}'
           ports:
             - containerPort: 9876

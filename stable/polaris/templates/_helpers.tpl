@@ -68,3 +68,19 @@ Name of the service account to use
     {{ default "default" .Values.serviceAccount.name }}
 {{- end -}}
 {{- end -}}
+
+{{/*
+Polaris OSS images use v-prefixed semver tags on Artifact Registry (e.g. v10.2.0).
+*/}}
+{{- define "polaris.imageTag" -}}
+{{- if .Values.image.tag -}}
+{{- .Values.image.tag -}}
+{{- else -}}
+{{- $v := .Chart.AppVersion -}}
+{{- if hasPrefix "v" $v -}}
+{{- $v -}}
+{{- else -}}
+{{- printf "v%s" $v -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
