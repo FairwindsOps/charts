@@ -689,6 +689,26 @@ postgresql:
     existingSuperUserSecret: fwinsights-postgresql-superuser
     secretKeys:
       adminPasswordKey: postgresql-password
+    # When `ephemeral` is false, optionally create an ExternalSecret that materializes
+    # `existingSecret` with the same keys as a hand-written Secret (postgresql-password,
+    # password for Temporal SQL, readonly-password, timescale-password). Requires
+    # External Secrets Operator and a SecretStore/ClusterSecretStore whose Vault KV v2
+    # mount matches `externalSecret.vault.path` as `remoteRef.key` (path after mount).
+    # Override `vault.path` and `vault.*Property` to match your KV secret field names.
+    externalSecret:
+      enabled: false
+      apiVersion: external-secrets.io/v1beta1
+      refreshInterval: 1h
+      secretStoreRef:
+        name: vault
+        kind: ClusterSecretStore
+      vault:
+        path: insights/postgres
+        postgresqlPasswordProperty: postgresql_password
+        readonlyPasswordProperty: readonly_password
+        timescalePasswordProperty: timescale_password
+        # If empty, the same Vault property as postgresqlPasswordProperty is used.
+        temporalPasswordProperty: ""
   # -- PostgreSQL configuration parameters
   parameters:
     max_connections: "100"

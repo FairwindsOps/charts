@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.1.1
+* Optional **ExternalSecret** for `postgresql.auth.existingSecret` when using external Postgres (`postgresql.ephemeral` false): set `postgresql.auth.externalSecret.enabled` to sync `fwinsights-postgresql` from Vault KV with keys `postgresql-password`, `password`, `readonly-password`, and `timescale-password` (same shape as a hand-managed Secret). Defaults use a generic KV path (`insights/postgres`) and field names (`postgresql_password`, `readonly_password`, `timescale_password`); override `postgresql.auth.externalSecret.vault` to match your Vault layout.
+
 ## 9.1.0
 * Add temporal deployment `report-job-worker` to be able to process worker using temporal
 
