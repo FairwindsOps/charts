@@ -681,7 +681,7 @@ postgresql:
     requests:
       cpu: 75m
       memory: 256Mi
-  # -- Authentication configuration
+  # -- Authentication configuration. When `auth.externalSecret.enabled` and not `ephemeral`, an ExternalSecret is created: set `auth.externalSecret.data` to the `spec.data` list (each entry `secretKey` + `remoteRef`); defaults target Vault KV `insights/postgres`. The chart pins `apiVersion`, refresh policy/interval, and ClusterSecretStore `fairwinds-vault-backend`.
   auth:
     username: postgres
     database: fairwinds_insights
@@ -689,27 +689,25 @@ postgresql:
     existingSuperUserSecret: fwinsights-postgresql-superuser
     secretKeys:
       adminPasswordKey: postgresql-password
-    # When `ephemeral` is false, optionally create an ExternalSecret that materializes
-    # `existingSecret` with the same keys as a hand-written Secret (postgresql-password,
-    # password for Temporal SQL, readonly-password, timescale-password). Requires
-    # External Secrets Operator and a SecretStore/ClusterSecretStore whose Vault KV v2
-    # mount matches `externalSecret.vault.path` as `remoteRef.key` (path after mount).
-    # Override `vault.path` and `vault.*Property` to match your KV secret field names.
     externalSecret:
       enabled: false
-      apiVersion: external-secrets.io/v1
-      refreshPolicy: Periodic
-      refreshInterval: 1h
-      secretStoreRef:
-        name: vault
-        kind: ClusterSecretStore
-      vault:
-        path: insights/postgres
-        postgresqlPasswordProperty: postgresql_password
-        readonlyPasswordProperty: readonly_password
-        timescalePasswordProperty: timescale_password
-        # If empty, the same Vault property as postgresqlPasswordProperty is used.
-        temporalPasswordProperty: ""
+      data:
+        - secretKey: postgresql-password
+          remoteRef:
+            key: insights/postgres
+            property: postgresql_password
+        - secretKey: password
+          remoteRef:
+            key: insights/postgres
+            property: postgresql_password
+        - secretKey: readonly-password
+          remoteRef:
+            key: insights/postgres
+            property: readonly_password
+        - secretKey: timescale-password
+          remoteRef:
+            key: insights/postgres
+            property: timescale_password
   # -- PostgreSQL configuration parameters
   parameters:
     max_connections: "100"

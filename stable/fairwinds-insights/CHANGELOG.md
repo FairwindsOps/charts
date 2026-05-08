@@ -1,8 +1,7 @@
 # Changelog
 
 ## 9.1.1
-* Optional **ExternalSecret** for `postgresql.auth.existingSecret` when using external Postgres (`postgresql.ephemeral` false): set `postgresql.auth.externalSecret.enabled` to sync `fwinsights-postgresql` from Vault KV with keys `postgresql-password`, `password`, `readonly-password`, and `timescale-password` (same shape as a hand-managed Secret). Defaults use a generic KV path (`insights/postgres`) and field names (`postgresql_password`, `readonly_password`, `timescale_password`); override `postgresql.auth.externalSecret.vault` to match your Vault layout.
-* **PostgreSQL ExternalSecret:** default `apiVersion` is **`external-secrets.io/v1`** (not `v1beta1`). Set `postgresql.auth.externalSecret.apiVersion` to `external-secrets.io/v1beta1` if your External Secrets Operator install does not yet serve the stable API. Rendered manifests set **`spec.refreshPolicy: Periodic`** by default (override with `postgresql.auth.externalSecret.refreshPolicy`).
+* Optional **ExternalSecret** for `postgresql.auth.existingSecret` when using external Postgres (`postgresql.ephemeral` false): set `postgresql.auth.externalSecret.enabled` and **`postgresql.auth.externalSecret.data`** to the External Secrets [`spec.data`](https://external-secrets.io/latest/api/externalsecret/) list (each item: `secretKey` + `remoteRef` with at least Vault KV `key` and `property`). Extend or change entries without chart edits. The chart hard-codes **`apiVersion: external-secrets.io/v1`**, **`spec.refreshPolicy: Periodic`**, **`spec.refreshInterval: 1h`**, and **`secretStoreRef`** to ClusterSecretStore **`fairwinds-vault-backend`** (Fairwinds fleet default).
 
 ## 9.1.0
 * Add temporal deployment `report-job-worker` to be able to process worker using temporal
