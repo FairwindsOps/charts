@@ -689,6 +689,30 @@ postgresql:
     existingSuperUserSecret: fwinsights-postgresql-superuser
     secretKeys:
       adminPasswordKey: postgresql-password
+    # -- When enabled (and `postgresql.ephemeral` is false), creates an ExternalSecret that owns `auth.existingSecret`.
+    # WARNING: enabling this transfers ownership of the target Secret to the ExternalSecret controller.
+    # If a manually-managed Secret with the same name exists, it will be adopted and deleted if the ExternalSecret is removed.
+    externalSecret:
+      enabled: false
+      # -- Refresh interval for the ExternalSecret
+      refreshInterval: 1h
+      # -- SecretStore reference
+      secretStoreRef:
+        name: fairwinds-vault-backend
+        kind: ClusterSecretStore
+      # -- Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave)
+      annotations: {}
+      # -- ExternalSecret spec.data entries (each must have `secretKey` and `remoteRef` with `key` + `property`)
+      data: []
+      # Example:
+      # - secretKey: postgresql-password
+      #   remoteRef:
+      #     key: your/vault/path
+      #     property: password
+      # - secretKey: readonly-password
+      #   remoteRef:
+      #     key: your/vault/path
+      #     property: readonly_password
   # -- PostgreSQL configuration parameters
   parameters:
     max_connections: "100"
