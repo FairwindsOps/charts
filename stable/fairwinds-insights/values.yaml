@@ -694,8 +694,6 @@ postgresql:
     # If a manually-managed Secret with the same name exists, it will be adopted and deleted if the ExternalSecret is removed.
     externalSecret:
       enabled: false
-      # -- Refresh interval for the ExternalSecret
-      refreshInterval: 1h
       # -- SecretStore reference
       secretStoreRef:
         name: fairwinds-vault-backend

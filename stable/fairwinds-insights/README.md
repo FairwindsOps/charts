@@ -208,7 +208,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.auth.existingSuperUserSecret | string | `"fwinsights-postgresql-superuser"` | Name of the existing Secret for superuser credentials |
 | postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` | Key within `existingSecret` for the admin password |
 | postgresql.auth.externalSecret.enabled | bool | `false` | Create an ExternalSecret that owns `auth.existingSecret`. **WARNING:** enables ownership — see values.yaml for details. |
-| postgresql.auth.externalSecret.refreshInterval | string | `"1h"` | How often the ExternalSecret controller syncs the secret |
 | postgresql.auth.externalSecret.secretStoreRef.name | string | `"fairwinds-vault-backend"` | Name of the SecretStore/ClusterSecretStore |
 | postgresql.auth.externalSecret.secretStoreRef.kind | string | `"ClusterSecretStore"` | Kind of the secret store reference |
 | postgresql.auth.externalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource |
