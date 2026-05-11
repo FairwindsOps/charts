@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.1.1
+* Add optional ExternalSecret for `postgresql.auth.existingSecret` when using external Postgres (`postgresql.ephemeral: false`). Enable via `postgresql.auth.externalSecret.enabled` and configure `data`, `secretStoreRef`, and `refreshInterval`.
+
 ## 9.1.0
 * Add temporal deployment `report-job-worker` to be able to process worker using temporal
 

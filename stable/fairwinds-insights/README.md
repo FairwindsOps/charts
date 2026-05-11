@@ -201,7 +201,18 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.port | int | `5432` |  |
 | postgresql.storage | object | `{"size":"10Gi","storageClass":"standard"}` | Storage configuration for the PostgreSQL cluster |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resource configuration for the PostgreSQL cluster |
-| postgresql.auth | object | `{"database":"fairwinds_insights","existingSecret":"fwinsights-postgresql","existingSuperUserSecret":"fwinsights-postgresql-superuser","secretKeys":{"adminPasswordKey":"postgresql-password"},"username":"postgres"}` | Authentication configuration |
+| postgresql.auth | object | see values.yaml | Authentication configuration |
+| postgresql.auth.username | string | `"postgres"` | PostgreSQL username |
+| postgresql.auth.database | string | `"fairwinds_insights"` | PostgreSQL database name |
+| postgresql.auth.existingSecret | string | `"fwinsights-postgresql"` | Name of the existing Secret containing credentials |
+| postgresql.auth.existingSuperUserSecret | string | `"fwinsights-postgresql-superuser"` | Name of the existing Secret for superuser credentials |
+| postgresql.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` | Key within `existingSecret` for the admin password |
+| postgresql.auth.externalSecret.enabled | bool | `false` | Create an ExternalSecret that owns `auth.existingSecret`. **WARNING:** enables ownership — see values.yaml for details. |
+| postgresql.auth.externalSecret.refreshInterval | string | `"1h"` | How often the ExternalSecret controller syncs the secret |
+| postgresql.auth.externalSecret.secretStoreRef.name | string | `"fairwinds-vault-backend"` | Name of the SecretStore/ClusterSecretStore |
+| postgresql.auth.externalSecret.secretStoreRef.kind | string | `"ClusterSecretStore"` | Kind of the secret store reference |
+| postgresql.auth.externalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource |
+| postgresql.auth.externalSecret.data | list | `[]` | ExternalSecret `spec.data` entries; each must have `secretKey` and `remoteRef` (with `key` + `property`) |
 | postgresql.parameters | object | `{"checkpoint_completion_target":"0.9","default_statistics_target":"100","effective_cache_size":"1GB","effective_io_concurrency":"200","maintenance_work_mem":"64MB","max_connections":"100","max_parallel_maintenance_workers":"2","max_parallel_workers":"8","max_parallel_workers_per_gather":"2","max_wal_size":"4GB","max_worker_processes":"8","min_wal_size":"1GB","password_encryption":"scram-sha-256","random_page_cost":"1.1","shared_buffers":"256MB","wal_buffers":"16MB","work_mem":"4MB"}` | PostgreSQL configuration parameters |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
