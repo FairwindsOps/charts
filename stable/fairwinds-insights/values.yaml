@@ -19,22 +19,22 @@ polaris:
 
 dashboardImage:
   # -- Docker image repository for the front end
-  repository: quay.io/fairwinds/insights-dashboard
+  repository: us-docker.pkg.dev/fairwinds-ops/insights/insights-dashboard
   # -- Overrides tag for the dashboard, defaults to image.tag
   tag:
 apiImage:
   # -- Docker image repository for the API server
-  repository: quay.io/fairwinds/insights-api
+  repository: us-docker.pkg.dev/fairwinds-ops/insights/insights-api
   # -- Overrides tag for the API server, defaults to image.tag
   tag:
 migrationImage:
   # -- Docker image repository for the database migration job
-  repository: quay.io/fairwinds/insights-db-migration
+  repository: us-docker.pkg.dev/fairwinds-ops/insights/insights-db-migration
   # -- Overrides tag for the migration image, defaults to image.tag
   tag:
 cronjobImage:
   # -- Docker image repository for maintenance CronJobs.
-  repository: quay.io/fairwinds/insights-cronjob
+  repository: us-docker.pkg.dev/fairwinds-ops/insights/insights-cronjob
   # -- Overrides tag for the cronjob image, defaults to image.tag
   tag:
 openApiImage:

@@ -15,13 +15,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | installationCodeSecret | string | `nil` | Name of secret containing INSTALLATION_CODE |
 | deployments | object | `{"additionalLabels":null,"additionalPodLabels":null}` | Deployments additional labels |
 | polaris.config | string | `nil` | Configuration for Polaris |
-| dashboardImage.repository | string | `"quay.io/fairwinds/insights-dashboard"` | Docker image repository for the front end |
+| dashboardImage.repository | string | `"us-docker.pkg.dev/fairwinds-ops/insights/insights-dashboard"` | Docker image repository for the front end |
 | dashboardImage.tag | string | `nil` | Overrides tag for the dashboard, defaults to image.tag |
-| apiImage.repository | string | `"quay.io/fairwinds/insights-api"` | Docker image repository for the API server |
+| apiImage.repository | string | `"us-docker.pkg.dev/fairwinds-ops/insights/insights-api"` | Docker image repository for the API server |
 | apiImage.tag | string | `nil` | Overrides tag for the API server, defaults to image.tag |
-| migrationImage.repository | string | `"quay.io/fairwinds/insights-db-migration"` | Docker image repository for the database migration job |
+| migrationImage.repository | string | `"us-docker.pkg.dev/fairwinds-ops/insights/insights-db-migration"` | Docker image repository for the database migration job |
 | migrationImage.tag | string | `nil` | Overrides tag for the migration image, defaults to image.tag |
-| cronjobImage.repository | string | `"quay.io/fairwinds/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
+| cronjobImage.repository | string | `"us-docker.pkg.dev/fairwinds-ops/insights/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v5.32.4"` | Overrides tag for the Open API server, defaults to image.tag |
