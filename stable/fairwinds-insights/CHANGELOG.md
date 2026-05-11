@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.2.1
+* Added pre-install for external secret
+
 ## 9.2.0
 * Switch self-hosted image defaults from Quay (`quay.io/fairwinds/`) to Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/insights/`) for `insights-dashboard`, `insights-api`, `insights-db-migration`, and `insights-cronjob`
 * Pin `appVersion` to full semver (`18.3.30`) since GCR uses immutable tags — floating tags like `18.3` are only available on Quay
