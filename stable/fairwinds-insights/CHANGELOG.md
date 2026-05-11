@@ -2,6 +2,7 @@
 
 ## 9.2.0
 * Switch self-hosted image defaults from Quay (`quay.io/fairwinds/`) to Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/insights/`) for `insights-dashboard`, `insights-api`, `insights-db-migration`, and `insights-cronjob`
+* Pin `appVersion` to full semver (`18.3.29`) since GCR uses immutable tags — floating tags like `18.3` are only available on Quay
 
 ## 9.1.1
 * Add optional ExternalSecret for `postgresql.auth.existingSecret` when using external Postgres (`postgresql.ephemeral: false`). Enable via `postgresql.auth.externalSecret.enabled` and configure `data`, `secretStoreRef`, and `refreshInterval`.

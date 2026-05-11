@@ -1,5 +1,5 @@
 apiVersion: v2
-appVersion: "18.3"
+appVersion: "18.3.29"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
 version: 9.2.0
