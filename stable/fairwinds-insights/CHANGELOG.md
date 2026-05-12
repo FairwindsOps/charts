@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.2.2
+* Suffix ExternalSecret and its target Secret with `-external` so it can coexist with the existing manually-managed Secret. The application still reads from `auth.existingSecret`; the external Secret is provisioned for validation only until you cut over.
+
 ## 9.2.1
 * Added pre-install for external secret
 
@@ -8,7 +11,7 @@
 * Pin `appVersion` to full semver (`18.3.30`) since GCR uses immutable tags — floating tags like `18.3` are only available on Quay
 
 ## 9.1.1
-* Add optional ExternalSecret for `postgresql.auth.existingSecret` when using external Postgres (`postgresql.ephemeral: false`). Enable via `postgresql.auth.externalSecret.enabled` and configure `data`, `secretStoreRef`, and `refreshInterval`.
+* Add optional ExternalSecret for `postgresql.auth.existingSecret` when using external Postgres (`postgresql.ephemeral: false`). Create via `postgresql.auth.externalSecret.create` and configure `data`, `secretStoreRef`, and `refreshInterval`.
 
 ## 9.1.0
 * Add temporal deployment `report-job-worker` to be able to process worker using temporal

@@ -689,11 +689,15 @@ postgresql:
     existingSuperUserSecret: fwinsights-postgresql-superuser
     secretKeys:
       adminPasswordKey: postgresql-password
-    # -- When enabled (and `postgresql.ephemeral` is false), creates an ExternalSecret that owns `auth.existingSecret`.
-    # WARNING: enabling this transfers ownership of the target Secret to the ExternalSecret controller.
-    # If a manually-managed Secret with the same name exists, it will be adopted and deleted if the ExternalSecret is removed.
+    # -- ExternalSecret configuration for PostgreSQL credentials.
+    # NOTE: the application does NOT use this Secret yet — it still reads from `auth.existingSecret`.
+    # This lets you verify the ExternalSecret syncs correctly before cutting over.
+    # To cut over: set `auth.existingSecret` to the externalSecret `name` and remove the old manually-managed Secret.
     externalSecret:
-      enabled: false
+      # -- When true (and `postgresql.ephemeral` is false), provisions an ExternalSecret and a corresponding Secret.
+      create: false
+      # -- Name of the ExternalSecret resource and the Secret it generates.
+      name: fwinsights-postgresql-external
       # -- SecretStore reference
       secretStoreRef:
         name: fairwinds-vault-backend
