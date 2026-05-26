@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.2.3
+* Add `postgresql.enablePDB` and `timescale.enablePDB` so CloudNativePG PDBs can be disabled for single-instance branch environments.
+
 ## 9.2.2
 * Suffix ExternalSecret and its target Secret with `-external` so it can coexist with the existing manually-managed Secret. The application still reads from `auth.existingSecret`; the external Secret is provisioned for validation only until you cut over.
 
