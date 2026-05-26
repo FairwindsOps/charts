@@ -22,6 +22,7 @@ metadata:
 {{- end }}
 spec:
   instances: 1
+  enablePDB: {{ $root.Values.postgresql.enablePDB }}
   enableSuperuserAccess: true
   imageName: {{ $root.Values.postgresql.image.registry }}/{{ $root.Values.postgresql.image.repository }}:{{ $root.Values.postgresql.image.tag }}
   postgresql:
@@ -79,6 +80,7 @@ metadata:
 {{- end }}
 spec:
   instances: 1
+  enablePDB: {{ $root.Values.timescale.enablePDB }}
   enableSuperuserAccess: true
   postgresUID: {{ $root.Values.timescale.postgresUID }}
   postgresGID: {{ $root.Values.timescale.postgresGID }}
