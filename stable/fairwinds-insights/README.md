@@ -191,6 +191,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
 | postgresql.image.tag | string | `"17.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
+| postgresql.enablePDB | bool | `true` | Let CloudNativePG manage PodDisruptionBudgets for the PostgreSQL cluster |
 | postgresql.operator | object | `{"clusterReadyTimeoutSeconds":600,"crds":{"create":true},"defaultVersion":"1.28.1","install":true,"version":"1.28.1","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
 | postgresql.operator.version | string | `"1.28.1"` | CloudNativePG operator version to install |
 | postgresql.operator.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
@@ -212,6 +213,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
 | timescale.ephemeral | bool | `true` | Provision TimescaleDB with CloudNativePG in-cluster (same pattern as `postgresql.ephemeral`). Breaking change: the legacy timescaledb-single subchart is no longer part of this chart. |
+| timescale.enablePDB | bool | `true` | Let CloudNativePG manage PodDisruptionBudgets for the Timescale cluster |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlHost | string | `"insights-timescale-rw"` | Host for Timescale (CloudNativePG read-write service) |
 | timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
