@@ -251,6 +251,41 @@ rbac-reporter:
       cpu: 100m
       memory: 128Mi
 
+image-trust:
+  enabled: false
+  schedule: "rand * * * *"
+  timeout: 1200
+  modes:
+    - cosign-keyless
+  modePolicy: any
+  trustedIssuers: []
+  trustedSubjects: []
+  trustedSubjectRegexps: []
+  ignoreTlog: false
+  namespaceBlocklist: []
+  namespaceAllowlist: []
+  maxConcurrentScans: 5
+  imageVerifyTimeoutSeconds: 180
+  publicKeys:
+    secretName: ""
+  privateImages:
+    dockerConfigSecret: ""
+    registryPasswordSecret: ""
+    registryPasswordSecretKey: password
+    registryUser: ""
+    registryCertDir: ""
+  serviceAccount:
+    annotations: {}
+  # image-trust.env -- Extra environment variables for the image-trust container.
+  env: {}
+  image:
+    repository: quay.io/fairwinds/image-trust
+    tag: "0.2"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+
 kube-bench:
   enabled: false
   schedule: "rand * * * *"

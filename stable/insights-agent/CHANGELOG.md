@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.6.5
+* Add `image-trust` report (Cosign keyless and static public key verification)
+
 ## 5.6.4
 * Bumped workloads plugin to `2.9` and prometheus-collector to `1.9`
 

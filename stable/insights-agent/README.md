@@ -31,6 +31,7 @@ There are several different report types which can be enabled and configured:
 * `workloads`
 * `kube-hunter`
 * `trivy`
+* `image-trust`
 * `nova`
 * `rbac-reporter`
 * `kube-bench`
@@ -114,6 +115,20 @@ Parameter | Description | Default
 `trivy.namespaceBlocklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlocklist="{kube-system,default}"` | []
 `trivy.serviceAccount.annotations` | Annotations to add to the Trivy service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing private images | nil
 `trivy.env` | A map of environment variables that will be set for the trivy container. | `nil`
+`image-trust.enabled` | Enable Cosign image trust reporting | `false`
+`image-trust.modes` | Verification modes: `cosign-keyless`, `cosign-key` (OR when both set) | `[cosign-keyless]`
+`image-trust.trustedIssuers` | OIDC issuers for keyless verification | `[]`
+`image-trust.trustedSubjects` | Exact certificate identities for keyless verification | `[]`
+`image-trust.trustedSubjectRegexps` | Subject regexes for keyless verification | `[]`
+`image-trust.publicKeys.secretName` | Secret with `.pub` / PEM files mounted at `/etc/image-trust/keys` | `""`
+`image-trust.privateImages.dockerConfigSecret` | Secret containing `config.json` for multi-registry auth | `""`
+`image-trust.privateImages.registryPasswordSecret` | Secret with registry password for private images | `""`
+`image-trust.privateImages.registryUser` | Registry username when not using docker config | `""`
+`image-trust.namespaceAllowlist` | Namespaces to scan | `[]`
+`image-trust.namespaceBlocklist` | Namespaces to exclude | `[]`
+`image-trust.maxConcurrentScans` | Parallel cosign verifications per run | `5`
+`image-trust.ignoreTlog` | Skip Rekor for keyed verification (`IMAGE_TRUST_IGNORE_TLOG`) | `false`
+`image-trust.env` | Extra environment variables for the image-trust container | `{}`
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true

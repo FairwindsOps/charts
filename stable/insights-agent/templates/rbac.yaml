@@ -93,6 +93,11 @@ subjects:
   name: {{ include "insights-agent.fullname" . }}-trivy
   namespace: {{ .Release.Namespace }}
 {{- end }}
+{{- if (index .Values "image-trust" "enabled") }}
+- kind: ServiceAccount
+  name: {{ include "insights-agent.fullname" . }}-image-trust
+  namespace: {{ .Release.Namespace }}
+{{- end }}
 {{- if .Values.workloads.enabled }}
 - kind: ServiceAccount
   name: {{ include "insights-agent.fullname" . }}-workloads
