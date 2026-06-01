@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.6.7
+* `image-trust.attestations.enabled` helper; auto-append attestation modes when enabled or types are set
+* Deprecated top-level `attestationTypes` in favor of `attestations.types`
+
+## 5.6.6
+* Expand `image-trust` chart for plugin 0.1.0: pull-secret RBAC, multi-registry auths, mirrors, per-registry TLS, Sigstore env, retry tuning, and attestation modes
+* `image-trust` image tag `0.1.0`
+
 ## 5.6.5
 * Add `image-trust` report (Cosign keyless and static public key verification)
 

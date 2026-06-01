@@ -28,6 +28,21 @@ spec:
             secret:
               secretName: {{ $cfg.privateImages.registryPasswordSecret }}
           {{- end }}
+          {{- if $cfg.privateImages.registryAuthsSecret }}
+          - name: image-trust-registry-auths
+            secret:
+              secretName: {{ $cfg.privateImages.registryAuthsSecret }}
+          {{- end }}
+          {{- if $cfg.sigstore.envFileSecret }}
+          - name: image-trust-sigstore-env
+            secret:
+              secretName: {{ $cfg.sigstore.envFileSecret }}
+          {{- end }}
+          {{- if $cfg.sigstore.trustBundleSecret }}
+          - name: image-trust-sigstore-trust
+            secret:
+              secretName: {{ $cfg.sigstore.trustBundleSecret }}
+          {{- end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if $cfg.publicKeys.secretName }}
@@ -45,12 +60,31 @@ spec:
               mountPath: /etc/registry
               readOnly: true
             {{- end }}
+            {{- if $cfg.privateImages.registryAuthsSecret }}
+            - name: image-trust-registry-auths
+              mountPath: /etc/image-trust/registry
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.sigstore.envFileSecret }}
+            - name: image-trust-sigstore-env
+              mountPath: /etc/sigstore
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.sigstore.trustBundleSecret }}
+            - name: image-trust-sigstore-trust
+              mountPath: /etc/sigstore/trust
+              readOnly: true
+            {{- end }}
             command:
               - "./report.sh"
             env:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "ssl-cert-file-env-spec" . | indent 12 }}
             {{- include "image-trust-env" . | nindent 12 }}
+            {{- if $cfg.sigstore.trustBundleSecret }}
+            - name: SIGSTORE_ROOT_FILE
+              value: "/etc/sigstore/trust/{{ default "root.pem" $cfg.sigstore.trustBundleSecretKey }}"
+            {{- end }}
             {{- range $key, $value := $cfg.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}

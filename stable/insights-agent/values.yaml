@@ -255,32 +255,62 @@ image-trust:
   enabled: false
   schedule: "rand * * * *"
   timeout: 1200
+  # modes -- Verification modes: cosign-keyless, cosign-key, cosign-attestation-keyless, cosign-attestation-key
   modes:
     - cosign-keyless
+  # modePolicy -- any (OR) or all (AND) across modes
   modePolicy: any
   trustedIssuers: []
   trustedSubjects: []
   trustedSubjectRegexps: []
+  # attestations -- When enabled (or types are set), chart adds cosign-attestation-* modes automatically.
+  attestations:
+    enabled: false
+    # types -- Predicate types (e.g. slsaprovenance1, spdxjson, cyclonedx)
+    types: []
+  # attestationTypes -- Deprecated; use attestations.types
+  attestationTypes: []
   ignoreTlog: false
   namespaceBlocklist: []
   namespaceAllowlist: []
   maxConcurrentScans: 5
   imageVerifyTimeoutSeconds: 180
+  verifyRetries: 3
+  verifyRetryBackoffSeconds: 2
+  verifyRetryJitter: true
+  resolveDigests: true
+  useImagePullSecrets: false
+  registryAuthHost: ""
+  # registryMirrors -- Comma-separated mirror=upstream pairs for signature lookup
+  registryMirrors: ""
+  # registryCertDirs -- Comma-separated host=/path/to/ca pairs for private registry TLS
+  registryCertDirs: ""
   publicKeys:
     secretName: ""
+    # refs -- KMS or remote public key URIs (gcpkms://, awskms://, etc.)
+    refs: []
   privateImages:
     dockerConfigSecret: ""
+    registryAuthsSecret: ""
+    registryAuthsSecretKey: auths.json
     registryPasswordSecret: ""
     registryPasswordSecretKey: password
     registryUser: ""
     registryCertDir: ""
+  sigstore:
+    # env -- Sigstore env vars forwarded to cosign (FULCIO_URL, REKOR_URL, etc.)
+    env: {}
+    envFileSecret: ""
+    envFileSecretKey: sigstore.env
+    trustBundleSecret: ""
+    trustBundleSecretKey: root.pem
   serviceAccount:
     annotations: {}
   # image-trust.env -- Extra environment variables for the image-trust container.
   env: {}
   image:
     repository: quay.io/fairwinds/image-trust
-    tag: "0.2"
+    tag: "0.1.0"
   resources:
     requests:
       cpu: 100m
