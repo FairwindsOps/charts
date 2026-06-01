@@ -691,10 +691,11 @@ postgresql:
     password: ""
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
-    # -- Migration user for schema migrations (login; connects before optional SET ROLE). Defaults to `username` when unset.
+    # -- Migration user for schema migrations (login; connects before optional SET ROLE). Defaults to `username` when unset; the migration Job then also uses `existingSecret`.
     migrationUsername: ""
     # -- Password for the migration user when `postgresql.ephemeral` is true. Defaults to `password` when unset.
     migrationPassword: ""
+    # -- Secret for the migration user when `migrationUsername` differs from `username`. Ignored otherwise (migration Job uses `existingSecret`).
     existingMigrationSecret: fwinsights-postgresql-migration
     # -- NOLOGIN role that owns the database schema. Migration jobs set POSTGRES_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE).
     ownerRole: ""

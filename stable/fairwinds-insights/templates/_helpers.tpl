@@ -86,7 +86,11 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{- define "fairwinds-insights.postgresqlMigrationSecret" -}}
+{{- if eq (include "fairwinds-insights.postgresqlSplitUsers" .) "true" -}}
 {{- .Values.postgresql.auth.existingMigrationSecret -}}
+{{- else -}}
+{{- .Values.postgresql.auth.existingSecret -}}
+{{- end -}}
 {{- end -}}
 
 {{- define "fairwinds-insights.postgresqlOwnerRole" -}}
