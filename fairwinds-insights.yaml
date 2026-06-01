@@ -3,6 +3,11 @@
 options:
   organization: fairwinds-production
   repositoryName: FairwindsOps/charts
+
+reports:
+  trivy:
+    enabled: false
+
 manifests:
   helm:
   - name: insights-agent
