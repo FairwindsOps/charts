@@ -1,8 +1,8 @@
 # TODO: move this file once it's configurable
 
 options:
-  organization: fairwinds-production
-  repositoryName: FairwindsOps/charts
+  organization: acme-co
+  repositoryName: vitorvezani/insights-charts
 
 reports:
   trivy:
