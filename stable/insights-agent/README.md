@@ -130,7 +130,6 @@ Parameter | Description | Default
 `image-trust.privateImages.registryAuthsSecret` | Secret with JSON array for `IMAGE_TRUST_REGISTRY_AUTHS` | `""`
 `image-trust.privateImages.registryPasswordSecret` | Secret with registry password for private images | `""`
 `image-trust.privateImages.registryUser` | Registry username when not using docker config | `""`
-`image-trust.useImagePullSecrets` | Merge `kubernetes.io/dockerconfigjson` secrets from scoped namespaces for registry auth (requires RBAC) | `false`
 `image-trust.registryMirrors` | `mirror=upstream` pairs for pull-through registries | `""`
 `image-trust.registryCertDirs` | Per-registry custom CA bundles (`host=/path` pairs) | `""`
 `image-trust.registryAuthHost` | Docker config host key for legacy `REGISTRY_USER` / password | `""`

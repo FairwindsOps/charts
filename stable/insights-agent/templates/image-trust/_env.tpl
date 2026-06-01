@@ -66,20 +66,16 @@
 - name: IMAGE_TRUST_RESOLVE_DIGESTS
   value: "false"
 {{- end }}
-{{- if $cfg.useImagePullSecrets }}
-- name: IMAGE_TRUST_USE_IMAGE_PULL_SECRETS
-  value: "true"
-{{- end }}
 {{- if $cfg.registryAuthHost }}
 - name: IMAGE_TRUST_REGISTRY_AUTH_HOST
   value: {{ $cfg.registryAuthHost | quote }}
 {{- end }}
 {{- if $cfg.namespaceBlocklist }}
-- name: NAMESPACE_BLOCKLIST
+- name: IMAGE_TRUST_NAMESPACE_BLOCKLIST
   value: {{ join "," $cfg.namespaceBlocklist | lower | quote }}
 {{- end }}
 {{- if $cfg.namespaceAllowlist }}
-- name: NAMESPACE_ALLOWLIST
+- name: IMAGE_TRUST_NAMESPACE_ALLOWLIST
   value: {{ join "," $cfg.namespaceAllowlist | lower | quote }}
 {{- end }}
 {{- if $cfg.privateImages.registryUser }}

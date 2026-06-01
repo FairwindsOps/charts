@@ -279,7 +279,6 @@ image-trust:
   verifyRetryBackoffSeconds: 2
   verifyRetryJitter: true
   resolveDigests: true
-  useImagePullSecrets: false
   registryAuthHost: ""
   # registryMirrors -- Comma-separated mirror=upstream pairs for signature lookup
   registryMirrors: ""

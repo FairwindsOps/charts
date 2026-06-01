@@ -12,25 +12,6 @@ metadata:
   {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
-kind: ClusterRole
-metadata:
-  name: {{ include "insights-agent.fullname" . }}-image-trust
-  labels:
-    app: insights-agent
-rules:
-  - apiGroups: [""]
-    resources: ["namespaces", "pods"]
-    verbs: ["get", "list"]
-  - apiGroups: ["batch"]
-    resources: ["jobs"]
-    verbs: ["get", "list"]
-  {{- if $cfg.useImagePullSecrets }}
-  - apiGroups: [""]
-    resources: ["secrets"]
-    verbs: ["get", "list"]
-  {{- end }}
----
-apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
   name: {{ include "insights-agent.fullname" . }}-image-trust
@@ -39,7 +20,7 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ include "insights-agent.fullname" . }}-image-trust
+  name: view
 subjects:
   - kind: ServiceAccount
     name: {{ include "insights-agent.fullname" . }}-image-trust
