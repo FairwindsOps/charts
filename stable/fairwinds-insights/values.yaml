@@ -685,10 +685,23 @@ postgresql:
       memory: 256Mi
   # -- Authentication configuration
   auth:
+    # -- Application user for runtime workloads (API, dashboard, cronjobs, etc.)
     username: postgres
+    # -- Password for the application user when `postgresql.ephemeral` is true (random if unset)
+    password: ""
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
+    # -- Migration user for schema migrations (login; connects before optional SET ROLE). Defaults to `username` when unset.
+    migrationUsername: ""
+    # -- Password for the migration user when `postgresql.ephemeral` is true. Defaults to `password` when unset.
+    migrationPassword: ""
+    existingMigrationSecret: fwinsights-postgresql-migration
+    # -- NOLOGIN role that owns the database schema. Migration jobs set POSTGRES_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE).
+    ownerRole: ""
+    # -- CNPG `postgres` superuser (not used by the application or migration jobs)
     existingSuperUserSecret: fwinsights-postgresql-superuser
+    # -- Superuser password when `postgresql.ephemeral` is true (random if unset)
+    superuserpassword: ""
     secretKeys:
       adminPasswordKey: postgresql-password
     # -- ExternalSecret configuration for PostgreSQL credentials.

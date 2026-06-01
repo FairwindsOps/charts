@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.3.0
+* Split PostgreSQL credentials into three chart roles: CNPG superuser (`existingSuperUserSecret`), migration login (`migrationUsername` / `existingMigrationSecret`), and application login (`username` / `existingSecret`). Optional NOLOGIN schema owner (`ownerRole`) — when set to a role other than the migration login, migration jobs receive `POSTGRES_OWNER_ROLE` and the Insights migration image runs goose with `SET ROLE` via `PGOPTIONS` (requires a migration image built from Insights with the updated `db/startup.sh`). By default, app and migration share the same login and no separate owner role is used. Existing CNPG clusters are unchanged until recreated or roles are provisioned manually.
+
 ## 9.2.3
 * Add `postgresql.enablePDB` and `timescale.enablePDB` so CloudNativePG PDBs can be disabled for single-instance branch environments.
 

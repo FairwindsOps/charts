@@ -31,11 +31,46 @@ spec:
   bootstrap:
     initdb:
       database: {{ $root.Values.postgresql.auth.database }}
-      owner: {{ $root.Values.postgresql.auth.username }}
+      owner: {{ include "fairwinds-insights.postgresqlMigrationUsername" $root }}
       secret:
-        name: {{ $root.Values.postgresql.auth.existingSecret }}
+        name: {{ include "fairwinds-insights.postgresqlMigrationSecret" $root }}
+{{- if or (eq (include "fairwinds-insights.postgresqlUseOwnerRole" $root) "true") (eq (include "fairwinds-insights.postgresqlSplitUsers" $root) "true") }}
+      postInitSQL:
+{{- if eq (include "fairwinds-insights.postgresqlUseOwnerRole" $root) "true" }}
+        - CREATE ROLE {{ include "fairwinds-insights.postgresqlOwnerRole" $root }} NOLOGIN
+        - ALTER DATABASE {{ $root.Values.postgresql.auth.database }} OWNER TO {{ include "fairwinds-insights.postgresqlOwnerRole" $root }}
+        - ALTER SCHEMA public OWNER TO {{ include "fairwinds-insights.postgresqlOwnerRole" $root }}
+        - GRANT {{ include "fairwinds-insights.postgresqlOwnerRole" $root }} TO {{ include "fairwinds-insights.postgresqlMigrationUsername" $root }}
+{{- end }}
+{{- if eq (include "fairwinds-insights.postgresqlSplitUsers" $root) "true" }}
+        - CREATE ROLE {{ include "fairwinds-insights.postgresqlAppUsername" $root }} LOGIN
+        - GRANT CONNECT ON DATABASE {{ $root.Values.postgresql.auth.database }} TO {{ include "fairwinds-insights.postgresqlAppUsername" $root }}
+        - GRANT pg_read_all_data, pg_write_all_data TO {{ include "fairwinds-insights.postgresqlAppUsername" $root }}
+{{- end }}
+{{- end }}
   superuserSecret:
     name: {{ $root.Values.postgresql.auth.existingSuperUserSecret }}
+{{- if or (eq (include "fairwinds-insights.postgresqlUseOwnerRole" $root) "true") (eq (include "fairwinds-insights.postgresqlSplitUsers" $root) "true") }}
+  managed:
+    roles:
+{{- if eq (include "fairwinds-insights.postgresqlUseOwnerRole" $root) "true" }}
+      - name: {{ include "fairwinds-insights.postgresqlOwnerRole" $root }}
+        ensure: present
+        login: false
+        superuser: false
+{{- end }}
+{{- if eq (include "fairwinds-insights.postgresqlSplitUsers" $root) "true" }}
+      - name: {{ include "fairwinds-insights.postgresqlAppUsername" $root }}
+        ensure: present
+        login: true
+        superuser: false
+        passwordSecret:
+          name: {{ $root.Values.postgresql.auth.existingSecret }}
+        inRoles:
+          - pg_read_all_data
+          - pg_write_all_data
+{{- end }}
+{{- end }}
   storage:
     size: {{ $root.Values.postgresql.storage.size }}
 {{- if $root.Values.postgresql.storage.storageClass }}

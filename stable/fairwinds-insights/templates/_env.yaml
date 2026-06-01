@@ -1,5 +1,6 @@
 {{ define "env" }}
 {{- $useReadReplica := .useReadReplica }}
+{{- $useMigrationCredentials := .useMigrationCredentials }}
 {{- $ := .root }}
 # Required values
 envFrom:
@@ -52,6 +53,23 @@ env:
   value: {{ . | quote }}
 {{- end }}
 # Database
+{{- $postgresUser := $.Values.postgresql.auth.username }}
+{{- $postgresSecret := $.Values.postgresql.auth.existingSecret }}
+{{- $postgresPasswordKey := "postgresql-password" }}
+{{- if $.Values.postgresql.ephemeral }}
+{{- $postgresPasswordKey = "password" }}
+{{- else if $.Values.postgresql.readOnly }}
+{{- $postgresPasswordKey = "readonly-password" }}
+{{- end }}
+{{- if $useMigrationCredentials }}
+{{- $postgresUser = include "fairwinds-insights.postgresqlMigrationUsername" $ }}
+{{- $postgresSecret = include "fairwinds-insights.postgresqlMigrationSecret" $ }}
+{{- if $.Values.postgresql.ephemeral }}
+{{- $postgresPasswordKey = "password" }}
+{{- else }}
+{{- $postgresPasswordKey = "postgresql-password" }}
+{{- end }}
+{{- end }}
 {{- if and ($useReadReplica) ($.Values.postgresql.readReplica) }}
 - name: POSTGRES_DB
   value: {{ $.Values.postgresql.readReplica.database }}
@@ -72,31 +90,21 @@ env:
 - name: POSTGRES_DB
   value: {{ $.Values.postgresql.auth.database }}
 - name: POSTGRES_USER
-  value: {{ $.Values.postgresql.auth.username }}
+  value: {{ $postgresUser }}
 - name: POSTGRES_PORT
   value: {{ $.Values.postgresql.port | quote }}
 - name: POSTGRES_SSL_MODE
   value: {{ $.Values.postgresql.sslMode | default "require" }}
 - name: POSTGRES_HOST
   value: {{ $.Values.postgresql.postgresqlHost | default (printf "%s-%s" $.Release.Name "postgresql") }}
-{{- if $.Values.postgresql.ephemeral }}
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ $.Values.postgresql.auth.existingSecret }}
-      key: password
-{{- else if $.Values.postgresql.readOnly }}
-- name: POSTGRES_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ $.Values.postgresql.auth.existingSecret }}
-      key: readonly-password
-{{- else }}
-- name: POSTGRES_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ $.Values.postgresql.auth.existingSecret }}
-      key: postgresql-password
+      name: {{ $postgresSecret }}
+      key: {{ $postgresPasswordKey }}
+{{- if and $useMigrationCredentials (eq (include "fairwinds-insights.postgresqlUseOwnerRole" $) "true") }}
+- name: POSTGRES_OWNER_ROLE
+  value: {{ include "fairwinds-insights.postgresqlOwnerRole" $ }}
 {{- end }}
 {{- end }}
 # Timescale Database

@@ -28,6 +28,7 @@ postgresql:
     size: 5Gi
   auth:
     password: "changeme"
+    migrationPassword: "changeme"
     superuserpassword: "changeme"
 
 timescale:
