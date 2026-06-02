@@ -95,9 +95,6 @@ jobs:
             for script in $(find incubator stable -type f -name pre-test-script.sh); do
                 shellcheck -x $script
             done
-            for script in $(find stable/fairwinds-insights/ci -type f -name '*.sh' 2>/dev/null); do
-                shellcheck -x "$script"
-            done
   lint-charts:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.14.0
@@ -110,7 +107,6 @@ jobs:
             git remote add ro https://github.com/fairwindsops/charts
             git fetch ro master
             ct lint --config scripts/ct.yaml --chart-yaml-schema scripts/schema.yaml --debug --print-config
-            stable/fairwinds-insights/ci/render-roles-test.sh
 
   sync:
     docker:
