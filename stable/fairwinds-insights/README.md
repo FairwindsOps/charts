@@ -202,7 +202,15 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.port | int | `5432` |  |
 | postgresql.storage | object | `{"size":"10Gi","storageClass":"standard"}` | Storage configuration for the PostgreSQL cluster |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resource configuration for the PostgreSQL cluster |
-| postgresql.auth | object | `{"database":"fairwinds_insights","existingSecret":"fwinsights-postgresql","existingSuperUserSecret":"fwinsights-postgresql-superuser","externalSecret":{"annotations":{},"create":false,"data":[],"name":"fwinsights-postgresql-external","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}},"secretKeys":{"adminPasswordKey":"postgresql-password"},"username":"postgres"}` | Authentication configuration |
+| postgresql.auth | object | `{"database":"fairwinds_insights","existingMigrationSecret":"fwinsights-postgresql-migration","existingSecret":"fwinsights-postgresql","existingSuperUserSecret":"fwinsights-postgresql-superuser","externalSecret":{"annotations":{},"create":false,"data":[],"name":"fwinsights-postgresql-external","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}},"migrationPassword":"","migrationUsername":"","ownerRole":"","password":"","secretKeys":{"adminPasswordKey":"postgresql-password"},"superuserpassword":"","username":"postgres"}` | Authentication configuration |
+| postgresql.auth.username | string | `"postgres"` | Application user for runtime workloads (API, dashboard, cronjobs, etc.) |
+| postgresql.auth.password | string | `""` | Password for the application user when `postgresql.ephemeral` is true (random if unset) |
+| postgresql.auth.migrationUsername | string | `""` | Migration user for schema migrations (login; connects before optional SET ROLE). Defaults to `username` when unset; the migration Job then also uses `existingSecret`. |
+| postgresql.auth.migrationPassword | string | `""` | Password for the migration user when `postgresql.ephemeral` is true. Defaults to `password` when unset. |
+| postgresql.auth.existingMigrationSecret | string | `"fwinsights-postgresql-migration"` | Secret for the migration user when `migrationUsername` differs from `username`. Ignored otherwise (migration Job uses `existingSecret`). |
+| postgresql.auth.ownerRole | string | `""` | NOLOGIN role that owns the database schema. Migration jobs set POSTGRES_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE). |
+| postgresql.auth.existingSuperUserSecret | string | `"fwinsights-postgresql-superuser"` | CNPG `postgres` superuser (not used by the application or migration jobs) |
+| postgresql.auth.superuserpassword | string | `""` | Superuser password when `postgresql.ephemeral` is true (random if unset) |
 | postgresql.auth.externalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"fwinsights-postgresql-external","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}}` | ExternalSecret configuration for PostgreSQL credentials. NOTE: the application does NOT use this Secret yet — it still reads from `auth.existingSecret`. This lets you verify the ExternalSecret syncs correctly before cutting over. To cut over: set `auth.existingSecret` to the externalSecret `name` and remove the old manually-managed Secret. |
 | postgresql.auth.externalSecret.create | bool | `false` | When true (and `postgresql.ephemeral` is false), provisions an ExternalSecret and a corresponding Secret. |
 | postgresql.auth.externalSecret.name | string | `"fwinsights-postgresql-external"` | Name of the ExternalSecret resource and the Secret it generates. |
@@ -216,7 +224,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.enablePDB | bool | `true` | Let CloudNativePG manage PodDisruptionBudgets for the Timescale cluster |
 | timescale.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | timescale.postgresqlHost | string | `"insights-timescale-rw"` | Host for Timescale (CloudNativePG read-write service) |
-| timescale.postgresqlUsername | string | `"postgres"` | Username to connect to Timescale with |
+| timescale.postgresqlUsername | string | `"postgres"` | Application user for runtime workloads |
 | timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres database |
 | timescale.password | string | `""` | App user password for ephemeral CNPG (random if unset) |
 | timescale.superuserpassword | string | `""` | Superuser password for ephemeral CNPG (random if unset) |
@@ -231,6 +239,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.storage.size | string | `"10Gi"` |  |
 | timescale.storage.storageClass | string | `"standard"` |  |
 | timescale.auth.existingSecret | string | `"fwinsights-timescale"` |  |
+| timescale.auth.migrationUsername | string | `""` | Migration user for Timescale schema migrations (login; connects before optional SET ROLE). Defaults to `postgresqlUsername` when unset; the migration Job then also uses `existingSecret`. |
+| timescale.auth.migrationPassword | string | `""` | Password for the migration user when `timescale.ephemeral` is true. Defaults to `password` when unset. |
+| timescale.auth.existingMigrationSecret | string | `"fwinsights-timescale-migration"` | Secret for the migration user when `migrationUsername` differs from `postgresqlUsername`. Ignored otherwise (migration Job uses `existingSecret`). |
+| timescale.auth.ownerRole | string | `""` | NOLOGIN role that owns the Timescale database schema. Migration jobs set TIMESCALE_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE). |
 | timescale.auth.existingSuperUserSecret | string | `"fwinsights-timescale-superuser"` |  |
 | timescale.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
 | timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
