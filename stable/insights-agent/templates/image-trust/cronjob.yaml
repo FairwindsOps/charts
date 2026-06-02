@@ -1,4 +1,5 @@
 {{- if (index .Values "image-trust" "enabled") -}}
+{{- include "image-trust.validateConfig" . -}}
 {{- $_ := set . "Label" "image-trust" }}
 {{- $_ := set . "Config" (index .Values "image-trust") }}
 {{- $cfg := index .Values "image-trust" }}
@@ -43,6 +44,16 @@ spec:
             secret:
               secretName: {{ $cfg.sigstore.trustBundleSecret }}
           {{- end }}
+          {{- if $cfg.registryMirrorsFile.secret }}
+          - name: image-trust-registry-mirrors-file
+            secret:
+              secretName: {{ $cfg.registryMirrorsFile.secret }}
+          {{- end }}
+          {{- if $cfg.registryCertDirsFile.secret }}
+          - name: image-trust-registry-cert-dirs-file
+            secret:
+              secretName: {{ $cfg.registryCertDirsFile.secret }}
+          {{- end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if $cfg.publicKeys.secretName }}
@@ -73,6 +84,16 @@ spec:
             {{- if $cfg.sigstore.trustBundleSecret }}
             - name: image-trust-sigstore-trust
               mountPath: /etc/sigstore/trust
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.registryMirrorsFile.secret }}
+            - name: image-trust-registry-mirrors-file
+              mountPath: /etc/image-trust/mirrors
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.registryCertDirsFile.secret }}
+            - name: image-trust-registry-cert-dirs-file
+              mountPath: /etc/image-trust/certs
               readOnly: true
             {{- end }}
             command:

@@ -42,6 +42,22 @@
 - name: IMAGE_TRUST_PUBLIC_KEY_REFS
   value: {{ join "," $cfg.publicKeys.refs | quote }}
 {{- end }}
+{{- if $cfg.publicKeys.paths }}
+- name: IMAGE_TRUST_PUBLIC_KEY_PATHS
+  value: {{ join "," $cfg.publicKeys.paths | quote }}
+{{- end }}
+{{- if $cfg.imageAllowlist }}
+- name: IMAGE_TRUST_IMAGE_ALLOWLIST
+  value: {{ join "," $cfg.imageAllowlist | quote }}
+{{- end }}
+{{- if $cfg.registryAllowlist }}
+- name: IMAGE_TRUST_REGISTRY_ALLOWLIST
+  value: {{ join "," $cfg.registryAllowlist | quote }}
+{{- end }}
+{{- if $cfg.signerAllowlist }}
+- name: IMAGE_TRUST_SIGNER_ALLOWLIST
+  value: {{ join "," $cfg.signerAllowlist | quote }}
+{{- end }}
 {{- if $cfg.maxConcurrentScans }}
 - name: MAX_CONCURRENT_SCANS
   value: {{ $cfg.maxConcurrentScans | quote }}
@@ -98,9 +114,17 @@
 - name: IMAGE_TRUST_REGISTRY_MIRRORS
   value: {{ $cfg.registryMirrors | quote }}
 {{- end }}
+{{- if $cfg.registryMirrorsFile.secret }}
+- name: IMAGE_TRUST_REGISTRY_MIRRORS_FILE
+  value: "/etc/image-trust/mirrors/{{ default "mirrors.txt" $cfg.registryMirrorsFile.secretKey }}"
+{{- end }}
 {{- if $cfg.registryCertDirs }}
 - name: IMAGE_TRUST_REGISTRY_CERT_DIRS
   value: {{ $cfg.registryCertDirs | quote }}
+{{- end }}
+{{- if $cfg.registryCertDirsFile.secret }}
+- name: IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE
+  value: "/etc/image-trust/certs/{{ default "cert-dirs.txt" $cfg.registryCertDirsFile.secretKey }}"
 {{- end }}
 {{- if $cfg.privateImages.registryCertDir }}
 - name: REGISTRY_CERT_DIR

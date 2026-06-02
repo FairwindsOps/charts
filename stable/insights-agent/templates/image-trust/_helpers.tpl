@@ -34,3 +34,31 @@ Effective IMAGE_TRUST_MODES: base modes plus attestation modes when attestations
 {{- end -}}
 {{- join "," $modes -}}
 {{- end -}}
+
+{{/*
+Fail at render time when image-trust is enabled with invalid plugin configuration.
+*/}}
+{{- define "image-trust.validateConfig" -}}
+{{- $cfg := index .Values "image-trust" -}}
+{{- if $cfg.enabled -}}
+{{- $modes := include "image-trust.effectiveModes" . | splitList "," -}}
+{{- $hasKeylessPolicy := or (has "cosign-keyless" $modes) (has "cosign-attestation-keyless" $modes) -}}
+{{- if $hasKeylessPolicy -}}
+{{- if and (not $cfg.trustedIssuers) (not $cfg.trustedSubjects) (not (gt (len $cfg.trustedSubjectRegexps) 0)) -}}
+{{- fail "image-trust.enabled: cosign-keyless (or attestation-keyless) requires trustedIssuers, trustedSubjects, or trustedSubjectRegexps" -}}
+{{- end -}}
+{{- end -}}
+{{- $hasKeyedMode := or (has "cosign-key" $modes) (has "cosign-attestation-key" $modes) -}}
+{{- if $hasKeyedMode -}}
+{{- $hasPublicKeys := or $cfg.publicKeys.secretName (gt (len ($cfg.publicKeys.refs | default list)) 0) (gt (len ($cfg.publicKeys.paths | default list)) 0) -}}
+{{- if not $hasPublicKeys -}}
+{{- fail "image-trust.enabled: cosign-key (or attestation-key) requires publicKeys.secretName, publicKeys.refs, or publicKeys.paths" -}}
+{{- end -}}
+{{- end -}}
+{{- if eq (include "image-trust.attestationsActive" .) "true" -}}
+{{- if not (include "image-trust.attestationTypes" .) -}}
+{{- fail "image-trust.enabled: attestations require attestations.types (or legacy attestationTypes)" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}

@@ -1,7 +1,7 @@
 # Changelog
 
 ## 5.6.5
-* Add `image-trust` report (Cosign keyless and static public key verification)
+* **image-trust:** Chart validation when enabled (keyless trust policy, public keys, attestation types). Values for allowlists, `publicKeys.paths`, and registry mirror/cert file secrets. Pin `on-demand-job-runner` to `0.2.19` for on-demand `image-trust` jobs.
 
 ## 5.6.4
 * Bumped workloads plugin to `2.9` and prometheus-collector to `1.9`

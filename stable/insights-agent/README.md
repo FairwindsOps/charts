@@ -124,14 +124,20 @@ Parameter | Description | Default
 `image-trust.attestations.enabled` | Enable attestation verification; auto-appends `cosign-attestation-*` modes | `false`
 `image-trust.attestations.types` | Predicate types (e.g. `slsaprovenance1`); setting types alone also enables attestations | `[]`
 `image-trust.attestationTypes` | Deprecated; use `attestations.types` | `[]`
+`image-trust.imageAllowlist` | Glob patterns; matching images do not generate findings | `[]`
+`image-trust.registryAllowlist` | Glob patterns for registries | `[]`
+`image-trust.signerAllowlist` | Issuer, subject, or `issuer\|subject` signer patterns | `[]`
 `image-trust.publicKeys.secretName` | Secret with `.pub` / PEM files mounted at `/etc/image-trust/keys` | `""`
+`image-trust.publicKeys.paths` | Absolute paths to public keys inside the container | `[]`
 `image-trust.publicKeys.refs` | Remote/KMS public key URIs | `[]`
 `image-trust.privateImages.dockerConfigSecret` | Secret containing `config.json` for multi-registry auth | `""`
 `image-trust.privateImages.registryAuthsSecret` | Secret with JSON array for `IMAGE_TRUST_REGISTRY_AUTHS` | `""`
 `image-trust.privateImages.registryPasswordSecret` | Secret with registry password for private images | `""`
 `image-trust.privateImages.registryUser` | Registry username when not using docker config | `""`
 `image-trust.registryMirrors` | `mirror=upstream` pairs for pull-through registries | `""`
+`image-trust.registryMirrorsFile.secret` | Secret with mirror pairs (`IMAGE_TRUST_REGISTRY_MIRRORS_FILE`) | `""`
 `image-trust.registryCertDirs` | Per-registry custom CA bundles (`host=/path` pairs) | `""`
+`image-trust.registryCertDirsFile.secret` | Secret with cert dir pairs (`IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE`) | `""`
 `image-trust.registryAuthHost` | Docker config host key for legacy `REGISTRY_USER` / password | `""`
 `image-trust.sigstore.env` | Private Sigstore env vars (Fulcio, Rekor URLs) | `{}`
 `image-trust.sigstore.envFileSecret` | Secret with `KEY=VALUE` lines for `IMAGE_TRUST_SIGSTORE_ENV_FILE` | `""`

@@ -260,9 +260,18 @@ image-trust:
     - cosign-keyless
   # modePolicy -- any (OR) or all (AND) across modes
   modePolicy: any
+  # trustedIssuers -- OIDC issuers for keyless verification (required when cosign-keyless is in modes)
   trustedIssuers: []
+  # trustedSubjects -- Exact certificate identities for keyless verification
   trustedSubjects: []
+  # trustedSubjectRegexps -- Subject regexes for keyless verification
   trustedSubjectRegexps: []
+  # imageAllowlist -- Glob patterns; matching images do not generate findings
+  imageAllowlist: []
+  # registryAllowlist -- Glob patterns for registries
+  registryAllowlist: []
+  # signerAllowlist -- Issuer, subject, or issuer|subject patterns for signers
+  signerAllowlist: []
   # attestations -- When enabled (or types are set), chart adds cosign-attestation-* modes automatically.
   attestations:
     enabled: false
@@ -270,6 +279,7 @@ image-trust:
     types: []
   # attestationTypes -- Deprecated; use attestations.types
   attestationTypes: []
+  # ignoreTlog -- Skip Rekor for keyed verification (typical for Fairwinds OSS keys and other static keys)
   ignoreTlog: false
   namespaceBlocklist: []
   namespaceAllowlist: []
@@ -282,11 +292,22 @@ image-trust:
   registryAuthHost: ""
   # registryMirrors -- Comma-separated mirror=upstream pairs for signature lookup
   registryMirrors: ""
+  # registryMirrorsFile -- Secret with mirror=upstream pairs (sets IMAGE_TRUST_REGISTRY_MIRRORS_FILE)
+  registryMirrorsFile:
+    secret: ""
+    secretKey: mirrors.txt
   # registryCertDirs -- Comma-separated host=/path/to/ca pairs for private registry TLS
   registryCertDirs: ""
+  # registryCertDirsFile -- Secret with host=/path pairs (sets IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE)
+  registryCertDirsFile:
+    secret: ""
+    secretKey: cert-dirs.txt
   publicKeys:
+    # secretName -- Secret with .pub / PEM files mounted at /etc/image-trust/keys
     secretName: ""
-    # refs -- KMS or remote public key URIs (gcpkms://, awskms://, etc.)
+    # paths -- Comma-separated absolute paths inside the container (e.g. from custom volume mounts)
+    paths: []
+    # refs -- KMS or HTTPS public key URIs (e.g. https://artifacts.fairwinds.com/cosign-p256.pub)
     refs: []
   privateImages:
     dockerConfigSecret: ""
@@ -951,7 +972,8 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: quay.io/fairwinds/on-demand-job-runner
-    tag: "0.2"
+    # 0.2.19+ required for on-demand report type image-trust
+    tag: "0.2.19"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
