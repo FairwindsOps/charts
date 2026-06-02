@@ -33,6 +33,8 @@ postgresql:
 
 timescale:
   password: "changeme"
+  auth:
+    migrationPassword: "changeme"
   superuserpassword: "changeme"
 
 dashboard:

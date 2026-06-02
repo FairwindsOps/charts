@@ -101,6 +101,30 @@ Create chart name and version as used by the chart label.
 {{- ne (include "fairwinds-insights.postgresqlOwnerRole" .) (include "fairwinds-insights.postgresqlMigrationUsername" .) -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.timescaleAppUsername" -}}
+{{- .Values.timescale.postgresqlUsername -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleMigrationUsername" -}}
+{{- default (include "fairwinds-insights.timescaleAppUsername" .) .Values.timescale.auth.migrationUsername -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleMigrationSecret" -}}
+{{- if ne (include "fairwinds-insights.timescaleMigrationUsername" .) (include "fairwinds-insights.timescaleAppUsername" .) -}}
+{{- .Values.timescale.auth.existingMigrationSecret -}}
+{{- else -}}
+{{- .Values.timescale.auth.existingSecret -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleOwnerRole" -}}
+{{- default (include "fairwinds-insights.timescaleMigrationUsername" .) .Values.timescale.auth.ownerRole -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleUseOwnerRole" -}}
+{{- ne (include "fairwinds-insights.timescaleOwnerRole" .) (include "fairwinds-insights.timescaleMigrationUsername" .) -}}
+{{- end -}}
+
 {{/*
 Common labels
 */}}

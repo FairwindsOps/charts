@@ -770,7 +770,7 @@ timescale:
   sslMode: require
   # -- Host for Timescale (CloudNativePG read-write service)
   postgresqlHost: insights-timescale-rw
-  # -- Username to connect to Timescale with
+  # -- Application user for runtime workloads
   postgresqlUsername: postgres
   # -- Name of the Postgres database
   postgresqlDatabase: postgres
@@ -800,6 +800,14 @@ timescale:
     storageClass: standard
   auth:
     existingSecret: fwinsights-timescale
+    # -- Migration user for Timescale schema migrations (login; connects before optional SET ROLE). Defaults to `postgresqlUsername` when unset; the migration Job then also uses `existingSecret`.
+    migrationUsername: ""
+    # -- Password for the migration user when `timescale.ephemeral` is true. Defaults to `password` when unset.
+    migrationPassword: ""
+    # -- Secret for the migration user when `migrationUsername` differs from `postgresqlUsername`. Ignored otherwise (migration Job uses `existingSecret`).
+    existingMigrationSecret: fwinsights-timescale-migration
+    # -- NOLOGIN role that owns the Timescale database schema. Migration jobs set TIMESCALE_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE).
+    ownerRole: ""
     existingSuperUserSecret: fwinsights-timescale-superuser
     secretKeys:
       adminPasswordKey: postgresql-password

@@ -1,7 +1,7 @@
 # Changelog
 
 ## 9.2.4
-* **Backward compatible:** Add optional PostgreSQL role separation without changing default behavior. Existing installs keep `username: postgres`, `existingSecret: fwinsights-postgresql`, and a single app/migration login — no new Secrets, CNPG `postInitSQL`, or env vars unless you opt in. New values: `migrationUsername`, `migrationPassword`, `existingMigrationSecret`, and `ownerRole` for split app/migration logins and optional NOLOGIN schema ownership (`POSTGRES_OWNER_ROLE`; requires a migration image with the updated Insights `db/startup.sh` and `pkg/database` owner-role support). CNPG superuser remains `existingSuperUserSecret`.
+* **Backward compatible:** Add optional PostgreSQL and Timescale role separation without changing default behavior. Existing installs keep `username` / `postgresqlUsername: postgres`, existing app secrets, and a single app/migration login per database — no new Secrets, CNPG `postInitSQL`, or owner-role env vars unless you opt in. New values under `postgresql.auth` and `timescale.auth`: `migrationUsername`, `migrationPassword`, `existingMigrationSecret`, and `ownerRole` for split app/migration logins and optional NOLOGIN schema ownership (`POSTGRES_OWNER_ROLE` / `TIMESCALE_OWNER_ROLE`; requires a migration image with the updated Insights `db/startup.sh` and `pkg/database` owner-role support). CNPG superuser secrets are unchanged.
 
 ## 9.2.3
 * Add `postgresql.enablePDB` and `timescale.enablePDB` so CloudNativePG PDBs can be disabled for single-instance branch environments.

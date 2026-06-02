@@ -136,13 +136,50 @@ spec:
   bootstrap:
     initdb:
       database: {{ $root.Values.timescale.postgresqlDatabase }}
-      owner: {{ $root.Values.timescale.postgresqlUsername }}
+      owner: {{ include "fairwinds-insights.timescaleMigrationUsername" $root }}
       secret:
-        name: {{ $root.Values.timescale.auth.existingSecret }}
+        name: {{ include "fairwinds-insights.timescaleMigrationSecret" $root }}
+{{- if or (eq (include "fairwinds-insights.timescaleUseOwnerRole" $root) "true") (ne (include "fairwinds-insights.timescaleMigrationUsername" $root) (include "fairwinds-insights.timescaleAppUsername" $root)) }}
       postInitSQL:
         - CREATE EXTENSION IF NOT EXISTS timescaledb;
+{{- if eq (include "fairwinds-insights.timescaleUseOwnerRole" $root) "true" }}
+        - CREATE ROLE {{ include "fairwinds-insights.timescaleOwnerRole" $root }} NOLOGIN
+        - ALTER DATABASE {{ $root.Values.timescale.postgresqlDatabase }} OWNER TO {{ include "fairwinds-insights.timescaleOwnerRole" $root }}
+        - ALTER SCHEMA public OWNER TO {{ include "fairwinds-insights.timescaleOwnerRole" $root }}
+        - GRANT {{ include "fairwinds-insights.timescaleOwnerRole" $root }} TO {{ include "fairwinds-insights.timescaleMigrationUsername" $root }}
+{{- end }}
+{{- if ne (include "fairwinds-insights.timescaleMigrationUsername" $root) (include "fairwinds-insights.timescaleAppUsername" $root) }}
+        - CREATE ROLE {{ include "fairwinds-insights.timescaleAppUsername" $root }} LOGIN
+        - GRANT CONNECT ON DATABASE {{ $root.Values.timescale.postgresqlDatabase }} TO {{ include "fairwinds-insights.timescaleAppUsername" $root }}
+        - GRANT pg_read_all_data, pg_write_all_data TO {{ include "fairwinds-insights.timescaleAppUsername" $root }}
+{{- end }}
+{{- else }}
+      postInitSQL:
+        - CREATE EXTENSION IF NOT EXISTS timescaledb;
+{{- end }}
   superuserSecret:
     name: {{ $root.Values.timescale.auth.existingSuperUserSecret }}
+{{- if or (eq (include "fairwinds-insights.timescaleUseOwnerRole" $root) "true") (ne (include "fairwinds-insights.timescaleMigrationUsername" $root) (include "fairwinds-insights.timescaleAppUsername" $root)) }}
+  managed:
+    roles:
+{{- if eq (include "fairwinds-insights.timescaleUseOwnerRole" $root) "true" }}
+      - name: {{ include "fairwinds-insights.timescaleOwnerRole" $root }}
+        ensure: present
+        login: false
+        superuser: false
+{{- end }}
+{{- if ne (include "fairwinds-insights.timescaleMigrationUsername" $root) (include "fairwinds-insights.timescaleAppUsername" $root) }}
+      - name: {{ include "fairwinds-insights.timescaleAppUsername" $root }}
+        ensure: present
+        login: true
+        superuser: false
+        passwordSecret:
+          name: {{ $root.Values.timescale.auth.existingSecret }}
+        inRoles:
+          - pg_read_all_data
+          - pg_write_all_data
+{{- end }}
+{{- end }}
   storage:
     size: {{ $root.Values.timescale.storage.size }}
 {{- if $root.Values.timescale.storage.storageClass }}
