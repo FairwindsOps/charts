@@ -102,10 +102,6 @@ spec:
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{ include "ssl-cert-file-env-spec" . | indent 12 }}
             {{- include "image-trust-env" . | nindent 12 }}
-            {{- if $cfg.sigstore.trustBundleSecret }}
-            - name: SIGSTORE_ROOT_FILE
-              value: "/etc/sigstore/trust/{{ default "root.pem" $cfg.sigstore.trustBundleSecretKey }}"
-            {{- end }}
             {{- range $key, $value := $cfg.env }}
             - name: {{ $key }}
               value: {{ $value | quote }}

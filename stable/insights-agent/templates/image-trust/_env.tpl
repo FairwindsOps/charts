@@ -134,6 +134,10 @@
 - name: IMAGE_TRUST_SIGSTORE_ENV_FILE
   value: "/etc/sigstore/{{ default "sigstore.env" $cfg.sigstore.envFileSecretKey }}"
 {{- end }}
+{{- if $cfg.sigstore.trustBundleSecret }}
+- name: SIGSTORE_ROOT_FILE
+  value: "/etc/sigstore/trust/{{ default "root.pem" $cfg.sigstore.trustBundleSecretKey }}"
+{{- end }}
 {{- range $key, $value := $cfg.sigstore.env }}
 - name: {{ $key }}
   value: {{ $value | quote }}
