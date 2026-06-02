@@ -251,6 +251,23 @@ rbac-reporter:
       cpu: 100m
       memory: 128Mi
 
+# image-trust -- Cosign image signature verification. Set enabled: true and configure trust policy below.
+# Example (uncomment and customize when enabling):
+# image-trust:
+#   enabled: true
+#   modes:
+#     - cosign-keyless
+#     - cosign-key
+#   trustedIssuers:
+#     - https://token.actions.githubusercontent.com
+#   trustedSubjectRegexps:
+#     - "^https://github.com/my-org/.+"
+#   publicKeys:
+#     refs:
+#       - https://artifacts.fairwinds.com/cosign-p256.pub
+#   ignoreTlog: true
+#   privateImages:
+#     registryAuthsSecret: image-trust-registry-auths
 image-trust:
   enabled: false
   schedule: "rand * * * *"
@@ -258,40 +275,53 @@ image-trust:
   # modes -- Verification modes: cosign-keyless, cosign-key, cosign-attestation-keyless, cosign-attestation-key
   modes:
     - cosign-keyless
+    # - cosign-key
   # modePolicy -- any (OR) or all (AND) across modes
   modePolicy: any
   # trustedIssuers -- OIDC issuers for keyless verification (required when cosign-keyless is in modes)
   trustedIssuers: []
+  # - https://token.actions.githubusercontent.com
   # trustedSubjects -- Exact certificate identities for keyless verification
   trustedSubjects: []
+  # - "https://github.com/my-org/my-repo/.github/workflows/release.yaml@refs/heads/main"
   # trustedSubjectRegexps -- Subject regexes for keyless verification
   trustedSubjectRegexps: []
+  # - "^https://github.com/my-org/.+"
   # imageAllowlist -- Glob patterns; matching images do not generate findings
   imageAllowlist: []
+  # - "registry.io/my-org/*"
   # registryAllowlist -- Glob patterns for registries
   registryAllowlist: []
+  # - "*.gcr.io"
   # signerAllowlist -- Issuer, subject, or issuer|subject patterns for signers
   signerAllowlist: []
+  # - "https://token.actions.githubusercontent.com|https://github.com/my-org/*"
   # attestations -- When enabled (or types are set), chart adds cosign-attestation-* modes automatically.
   attestations:
     enabled: false
     # types -- Predicate types (e.g. slsaprovenance1, spdxjson, cyclonedx)
     types: []
+    # - slsaprovenance1
   # attestationTypes -- Deprecated; use attestations.types
   attestationTypes: []
   # ignoreTlog -- Skip Rekor for keyed verification (typical for Fairwinds OSS keys and other static keys)
   ignoreTlog: false
   namespaceBlocklist: []
+  # - kube-system
   namespaceAllowlist: []
+  # - production
+  # - staging
   maxConcurrentScans: 5
   imageVerifyTimeoutSeconds: 180
   verifyRetries: 3
   verifyRetryBackoffSeconds: 2
   verifyRetryJitter: true
   resolveDigests: true
+  # registryAuthHost -- Docker config host key when using registryUser + registryPasswordSecret (default: https://index.docker.io/v1/)
   registryAuthHost: ""
   # registryMirrors -- Comma-separated mirror=upstream pairs for signature lookup
   registryMirrors: ""
+  # registryMirrors: "mirror.corp.io=registry.io,internal.cache=ghcr.io"
   # registryMirrorsFile -- Secret with mirror=upstream pairs (sets IMAGE_TRUST_REGISTRY_MIRRORS_FILE)
   registryMirrorsFile:
     secret: ""
@@ -305,25 +335,39 @@ image-trust:
   publicKeys:
     # secretName -- Secret with .pub / PEM files mounted at /etc/image-trust/keys
     secretName: ""
-    # paths -- Comma-separated absolute paths inside the container (e.g. from custom volume mounts)
+    # secretName: image-trust-public-keys
+    # paths -- Absolute paths inside the container (e.g. from custom volume mounts)
     paths: []
+    # - /etc/image-trust/keys/fairwinds-cosign-p256.pub
     # refs -- KMS or HTTPS public key URIs (e.g. https://artifacts.fairwinds.com/cosign-p256.pub)
     refs: []
+    # - https://artifacts.fairwinds.com/cosign-p256.pub
+    # - gcpkms://projects/PROJECT/locations/LOC/keyRings/RING/cryptoKeys/KEY/versions/1
   privateImages:
+    # dockerConfigSecret -- Secret containing config.json (mounted at /etc/docker/config.json)
     dockerConfigSecret: ""
     # registryAuthsSecret -- Secret with JSON array; sets IMAGE_TRUST_REGISTRY_AUTHS_FILE
+    # [{"host":"https://ghcr.io","username":"user","password":"token"}]
     registryAuthsSecret: ""
+    # registryAuthsSecret: image-trust-registry-auths
     registryAuthsSecretKey: auths.json
     registryPasswordSecret: ""
+    # registryPasswordSecret: image-trust-registry-password
     registryPasswordSecretKey: password
     registryUser: ""
+    # registryUser: robot
     registryCertDir: ""
   sigstore:
     # env -- Sigstore env vars forwarded to cosign (FULCIO_URL, REKOR_URL, etc.)
     env: {}
+    # env:
+    #   FULCIO_URL: https://fulcio.internal.example
+    #   REKOR_URL: https://rekor.internal.example
     envFileSecret: ""
+    # envFileSecret: image-trust-sigstore-env
     envFileSecretKey: sigstore.env
     trustBundleSecret: ""
+    # trustBundleSecret: sigstore-trust-bundle
     trustBundleSecretKey: root.pem
   serviceAccount:
     annotations: {}
