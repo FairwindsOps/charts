@@ -131,13 +131,13 @@ Parameter | Description | Default
 `image-trust.publicKeys.paths` | Absolute paths to public keys inside the container | `[]`
 `image-trust.publicKeys.refs` | Remote/KMS public key URIs | `[]`
 `image-trust.privateImages.dockerConfigSecret` | Secret containing `config.json` for multi-registry auth | `""`
-`image-trust.privateImages.registryAuthsSecret` | Secret with JSON array for `IMAGE_TRUST_REGISTRY_AUTHS` | `""`
+`image-trust.privateImages.registryAuthsSecret` | Secret with JSON array mounted for `IMAGE_TRUST_REGISTRY_AUTHS_FILE` | `""`
 `image-trust.privateImages.registryPasswordSecret` | Secret with registry password for private images | `""`
 `image-trust.privateImages.registryUser` | Registry username when not using docker config | `""`
 `image-trust.registryMirrors` | `mirror=upstream` pairs for pull-through registries | `""`
 `image-trust.registryMirrorsFile.secret` | Secret with mirror pairs (`IMAGE_TRUST_REGISTRY_MIRRORS_FILE`) | `""`
-`image-trust.registryCertDirs` | Per-registry custom CA bundles (`host=/path` pairs) | `""`
-`image-trust.registryCertDirsFile.secret` | Secret with cert dir pairs (`IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE`) | `""`
+`image-trust.registryCertDirs` | Per-registry custom CA bundles (`host=/path` pairs); mount CA directories at those paths (e.g. via `image-trust.env`) | `""`
+`image-trust.registryCertDirsFile.secret` | Secret with cert dir pairs (`IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE`); mount CA directories at the paths in the file | `""`
 `image-trust.registryAuthHost` | Docker config host key for legacy `REGISTRY_USER` / password | `""`
 `image-trust.sigstore.env` | Private Sigstore env vars (Fulcio, Rekor URLs) | `{}`
 `image-trust.sigstore.envFileSecret` | Secret with `KEY=VALUE` lines for `IMAGE_TRUST_SIGSTORE_ENV_FILE` | `""`
@@ -152,6 +152,7 @@ Parameter | Description | Default
 `image-trust.resolveDigests` | Resolve tag-only images via registry API | `true`
 `image-trust.ignoreTlog` | Skip Rekor for keyed verification | `false`
 `image-trust.env` | Extra environment variables for the image-trust container | `{}`
+`onDemandJobRunner.image.tag` | On-demand job runner image tag; use `0.2.19` or newer for on-demand `image-trust` jobs | `0.2.19`
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true

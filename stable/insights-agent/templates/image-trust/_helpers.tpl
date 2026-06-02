@@ -41,7 +41,11 @@ Fail at render time when image-trust is enabled with invalid plugin configuratio
 {{- define "image-trust.validateConfig" -}}
 {{- $cfg := index .Values "image-trust" -}}
 {{- if $cfg.enabled -}}
-{{- $modes := include "image-trust.effectiveModes" . | splitList "," -}}
+{{- $modesStr := include "image-trust.effectiveModes" . | trim -}}
+{{- if not $modesStr -}}
+{{- fail "image-trust.enabled: modes must include at least one verification mode (e.g. cosign-keyless, cosign-key)" -}}
+{{- end -}}
+{{- $modes := splitList "," $modesStr -}}
 {{- $hasKeylessPolicy := or (has "cosign-keyless" $modes) (has "cosign-attestation-keyless" $modes) -}}
 {{- if $hasKeylessPolicy -}}
 {{- if and (not $cfg.trustedIssuers) (not $cfg.trustedSubjects) (not (gt (len $cfg.trustedSubjectRegexps) 0)) -}}
@@ -58,6 +62,20 @@ Fail at render time when image-trust is enabled with invalid plugin configuratio
 {{- if eq (include "image-trust.attestationsActive" .) "true" -}}
 {{- if not (include "image-trust.attestationTypes" .) -}}
 {{- fail "image-trust.enabled: attestations require attestations.types (or legacy attestationTypes)" -}}
+{{- end -}}
+{{- if not (or (has "cosign-keyless" $modes) (has "cosign-key" $modes) (has "cosign-attestation-keyless" $modes) (has "cosign-attestation-key" $modes)) -}}
+{{- fail "image-trust.enabled: attestations require cosign-keyless and/or cosign-key in modes (attestation modes are appended automatically)" -}}
+{{- end -}}
+{{- end -}}
+{{- if and $cfg.namespaceAllowlist $cfg.namespaceBlocklist -}}
+{{- $blockLower := list -}}
+{{- range $cfg.namespaceBlocklist -}}
+{{- $blockLower = append $blockLower (lower .) -}}
+{{- end -}}
+{{- range $ns := $cfg.namespaceAllowlist -}}
+{{- if has (lower $ns) $blockLower -}}
+{{- fail (printf "image-trust.enabled: namespace %q cannot be in both namespaceAllowlist and namespaceBlocklist" $ns) -}}
+{{- end -}}
 {{- end -}}
 {{- end -}}
 {{- end -}}

@@ -296,9 +296,9 @@ image-trust:
   registryMirrorsFile:
     secret: ""
     secretKey: mirrors.txt
-  # registryCertDirs -- Comma-separated host=/path/to/ca pairs for private registry TLS
+  # registryCertDirs -- Comma-separated host=/path pairs; paths must exist in the container (mount CA bundles via image-trust.env or extra volumes)
   registryCertDirs: ""
-  # registryCertDirsFile -- Secret with host=/path pairs (sets IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE)
+  # registryCertDirsFile -- Secret with host=/path pairs (sets IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE); mount CA dirs separately
   registryCertDirsFile:
     secret: ""
     secretKey: cert-dirs.txt
@@ -311,6 +311,7 @@ image-trust:
     refs: []
   privateImages:
     dockerConfigSecret: ""
+    # registryAuthsSecret -- Secret with JSON array; sets IMAGE_TRUST_REGISTRY_AUTHS_FILE
     registryAuthsSecret: ""
     registryAuthsSecretKey: auths.json
     registryPasswordSecret: ""
@@ -972,7 +973,7 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: quay.io/fairwinds/on-demand-job-runner
-    tag: "0.2"
+    tag: "0.2.19"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
