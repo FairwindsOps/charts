@@ -1,6 +1,6 @@
 # Changelog
 
-## 5.6.5
+## 5.7.0
 * Added image-trust plugin
 
 ## 5.6.4
