@@ -692,12 +692,15 @@ postgresql:
     database: fairwinds_insights
     existingSecret: fwinsights-postgresql
     # -- Migration user for schema migrations (login; connects before optional SET ROLE). Defaults to `username` when unset; the migration Job then also uses `existingSecret`.
+    # When enabling on an existing CNPG cluster, bootstrap SQL does not re-run; apply roles manually or use a new cluster.
     migrationUsername: ""
     # -- Password for the migration user when `postgresql.ephemeral` is true. Defaults to `password` when unset.
     migrationPassword: ""
     # -- Secret for the migration user when `migrationUsername` differs from `username`. Ignored otherwise (migration Job uses `existingSecret`).
+    # Not created by `auth.externalSecret`; provision separately when using Vault/ESO.
     existingMigrationSecret: fwinsights-postgresql-migration
     # -- NOLOGIN role that owns the database schema. Migration jobs set POSTGRES_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE).
+    # Requires a migration image with owner-role support. Use identifier-safe names (letters, digits, underscore).
     ownerRole: ""
     # -- CNPG `postgres` superuser (not used by the application or migration jobs)
     existingSuperUserSecret: fwinsights-postgresql-superuser
@@ -801,12 +804,14 @@ timescale:
   auth:
     existingSecret: fwinsights-timescale
     # -- Migration user for Timescale schema migrations (login; connects before optional SET ROLE). Defaults to `postgresqlUsername` when unset; the migration Job then also uses `existingSecret`.
+    # When enabling on an existing CNPG cluster, bootstrap SQL does not re-run; apply roles manually or use a new cluster.
     migrationUsername: ""
     # -- Password for the migration user when `timescale.ephemeral` is true. Defaults to `password` when unset.
     migrationPassword: ""
     # -- Secret for the migration user when `migrationUsername` differs from `postgresqlUsername`. Ignored otherwise (migration Job uses `existingSecret`).
     existingMigrationSecret: fwinsights-timescale-migration
     # -- NOLOGIN role that owns the Timescale database schema. Migration jobs set TIMESCALE_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE).
+    # Requires a migration image with owner-role support. Use identifier-safe names (letters, digits, underscore).
     ownerRole: ""
     existingSuperUserSecret: fwinsights-timescale-superuser
     secretKeys:

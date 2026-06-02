@@ -1,0 +1,45 @@
+# Opt-in PostgreSQL/Timescale role split for helm template CI (see ci/render-roles-test.sh).
+rok8sCIRef: roles-ci
+sanitizedBranch: roles-ci
+fullnameOverride: roles-ci
+
+ingress:
+  enabled: true
+  hostedZones:
+  - test.cluster.local
+
+options:
+  autogenerateKeys: true
+
+postgresql:
+  ephemeral: true
+  operator:
+    install: false
+  storage:
+    size: 5Gi
+  auth:
+    username: insights_app
+    password: changeme
+    migrationUsername: insights_migrate
+    migrationPassword: changeme
+    ownerRole: insights_owner
+    superuserpassword: changeme
+
+timescale:
+  ephemeral: true
+  password: changeme
+  postgresqlUsername: ts_app
+  auth:
+    migrationUsername: ts_migrate
+    migrationPassword: changeme
+    ownerRole: ts_owner
+  superuserpassword: changeme
+
+rustfs:
+  install: false
+
+reportStorage:
+  strategy: local
+
+temporal:
+  enabled: false
