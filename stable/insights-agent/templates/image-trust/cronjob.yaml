@@ -1,0 +1,111 @@
+{{- if (index .Values "image-trust" "enabled") -}}
+{{- include "image-trust.validateConfig" . -}}
+{{- $_ := set . "Label" "image-trust" }}
+{{- $_ := set . "Config" (index .Values "image-trust") }}
+{{- $cfg := index .Values "image-trust" }}
+{{- include "cronjob" . }}
+spec:
+  {{ include "cronjob-spec" . | nindent 2 | trim }}
+  jobTemplate:
+    spec:
+      {{ include "job-spec" . | nindent 6 | trim }}
+      template:
+        {{ include "job-spec-metadata" . | nindent 8 | trim }}
+        spec:
+          {{ include "job-template-spec" . | indent 10 | trim }}
+          {{- if $cfg.publicKeys.secretName }}
+          - name: image-trust-keys
+            secret:
+              secretName: {{ $cfg.publicKeys.secretName }}
+              defaultMode: 0444
+          {{- end }}
+          {{- if $cfg.privateImages.dockerConfigSecret }}
+          - name: image-trust-dockerconfig
+            secret:
+              secretName: {{ $cfg.privateImages.dockerConfigSecret }}
+          {{- end }}
+          {{- if $cfg.privateImages.registryPasswordSecret }}
+          - name: image-trust-registry-password
+            secret:
+              secretName: {{ $cfg.privateImages.registryPasswordSecret }}
+          {{- end }}
+          {{- if $cfg.privateImages.registryAuthsSecret }}
+          - name: image-trust-registry-auths
+            secret:
+              secretName: {{ $cfg.privateImages.registryAuthsSecret }}
+          {{- end }}
+          {{- if $cfg.sigstore.envFileSecret }}
+          - name: image-trust-sigstore-env
+            secret:
+              secretName: {{ $cfg.sigstore.envFileSecret }}
+          {{- end }}
+          {{- if $cfg.sigstore.trustBundleSecret }}
+          - name: image-trust-sigstore-trust
+            secret:
+              secretName: {{ $cfg.sigstore.trustBundleSecret }}
+          {{- end }}
+          {{- if $cfg.registryMirrorsFile.secret }}
+          - name: image-trust-registry-mirrors-file
+            secret:
+              secretName: {{ $cfg.registryMirrorsFile.secret }}
+          {{- end }}
+          {{- if $cfg.registryCertDirsFile.secret }}
+          - name: image-trust-registry-cert-dirs-file
+            secret:
+              secretName: {{ $cfg.registryCertDirsFile.secret }}
+          {{- end }}
+          containers:
+          - {{ include "container-spec" . | indent 12 | trim }}
+            {{- if $cfg.publicKeys.secretName }}
+            - name: image-trust-keys
+              mountPath: /etc/image-trust/keys
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.privateImages.dockerConfigSecret }}
+            - name: image-trust-dockerconfig
+              mountPath: /etc/docker
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.privateImages.registryPasswordSecret }}
+            - name: image-trust-registry-password
+              mountPath: /etc/registry
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.privateImages.registryAuthsSecret }}
+            - name: image-trust-registry-auths
+              mountPath: /etc/image-trust/registry
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.sigstore.envFileSecret }}
+            - name: image-trust-sigstore-env
+              mountPath: /etc/sigstore
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.sigstore.trustBundleSecret }}
+            - name: image-trust-sigstore-trust
+              mountPath: /etc/sigstore/trust
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.registryMirrorsFile.secret }}
+            - name: image-trust-registry-mirrors-file
+              mountPath: /etc/image-trust/mirrors
+              readOnly: true
+            {{- end }}
+            {{- if $cfg.registryCertDirsFile.secret }}
+            - name: image-trust-registry-cert-dirs-file
+              mountPath: /etc/image-trust/certs
+              readOnly: true
+            {{- end }}
+            command:
+              - "./report.sh"
+            env:
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            {{ include "ssl-cert-file-env-spec" . | indent 12 }}
+            {{- include "image-trust-env" . | nindent 12 }}
+            {{- range $key, $value := $cfg.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+            {{ include "security-context" . | indent 12 | trim }}
+          {{ include "uploaderContainer" . | indent 10 | trim }}
+{{- end -}}

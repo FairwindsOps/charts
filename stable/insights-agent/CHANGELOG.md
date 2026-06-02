@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.7.0
+* Added image-trust plugin
+
 ## 5.6.4
 * Bumped workloads plugin to `2.9` and prometheus-collector to `1.9`
 

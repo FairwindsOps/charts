@@ -31,6 +31,7 @@ There are several different report types which can be enabled and configured:
 * `workloads`
 * `kube-hunter`
 * `trivy`
+* `image-trust`
 * `nova`
 * `rbac-reporter`
 * `kube-bench`
@@ -114,6 +115,44 @@ Parameter | Description | Default
 `trivy.namespaceBlocklist` | Specifies which namespaces to not scan, takes an array of namespaces for example: `--set trivy.namespaceBlocklist="{kube-system,default}"` | []
 `trivy.serviceAccount.annotations` | Annotations to add to the Trivy service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for accessing private images | nil
 `trivy.env` | A map of environment variables that will be set for the trivy container. | `nil`
+`image-trust.enabled` | Enable Cosign image trust reporting | `false`
+`image-trust.modes` | Modes: `cosign-keyless`, `cosign-key`, `cosign-attestation-keyless`, `cosign-attestation-key` | `[cosign-keyless]`
+`image-trust.modePolicy` | `any` (first successful mode in list order) or `all` (every configured mode must verify) | `any`
+`image-trust.trustedIssuers` | OIDC issuers for keyless verification | `[]`
+`image-trust.trustedSubjects` | Exact certificate identities for keyless verification | `[]`
+`image-trust.trustedSubjectRegexps` | Subject regexes for keyless verification | `[]`
+`image-trust.attestations.enabled` | Enable attestation verification; auto-appends `cosign-attestation-*` modes | `false`
+`image-trust.attestations.types` | Predicate types (e.g. `slsaprovenance1`); setting types alone also enables attestations | `[]`
+`image-trust.attestationTypes` | Deprecated; use `attestations.types` | `[]`
+`image-trust.imageAllowlist` | Glob patterns; matching images do not generate findings | `[]`
+`image-trust.registryAllowlist` | Glob patterns for registries | `[]`
+`image-trust.signerAllowlist` | Issuer, subject, or `issuer\|subject` signer patterns | `[]`
+`image-trust.publicKeys.secretName` | Secret with `.pub` / PEM files mounted at `/etc/image-trust/keys` | `""`
+`image-trust.publicKeys.paths` | Absolute paths to public keys inside the container | `[]`
+`image-trust.publicKeys.refs` | Remote/KMS public key URIs | `[]`
+`image-trust.privateImages.dockerConfigSecret` | Secret containing `config.json` for multi-registry auth | `""`
+`image-trust.privateImages.registryAuthsSecret` | Secret with JSON array mounted for `IMAGE_TRUST_REGISTRY_AUTHS_FILE` | `""`
+`image-trust.privateImages.registryPasswordSecret` | Secret with registry password for private images | `""`
+`image-trust.privateImages.registryUser` | Registry username when not using docker config | `""`
+`image-trust.registryMirrors` | `mirror=upstream` pairs for pull-through registries | `""`
+`image-trust.registryMirrorsFile.secret` | Secret with mirror pairs (`IMAGE_TRUST_REGISTRY_MIRRORS_FILE`) | `""`
+`image-trust.registryCertDirs` | Per-registry custom CA bundles (`host=/path` pairs); mount CA directories at those paths (e.g. via `image-trust.env`) | `""`
+`image-trust.registryCertDirsFile.secret` | Secret with cert dir pairs (`IMAGE_TRUST_REGISTRY_CERT_DIRS_FILE`); mount CA directories at the paths in the file | `""`
+`image-trust.registryAuthHost` | Docker config host key for legacy `REGISTRY_USER` / password | `""`
+`image-trust.sigstore.env` | Private Sigstore env vars (Fulcio, Rekor URLs) | `{}`
+`image-trust.sigstore.envFileSecret` | Secret with `KEY=VALUE` lines for `IMAGE_TRUST_SIGSTORE_ENV_FILE` | `""`
+`image-trust.sigstore.trustBundleSecret` | Secret with Sigstore root bundle (`SIGSTORE_ROOT_FILE`) | `""`
+`image-trust.namespaceAllowlist` | Namespaces to scan | `[]`
+`image-trust.namespaceBlocklist` | Namespaces to exclude | `[]`
+`image-trust.maxConcurrentScans` | Parallel cosign verifications per run | `5`
+`image-trust.imageVerifyTimeoutSeconds` | Per-image verify timeout in seconds | `180`
+`image-trust.verifyRetries` | Retries for transient registry/Sigstore errors | `3`
+`image-trust.verifyRetryBackoffSeconds` | Base delay between retries | `2`
+`image-trust.verifyRetryJitter` | Add random jitter to retry backoff | `true`
+`image-trust.resolveDigests` | Resolve tag-only images via registry API | `true`
+`image-trust.ignoreTlog` | Skip Rekor for keyed verification | `false`
+`image-trust.env` | Extra environment variables for the image-trust container | `{}`
+`onDemandJobRunner.image.tag` | On-demand job runner image tag; use `0.2.19` or newer for on-demand `image-trust` jobs | `0.2.19`
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true

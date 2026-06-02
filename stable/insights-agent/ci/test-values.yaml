@@ -75,6 +75,14 @@ kube-hunter:
     requests:
       cpu: 50m
 
+image-trust:
+  enabled: true
+  trustedIssuers:
+    - https://token.actions.githubusercontent.com
+  resources:
+    requests:
+      cpu: 50m
+
 trivy:
   enabled: true
   maxScansPerRun: 2

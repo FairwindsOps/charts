@@ -1,0 +1,28 @@
+{{- if and (index .Values "image-trust" "enabled") (not .Values.rbac.disabled) -}}
+{{- $cfg := index .Values "image-trust" -}}
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-image-trust
+  labels:
+    app: insights-agent
+  {{- with $cfg.serviceAccount.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-image-trust
+  labels:
+    app: insights-agent
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "insights-agent.fullname" . }}-image-trust
+    namespace: {{ .Release.Namespace }}
+{{- end -}}
