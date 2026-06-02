@@ -26,7 +26,7 @@ spec:
         command: ["one_time_migration"]
         resources:
           {{- toYaml .Values.oneTimeMigration.resources | nindent 10 }}
-        {{- include "env" (dict "root" .) | indent 8 }}
+        {{- include "env" (dict "root" . "useMigrationCredentials" true) | indent 8 }}
         {{- with .Values.oneTimeMigration.additionalEnv }}
           {{- toYaml . | nindent 8 }}
         {{- end }}

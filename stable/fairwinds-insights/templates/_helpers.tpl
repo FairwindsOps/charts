@@ -77,6 +77,92 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.postgresqlAppUsername" -}}
+{{- .Values.postgresql.auth.username -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.postgresqlMigrationUsername" -}}
+{{- default (include "fairwinds-insights.postgresqlAppUsername" .) .Values.postgresql.auth.migrationUsername -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.postgresqlMigrationSecret" -}}
+{{- if eq (include "fairwinds-insights.postgresqlSplitAppMigration" .) "true" -}}
+{{- .Values.postgresql.auth.existingMigrationSecret -}}
+{{- else -}}
+{{- .Values.postgresql.auth.existingSecret -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.postgresqlOwnerRole" -}}
+{{- default (include "fairwinds-insights.postgresqlMigrationUsername" .) .Values.postgresql.auth.ownerRole -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.postgresqlUseOwnerRole" -}}
+{{- if ne (include "fairwinds-insights.postgresqlOwnerRole" .) (include "fairwinds-insights.postgresqlMigrationUsername" .) -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.postgresqlRoleBootstrap" -}}
+{{- if or (eq (include "fairwinds-insights.postgresqlUseOwnerRole" .) "true") (ne (include "fairwinds-insights.postgresqlMigrationUsername" .) (include "fairwinds-insights.postgresqlAppUsername" .)) -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.postgresqlSplitAppMigration" -}}
+{{- if ne (include "fairwinds-insights.postgresqlMigrationUsername" .) (include "fairwinds-insights.postgresqlAppUsername" .) -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleAppUsername" -}}
+{{- .Values.timescale.postgresqlUsername -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleMigrationUsername" -}}
+{{- default (include "fairwinds-insights.timescaleAppUsername" .) .Values.timescale.auth.migrationUsername -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleMigrationSecret" -}}
+{{- if eq (include "fairwinds-insights.timescaleSplitAppMigration" .) "true" -}}
+{{- .Values.timescale.auth.existingMigrationSecret -}}
+{{- else -}}
+{{- .Values.timescale.auth.existingSecret -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleOwnerRole" -}}
+{{- default (include "fairwinds-insights.timescaleMigrationUsername" .) .Values.timescale.auth.ownerRole -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleUseOwnerRole" -}}
+{{- if ne (include "fairwinds-insights.timescaleOwnerRole" .) (include "fairwinds-insights.timescaleMigrationUsername" .) -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleRoleBootstrap" -}}
+{{- if or (eq (include "fairwinds-insights.timescaleUseOwnerRole" .) "true") (ne (include "fairwinds-insights.timescaleMigrationUsername" .) (include "fairwinds-insights.timescaleAppUsername" .)) -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.timescaleSplitAppMigration" -}}
+{{- if ne (include "fairwinds-insights.timescaleMigrationUsername" .) (include "fairwinds-insights.timescaleAppUsername" .) -}}
+true
+{{- end -}}
+{{- end -}}
+
+{{/*
+Unquoted PostgreSQL identifiers only (used in CNPG postInitSQL).
+*/}}
+{{- define "fairwinds-insights.assertPostgresIdentifier" -}}
+{{- $id := . -}}
+{{- if not (regexMatch "^[a-zA-Z_][a-zA-Z0-9_]*$" $id) -}}
+{{- fail (printf "invalid PostgreSQL identifier %q: use letters, digits, and underscores only; must start with a letter or underscore" $id) -}}
+{{- end -}}
+{{- end -}}
+
 {{/*
 Common labels
 */}}
