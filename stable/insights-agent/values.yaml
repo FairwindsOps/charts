@@ -973,7 +973,7 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: quay.io/fairwinds/on-demand-job-runner
-    tag: "0.2.19"
+    tag: "0.2"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
