@@ -1,6 +1,6 @@
 # Changelog
 
-## 9.2.4
+## 9.3.0
 * **Backward compatible:** Add optional PostgreSQL and Timescale role separation without changing default behavior. Existing installs keep `username` / `postgresqlUsername: postgres`, existing app secrets, and a single app/migration login per database — no new Secrets, CNPG `postInitSQL`, or owner-role env vars unless you opt in. New values under `postgresql.auth` and `timescale.auth`: `migrationUsername`, `migrationPassword`, `existingMigrationSecret`, and `ownerRole` for split app/migration logins and optional NOLOGIN schema ownership (`POSTGRES_OWNER_ROLE` / `TIMESCALE_OWNER_ROLE`; requires a migration image with the updated Insights `db/startup.sh` and `pkg/database` owner-role support). CNPG superuser secrets are unchanged.
 * **Existing CNPG clusters:** `postInitSQL` and `managed.roles` in the Cluster spec run only at **initial** `initdb` bootstrap. Enabling role split or `ownerRole` on a cluster that already exists requires equivalent manual SQL (or a new cluster / restore). A Helm upgrade alone does not create new roles on an existing database.
 * **External secrets:** `postgresql.auth.externalSecret` provisions the application secret only. When `migrationUsername` differs from `username`, provision `existingMigrationSecret` separately (manual Secret, second ExternalSecret, or your secret store).
