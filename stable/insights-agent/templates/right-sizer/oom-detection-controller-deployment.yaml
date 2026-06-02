@@ -75,7 +75,5 @@ spec:
             httpGet:
               path: /healthz
               port: 8080
-          resources:
-            {{- toYaml (index .Values "right-sizer" "oom-detection" "resources") | nindent 12 }}
       serviceAccountName: {{ include "insights-agent.fullname" . }}-right-sizer-oom-detection-controller
 {{- end -}}
