@@ -972,8 +972,7 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: quay.io/fairwinds/on-demand-job-runner
-    # 0.2.19+ required for on-demand report type image-trust
-    tag: "0.2.19"
+    tag: "0.2"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
