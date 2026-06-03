@@ -1,6 +1,8 @@
 {{- define "image-trust-env" -}}
 {{- $cfg := index .Values "image-trust" -}}
 {{- $effectiveModes := include "image-trust.effectiveModes" . -}}
+- name: HOME
+  value: "/home/image-trust"
 {{- if $effectiveModes }}
 - name: IMAGE_TRUST_MODES
   value: {{ $effectiveModes | quote }}
