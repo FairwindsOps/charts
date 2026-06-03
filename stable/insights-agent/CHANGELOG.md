@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.7.1
+* Fixed image-trust keyless verification failing with read-only root filesystem by mounting a writable cosign/Sigstore cache directory
+
 ## 5.7.0
 * Added image-trust plugin
 
