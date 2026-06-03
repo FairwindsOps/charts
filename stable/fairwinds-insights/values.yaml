@@ -1115,7 +1115,7 @@ temporalDeployments:
       - name: POSTGRES_MAX_IDLE_CONNS
         value: "2"
       - name: POSTGRES_MAX_OPEN_CONNS
-        value: "2"
+        value: "4"
   general-worker:
     enabled: true
     command: "general_worker"
