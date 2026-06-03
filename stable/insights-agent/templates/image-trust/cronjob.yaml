@@ -54,10 +54,8 @@ spec:
             secret:
               secretName: {{ $cfg.registryCertDirsFile.secret }}
           {{- end }}
-          {{- if eq (include "image-trust.needsCosignCache" .) "true" }}
           - name: image-trust-cosign-cache
             emptyDir: {}
-          {{- end }}
           containers:
           - {{ include "container-spec" . | indent 12 | trim }}
             {{- if $cfg.publicKeys.secretName }}
@@ -100,10 +98,8 @@ spec:
               mountPath: /etc/image-trust/certs
               readOnly: true
             {{- end }}
-            {{- if eq (include "image-trust.needsCosignCache" .) "true" }}
             - name: image-trust-cosign-cache
               mountPath: /home/image-trust
-            {{- end }}
             command:
               - "./report.sh"
             env:

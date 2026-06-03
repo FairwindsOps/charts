@@ -1,10 +1,8 @@
 {{- define "image-trust-env" -}}
 {{- $cfg := index .Values "image-trust" -}}
 {{- $effectiveModes := include "image-trust.effectiveModes" . -}}
-{{- if eq (include "image-trust.needsCosignCache" .) "true" }}
 - name: HOME
   value: "/home/image-trust"
-{{- end }}
 {{- if $effectiveModes }}
 - name: IMAGE_TRUST_MODES
   value: {{ $effectiveModes | quote }}
