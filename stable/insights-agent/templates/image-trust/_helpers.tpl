@@ -19,20 +19,6 @@ True when attestations.enabled or at least one attestation type is configured.
 {{- end -}}
 
 {{/*
-True when cosign needs a writable home directory for Sigstore TUF/Rekor cache (readOnlyRootFilesystem).
-*/}}
-{{- define "image-trust.needsCosignCache" -}}
-{{- $cfg := index .Values "image-trust" -}}
-{{- $modesStr := include "image-trust.effectiveModes" . | trim -}}
-{{- if $modesStr -}}
-{{- $modes := splitList "," $modesStr -}}
-{{- $hasKeyless := or (has "cosign-keyless" $modes) (has "cosign-attestation-keyless" $modes) -}}
-{{- $hasKeyedRekor := and (or (has "cosign-key" $modes) (has "cosign-attestation-key" $modes)) (not $cfg.ignoreTlog) -}}
-{{- if or $hasKeyless $hasKeyedRekor -}}true{{- end -}}
-{{- end -}}
-{{- end -}}
-
-{{/*
 Effective IMAGE_TRUST_MODES: base modes plus attestation modes when attestations are active.
 */}}
 {{- define "image-trust.effectiveModes" -}}
