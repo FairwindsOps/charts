@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.3.2
+* Remove `Chart.lock` from `.gitignore`
+
 ## 9.3.1
 * Increase `delete-org-cluster-worker` default value for `POSTGRES_MAX_OPEN_CONNS` from `2` to `4` 
 

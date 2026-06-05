@@ -1,37 +1,27 @@
 dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
-  version: '10.3.*'
-  condition: goldilocks.enabled
+  version: 10.3.0
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: '28.14.*'
-  condition: prometheus-metrics.installPrometheusServer
+  version: 28.14.1
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: '1.11.*'
-  condition: admission.enabled
+  version: 1.11.2
 - name: falco
   repository: https://falcosecurity.github.io/charts
-  version: '8.0.*'
-  condition: falco.installFalco
-  alias: falcosecurity
+  version: 8.0.5
 - name: vpa
-  version: '4.10.*'
   repository: https://charts.fairwinds.com/stable
-  condition: right-sizer.enableClosedBeta
-  alias: right-sizer-vpa
+  version: 4.10.2
 - name: trivy
-  version: 0.21.3
   repository: https://aquasecurity.github.io/helm-charts/
-  condition: trivy.server.installTrivyServer
-  alias: trivy-server
+  version: 0.21.3
 - name: dcgm-exporter
-  version: '4.8.1'
   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
-  condition: dcgm-exporter.enabled
+  version: 4.8.1
 - name: device-metrics-exporter-charts
-  version: '1.4.1'
   repository: https://rocm.github.io/device-metrics-exporter
-  condition: amd-device-metrics-exporter.enabled
-  alias: amd-device-metrics-exporter
+  version: v1.4.1
+digest: sha256:d3a6a71687cd52597e2024c7b473c1c86a1df984d462fb878d389ede2fb32327
+generated: "2026-06-05T09:56:47.993355-03:00"
