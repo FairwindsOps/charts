@@ -47,7 +47,7 @@
       "groupName": "CircleCI major updates"
     },
     {
-      "description": "Bump chart version on dependency and image updates (top-level version: only)",
+      "description": "Bump chart version on dependency and image updates",
       "matchManagers": ["helmv3", "helm-values"],
       "matchFileNames": ["stable/**"],
       "bumpVersions": [
