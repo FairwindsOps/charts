@@ -1,4 +1,4 @@
-apiVersion: v1
+apiVersion: v2
 description: A Helm chart to run the Fairwinds Insights agent
 name: insights-agent
 version: 5.7.1
@@ -8,3 +8,40 @@ icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insigh
 maintainers:
   - name: vitorvezani
   - name: jdesouza
+dependencies:
+  - name: goldilocks
+    repository: https://charts.fairwinds.com/stable
+    version: '10.3.*'
+    condition: goldilocks.enabled
+  - name: prometheus
+    repository: https://prometheus-community.github.io/helm-charts
+    version: '28.14.*'
+    condition: prometheus-metrics.installPrometheusServer
+  - name: insights-admission
+    repository: https://charts.fairwinds.com/stable
+    version: '1.11.*'
+    condition: admission.enabled
+  - name: falco
+    repository: https://falcosecurity.github.io/charts
+    version: '8.0.*'
+    condition: falco.installFalco
+    alias: falcosecurity
+  - name: vpa
+    version: '4.10.*'
+    repository: https://charts.fairwinds.com/stable
+    condition: right-sizer.enableClosedBeta
+    alias: right-sizer-vpa
+  - name: trivy
+    version: 0.21.3
+    repository: https://aquasecurity.github.io/helm-charts/
+    condition: trivy.server.installTrivyServer
+    alias: trivy-server
+  - name: dcgm-exporter
+    version: '4.8.1'
+    repository: https://nvidia.github.io/dcgm-exporter/helm-charts
+    condition: dcgm-exporter.enabled
+  - name: device-metrics-exporter-charts
+    version: '1.4.1'
+    repository: https://rocm.github.io/device-metrics-exporter
+    condition: amd-device-metrics-exporter.enabled
+    alias: amd-device-metrics-exporter
