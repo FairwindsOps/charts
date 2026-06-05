@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.7.2
+* Moved dependencies from `requirements.yaml` to `Chart.yaml`
+
 ## 5.7.1
 * Fixed image-trust keyless verification failing with read-only root filesystem by mounting a writable cosign/Sigstore cache directory
 
