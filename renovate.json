@@ -1,0 +1,67 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":dependencyDashboard"],
+  "labels": ["dependencies"],
+  "prConcurrentLimit": 10,
+  "branchConcurrentLimit": 10,
+  "minimumReleaseAge": "7 days",
+  "ignorePaths": ["incubator/**", "docs/**"],
+  "registryAliases": {
+    "stable": "https://charts.fairwinds.com/stable"
+  },
+  "enabledManagers": ["helmv3", "helm-values", "circleci"],
+  "packageRules": [
+    {
+      "description": "Resolve @stable Helm repo alias and explicit fairwinds-stable URLs to the published index",
+      "matchManagers": ["helmv3"],
+      "matchDatasources": ["helm"],
+      "matchSourceUrls": [
+        "https://charts.fairwinds.com/stable",
+        "https://charts.fairwinds.com/stable/"
+      ],
+      "registryUrls": ["https://charts.fairwinds.com/stable"]
+    },
+    {
+      "matchManagers": ["helmv3"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "Helm chart major updates"
+    },
+    {
+      "matchManagers": ["helm-values"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "groupName": "Helm values non-major updates"
+    },
+    {
+      "matchManagers": ["helm-values"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "Helm values major updates"
+    },
+    {
+      "matchManagers": ["circleci"],
+      "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
+      "groupName": "CircleCI non-major updates"
+    },
+    {
+      "matchManagers": ["circleci"],
+      "matchUpdateTypes": ["major"],
+      "groupName": "CircleCI major updates"
+    },
+    {
+      "description": "Bump chart version on dependency and image updates",
+      "matchManagers": ["helmv3", "helm-values"],
+      "matchFileNames": ["stable/**"],
+      "bumpVersions": [
+        {
+          "filePatterns": ["{{packageFileDir}}/Chart.{yaml,yml}"],
+          "matchStrings": ["(?m)^version:\\s(?<version>[^\\s]+)"],
+          "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
+        }
+      ]
+    },
+    {
+      "description": "Every upgrade: upstream release must be at least 7 days old",
+      "matchManagers": ["helmv3", "helm-values", "circleci"],
+      "minimumReleaseAge": "7 days"
+    }
+  ]
+}
