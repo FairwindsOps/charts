@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rok8s: fairwinds/rok8s-scripts@14
+  rok8s: fairwinds/rok8s-scripts@14.4.0
 
 references:
   setup_environment: &setup_environment
@@ -80,7 +80,7 @@ jobs:
       - *check_changelog
   lint-scripts:
     docker:
-      - image: koalaman/shellcheck-alpine:v0.7.0
+      - image: koalaman/shellcheck-alpine:v0.11.0
     steps:
       - checkout
       - run:
