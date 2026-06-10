@@ -7,7 +7,7 @@ dependencies:
   version: 28.16.0
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: 1.11.2
+  version: 1.12.1
 - name: falco
   repository: https://falcosecurity.github.io/charts
   version: 8.0.5
@@ -23,5 +23,5 @@ dependencies:
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.0
-digest: sha256:aeb80937c1e2ca2b1b91bacebf956fab9945b81d448310fe0efcb69256e0a334
-generated: "2026-06-10T18:29:41.045332616Z"
+digest: sha256:d05de5085ec8041354a1a857a637a3cd2585818389df937b880a1928ea51b90e
+generated: "2026-06-10T18:55:54.539246969Z"
