@@ -3,6 +3,14 @@ version: 2.1
 orbs:
   rok8s: fairwinds/rok8s-scripts@14.4.0
 
+commands:
+  set_vault:
+    description: Install and configure vault
+    steps:
+      - run: ./.circleci/scripts/vault.sh
+      - rok8s/get_vault_env:
+          vault_path: repo/global/env
+
 references:
   setup_environment: &setup_environment
     run:
@@ -60,6 +68,16 @@ executors:
       - image: quay.io/reactiveops/ci-images:v15-cimg-24.04
 
 jobs:
+  # On Renovate PRs, update CHANGELOG.md for charts enforced by check-helm-docs and push to the PR branch.
+  bump_renovate_pr_changelog:
+    executor: ci-images
+    steps:
+      - checkout
+      - set_vault
+      - run:
+          name: Bump changelog for Renovate PR
+          command: ./.circleci/scripts/bump-renovate-pr.sh
+
   check-helm-docs:
     executor: ci-images
     steps:
@@ -171,6 +189,10 @@ workflows:
   # scan_for_vulnerabilities fails when vulns found but does not block (no job requires it).
   test-and-sync:
     jobs:
+      - bump_renovate_pr_changelog:
+          filters:
+            branches:
+              only: /renovate\/.*/
       - check-helm-docs
       - lint-scripts
       - lint-charts
