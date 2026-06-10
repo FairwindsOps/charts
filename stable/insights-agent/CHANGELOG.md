@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.9.0
+* Bump dependencies
+
 ## 5.8.0
 * Bump dependencies
 
