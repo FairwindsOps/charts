@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.7.3
+* Bumped dcgm-exporter to `4.8.2`
+
 ## 5.7.2
 * Moved dependencies from `requirements.yaml` to `Chart.yaml`
 
