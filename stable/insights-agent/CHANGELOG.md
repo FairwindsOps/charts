@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.8.0
+* Bump dependencies
+
 ## 5.7.3
 * Bumped dcgm-exporter to `4.8.2`
 
