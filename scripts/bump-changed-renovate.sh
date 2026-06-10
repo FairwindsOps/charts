@@ -36,10 +36,12 @@ bump_one_chart() {
 
   version=$(grep '^version:' "$d/Chart.yaml" | head -1 | awk '{print $2}' | tr -d "'\"")
 
-  echo -e "# Changelog" > /tmp/CHANGELOG.md
-  echo -e "\n## $version" >> /tmp/CHANGELOG.md
-  echo -e "* $fallback_msg" >> /tmp/CHANGELOG.md
-  tail -n+2 "$d/CHANGELOG.md" >> /tmp/CHANGELOG.md
+  {
+    echo -e "# Changelog"
+    echo -e "\n## $version"
+    echo -e "* $fallback_msg"
+    tail -n+2 "$d/CHANGELOG.md"
+  } > /tmp/CHANGELOG.md
   mv /tmp/CHANGELOG.md "$d/CHANGELOG.md"
 }
 
