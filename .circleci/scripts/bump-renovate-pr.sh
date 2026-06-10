@@ -9,16 +9,18 @@ if ! command -v python3 >/dev/null 2>&1; then
   sudo apt-get install -y -qq python3 >/dev/null
 fi
 
-if [[ -z "${GITHUB_TOKEN:-}" ]]; then
-  echo "GITHUB_TOKEN is not set. Add a GitHub PAT with contents:write to the CircleCI project or context."
-  exit 1
-fi
-
 AUTHOR=$(git log -1 --format='%an')
 if [[ "$AUTHOR" != "renovate[bot]" ]]; then
   echo "Latest commit author is not renovate[bot] (got '${AUTHOR}'); skipping bump."
   exit 0
 fi
+
+GITHUB_TOKEN="${GITHUB_TOKEN:-${GH_TOKEN:-${GITHUB_ACCESS_TOKEN:-}}}"
+if [[ -z "$GITHUB_TOKEN" ]]; then
+  echo "GITHUB_TOKEN is not set. Vault repo/global/env should expose GITHUB_TOKEN, GH_TOKEN, or GITHUB_ACCESS_TOKEN."
+  exit 1
+fi
+export GITHUB_TOKEN
 
 git fetch --no-tags origin +refs/heads/master:refs/remotes/origin/master 2>/dev/null || \
   git fetch origin master --depth=500
