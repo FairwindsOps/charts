@@ -17,7 +17,9 @@ metadata:
     {{ toYaml . | nindent 4 }}
     {{- end }}
 spec:
+  {{- if not (eq (include "fairwinds-insights.temporalKedaEnabled" (dict "options" $options "root" $) | trim) "true") }}
   replicas: {{ $options.replicas | default $.Values.temporalDeploymentDefaults.replicas | default 1 }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "fairwinds-insights.selectorLabels" $ | nindent 6 }}

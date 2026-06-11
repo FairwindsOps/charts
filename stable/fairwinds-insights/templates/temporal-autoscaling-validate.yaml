@@ -1,0 +1,9 @@
+{{- range $name, $options := .Values.temporalDeployments }}
+{{- if $options.enabled }}
+{{- $hpaEnabled := include "fairwinds-insights.temporalHpaEnabled" (dict "options" $options "root" $) | trim }}
+{{- $kedaEnabled := include "fairwinds-insights.temporalKedaEnabled" (dict "options" $options "root" $) | trim }}
+{{- if and (eq $hpaEnabled "true") (eq $kedaEnabled "true") }}
+{{- fail (printf "temporalDeployments.%s: hpa.enabled and keda.enabled cannot both be true" $name) }}
+{{- end }}
+{{- end }}
+{{- end }}

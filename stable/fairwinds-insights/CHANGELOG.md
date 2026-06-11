@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.4.0
+* Add optional KEDA `ScaledObject` support for `temporalDeployments`. Requires KEDA in-cluster and `keda.prometheus.serverAddress` when enabled.
+
 ## 9.3.2
 * Remove `Chart.lock` from `.gitignore`
 
