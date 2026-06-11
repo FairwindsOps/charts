@@ -1,0 +1,39 @@
+{{- range $name, $options := .Values.temporalDeployments }}
+{{- if and $options.enabled (eq (include "fairwinds-insights.temporalKedaEnabled" (dict "options" $options "root" $) | trim) "true") }}
+{{- $keda := mergeOverwrite (deepCopy $.Values.temporalDeploymentDefaults.keda) ($options.keda | default dict) }}
+{{- $prom := $keda.prometheus }}
+{{- if not $prom.serverAddress }}
+{{- fail (printf "temporalDeployments.%s: keda.prometheus.serverAddress is required when keda is enabled" $name) }}
+{{- end }}
+apiVersion: keda.sh/v1alpha1
+kind: ScaledObject
+metadata:
+  name: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: {{ $name }}
+spec:
+  scaleTargetRef:
+    name: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
+  minReplicaCount: {{ $keda.min }}
+  maxReplicaCount: {{ $keda.max }}
+  pollingInterval: {{ $keda.pollingInterval }}
+  cooldownPeriod: {{ $keda.cooldownPeriod }}
+  {{- with $keda.advanced }}
+  advanced:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  triggers:
+    - type: prometheus
+      metadata:
+        serverAddress: {{ $prom.serverAddress }}
+        threshold: {{ $prom.threshold | quote }}
+        activationThreshold: {{ $prom.activationThreshold | quote }}
+        ignoreNullValues: {{ $prom.ignoreNullValues | quote }}
+        {{- if not $prom.query }}
+        {{- fail (printf "temporalDeployments.%s: keda.prometheus.query is required when keda is enabled" $name) }}
+        {{- end }}
+        query: {{ $prom.query | quote }}
+---
+{{- end }}
+{{- end }}
