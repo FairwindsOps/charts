@@ -4,13 +4,13 @@ dependencies:
   version: 10.3.0
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 28.16.0
+  version: 29.10.1
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: 1.11.2
+  version: 1.12.1
 - name: falco
   repository: https://falcosecurity.github.io/charts
-  version: 8.0.5
+  version: 9.0.0
 - name: vpa
   repository: https://charts.fairwinds.com/stable
   version: 4.10.2
@@ -22,6 +22,6 @@ dependencies:
   version: 4.8.2
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
-  version: v1.4.1
-digest: sha256:dd494e5b0339004ff9d26fd895ea1d2cb84a483122c9e69e61e1363ea00e4f8b
-generated: "2026-06-10T15:00:45.766726845Z"
+  version: v1.5.0
+digest: sha256:7651a0604a107379d87143add8d1af1a8fb859f9f715fbd33aac36efdaf12bcd
+generated: "2026-06-11T12:03:51.959525021Z"
