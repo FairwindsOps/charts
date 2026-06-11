@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.3.3
+* Add `postgresql.auth.secretKeys.migrationPasswordKey` (and Timescale equivalent) so the migration Job can read a dedicated password key when app and migrator credentials share one ExternalSecret-managed Secret. Defaults to `postgresql-password` for separate migration Secrets.
+
 ## 9.3.2
 * Remove `Chart.lock` from `.gitignore`
 

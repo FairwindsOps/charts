@@ -67,7 +67,7 @@ env:
 {{- if $.Values.postgresql.ephemeral }}
 {{- $postgresPasswordKey = "password" }}
 {{- else }}
-{{- $postgresPasswordKey = "postgresql-password" }}
+{{- $postgresPasswordKey = $.Values.postgresql.auth.secretKeys.migrationPasswordKey }}
 {{- end }}
 {{- end }}
 {{- if and ($useReadReplica) ($.Values.postgresql.readReplica) }}
@@ -120,7 +120,7 @@ env:
 {{- if $.Values.timescale.ephemeral }}
 {{- $timescalePasswordKey = "password" }}
 {{- else }}
-{{- $timescalePasswordKey = $.Values.timescale.auth.secretKeys.adminPasswordKey }}
+{{- $timescalePasswordKey = $.Values.timescale.auth.secretKeys.migrationPasswordKey }}
 {{- end }}
 {{- end }}
 - name: TIMESCALE_DB
