@@ -1,5 +1,26 @@
 # Changelog
 
+## 5.13.0
+* Bump dependencies
+
+## 5.12.0
+* Bump dependencies
+
+## 5.11.0
+* Bump dependencies
+
+## 5.10.0
+* Bump dependencies
+
+## 5.9.0
+* Bump dependencies
+
+## 5.8.0
+* Bump dependencies
+
+## 5.7.3
+* Bumped dcgm-exporter to `4.8.2`
+
 ## 5.7.2
 * Moved dependencies from `requirements.yaml` to `Chart.yaml`
 
