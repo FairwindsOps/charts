@@ -1,7 +1,10 @@
 # Changelog
 
-## 9.3.3
+## 9.4.1
 * Add `postgresql.auth.secretKeys.migrationPasswordKey` (and Timescale equivalent) so the migration Job can read a dedicated password key when app and migrator credentials share one ExternalSecret-managed Secret. Defaults to `postgresql-password` for separate migration Secrets.
+
+## 9.4.0
+* Add optional KEDA `ScaledObject` support for `temporalDeployments`. Requires KEDA in-cluster and `keda.prometheus.serverAddress` when enabled.
 
 ## 9.3.2
 * Remove `Chart.lock` from `.gitignore`

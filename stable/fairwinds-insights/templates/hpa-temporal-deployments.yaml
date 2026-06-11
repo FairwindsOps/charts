@@ -1,5 +1,5 @@
 {{ range $name, $options := .Values.temporalDeployments }}
-{{ if and $options.enabled $options.hpa.enabled }}
+{{ if and $options.enabled (eq (include "fairwinds-insights.temporalHpaEnabled" (dict "options" $options "root" $) | trim) "true") }}
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:

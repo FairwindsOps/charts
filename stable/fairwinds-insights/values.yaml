@@ -1062,6 +1062,37 @@ temporalDeploymentDefaults:
     min: 2
     max: 4
     metrics: []
+  keda:
+    enabled: false
+    min: 1
+    max: 10
+    pollingInterval: 30
+    cooldownPeriod: 300
+    prometheus:
+      serverAddress: ""
+      threshold: "30"
+      activationThreshold: "5"
+      ignoreNullValues: "true"
+      query: ""
+    advanced:
+      horizontalPodAutoscalerConfig:
+        behavior:
+          scaleUp:
+            stabilizationWindowSeconds: 0
+            policies:
+              - type: Percent
+                value: 100
+                periodSeconds: 60
+              - type: Pods
+                value: 4
+                periodSeconds: 60
+            selectPolicy: Max
+          scaleDown:
+            stabilizationWindowSeconds: 300
+            policies:
+              - type: Percent
+                value: 50
+                periodSeconds: 120
   pdb:
     enabled: false
     minAvailable: 1
@@ -1226,6 +1257,9 @@ temporalDeployments:
       min: 2
       max: 6
       metrics: []
+    keda:
+      enabled: false
+      query: histogram_quantile(0.95, sum(rate(task_schedule_to_start_latency_bucket{namespace="fwinsights",taskqueue="report_jobs_process"}[5m])) by (le))
     pdb:
       enabled: false
     resources:

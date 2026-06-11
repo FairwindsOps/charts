@@ -251,3 +251,18 @@ app.kubernetes.io/instance: {{ .Release.Name }}
 https://insights.fairwinds.com
 {{- end -}}
 {{- end -}}
+
+{{- define "fairwinds-insights.temporalHpaEnabled" -}}
+{{- $options := .options -}}
+{{- $root := .root -}}
+{{- $default := $root.Values.temporalDeploymentDefaults.hpa.enabled | default false -}}
+{{- if (dig "hpa" "enabled" $default $options) -}}true{{- else -}}false{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.temporalKedaEnabled" -}}
+{{- $options := .options -}}
+{{- $root := .root -}}
+{{- $default := $root.Values.temporalDeploymentDefaults.keda.enabled | default false -}}
+{{- if (dig "keda" "enabled" $default $options) -}}true{{- else -}}false{{- end -}}
+{{- end -}}
+
