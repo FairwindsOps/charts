@@ -41,7 +41,7 @@ openApiImage:
   # -- Docker image repository for the Open API server
   repository: swaggerapi/swagger-ui
   # -- Overrides tag for the Open API server, defaults to image.tag
-  tag: v5.32.4  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
+  tag: v5.32.6  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
@@ -697,7 +697,7 @@ postgresql:
     # -- Password for the migration user when `postgresql.ephemeral` is true. Defaults to `password` when unset.
     migrationPassword: ""
     # -- Secret for the migration user when `migrationUsername` differs from `username`. Ignored otherwise (migration Job uses `existingSecret`).
-    # Not created by `auth.externalSecret`; provision separately when using Vault/ESO.
+    # May match `existingSecret` when the migrator password is a separate key in the same Secret (see `secretKeys.migrationPasswordKey` and `externalSecret.data`).
     existingMigrationSecret: fwinsights-postgresql-migration
     # -- NOLOGIN role that owns the database schema. Migration jobs set POSTGRES_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE).
     # Requires a migration image with owner-role support. Use identifier-safe names (letters, digits, underscore).
@@ -708,6 +708,8 @@ postgresql:
     superuserpassword: ""
     secretKeys:
       adminPasswordKey: postgresql-password
+      # -- Key in the migration Secret for the migration Job password. Defaults to `postgresql-password` (separate migration Secret). Use e.g. `migration-postgresql-password` when the migrator password is synced into the same Secret as the app login via `externalSecret.data`.
+      migrationPasswordKey: postgresql-password
     # -- ExternalSecret configuration for PostgreSQL credentials.
     # NOTE: the application does NOT use this Secret yet — it still reads from `auth.existingSecret`.
     # This lets you verify the ExternalSecret syncs correctly before cutting over.
@@ -734,6 +736,10 @@ postgresql:
       #   remoteRef:
       #     key: your/vault/path
       #     property: readonly_password
+      # - secretKey: migration-postgresql-password
+      #   remoteRef:
+      #     key: your/vault/path
+      #     property: migrator_password
   # -- PostgreSQL configuration parameters
   parameters:
     max_connections: "100"
@@ -816,6 +822,7 @@ timescale:
     existingSuperUserSecret: fwinsights-timescale-superuser
     secretKeys:
       adminPasswordKey: postgresql-password
+      migrationPasswordKey: postgresql-password
   secrets:
     certificateSecretName: fwinsights-timescale-ca
     credentialsSecretName: fwinsights-timescale
@@ -907,7 +914,7 @@ migrateHealthScoreJob:
 cronjobExecutor:
   image:
     repository: alpine/kubectl
-    tag: "1.35.4"
+    tag: "1.36.0"
   resources:
     limits:
       cpu: 100m
@@ -1055,6 +1062,37 @@ temporalDeploymentDefaults:
     min: 2
     max: 4
     metrics: []
+  keda:
+    enabled: false
+    min: 1
+    max: 10
+    pollingInterval: 30
+    cooldownPeriod: 300
+    prometheus:
+      serverAddress: ""
+      threshold: "30"
+      activationThreshold: "5"
+      ignoreNullValues: "true"
+      query: ""
+    advanced:
+      horizontalPodAutoscalerConfig:
+        behavior:
+          scaleUp:
+            stabilizationWindowSeconds: 0
+            policies:
+              - type: Percent
+                value: 100
+                periodSeconds: 60
+              - type: Pods
+                value: 4
+                periodSeconds: 60
+            selectPolicy: Max
+          scaleDown:
+            stabilizationWindowSeconds: 300
+            policies:
+              - type: Percent
+                value: 50
+                periodSeconds: 120
   pdb:
     enabled: false
     minAvailable: 1
@@ -1219,6 +1257,8 @@ temporalDeployments:
       min: 2
       max: 6
       metrics: []
+    keda:
+      enabled: false
     pdb:
       enabled: false
     resources:
