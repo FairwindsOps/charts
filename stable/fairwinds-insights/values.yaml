@@ -1259,7 +1259,6 @@ temporalDeployments:
       metrics: []
     keda:
       enabled: false
-      query: histogram_quantile(0.95, sum(rate(task_schedule_to_start_latency_bucket{namespace="fwinsights",taskqueue="report_jobs_process"}[5m])) by (le))
     pdb:
       enabled: false
     resources:
