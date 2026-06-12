@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.5.2
+* Bump dependencies
+
 ## 9.5.1
 * Remove unused `keda.query` value from `report-job-worker`
 

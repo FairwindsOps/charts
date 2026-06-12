@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.12.2
+* Bump dependencies
+
 ## 1.12.1
 * Pinned CI test image to `python:3.14.4-alpine3.23`
 * Bumped CI test image default to `python:3.13-alpine`
