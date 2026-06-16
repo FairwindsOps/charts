@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.5.3
+* Bump `alpine/kubectl` dependency image
+
 ## 9.5.2
 * Bump dependencies
 
