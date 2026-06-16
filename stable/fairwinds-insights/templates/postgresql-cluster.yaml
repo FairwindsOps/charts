@@ -181,8 +181,10 @@ spec:
               fi
             fi
 
+            CNPG_DEPLOY=$(kubectl get deployment -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE" -o jsonpath='{.items[0].metadata.name}')
+
             echo "Waiting for webhook server deployment to be ready..."
-            kubectl wait --for=condition=available --timeout=300s deployment/cnpg-controller-manager -n $OPERATOR_NAMESPACE
+            kubectl wait --for=condition=available --timeout=300s "deployment/${CNPG_DEPLOY}" -n "$OPERATOR_NAMESPACE"
 
             {{- if .Values.postgresql.ephemeral }}
             echo "Checking PostgreSQL cluster insights-postgres..."

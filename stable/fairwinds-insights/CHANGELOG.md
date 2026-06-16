@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.5.4
+* Support dynamic deployment name for cnpg-operator
+
 ## 9.5.3
 * Add documentation for breaking change versions
 
