@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.5.6
+* Ephemeral PostgreSQL and Timescale pre-install Secrets no longer regenerate passwords or TLS CA material on every `helm upgrade` when values are left blank
+
 ## 9.5.5
 * Support dynamic deployment name for cnpg-operator
 * Add `helm.sh/resource-policy: keep` to timescale secrets
