@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.6.0
+* Bump dependencies
+
 ## 9.5.3
 * Add documentation for breaking change versions
 
