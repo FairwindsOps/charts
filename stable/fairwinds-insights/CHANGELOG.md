@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.5.5
+* Support dynamic deployment name for cnpg-operator
+* Add `helm.sh/resource-policy: keep` to timescale secrets
+
 ## 9.5.4
 * Bump `alpine/kubectl` dependency image
 
