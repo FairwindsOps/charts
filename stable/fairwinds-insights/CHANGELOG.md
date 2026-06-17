@@ -1,7 +1,10 @@
 # Changelog
 
-## 9.5.4
+## 9.5.5
 * Support dynamic deployment name for cnpg-operator
+
+## 9.5.4
+* Bump `alpine/kubectl` dependency image
 
 ## 9.5.3
 * Add documentation for breaking change versions
