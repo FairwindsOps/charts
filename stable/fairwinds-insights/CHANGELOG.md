@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.6.0
+* **Backward compatible:** Move CloudNativePG operator settings from `postgresql.operator` to top-level `cnpg`. Use `cnpg.install` when provisioning ephemeral Timescale/PostgreSQL. `postgresql.operator` is still honored if set but deprecated.
+
 ## 9.5.6
 * Ephemeral PostgreSQL and Timescale pre-install Secrets no longer regenerate passwords or TLS CA material on every `helm upgrade` when values are left blank
 

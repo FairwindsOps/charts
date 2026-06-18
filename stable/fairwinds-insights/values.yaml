@@ -632,6 +632,24 @@ ingress:
   # -- Adds additional path ie. Redirect path for ALB
   extraPaths: {}
 
+cnpg:
+  # -- Install CloudNativePG operator (used by ephemeral PostgreSQL and/or Timescale)
+  install: true
+  # -- CloudNativePG operator version to install
+  version: "1.28.1"
+  # -- Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails
+  defaultVersion: "1.28.1"
+  # -- CloudNativePG operator configuration
+  webhook:
+    mutating:
+      create: true
+    validating:
+      create: true
+  crds:
+    create: true
+  # -- Per-cluster timeout for `kubectl wait --for=condition=Ready` on each CNPG Cluster in the pre-install hook (PostgreSQL and Timescale when ephemeral). Keeps the hook from finishing before both databases accept connections.
+  clusterReadyTimeoutSeconds: 600
+
 postgresql:
   # -- Set to `true` to run migrations after the install, upgrade
   postMigrate: false
@@ -643,23 +661,6 @@ postgresql:
   ephemeral: true
   # -- Let CloudNativePG manage PodDisruptionBudgets for the PostgreSQL cluster
   enablePDB: true
-  # -- Install CloudNativePG operator
-  operator:
-    install: true
-    # -- CloudNativePG operator version to install
-    version: "1.28.1"
-    # -- Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails
-    defaultVersion: "1.28.1"
-    # -- CloudNativePG operator configuration
-    webhook:
-      mutating:
-        create: true
-      validating:
-        create: true
-    crds:
-      create: true
-    # -- Per-cluster timeout for `kubectl wait --for=condition=Ready` on each CNPG Cluster in the pre-install hook (PostgreSQL and Timescale when ephemeral). Keeps the hook from finishing before both databases accept connections.
-    clusterReadyTimeoutSeconds: 600
   # -- SSL mode for connecting to the database
   sslMode: require
   # -- TLS mode for connecting to the database
