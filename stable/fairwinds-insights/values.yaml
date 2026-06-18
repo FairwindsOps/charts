@@ -875,6 +875,20 @@ reportStorage:
 rustfs:
   # -- Install RustFS in-cluster for report storage. Prefer `helm install|upgrade --wait --wait-for-jobs` so the bucket Job completes before Helm exits.
   install: true
+  secret:
+    # -- Use an existing Secret with RUSTFS_ACCESS_KEY and RUSTFS_SECRET_KEY instead of chart-managed credentials.
+    existingSecret: ""
+    # SECURITY: rendering fails by default unless one of the following is true:
+    #   1. `secret.existingSecret` names a Kubernetes Secret you control, or
+    #   2. `secret.rustfs.access_key` and `secret.rustfs.secret_key` are both set to non-empty, non-default values, or
+    #   3. `secret.allowInsecureDefaults: true` is set (only for local dev).
+    # This prevents accidental deployment with the well-known default `rustfsadmin/rustfsadmin` credentials.
+    allowInsecureDefaults: false
+    rustfs:
+      # -- Access key for the RustFS secret.
+      access_key: "change-me-to-a-real-access-key"
+      # -- Secret key for the RustFS secret.
+      secret_key: "change-me-to-a-real-secret-key"
   nameOverride: fw-rustfs
   replicaCount: 1
   mode:
