@@ -172,6 +172,13 @@ true
 {{- end -}}
 {{- end -}}
 
+{{/* Resolved CloudNativePG operator values. `cnpg` is primary; `postgresql.operator` is deprecated. */}}
+{{- define "fairwinds-insights.cnpg" -}}
+{{- $legacy := default dict .Values.postgresql.operator -}}
+{{- $cnpg := default dict .Values.cnpg -}}
+{{- mergeOverwrite $legacy $cnpg | toYaml -}}
+{{- end -}}
+
 {{/*
 Unquoted PostgreSQL identifiers only (used in CNPG postInitSQL).
 */}}

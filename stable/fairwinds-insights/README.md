@@ -186,16 +186,18 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
+| cnpg.install | bool | `true` | Install CloudNativePG operator (used by ephemeral PostgreSQL and/or Timescale) |
+| cnpg.version | string | `"1.28.1"` | CloudNativePG operator version to install |
+| cnpg.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
+| cnpg.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
+| cnpg.crds.create | bool | `true` |  |
+| cnpg.clusterReadyTimeoutSeconds | int | `600` |  |
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the install, upgrade |
 | postgresql.image.registry | string | `"quay.io"` |  |
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
 | postgresql.image.tag | string | `"17.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
 | postgresql.enablePDB | bool | `true` | Let CloudNativePG manage PodDisruptionBudgets for the PostgreSQL cluster |
-| postgresql.operator | object | `{"clusterReadyTimeoutSeconds":600,"crds":{"create":true},"defaultVersion":"1.28.1","install":true,"version":"1.28.1","webhook":{"mutating":{"create":true},"validating":{"create":true}}}` | Install CloudNativePG operator |
-| postgresql.operator.version | string | `"1.28.1"` | CloudNativePG operator version to install |
-| postgresql.operator.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
-| postgresql.operator.webhook | object | `{"mutating":{"create":true},"validating":{"create":true}}` | CloudNativePG operator configuration |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
 | postgresql.tls | object | `{"certFilename":"tls.crt","certKeyFilename":"tls.key","certificatesSecret":"fwinsights-postgresql-ca","enabled":true}` | TLS mode for connecting to the database |
 | postgresql.postgresqlHost | string | `"insights-postgres-rw"` | Host for postgresql (CloudNativePG cluster name) |
