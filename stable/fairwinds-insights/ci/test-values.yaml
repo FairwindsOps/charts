@@ -17,12 +17,12 @@ deployments:
   additionalPodLabels:
     pod-foo: pod-bar
 
+cnpg:
+  install: true
+
 postgresql:
   # Enable ephemeral PostgreSQL cluster
   ephemeral: true
-  # Install CloudNativePG operator
-  operator:
-    install: true
   # Storage configuration
   storage:
     size: 5Gi
