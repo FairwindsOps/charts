@@ -153,6 +153,32 @@ true
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.ephemeralSecretPassword" -}}
+{{- $root := .root -}}
+{{- $value := .value -}}
+{{- $secretName := .secretName -}}
+{{- $key := .key | default "password" -}}
+{{- if $value -}}
+{{- $value -}}
+{{- else if $secretName -}}
+{{- $existing := lookup "v1" "Secret" $root.Release.Namespace $secretName -}}
+{{- if and $existing (index $existing.data $key) -}}
+{{- index $existing.data $key | b64dec -}}
+{{- else -}}
+{{- randAlphaNum 32 -}}
+{{- end -}}
+{{- else -}}
+{{- randAlphaNum 32 -}}
+{{- end -}}
+{{- end -}}
+
+{{/* Resolved CloudNativePG operator values. `cnpg` is primary; `postgresql.operator` is deprecated. */}}
+{{- define "fairwinds-insights.cnpg" -}}
+{{- $legacy := default dict .Values.postgresql.operator -}}
+{{- $cnpg := default dict .Values.cnpg -}}
+{{- mergeOverwrite $legacy $cnpg | toYaml -}}
+{{- end -}}
+
 {{/*
 Unquoted PostgreSQL identifiers only (used in CNPG postInitSQL).
 */}}

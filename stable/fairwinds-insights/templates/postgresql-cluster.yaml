@@ -1,4 +1,5 @@
-{{- $cnpgOperatorJob := and .Values.postgresql.operator.install (or .Values.postgresql.ephemeral .Values.timescale.ephemeral) }}
+{{- $cnpg := include "fairwinds-insights.cnpg" . | fromYaml -}}
+{{- $cnpgOperatorJob := and $cnpg.install (or .Values.postgresql.ephemeral .Values.timescale.ephemeral) }}
 {{- if $cnpgOperatorJob }}
 ---
 # Minimal RBAC for PostgreSQL / Timescale cluster creation
@@ -116,7 +117,7 @@ spec:
             echo "Namespace: {{ .Release.Namespace }}"
             echo "Release: {{ .Release.Name }}"
 
-            OPERATOR_NAMESPACE="{{ .Values.postgresql.operator.namespace }}"
+            OPERATOR_NAMESPACE="{{ $cnpg.namespace }}"
             if [ -z "$OPERATOR_NAMESPACE" ]; then
               OPERATOR_NAMESPACE="cnpg-system"
             fi
@@ -134,8 +135,8 @@ spec:
                   kubectl create namespace "$OPERATOR_NAMESPACE"
                 fi
 
-                OPERATOR_VERSION="{{ .Values.postgresql.operator.version }}"
-                DEFAULT_CNPG_VERSION="{{ .Values.postgresql.operator.defaultVersion | default "1.28.1" }}"
+                OPERATOR_VERSION="{{ $cnpg.version }}"
+                DEFAULT_CNPG_VERSION="{{ $cnpg.defaultVersion | default "1.28.1" }}"
                 if [ "$OPERATOR_VERSION" = "latest" ]; then
                   echo "Resolving latest CloudNativePG operator version..."
                   CNPG_VERSION=""
@@ -181,8 +182,10 @@ spec:
               fi
             fi
 
+            CNPG_DEPLOY=$(kubectl get deployment -l app.kubernetes.io/name=cloudnative-pg -n "$OPERATOR_NAMESPACE" -o jsonpath='{.items[0].metadata.name}')
+
             echo "Waiting for webhook server deployment to be ready..."
-            kubectl wait --for=condition=available --timeout=300s deployment/cnpg-controller-manager -n $OPERATOR_NAMESPACE
+            kubectl wait --for=condition=available --timeout=300s "deployment/${CNPG_DEPLOY}" -n "$OPERATOR_NAMESPACE"
 
             {{- if .Values.postgresql.ephemeral }}
             echo "Checking PostgreSQL cluster insights-postgres..."
@@ -212,7 +215,7 @@ spec:
             fi
             {{- end }}
 
-            READY_TIMEOUT="{{ .Values.postgresql.operator.clusterReadyTimeoutSeconds | default 600 }}s"
+            READY_TIMEOUT="{{ $cnpg.clusterReadyTimeoutSeconds | default 600 }}s"
             NS="{{ .Release.Namespace }}"
             describe_on_fail() {
               echo "--- kubectl describe cluster/$1 (last status) ---"
@@ -251,11 +254,11 @@ spec:
             drop:
               - ALL
 {{- end }}
-{{- if and .Values.postgresql.ephemeral (not .Values.postgresql.operator.install) }}
+{{- if and .Values.postgresql.ephemeral (not $cnpg.install) }}
 ---
 {{ include "fairwinds-insights.cnpg.postgresCluster" (dict "root" . "mode" "helm") }}
 {{- end }}
-{{- if and .Values.timescale.ephemeral (not .Values.postgresql.operator.install) }}
+{{- if and .Values.timescale.ephemeral (not $cnpg.install) }}
 ---
 {{ include "fairwinds-insights.cnpg.timescaleClusterImageCatalog" (dict "root" . "mode" "helm") }}
 ---

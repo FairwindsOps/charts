@@ -1,7 +1,20 @@
 # Changelog
 
+## 9.6.1
+* Bump `rustfs` chart dependency to 0.8.0
+
 ## 9.6.0
-* Bump dependencies
+* **Backward compatible:** Move CloudNativePG operator settings from `postgresql.operator` to top-level `cnpg`. Use `cnpg.install` when provisioning ephemeral Timescale/PostgreSQL. `postgresql.operator` is still honored if set but deprecated.
+
+## 9.5.6
+* Ephemeral PostgreSQL and Timescale pre-install Secrets no longer regenerate passwords or TLS CA material on every `helm upgrade` when values are left blank
+
+## 9.5.5
+* Support dynamic deployment name for cnpg-operator
+* Add `helm.sh/resource-policy: keep` to timescale secrets
+
+## 9.5.4
+* Bump `alpine/kubectl` dependency image
 
 ## 9.5.3
 * Add documentation for breaking change versions
