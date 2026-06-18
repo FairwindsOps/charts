@@ -271,6 +271,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportStorage.s3CredentialsSecret | string | `nil` | Secret with `accessKeyId` and `secretAccessKey` when strategy is `rustfs` and `rustfs.install` is false (external S3-compatible storage) |
 | reportStorage.fixturesDir | string | `nil` | Directory to store files in for local. |
 | rustfs.install | bool | `true` |  |
+| rustfs.secret.existingSecret | string | `""` | Use an existing Secret with RUSTFS_ACCESS_KEY and RUSTFS_SECRET_KEY instead of chart-managed credentials. |
+| rustfs.secret.allowInsecureDefaults | bool | `false` |  |
+| rustfs.secret.rustfs.access_key | string | `"change-me-to-a-real-access-key"` | Access key for the RustFS secret. |
+| rustfs.secret.rustfs.secret_key | string | `"change-me-to-a-real-secret-key"` | Secret key for the RustFS secret. |
 | rustfs.nameOverride | string | `"fw-rustfs"` |  |
 | rustfs.replicaCount | int | `1` |  |
 | rustfs.mode.standalone.enabled | bool | `true` |  |
