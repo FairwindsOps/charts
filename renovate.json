@@ -9,7 +9,17 @@
   "registryAliases": {
     "stable": "https://charts.fairwinds.com/stable"
   },
-  "enabledManagers": ["helmv3", "helm-values", "circleci"],
+  "enabledManagers": ["helmv3", "helm-values", "circleci", "custom.regex"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Update fairwinds-insights appVersion from insights-api image tags",
+      "managerFilePatterns": ["stable/fairwinds-insights/Chart.yaml"],
+      "datasourceTemplate": "docker",
+      "depNameTemplate": "us-docker.pkg.dev/fairwinds-ops/insights/insights-api",
+      "matchStrings": ["appVersion:\\s[\"']?(?<currentValue>[\\d\\.]+)[\"']?"]
+    }
+  ],
   "packageRules": [
     {
       "description": "Resolve @stable Helm repo alias and explicit fairwinds-stable URLs to the published index",
@@ -48,7 +58,7 @@
     },
     {
       "description": "Bump chart version on dependency and image updates",
-      "matchManagers": ["helmv3", "helm-values"],
+      "matchManagers": ["helmv3", "helm-values", "custom.regex"],
       "matchFileNames": ["stable/**"],
       "bumpVersions": [
         {
@@ -62,6 +72,12 @@
       "description": "Every upgrade: upstream release must be at least 7 days old",
       "matchManagers": ["helmv3", "helm-values", "circleci"],
       "minimumReleaseAge": "7 days"
+    },
+    {
+      "description": "fairwinds-insights appVersion tracks insights-api image tags immediately",
+      "matchManagers": ["custom.regex"],
+      "matchFileNames": ["stable/fairwinds-insights/**"],
+      "minimumReleaseAge": null
     }
   ]
 }
