@@ -1,7 +1,10 @@
 # Changelog
 
-## 9.6.1
+## 9.6.2
 * Bump `rustfs` chart dependency to 0.8.0
+
+## 9.6.1
+* Bump chart's `appVersion` to `18.3.51`
 
 ## 9.6.0
 * **Backward compatible:** Move CloudNativePG operator settings from `postgresql.operator` to top-level `cnpg`. Use `cnpg.install` when provisioning ephemeral Timescale/PostgreSQL. `postgresql.operator` is still honored if set but deprecated.
