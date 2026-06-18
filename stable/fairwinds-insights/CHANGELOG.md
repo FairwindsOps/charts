@@ -1,7 +1,7 @@
 # Changelog
 
 ## 9.6.1
-* Bump dependencies
+* Bump chart's `appVersion` to `18.3.51`
 
 ## 9.6.0
 * **Backward compatible:** Move CloudNativePG operator settings from `postgresql.operator` to top-level `cnpg`. Use `cnpg.install` when provisioning ephemeral Timescale/PostgreSQL. `postgresql.operator` is still honored if set but deprecated.
