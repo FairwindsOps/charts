@@ -30,3 +30,19 @@ Create chart name and version as used by the chart label.
 {{- define "rbac-manager.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" -}}
 {{- end -}}
+
+{{/*
+RBAC Manager OSS images use v-prefixed semver tags on Artifact Registry (e.g. v1.10.0).
+*/}}
+{{- define "rbac-manager.imageTag" -}}
+{{- if .Values.image.tag -}}
+{{- .Values.image.tag -}}
+{{- else -}}
+{{- $v := .Chart.AppVersion -}}
+{{- if hasPrefix "v" $v -}}
+{{- $v -}}
+{{- else -}}
+{{- printf "v%s" $v -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}

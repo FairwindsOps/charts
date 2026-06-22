@@ -52,8 +52,8 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"quay.io/reactiveops/rbac-manager"` | The image to run for rbac manager |
-| image.tag | string | `"v1.9.5"` | The tag of the image to run |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/rbac-manager"` | The image to run for rbac manager |
+| image.tag | string | `""` | The tag of the image to run. Defaults to the Chart's AppVersion |
 | image.digest | string | `""` | The digest of the image to run |
 | image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.imagePullSecrets | list | `[]` |  |
