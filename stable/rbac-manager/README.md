@@ -29,15 +29,7 @@ Helm 3 will be made mandatory in the future.
 
 **Breaking:** The default container image is now `us-docker.pkg.dev/fairwinds-ops/oss/rbac-manager`. The previous default, `quay.io/reactiveops/rbac-manager`, is deprecated.
 
-To remain on Quay during migration, set `image.repository` (and `image.tag` if needed) in your values:
-
-```
-image:
-  repository: quay.io/reactiveops/rbac-manager
-  tag: v1.10.0
-```
-
-If you pin the image with `image.digest`, use a digest from the registry you pull from. Image digests are not portable between Quay and Google Artifact Registry.
+To remain on Quay during migration, set `image.repository` (and `image.tag` if needed) in your values.
 
 ## Upgrading to Chart Version 1.0.0
 
