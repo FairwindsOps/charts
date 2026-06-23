@@ -25,6 +25,12 @@ As of chart version 1.6.0 Kubernetes 1.16+, Helm 2.10+
 
 Helm 3 will be made mandatory in the future.
 
+## Upgrading to Chart Version 2.0.0
+
+**Breaking:** The default container image is now `us-docker.pkg.dev/fairwinds-ops/oss/rbac-manager`. The previous default, `quay.io/reactiveops/rbac-manager`, is deprecated.
+
+To remain on Quay during migration, set `image.repository` (and `image.tag` if needed) in your values.
+
 ## Upgrading to Chart Version 1.0.0
 
 The upgrade to version 1.0.0 of this chart removes support for installing RBAC Definitions as part of the chart values. This change was made to simplify CRD installation with Helm. We recommend installing RBAC Definitions separately from the chart.
@@ -52,8 +58,8 @@ In the above workflow, an RBAC Definition installed between revision 1 and 2 sho
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"quay.io/reactiveops/rbac-manager"` | The image to run for rbac manager |
-| image.tag | string | `"v1.9.5"` | The tag of the image to run |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/rbac-manager"` | The image to run for rbac manager |
+| image.tag | string | `""` | The tag of the image to run. Defaults to the Chart's AppVersion |
 | image.digest | string | `""` | The digest of the image to run |
 | image.pullPolicy | string | `"Always"` | The image pullPolicy. Recommend not changing this |
 | image.imagePullSecrets | list | `[]` |  |
