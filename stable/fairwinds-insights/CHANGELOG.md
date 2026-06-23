@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.7.1
+* Bump dependencies
+
 ## 9.7.0
 * Bump `rustfs` chart dependency to 0.8.0 - set `rustfs.secret.allowInsecureDefaults: true` if you want to deploy this version on existing rustfs workload.
 

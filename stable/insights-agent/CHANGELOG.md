@@ -1,37 +1,40 @@
 # Changelog
 
-## 5.15.1
-* Bump dependencies
+## 5.16.1
+* Bumped `trivy` to `0.23.1`
+
+## 5.16.0
+* Bumped `prometheus` to `29.12.*`
 
 ## 5.15.0
-* Bump dependencies
+* Bumped `prometheus` to `29.11.*`
 
 ## 5.14.0
-* Bump dependencies
+* Bumped `falco` to `9.1.*`
 
 ## 5.13.1
-* Bump dependencies
+* Bumped test image python tag to `3.9-alpine`
 
 ## 5.13.0
-* Bump dependencies
+* Bumped `prometheus` to `29.10.*`
 
 ## 5.12.0
-* Bump dependencies
+* Major bump: `prometheus` to `29.9.*` and `falco` to `9.0.*`
 
 ## 5.11.0
-* Bump dependencies
+* Bumped `insights-admission` to `1.12.*`
 
 ## 5.10.0
-* Bump dependencies
+* Bumped `amd-device-metrics-exporter` to `v1.5.0`
 
 ## 5.9.0
-* Bump dependencies
+* Bumped `prometheus` to `28.16.*`
 
 ## 5.8.0
-* Bump dependencies
+* Bumped `trivy` to `0.23.0`
 
 ## 5.7.3
-* Bumped dcgm-exporter to `4.8.2`
+* Bumped `dcgm-exporter` to `4.8.2`
 
 ## 5.7.2
 * Moved dependencies from `requirements.yaml` to `Chart.yaml`
