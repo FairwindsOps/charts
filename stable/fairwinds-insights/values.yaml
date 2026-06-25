@@ -1056,6 +1056,27 @@ outboxWorker:
 # -- Default options for temporal deployments
 temporalDeploymentDefaults:
   useReadReplica: false
+  image:
+    # -- Overrides `apiImage.repository` when set (non-empty)
+    repository: ""
+    # -- Overrides the API image tag when set (non-empty); otherwise uses `fairwinds-insights.apiImageTag`
+    tag: ""
+  # -- Container image pull policy
+  imagePullPolicy: Always
+  # -- nodeSelector for temporal worker pods
+  nodeSelector: {}
+  # -- Optional pod affinity (set to a mapping to enable)
+  affinity: null
+  # -- Optional init containers
+  initContainers: []
+  # -- Pod termination grace period (seconds)
+  terminationGracePeriodSeconds: 600
+  # -- Optional priority class name for the pod
+  priorityClassName: ""
+  # -- Extra annotations on the Deployment (merged with Polaris annotations)
+  annotations: {}
+  # -- Extra annotations on the pod template
+  podAnnotations: {}
   resources:
     requests:
       cpu: 500m
@@ -1268,6 +1289,7 @@ temporalDeployments:
   report-job-worker:
     enabled: true
     command: "report_job_worker"
+    terminationGracePeriodSeconds: 900
     hpa:
       min: 2
       max: 6
