@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.17.0
+* Bump dependencies
+
 ## 5.16.1
 * Bumped `trivy` to `0.23.1`
 
