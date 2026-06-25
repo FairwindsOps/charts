@@ -1328,7 +1328,7 @@ temporalDeployments:
       - name: POSTGRES_MAX_OPEN_CONNS
         value: "6"
       - name: ENABLE_APP_GROUP_HEALTH_FOR_REPORT_WORKFLOW
-        value: "true"
+        value: "false"
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
