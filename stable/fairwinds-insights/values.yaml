@@ -1289,7 +1289,7 @@ temporalDeployments:
   report-job-worker:
     enabled: true
     command: "report_job_worker"
-    terminationGracePeriodSeconds: 900 # 15 minutes
+    terminationGracePeriodSeconds: 900
     hpa:
       min: 2
       max: 6
