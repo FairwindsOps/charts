@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A Helm chart to run the Fairwinds Insights agent
 name: insights-agent
-version: 5.18.0
+version: 5.18.1
 appVersion: 9.2.1
 kubeVersion: ">= 1.22.0-0"
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insights-agent/icon.png
@@ -32,7 +32,7 @@ dependencies:
     condition: right-sizer.enableClosedBeta
     alias: right-sizer-vpa
   - name: trivy
-    version: 0.23.1
+    version: 0.23.2
     repository: https://aquasecurity.github.io/helm-charts/
     condition: trivy.server.installTrivyServer
     alias: trivy-server
