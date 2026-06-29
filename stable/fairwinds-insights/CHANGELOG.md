@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.8.2
+* Bump dependencies
+
 ## 9.8.1
 * Bump dependencies
 
