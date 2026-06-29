@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.18.2
+* Bump `workloads` to `2.10.*`
+
 ## 5.18.1
 * Bump dependencies
 
