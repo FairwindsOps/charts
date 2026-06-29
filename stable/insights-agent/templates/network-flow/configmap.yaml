@@ -1,0 +1,18 @@
+{{- if (index .Values "network-observability" "enabled") }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-network-flow
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: insights-agent
+    component: network-flow
+data:
+  config.yaml: |-
+    events-buffer-length: {{ (index .Values "network-observability" "agent" "ig" "eventsBufferLength") }}
+    gadget-namespace: {{ .Release.Namespace }}
+    daemon-log-level: {{ (index .Values "network-observability" "agent" "ig" "daemonLogLevel") }}
+    operator:
+      kubemanager:
+        hook-mode: {{ (index .Values "network-observability" "agent" "ig" "hookMode") }}
+{{- end }}

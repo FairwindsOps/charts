@@ -1,0 +1,35 @@
+{{- if and (index .Values "network-observability" "enabled") (index .Values "network-observability" "aggregator" "autoscaling" "enabled") }}
+{{- $agg := index .Values "network-observability" "aggregator" }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-network-flow-aggregator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: insights-agent
+    component: network-flow-aggregator
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "insights-agent.fullname" . }}-network-flow-aggregator
+  minReplicas: {{ $agg.autoscaling.minReplicas }}
+  maxReplicas: {{ $agg.autoscaling.maxReplicas }}
+  metrics:
+  {{- if $agg.autoscaling.targetCPUUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ $agg.autoscaling.targetCPUUtilizationPercentage }}
+  {{- end }}
+  {{- if $agg.autoscaling.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ $agg.autoscaling.targetMemoryUtilizationPercentage }}
+  {{- end }}
+{{- end }}

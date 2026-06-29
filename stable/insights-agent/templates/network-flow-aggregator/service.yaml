@@ -1,0 +1,27 @@
+{{- if (index .Values "network-observability" "enabled") }}
+{{- $agg := index .Values "network-observability" "aggregator" }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-network-flow-aggregator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: insights-agent
+    component: network-flow-aggregator
+  {{- with $agg.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ $agg.service.type }}
+  selector:
+    app: insights-agent
+    component: network-flow-aggregator
+  ports:
+    - name: grpc
+      port: {{ $agg.grpcPort }}
+      targetPort: grpc
+    - name: http
+      port: {{ $agg.httpPort }}
+      targetPort: http
+{{- end }}

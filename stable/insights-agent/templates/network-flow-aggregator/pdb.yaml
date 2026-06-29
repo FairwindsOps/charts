@@ -1,0 +1,19 @@
+{{- if (index .Values "network-observability" "enabled") }}
+{{- $agg := index .Values "network-observability" "aggregator" }}
+{{- if or (and $agg.pdb.enabled $agg.autoscaling.enabled (gt ($agg.autoscaling.minReplicas | int) 1)) (and $agg.pdb.enabled (not $agg.autoscaling.enabled) (gt ($agg.replicas | int) 1)) }}
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-network-flow-aggregator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: insights-agent
+    component: network-flow-aggregator
+spec:
+  minAvailable: {{ $agg.pdb.minAvailable }}
+  selector:
+    matchLabels:
+      app: insights-agent
+      component: network-flow-aggregator
+{{- end }}
+{{- end }}
