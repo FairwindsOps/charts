@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.8.1
+* Bump dependencies
+
 ## 9.8.0
 * Expand `temporalDeploymentDefaults` and temporal worker pod spec (termination grace period, scheduling, image overrides, annotations)
 
