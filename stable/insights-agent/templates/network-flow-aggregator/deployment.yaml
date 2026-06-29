@@ -63,6 +63,7 @@ spec:
         - name: network-flow-aggregator
           image: "{{ $agg.image.repository }}:{{ $agg.image.tag }}"
           imagePullPolicy: {{ $agg.image.pullPolicy }}
+          command: ["network-flow-aggregator"]
           args:
             - -grpc-addr=:{{ $agg.grpcPort }}
             - -http-addr=:{{ $agg.httpPort }}
