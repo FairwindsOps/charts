@@ -3,6 +3,9 @@
 ## 5.19.0
 * Add network-observability support (network-flow agent and network-flow-aggregator)
 
+## 5.18.2
+* Bump `workloads` to `2.10.*`
+
 ## 5.18.1
 * Bump dependencies
 
