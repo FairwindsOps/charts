@@ -84,6 +84,9 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | dashboard.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | dashboard.securityContext.runAsUser | int | `101` | The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile |
 | api.port | int | `8080` | Port for the API server to listen on. |
+| api.grpc.enabled | bool | `false` | Enable network-flow gRPC server configuration. |
+| api.grpc.address | string | `""` | Listen address for the network-flow gRPC server. |
+| api.grpc.networkFlow.batchSize | string | `""` | Batch size for network flow gRPC ingestion. |
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
 | api.pdb.minReplicas | int | `1` | How many replicas should always exist for the API server. |
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |

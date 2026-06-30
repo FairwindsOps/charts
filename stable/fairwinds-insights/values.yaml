@@ -290,6 +290,14 @@ dashboard:
 api:
   # -- Port for the API server to listen on.
   port: 8080
+  grpc:
+    # -- Enable network-flow gRPC server configuration.
+    enabled: false
+    # -- Listen address for the network-flow gRPC server.
+    address: ""
+    networkFlow:
+      # -- Batch size for network flow gRPC ingestion.
+      batchSize: ""
   pdb:
     # -- Create a pod disruption budget for the API server.
     enabled: false
