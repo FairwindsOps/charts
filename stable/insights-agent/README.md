@@ -216,7 +216,7 @@ Parameter | Description | Default
 `network-observability.enabled` | Enable the network observability agent DaemonSet and aggregator Deployment | `false`
 `network-observability.agent.image.repository` | Repository for the network-flow agent image | `quay.io/fairwinds/network-flow`
 `network-observability.agent.image.tag` | Tag for the network-flow agent image | `0.0.3`
-`network-observability.agent.gadgetVersion` | Inspektor Gadget version used for trace/top/trace_dns gadget images | `v0.52.0`
+`network-observability.agent.gadgetVersion` | Inspektor Gadget version used for gadgets images | `v0.53.1`
 `network-observability.agent.collectorAddr` | Aggregator gRPC address; defaults to the in-cluster aggregator Service | `""`
 `network-observability.agent.batchSize` | Number of flow events to batch before flushing to the aggregator | `5000`
 `network-observability.agent.maxPendingEvents` | Maximum pending events before drop-oldest retention | `50000`
