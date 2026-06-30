@@ -1,0 +1,143 @@
+{{- if (index .Values "network-observability" "enabled") }}
+{{- $no := index .Values "network-observability" }}
+{{- $agg := $no.aggregator }}
+{{- $upstream := $agg.upstream }}
+{{- $grpcAddr := "" }}
+{{- if $upstream.enabled }}
+  {{- if $upstream.grpcAddr }}
+    {{- $grpcAddr = $upstream.grpcAddr }}
+  {{- else if $upstream.autoDetectFromHost }}
+    {{- $host := .Values.insights.host | trimPrefix "https://" | trimPrefix "http://" | trimSuffix "/" }}
+    {{- $grpcAddr = printf "%s:%v" $host $upstream.grpcPort }}
+  {{- end }}
+{{- end }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-network-flow-aggregator
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: insights-agent
+    component: network-flow-aggregator
+spec:
+  {{- if not $agg.autoscaling.enabled }}
+  replicas: {{ $agg.replicas }}
+  {{- end }}
+  selector:
+    matchLabels:
+      app: insights-agent
+      component: network-flow-aggregator
+  template:
+    metadata:
+      labels:
+        app: insights-agent
+        component: network-flow-aggregator
+      {{- if or $agg.podAnnotations .Values.global.customWorkloadAnnotations }}
+      annotations:
+        {{- with $agg.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.global.customWorkloadAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-network-flow-aggregator
+      {{- with $agg.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $agg.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $agg.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $agg.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: network-flow-aggregator
+          image: "{{ $agg.image.repository }}:{{ $agg.image.tag }}"
+          imagePullPolicy: {{ $agg.image.pullPolicy }}
+          command: ["network-flow-aggregator"]
+          args:
+            - -grpc-addr=:{{ $agg.grpcPort }}
+            - -http-addr=:{{ $agg.httpPort }}
+            - -max-events={{ $agg.maxEvents }}
+            - -max-age={{ $agg.maxAge }}
+            - -log-level={{ $agg.logLevel }}
+            {{- if $agg.disableKube }}
+            - -disable-kube
+            {{- end }}
+            {{- if $grpcAddr }}
+            - -insights-grpc-addr={{ $grpcAddr }}
+            - -organization={{ .Values.insights.organization }}
+            - -cluster={{ .Values.insights.cluster }}
+            - -upstream-batch-size={{ $upstream.batchSize }}
+            - -upstream-flush-interval={{ $upstream.flushInterval }}
+            {{- end }}
+          ports:
+            - name: grpc
+              containerPort: {{ $agg.grpcPort }}
+            - name: http
+              containerPort: {{ $agg.httpPort }}
+          env:
+            {{- if $grpcAddr }}
+            - name: INSIGHTS_GRPC_ADDR
+              value: {{ $grpcAddr | quote }}
+            - name: ORGANIZATION
+              value: {{ .Values.insights.organization | quote }}
+            - name: CLUSTER
+              value: {{ .Values.insights.cluster | quote }}
+            - name: AUTH_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  {{- if .Values.insights.tokenSecretName }}
+                  name: {{ .Values.insights.tokenSecretName }}
+                  {{- else }}
+                  name: {{ include "insights-agent.fullname" . }}-token
+                  {{- end }}
+                  key: token
+            - name: UPSTREAM_BATCH_SIZE
+              value: {{ $upstream.batchSize | quote }}
+            - name: UPSTREAM_FLUSH_INTERVAL
+              value: {{ $upstream.flushInterval | quote }}
+            {{- end }}
+            {{ include "proxy-env-spec" . | indent 12 | trim }}
+            {{- range $key, $value := $agg.env }}
+            - name: {{ $key }}
+              value: {{ $value | quote }}
+            {{- end }}
+          {{- with $agg.containerSecurityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- if $agg.probes.enabled }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          {{- end }}
+          resources:
+            {{- toYaml $agg.resources | nindent 12 }}
+          {{- with $agg.extraVolumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with $agg.extraVolumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+{{- end }}

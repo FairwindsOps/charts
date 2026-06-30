@@ -40,6 +40,7 @@ There are several different report types which can be enabled and configured:
 * `prometheus-metrics`
 * `admission`
 * `cloudcosts` (AWS, GCP, or Azure; optional FOCUS format)
+* `network-observability`
 
 See below for configuration details.
 
@@ -68,7 +69,7 @@ Parameter | Description | Default
 `global.proxy.no_proxy` | Annotations to provides a way to exclude traffic destined to certain hosts from using the proxy | ""
 `global.sslCertFileSecretName` | The name of an existing Secret containing an SSL certificate file to be used when communicating with a self-hosted Insights API. | ""
 `global.sslCertFileSecretKey` | The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API. | ""
-`customWorkloadAnnotations` | Additional annotations to add to each worload. (excluding Falco, uses metadata) | `{}` 
+`customWorkloadAnnotations` | Additional annotations to add to each workload. (excluding Falco, uses metadata) | `{}` 
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
 `uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
 `uploader.imagePullSecret` | A pull secret for a private uploader image
@@ -162,7 +163,7 @@ Parameter | Description | Default
 `goldilocks.controller.flags.exclude-namespaces` | Namespaces to exclude from the goldilocks report | `kube-system`
 `goldilocks.vpa.enabled` | Install the Vertical Pod Autoscaler as part of the Goldilocks installation | true
 `goldilocks.controller.flags.on-by-default` | Goldilocks will by default monitor all namespaces that aren't excluded | true
-`goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilcoks controller |
+`goldilocks.controller.resources` | CPU/memory requests and limits for the Goldilocks controller |
 `goldilocks.dashboard.enabled` | Installs the Goldilocks Dashboard | false
 `prometheus-metrics.installPrometheusServer` | Install a new Prometheus server instance for the prometheus report | false
 `prometheus-metrics.address` | The address of an existing Prometheus instance to query in the form `<scheme>://<service-name>.<namespace>[:<port>]` for example `http://prometheus-server.prometheus` | `"http://prometheus-server"`
@@ -212,6 +213,42 @@ Parameter | Description | Default
 `insights-event-watcher.cloudwatch.maxMemoryMB` | Maximum memory usage in MB for CloudWatch processing | `512`
 `insights-event-watcher.serviceAccount.annotations` | Annotations to add to the service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for IRSA | `nil`
 `insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
+`network-observability.enabled` | Enable the network observability agent DaemonSet and aggregator Deployment | `false`
+`network-observability.agent.image.repository` | Repository for the network-flow agent image | `quay.io/fairwinds/network-flow`
+`network-observability.agent.image.tag` | Tag for the network-flow agent image | `0.0.3`
+`network-observability.agent.gadgetVersion` | Inspektor Gadget version used for gadgets images | `v0.53.1`
+`network-observability.agent.collectorAddr` | Aggregator gRPC address; defaults to the in-cluster aggregator Service | `""`
+`network-observability.agent.batchSize` | Number of flow events to batch before flushing to the aggregator | `5000`
+`network-observability.agent.maxPendingEvents` | Maximum pending events before drop-oldest retention | `50000`
+`network-observability.agent.flushInterval` | Interval to flush batched events | `5s`
+`network-observability.agent.logLevel` | Log level for the agent | `info`
+`network-observability.agent.ig.eventsBufferLength` | Inspektor Gadget events buffer length | `32768`
+`network-observability.agent.ig.daemonLogLevel` | Inspektor Gadget daemon log level | `info`
+`network-observability.agent.ig.hookMode` | Inspektor Gadget kube manager hook mode | `auto`
+`network-observability.agent.resources` | CPU/memory requests and limits for the agent | See values.yaml
+`network-observability.agent.tolerations` | Tolerations for the agent DaemonSet | `[{ operator: Exists }]` |
+`network-observability.agent.nodeSelector` | Node selector for the agent DaemonSet | `{}` |
+`network-observability.agent.affinity` | Affinity rules for the agent DaemonSet | `{}` |
+`network-observability.agent.priorityClassName` | Priority class for agent pods | `""` |
+`network-observability.agent.updateStrategy` | DaemonSet update strategy | `{ type: RollingUpdate }` |
+`network-observability.aggregator.replicas` | Aggregator Deployment replicas (ignored when autoscaling is enabled) | `1` |
+`network-observability.aggregator.image.repository` | Repository for the aggregator image | `quay.io/fairwinds/network-flow-aggregator` |
+`network-observability.aggregator.image.tag` | Tag for the aggregator image | `0.0.3` |
+`network-observability.aggregator.maxEvents` | Maximum in-memory flow events retained by the aggregator | `100000` |
+`network-observability.aggregator.maxAge` | Maximum age of retained flow events | `15m` |
+`network-observability.aggregator.disableKube` | Skip Kubernetes enrichment in the aggregator | `false` |
+`network-observability.aggregator.resources` | CPU/memory requests and limits for the aggregator | See values.yaml |
+`network-observability.aggregator.upstream.enabled` | Enable forwarding enriched events to the Insights API | `true` |
+`network-observability.aggregator.upstream.grpcAddr` | Insights network-flow gRPC address; empty disables upstream unless autoDetectFromHost is set | `""` |
+`network-observability.aggregator.upstream.autoDetectFromHost` | Derive upstream gRPC address from `insights.host` | `false` |
+`network-observability.aggregator.upstream.grpcPort` | Port appended when auto-detecting upstream address | `4318` |
+`network-observability.aggregator.autoscaling.enabled` | Enable HPA for the aggregator Deployment | `false` |
+`network-observability.aggregator.autoscaling.minReplicas` | Minimum aggregator replicas when autoscaling is enabled | `2` |
+`network-observability.aggregator.autoscaling.maxReplicas` | Maximum aggregator replicas when autoscaling is enabled | `5` |
+`network-observability.aggregator.pdb.enabled` | Create a PodDisruptionBudget when replica count exceeds 1 | `true` |
+`network-observability.aggregator.pdb.minAvailable` | Minimum available aggregator pods during disruptions | `1` |
+
+Network observability requires Linux nodes with access to `/sys/fs/bpf` and `/sys/kernel/debug`. The agent runs Inspektor Gadget in-container and needs elevated capabilities (see `network-observability.agent.containerSecurityContext` in values.yaml).
 
 ### Azure Workload Identity: Creating the federated credential (cloud-costs)
 

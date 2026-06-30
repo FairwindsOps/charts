@@ -18,6 +18,14 @@
       "datasourceTemplate": "docker",
       "depNameTemplate": "us-docker.pkg.dev/fairwinds-ops/insights/insights-api",
       "matchStrings": ["appVersion:\\s[\"']?(?<currentValue>[\\d\\.]+)[\"']?"]
+    },
+    {
+      "customType": "regex",
+      "description": "Update Inspektor Gadget version for insights-agent network-observability",
+      "managerFilePatterns": ["stable/insights-agent/values.yaml"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "inspektor-gadget/inspektor-gadget",
+      "matchStrings": ["gadgetVersion:\\s[\"']?(?<currentValue>v[\\d\\.]+)[\"']?"]
     }
   ],
   "packageRules": [

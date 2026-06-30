@@ -1,0 +1,174 @@
+{{- if (index .Values "network-observability" "enabled") }}
+{{- $no := index .Values "network-observability" }}
+{{- $agent := $no.agent }}
+{{- $gadgetVersion := $agent.gadgetVersion }}
+{{- $collectorAddr := $agent.collectorAddr | default (printf "%s-network-flow-aggregator.%s.svc:%v" (include "insights-agent.fullname" .) .Release.Namespace $no.aggregator.grpcPort) }}
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: {{ include "insights-agent.fullname" . }}-network-flow
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: insights-agent
+    component: network-flow
+spec:
+  selector:
+    matchLabels:
+      app: insights-agent
+      component: network-flow
+  {{- with $agent.updateStrategy }}
+  updateStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  template:
+    metadata:
+      labels:
+        app: insights-agent
+        component: network-flow
+      {{- if or $agent.podAnnotations .Values.global.customWorkloadAnnotations }}
+      annotations:
+        {{- with $agent.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+        {{- with .Values.global.customWorkloadAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- end }}
+    spec:
+      serviceAccountName: {{ include "insights-agent.fullname" . }}-network-flow
+      hostPID: false
+      hostNetwork: false
+      {{- with $agent.priorityClassName }}
+      priorityClassName: {{ . | quote }}
+      {{- end }}
+      {{- with $agent.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $agent.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $agent.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with $agent.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: agent
+          image: "{{ $agent.image.repository }}:{{ $agent.image.tag }}"
+          imagePullPolicy: {{ $agent.image.pullPolicy }}
+          env:
+            - name: NODE_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: spec.nodeName
+            - name: COLLECTOR_ADDR
+              value: {{ $collectorAddr | quote }}
+            - name: MAX_PENDING_EVENTS
+              value: {{ $agent.maxPendingEvents | quote }}
+            - name: BATCH_SIZE
+              value: {{ $agent.batchSize | quote }}
+            - name: FLUSH_INTERVAL
+              value: {{ $agent.flushInterval | quote }}
+            - name: LOG_LEVEL
+              value: {{ $agent.logLevel | quote }}
+            - name: IG_ADDR
+              value: tcp://127.0.0.1:8080
+            - name: TRACE_TCP_IMAGE
+              value: ghcr.io/inspektor-gadget/gadget/trace_tcp:{{ $gadgetVersion }}
+            - name: TOP_TCP_IMAGE
+              value: ghcr.io/inspektor-gadget/gadget/top_tcp:{{ $gadgetVersion }}
+            - name: TRACE_DNS_IMAGE
+              value: ghcr.io/inspektor-gadget/gadget/trace_dns:{{ $gadgetVersion }}
+            - name: GADGET_POD_UID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.uid
+            - name: GADGET_IMAGE
+              value: ghcr.io/inspektor-gadget/inspektor-gadget
+            - name: HOST_ROOT
+              value: /host
+          securityContext:
+            {{- toYaml $agent.containerSecurityContext | nindent 12 }}
+          volumeMounts:
+            - mountPath: /host/bin
+              name: bin
+              readOnly: true
+            - mountPath: /host/etc
+              name: etc
+            - mountPath: /host/opt
+              name: opt
+            - mountPath: /host/usr
+              name: usr
+              readOnly: true
+            - mountPath: /host/run
+              name: run
+              readOnly: true
+            - mountPath: /host/var
+              name: var
+              readOnly: true
+            - mountPath: /host/proc
+              name: proc
+              readOnly: true
+            - mountPath: /run
+              name: run
+            - mountPath: /sys/kernel/debug
+              name: debugfs
+            - mountPath: /sys/fs/cgroup
+              name: cgroup
+              readOnly: true
+            - mountPath: /sys/fs/bpf
+              name: bpffs
+            - mountPath: /var/lib/ig
+              name: oci
+            - mountPath: /etc/ig
+              name: config
+              readOnly: true
+            - mountPath: /var/run/ig/wasm-cache
+              name: wasm-cache
+          resources:
+            {{- toYaml $agent.resources | nindent 12 }}
+      volumes:
+        - name: bin
+          hostPath:
+            path: /bin
+        - name: etc
+          hostPath:
+            path: /etc
+        - name: opt
+          hostPath:
+            path: /opt
+        - name: usr
+          hostPath:
+            path: /usr
+        - name: proc
+          hostPath:
+            path: /proc
+        - name: run
+          hostPath:
+            path: /run
+        - name: var
+          hostPath:
+            path: /var
+        - name: cgroup
+          hostPath:
+            path: /sys/fs/cgroup
+        - name: bpffs
+          hostPath:
+            path: /sys/fs/bpf
+        - name: debugfs
+          hostPath:
+            path: /sys/kernel/debug
+        - name: oci
+          emptyDir: {}
+        - name: wasm-cache
+          emptyDir: {}
+        - name: config
+          configMap:
+            name: {{ include "insights-agent.fullname" . }}-network-flow
+            defaultMode: 0400
+{{- end }}

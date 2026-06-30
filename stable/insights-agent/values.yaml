@@ -1109,3 +1109,106 @@ insights-event-watcher:
   tolerations: []
   affinity: {}
   annotations: {}
+
+network-observability:
+  enabled: false
+  agent:
+    image:
+      repository: quay.io/fairwinds/network-flow
+      tag: "0.0.3"
+      pullPolicy: IfNotPresent
+    gadgetVersion: "v0.53.1"
+    collectorAddr: ""
+    batchSize: 5000
+    maxPendingEvents: 50000
+    flushInterval: "5s"
+    logLevel: info
+    ig:
+      eventsBufferLength: 32768
+      daemonLogLevel: info
+      hookMode: auto
+    resources:
+      requests:
+        cpu: 100m
+        memory: 128Mi
+      limits:
+        cpu: 500m
+        memory: 512Mi
+    tolerations:
+      - operator: Exists
+    nodeSelector: {}
+    affinity: {}
+    priorityClassName: ""
+    updateStrategy:
+      type: RollingUpdate
+    podAnnotations:
+      container.apparmor.security.beta.kubernetes.io/agent: unconfined
+    podSecurityContext: {}
+    containerSecurityContext:
+      readOnlyRootFilesystem: true
+      seLinuxOptions:
+        type: spc_t
+      capabilities:
+        drop:
+          - ALL
+        add:
+          - SYS_ADMIN
+          - SYSLOG
+          - SYS_PTRACE
+          - SYS_RESOURCE
+          - IPC_LOCK
+          - NET_RAW
+          - NET_ADMIN
+    serviceAccount:
+      annotations: {}
+  aggregator:
+    image:
+      repository: quay.io/fairwinds/network-flow-aggregator
+      tag: "0.0.3"
+      pullPolicy: IfNotPresent
+    replicas: 1
+    grpcPort: 4317
+    httpPort: 8080
+    maxEvents: 100000
+    maxAge: "15m"
+    disableKube: false
+    logLevel: info
+    resources:
+      requests:
+        cpu: 50m
+        memory: 64Mi
+      limits:
+        cpu: 500m
+        memory: 256Mi
+    service:
+      type: ClusterIP
+      annotations: {}
+    probes:
+      enabled: true
+    nodeSelector: {}
+    affinity: {}
+    tolerations: []
+    podAnnotations: {}
+    podSecurityContext: {}
+    containerSecurityContext: {}
+    serviceAccount:
+      annotations: {}
+    upstream:
+      enabled: true
+      grpcAddr: ""
+      autoDetectFromHost: false
+      grpcPort: 4318
+      batchSize: 10000
+      flushInterval: "10s"
+    autoscaling:
+      enabled: false
+      minReplicas: 2
+      maxReplicas: 5
+      targetCPUUtilizationPercentage: 80
+      targetMemoryUtilizationPercentage:
+    pdb:
+      enabled: true
+      minAvailable: 1
+    env: {}
+    extraVolumeMounts: []
+    extraVolumes: []
