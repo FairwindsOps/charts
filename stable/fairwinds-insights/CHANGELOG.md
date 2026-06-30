@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.9.1
+* Drop deprecated `networking.k8s.io/v1beta1` Ingress templates; Custom `ingress.extraPaths` must use the v1 backend format.
+
 ## 9.9.0
 * Add support for enabling the gRPC server in Insights API
 

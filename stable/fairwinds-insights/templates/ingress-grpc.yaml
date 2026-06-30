@@ -1,42 +1,6 @@
 {{- if and .Values.api.grpc.enabled .Values.api.grpc.ingress.enabled .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
 {{- $hostname := include "fairwinds-insights.api.grpcIngressHostname" . -}}
-{{- if not (.Capabilities.APIVersions.Has "networking.k8s.io/v1/Ingress") }}
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: {{ $fullName }}-api-grpc
-  labels:
-    {{- include "fairwinds-insights.labels" . | nindent 4 }}
-  annotations:
-    alb.ingress.kubernetes.io/backend-protocol-version: GRPC
-    alb.ingress.kubernetes.io/healthcheck-port: "8080"
-    alb.ingress.kubernetes.io/healthcheck-path: /readyz
-    {{- with .Values.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-    {{- with .Values.api.grpc.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
-    {{- end }}
-spec:
-{{- if .Values.ingress.className }}
-  ingressClassName: {{ .Values.ingress.className | quote }}
-{{- end }}
-{{- if .Values.ingress.tls }}
-  tls:
-    - secretName: {{ $fullName }}-api-grpc-cert
-      hosts:
-        - {{ $hostname }}
-{{- end }}
-  rules:
-    - host: {{ $hostname }}
-      http:
-        paths:
-          - path: /*
-            backend:
-              serviceName: {{ $fullName }}-api
-              servicePort: grpc
-{{- else }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -74,5 +38,4 @@ spec:
                 name: {{ $fullName }}-api
                 port:
                   name: grpc
-{{- end }}
 {{- end }}
