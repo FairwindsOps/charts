@@ -254,7 +254,7 @@ env:
   value: {{ . | quote }}
 {{- end }}
 {{- with $.Values.api.grpc.networkFlow.batchSize }}
-- name: NETWORK_FLOW_GRPC_BATCH_SIZE
+- name: INSIGHTS_NETWORK_FLOW_GRPC_BATCH_SIZE
   value: {{ . | quote }}
 {{- end }}
 
