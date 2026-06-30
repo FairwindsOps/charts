@@ -84,6 +84,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | dashboard.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | dashboard.securityContext.runAsUser | int | `101` | The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile |
 | api.port | int | `8080` | Port for the API server to listen on. |
+| api.grpc.enabled | bool | `false` | Enable network-flow gRPC server configuration. |
+| api.grpc.address | string | `""` | Listen address for the network-flow gRPC server (INSIGHTS_GRPC_ADDR). Defaults to :4318 when enabled and empty. |
+| api.grpc.port | int | `4318` | Container and Service port for the network-flow gRPC server. |
+| api.grpc.networkFlow.batchSize | string | `""` | Batch size for network flow gRPC ingestion. |
+| api.grpc.ingress.enabled | bool | `false` | Create a dedicated ALB Ingress for the network-flow gRPC server. |
+| api.grpc.ingress.hostname | string | `""` | Public hostname for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone}. |
+| api.grpc.ingress.annotations | object | `{}` | Additional annotations merged on top of ingress.annotations. |
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
 | api.pdb.minReplicas | int | `1` | How many replicas should always exist for the API server. |
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |

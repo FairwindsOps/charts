@@ -38,7 +38,20 @@ spec:
           - name: http
             containerPort: {{ .Values.api.port }}
             protocol: TCP
+          {{- if .Values.api.grpc.enabled }}
+          - name: grpc
+            containerPort: {{ .Values.api.grpc.port }}
+            protocol: TCP
+          {{- end }}
           {{- include "env" (dict "root" .) | indent 10 }}
+          {{- if .Values.api.grpc.enabled }}
+          - name: INSIGHTS_GRPC_ADDR
+            value: {{ include "fairwinds-insights.api.grpcListenAddress" . | quote }}
+          {{- with .Values.api.grpc.networkFlow.batchSize }}
+          - name: INSIGHTS_NETWORK_FLOW_GRPC_BATCH_SIZE
+            value: {{ . | quote }}
+          {{- end }}
+          {{- end }}
           {{- with .Values.api.additionalEnvVars }}
             {{- toYaml . | nindent 10 }}
           {{- end }}

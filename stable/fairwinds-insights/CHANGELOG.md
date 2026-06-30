@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.9.0
+* Add support for enabling the gRPC server in Insights API
+
 ## 9.8.3
 * Bump dependencies
 

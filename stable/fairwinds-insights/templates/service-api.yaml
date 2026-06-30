@@ -16,6 +16,12 @@ spec:
       targetPort: http
       protocol: TCP
       name: http
+    {{- if .Values.api.grpc.enabled }}
+    - port: {{ .Values.api.grpc.port }}
+      targetPort: grpc
+      protocol: TCP
+      name: grpc
+    {{- end }}
   selector:
     {{- include "fairwinds-insights.selectorLabels" . | nindent 4 }}
     app.kubernetes.io/component: api
