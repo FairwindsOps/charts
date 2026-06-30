@@ -293,11 +293,20 @@ api:
   grpc:
     # -- Enable network-flow gRPC server configuration.
     enabled: false
-    # -- Listen address for the network-flow gRPC server.
+    # -- Listen address for the network-flow gRPC server (INSIGHTS_GRPC_ADDR). Defaults to :4318 when enabled and empty.
     address: ""
+    # -- Container and Service port for the network-flow gRPC server.
+    port: 4318
     networkFlow:
       # -- Batch size for network flow gRPC ingestion.
       batchSize: ""
+    ingress:
+      # -- Create a dedicated ALB Ingress for the network-flow gRPC server.
+      enabled: false
+      # -- Public hostname for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone}.
+      hostname: ""
+      # -- Additional annotations merged on top of ingress.annotations.
+      annotations: {}
   pdb:
     # -- Create a pod disruption budget for the API server.
     enabled: false

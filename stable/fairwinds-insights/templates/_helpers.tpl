@@ -37,6 +37,32 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.api.grpcEnabled" -}}
+{{- .Values.api.grpc.enabled -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.api.grpcListenAddress" -}}
+{{- if .Values.api.grpc.address -}}
+{{- .Values.api.grpc.address -}}
+{{- else -}}
+{{- printf ":%d" (int .Values.api.grpc.port) -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.api.grpcIngressHostname" -}}
+{{- if .Values.api.grpc.ingress.hostname -}}
+{{- .Values.api.grpc.ingress.hostname -}}
+{{- else if gt (len .Values.ingress.hostedZones) 0 -}}
+{{- $zone := index .Values.ingress.hostedZones 0 -}}
+{{- if .Values.sanitizedBranch -}}
+{{- $branch := .Values.sanitizedBranch | trunc (int .Values.sanitizedPrefixMaxLength | default 12) | trimSuffix "-" -}}
+{{- printf "grpc-%s.%s" $branch $zone -}}
+{{- else -}}
+{{- printf "grpc.%s" $zone -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "fairwinds-insights.cronjobImageTag" -}}
 {{- if .Values.cronjobImage.tag -}}
 {{- .Values.cronjobImage.tag -}}

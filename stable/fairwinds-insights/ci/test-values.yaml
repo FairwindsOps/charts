@@ -62,6 +62,10 @@ api:
     requests:
       cpu: 50m
       memory: 128Mi
+  grpc:
+    enabled: true
+    ingress:
+      enabled: true
 
 alertsCronjob:
   schedules: []

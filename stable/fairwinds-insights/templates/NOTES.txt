@@ -1,3 +1,9 @@
 {{ if gt (len .Values.ingress.hostedZones) 0 }}
 Fairwinds Insights is now running at https://{{ include "fairwinds-insights.sanitizedPrefix" . }}{{ index .Values.ingress.hostedZones 0 }}
+{{- if .Values.api.grpc.enabled }}
+Network flow gRPC (in-cluster): {{ include "fairwinds-insights.fullname" . }}-api.{{ .Release.Namespace }}.svc:{{ .Values.api.grpc.port }}
+{{- if and .Values.api.grpc.ingress.enabled .Values.ingress.enabled }}
+Network flow gRPC (public): https://{{ include "fairwinds-insights.api.grpcIngressHostname" . }}
+{{- end }}
+{{- end }}
 {{ end }}

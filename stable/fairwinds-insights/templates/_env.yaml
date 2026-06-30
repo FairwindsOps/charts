@@ -248,18 +248,6 @@ env:
 - name: CRON_JOB_IMAGE_TAG
   value: {{ include "fairwinds-insights.cronjobImageTag" $ | quote }}
 
-# gRPC
-{{- if $.Values.api.grpc.enabled }}
-{{- with $.Values.api.grpc.address }}
-- name: INSIGHTS_GRPC_ADDR
-  value: {{ . | quote }}
-{{- end }}
-{{- with $.Values.api.grpc.networkFlow.batchSize }}
-- name: INSIGHTS_NETWORK_FLOW_GRPC_BATCH_SIZE
-  value: {{ . | quote }}
-{{- end }}
-{{- end }}
-
 # temporal specific
 - name: TEMPORAL_HOST_PORT
   value: {{ $.Values.temporal.hostPort | quote }}
