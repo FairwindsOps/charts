@@ -339,7 +339,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"reportjob"` |  |
 | reportjob.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | reportjob.terminationGracePeriodSeconds | int | `600` |  |
-| reportjob.appGroupHealthForReportWorkflowEnabled | bool | `false` |  |
+| reportjob.appGroupHealthForReportWorkflowEnabled | bool | `true` |  |
 | reportjob.additionalEnvVars | list | `[]` |  |
 | outboxWorker | object | `{"additionalEnvVars":[],"affinity":null,"annotations":{},"args":[],"command":["outbox_worker"],"enabled":true,"image":{"repository":"","tag":""},"imagePullPolicy":"Always","initContainers":[],"nodeSelector":{},"podAnnotations":{},"priorityClassName":"","replicas":1,"resources":{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324},"terminationGracePeriodSeconds":600,"tolerations":[],"topologySpreadConstraints":[],"useReadReplica":false,"volumeMounts":[],"volumes":[]}` | Deploy the outbox worker |
 | outboxWorker.enabled | bool | `true` | Enable the outbox-worker Deployment |
