@@ -4,7 +4,7 @@ dependencies:
   version: 10.3.0
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 29.13.0
+  version: 29.13.1
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
   version: 1.12.3
@@ -13,7 +13,7 @@ dependencies:
   version: 9.1.0
 - name: vpa
   repository: https://charts.fairwinds.com/stable
-  version: 4.10.2
+  version: 4.12.2
 - name: trivy
   repository: https://aquasecurity.github.io/helm-charts/
   version: 0.23.2
@@ -23,5 +23,5 @@ dependencies:
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.0
-digest: sha256:ed5fa533a5d65831d447749733db1de5d370e6874b468f53af46abb8f9ce1013
-generated: "2026-06-26T11:43:51.601850028Z"
+digest: sha256:3368f7f4d0efa174f0e7b15ab18eda8ca967bd7e95b49c21639574ff88f31dc9
+generated: "2026-07-01T19:20:07.536669592Z"

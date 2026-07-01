@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.20.0
+* Bump dependencies
+
 ## 5.19.1
 * Bump dependencies
 
