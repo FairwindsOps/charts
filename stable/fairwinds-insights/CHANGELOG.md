@@ -1,5 +1,10 @@
 # Changelog
 
+## 9.9.4
+* Change `appGroupHealthForReportWorkflowEnabled` default from `false` to `true`
+* Set `alb.ingress.kubernetes.io/target-type: ip` on the gRPC Ingress so it works when the API Service is `ClusterIP`.
+* Set explicit HTTP health check annotations on the gRPC Ingress (`healthcheck-protocol: HTTP`, `success-codes: "200"`).
+
 ## 9.9.3
 * Fix gRPC ingress ALB annotation merge order and derive a separate ingress group when the main ingress uses `alb.ingress.kubernetes.io/group.name`.
 
