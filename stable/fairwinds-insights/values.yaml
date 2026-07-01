@@ -305,7 +305,9 @@ api:
       enabled: false
       # -- Public hostname for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone}.
       hostname: ""
-      # -- Additional annotations merged on top of ingress.annotations.
+      # -- ALB ingress group for the gRPC Ingress. Defaults to {ingress.annotations group.name}-grpc when the main ingress uses a shared group.
+      groupName: ""
+      # -- Additional annotations merged last (after ingress.annotations and gRPC defaults).
       annotations: {}
   pdb:
     # -- Create a pod disruption budget for the API server.

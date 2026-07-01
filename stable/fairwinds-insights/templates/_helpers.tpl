@@ -63,6 +63,14 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.api.grpcIngressGroupName" -}}
+{{- if .Values.api.grpc.ingress.groupName -}}
+{{- .Values.api.grpc.ingress.groupName -}}
+{{- else if index .Values.ingress.annotations "alb.ingress.kubernetes.io/group.name" -}}
+{{- printf "%s-grpc" (index .Values.ingress.annotations "alb.ingress.kubernetes.io/group.name") -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "fairwinds-insights.cronjobImageTag" -}}
 {{- if .Values.cronjobImage.tag -}}
 {{- .Values.cronjobImage.tag -}}

@@ -1,6 +1,7 @@
 {{- if and .Values.api.grpc.enabled .Values.api.grpc.ingress.enabled .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
 {{- $hostname := include "fairwinds-insights.api.grpcIngressHostname" . -}}
+{{- $ingressAnnotations := omit .Values.ingress.annotations "alb.ingress.kubernetes.io/group.name" "alb.ingress.kubernetes.io/healthcheck-path" "alb.ingress.kubernetes.io/healthcheck-port" "alb.ingress.kubernetes.io/backend-protocol-version" -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -8,11 +9,14 @@ metadata:
   labels:
     {{- include "fairwinds-insights.labels" . | nindent 4 }}
   annotations:
+    {{- with $ingressAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
     alb.ingress.kubernetes.io/backend-protocol-version: GRPC
     alb.ingress.kubernetes.io/healthcheck-port: "8080"
     alb.ingress.kubernetes.io/healthcheck-path: /readyz
-    {{- with .Values.ingress.annotations }}
-    {{- toYaml . | nindent 4 }}
+    {{- with include "fairwinds-insights.api.grpcIngressGroupName" . }}
+    alb.ingress.kubernetes.io/group.name: {{ . | quote }}
     {{- end }}
     {{- with .Values.api.grpc.ingress.annotations }}
     {{- toYaml . | nindent 4 }}

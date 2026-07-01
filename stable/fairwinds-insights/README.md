@@ -90,7 +90,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.grpc.networkFlow.batchSize | string | `""` | Batch size for network flow gRPC ingestion. |
 | api.grpc.ingress.enabled | bool | `false` | Create a dedicated ALB Ingress for the network-flow gRPC server. |
 | api.grpc.ingress.hostname | string | `""` | Public hostname for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone}. |
-| api.grpc.ingress.annotations | object | `{}` | Additional annotations merged on top of ingress.annotations. |
+| api.grpc.ingress.groupName | string | `""` | ALB ingress group for the gRPC Ingress. Defaults to {ingress.annotations group.name}-grpc when the main ingress uses a shared group. |
+| api.grpc.ingress.annotations | object | `{}` | Additional annotations merged last (after ingress.annotations and gRPC defaults). |
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |
 | api.pdb.minReplicas | int | `1` | How many replicas should always exist for the API server. |
 | api.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the API server. |
