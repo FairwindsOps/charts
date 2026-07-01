@@ -1,7 +1,7 @@
 {{- if and .Values.api.grpc.enabled .Values.api.grpc.ingress.enabled .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
 {{- $hostname := include "fairwinds-insights.api.grpcIngressHostname" . -}}
-{{- $ingressAnnotations := omit .Values.ingress.annotations "alb.ingress.kubernetes.io/group.name" "alb.ingress.kubernetes.io/healthcheck-path" "alb.ingress.kubernetes.io/healthcheck-port" "alb.ingress.kubernetes.io/backend-protocol-version" -}}
+{{- $ingressAnnotations := omit .Values.ingress.annotations "alb.ingress.kubernetes.io/group.name" "alb.ingress.kubernetes.io/healthcheck-path" "alb.ingress.kubernetes.io/healthcheck-port" "alb.ingress.kubernetes.io/healthcheck-protocol" "alb.ingress.kubernetes.io/success-codes" "alb.ingress.kubernetes.io/backend-protocol-version" -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -13,8 +13,11 @@ metadata:
     {{- toYaml . | nindent 4 }}
     {{- end }}
     alb.ingress.kubernetes.io/backend-protocol-version: GRPC
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/healthcheck-protocol: HTTP
     alb.ingress.kubernetes.io/healthcheck-port: "8080"
     alb.ingress.kubernetes.io/healthcheck-path: /readyz
+    alb.ingress.kubernetes.io/success-codes: "200"
     {{- with include "fairwinds-insights.api.grpcIngressGroupName" . }}
     alb.ingress.kubernetes.io/group.name: {{ . | quote }}
     {{- end }}
