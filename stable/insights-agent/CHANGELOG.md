@@ -1,10 +1,13 @@
 # Changelog
 
+## 5.20.1
+* Improve changelog versions bump documentation
+
 ## 5.20.0
-* Bump dependencies
+* Bumped `vpa` to `4.12.*`
 
 ## 5.19.1
-* Bump dependencies
+* Bumped `inspektor-gadget` to `v0.53.2`
 
 ## 5.19.0
 * Add network-observability support (network-flow agent and network-flow-aggregator)
@@ -13,13 +16,13 @@
 * Bump `workloads` to `2.10.*`
 
 ## 5.18.1
-* Bump dependencies
+* Bumped `trivy` to `0.23.2`
 
 ## 5.18.0
-* Bump dependencies
+* Bumped `prometheus` to `29.13.*`
 
 ## 5.17.0
-* Bump dependencies
+* Bumped test image python tag to `3.14-alpine`
 
 ## 5.16.1
 * Bumped `trivy` to `0.23.1`
