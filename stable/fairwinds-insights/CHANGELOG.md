@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.9.5
+* Use native gRPC ALB health checks on the gRPC Ingress. HTTP `/readyz` health checks are incompatible with GRPC target groups.
+
 ## 9.9.4
 * Change `appGroupHealthForReportWorkflowEnabled` default from `false` to `true`
 * Set `alb.ingress.kubernetes.io/target-type: ip` on the gRPC Ingress so it works when the API Service is `ClusterIP`.
