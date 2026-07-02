@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.9.6
+* Bump dependencies
+
 ## 9.9.5
 * Use native gRPC ALB health checks on the gRPC Ingress. HTTP `/readyz` health checks are incompatible with GRPC target groups.
 
