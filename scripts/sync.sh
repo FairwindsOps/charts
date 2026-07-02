@@ -30,6 +30,8 @@ readonly BITNAMI_REPO_URL=https://charts.bitnami.com/bitnami
 readonly FALCO_REPO_URL=https://falcosecurity.github.io/charts
 readonly METRICS_SERVER_REPO_URL=https://kubernetes-sigs.github.io/metrics-server/
 readonly AQUASECURITY_REPO_URL=https://aquasecurity.github.io/helm-charts/
+readonly NVIDIA_REPO_URL=https://nvidia.github.io/dcgm-exporter/helm-charts
+readonly ROCM_REPO_URL=https://rocm.github.io/device-metrics-exporter
 
 readonly S3_BUCKET_STABLE=s3://fairwinds-helm-charts/stable
 readonly S3_BUCKET_INCUBATOR=s3://fairwinds-helm-charts/incubator
@@ -66,6 +68,8 @@ setup_helm_client() {
 	helm repo add metrics-server "$METRICS_SERVER_REPO_URL"
 	helm repo add temporal "$TEMPORAL_REPO_URL"
 	helm repo add aquasecurity "$AQUASECURITY_REPO_URL"
+	helm repo add nvidia "$NVIDIA_REPO_URL"
+	helm repo add rocm "$ROCM_REPO_URL"
 }
 
 authenticate() {
