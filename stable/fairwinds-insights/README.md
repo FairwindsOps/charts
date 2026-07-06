@@ -89,7 +89,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.grpc.port | int | `4318` | Container and Service port for the network-flow gRPC server. |
 | api.grpc.networkFlow.batchSize | string | `""` | Batch size for network flow gRPC ingestion. |
 | api.grpc.ingress.enabled | bool | `false` | Create a dedicated ALB Ingress for the network-flow gRPC server. |
-| api.grpc.ingress.hostname | string | `""` | Public hostname for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone}. |
+| api.grpc.ingress.hosts | list | `[]` | Public hostnames for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone} when empty. |
 | api.grpc.ingress.groupName | string | `""` | ALB ingress group for the gRPC Ingress. Defaults to {ingress.annotations group.name}-grpc when the main ingress uses a shared group. |
 | api.grpc.ingress.annotations | object | `{}` | Additional annotations merged last (after ingress.annotations and gRPC defaults). |
 | api.pdb.enabled | bool | `false` | Create a pod disruption budget for the API server. |

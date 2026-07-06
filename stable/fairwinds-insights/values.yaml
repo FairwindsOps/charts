@@ -303,8 +303,8 @@ api:
     ingress:
       # -- Create a dedicated ALB Ingress for the network-flow gRPC server.
       enabled: false
-      # -- Public hostname for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone}.
-      hostname: ""
+      # -- Public hostnames for gRPC Ingress. Defaults to grpc-{sanitizedBranch}.{first hostedZone} or grpc.{first hostedZone} when empty.
+      hosts: []
       # -- ALB ingress group for the gRPC Ingress. Defaults to {ingress.annotations group.name}-grpc when the main ingress uses a shared group.
       groupName: ""
       # -- Additional annotations merged last (after ingress.annotations and gRPC defaults).
