@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.20.2
+* Bump network-flow agent and aggregator to `0.0.6` and change their pullPolicy to `Always`
+
 ## 5.20.1
 * Improve changelog versions bump documentation
 
