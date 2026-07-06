@@ -50,9 +50,7 @@ Create chart name and version as used by the chart label.
 {{- end -}}
 
 {{- define "fairwinds-insights.api.grpcIngressHostname" -}}
-{{- if .Values.api.grpc.ingress.hostname -}}
-{{- .Values.api.grpc.ingress.hostname -}}
-{{- else if gt (len .Values.ingress.hostedZones) 0 -}}
+{{- if gt (len .Values.ingress.hostedZones) 0 -}}
 {{- $zone := index .Values.ingress.hostedZones 0 -}}
 {{- if .Values.sanitizedBranch -}}
 {{- $branch := .Values.sanitizedBranch | trunc (int .Values.sanitizedPrefixMaxLength | default 12) | trimSuffix "-" -}}
