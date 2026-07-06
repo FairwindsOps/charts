@@ -1,7 +1,7 @@
 # Changelog
 
 ## 9.10.0
-* Bump dependencies
+* Replace `api.grpc.ingress.hostname` with `api.grpc.ingress.hosts` to support multiple gRPC Ingress hostnames.
 
 ## 9.9.6
 * Bump dependencies

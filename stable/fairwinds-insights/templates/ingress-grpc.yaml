@@ -1,6 +1,12 @@
 {{- if and .Values.api.grpc.enabled .Values.api.grpc.ingress.enabled .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
-{{- $hostname := include "fairwinds-insights.api.grpcIngressHostname" . -}}
+{{- $hosts := .Values.api.grpc.ingress.hosts -}}
+{{- if not $hosts -}}
+{{- with include "fairwinds-insights.api.grpcIngressHostname" . -}}
+{{- $hosts = list . -}}
+{{- end -}}
+{{- end -}}
+{{- if $hosts }}
 {{- $ingressAnnotations := omit .Values.ingress.annotations "alb.ingress.kubernetes.io/group.name" "alb.ingress.kubernetes.io/healthcheck-path" "alb.ingress.kubernetes.io/healthcheck-port" "alb.ingress.kubernetes.io/healthcheck-protocol" "alb.ingress.kubernetes.io/success-codes" "alb.ingress.kubernetes.io/backend-protocol-version" -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -31,10 +37,13 @@ spec:
   tls:
     - secretName: {{ $fullName }}-api-grpc-cert
       hosts:
-        - {{ $hostname }}
+        {{- range $hosts }}
+        - {{ . }}
+        {{- end }}
 {{- end }}
   rules:
-    - host: {{ $hostname }}
+    {{- range $hosts }}
+    - host: {{ . }}
       http:
         paths:
           - path: /
@@ -44,4 +53,6 @@ spec:
                 name: {{ $fullName }}-api
                 port:
                   name: grpc
+    {{- end }}
+{{- end }}
 {{- end }}
