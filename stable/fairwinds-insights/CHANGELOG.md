@@ -1,6 +1,6 @@
 # Changelog
 
-## 9.10.0
+## 9.11.0
 * Upgrade temporal dependency from `1.2.0` to `1.4.0`
 
 ## 9.10.0
