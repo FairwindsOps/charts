@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.11.2
+* Bump dependencies
+
 ## 9.11.1
 * Bump dependencies
 
