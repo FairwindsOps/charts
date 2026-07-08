@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.11.1
+* Bump dependencies
+
 ## 9.11.0
 * Upgrade temporal dependency from `1.2.0` to `1.4.0`
 
