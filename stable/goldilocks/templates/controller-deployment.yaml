@@ -61,6 +61,10 @@ spec:
           securityContext:
             {{- toYaml .Values.controller.securityContext | nindent 12 }}
         {{- end }}
+          {{- with .Values.controller.extraEnv }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.controller.resources | nindent 12 }}
           {{- if .Values.controller.deployment.extraVolumeMounts }}
