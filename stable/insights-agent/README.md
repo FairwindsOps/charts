@@ -239,9 +239,7 @@ Parameter | Description | Default
 `network-observability.aggregator.disableKube` | Skip Kubernetes enrichment in the aggregator | `false` |
 `network-observability.aggregator.resources` | CPU/memory requests and limits for the aggregator | See values.yaml |
 `network-observability.aggregator.upstream.enabled` | Enable forwarding enriched events to the Insights API | `true` |
-`network-observability.aggregator.upstream.grpcAddr` | Insights network-flow gRPC address; empty disables upstream unless autoDetectFromHost is set | `""` |
-`network-observability.aggregator.upstream.autoDetectFromHost` | Derive upstream gRPC address from `insights.host` | `false` |
-`network-observability.aggregator.upstream.grpcPort` | Port appended when auto-detecting upstream address | `4318` |
+`network-observability.aggregator.upstream.grpcAddr` | Insights network-flow gRPC address (`host:port`); empty disables upstream | `"grpc.insights.fairwinds.com:443"` |
 `network-observability.aggregator.autoscaling.enabled` | Enable HPA for the aggregator Deployment | `false` |
 `network-observability.aggregator.autoscaling.minReplicas` | Minimum aggregator replicas when autoscaling is enabled | `2` |
 `network-observability.aggregator.autoscaling.maxReplicas` | Maximum aggregator replicas when autoscaling is enabled | `5` |
