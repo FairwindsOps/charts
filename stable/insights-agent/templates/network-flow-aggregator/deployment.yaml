@@ -3,13 +3,8 @@
 {{- $agg := $no.aggregator }}
 {{- $upstream := $agg.upstream }}
 {{- $grpcAddr := "" }}
-{{- if $upstream.enabled }}
-  {{- if $upstream.grpcAddr }}
-    {{- $grpcAddr = $upstream.grpcAddr }}
-  {{- else if $upstream.autoDetectFromHost }}
-    {{- $host := .Values.insights.host | trimPrefix "https://" | trimPrefix "http://" | trimSuffix "/" }}
-    {{- $grpcAddr = printf "%s:%v" $host $upstream.grpcPort }}
-  {{- end }}
+{{- if and $upstream.enabled $upstream.grpcAddr }}
+  {{- $grpcAddr = $upstream.grpcAddr }}
 {{- end }}
 apiVersion: apps/v1
 kind: Deployment

@@ -1195,9 +1195,7 @@ network-observability:
       annotations: {}
     upstream:
       enabled: true
-      grpcAddr: ""
-      autoDetectFromHost: false
-      grpcPort: 4318
+      grpcAddr: "grpc.insights.fairwinds.com:443"
       batchSize: 10000
       flushInterval: "10s"
     autoscaling:
