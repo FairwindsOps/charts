@@ -1,5 +1,11 @@
 # Changelog
 
+## 5.23.0
+* Bump dependencies
+
+## 5.22.0
+* Bump dependencies
+
 ## 5.21.1
 * Remove `network-observability.aggregator.upstream.grpcPort` and `autoDetectFromHost`; upstream address is set only via `grpcAddr`
 
