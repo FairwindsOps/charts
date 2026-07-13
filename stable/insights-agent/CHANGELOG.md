@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.23.0
+* Bump dependencies
+
 ## 5.22.0
 * Bump dependencies
 
