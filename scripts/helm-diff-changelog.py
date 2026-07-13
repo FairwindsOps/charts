@@ -3,9 +3,6 @@
 
 Mirrors insights-plugins/scripts/gomod-diff-changelog.py for Chart.yaml dependencies,
 appVersion, and values.yaml image tags / *Version fields.
-
-Compares full old/new file contents (not unified diffs) so repository/tag association
-does not depend on git hunk context.
 """
 from __future__ import annotations
 
@@ -25,14 +22,14 @@ TAG_RE = re.compile(r"^tag:\s*['\"]?([^'\"#\s]+)['\"]?")
 CUSTOM_VER_RE = re.compile(r"^([A-Za-z][\w]*[Vv]ersion):\s*['\"]?([^'\"#\s]+)['\"]?")
 
 
-def _git_show(path: str) -> str:
+def _git_show(path: str) -> str | None:
     p = subprocess.run(
         ["git", "show", f"{BASE_REF}:{path}"],
         capture_output=True,
         text=True,
     )
     if p.returncode != 0:
-        return ""
+        return None
     return p.stdout
 
 
@@ -148,26 +145,30 @@ def bullets_from_values_yaml(old: str, new: str) -> list[str]:
     return out
 
 
-def bullets_for_chart(chart_dir: str) -> list[str]:
+def bullets_for_chart(chart_dir: str) -> list[str] | None:
+    """Return changelog bullets, or None if git show failed (like gomod-diff exit 1)."""
     chart_dir = chart_dir.rstrip("/")
     chart_yaml = f"{chart_dir}/Chart.yaml"
     values_yaml = f"{chart_dir}/values.yaml"
 
     bullets: list[str] = []
     if os.path.isfile(chart_yaml):
+        old_chart = _git_show(chart_yaml)
+        if old_chart is None:
+            return None
         bullets.extend(
-            bullets_from_chart_yaml(
-                _git_show(chart_yaml), _read(chart_yaml), chart_dir=chart_dir
-            )
+            bullets_from_chart_yaml(old_chart, _read(chart_yaml), chart_dir=chart_dir)
         )
 
     if os.path.isfile(values_yaml):
         old_values = _git_show(values_yaml)
+        if old_values is None:
+            # New file on branch vs missing on base is fine; treat as empty base.
+            old_values = ""
         new_values = _read(values_yaml)
         if old_values != new_values:
             bullets.extend(bullets_from_values_yaml(old_values, new_values))
 
-    # Dedupe while preserving order
     seen: set[str] = set()
     unique: list[str] = []
     for b in bullets:
@@ -182,7 +183,10 @@ def main() -> int:
         print("usage: helm-diff-changelog.py <stable/chart-dir>", file=sys.stderr)
         return 2
     chart_dir = sys.argv[1]
-    for line in bullets_for_chart(chart_dir):
+    bullets = bullets_for_chart(chart_dir)
+    if bullets is None:
+        return 1
+    for line in bullets:
         print(line)
     return 0
 
