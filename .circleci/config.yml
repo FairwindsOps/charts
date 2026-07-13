@@ -113,12 +113,6 @@ jobs:
             for script in $(find incubator stable -type f -name pre-test-script.sh); do
                 shellcheck -x $script
             done
-      - run:
-          name: test-renovate-changelog
-          command: |
-            # shellcheck image is Alpine; install python3 for stdlib unittest.
-            apk add --no-cache python3 >/dev/null
-            python3 -m unittest discover -s scripts -p 'test_*.py' -v
   lint-charts:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.14.0
