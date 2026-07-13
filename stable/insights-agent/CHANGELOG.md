@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.23.1
+* Bump network-flow agent and aggregator to `0.0.8`
+
 ## 5.23.0
 * Bump dependencies
 
