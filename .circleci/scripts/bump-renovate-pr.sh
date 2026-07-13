@@ -7,6 +7,9 @@
 # (scripts/helm-diff-changelog.py). The PR title/body is only a fallback message.
 set -euo pipefail
 
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
+REPO_ROOT=$(cd "${SCRIPT_DIR}/../.." && pwd)
+
 if ! command -v python3 >/dev/null 2>&1; then
   sudo apt-get update -qq
   sudo apt-get install -y -qq python3 >/dev/null
@@ -53,71 +56,15 @@ if [[ -n "${CIRCLE_PROJECT_USERNAME:-}" && -n "${CIRCLE_PROJECT_REPONAME:-}" ]];
       "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pulls/${PR_NUMBER}" 2>/dev/null) || resp=""
     if [[ -n "$resp" ]]; then
       # Fallback only: helm-diff-changelog.py usually supplies package + version.
-      MSG=$(printf '%s' "$resp" | python3 -c '
-import json, re, sys
-
-pr = json.load(sys.stdin)
-title = pr.get("title") or "Bump dependencies"
-title = re.sub(r"^chore\(deps\):\s*", "", title, flags=re.IGNORECASE)
-body = pr.get("body") or ""
-
-def strip_md_link(text: str) -> str:
-    m = re.match(r"\[([^\]]+)\]\([^)]+\)", text.strip())
-    if m:
-        return m.group(1).strip()
-    return text.strip()
-
-def short_name(pkg: str) -> str:
-    pkg = strip_md_link(pkg)
-    pkg = re.sub(r"\s*\(.*\)$", "", pkg).strip()
-    if "/" in pkg and not pkg.startswith("http"):
-        parts = [p for p in pkg.split("/") if p]
-        if len(parts) >= 3 and ("." in parts[0] or "pkg.dev" in pkg):
-            return "/".join(parts[-2:])
-    return pkg
-
-upgrades = []
-seen = set()
-row_re = re.compile(
-    r"^\|\s*(.+?)\s*\|\s*[^|]*\|\s*`([^`]+)`\s*(?:→|->)\s*`([^`]+)`",
-    re.MULTILINE,
-)
-for m in row_re.finditer(body):
-    pkg = short_name(m.group(1))
-    new_ver = m.group(3).strip()
-    if not pkg or pkg.lower() in ("package", "---"):
-        continue
-    key = (pkg, new_ver)
-    if key in seen:
-        continue
-    seen.add(key)
-    upgrades.append((pkg, new_ver))
-
-if upgrades:
-    print("\n".join(f"Bumped `{pkg}` to `{ver}`" for pkg, ver in upgrades))
-    sys.exit(0)
-
-patterns = [
-    (r"^Update Helm release (.+) to v?(.+)$", r"Bumped `\1` to `\2`"),
-    (r"^Update (.+) Docker tag to v?(.+)$", r"Bumped `\1` to `\2`"),
-    (r"^Update dependency (.+) to v?(.+)$", r"Bumped `\1` to `\2`"),
-    (r"^Update (.+) to v?(.+)$", r"Bumped `\1` to `\2`"),
-]
-for pat, repl in patterns:
-    if re.match(pat, title):
-        print(re.sub(pat, repl, title))
-        sys.exit(0)
-
-print(title)
-')
+      MSG=$(printf '%s' "$resp" | python3 "${REPO_ROOT}/scripts/renovate-pr-fallback.py")
     fi
   fi
 fi
 
-echo "Fallback changelog message(s):"
+echo "PR-derived fallback message(s) (used only if diff parser returns nothing):"
 printf '%s\n' "$MSG"
 
-./scripts/bump-changed-renovate.sh "$MSG"
+"${REPO_ROOT}/scripts/bump-changed-renovate.sh" "$MSG"
 
 if git diff --quiet; then
   echo "No changelog updates needed."

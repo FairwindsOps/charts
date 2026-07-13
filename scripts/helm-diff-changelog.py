@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
-"""Parse git diffs for a Helm chart dir vs origin/master; emit changelog bullet lines.
+"""Parse Helm chart files vs origin/master; emit changelog bullet lines.
 
 Mirrors insights-plugins/scripts/gomod-diff-changelog.py for Chart.yaml dependencies,
 appVersion, and values.yaml image tags / *Version fields.
+
+Compares full old/new file contents (not unified diffs) so repository/tag association
+does not depend on git hunk context.
 """
 from __future__ import annotations
 
@@ -25,17 +28,6 @@ CUSTOM_VER_RE = re.compile(r"^([A-Za-z][\w]*[Vv]ersion):\s*['\"]?([^'\"#\s]+)['\
 def _git_show(path: str) -> str:
     p = subprocess.run(
         ["git", "show", f"{BASE_REF}:{path}"],
-        capture_output=True,
-        text=True,
-    )
-    if p.returncode != 0:
-        return ""
-    return p.stdout
-
-
-def _git_diff(*paths: str) -> str:
-    p = subprocess.run(
-        ["git", "diff", BASE_REF, "--", *paths],
         capture_output=True,
         text=True,
     )
@@ -99,60 +91,60 @@ def bullets_from_chart_yaml(old: str, new: str, chart_dir: str = "") -> list[str
     return out
 
 
-def bullets_from_values_diff(diff_text: str) -> list[str]:
-    """Emit bullets for image tag / *Version changes in a values.yaml unified diff."""
-    out: list[str] = []
-    seen: set[tuple[str, str]] = set()
-    current_repo = "image"
-    # repo -> removed tag (awaiting matching add)
-    pending_tag: dict[str, str] = {}
-    pending_custom: dict[str, str] = {}
+def parse_values_versions(text: str) -> tuple[dict[str, str], dict[str, str]]:
+    """Parse values.yaml into (repository -> tag, customVersionKey -> version)."""
+    repo_tags: dict[str, str] = {}
+    custom: dict[str, str] = {}
+    current_repo: str | None = None
 
-    for line in diff_text.splitlines():
-        if not line or line.startswith(("---", "+++", "@@")):
-            continue
-        sign = line[0]
-        if sign not in " +-":
-            continue
-        body = line[1:].strip()
-        if not body or body.startswith("#"):
+    for raw in text.splitlines():
+        stripped = raw.strip()
+        if not stripped or stripped.startswith("#"):
             continue
 
-        m = REPO_RE.match(body)
+        m = REPO_RE.match(stripped)
         if m:
             current_repo = m.group(1)
             continue
 
-        m = TAG_RE.match(body)
-        if m:
-            tag = m.group(1)
-            if sign == "-":
-                pending_tag[current_repo] = tag
-            elif sign == "+":
-                old = pending_tag.pop(current_repo, None)
-                if old != tag:
-                    key = (current_repo, tag)
-                    if key not in seen:
-                        seen.add(key)
-                        out.append(f"Bumped `{current_repo}` to `{tag}`")
+        m = TAG_RE.match(stripped)
+        if m and current_repo is not None:
+            repo_tags[current_repo] = m.group(1)
             continue
 
-        m = CUSTOM_VER_RE.match(body)
+        m = CUSTOM_VER_RE.match(stripped)
         if m:
             key_name, ver = m.group(1), m.group(2)
-            if key_name in ("appVersion",):  # handled via Chart.yaml
+            if key_name == "appVersion":
                 continue
-            if sign == "-":
-                pending_custom[key_name] = ver
-            elif sign == "+":
-                old = pending_custom.pop(key_name, None)
-                if old != ver:
-                    key = (key_name, ver)
-                    if key not in seen:
-                        seen.add(key)
-                        # Prefer a short label: gadgetVersion -> gadget
-                        label = re.sub(r"[Vv]ersion$", "", key_name) or key_name
-                        out.append(f"Bumped `{label}` to `{ver}`")
+            custom[key_name] = ver
+
+    return repo_tags, custom
+
+
+def bullets_from_values_yaml(old: str, new: str) -> list[str]:
+    """Emit bullets for image tag / *Version changes between two values.yaml texts."""
+    out: list[str] = []
+    old_repos, old_custom = parse_values_versions(old)
+    new_repos, new_custom = parse_values_versions(new)
+
+    for repo in sorted(set(old_repos) | set(new_repos)):
+        if repo not in new_repos:
+            continue
+        new_tag = new_repos[repo]
+        if old_repos.get(repo) == new_tag:
+            continue
+        out.append(f"Bumped `{repo}` to `{new_tag}`")
+
+    for key_name in sorted(set(old_custom) | set(new_custom)):
+        if key_name not in new_custom:
+            continue
+        new_ver = new_custom[key_name]
+        if old_custom.get(key_name) == new_ver:
+            continue
+        label = re.sub(r"[Vv]ersion$", "", key_name) or key_name
+        out.append(f"Bumped `{label}` to `{new_ver}`")
+
     return out
 
 
@@ -170,9 +162,10 @@ def bullets_for_chart(chart_dir: str) -> list[str]:
         )
 
     if os.path.isfile(values_yaml):
-        diff = _git_diff(values_yaml)
-        if diff.strip():
-            bullets.extend(bullets_from_values_diff(diff))
+        old_values = _git_show(values_yaml)
+        new_values = _read(values_yaml)
+        if old_values != new_values:
+            bullets.extend(bullets_from_values_yaml(old_values, new_values))
 
     # Dedupe while preserving order
     seen: set[str] = set()

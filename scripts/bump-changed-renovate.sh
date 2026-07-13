@@ -36,16 +36,29 @@ bump_one_chart() {
   local chart=$1
   local d="stable/$chart"
   local fallback_msg=$2
-  local version bullets_tmp py_out
+  local version bullets_tmp err_tmp py_out py_rc
 
   bullets_tmp=$(mktemp)
-  py_out=$(python3 "${SCRIPT_DIR}/helm-diff-changelog.py" "$d" 2>/dev/null) || py_out=""
-  if [[ -n "$py_out" ]]; then
+  err_tmp=$(mktemp)
+  # Capture stderr; do not hide parser failures behind the PR fallback.
+  set +e
+  py_out=$(python3 "${SCRIPT_DIR}/helm-diff-changelog.py" "$d" 2>"$err_tmp")
+  py_rc=$?
+  set -e
+
+  if [[ $py_rc -ne 0 ]]; then
+    echo "helm-diff-changelog.py failed for $d (exit ${py_rc}); using PR-derived fallback." >&2
+    if [[ -s "$err_tmp" ]]; then
+      cat "$err_tmp" >&2
+    fi
+    printf '%s\n' "$fallback_msg" > "$bullets_tmp"
+  elif [[ -n "$py_out" ]]; then
     printf '%s\n' "$py_out" > "$bullets_tmp"
   else
-    # Fallback may be one or more newline-separated lines from the PR title/body.
+    echo "helm-diff-changelog.py produced no bullets for $d; using PR-derived fallback." >&2
     printf '%s\n' "$fallback_msg" > "$bullets_tmp"
   fi
+  rm -f "$err_tmp"
 
   version=$(grep '^version:' "$d/Chart.yaml" | head -1 | awk '{print $2}' | tr -d "'\"")
 
