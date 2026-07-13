@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.23.2
+* Change selinux for network observability to super_t
+
 ## 5.23.1
 * Bump network-flow agent and aggregator to `0.0.8`
 
