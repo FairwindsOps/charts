@@ -1,8 +1,12 @@
-#!/usr/bin/env bash
+#! /bin/bash
 set -eo pipefail
 
 # Add CHANGELOG.md entries for charts changed on a Renovate PR branch.
 # Chart.yaml versions are bumped by Renovate; this only updates changelogs enforced by CI.
+# Prefer package/version bullets from helm-diff-changelog.py (same idea as
+# insights-plugins gomod-diff-changelog.py); fall back to the PR-derived message.
+
+SCRIPT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 
 message=$1
 require_changelog=(insights-agent fairwinds-insights insights-admission)
@@ -32,16 +36,25 @@ bump_one_chart() {
   local chart=$1
   local d="stable/$chart"
   local fallback_msg=$2
-  local version
+  local version bullets_tmp py_out
+
+  bullets_tmp=$(mktemp)
+  py_out=$(python3 "${SCRIPT_DIR}/helm-diff-changelog.py" "$d" 2>/dev/null) || py_out=""
+  if [[ -n "$py_out" ]]; then
+    printf '%s\n' "$py_out" > "$bullets_tmp"
+  else
+    printf '%s\n' "$fallback_msg" > "$bullets_tmp"
+  fi
 
   version=$(grep '^version:' "$d/Chart.yaml" | head -1 | awk '{print $2}' | tr -d "'\"")
-
-  {
-    echo -e "# Changelog"
-    echo -e "\n## $version"
-    echo -e "* $fallback_msg"
-    tail -n+2 "$d/CHANGELOG.md"
-  } > /tmp/CHANGELOG.md
+  echo -e "# Changelog" > /tmp/CHANGELOG.md
+  echo -e "\n## $version" >> /tmp/CHANGELOG.md
+  while IFS= read -r line || [[ -n "$line" ]]; do
+    [[ -z "$line" ]] && continue
+    echo "* $line" >> /tmp/CHANGELOG.md
+  done < "$bullets_tmp"
+  rm -f "$bullets_tmp"
+  tail -n+2 "$d/CHANGELOG.md" >> /tmp/CHANGELOG.md
   mv /tmp/CHANGELOG.md "$d/CHANGELOG.md"
 }
 
