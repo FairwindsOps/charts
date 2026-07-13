@@ -215,7 +215,7 @@ Parameter | Description | Default
 `insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
 `network-observability.enabled` | Enable the network observability agent DaemonSet and aggregator Deployment | `false`
 `network-observability.agent.image.repository` | Repository for the network-flow agent image | `quay.io/fairwinds/network-flow`
-`network-observability.agent.image.tag` | Tag for the network-flow agent image | `0.0.3`
+`network-observability.agent.image.tag` | Tag for the network-flow agent image | `0.0.8`
 `network-observability.agent.gadgetVersion` | Inspektor Gadget version used for gadgets images | `v0.53.1`
 `network-observability.agent.collectorAddr` | Aggregator gRPC address; defaults to the in-cluster aggregator Service | `""`
 `network-observability.agent.batchSize` | Number of flow events to batch before flushing to the aggregator | `5000`
@@ -233,7 +233,7 @@ Parameter | Description | Default
 `network-observability.agent.updateStrategy` | DaemonSet update strategy | `{ type: RollingUpdate }` |
 `network-observability.aggregator.replicas` | Aggregator Deployment replicas (ignored when autoscaling is enabled) | `1` |
 `network-observability.aggregator.image.repository` | Repository for the aggregator image | `quay.io/fairwinds/network-flow-aggregator` |
-`network-observability.aggregator.image.tag` | Tag for the aggregator image | `0.0.3` |
+`network-observability.aggregator.image.tag` | Tag for the aggregator image | `0.0.8` |
 `network-observability.aggregator.maxEvents` | Maximum in-memory flow events retained by the aggregator | `100000` |
 `network-observability.aggregator.maxAge` | Maximum age of retained flow events | `15m` |
 `network-observability.aggregator.disableKube` | Skip Kubernetes enrichment in the aggregator | `false` |
