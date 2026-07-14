@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.12.4
+* Soften default KEDA scale-up for temporal workers, so scale-up ramps instead of jumping to max
+
 ## 9.12.3
 * Bumped `insights-api` to `18.3.65`
 

@@ -1133,15 +1133,15 @@ temporalDeploymentDefaults:
       horizontalPodAutoscalerConfig:
         behavior:
           scaleUp:
-            stabilizationWindowSeconds: 0
+            stabilizationWindowSeconds: 120
             policies:
               - type: Percent
-                value: 100
+                value: 50
                 periodSeconds: 60
               - type: Pods
-                value: 4
+                value: 1
                 periodSeconds: 60
-            selectPolicy: Max
+            selectPolicy: Min
           scaleDown:
             stabilizationWindowSeconds: 300
             policies:
@@ -1315,6 +1315,8 @@ temporalDeployments:
       metrics: []
     keda:
       enabled: false
+      min: 2
+      max: 6
     pdb:
       enabled: false
     resources:
