@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.12.3
+* Bumped `insights-api` to `18.3.65`
+
 ## 9.12.2
 * Bump dependencies
 
