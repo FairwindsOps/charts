@@ -1117,7 +1117,7 @@ network-observability:
       repository: quay.io/fairwinds/network-flow
       tag: "0.0.8"
       pullPolicy: Always
-    gadgetVersion: "v0.53.2"
+    gadgetVersion: "v0.54.0"
     collectorAddr: ""
     batchSize: 5000
     maxPendingEvents: 50000
