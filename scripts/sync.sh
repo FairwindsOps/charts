@@ -98,6 +98,24 @@ sync_repo() {
 		if [[ -f $dir ]]; then
 			continue
 		fi
+
+		if [[ ! -f "$dir/Chart.yaml" ]]; then
+			echo "Skipping $dir (not a chart directory)"
+			continue
+		fi
+
+		local chart_name chart_version
+		chart_name="$(yq eval '.name' "$dir/Chart.yaml")"
+		chart_version="$(yq eval '.version' "$dir/Chart.yaml")"
+
+		# Avoid republishing the same version: re-packaging changes digests in index.yaml and makes Artifact Hub emit duplicate release notifications.
+		if yq eval -e ".entries[\"${chart_name}\"][] | select(.version == \"${chart_version}\")" \
+			"$index_dir/index.yaml" >/dev/null 2>&1; then
+			echo "Skipping ${chart_name}-${chart_version} (already in index)"
+			continue
+		fi
+
+		echo "Packaging ${chart_name}-${chart_version}"
 		if helm dependency build "$dir"; then
 			helm package --destination "$sync_dir" "$dir"
 		else
