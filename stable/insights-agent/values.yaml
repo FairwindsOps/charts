@@ -1147,7 +1147,7 @@ network-observability:
     containerSecurityContext:
       readOnlyRootFilesystem: true
       seLinuxOptions:
-        type: spc_t
+        type: super_t
       capabilities:
         drop:
           - ALL
