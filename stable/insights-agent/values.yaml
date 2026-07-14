@@ -1115,9 +1115,9 @@ network-observability:
   agent:
     image:
       repository: quay.io/fairwinds/network-flow
-      tag: "0.0.8"
+      tag: "0.0"
       pullPolicy: Always
-    gadgetVersion: "v0.54.0"
+    gadgetVersion: ""
     collectorAddr: ""
     batchSize: 5000
     maxPendingEvents: 50000
@@ -1164,7 +1164,7 @@ network-observability:
   aggregator:
     image:
       repository: quay.io/fairwinds/network-flow-aggregator
-      tag: "0.0.8"
+      tag: "0.0"
       pullPolicy: Always
     replicas: 1
     grpcPort: 4317
