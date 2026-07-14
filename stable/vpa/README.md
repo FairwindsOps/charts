@@ -190,6 +190,7 @@ For more information, see [VPA docs](https://github.com/kubernetes/autoscaler/bl
 | serviceAccount.automountServiceAccountToken | bool | `true` | Automount API credentials for the Service Account |
 | recommender.enabled | bool | `true` | If true, the vpa recommender component will be installed. |
 | recommender.envFromSecret | string | `""` | Specify a secret to get environment variables from |
+| recommender.extraEnv | list | `[]` | Extra environment variables to add to the recommender container |
 | recommender.annotations | object | `{}` | Annotations to add to the recommender deployment |
 | recommender.extraArgs | object | `{"pod-recommendation-min-cpu-millicores":15,"pod-recommendation-min-memory-mb":100,"v":"4"}` | A set of key-value flags to be passed to the recommender |
 | recommender.replicaCount | int | `1` |  |
@@ -211,6 +212,7 @@ For more information, see [VPA docs](https://github.com/kubernetes/autoscaler/bl
 | recommender.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the recommender |
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.annotations | object | `{}` | Annotations to add to the updater deployment |
+| updater.extraEnv | list | `[]` | Extra environment variables to add to the updater container |
 | updater.extraArgs | object | `{}` | A key-value map of flags to pass to the updater. Since VPA 1.6.0: set "in-place-skip-disruption-budget": "true" to skip PDB checks for in-place updates when all containers have NotRequired resize policy. |
 | updater.replicaCount | int | `1` |  |
 | updater.revisionHistoryLimit | int | `10` | The number of old replicasets to retain, default is 10, 0 will garbage-collect old replicasets |
@@ -231,6 +233,7 @@ For more information, see [VPA docs](https://github.com/kubernetes/autoscaler/bl
 | updater.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the updater |
 | admissionController.enabled | bool | `true` | If true, will install the admission-controller component of vpa |
 | admissionController.annotations | object | `{}` | Annotations to add to the admission controller deployment |
+| admissionController.extraEnv | list | `[]` | Extra environment variables to add to the admission controller container |
 | admissionController.extraArgs | object | `{}` | A key-value map of flags to pass to the admissionController |
 | admissionController.generateCertificate | bool | `true` | If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook |
 | admissionController.secretName | string | `"{{ include \"vpa.fullname\" . }}-tls-secret"` | Name for the TLS secret created for the webhook. Default {{ .Release.Name }}-tls-secret |
