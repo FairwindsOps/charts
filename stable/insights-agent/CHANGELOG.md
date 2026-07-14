@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.24.0
+* Bumped `gadget` to `v0.54.0`
+
 ## 5.23.2
 * Change selinux for network observability to super_t
 
