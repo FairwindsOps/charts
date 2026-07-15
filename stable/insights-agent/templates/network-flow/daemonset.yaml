@@ -78,12 +78,14 @@ spec:
               value: {{ $agent.logLevel | quote }}
             - name: IG_ADDR
               value: tcp://127.0.0.1:8080
+            {{- if $gadgetVersion }}
             - name: TRACE_TCP_IMAGE
               value: ghcr.io/inspektor-gadget/gadget/trace_tcp:{{ $gadgetVersion }}
             - name: TOP_TCP_IMAGE
               value: ghcr.io/inspektor-gadget/gadget/top_tcp:{{ $gadgetVersion }}
             - name: TRACE_DNS_IMAGE
               value: ghcr.io/inspektor-gadget/gadget/trace_dns:{{ $gadgetVersion }}
+            {{- end }}
             - name: GADGET_POD_UID
               valueFrom:
                 fieldRef:
