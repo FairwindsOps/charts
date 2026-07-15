@@ -1120,7 +1120,7 @@ network-observability:
     gadgetVersion: ""
     collectorAddr: ""
     batchSize: 5000
-    maxPendingEvents: 50000
+    maxPendingEvents: 25000
     flushInterval: "5s"
     logLevel: info
     ig:
@@ -1129,7 +1129,7 @@ network-observability:
       hookMode: auto
     resources:
       requests:
-        cpu: 100m
+        cpu: 50m
         memory: 128Mi
       limits:
         cpu: 500m
@@ -1175,11 +1175,11 @@ network-observability:
     logLevel: info
     resources:
       requests:
-        cpu: 50m
-        memory: 64Mi
+        cpu: 100m
+        memory: 256Mi
       limits:
         cpu: 500m
-        memory: 256Mi
+        memory: 768Mi
     service:
       type: ClusterIP
       annotations: {}

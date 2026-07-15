@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.24.2
+* Tune network-observability defaults to reduce OOM risk.
+
 ## 5.24.1
 * Bump network-flow agent and aggregator to use `0.0`, remove gadget version override
 
