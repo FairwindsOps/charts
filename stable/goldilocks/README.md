@@ -82,6 +82,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.rbac.extraClusterRoleBindings | list | `[]` | A list of ClusterRoles for which ClusterRoleBindings will be created for the ServiceAccount, if enabled |
 | controller.serviceAccount.create | bool | `true` | If true, a service account will be created for the controller. If set to false, you must set `controller.serviceAccount.name` |
 | controller.serviceAccount.name | string | `nil` | The name of an existing service account to use for the controller. Combined with `controller.serviceAccount.create` |
+| controller.extraEnv | list | `[]` | Extra environment variables to add to the controller container |
 | controller.flags | object | `{}` | A map of additional flags to pass to the controller. For monitoring all namespaces out of the box, add the following flag "on-by-default: true" |
 | controller.logVerbosity | string | `"2"` | Controller log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | controller.nodeSelector | object | `{}` | Node selector for the controller pod |
@@ -103,6 +104,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.service.type | string | `"ClusterIP"` | The type of the dashboard service |
 | dashboard.service.port | int | `80` | The port to run the dashboard service on |
 | dashboard.service.annotations | object | `{}` | Extra annotations for the dashboard service |
+| dashboard.extraEnv | list | `[]` | Extra environment variables to add to the dashboard container |
 | dashboard.flags | object | `{}` | A map of additional flags to pass to the dashboard. For monitoring all namespaces out of the box, add the following flag "on-by-default: true". |
 | dashboard.logVerbosity | string | `"2"` | Dashboard log verbosity. Can be set from 1-10 with 10 being extremely verbose |
 | dashboard.excludeContainers | string | `"linkerd-proxy,istio-proxy"` | Container names to exclude from displaying in the Goldilocks dashboard |
