@@ -218,10 +218,10 @@ Parameter | Description | Default
 `network-observability.agent.image.tag` | Tag for the network-flow agent image | `0.0`
 `network-observability.agent.gadgetVersion` | Inspektor Gadget version used for gadgets images. When empty, uses plugins default | `""`
 `network-observability.agent.collectorAddr` | Aggregator gRPC address; defaults to the in-cluster aggregator Service | `""`
-`network-observability.agent.batchSize` | Number of flow events to batch before flushing to the aggregator | `5000`
-`network-observability.agent.maxPendingEvents` | Maximum pending events before drop-oldest retention | `50000`
-`network-observability.agent.flushInterval` | Interval to flush batched events | `5s`
-`network-observability.agent.logLevel` | Log level for the agent | `info`
+`network-observability.agent.batchSize` | Number of flow events to batch before flushing to the aggregator; empty uses binary default (`5000`) | `""`
+`network-observability.agent.maxPendingEvents` | Maximum pending events before drop-oldest retention (chart default is lower than binary `50000` to reduce OOM risk) | `25000`
+`network-observability.agent.flushInterval` | Interval to flush batched events; empty uses binary default (`5s`) | `""`
+`network-observability.agent.logLevel` | Log level for the agent; empty uses binary default (`info`) | `""`
 `network-observability.agent.ig.eventsBufferLength` | Inspektor Gadget events buffer length | `32768`
 `network-observability.agent.ig.daemonLogLevel` | Inspektor Gadget daemon log level | `info`
 `network-observability.agent.ig.hookMode` | Inspektor Gadget kube manager hook mode | `auto`
@@ -234,9 +234,12 @@ Parameter | Description | Default
 `network-observability.aggregator.replicas` | Aggregator Deployment replicas (ignored when autoscaling is enabled) | `1` |
 `network-observability.aggregator.image.repository` | Repository for the aggregator image | `quay.io/fairwinds/network-flow-aggregator` |
 `network-observability.aggregator.image.tag` | Tag for the aggregator image | `0.0` |
-`network-observability.aggregator.maxEvents` | Maximum in-memory flow events retained by the aggregator | `100000` |
-`network-observability.aggregator.maxAge` | Maximum age of retained flow events | `15m` |
+`network-observability.aggregator.maxEvents` | Maximum in-memory flow events retained by the aggregator; empty uses binary default (`100000`) | `""` |
+`network-observability.aggregator.maxAge` | Maximum age of retained flow events; empty uses binary default (`15m`) | `""` |
 `network-observability.aggregator.disableKube` | Skip Kubernetes enrichment in the aggregator | `false` |
+`network-observability.aggregator.logLevel` | Aggregator log level; empty uses binary default (`info`) | `""` |
+`network-observability.aggregator.upstream.batchSize` | Insights upstream send batch size; empty uses binary default (`10000`) | `""` |
+`network-observability.aggregator.upstream.flushInterval` | Insights upstream flush interval; empty uses binary default (`10s`) | `""` |
 `network-observability.aggregator.resources` | CPU/memory requests and limits for the aggregator | See values.yaml |
 `network-observability.aggregator.upstream.enabled` | Enable forwarding enriched events to the Insights API | `true` |
 `network-observability.aggregator.upstream.grpcAddr` | Insights network-flow gRPC address (`host:port`); empty disables upstream | `"grpc.insights.fairwinds.com:443"` |
