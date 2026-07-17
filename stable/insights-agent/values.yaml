@@ -1120,7 +1120,7 @@ network-observability:
     gadgetVersion: ""
     collectorAddr: ""
     batchSize: ""
-    maxPendingEvents: ""
+    maxPendingEvents: 25000"
     flushInterval: ""
     logLevel: ""
     ig:
