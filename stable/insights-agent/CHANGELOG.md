@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.25.0
+* Bumped `prometheus` to `29.16.*`
+
 ## 5.24.2
 * Tune network-observability defaults to reduce OOM risk.
 
