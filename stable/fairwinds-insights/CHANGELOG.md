@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.13.0
+* Bumped `temporal` to `1.6.0`
+
 ## 9.12.7
 * Bumped `insights-api` to `18.3.68`
 
