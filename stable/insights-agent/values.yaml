@@ -1119,10 +1119,10 @@ network-observability:
       pullPolicy: Always
     gadgetVersion: ""
     collectorAddr: ""
-    batchSize: 5000
+    batchSize: ""
     maxPendingEvents: 25000
-    flushInterval: "5s"
-    logLevel: info
+    flushInterval: ""
+    logLevel: ""
     ig:
       eventsBufferLength: 32768
       daemonLogLevel: info
@@ -1169,10 +1169,10 @@ network-observability:
     replicas: 1
     grpcPort: 4317
     httpPort: 8080
-    maxEvents: 100000
-    maxAge: "15m"
+    maxEvents: ""
+    maxAge: ""
     disableKube: false
-    logLevel: info
+    logLevel: ""
     resources:
       requests:
         cpu: 100m
@@ -1196,8 +1196,8 @@ network-observability:
     upstream:
       enabled: true
       grpcAddr: "grpc.insights.fairwinds.com:443"
-      batchSize: 10000
-      flushInterval: "10s"
+      batchSize: ""
+      flushInterval: ""
     autoscaling:
       enabled: false
       minReplicas: 2

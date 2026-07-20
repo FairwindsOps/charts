@@ -68,16 +68,22 @@ spec:
                   fieldPath: spec.nodeName
             - name: COLLECTOR_ADDR
               value: {{ $collectorAddr | quote }}
+            {{- if $agent.maxPendingEvents }}
             - name: MAX_PENDING_EVENTS
               value: {{ $agent.maxPendingEvents | quote }}
+            {{- end }}
+            {{- if $agent.batchSize }}
             - name: BATCH_SIZE
               value: {{ $agent.batchSize | quote }}
+            {{- end }}
+            {{- if $agent.flushInterval }}
             - name: FLUSH_INTERVAL
               value: {{ $agent.flushInterval | quote }}
+            {{- end }}
+            {{- if $agent.logLevel }}
             - name: LOG_LEVEL
               value: {{ $agent.logLevel | quote }}
-            - name: IG_ADDR
-              value: tcp://127.0.0.1:8080
+            {{- end }}
             {{- if $gadgetVersion }}
             - name: TRACE_TCP_IMAGE
               value: ghcr.io/inspektor-gadget/gadget/trace_tcp:{{ $gadgetVersion }}
