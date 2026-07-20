@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.26.0
+* Bumped `prometheus` to `29.17.*`
+
 ## 5.25.0
 * Bumped `prometheus` to `29.16.*`
 
