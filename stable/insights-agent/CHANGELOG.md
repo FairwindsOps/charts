@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.25.0
+* Bumped `prometheus` to `29.16.*`
+
 ## 5.24.3
 * Configure network-flow agent and aggregator via env vars; omit values that match binary defaults
 
