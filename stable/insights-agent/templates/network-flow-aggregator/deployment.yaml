@@ -59,28 +59,32 @@ spec:
           image: "{{ $agg.image.repository }}:{{ $agg.image.tag }}"
           imagePullPolicy: {{ $agg.image.pullPolicy }}
           command: ["network-flow-aggregator"]
-          args:
-            - -grpc-addr=:{{ $agg.grpcPort }}
-            - -http-addr=:{{ $agg.httpPort }}
-            - -max-events={{ $agg.maxEvents }}
-            - -max-age={{ $agg.maxAge }}
-            - -log-level={{ $agg.logLevel }}
-            {{- if $agg.disableKube }}
-            - -disable-kube
-            {{- end }}
-            {{- if $grpcAddr }}
-            - -insights-grpc-addr={{ $grpcAddr }}
-            - -organization={{ .Values.insights.organization }}
-            - -cluster={{ .Values.insights.cluster }}
-            - -upstream-batch-size={{ $upstream.batchSize }}
-            - -upstream-flush-interval={{ $upstream.flushInterval }}
-            {{- end }}
           ports:
             - name: grpc
               containerPort: {{ $agg.grpcPort }}
             - name: http
               containerPort: {{ $agg.httpPort }}
           env:
+            - name: GRPC_ADDR
+              value: ":{{ $agg.grpcPort }}"
+            - name: HTTP_ADDR
+              value: ":{{ $agg.httpPort }}"
+            {{- if $agg.maxEvents }}
+            - name: MAX_EVENTS
+              value: {{ $agg.maxEvents | quote }}
+            {{- end }}
+            {{- if $agg.maxAge }}
+            - name: MAX_AGE
+              value: {{ $agg.maxAge | quote }}
+            {{- end }}
+            {{- if $agg.logLevel }}
+            - name: LOG_LEVEL
+              value: {{ $agg.logLevel | quote }}
+            {{- end }}
+            {{- if $agg.disableKube }}
+            - name: DISABLE_KUBE
+              value: "true"
+            {{- end }}
             {{- if $grpcAddr }}
             - name: INSIGHTS_GRPC_ADDR
               value: {{ $grpcAddr | quote }}
@@ -97,10 +101,14 @@ spec:
                   name: {{ include "insights-agent.fullname" . }}-token
                   {{- end }}
                   key: token
+            {{- if $upstream.batchSize }}
             - name: UPSTREAM_BATCH_SIZE
               value: {{ $upstream.batchSize | quote }}
+            {{- end }}
+            {{- if $upstream.flushInterval }}
             - name: UPSTREAM_FLUSH_INTERVAL
               value: {{ $upstream.flushInterval | quote }}
+            {{- end }}
             {{- end }}
             {{ include "proxy-env-spec" . | indent 12 | trim }}
             {{- range $key, $value := $agg.env }}
