@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.27.0
+* Bumped `workloads` to `2.14`
+
 ## 5.26.0
 * Bumped `prometheus` to `29.17.*`
 
