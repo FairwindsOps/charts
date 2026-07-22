@@ -9,7 +9,7 @@ metadata:
     component: network-flow-aggregator
 rules:
   - apiGroups: [""]
-    resources: ["pods", "services"]
+    resources: ["nodes", "pods", "services"]
     verbs: ["get", "list", "watch"]
   - apiGroups: ["discovery.k8s.io"]
     resources: ["endpointslices"]

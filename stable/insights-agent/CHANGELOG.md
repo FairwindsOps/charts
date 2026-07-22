@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.27.1
+* Grant network-flow-aggregator ClusterRole `get`/`list`/`watch` on `nodes`
+
 ## 5.27.0
 * Bumped `workloads` to `2.14`
 
