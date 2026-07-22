@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.27.2
+* Bumped `dcgm-exporter` to `4.8.3`
+
 ## 5.27.1
 * Grant network-flow-aggregator ClusterRole `get`/`list`/`watch` on `nodes`
 
