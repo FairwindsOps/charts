@@ -20,7 +20,8 @@ rules:
     verbs:
       - 'get'
       - 'list'
-  # Optional Karpenter inventory (workloads 2.15+). Soft-fails empty without these CRDs/RBAC.
+  # Optional Karpenter inventory (workloads 2.15+). Without these CRDs the plugin
+  # omits top-level Karpenter; without RBAC it emits Karpenter with empty nested arrays.
   - apiGroups:
       - 'karpenter.sh'
     resources:
