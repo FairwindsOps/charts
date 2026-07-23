@@ -81,8 +81,8 @@ Parameter | Description | Default
 `cronjobs.disableServiceMesh` | Adds annotations to all CronJobs to not inject Linkerd or Istio | true
 `cronjobs.backoffLimit` | Backoff limit to use for each report CronJob | 1
 `cronjobs.imagePullSecret` | A pull secret for cronjob images
-`cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 2
-`cronjobs.successfulJobsHistoryLimit` | Number of successful jobs to keep in history for each report | 2
+`cronjobs.failedJobsHistoryLimit` | Number of failed jobs to keep in history for each report | 1
+`cronjobs.successfulJobsHistoryLimit` | Number of successful jobs to keep in history for each report | 1
 `cronjobs.nodeSelector` | Node selector to use for cronjobs | null
 `cronjobs.tolerations` | Tolerations to use for cronjobs | null
 `cronjobs.runJobsImmediately` | Run each of the reports immediately upon install of the Insights Agent | true

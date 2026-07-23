@@ -46,8 +46,8 @@ cronjobs:
   apiVersion: ""
   disableServiceMesh: true
   backoffLimit: 1
-  failedJobsHistoryLimit: 2
-  successfulJobsHistoryLimit: 2
+  failedJobsHistoryLimit: 1
+  successfulJobsHistoryLimit: 1
   nodeSelector: null
   runJobsImmediately: true
   # tolerations:
