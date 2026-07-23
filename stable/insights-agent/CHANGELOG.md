@@ -1,5 +1,9 @@
 # Changelog
 
+## 5.28.0
+* Bumped `workloads` to `2.15`
+* Grant workloads ClusterRole `get`/`list` on Karpenter `nodepools`/`nodeclaims` (`karpenter.sh`) and `ec2nodeclasses` (`karpenter.k8s.aws`) for inventory
+
 ## 5.27.2
 * Bumped `dcgm-exporter` to `4.8.3`
 

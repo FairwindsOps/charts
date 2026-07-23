@@ -20,6 +20,22 @@ rules:
     verbs:
       - 'get'
       - 'list'
+  # Optional Karpenter inventory (workloads 2.15+). Soft-fails empty without these CRDs/RBAC.
+  - apiGroups:
+      - 'karpenter.sh'
+    resources:
+      - 'nodepools'
+      - 'nodeclaims'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'karpenter.k8s.aws'
+    resources:
+      - 'ec2nodeclasses'
+    verbs:
+      - 'get'
+      - 'list'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
