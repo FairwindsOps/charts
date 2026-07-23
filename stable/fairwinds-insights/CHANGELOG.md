@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.13.5
+* Set CronJob job history limits to 1 successful and 1 failed (overridable per cronjob)
+
 ## 9.13.4
 * Bumped `insights-api` to `18.3.73`
 
