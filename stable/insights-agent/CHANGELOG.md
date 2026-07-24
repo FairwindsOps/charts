@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.28.1
+* Reduce CronJob job history limits to 1 successful and 1 failed
+
 ## 5.28.0
 * Bumped `workloads` to `2.15`
 * Grant workloads ClusterRole `get`/`list` on Karpenter `nodepools`/`nodeclaims` (`karpenter.sh`) and `ec2nodeclasses` (`karpenter.k8s.aws`) for inventory
