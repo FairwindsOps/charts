@@ -78,6 +78,10 @@ spec:
               name: {{ .Values.recommender.envFromSecret }}
           {{- end }}
           {{- end }}
+          {{- with .Values.recommender.extraEnv }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           resources:
             {{- toYaml .Values.recommender.resources | nindent 12 }}
       {{- with .Values.recommender.nodeSelector }}
