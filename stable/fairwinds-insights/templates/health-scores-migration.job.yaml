@@ -10,6 +10,8 @@ spec:
   schedule: "0 0 1 1 0"
   concurrencyPolicy: Forbid
   suspend: true
+  successfulJobsHistoryLimit: {{ dig "successfulJobsHistoryLimit" $.Values.cronjobOptions.successfulJobsHistoryLimit $.Values.migrateHealthScoreJob }}
+  failedJobsHistoryLimit: {{ dig "failedJobsHistoryLimit" $.Values.cronjobOptions.failedJobsHistoryLimit $.Values.migrateHealthScoreJob }}
   jobTemplate:
     spec:
       template:

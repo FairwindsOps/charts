@@ -10,6 +10,8 @@ metadata:
 spec:
   schedule: "{{ $options.schedule }}"
   concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: {{ dig "successfulJobsHistoryLimit" $.Values.cronjobOptions.successfulJobsHistoryLimit $options }}
+  failedJobsHistoryLimit: {{ dig "failedJobsHistoryLimit" $.Values.cronjobOptions.failedJobsHistoryLimit $options }}
   jobTemplate:
     spec:
       template:

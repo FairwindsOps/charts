@@ -98,6 +98,10 @@ cronjobOptions:
       value: "1"
     - name: POSTGRES_MAX_OPEN_CONNS
       value: "1"
+  # -- Default successful jobs history limit (overridden per cronjob by cronjobs.<name>.successfulJobsHistoryLimit)
+  successfulJobsHistoryLimit: 1
+  # -- Default failed jobs history limit (overridden per cronjob by cronjobs.<name>.failedJobsHistoryLimit)
+  failedJobsHistoryLimit: 1
 
 cronjobs:
   # -- Options for the action-items filters refresher job.
