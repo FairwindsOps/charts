@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.13.7
+* Bumped `swaggerapi/swagger-ui` to `v5.32.9`
+
 ## 9.13.6
 * Bumped `insights-api` to `18.3.74`
 
