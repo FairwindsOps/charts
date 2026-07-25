@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.29.0
+* Bumped `prometheus` to `29.18.*`
+
 ## 5.28.1
 * Reduce CronJob job history limits to 1 successful and 1 failed
 
