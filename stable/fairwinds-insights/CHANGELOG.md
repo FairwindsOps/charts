@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.13.8
+* Bumped alpine/kubectl to `1.36.2`
+
 ## 9.13.7
 * Bumped `swaggerapi/swagger-ui` to `v5.32.9`
 
