@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.13.11
+* Update application version to 18.4. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 9.13.10
 * Bumped `insights-api` to `18.3.77`
 
