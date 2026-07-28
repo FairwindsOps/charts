@@ -37,6 +37,16 @@ rules:
     verbs:
       - 'get'
       - 'list'
+  # Optional Gateway API inventory. Without these CRDs the plugin
+  # omits Gateways/HTTPRoutes; without RBAC it continues with empty arrays.
+  - apiGroups:
+      - 'gateway.networking.k8s.io'
+    resources:
+      - 'gateways'
+      - 'httproutes'
+    verbs:
+      - 'get'
+      - 'list'
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
