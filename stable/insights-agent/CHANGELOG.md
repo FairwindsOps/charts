@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.30.2
+* Bumped `device-metrics-exporter-charts` to `v1.5.1`
+
 ## 5.30.1
 * Grant workloads ClusterRole `get`/`list` on Gateway API `gateways`/`httproutes` (`gateway.networking.k8s.io`) for inventory
 
