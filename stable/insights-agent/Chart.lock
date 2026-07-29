@@ -13,7 +13,7 @@ dependencies:
   version: 9.1.0
 - name: vpa
   repository: https://charts.fairwinds.com/stable
-  version: 4.12.3
+  version: 4.12.4
 - name: trivy
   repository: https://aquasecurity.github.io/helm-charts/
   version: 0.24.0
@@ -22,6 +22,6 @@ dependencies:
   version: 4.8.3
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
-  version: v1.5.0
-digest: sha256:1384116c6e00f48fd8bac520d20e0b303d8fd3c2ec3a2b453647f96d5c140007
-generated: "2026-07-25T20:36:44.011213769Z"
+  version: v1.5.1
+digest: sha256:1203b6bb659cbc96c505574f75d54aff4f27e4601433ea53459652e6afd5c2e8
+generated: "2026-07-29T00:51:49.113232693Z"
