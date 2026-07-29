@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.14.3
+* Bump insights-agent version to `5.30.0`
+
 ## 9.14.2
 * Bumped `insights-api` to `18.4.1`
 
