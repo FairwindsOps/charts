@@ -8,6 +8,7 @@
 * Bumped `cloud-costs` to `1.1`
 * Bumped `kyverno` to `0.6`
 * Bumped `image-trust` to floating tag `0.1`
+* Bumped `insights-admission` chart to `0.13.0`
 
 ## 5.31.0
 * Bumped `prometheus` to `29.19.*`
