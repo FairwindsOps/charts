@@ -1,8 +1,5 @@
 # Changelog
 
-## 5.32.0
-* Bumped `insights-admission` image tag to `2.3`
-
 ## 5.31.0
 * Bumped `prometheus` to `29.19.*`
 
