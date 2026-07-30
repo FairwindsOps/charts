@@ -205,7 +205,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.postMigrate | bool | `false` | Set to `true` to run migrations after the install, upgrade |
 | postgresql.image.registry | string | `"quay.io"` |  |
 | postgresql.image.repository | string | `"fairwinds/postgres-partman"` |  |
-| postgresql.image.tag | string | `"17.0"` |  |
+| postgresql.image.tag | string | `"18.0"` |  |
 | postgresql.ephemeral | bool | `true` | Use the ephemeral postgresql cluster by default |
 | postgresql.enablePDB | bool | `true` | Let CloudNativePG manage PodDisruptionBudgets for the PostgreSQL cluster |
 | postgresql.sslMode | string | `"require"` | SSL mode for connecting to the database |
