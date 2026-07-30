@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.15.0
+* Bumped `fairwinds/postgres-partman` to `18.0`
+
 ## 9.14.5
 * Bumped `insights-api` to `18.4.3`
 
