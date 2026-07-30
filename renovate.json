@@ -18,6 +18,17 @@
       "datasourceTemplate": "docker",
       "depNameTemplate": "us-docker.pkg.dev/fairwinds-ops/insights/insights-api",
       "matchStrings": ["appVersion:\\s[\"']?(?<currentValue>[\\d\\.]+)[\"']?"]
+    },
+    {
+      "customType": "regex",
+      "description": "Update fairwinds-insights agentChartTargetVersion from insights-agent chart",
+      "managerFilePatterns": ["stable/fairwinds-insights/values.yaml"],
+      "datasourceTemplate": "helm",
+      "depNameTemplate": "insights-agent",
+      "registryUrlTemplate": "https://charts.fairwinds.com/stable",
+      "matchStrings": [
+        "agentChartTargetVersion:\\s[\"']?(?<currentValue>[\\d\\.]+)[\"']?"
+      ]
     }
   ],
   "packageRules": [
@@ -30,6 +41,13 @@
         "https://charts.fairwinds.com/stable/"
       ],
       "registryUrls": ["https://charts.fairwinds.com/stable"]
+    },
+    {
+      "description": "insights-agent target: only major/minor (e.g. 5.30.x → 5.31.x), skip patch-only bumps",
+      "matchManagers": ["custom.regex"],
+      "matchDepNames": ["insights-agent"],
+      "matchUpdateTypes": ["patch"],
+      "enabled": false
     },
     {
       "matchManagers": ["helmv3"],
@@ -76,7 +94,7 @@
     {
       "description": "fairwinds-insights appVersion tracks insights-api image tags immediately",
       "matchManagers": ["custom.regex"],
-      "matchFileNames": ["stable/fairwinds-insights/**"],
+      "matchDepNames": ["us-docker.pkg.dev/fairwinds-ops/insights/insights-api"],
       "minimumReleaseAge": null
     }
   ]
