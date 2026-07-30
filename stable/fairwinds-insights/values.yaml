@@ -679,7 +679,7 @@ postgresql:
   image:
     registry: quay.io
     repository: fairwinds/postgres-partman
-    tag: "17.0"
+    tag: "18.0"
   # -- Use the ephemeral postgresql cluster by default
   ephemeral: true
   # -- Let CloudNativePG manage PodDisruptionBudgets for the PostgreSQL cluster
