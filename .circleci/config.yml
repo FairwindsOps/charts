@@ -68,14 +68,14 @@ executors:
       - image: quay.io/reactiveops/ci-images:v15-cimg-24.04
 
 jobs:
-  # On Renovate PRs, update CHANGELOG.md for charts enforced by check-helm-docs and push to the PR branch.
+  # On Renovate PRs, update CHANGELOG.md and regenerate helm-docs READMEs, then push to the PR branch.
   bump_renovate_pr_changelog:
     executor: ci-images
     steps:
       - checkout
       - set_vault
       - run:
-          name: Bump changelog for Renovate PR
+          name: Bump changelog and helm-docs for Renovate PR
           command: ./.circleci/scripts/bump-renovate-pr.sh
 
   check-helm-docs:

@@ -1,11 +1,15 @@
 #! /usr/bin/env bash
-# Update CHANGELOG.md on Renovate dependency PRs (CircleCI).
+# Update CHANGELOG.md and helm-docs READMEs on Renovate dependency PRs (CircleCI).
 # Runs only if the latest commit is by renovate[bot].
 # Requires GITHUB_TOKEN (repo scope) in project env or a context (e.g. org-global).
 #
 # Same pattern as insights-plugins: CI derives changelog bullets from
 # scripts/helm-diff-changelog.py. The PR title is only a fallback message.
+# Also regenerates chart READMEs with the same helm-docs flags as check-helm-docs
+# so Renovate PRs do not fail that job.
 set -euo pipefail
+
+HELM_DOCS_VERSION=1.11.0
 
 if ! command -v python3 >/dev/null 2>&1; then
   sudo apt-get update -qq
@@ -60,16 +64,38 @@ fi
 
 ./scripts/bump-changed-renovate.sh "$MSG"
 
+if ! command -v helm-docs >/dev/null 2>&1; then
+  echo "Installing helm-docs v${HELM_DOCS_VERSION}"
+  curl -fsSL -o /tmp/helm-docs.tar.gz \
+    "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz"
+  tar -zxvf /tmp/helm-docs.tar.gz -C /tmp helm-docs
+  sudo mv /tmp/helm-docs /usr/local/bin/helm-docs
+  sudo chmod +x /usr/local/bin/helm-docs
+fi
+
+# Must match check-helm-docs; default alphanumeric sort would reorder values tables and fail CI.
+helm-docs --sort-values-order=file
+
 if git diff --quiet; then
-  echo "No changelog updates needed."
+  echo "No changelog or helm-docs updates needed."
   exit 0
 fi
 
 git config --global user.name "Charts CI"
 git config --global user.email insights@fairwinds.com
 
-git add stable/insights-agent/CHANGELOG.md stable/fairwinds-insights/CHANGELOG.md stable/insights-admission/CHANGELOG.md
-git commit -m "chore: bump CHANGELOG.md for changed charts"
+# Stage changelog and any README.md updates from helm-docs.
+mapfile -t changed < <(git diff --name-only -- \
+  stable/insights-agent/CHANGELOG.md \
+  stable/fairwinds-insights/CHANGELOG.md \
+  stable/insights-admission/CHANGELOG.md \
+  $(git diff --name-only | grep 'README\.md$' || true))
+if [[ ${#changed[@]} -eq 0 ]]; then
+  echo "Diff present but no changelog/README files to commit; skipping."
+  exit 0
+fi
+git add -- "${changed[@]}"
+git commit -m "chore: bump CHANGELOG.md and helm-docs for Renovate"
 
 git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
 git push origin "HEAD:${CIRCLE_BRANCH}"
