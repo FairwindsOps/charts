@@ -92,6 +92,16 @@
       "minimumReleaseAge": "7 days"
     },
     {
+      "description": "Fairwinds-owned images skip release-age (floating X.Y tags are retagged on every patch)",
+      "matchManagers": ["helm-values"],
+      "matchDatasources": ["docker"],
+      "matchPackageNames": [
+        "quay.io/fairwinds/**",
+        "us-docker.pkg.dev/fairwinds-ops/**"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
       "description": "fairwinds-insights appVersion tracks insights-api image tags immediately",
       "matchManagers": ["custom.regex"],
       "matchDepNames": ["us-docker.pkg.dev/fairwinds-ops/insights/insights-api"],
