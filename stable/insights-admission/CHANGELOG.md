@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.13.0
+* Bumped admission controller image to `2.3` (insights-plugins admission `2.3.19`)
+
 ## 1.12.3
 * Bump dependencies
 

@@ -1,5 +1,15 @@
 # Changelog
 
+## 5.32.0
+* Bumped `polaris` to `v10.2.1` and switched image repository to `us-docker.pkg.dev/fairwinds-ops/oss/polaris`
+* Bumped `nova` to `v3.12.0` and switched image repository to `us-docker.pkg.dev/fairwinds-ops/oss/nova`
+* Bumped `pluto` to `v5.24.1`
+* Bumped `goldilocks` reporter image to `v4.15.1`
+* Bumped `cloud-costs` to `1.1`
+* Bumped `kyverno` to `0.6`
+* Bumped `image-trust` to floating tag `0.1`
+* Bumped `insights-admission` to `1.13.*`
+
 ## 5.31.0
 * Bumped `prometheus` to `29.19.*`
 
