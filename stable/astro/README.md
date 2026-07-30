@@ -35,7 +35,7 @@ Kubernetes 1.11+, Helm 2.13+
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.repository | string | `"quay.io/fairwinds/astro"` | Docker image repo |
-| image.tag | string | `"v1.5.3"` | Docker image tag |
+| image.tag | string | `"v1.6.0"` | Docker image tag |
 | image.pullPolicy | string | `"IfNotPresent"` | Docker image pull policy |
 | resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | The resources block for the deployment. |
 | nodeSelector | object | `{}` | Deployment ndoeSelector |
