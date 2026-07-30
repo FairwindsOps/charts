@@ -656,8 +656,6 @@ admission:
 
 insights-admission:
   nameOverride: insights-agent
-  image:
-    tag: "2.3"
   insights:
     secret:
       create: false
