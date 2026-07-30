@@ -66,11 +66,13 @@ fi
 
 if ! command -v helm-docs >/dev/null 2>&1; then
   echo "Installing helm-docs v${HELM_DOCS_VERSION}"
-  curl -fsSL -o /tmp/helm-docs.tar.gz \
-    "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz"
-  tar -zxvf /tmp/helm-docs.tar.gz -C /tmp helm-docs
-  sudo mv /tmp/helm-docs /usr/local/bin/helm-docs
-  sudo chmod +x /usr/local/bin/helm-docs
+  (
+    cd /tmp
+    curl -fsSLO "https://github.com/norwoodj/helm-docs/releases/download/v${HELM_DOCS_VERSION}/helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz"
+    tar -zxvf "helm-docs_${HELM_DOCS_VERSION}_Linux_x86_64.tar.gz" helm-docs
+    mv helm-docs /usr/local/bin/helm-docs
+    chmod +x /usr/local/bin/helm-docs
+  )
 fi
 
 # Must match check-helm-docs; default alphanumeric sort would reorder values tables and fail CI.
@@ -84,17 +86,20 @@ fi
 git config --global user.name "Charts CI"
 git config --global user.email insights@fairwinds.com
 
-# Stage changelog and any README.md updates from helm-docs.
-mapfile -t changed < <(git diff --name-only -- \
+git add \
   stable/insights-agent/CHANGELOG.md \
   stable/fairwinds-insights/CHANGELOG.md \
-  stable/insights-admission/CHANGELOG.md \
-  $(git diff --name-only | grep 'README\.md$' || true))
-if [[ ${#changed[@]} -eq 0 ]]; then
-  echo "Diff present but no changelog/README files to commit; skipping."
+  stable/insights-admission/CHANGELOG.md
+while IFS= read -r f; do
+  [[ -n "$f" ]] || continue
+  git add -- "$f"
+done < <(git diff --name-only | grep 'README\.md$' || true)
+
+if git diff --cached --quiet; then
+  echo "Working tree dirty but nothing to stage for Renovate bump; skipping commit."
   exit 0
 fi
-git add -- "${changed[@]}"
+
 git commit -m "chore: bump CHANGELOG.md and helm-docs for Renovate"
 
 git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}.git"
