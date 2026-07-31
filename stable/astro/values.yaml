@@ -1,8 +1,8 @@
 image:
   # -- Docker image repo
-  repository: quay.io/fairwinds/astro
+  repository: us-docker.pkg.dev/fairwinds-ops/oss/astro
   # -- Docker image tag
-  tag: "v1.5.3"
+  tag: "v1.6.0"
   # -- Docker image pull policy
   pullPolicy: IfNotPresent
 # -- The resources block for the deployment.
