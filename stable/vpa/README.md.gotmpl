@@ -104,7 +104,7 @@ In the previous version, when the admissionController.cleanupOnDelete flag was s
 cleanupOnDelete:
     enabled: true
     image:
-      repository: quay.io/reactiveops/ci-images
+      repository: us-docker.pkg.dev/fairwinds-ops/oss/ci-images
       tag: v11-alpine
 
 ```
