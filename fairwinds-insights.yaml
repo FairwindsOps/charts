@@ -13,7 +13,7 @@ manifests:
     valuesFile: stable/insights-admission/ci/test-values.yaml
 
 exemptions:
-  - image: quay.io/fairwinds/nova
+  - image: us-docker.pkg.dev/fairwinds-ops/oss/nova
     report: trivy
     reason: Nova's image is built from the scratch base image, and is unscannable
 
