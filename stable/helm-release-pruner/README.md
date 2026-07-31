@@ -134,45 +134,45 @@ pruner:
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"quay.io/fairwinds/helm-release-pruner"` | Image repository |
-| image.tag | string | `"v4.0"` | Image tag (defaults to appVersion) |
+| affinity | object | `{}` | Affinity rules for pod scheduling |
+| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | Container security context |
+| fullnameOverride | string | `""` | Override the full release name |
+| healthAddr | string | `":8080"` | Address for health check and metrics endpoints |
 | image.pullPolicy | string | `"Always"` | Image pull policy |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/helm-release-pruner"` | Image repository |
+| image.tag | string | `"v4.1.0"` | Image tag (defaults to appVersion) |
 | imagePullSecrets | list | `[]` | Image pull secrets |
 | nameOverride | string | `""` | Override the chart name |
-| fullnameOverride | string | `""` | Override the full release name |
-| pruner | object | `{"cleanupOrphanNamespaces":false,"debug":false,"deleteRateLimit":"100ms","dryRun":true,"interval":"1h","maxReleasesToKeep":0,"namespaceExclude":"","namespaceFilter":"","olderThan":"","orphanNamespaceExclude":"","orphanNamespaceFilter":"","preserveNamespace":false,"releaseExclude":"","releaseFilter":"","systemNamespaces":""}` | Pruner configuration options (maps to CLI flags) |
-| pruner.dryRun | bool | `true` | If true, only log what would be deleted without actually deleting |
-| pruner.debug | bool | `false` | Enable debug logging |
-| pruner.interval | string | `"1h"` | How often to run the pruning cycle (daemon mode only) Supports Go duration format: "1h", "30m", "6h" |
-| pruner.olderThan | string | `""` | Delete releases older than this duration Supports: Go durations (336h), days (14d), weeks (2w) |
-| pruner.maxReleasesToKeep | int | `0` | Keep only the N most recent releases globally after filtering (0 = no limit) |
-| pruner.releaseFilter | string | `""` | Regex to include matching release names |
-| pruner.releaseExclude | string | `""` | Regex to exclude matching release names |
-| pruner.namespaceFilter | string | `""` | Regex to include matching namespaces |
-| pruner.namespaceExclude | string | `""` | Regex to exclude matching namespaces |
-| pruner.preserveNamespace | bool | `false` | Don't delete namespaces even when empty after release deletion |
-| pruner.cleanupOrphanNamespaces | bool | `false` | Enable cleanup of namespaces that have no Helm releases |
-| pruner.orphanNamespaceFilter | string | `""` | Regex filter for namespaces to consider for orphan cleanup (REQUIRED when using cleanupOrphanNamespaces) |
-| pruner.orphanNamespaceExclude | string | `""` | Regex to exclude namespaces from orphan cleanup |
-| pruner.systemNamespaces | string | `""` | Comma-separated list of additional namespaces to never delete (kube-system, kube-public, default, kube-node-lease are always protected) |
-| pruner.deleteRateLimit | string | `"100ms"` | Minimum duration between delete operations (0 to disable) |
-| replicas | int | `1` | Number of replicas (should typically be 1) |
-| healthAddr | string | `":8080"` | Address for health check and metrics endpoints |
-| service.enabled | bool | `true` | Create a Service for health/metrics endpoints |
-| service.port | int | `8080` | Service port |
-| service.annotations | object | `{}` | Service annotations |
-| serviceMonitor.enabled | bool | `false` | Create a ServiceMonitor for Prometheus scraping |
-| serviceMonitor.interval | string | `"30s"` | Scrape interval |
-| serviceMonitor.additionalLabels | object | `{}` | Additional labels for the ServiceMonitor |
-| serviceAccount.create | bool | `true` | Create a ServiceAccount |
-| serviceAccount.name | string | `""` | Name of an existing ServiceAccount to use (if create is false) |
-| serviceAccount.annotations | object | `{}` | Annotations for the ServiceAccount |
-| rbac.create | bool | `true` | Create RBAC resources (ClusterRole, ClusterRoleBinding) |
+| nodeSelector | object | `{}` | Node selector for pod scheduling |
 | podAnnotations | object | `{}` | Additional annotations for pods |
 | podLabels | object | `{}` | Additional labels for pods |
+| pruner | object | `{"cleanupOrphanNamespaces":false,"debug":false,"deleteRateLimit":"100ms","dryRun":true,"interval":"1h","maxReleasesToKeep":0,"namespaceExclude":"","namespaceFilter":"","olderThan":"","orphanNamespaceExclude":"","orphanNamespaceFilter":"","preserveNamespace":false,"releaseExclude":"","releaseFilter":"","systemNamespaces":""}` | Pruner configuration options (maps to CLI flags) |
+| pruner.cleanupOrphanNamespaces | bool | `false` | Enable cleanup of namespaces that have no Helm releases |
+| pruner.debug | bool | `false` | Enable debug logging |
+| pruner.deleteRateLimit | string | `"100ms"` | Minimum duration between delete operations (0 to disable) |
+| pruner.dryRun | bool | `true` | If true, only log what would be deleted without actually deleting |
+| pruner.interval | string | `"1h"` | How often to run the pruning cycle (daemon mode only) Supports Go duration format: "1h", "30m", "6h" |
+| pruner.maxReleasesToKeep | int | `0` | Keep only the N most recent releases globally after filtering (0 = no limit) |
+| pruner.namespaceExclude | string | `""` | Regex to exclude matching namespaces |
+| pruner.namespaceFilter | string | `""` | Regex to include matching namespaces |
+| pruner.olderThan | string | `""` | Delete releases older than this duration Supports: Go durations (336h), days (14d), weeks (2w) |
+| pruner.orphanNamespaceExclude | string | `""` | Regex to exclude namespaces from orphan cleanup |
+| pruner.orphanNamespaceFilter | string | `""` | Regex filter for namespaces to consider for orphan cleanup (REQUIRED when using cleanupOrphanNamespaces) |
+| pruner.preserveNamespace | bool | `false` | Don't delete namespaces even when empty after release deletion |
+| pruner.releaseExclude | string | `""` | Regex to exclude matching release names |
+| pruner.releaseFilter | string | `""` | Regex to include matching release names |
+| pruner.systemNamespaces | string | `""` | Comma-separated list of additional namespaces to never delete (kube-system, kube-public, default, kube-node-lease are always protected) |
+| rbac.create | bool | `true` | Create RBAC resources (ClusterRole, ClusterRoleBinding) |
+| replicas | int | `1` | Number of replicas (should typically be 1) |
 | resources | object | `{"limits":{"memory":"128Mi"},"requests":{"cpu":"10m","memory":"32Mi"}}` | Resource requests and limits |
-| nodeSelector | object | `{}` | Node selector for pod scheduling |
-| tolerations | list | `[]` | Tolerations for pod scheduling |
-| affinity | object | `{}` | Affinity rules for pod scheduling |
 | securityContext | object | `{"fsGroup":10324,"runAsNonRoot":true,"runAsUser":10324}` | Pod security context |
-| containerSecurityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}` | Container security context |
+| service.annotations | object | `{}` | Service annotations |
+| service.enabled | bool | `true` | Create a Service for health/metrics endpoints |
+| service.port | int | `8080` | Service port |
+| serviceAccount.annotations | object | `{}` | Annotations for the ServiceAccount |
+| serviceAccount.create | bool | `true` | Create a ServiceAccount |
+| serviceAccount.name | string | `""` | Name of an existing ServiceAccount to use (if create is false) |
+| serviceMonitor.additionalLabels | object | `{}` | Additional labels for the ServiceMonitor |
+| serviceMonitor.enabled | bool | `false` | Create a ServiceMonitor for Prometheus scraping |
+| serviceMonitor.interval | string | `"30s"` | Scrape interval |
+| tolerations | list | `[]` | Tolerations for pod scheduling |

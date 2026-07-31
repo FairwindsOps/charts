@@ -3,9 +3,9 @@
 
 image:
   # image.repository -- Image repository
-  repository: quay.io/fairwinds/helm-release-pruner
+  repository: us-docker.pkg.dev/fairwinds-ops/oss/helm-release-pruner
   # image.tag -- Image tag (defaults to appVersion)
-  tag: "v4.0"
+  tag: "v4.1.0"
   # image.pullPolicy -- Image pull policy
   pullPolicy: Always
 
