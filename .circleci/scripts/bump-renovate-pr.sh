@@ -9,7 +9,7 @@
 # so Renovate PRs do not fail that job.
 set -euo pipefail
 
-HELM_DOCS_VERSION=1.11.0
+HELM_DOCS_VERSION=1.14.2
 
 if ! command -v python3 >/dev/null 2>&1; then
   sudo apt-get update -qq
