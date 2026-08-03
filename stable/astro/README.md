@@ -15,6 +15,10 @@ We recommend installing astro in its own namespace and with a simple release nam
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 helm install astro fairwinds-stable/astro --namespace astro
 ```
+
+## Changes in 2.0.0
+The default image now comes from Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/oss/astro`) instead of Quay. If you mirror images or allow registries explicitly, update your configuration before upgrading.
+
 ## Changes to chart values in 1.0.0+
 When upgrading from a chart version below 1.0.0 to 1.0.0+ take into account the following changes in values:
 
@@ -34,8 +38,8 @@ Kubernetes 1.11+, Helm 2.13+
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"quay.io/fairwinds/astro"` | Docker image repo |
-| image.tag | string | `"v1.5.3"` | Docker image tag |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/astro"` | Docker image repo |
+| image.tag | string | `"v1.6.0"` | Docker image tag |
 | image.pullPolicy | string | `"IfNotPresent"` | Docker image pull policy |
 | resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | The resources block for the deployment. |
 | nodeSelector | object | `{}` | Deployment ndoeSelector |
