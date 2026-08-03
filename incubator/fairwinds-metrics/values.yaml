@@ -4,7 +4,7 @@
 
 image:
   # image.repository -- Repository for the custom-metrics image
-  repository: quay.io/fairwinds/custom-metrics
+  repository: us-docker.pkg.dev/fairwinds-ops/oss/custom-metrics
   # image.tag -- The custom-metrics image tag to use
   tag: v0.6.0
   # image.pullPolicy -- imagePullPolicy - Highly recommended to leave this as `Always`
