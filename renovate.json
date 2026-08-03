@@ -29,9 +29,39 @@
       "matchStrings": [
         "agentChartTargetVersion:\\s[\"']?(?<currentValue>[\\d\\.]+)[\"']?"
       ]
+    },
+    {
+      "customType": "regex",
+      "description": "Update helm-docs version in CircleCI install scripts",
+      "managerFilePatterns": [
+        ".circleci/config.yml",
+        ".circleci/scripts/bump-renovate-pr.sh"
+      ],
+      "matchStrings": ["HELM_DOCS_VERSION=(?<currentValue>[\\d.]+)"],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "norwoodj/helm-docs",
+      "extractVersionTemplate": "^v(?<version>.*)$"
+    },
+    {
+      "customType": "regex",
+      "description": "Update helm-docs pre-commit hook revision",
+      "managerFilePatterns": [".pre-commit-config.yaml"],
+      "matchStrings": [
+        "repo: https://github\\.com/norwoodj/helm-docs\\n {4}rev: v(?<currentValue>[\\d.]+)"
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "norwoodj/helm-docs",
+      "extractVersionTemplate": "^v(?<version>.*)$",
+      "autoReplaceStringTemplate": "repo: https://github.com/norwoodj/helm-docs\n    rev: v{{{newValue}}}"
     }
   ],
   "packageRules": [
+    {
+      "description": "Keep helm-docs pins in sync across CI and pre-commit",
+      "matchManagers": ["custom.regex"],
+      "matchDepNames": ["norwoodj/helm-docs"],
+      "groupName": "helm-docs"
+    },
     {
       "description": "Resolve @stable Helm repo alias and explicit fairwinds-stable URLs to the published index",
       "matchManagers": ["helmv3"],
