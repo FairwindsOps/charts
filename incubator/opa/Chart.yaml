@@ -1,6 +1,10 @@
 apiVersion: v1
 appVersion: "0.0.1"
-description: A Helm chart to manage opa
+description: >-
+  DEPRECATED: This chart is no longer maintained and cannot be installed on
+  Kubernetes 1.25 or newer, since it renders API versions that have been
+  removed. It may be removed from this repository in a future release. Use Fairwinds Insights instead.
+deprecated: true
 name: opa
 version: 0.1.4
 maintainers:
