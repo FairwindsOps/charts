@@ -37,7 +37,7 @@ before upgrading, and add `--skip-crds` when running `helm install`.
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
-| image.repository | string | `"quay.io/fairwinds/gemini"` | Repository for the gemini image |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/gemini"` | Repository for the gemini image |
 | image.tag | string | `nil` | The gemini image tag to use. Defaults to .Chart.appVersion |
 | rbac.create | bool | `true` | If true, create a new ServiceAccount and attach permissions |
 | rbac.serviceAccountName | string | `nil` |  |
