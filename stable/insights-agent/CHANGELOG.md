@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.0
+* **Breaking:** Default plugin images now come from Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/oss/...`) instead of Quay. Defaults are pinned to immutable semver tags.
+* Bumped `insights-admission` chart to `2.0.*`
+
 ## 5.32.0
 * Bumped `polaris` to `v10.2.1` and switched image repository to `us-docker.pkg.dev/fairwinds-ops/oss/polaris`
 * Bumped `nova` to `v3.12.0` and switched image repository to `us-docker.pkg.dev/fairwinds-ops/oss/nova`

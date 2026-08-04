@@ -108,8 +108,8 @@ prometheus-metrics:
   enabled: true
   installPrometheusServer: true
   image:
-    repository: quay.io/fairwinds/prometheus-collector
-    tag: "1.0"
+    repository: us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector
+    tag: "1.9.18"
   resources:
     requests:
       cpu: 50m

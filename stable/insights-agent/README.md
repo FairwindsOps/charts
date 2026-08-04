@@ -5,6 +5,9 @@ to [Fairwinds Insights](https://insights.fairwinds.com).
 
 A list of breaking changes for each major version release is available at the bottom of this document.
 
+## Changes in 6.0.0
+Most plugin image defaults now come from Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/oss/...`) instead of Quay, pinned to immutable semver tags. If you mirror images or allow registries explicitly, update your configuration before upgrading. Still on Quay: `insights-right-sizer` and `vpa-*`.
+
 ## Installation
 We recommend installing `insights-agent` in its own namespace.
 
@@ -71,9 +74,9 @@ Parameter | Description | Default
 `global.sslCertFileSecretKey` | The key, within global.sslCertFileSecretName, containing an SSL certificate file to be used when communicating with a self-hosted Insights API. | ""
 `customWorkloadAnnotations` | Additional annotations to add to each workload. (excluding Falco, uses metadata) | `{}` 
 `insights.apiToken` | Only needed if `fleetInstall=true` | ""
-`uploader.image.repository`  | The repository to pull the uploader script from | quay.io/fairwinds/insights-uploader
+`uploader.image.repository`  | The repository to pull the uploader script from | us-docker.pkg.dev/fairwinds-ops/oss/insights-uploader
 `uploader.imagePullSecret` | A pull secret for a private uploader image
-`uploader.image.tag` | The tag to use for the uploader script | 0.5
+`uploader.image.tag` | The tag to use for the uploader script | 0.6.12
 `uploader.resources` | CPU/memory requests and limits for the uploader script |
 `uploader.sendFailures` | Send logs of failure to Insights when a job fails. | true
 `uploader.env` | Set extra environment variables for the uploader script | []
@@ -153,7 +156,7 @@ Parameter | Description | Default
 `image-trust.resolveDigests` | Resolve tag-only images via registry API | `true`
 `image-trust.ignoreTlog` | Skip Rekor for keyed verification | `false`
 `image-trust.env` | Extra environment variables for the image-trust container | `{}`
-`onDemandJobRunner.image.tag` | On-demand job runner image tag; use `0.2.19` or newer for on-demand `image-trust` jobs | `0.2.19`
+`onDemandJobRunner.image.tag` | On-demand job runner image tag; use `0.2.19` or newer for on-demand `image-trust` jobs | `0.2.29`
 `opa.role` | Specifies which ClusterRole to grant the OPA agent access to | view
 `opa.additionalAccess` | Specifies additional access to grant the OPA agent. This should contain an array of objects with each having an array of apiGroups, an array of resources, and an array of verbs. Just like a RoleBinding. | null
 `insights-agent` chart twice you will want to set this flag to `false` on *one* of the installs, doesn't matter which. | true
@@ -196,8 +199,8 @@ Parameter | Description | Default
 `cloudcosts.azure.workloadIdentity.tenantId` | Azure AD Workload Identity: tenant ID (required when provider is azure) | ""
 `cloudcosts.serviceAccount.annotations` | Annotations for the cloud-costs service account, e.g. `eks.amazonaws.com/role-arn` for IRSA (AWS) | nil
 `insights-event-watcher.enabled` | Enable the insights-event-watcher component | `true`
-`insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `quay.io/fairwinds/insights-event-watcher`
-`insights-event-watcher.image.tag` | Tag for the insights-event-watcher image | `0.1`
+`insights-event-watcher.image.repository` | Repository for the insights-event-watcher image | `us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher`
+`insights-event-watcher.image.tag` | Tag for the insights-event-watcher image | `0.2.52`
 `insights-event-watcher.logLevel` | Log level for the watcher (debug, info, warn, error) | `info`
 `insights-event-watcher.eventBufferSize` | Size of the event processing buffer | `1000`
 `insights-event-watcher.httpTimeoutSeconds` | HTTP client timeout in seconds | `30`
@@ -214,8 +217,8 @@ Parameter | Description | Default
 `insights-event-watcher.serviceAccount.annotations` | Annotations to add to the service account, e.g. `eks.amazonaws.com/role-arn: arn:aws:iam::ACCOUNT_ID:role/IAM_ROLE_NAME` for IRSA | `nil`
 `insights-event-watcher.resources` | CPU/memory requests and limits for the watcher | See values.yaml
 `network-observability.enabled` | Enable the network observability agent DaemonSet and aggregator Deployment | `false`
-`network-observability.agent.image.repository` | Repository for the network-flow agent image | `quay.io/fairwinds/network-flow`
-`network-observability.agent.image.tag` | Tag for the network-flow agent image | `0.0`
+`network-observability.agent.image.repository` | Repository for the network-flow agent image | `us-docker.pkg.dev/fairwinds-ops/oss/network-flow`
+`network-observability.agent.image.tag` | Tag for the network-flow agent image | `0.0.14`
 `network-observability.agent.gadgetVersion` | Inspektor Gadget version used for gadgets images. When empty, uses plugins default | `""`
 `network-observability.agent.collectorAddr` | Aggregator gRPC address; defaults to the in-cluster aggregator Service | `""`
 `network-observability.agent.batchSize` | Number of flow events to batch before flushing to the aggregator; empty uses binary default (`5000`) | `""`
@@ -232,8 +235,8 @@ Parameter | Description | Default
 `network-observability.agent.priorityClassName` | Priority class for agent pods | `""` |
 `network-observability.agent.updateStrategy` | DaemonSet update strategy | `{ type: RollingUpdate }` |
 `network-observability.aggregator.replicas` | Aggregator Deployment replicas (ignored when autoscaling is enabled) | `1` |
-`network-observability.aggregator.image.repository` | Repository for the aggregator image | `quay.io/fairwinds/network-flow-aggregator` |
-`network-observability.aggregator.image.tag` | Tag for the aggregator image | `0.0` |
+`network-observability.aggregator.image.repository` | Repository for the aggregator image | `us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator` |
+`network-observability.aggregator.image.tag` | Tag for the aggregator image | `0.0.18` |
 `network-observability.aggregator.maxEvents` | Maximum in-memory flow events retained by the aggregator; empty uses binary default (`100000`) | `""` |
 `network-observability.aggregator.maxAge` | Maximum age of retained flow events; empty uses binary default (`15m`) | `""` |
 `network-observability.aggregator.disableKube` | Skip Kubernetes enrichment in the aggregator | `false` |
