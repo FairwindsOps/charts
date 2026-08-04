@@ -8,6 +8,9 @@ This is an Admission Controller to reject deployment of objects into your Kubern
 
 A valid TLS certificate is required for this admission controller to work. If you have cert-manager installed then everything should work out of the box. If you don't use cert-manager and don't want to install it then you can supply a CA Bundle with the `caBundle` parameter and create a TLS secret and pass the name of that secret as `secretName`.
 
+## Changes in 2.0.0
+The default image now comes from Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/oss/insights-admission-controller`) instead of Quay, pinned to immutable semver (`2.3.20`). If you mirror images or allow registries explicitly, update your configuration before upgrading.
+
 ```bash
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 helm install insights-admission fairwinds-stable/insights-admission \
