@@ -105,9 +105,13 @@ cronjobOptions:
 
 cronjobs:
   # -- Options for the action-items filters refresher job.
+  # useMigrationCredentials: connect as postgresql.auth.migrationUsername and set
+  # POSTGRES_OWNER_ROLE when ownerRole is configured (required to REFRESH matviews
+  # owned by insights_owner after owner-role migration).
   action-item-filters-refresh:
     command: action_items_filters_refresher
     schedule: "0/15 * * * *"
+    useMigrationCredentials: false
 
   # -- Options for the action item stats job
   action-items-statistics:
@@ -188,14 +192,17 @@ cronjobs:
     schedule: "*/30 * * * *"
 
   # -- Options for the image-vulns-refresh job.
+  # useMigrationCredentials: same as action-item-filters-refresh (REFRESH matviews as owner).
   image-vulns-refresh:
     command: image_vulnerabilities_refresher
     schedule: "*/30 * * * *"
+    useMigrationCredentials: false
 
   # -- Options for the image-vulnerabilities-on-demand-refresher
   img-vulns-on-demand-refresh:
     command: image_vulnerabilities_on_demand_refresher
     schedule: "*/2 * * * *"
+    useMigrationCredentials: false
 
   # -- Options for the sync-action-items-iac-files cronjob.
   sync-action-items-iac-files:

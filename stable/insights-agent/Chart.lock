@@ -4,7 +4,7 @@ dependencies:
   version: 10.4.1
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 29.19.0
+  version: 29.20.1
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
   version: 2.0.0
@@ -13,7 +13,7 @@ dependencies:
   version: 9.1.0
 - name: vpa
   repository: https://charts.fairwinds.com/stable
-  version: 4.12.4
+  version: 4.12.5
 - name: trivy
   repository: https://aquasecurity.github.io/helm-charts/
   version: 0.24.0
