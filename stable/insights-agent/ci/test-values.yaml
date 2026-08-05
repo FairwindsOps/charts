@@ -107,6 +107,9 @@ trivy:
 prometheus-metrics:
   enabled: true
   installPrometheusServer: true
+  # The e2e Prometheus has only seconds of cAdvisor history when the job runs,
+  # so the CPU rate query legitimately returns no data.
+  skipNonZeroMetricsCheck: true
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector
     tag: "1.9.18"
