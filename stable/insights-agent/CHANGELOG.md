@@ -1,5 +1,8 @@
 # Changelog
 
+## 5.33.0
+* Bumped `prometheus` to `29.20.*`
+
 ## 5.32.0
 * Bumped `polaris` to `v10.2.1` and switched image repository to `us-docker.pkg.dev/fairwinds-ops/oss/polaris`
 * Bumped `nova` to `v3.12.0` and switched image repository to `us-docker.pkg.dev/fairwinds-ops/oss/nova`
