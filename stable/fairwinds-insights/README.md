@@ -43,7 +43,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobOptions.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars) |
 | cronjobOptions.successfulJobsHistoryLimit | int | `1` | Default successful jobs history limit (overridden per cronjob by cronjobs.<name>.successfulJobsHistoryLimit) |
 | cronjobOptions.failedJobsHistoryLimit | int | `1` | Default failed jobs history limit (overridden per cronjob by cronjobs.<name>.failedJobsHistoryLimit) |
-| cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *"}` | Options for the action-items filters refresher job. |
+| cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *","useMigrationCredentials":false}` | Options for the action-items filters refresher job. useMigrationCredentials: connect as postgresql.auth.migrationUsername and set POSTGRES_OWNER_ROLE when ownerRole is configured (required to REFRESH matviews owned by insights_owner after owner-role migration). |
 | cronjobs.action-items-statistics | object | `{"command":"action_items_statistics","schedule":"15 * * * *"}` | Options for the action item stats job |
 | cronjobs.benchmark | object | `{"command":"benchmark","schedule":""}` | Options for the benchmark job |
 | cronjobs.update-tickets | object | `{"command":"update_tickets","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"0 * * * *"}` | Options for the update tickets job. |
@@ -55,8 +55,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.slack-channels | object | `{"command":"slack_channels_local_refresher","schedule":"0/15 * * * *"}` | Options for the slack channels job. |
 | cronjobs.trial-end | object | `{"command":"trial_end_downgrade","schedule":""}` | Options for the trial-end job. |
 | cronjobs.move-health-scores-to-ts | object | `{"command":"move_resource_health_scores_to_ts","schedule":"*/30 * * * *"}` | Options for the move-health-scores-to-ts job. |
-| cronjobs.image-vulns-refresh | object | `{"command":"image_vulnerabilities_refresher","schedule":"*/30 * * * *"}` | Options for the image-vulns-refresh job. |
-| cronjobs.img-vulns-on-demand-refresh | object | `{"command":"image_vulnerabilities_on_demand_refresher","schedule":"*/2 * * * *"}` | Options for the image-vulnerabilities-on-demand-refresher |
+| cronjobs.image-vulns-refresh | object | `{"command":"image_vulnerabilities_refresher","schedule":"*/30 * * * *","useMigrationCredentials":false}` | Options for the image-vulns-refresh job. useMigrationCredentials: same as action-item-filters-refresh (REFRESH matviews as owner). |
+| cronjobs.img-vulns-on-demand-refresh | object | `{"command":"image_vulnerabilities_on_demand_refresher","schedule":"*/2 * * * *","useMigrationCredentials":false}` | Options for the image-vulnerabilities-on-demand-refresher |
 | cronjobs.sync-action-items-iac-files | object | `{"command":"sync_action_items_iac_files","schedule":"0 * * * *"}` | Options for the sync-action-items-iac-files cronjob. |
 | cronjobs.app-groups-cves-statistics | object | `{"command":"app_groups_cves_statistics","schedule":"0 9,21 * * *"}` | Options for the app_groups_cves_statistics cronjob. |
 | cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
