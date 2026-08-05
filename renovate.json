@@ -122,7 +122,7 @@
       "minimumReleaseAge": "7 days"
     },
     {
-      "description": "Fairwinds-owned images skip release-age (floating X.Y tags are retagged on every patch)",
+      "description": "Fairwinds-owned images skip release-age",
       "matchManagers": ["helm-values"],
       "matchDatasources": ["docker"],
       "matchPackageNames": [

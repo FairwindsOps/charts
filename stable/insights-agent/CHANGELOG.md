@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.0.0
+* **Breaking:** Default plugin images now come from Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/oss/...`) instead of Quay. Defaults are pinned to immutable semver tags.
+* Bumped `insights-admission` chart to `2.0.*`
+
 ## 5.33.0
 * Bumped `prometheus` to `29.20.*`
 
