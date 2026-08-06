@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.17.0
+* Bumped `agentChartTarget` to `5.31.0`
+
 ## 9.16.0
 * Bumped `rustfs` to `0.12.0`
 
