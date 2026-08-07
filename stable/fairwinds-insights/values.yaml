@@ -1396,6 +1396,33 @@ temporalDeployments:
 #         - user2@example.com
 temporalSchedulers: []
 
+# -- GCP Cloud Billing / Compute pricing for UpdateGCPCloudPricingWorkflow (general-worker).
+# Off by default (self-hosted). SaaS sets enabled + projectID and either mounts a Secret
+# or creates an ExternalSecret from Vault; ADC uses GOOGLE_APPLICATION_CREDENTIALS.
+gcpPricing:
+  enabled: false
+  projectID: ""
+  credentialsSecretName: gcp-pricing-credentials
+  credentialsSecretKey: credentials.json
+  credentialsMountPath: /var/run/secrets/gcp
+  credentialsSecretOptional: false
+  externalSecret:
+    create: false
+    # Defaults to credentialsSecretName when empty
+    name: ""
+    refreshInterval: 1h
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: fairwinds-vault-backend
+    annotations: {}
+    # Example:
+    # data:
+    #   - secretKey: credentials.json
+    #     remoteRef:
+    #       key: reactiveops.com-infrastructure/staging-eks/insights/gcp-pricing
+    #       property: service_account_json
+    data: []
+
 # -- Job that creates/updates Temporal schedules from temporalSchedulers
 temporalSchedulersJob:
   image:

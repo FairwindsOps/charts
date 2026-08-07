@@ -75,12 +75,25 @@ spec:
           {{- with $options.additionalEnv }}
           {{- toYaml . | nindent 10 }}
           {{- end }}
+          {{- $gcpPricing := $.Values.gcpPricing | default dict }}
+          {{- $gcpEnabled := and ($gcpPricing.enabled | default false) (eq $name "general-worker") }}
+          {{- if $gcpEnabled }}
+          {{- if not $gcpPricing.projectID }}
+          {{- fail "gcpPricing.enabled is true but gcpPricing.projectID is empty" }}
+          {{- end }}
+          - name: ENABLE_GCP_PRICING
+            value: "true"
+          - name: GCP_PROJECT_ID
+            value: {{ $gcpPricing.projectID | quote }}
+          - name: GOOGLE_APPLICATION_CREDENTIALS
+            value: {{ printf "%s/%s" ($gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp") ($gcpPricing.credentialsSecretKey | default "credentials.json") | quote }}
+          {{- end }}
           resources:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.resources $options.resources) | nindent 12 }}
           securityContext:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.securityContext $options.securityContext) | nindent 12 }}
           {{- $volumeMounts := default $.Values.temporalDeploymentDefaults.volumeMounts $options.volumeMounts }}
-          {{- if or $volumeMounts $.Values.selfHostedSecret }}
+          {{- if or $volumeMounts $.Values.selfHostedSecret $gcpEnabled }}
           volumeMounts:
             {{- with $volumeMounts }}
             {{- toYaml . | nindent 12 }}
@@ -88,6 +101,11 @@ spec:
             {{- if $.Values.selfHostedSecret }}
             - name: self-hosted-secret
               mountPath: /var/run/secrets/self-hosted
+            {{- end }}
+            {{- if $gcpEnabled }}
+            - name: gcp-pricing-credentials
+              mountPath: {{ $gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp" }}
+              readOnly: true
             {{- end }}
           {{- end }}
       {{- with (default $.Values.temporalDeploymentDefaults.nodeSelector $options.nodeSelector) }}
@@ -107,7 +125,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- $volumes := default $.Values.temporalDeploymentDefaults.volumes $options.volumes }}
-      {{- if or $volumes $.Values.selfHostedSecret }}
+      {{- if or $volumes $.Values.selfHostedSecret $gcpEnabled }}
       volumes:
         {{- with $volumes }}
         {{- toYaml . | nindent 8 }}
@@ -116,6 +134,12 @@ spec:
         - name: self-hosted-secret
           secret:
             secretName: {{ $.Values.selfHostedSecret }}
+        {{- end }}
+        {{- if $gcpEnabled }}
+        - name: gcp-pricing-credentials
+          secret:
+            secretName: {{ $gcpPricing.credentialsSecretName | default "gcp-pricing-credentials" }}
+            optional: {{ $gcpPricing.credentialsSecretOptional | default false }}
         {{- end }}
       {{- end }}
 ---
