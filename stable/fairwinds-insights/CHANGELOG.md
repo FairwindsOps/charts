@@ -16,7 +16,7 @@
 * Bumped `rustfs` to `0.12.0`
 
 ## 9.15.4
-* CronJobs: optional `cronjobs.<name>.useMigrationCredentials` — uses migrator Secret + `POSTGRES_OWNER_ROLE` (same as migrate Job). Enable for matview refresh jobs after owner-role migration (`action-item-filters-refresh`, `image-vulns-refresh`, `img-vulns-on-demand-refresh`).
+* CronJobs: optional `cronjobs.<name>.useMigrationCredentials` — uses migrator Secret + `POSTGRES_OWNER_ROLE` (same as migrate Job). Enable for matview refresh jobs after owner-role migration (`action-item-filters-refresh`, `image-vulns-refresh`, `img-vulns-on-demand-refresh`). Also `cronjobs.partman-maintenance` for pg_partman (new partitions owned by ownerRole).
 
 ## 9.15.3
 * Bumped `insights-api` to `18.4.6`
