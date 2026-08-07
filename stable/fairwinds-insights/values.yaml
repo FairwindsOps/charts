@@ -154,6 +154,14 @@ cronjobs:
     command: database_cleanup
     schedule: "0 0 * * *"
 
+  # -- Options for pg_partman maintenance. New partitions are owned by current_user;
+  # useMigrationCredentials + ownerRole so children are owned by insights_owner
+  # (not the legacy app login). Enable after owner-role migration.
+  partman-maintenance:
+    command: partman_maintenance
+    schedule: "30 0 * * *"
+    useMigrationCredentials: false
+
   # -- Options for the email digest job.
   email:
     command: email_digest

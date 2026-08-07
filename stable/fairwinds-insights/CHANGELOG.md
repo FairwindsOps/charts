@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.18.1
+* CronJobs: add `cronjobs.partman-maintenance` (`partman_maintenance`) with optional `useMigrationCredentials` so new pg_partman partitions are owned by `ownerRole` (e.g. `insights_owner`). Partman was removed from `database_cleanup` for the same reason.
+
 ## 9.18.0
 * Bumped `agentChartTarget` to `5.32.0`
 
