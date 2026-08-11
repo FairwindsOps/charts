@@ -21,7 +21,9 @@ commands:
           event: fail
           # TEMP INS-2537: drop the feature branch from this list before merge
           branch_pattern: master,monitoring-charts-release/vv/INS-2537
-          # Channel comes from SLACK_DEFAULT_CHANNEL in vault
+          # The bot behind SLACK_ACCESS_TOKEN (repo/global/env) must be a member of this
+          # channel, or Slack returns "not_in_channel". Invite it with /invite in Slack.
+          channel: CPYBX810T
           template: basic_fail_1
 
 references:
@@ -173,6 +175,15 @@ jobs:
       - *install_vault_alpine
       - rok8s/get_vault_env:
           vault_path: repo/global/env
+      - run:
+          name: Who does SLACK_ACCESS_TOKEN belong to
+          command: |
+            # auth.test names the bot to invite; conversations.info confirms the channel.
+            curl -sS -H "Authorization: Bearer ${SLACK_ACCESS_TOKEN}" \
+              https://slack.com/api/auth.test | jq '{ok, team, user, user_id, bot_id, error}'
+            curl -sS -H "Authorization: Bearer ${SLACK_ACCESS_TOKEN}" \
+              "https://slack.com/api/conversations.info?channel=CPYBX810T" |
+              jq '{ok, error, name: .channel.name, is_member: .channel.is_member}'
       - run:
           name: Force fail to exercise Slack alert
           command: |
