@@ -21,8 +21,7 @@ commands:
           event: fail
           # TEMP INS-2537: drop the feature branch from this list before merge
           branch_pattern: master,monitoring-charts-release/vv/INS-2537
-          # pod-dev-notifications, same channel insights-release defaults to
-          channel: CPYBX810T
+          # Channel comes from SLACK_DEFAULT_CHANNEL in vault
           template: basic_fail_1
 
 references:
