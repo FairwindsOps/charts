@@ -3,6 +3,9 @@
 ## 9.19.0
 * Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow`: ExternalSecret from Vault, mount SA JSON on `general-worker`, set `ENABLE_GCP_PRICING` / `GCP_PROJECT_ID` / `GOOGLE_APPLICATION_CREDENTIALS` (ADC via `DefaultTokenSource`). Disabled by default.
 
+## 9.18.3
+* Bumped `insights-api` to `18.4.12`
+
 ## 9.18.2
 * Bumped `insights-api` to `18.4.10`
 
