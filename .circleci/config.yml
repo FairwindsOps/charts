@@ -12,6 +12,19 @@ commands:
       - rok8s/get_vault_env:
           vault_path: repo/global/env
 
+  notify_slack_on_failure:
+    description: |
+      Alert Slack when a release-path job fails. Must be the last step of a job, and the
+      job must have already loaded SLACK_ACCESS_TOKEN from vault (repo/global/env).
+    steps:
+      - slack/notify:
+          event: fail
+          # TEMP INS-2537: drop the feature branch from this list before merge
+          branch_pattern: master,monitoring-charts-release/vv/INS-2537
+          # pod-dev-notifications, same channel insights-release defaults to
+          channel: CPYBX810T
+          template: basic_fail_1
+
 references:
   setup_environment: &setup_environment
     run:
@@ -141,36 +154,32 @@ jobs:
           vault_path: fairwindsops/sts/charts-docs
       - rok8s/get_vault_env:
           vault_path: repo/charts/env
+      # SLACK_ACCESS_TOKEN for the notify step below, same vault path Insights uses.
+      - rok8s/get_vault_env:
+          vault_path: repo/global/env
       - run:
           name: sync
           command: scripts/sync.sh
+      - notify_slack_on_failure
 
-  # TEMP INS-2537: delete force-fail-slack-alert-test + branch allowlists before merge
+  # TEMP INS-2537: delete this whole job (and its workflow entry) before merge.
+  # Mirrors sync's vault + notify wiring, then fails on purpose so we can verify
+  # the Slack alert without running a real release.
   force-fail-slack-alert-test:
     docker:
-      - image: cimg/base:current
+      - image: quay.io/helmpack/chart-testing:v3.14.0
     steps:
+      - checkout
+      - *setup_environment
+      - *install_vault_alpine
+      - rok8s/get_vault_env:
+          vault_path: repo/global/env
       - run:
           name: Force fail to exercise Slack alert
           command: |
-            echo "TEMP INS-2537: forcing failure to test alert-master-release-failure"
+            echo "TEMP INS-2537: forcing failure to test the sync failure alert"
             exit 1
-
-  alert-master-release-failure:
-    executor: ci-images
-    steps:
-      - checkout
-      - set_vault
-      - run:
-          name: Ensure Slack default channel
-          command: |
-            # pod-dev-notifications — same default as insights-release
-            echo 'export SLACK_DEFAULT_CHANNEL="${SLACK_DEFAULT_CHANNEL:-CPYBX810T}"' >> "${BASH_ENV}"
-      - slack/notify:
-          event: always
-          # TEMP INS-2537: remove feature branch from branch_pattern before merge
-          branch_pattern: master,monitoring-charts-release/vv/INS-2537
-          template: basic_fail_1
+      - notify_slack_on_failure
 
 workflows:
   version: 2
@@ -226,18 +235,3 @@ workflows:
             branches:
               only:
                 - master
-      - alert-master-release-failure:
-          requires:
-            - lint-scripts
-            - lint-charts
-            - check-helm-docs
-            - sync
-            # TEMP INS-2537: delete before merge
-            - force-fail-slack-alert-test
-          when: on_fail
-          filters:
-            branches:
-              only:
-                - master
-                # TEMP INS-2537: delete before merge
-                - monitoring-charts-release/vv/INS-2537
