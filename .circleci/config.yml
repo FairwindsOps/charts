@@ -152,7 +152,7 @@ jobs:
           vault_path: fairwindsops/sts/charts-docs
       - rok8s/get_vault_env:
           vault_path: repo/charts/env
-      # SLACK_ACCESS_TOKEN for the notify step below, same vault path Insights uses.
+      # SLACK_ACCESS_TOKEN for the notify step below
       - rok8s/get_vault_env:
           vault_path: repo/global/env
       - run:
