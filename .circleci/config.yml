@@ -2,6 +2,7 @@ version: 2.1
 
 orbs:
   rok8s: fairwinds/rok8s-scripts@16.0.0
+  slack: circleci/slack@6.1.3
 
 commands:
   set_vault:
@@ -97,6 +98,7 @@ jobs:
             helm-docs --sort-values-order=file
             git diff --exit-code
       - *check_changelog
+
   lint-scripts:
     docker:
       - image: koalaman/shellcheck-alpine:v0.11.0
@@ -114,6 +116,7 @@ jobs:
             for script in $(find incubator stable -type f -name pre-test-script.sh); do
                 shellcheck -x $script
             done
+
   lint-charts:
     docker:
       - image: quay.io/helmpack/chart-testing:v3.14.0
@@ -142,6 +145,33 @@ jobs:
           name: sync
           command: scripts/sync.sh
 
+  # TEMP INS-2537: delete force-fail-slack-alert-test + branch allowlists before merge
+  force-fail-slack-alert-test:
+    docker:
+      - image: cimg/base:current
+    steps:
+      - run:
+          name: Force fail to exercise Slack alert
+          command: |
+            echo "TEMP INS-2537: forcing failure to test alert-master-release-failure"
+            exit 1
+
+  alert-master-release-failure:
+    executor: ci-images
+    steps:
+      - checkout
+      - set_vault
+      - run:
+          name: Ensure Slack default channel
+          command: |
+            # pod-dev-notifications — same default as insights-release
+            echo 'export SLACK_DEFAULT_CHANNEL="${SLACK_DEFAULT_CHANNEL:-CPYBX810T}"' >> "${BASH_ENV}"
+      - slack/notify:
+          event: always
+          # TEMP INS-2537: remove feature branch from branch_pattern before merge
+          branch_pattern: master,monitoring-charts-release/vv/INS-2537
+          template: basic_fail_1
+
 workflows:
   version: 2
   test-and-sync:
@@ -153,6 +183,12 @@ workflows:
       - check-helm-docs
       - lint-scripts
       - lint-charts
+      # TEMP INS-2537: delete before merge
+      - force-fail-slack-alert-test:
+          filters:
+            branches:
+              only:
+                - monitoring-charts-release/vv/INS-2537
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.33"
           kind_node_image: "kindest/node:v1.33.12@sha256:3f5c8443c620245e4d355cfe09e96a91ead32ceaa569d3f1ca9edf0cb2fe2ff4"
@@ -190,3 +226,18 @@ workflows:
             branches:
               only:
                 - master
+      - alert-master-release-failure:
+          requires:
+            - lint-scripts
+            - lint-charts
+            - check-helm-docs
+            - sync
+            # TEMP INS-2537: delete before merge
+            - force-fail-slack-alert-test
+          when: on_fail
+          filters:
+            branches:
+              only:
+                - master
+                # TEMP INS-2537: delete before merge
+                - monitoring-charts-release/vv/INS-2537
