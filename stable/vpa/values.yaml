@@ -218,7 +218,7 @@ admissionController:
       # admissionController.certGen.image.repository -- An image that contains certgen for creating certificates. Only used if admissionController.generateCertificate is true
       repository: registry.k8s.io/ingress-nginx/kube-webhook-certgen
       # admissionController.certGen.image.tag -- An image tag for the admissionController.certGen.image.repository image. Only used if admissionController.generateCertificate is true
-      tag: v20230312-helm-chart-4.5.2-28-g66a760794
+      tag: v1.4.4
       # admissionController.certGen.image.pullPolicy -- The pull policy for the certgen image. Recommend not changing this
       pullPolicy: Always
     # admissionController.certGen.env -- Additional environment variables to be added to the certgen container. Format is KEY: Value format
