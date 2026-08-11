@@ -25,6 +25,22 @@ The admissionController is the only one that poses a stability consideration bec
 
 For more details, please see the values below, and the vertical pod autosclaer documentation.
 
+## *BREAKING* Upgrading to >=5.0.0
+
+VPA 1.7 requires Kubernetes 1.28 or later. The `InPlace`, `InPlaceOrRecreate`,
+and `CPUStartupBoost` features require Kubernetes 1.33 or later.
+
+Update the installed CRDs from the chart's `crds/` directory before upgrading.
+The VPA 1.7 CRDs add the `InPlace` update mode, CPU startup boost, per-VPA
+configuration fields, and observed generation status fields. Helm does not
+upgrade CRDs automatically.
+
+The `InPlace`, `CPUStartupBoost`, and `PerVPAConfig` features are alpha and
+disabled by default. Configure `InPlace` and `CPUStartupBoost` on the admission
+controller and updater. Configure `PerVPAConfig` on the admission controller,
+recommender, and updater. See the [VPA 1.7 feature documentation](https://github.com/kubernetes/autoscaler/blob/vertical-pod-autoscaler-1.7.1/vertical-pod-autoscaler/docs/features.md)
+for configuration and requirements.
+
 ## *BREAKING* Upgrading to >=4.0.0
 
 Ensure that you update the CRDs from [the autoscaler repository](https://raw.githubusercontent.com/kubernetes/autoscaler/master/vertical-pod-autoscaler/deploy/vpa-v1-crd-gen.yaml) or the crds/ folder.
@@ -130,8 +146,8 @@ recommender:
 
 ## Utilize In-Place Pod Vertical Scaling
 
-Since VPA 1.6.0, the `InPlaceOrRecreate` update mode is GA and enabled by default.
-No feature gate configuration is required.
+In VPA 1.7.0, the `InPlaceOrRecreate` feature gate was removed.
+No VPA feature gate configuration is required for this update mode.
 
 To use in-place scaling, configure your VPA resources with:
 
