@@ -19,11 +19,8 @@ commands:
     steps:
       - slack/notify:
           event: fail
-          # TEMP INS-2537: drop the feature branch from this list before merge
-          branch_pattern: master,monitoring-charts-release/vv/INS-2537
-          # The bot behind SLACK_ACCESS_TOKEN (repo/global/env) must be a member of this
-          # channel, or Slack returns "not_in_channel". Invite it with /invite in Slack.
-          channel: CPYBX810T
+          branch_pattern: master
+          channel: CPYBX810T # pod-dev-notifications
           template: basic_fail_1
 
 references:
@@ -163,34 +160,6 @@ jobs:
           command: scripts/sync.sh
       - notify_slack_on_failure
 
-  # TEMP INS-2537: delete this whole job (and its workflow entry) before merge.
-  # Mirrors sync's vault + notify wiring, then fails on purpose so we can verify
-  # the Slack alert without running a real release.
-  force-fail-slack-alert-test:
-    docker:
-      - image: quay.io/helmpack/chart-testing:v3.14.0
-    steps:
-      - checkout
-      - *setup_environment
-      - *install_vault_alpine
-      - rok8s/get_vault_env:
-          vault_path: repo/global/env
-      - run:
-          name: Who does SLACK_ACCESS_TOKEN belong to
-          command: |
-            # auth.test names the bot to invite; conversations.info confirms the channel.
-            curl -sS -H "Authorization: Bearer ${SLACK_ACCESS_TOKEN}" \
-              https://slack.com/api/auth.test | jq '{ok, team, user, user_id, bot_id, error}'
-            curl -sS -H "Authorization: Bearer ${SLACK_ACCESS_TOKEN}" \
-              "https://slack.com/api/conversations.info?channel=CPYBX810T" |
-              jq '{ok, error, name: .channel.name, is_member: .channel.is_member}'
-      - run:
-          name: Force fail to exercise Slack alert
-          command: |
-            echo "TEMP INS-2537: forcing failure to test the sync failure alert"
-            exit 1
-      - notify_slack_on_failure
-
 workflows:
   version: 2
   test-and-sync:
@@ -202,12 +171,6 @@ workflows:
       - check-helm-docs
       - lint-scripts
       - lint-charts
-      # TEMP INS-2537: delete before merge
-      - force-fail-slack-alert-test:
-          filters:
-            branches:
-              only:
-                - monitoring-charts-release/vv/INS-2537
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.33"
           kind_node_image: "kindest/node:v1.33.12@sha256:3f5c8443c620245e4d355cfe09e96a91ead32ceaa569d3f1ca9edf0cb2fe2ff4"
