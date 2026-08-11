@@ -1419,7 +1419,7 @@ gcpPricing:
     # data:
     #   - secretKey: credentials.json
     #     remoteRef:
-    #       key: reactiveops.com-infrastructure/staging-eks/insights/gcp-pricing
+    #       key: my-infrastructure/my-cluster/insights/gcp-pricing
     #       property: service_account_json
     data: []
 
