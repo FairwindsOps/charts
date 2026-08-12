@@ -1,7 +1,7 @@
 # Changelog
 
 ## 9.18.4
-* Temporal workers: support `temporalDeployments.<name>.useMigrationCredentials` (same migrator Secret + `POSTGRES_OWNER_ROLE` as CronJobs). Enable on `delete-org-cluster-worker` after owner-role migration so org-delete can `TRUNCATE` partitions owned by `insights_owner`.
+* Temporal workers: support `temporalDeployments.<name>.useMigrationCredentials`.
 
 ## 9.18.3
 * Bumped `insights-api` to `18.4.12`
@@ -10,7 +10,7 @@
 * Bumped `insights-api` to `18.4.10`
 
 ## 9.18.1
-* CronJobs: add `cronjobs.partman-maintenance` (`partman_maintenance`) with optional `useMigrationCredentials` so new pg_partman partitions are owned by `ownerRole` (e.g. `insights_owner`). Partman was removed from `database_cleanup` for the same reason.
+* CronJobs: add `cronjobs.partman-maintenance` (`partman_maintenance`) with optional `useMigrationCredentials` so new pg_partman partitions are owned by `ownerRole`. Partman was removed from `database_cleanup` for the same reason.
 
 ## 9.18.0
 * Bumped `agentChartTarget` to `5.32.0`
