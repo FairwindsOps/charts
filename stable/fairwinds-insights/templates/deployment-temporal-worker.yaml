@@ -1,5 +1,11 @@
 {{ range $name, $options := .Values.temporalDeployments }}
 {{ if $options.enabled }}
+{{- $gcpPricing := $.Values.gcpPricing | default dict }}
+{{- $gcpEnabled := and ($gcpPricing.enabled | default false) (eq $name "general-worker") }}
+{{- $gcpSecretName := include "fairwinds-insights.gcpPricingSecretName" $ | trim }}
+{{- $gcpMountCreds := and $gcpEnabled $gcpSecretName }}
+{{- $gcpCredsKey := $gcpPricing.credentialsSecretKey | default "credentials.json" }}
+{{- $gcpCredsPath := $gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp" }}
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -75,16 +81,6 @@ spec:
           {{- with $options.additionalEnv }}
           {{- toYaml . | nindent 10 }}
           {{- end }}
-          {{- $gcpPricing := $.Values.gcpPricing | default dict }}
-          {{- $gcpExt := $gcpPricing.externalSecret | default dict }}
-          {{- $gcpEnabled := and ($gcpPricing.enabled | default false) (eq $name "general-worker") }}
-          {{- $gcpSecretName := $gcpPricing.credentialsSecretName | default "" }}
-          {{- if and ($gcpExt.create | default false) (not $gcpSecretName) }}
-          {{- $gcpSecretName = $gcpExt.name | default "gcp-pricing-credentials" }}
-          {{- end }}
-          {{- $gcpCredsKey := $gcpPricing.credentialsSecretKey | default "credentials.json" }}
-          {{- $gcpCredsPath := $gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp" }}
-          {{- $gcpMountCreds := and $gcpEnabled $gcpSecretName }}
           {{- if $gcpEnabled }}
           - name: ENABLE_GCP_PRICING
             value: "true"

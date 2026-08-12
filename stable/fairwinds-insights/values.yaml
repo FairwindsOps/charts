@@ -1390,21 +1390,23 @@ temporalDeployments:
 #         - user2@example.com
 temporalSchedulers: []
 
-# -- GCP Cloud Billing / Compute pricing for UpdateGCPCloudPricingWorkflow (general-worker).
+# -- GCP Cloud Billing / Compute pricing for UpdateGCPCloudPricingWorkflow (general-worker). Off by default. With no secret, ADC is used (DefaultTokenSource) and GOOGLE_APPLICATION_CREDENTIALS is not set.
 gcpPricing:
+  # -- Set ENABLE_GCP_PRICING on general-worker
   enabled: false
-  # -- GCP project for Compute machineTypes. Empty: omit GCP_PROJECT_ID (activity skips). Not used for ADC auth.
+  # -- GCP_PROJECT_ID for Compute machineTypes. Optional; the activity skips if unset.
   projectID: ""
-  # -- Secret with the GCP SA JSON. Empty: no mount, ADC without a file (DefaultTokenSource).
+  # -- Existing Secret with the SA JSON. Empty: do not mount (unless externalSecret.create).
   credentialsSecretName: ""
-  # -- Key in that Secret. Empty uses credentials.json
-  credentialsSecretKey: ""
-  # -- Mount path for the Secret. Empty uses /var/run/secrets/gcp
-  credentialsMountPath: ""
+  # -- Key in that Secret
+  credentialsSecretKey: credentials.json
+  # -- Mount path for that Secret
+  credentialsMountPath: /var/run/secrets/gcp
   externalSecret:
+    # -- Create an ExternalSecret for the SA JSON
     create: false
-    # Defaults to credentialsSecretName when empty
-    name: ""
+    # -- ExternalSecret and the Secret it creates. Independent of credentialsSecretName.
+    name: gcp-pricing-credentials-external
     refreshInterval: 1h
     secretStoreRef:
       kind: ClusterSecretStore
