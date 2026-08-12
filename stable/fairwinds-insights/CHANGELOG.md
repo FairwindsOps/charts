@@ -1,7 +1,7 @@
 # Changelog
 
 ## 9.20.1
-* Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow`: ExternalSecret from Vault, mount SA JSON on `general-worker`, set `ENABLE_GCP_PRICING` / `GCP_PROJECT_ID` / `GOOGLE_APPLICATION_CREDENTIALS` (ADC via `DefaultTokenSource`). Disabled by default.
+* Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow` on `general-worker`. `enabled` sets `ENABLE_GCP_PRICING`; `projectID` and SA JSON mount/`GOOGLE_APPLICATION_CREDENTIALS` are optional (ADC via `DefaultTokenSource` when unset). Disabled by default.
 
 ## 9.20.0
 * Bumped `agentChartTarget` to `6.0.0`

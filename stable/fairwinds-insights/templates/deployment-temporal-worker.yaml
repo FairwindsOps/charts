@@ -76,24 +76,33 @@ spec:
           {{- toYaml . | nindent 10 }}
           {{- end }}
           {{- $gcpPricing := $.Values.gcpPricing | default dict }}
+          {{- $gcpExt := $gcpPricing.externalSecret | default dict }}
           {{- $gcpEnabled := and ($gcpPricing.enabled | default false) (eq $name "general-worker") }}
-          {{- if $gcpEnabled }}
-          {{- if not $gcpPricing.projectID }}
-          {{- fail "gcpPricing.enabled is true but gcpPricing.projectID is empty" }}
+          {{- $gcpSecretName := $gcpPricing.credentialsSecretName | default "" }}
+          {{- if and ($gcpExt.create | default false) (not $gcpSecretName) }}
+          {{- $gcpSecretName = $gcpExt.name | default "gcp-pricing-credentials" }}
           {{- end }}
+          {{- $gcpCredsKey := $gcpPricing.credentialsSecretKey | default "credentials.json" }}
+          {{- $gcpCredsPath := $gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp" }}
+          {{- $gcpMountCreds := and $gcpEnabled $gcpSecretName }}
+          {{- if $gcpEnabled }}
           - name: ENABLE_GCP_PRICING
             value: "true"
+          {{- with $gcpPricing.projectID }}
           - name: GCP_PROJECT_ID
-            value: {{ $gcpPricing.projectID | quote }}
+            value: {{ . | quote }}
+          {{- end }}
+          {{- if $gcpMountCreds }}
           - name: GOOGLE_APPLICATION_CREDENTIALS
-            value: {{ printf "%s/%s" ($gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp") ($gcpPricing.credentialsSecretKey | default "credentials.json") | quote }}
+            value: {{ printf "%s/%s" $gcpCredsPath $gcpCredsKey | quote }}
+          {{- end }}
           {{- end }}
           resources:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.resources $options.resources) | nindent 12 }}
           securityContext:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.securityContext $options.securityContext) | nindent 12 }}
           {{- $volumeMounts := default $.Values.temporalDeploymentDefaults.volumeMounts $options.volumeMounts }}
-          {{- if or $volumeMounts $.Values.selfHostedSecret $gcpEnabled }}
+          {{- if or $volumeMounts $.Values.selfHostedSecret $gcpMountCreds }}
           volumeMounts:
             {{- with $volumeMounts }}
             {{- toYaml . | nindent 12 }}
@@ -102,9 +111,9 @@ spec:
             - name: self-hosted-secret
               mountPath: /var/run/secrets/self-hosted
             {{- end }}
-            {{- if $gcpEnabled }}
+            {{- if $gcpMountCreds }}
             - name: gcp-pricing-credentials
-              mountPath: {{ $gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp" }}
+              mountPath: {{ $gcpCredsPath }}
               readOnly: true
             {{- end }}
           {{- end }}
@@ -125,7 +134,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- $volumes := default $.Values.temporalDeploymentDefaults.volumes $options.volumes }}
-      {{- if or $volumes $.Values.selfHostedSecret $gcpEnabled }}
+      {{- if or $volumes $.Values.selfHostedSecret $gcpMountCreds }}
       volumes:
         {{- with $volumes }}
         {{- toYaml . | nindent 8 }}
@@ -135,11 +144,14 @@ spec:
           secret:
             secretName: {{ $.Values.selfHostedSecret }}
         {{- end }}
-        {{- if $gcpEnabled }}
+        {{- if $gcpMountCreds }}
         - name: gcp-pricing-credentials
           secret:
-            secretName: {{ $gcpPricing.credentialsSecretName | default "gcp-pricing-credentials" }}
-            optional: {{ ne $gcpPricing.credentialsSecretOptional false }}
+            secretName: {{ $gcpSecretName }}
+            optional: true
+            items:
+              - key: {{ $gcpCredsKey }}
+                path: {{ $gcpCredsKey }}
         {{- end }}
       {{- end }}
 ---

@@ -1393,15 +1393,14 @@ temporalSchedulers: []
 # -- GCP Cloud Billing / Compute pricing for UpdateGCPCloudPricingWorkflow (general-worker).
 gcpPricing:
   enabled: false
+  # -- GCP project for Compute machineTypes. Empty: omit GCP_PROJECT_ID (activity skips). Not used for ADC auth.
   projectID: ""
-  # -- Secret with the GCP SA JSON. Empty uses gcp-pricing-credentials
+  # -- Secret with the GCP SA JSON. Empty: no mount, ADC without a file (DefaultTokenSource).
   credentialsSecretName: ""
   # -- Key in that Secret. Empty uses credentials.json
   credentialsSecretKey: ""
   # -- Mount path for the Secret. Empty uses /var/run/secrets/gcp
   credentialsMountPath: ""
-  # -- If true, general-worker starts even when the credentials Secret is missing
-  credentialsSecretOptional: true
   externalSecret:
     create: false
     # Defaults to credentialsSecretName when empty
