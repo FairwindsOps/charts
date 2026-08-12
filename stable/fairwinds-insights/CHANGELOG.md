@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.18.4
+* Temporal workers: support `temporalDeployments.<name>.useMigrationCredentials` (same migrator Secret + `POSTGRES_OWNER_ROLE` as CronJobs). Enable on `delete-org-cluster-worker` after owner-role migration so org-delete can `TRUNCATE` partitions owned by `insights_owner`.
+
 ## 9.18.3
 * Bumped `insights-api` to `18.4.12`
 

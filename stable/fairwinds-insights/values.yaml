@@ -1193,6 +1193,11 @@ temporalDeployments:
   delete-org-cluster-worker:
     enabled: true
     command: "delete_organization_and_cluster_worker"
+    # useMigrationCredentials: connect as postgresql.auth.migrationUsername and set
+    # POSTGRES_OWNER_ROLE when ownerRole is configured. Required after owner-role
+    # migration so TruncatePartitionedOrganizationTablesActivity can TRUNCATE
+    # partitions owned by insights_owner.
+    useMigrationCredentials: false
     hpa:
       min: 1
       max: 1
