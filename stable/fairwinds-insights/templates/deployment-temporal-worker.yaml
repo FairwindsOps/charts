@@ -139,7 +139,7 @@ spec:
         - name: gcp-pricing-credentials
           secret:
             secretName: {{ $gcpPricing.credentialsSecretName | default "gcp-pricing-credentials" }}
-            optional: {{ $gcpPricing.credentialsSecretOptional | default false }}
+            optional: {{ ne $gcpPricing.credentialsSecretOptional false }}
         {{- end }}
       {{- end }}
 ---

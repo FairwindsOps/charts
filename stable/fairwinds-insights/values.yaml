@@ -1400,7 +1400,8 @@ gcpPricing:
   credentialsSecretKey: ""
   # -- Mount path for the Secret. Empty uses /var/run/secrets/gcp
   credentialsMountPath: ""
-  credentialsSecretOptional: false
+  # -- If true, general-worker starts even when the credentials Secret is missing
+  credentialsSecretOptional: true
   externalSecret:
     create: false
     # Defaults to credentialsSecretName when empty
