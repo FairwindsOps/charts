@@ -1391,8 +1391,6 @@ temporalDeployments:
 temporalSchedulers: []
 
 # -- GCP Cloud Billing / Compute pricing for UpdateGCPCloudPricingWorkflow (general-worker).
-# Off by default (self-hosted). SaaS sets enabled + projectID and either mounts a Secret
-# or creates an ExternalSecret from Vault; ADC uses GOOGLE_APPLICATION_CREDENTIALS.
 gcpPricing:
   enabled: false
   projectID: ""
