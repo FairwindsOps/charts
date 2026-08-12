@@ -1394,9 +1394,12 @@ temporalSchedulers: []
 gcpPricing:
   enabled: false
   projectID: ""
-  credentialsSecretName: gcp-pricing-credentials
-  credentialsSecretKey: credentials.json
-  credentialsMountPath: /var/run/secrets/gcp
+  # -- Secret with the GCP SA JSON. Empty uses gcp-pricing-credentials
+  credentialsSecretName: ""
+  # -- Key in that Secret. Empty uses credentials.json
+  credentialsSecretKey: ""
+  # -- Mount path for the Secret. Empty uses /var/run/secrets/gcp
+  credentialsMountPath: ""
   credentialsSecretOptional: false
   externalSecret:
     create: false
