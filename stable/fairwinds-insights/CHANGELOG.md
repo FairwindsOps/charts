@@ -4,6 +4,9 @@
 * Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow`: ExternalSecret from Vault, mount SA JSON on `general-worker`, set `ENABLE_GCP_PRICING` / `GCP_PROJECT_ID` / `GOOGLE_APPLICATION_CREDENTIALS` (ADC via `DefaultTokenSource`). Disabled by default.
 * Bumped `agentChartTarget` to `5.33.0`
 
+## 9.18.4
+* Temporal workers: support `temporalDeployments.<name>.useMigrationCredentials`.
+
 ## 9.18.3
 * Bumped `insights-api` to `18.4.12`
 
