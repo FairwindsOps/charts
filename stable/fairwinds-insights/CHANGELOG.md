@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.20.0
+* Bumped `agentChartTarget` to `6.0.0`
+
 ## 9.19.0
 * Bumped `agentChartTarget` to `5.33.0`
 
