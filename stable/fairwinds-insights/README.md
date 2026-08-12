@@ -43,13 +43,17 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobOptions.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars) |
 | cronjobOptions.successfulJobsHistoryLimit | int | `1` | Default successful jobs history limit (overridden per cronjob by cronjobs.<name>.successfulJobsHistoryLimit) |
 | cronjobOptions.failedJobsHistoryLimit | int | `1` | Default failed jobs history limit (overridden per cronjob by cronjobs.<name>.failedJobsHistoryLimit) |
-| cronjobs.action-item-filters-refresh | object | `{"command":"action_items_filters_refresher","schedule":"0/15 * * * *","useMigrationCredentials":false}` | Options for the action-items filters refresher job. useMigrationCredentials: connect as postgresql.auth.migrationUsername and set POSTGRES_OWNER_ROLE when ownerRole is configured (required to REFRESH matviews owned by insights_owner after owner-role migration). |
+| cronjobs.action-item-filters-refresh.command | string | `"action_items_filters_refresher"` |  |
+| cronjobs.action-item-filters-refresh.schedule | string | `"0/15 * * * *"` |  |
+| cronjobs.action-item-filters-refresh.useMigrationCredentials | bool | `false` |  |
 | cronjobs.action-items-statistics | object | `{"command":"action_items_statistics","schedule":"15 * * * *"}` | Options for the action item stats job |
 | cronjobs.benchmark | object | `{"command":"benchmark","schedule":""}` | Options for the benchmark job |
 | cronjobs.update-tickets | object | `{"command":"update_tickets","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"0 * * * *"}` | Options for the update tickets job. |
 | cronjobs.costs-update | object | `{"command":"cloud_costs_update","includeGitHubSecret":true,"resources":{"limits":{"cpu":"500m","memory":"2Gi"},"requests":{"cpu":"500m","memory":"2Gi"}},"schedule":"15 */3 * * *"}` | Options for the cloud costs update job |
 | cronjobs.database-cleanup | object | `{"command":"database_cleanup","schedule":"0 0 * * *"}` | Options for the database cleanup job. |
-| cronjobs.partman-maintenance | object | `{"command":"partman_maintenance","schedule":"30 0 * * *","useMigrationCredentials":false}` | Options for pg_partman maintenance. New partitions are owned by current_user; useMigrationCredentials + ownerRole so children are owned by insights_owner (not the legacy app login). Enable after owner-role migration. |
+| cronjobs.partman-maintenance.command | string | `"partman_maintenance"` |  |
+| cronjobs.partman-maintenance.schedule | string | `"30 0 * * *"` |  |
+| cronjobs.partman-maintenance.useMigrationCredentials | bool | `false` |  |
 | cronjobs.email | object | `{"command":"email_digest","schedule":""}` | Options for the email digest job. |
 | cronjobs.resources-recommendations | object | `{"command":"resources_recommendations","resources":{"limits":{"cpu":1,"memory":"3Gi"},"requests":{"cpu":1,"memory":"3Gi"}},"schedule":"0 2 * * *"}` | Options for the resources recommendations job |
 | cronjobs.saml | object | `{"command":"refresh_saml_metadata","schedule":"0 * * * *"}` | Options for the SAML sync job |

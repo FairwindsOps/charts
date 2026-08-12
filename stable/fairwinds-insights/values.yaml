@@ -104,10 +104,6 @@ cronjobOptions:
   failedJobsHistoryLimit: 1
 
 cronjobs:
-  # -- Options for the action-items filters refresher job.
-  # useMigrationCredentials: connect as postgresql.auth.migrationUsername and set
-  # POSTGRES_OWNER_ROLE when ownerRole is configured (required to REFRESH matviews
-  # owned by insights_owner after owner-role migration).
   action-item-filters-refresh:
     command: action_items_filters_refresher
     schedule: "0/15 * * * *"
@@ -154,9 +150,6 @@ cronjobs:
     command: database_cleanup
     schedule: "0 0 * * *"
 
-  # -- Options for pg_partman maintenance. New partitions are owned by current_user;
-  # useMigrationCredentials + ownerRole so children are owned by insights_owner
-  # (not the legacy app login). Enable after owner-role migration.
   partman-maintenance:
     command: partman_maintenance
     schedule: "30 0 * * *"
@@ -1193,10 +1186,6 @@ temporalDeployments:
   delete-org-cluster-worker:
     enabled: true
     command: "delete_organization_and_cluster_worker"
-    # useMigrationCredentials: connect as postgresql.auth.migrationUsername and set
-    # POSTGRES_OWNER_ROLE when ownerRole is configured. Required after owner-role
-    # migration so TruncatePartitionedOrganizationTablesActivity can TRUNCATE
-    # partitions owned by insights_owner.
     useMigrationCredentials: false
     hpa:
       min: 1
