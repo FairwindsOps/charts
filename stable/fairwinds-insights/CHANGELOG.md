@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.19.0
+* Bumped `agentChartTarget` to `5.33.0`
+
 ## 9.18.4
 * Temporal workers: support `temporalDeployments.<name>.useMigrationCredentials`.
 
