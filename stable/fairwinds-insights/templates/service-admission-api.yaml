@@ -1,0 +1,23 @@
+{{- if .Values.admissionApi.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-admission-api
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    app.kubernetes.io/component: admission-api
+  {{- with .Values.service.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: {{ default .Values.service.type .Values.admissionApi.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "fairwinds-insights.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: admission-api
+{{- end }}

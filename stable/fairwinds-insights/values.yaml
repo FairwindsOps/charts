@@ -350,8 +350,8 @@ api:
   # -- Resources for the API server.
   resources:
     limits:
-      cpu: 1000m
-      memory: 1024Mi
+      cpu: 500m
+      memory: 1Gi
     requests:
       cpu: 250m
       memory: 256Mi
@@ -389,6 +389,76 @@ api:
       value: "5"
     - name: POSTGRES_MAX_OPEN_CONNS
       value: "15"
+
+admissionApi:
+  # -- Deploy a dedicated API Deployment for admission submit traffic (same insights-api image).
+  enabled: true
+  # -- Replica count when HPA is disabled.
+  replicas: 3
+  pdb:
+    # -- Create a pod disruption budget for the admission API server.
+    enabled: false
+    # -- How many replicas should always exist for the admission API server.
+    minReplicas: 1
+  hpa:
+    # -- Create a horizontal pod autoscaler for the admission API server.
+    enabled: false
+    # -- Minimum number of replicas for the admission API server.
+    min: 3
+    # -- Maximum number of replicas for the admission API server.
+    max: 6
+    # -- Scaling metrics
+    metrics:
+      - type: Resource
+        resource:
+          name: cpu
+          target:
+            type: Utilization
+            averageUtilization: 75
+      - type: Resource
+        resource:
+          name: memory
+          target:
+            type: Utilization
+            averageUtilization: 75
+  # -- Resources for the admission API server.
+  resources:
+    limits:
+      cpu: 500m
+      memory: 1Gi
+    requests:
+      cpu: 250m
+      memory: 256Mi
+  # -- Tolerations for the admission API server.
+  tolerations: []
+  # topologySpreadConstraints -- Default TopologySpreadConstraints for the admission API server.
+  topologySpreadConstraints:
+    - maxSkew: 1
+      topologyKey: topology.kubernetes.io/zone
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: admission-api
+          app.kubernetes.io/name: fairwinds-insights
+    - maxSkew: 1
+      topologyKey: kubernetes.io/hostname
+      whenUnsatisfiable: ScheduleAnyway
+      labelSelector:
+        matchLabels:
+          app.kubernetes.io/component: admission-api
+          app.kubernetes.io/name: fairwinds-insights
+  ingress:
+    # -- Route admission submit to this service (independent of api.ingress.enabled).
+    enabled: true
+    # -- Ingress path for admission submit (ALB wildcards when pathType is ImplementationSpecific).
+    path: /v0/organizations/*/clusters/*/data/admission/submit
+    # -- Ingress path type. Use ImplementationSpecific for ALB path wildcards.
+    pathType: ImplementationSpecific
+  service:
+    # -- Service type for the admission API server
+    type:
+  # -- Extra env vars for admission-api only (appended after shared env + api.additionalEnvVars).
+  additionalEnvVars: []
 
 openApi:
   # -- Port for the Open API server to listen on.

@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.21.0
+* Add `admissionApi` Deployment/Service that receives admission submit traffic.
+
 ## 9.20.1
 * Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow` on `general-worker`. Disabled by default. `enabled` sets `ENABLE_GCP_PRICING`; `projectID` and a credentials Secret are optional (ADC when no Secret).
 

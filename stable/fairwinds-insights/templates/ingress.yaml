@@ -40,6 +40,15 @@ spec:
                 port:
                   name: http
           {{- end }}
+          {{- if $.Values.admissionApi.ingress.enabled }}
+          - path: {{ $.Values.admissionApi.ingress.path }}
+            pathType: {{ $.Values.admissionApi.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}-{{ ternary "admission-api" "api" $.Values.admissionApi.enabled }}
+                port:
+                  name: http
+          {{- end }}
           {{- if $.Values.api.ingress.enabled }}
           - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
             pathType: Prefix
@@ -67,7 +76,7 @@ spec:
                   name: http
     {{- end }}
 {{- else }}
-{{- if $.Values.api.ingress.enabled }}
+{{- if or $.Values.api.ingress.enabled $.Values.admissionApi.ingress.enabled }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -100,6 +109,16 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
+          {{- if $.Values.admissionApi.ingress.enabled }}
+          - path: {{ $.Values.admissionApi.ingress.path }}
+            pathType: {{ $.Values.admissionApi.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}-{{ ternary "admission-api" "api" $.Values.admissionApi.enabled }}
+                port:
+                  name: http
+          {{- end }}
+          {{- if $.Values.api.ingress.enabled }}
           - path: {{ $.Values.ingress.starPaths | ternary "/v0*" "/v0" }}
             pathType: Prefix
             backend:
@@ -107,6 +126,7 @@ spec:
                 name: {{ $fullName }}-api
                 port:
                   name: http
+          {{- end }}
     {{- end }}
 {{- end }}
 ---
