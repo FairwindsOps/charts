@@ -1390,6 +1390,36 @@ temporalDeployments:
 #         - user2@example.com
 temporalSchedulers: []
 
+# -- GCP Cloud Billing / Compute pricing for UpdateGCPCloudPricingWorkflow (general-worker). Off by default. With no secret, ADC is used (DefaultTokenSource) and GOOGLE_APPLICATION_CREDENTIALS is not set.
+gcpPricing:
+  # -- Set ENABLE_GCP_PRICING on general-worker
+  enabled: false
+  # -- GCP_PROJECT_ID for Compute machineTypes. Optional; the activity skips if unset.
+  projectID: ""
+  # -- Existing Secret with the SA JSON. Empty: do not mount (unless externalSecret.create).
+  existingSecret: ""
+  # -- Key in that Secret
+  credentialsSecretKey: credentials.json
+  # -- Mount path for that Secret
+  credentialsMountPath: /var/run/secrets/gcp
+  externalSecret:
+    # -- Create an ExternalSecret for the SA JSON
+    create: false
+    # -- ExternalSecret and the Secret it creates
+    name: gcp-pricing-credentials-external
+    refreshInterval: 1h
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: fairwinds-vault-backend
+    annotations: {}
+    # Example:
+    # data:
+    #   - secretKey: credentials.json
+    #     remoteRef:
+    #       key: my-infrastructure/my-cluster/insights/gcp-pricing
+    #       property: service_account_json
+    data: []
+
 # -- Job that creates/updates Temporal schedules from temporalSchedulers
 temporalSchedulersJob:
   image:

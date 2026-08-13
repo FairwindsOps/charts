@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.20.1
+* Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow` on `general-worker`. Disabled by default. `enabled` sets `ENABLE_GCP_PRICING`; `projectID` and a credentials Secret are optional (ADC when no Secret).
+
 ## 9.20.0
 * Bumped `agentChartTarget` to `6.0.0`
 
