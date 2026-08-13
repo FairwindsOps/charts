@@ -1397,7 +1397,7 @@ gcpPricing:
   # -- GCP_PROJECT_ID for Compute machineTypes. Optional; the activity skips if unset.
   projectID: ""
   # -- Existing Secret with the SA JSON. Empty: do not mount (unless externalSecret.create).
-  credentialsSecretName: ""
+  existingSecret: ""
   # -- Key in that Secret
   credentialsSecretKey: credentials.json
   # -- Mount path for that Secret
@@ -1405,7 +1405,7 @@ gcpPricing:
   externalSecret:
     # -- Create an ExternalSecret for the SA JSON
     create: false
-    # -- ExternalSecret and the Secret it creates. Independent of credentialsSecretName.
+    # -- ExternalSecret and the Secret it creates
     name: gcp-pricing-credentials-external
     refreshInterval: 1h
     secretStoreRef:

@@ -327,7 +327,7 @@ https://insights.fairwinds.com
 {{/*
 Secret name for GCP pricing credentials.
 ESO path: externalSecret.name (default gcp-pricing-credentials-external).
-Existing Secret path: credentialsSecretName (empty means do not mount).
+Existing Secret path: existingSecret (empty means do not mount).
 */}}
 {{- define "fairwinds-insights.gcpPricingSecretName" -}}
 {{- $p := .Values.gcpPricing | default dict -}}
@@ -335,7 +335,7 @@ Existing Secret path: credentialsSecretName (empty means do not mount).
 {{- if $ext.create -}}
 {{- $ext.name | default "gcp-pricing-credentials-external" -}}
 {{- else -}}
-{{- $p.credentialsSecretName -}}
+{{- $p.existingSecret -}}
 {{- end -}}
 {{- end -}}
 
