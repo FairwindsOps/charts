@@ -105,7 +105,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
 | api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
-| api.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"500m","memory":"1Gi"}}` | Resources for the API server. |
+| api.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
 | api.topologySpreadConstraints[0].maxSkew | int | `1` |  |
@@ -133,7 +133,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | admissionApi.hpa.min | int | `3` | Minimum number of replicas for the admission API server. |
 | admissionApi.hpa.max | int | `6` | Maximum number of replicas for the admission API server. |
 | admissionApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
-| admissionApi.resources | object | `{"limits":{"cpu":2,"memory":"4Gi"},"requests":{"cpu":2,"memory":"4Gi"}}` | Resources for the admission API server. |
+| admissionApi.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the admission API server. |
 | admissionApi.tolerations | list | `[]` | Tolerations for the admission API server. |
 | admissionApi.topologySpreadConstraints[0].maxSkew | int | `1` |  |
 | admissionApi.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
