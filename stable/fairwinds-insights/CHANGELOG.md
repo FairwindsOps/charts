@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.21.2
+* Temporal: add `database-maintainer-worker` (`database_maintainer_worker`) for owner-only DB work (on-demand image-vulnerabilities matview refresh)
+
 ## 9.21.1
 * Bumped `insights-api` to `18.4.16`
 
