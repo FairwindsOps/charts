@@ -1433,6 +1433,30 @@ temporalDeployments:
         value: "6"
       - name: ENABLE_APP_GROUP_HEALTH_FOR_REPORT_WORKFLOW
         value: "false"
+  # REFRESH MATERIALIZED VIEW needs ownerRole. Enable useMigrationCredentials in SaaS.
+  image-vulns-refresh-worker:
+    enabled: true
+    command: "image_vulnerabilities_refresh_worker"
+    useMigrationCredentials: false
+    hpa:
+      min: 1
+      max: 1
+      metrics: []
+    pdb:
+      enabled: false
+    resources:
+      requests:
+        cpu: 50m
+        memory: 128Mi
+      limits:
+        cpu: 200m
+        memory: 256Mi
+    args: []
+    additionalEnv:
+      - name: POSTGRES_MAX_IDLE_CONNS
+        value: "1"
+      - name: POSTGRES_MAX_OPEN_CONNS
+        value: "3"
   # Example: Add more temporal workers like this:
   # report-processor-worker:
   #   enabled: false
