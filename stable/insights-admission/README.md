@@ -8,6 +8,9 @@ This is an Admission Controller to reject deployment of objects into your Kubern
 
 A valid TLS certificate is required for this admission controller to work. If you have cert-manager installed then everything should work out of the box. If you don't use cert-manager and don't want to install it then you can supply a CA Bundle with the `caBundle` parameter and create a TLS secret and pass the name of that secret as `secretName`.
 
+## Changes in 2.0.0
+The default image now comes from Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/oss/insights-admission-controller`) instead of Quay, pinned to immutable semver (`2.3.20`). If you mirror images or allow registries explicitly, update your configuration before upgrading.
+
 ```bash
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
 helm install insights-admission fairwinds-stable/insights-admission \
@@ -65,7 +68,7 @@ rules:
 | webhookConfig.mutating.enable | bool | `false` | Enable the mutating webhook, which uses settings defined in webhookConfig values. |
 | pluto.targetVersions | string | `""` | Pluto target versions specified as key=value[,key=value...]. These supersede all defaults in Pluto version files. If unset, the `k8s` component will use the current Kubernetes cluster version. For example: k8s=v1.20.0,cert-manager=v1.8.0 |
 | resources | object | `{"limits":{"cpu":1,"memory":"2Gi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | A resources block for the controller. |
-| image.repository | string | `"quay.io/fairwinds/insights-admission-controller"` | Repository for the Insights Admission Controller image |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/insights-admission-controller"` | Repository for the Insights Admission Controller image |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as 'Always' |
 | image.tag | string | `""` | The Insights admission controller tag to use. Defaults to the Chart's AppVersion |
 | imagePullSecrets | list | `[]` | Secrets to use when pulling this image. |

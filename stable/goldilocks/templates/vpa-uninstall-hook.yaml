@@ -62,7 +62,7 @@ spec:
       serviceAccountName: {{ include "goldilocks.fullname" . }}-vpa-uninstall
       containers:
       - name: vpa-uninstall
-        image: quay.io/reactiveops/ci-images:v9-alpine
+        image: us-docker.pkg.dev/fairwinds-ops/oss/ci-images:v9-alpine
         command: ["bash"]
         args:
           - -c

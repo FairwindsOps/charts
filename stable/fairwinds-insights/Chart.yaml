@@ -1,8 +1,8 @@
 apiVersion: v2
-appVersion: "18.4.4"
+appVersion: "18.4.12"
 description: A Helm chart to run the Fairwinds Insights server
 name: fairwinds-insights
-version: 9.15.1
+version: 9.20.1
 kubeVersion: ">= 1.22.0-0"
 maintainers:
   - name: rbren
@@ -10,7 +10,7 @@ maintainers:
   - name: jdesouza
 dependencies:
   - name: rustfs
-    version: 0.8.0
+    version: 0.12.0
     repository: https://charts.rustfs.com/
     condition: rustfs.install
   - name: temporal

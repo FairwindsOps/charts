@@ -3,6 +3,9 @@ target-branch: master
 chart-dirs:
   - stable
   - incubator
+# Deprecated and unmaintained
+excluded-charts:
+  - opa
 chart-repos:
   - "jetstack=https://charts.jetstack.io"
   - "fairwinds-stable=https://charts.fairwinds.com/stable"

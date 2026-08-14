@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.0
+* **Breaking:** Default image repository is now `us-docker.pkg.dev/fairwinds-ops/oss/insights-admission-controller` instead of Quay. AppVersion pinned to `2.3.20`.
+
 ## 1.13.0
 * Bumped admission controller image to `2.3` (insights-plugins admission `2.3.19`)
 

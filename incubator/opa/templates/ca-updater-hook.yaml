@@ -24,7 +24,7 @@ spec:
       serviceAccountName: {{ include "opa.fullname" . }}
       containers:
       - name: start-job-from-cronjob
-        image: quay.io/reactiveops/ci-images:v8-alpine
+        image: us-docker.pkg.dev/fairwinds-ops/oss/ci-images:v8-alpine
         command: ["bash"]
         args:
           - -c

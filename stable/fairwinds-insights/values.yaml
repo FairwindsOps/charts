@@ -45,7 +45,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 5.30.0
+  agentChartTargetVersion: 6.0.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -104,10 +104,10 @@ cronjobOptions:
   failedJobsHistoryLimit: 1
 
 cronjobs:
-  # -- Options for the action-items filters refresher job.
   action-item-filters-refresh:
     command: action_items_filters_refresher
     schedule: "0/15 * * * *"
+    useMigrationCredentials: false
 
   # -- Options for the action item stats job
   action-items-statistics:
@@ -150,6 +150,11 @@ cronjobs:
     command: database_cleanup
     schedule: "0 0 * * *"
 
+  partman-maintenance:
+    command: partman_maintenance
+    schedule: "30 0 * * *"
+    useMigrationCredentials: false
+
   # -- Options for the email digest job.
   email:
     command: email_digest
@@ -188,14 +193,17 @@ cronjobs:
     schedule: "*/30 * * * *"
 
   # -- Options for the image-vulns-refresh job.
+  # useMigrationCredentials: same as action-item-filters-refresh (REFRESH matviews as owner).
   image-vulns-refresh:
     command: image_vulnerabilities_refresher
     schedule: "*/30 * * * *"
+    useMigrationCredentials: false
 
   # -- Options for the image-vulnerabilities-on-demand-refresher
   img-vulns-on-demand-refresh:
     command: image_vulnerabilities_on_demand_refresher
     schedule: "*/2 * * * *"
+    useMigrationCredentials: false
 
   # -- Options for the sync-action-items-iac-files cronjob.
   sync-action-items-iac-files:
@@ -1178,6 +1186,7 @@ temporalDeployments:
   delete-org-cluster-worker:
     enabled: true
     command: "delete_organization_and_cluster_worker"
+    useMigrationCredentials: false
     hpa:
       min: 1
       max: 1
@@ -1380,6 +1389,36 @@ temporalDeployments:
 #         - user1@example.com
 #         - user2@example.com
 temporalSchedulers: []
+
+# -- GCP Cloud Billing / Compute pricing for UpdateGCPCloudPricingWorkflow (general-worker). Off by default. With no secret, ADC is used (DefaultTokenSource) and GOOGLE_APPLICATION_CREDENTIALS is not set.
+gcpPricing:
+  # -- Set ENABLE_GCP_PRICING on general-worker
+  enabled: false
+  # -- GCP_PROJECT_ID for Compute machineTypes. Optional; the activity skips if unset.
+  projectID: ""
+  # -- Existing Secret with the SA JSON. Empty: do not mount (unless externalSecret.create).
+  existingSecret: ""
+  # -- Key in that Secret
+  credentialsSecretKey: credentials.json
+  # -- Mount path for that Secret
+  credentialsMountPath: /var/run/secrets/gcp
+  externalSecret:
+    # -- Create an ExternalSecret for the SA JSON
+    create: false
+    # -- ExternalSecret and the Secret it creates
+    name: gcp-pricing-credentials-external
+    refreshInterval: 1h
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: fairwinds-vault-backend
+    annotations: {}
+    # Example:
+    # data:
+    #   - secretKey: credentials.json
+    #     remoteRef:
+    #       key: my-infrastructure/my-cluster/insights/gcp-pricing
+    #       property: service_account_json
+    data: []
 
 # -- Job that creates/updates Temporal schedules from temporalSchedulers
 temporalSchedulersJob:

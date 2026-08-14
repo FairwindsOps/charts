@@ -2,7 +2,7 @@ apiVersion: v1
 appVersion: "v0.6.0"
 description: A Helm chart for running Fairwinds Custom Metrics
 name: fairwinds-metrics
-version: 0.6.0
+version: 0.6.1
 maintainers:
   - name: sudermanjr
   - name: lucasreed

@@ -324,3 +324,18 @@ https://insights.fairwinds.com
 {{- if (dig "keda" "enabled" $default $options) -}}true{{- else -}}false{{- end -}}
 {{- end -}}
 
+{{/*
+Secret name for GCP pricing credentials.
+ESO path: externalSecret.name (default gcp-pricing-credentials-external).
+Existing Secret path: existingSecret (empty means do not mount).
+*/}}
+{{- define "fairwinds-insights.gcpPricingSecretName" -}}
+{{- $p := .Values.gcpPricing | default dict -}}
+{{- $ext := $p.externalSecret | default dict -}}
+{{- if $ext.create -}}
+{{- $ext.name | default "gcp-pricing-credentials-external" -}}
+{{- else -}}
+{{- $p.existingSecret -}}
+{{- end -}}
+{{- end -}}
+

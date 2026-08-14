@@ -27,7 +27,7 @@ Also, if you don't need the istio root CA expire check and want to limit the RBA
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| image.repository | string | `"quay.io/fairwinds/custom-metrics"` | Repository for the custom-metrics image |
+| image.repository | string | `"us-docker.pkg.dev/fairwinds-ops/oss/custom-metrics"` | Repository for the custom-metrics image |
 | image.tag | string | `"v0.6.0"` | The custom-metrics image tag to use |
 | image.pullPolicy | string | `"Always"` | imagePullPolicy - Highly recommended to leave this as `Always` |
 | nameOverride | string | `""` |  |

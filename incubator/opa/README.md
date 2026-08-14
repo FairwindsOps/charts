@@ -1,5 +1,7 @@
 # OPA Chart
 
+> **DEPRECATED AND UNMAINTAINED.** This chart cannot be installed on Kubernetes 1.25 or newer: it renders deprecated and/or removed resources. It is excluded from CI and may be removed from this repository in a future release. Use Fairwinds Insights instead.
+
 This chart will install the OPA controller and validating webhook to utilize it. It includes a default set of policies and allows the installation of additional policy.
 
 ## How Does This Work?

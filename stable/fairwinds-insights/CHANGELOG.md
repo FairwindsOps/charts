@@ -1,5 +1,47 @@
 # Changelog
 
+## 9.20.1
+* Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow` on `general-worker`. Disabled by default. `enabled` sets `ENABLE_GCP_PRICING`; `projectID` and a credentials Secret are optional (ADC when no Secret).
+
+## 9.20.0
+* Bumped `agentChartTarget` to `6.0.0`
+
+## 9.19.0
+* Bumped `agentChartTarget` to `5.33.0`
+
+## 9.18.4
+* Temporal workers: support `temporalDeployments.<name>.useMigrationCredentials`.
+
+## 9.18.3
+* Bumped `insights-api` to `18.4.12`
+
+## 9.18.2
+* Bumped `insights-api` to `18.4.10`
+
+## 9.18.1
+* CronJobs: add `cronjobs.partman-maintenance` (`partman_maintenance`) with optional `useMigrationCredentials` so new pg_partman partitions are owned by `ownerRole`. Partman was removed from `database_cleanup` for the same reason.
+
+## 9.18.0
+* Bumped `agentChartTarget` to `5.32.0`
+
+## 9.17.1
+* Bumped `insights-api` to `18.4.9`
+
+## 9.17.0
+* Bumped `agentChartTarget` to `5.31.0`
+
+## 9.16.0
+* Bumped `rustfs` to `0.12.0`
+
+## 9.15.4
+* CronJobs: optional `cronjobs.<name>.useMigrationCredentials` — uses migrator Secret + `POSTGRES_OWNER_ROLE` (same as migrate Job). Enable for matview refresh jobs after owner-role migration (`action-item-filters-refresh`, `image-vulns-refresh`, `img-vulns-on-demand-refresh`). Also `cronjobs.partman-maintenance` for pg_partman (new partitions owned by ownerRole).
+
+## 9.15.3
+* Bumped `insights-api` to `18.4.6`
+
+## 9.15.2
+* Bumped `insights-api` to `18.4.5`
+
 ## 9.15.1
 * Bumped `insights-api` to `18.4.4`
 
