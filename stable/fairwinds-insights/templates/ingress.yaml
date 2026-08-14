@@ -1,5 +1,9 @@
 {{- if .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
+{{/* Admission submit path is added only when admissionApi.enabled and admissionApi.ingress.enabled. */}}
+{{- $admissionPath := and .Values.admissionApi.enabled .Values.admissionApi.ingress.enabled -}}
+{{- $catchAllStars := or .Values.ingress.starPaths $admissionPath -}}
+{{- $catchAllPathType := $admissionPath | ternary "ImplementationSpecific" "Prefix" -}}
 {{- if not .Values.ingress.separate }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -40,9 +44,18 @@ spec:
                 port:
                   name: http
           {{- end }}
+          {{- if $admissionPath }}
+          - path: {{ $.Values.admissionApi.ingress.path }}
+            pathType: {{ $.Values.admissionApi.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}-admission-api
+                port:
+                  name: http
+          {{- end }}
           {{- if $.Values.api.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
-            pathType: Prefix
+          - path: {{ $catchAllStars | ternary "/v0/*" "/v0" }}
+            pathType: {{ $catchAllPathType }}
             backend:
               service:
                 name: {{ $fullName }}-api
@@ -58,8 +71,8 @@ spec:
                 port:
                   name: http
           {{- end }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
-            pathType: Prefix
+          - path: {{ $catchAllStars | ternary "/*" "/" }}
+            pathType: {{ $catchAllPathType }}
             backend:
               service:
                 name: {{ $fullName }}-dashboard
@@ -67,7 +80,7 @@ spec:
                   name: http
     {{- end }}
 {{- else }}
-{{- if $.Values.api.ingress.enabled }}
+{{- if or $.Values.api.ingress.enabled $admissionPath }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -100,13 +113,24 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0*" "/v0" }}
-            pathType: Prefix
+          {{- if $admissionPath }}
+          - path: {{ $.Values.admissionApi.ingress.path }}
+            pathType: {{ $.Values.admissionApi.ingress.pathType }}
+            backend:
+              service:
+                name: {{ $fullName }}-admission-api
+                port:
+                  name: http
+          {{- end }}
+          {{- if $.Values.api.ingress.enabled }}
+          - path: {{ $catchAllStars | ternary "/v0*" "/v0" }}
+            pathType: {{ $catchAllPathType }}
             backend:
               service:
                 name: {{ $fullName }}-api
                 port:
                   name: http
+          {{- end }}
     {{- end }}
 {{- end }}
 ---
