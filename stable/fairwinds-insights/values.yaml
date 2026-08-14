@@ -1434,7 +1434,7 @@ temporalDeployments:
       - name: ENABLE_APP_GROUP_HEALTH_FOR_REPORT_WORKFLOW
         value: "false"
   database-maintainer-worker:
-    enabled: false
+    enabled: true
     command: "database_maintainer_worker"
     useMigrationCredentials: false
     hpa:
