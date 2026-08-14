@@ -105,7 +105,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.hpa.min | int | `2` | Minimum number of replicas for the API server. |
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
 | api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
-| api.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
+| api.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
 | api.nodeSelector | object | `{}` | Node Selector for the API server. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
 | api.topologySpreadConstraints[0].maxSkew | int | `1` |  |
@@ -125,6 +125,31 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.additionalEnvVars[0].value | string | `"5"` |  |
 | api.additionalEnvVars[1].name | string | `"POSTGRES_MAX_OPEN_CONNS"` |  |
 | api.additionalEnvVars[1].value | string | `"15"` |  |
+| admissionApi.enabled | bool | `false` | Deploy a dedicated API Deployment to handle admission submit traffic. |
+| admissionApi.replicas | int | `3` | Replica count when HPA is disabled. |
+| admissionApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the admission API server. |
+| admissionApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the admission API server. |
+| admissionApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the admission API server. |
+| admissionApi.hpa.min | int | `3` | Minimum number of replicas for the admission API server. |
+| admissionApi.hpa.max | int | `6` | Maximum number of replicas for the admission API server. |
+| admissionApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
+| admissionApi.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the admission API server. |
+| admissionApi.tolerations | list | `[]` | Tolerations for the admission API server. |
+| admissionApi.topologySpreadConstraints[0].maxSkew | int | `1` |  |
+| admissionApi.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
+| admissionApi.topologySpreadConstraints[0].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| admissionApi.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"admission-api"` |  |
+| admissionApi.topologySpreadConstraints[0].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| admissionApi.topologySpreadConstraints[1].maxSkew | int | `1` |  |
+| admissionApi.topologySpreadConstraints[1].topologyKey | string | `"kubernetes.io/hostname"` |  |
+| admissionApi.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
+| admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"admission-api"` |  |
+| admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| admissionApi.ingress.enabled | bool | `false` | Add the admission submit ingress path to *-admission-api. |
+| admissionApi.ingress.path | string | `"/v0/organizations/*/clusters/*/data/admission/submit"` | Ingress path for admission submit (ALB wildcards when pathType is ImplementationSpecific). |
+| admissionApi.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Use ImplementationSpecific for ALB path wildcards. |
+| admissionApi.service.type | string | `nil` | Service type for the admission API server |
+| admissionApi.additionalEnvVars | list | `[]` | Extra env vars for admission-api only (appended after shared env + api.additionalEnvVars). |
 | openApi.port | int | `8080` | Port for the Open API server to listen on. |
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
