@@ -125,14 +125,14 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.additionalEnvVars[0].value | string | `"5"` |  |
 | api.additionalEnvVars[1].name | string | `"POSTGRES_MAX_OPEN_CONNS"` |  |
 | api.additionalEnvVars[1].value | string | `"15"` |  |
-| admissionApi.enabled | bool | `true` | Deploy a dedicated API Deployment for admission submit traffic (same insights-api image). |
+| admissionApi.enabled | bool | `false` | Deploy a dedicated API Deployment to handle admission submit traffic. |
 | admissionApi.replicas | int | `3` | Replica count when HPA is disabled. |
 | admissionApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the admission API server. |
 | admissionApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the admission API server. |
 | admissionApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the admission API server. |
 | admissionApi.hpa.min | int | `3` | Minimum number of replicas for the admission API server. |
 | admissionApi.hpa.max | int | `6` | Maximum number of replicas for the admission API server. |
-| admissionApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
+| admissionApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | admissionApi.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the admission API server. |
 | admissionApi.tolerations | list | `[]` | Tolerations for the admission API server. |
 | admissionApi.topologySpreadConstraints[0].maxSkew | int | `1` |  |
@@ -145,7 +145,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | admissionApi.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"admission-api"` |  |
 | admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
-| admissionApi.ingress.enabled | bool | `true` | Route admission submit to this service (independent of api.ingress.enabled). |
+| admissionApi.ingress.enabled | bool | `false` | Add the admission submit ingress path to *-admission-api. |
 | admissionApi.ingress.path | string | `"/v0/organizations/*/clusters/*/data/admission/submit"` | Ingress path for admission submit (ALB wildcards when pathType is ImplementationSpecific). |
 | admissionApi.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Use ImplementationSpecific for ALB path wildcards. |
 | admissionApi.service.type | string | `nil` | Service type for the admission API server |

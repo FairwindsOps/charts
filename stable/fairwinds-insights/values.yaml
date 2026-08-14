@@ -391,8 +391,8 @@ api:
       value: "15"
 
 admissionApi:
-  # -- Deploy a dedicated API Deployment for admission submit traffic (same insights-api image).
-  enabled: true
+  # -- Deploy a dedicated API Deployment to handle admission submit traffic.
+  enabled: false
   # -- Replica count when HPA is disabled.
   replicas: 3
   pdb:
@@ -414,13 +414,13 @@ admissionApi:
           name: cpu
           target:
             type: Utilization
-            averageUtilization: 75
+            averageUtilization: 80
       - type: Resource
         resource:
           name: memory
           target:
             type: Utilization
-            averageUtilization: 75
+            averageUtilization: 80
   # -- Resources for the admission API server.
   resources:
     limits:
@@ -448,8 +448,8 @@ admissionApi:
           app.kubernetes.io/component: admission-api
           app.kubernetes.io/name: fairwinds-insights
   ingress:
-    # -- Route admission submit to this service (independent of api.ingress.enabled).
-    enabled: true
+    # -- Add the admission submit ingress path to *-admission-api.
+    enabled: false
     # -- Ingress path for admission submit (ALB wildcards when pathType is ImplementationSpecific).
     path: /v0/organizations/*/clusters/*/data/admission/submit
     # -- Ingress path type. Use ImplementationSpecific for ALB path wildcards.

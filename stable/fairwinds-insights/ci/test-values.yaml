@@ -67,20 +67,6 @@ api:
     ingress:
       enabled: true
 
-admissionApi:
-  enabled: true
-  replicas: 1
-  pdb:
-    enabled: false
-  hpa:
-    enabled: false
-  resources:
-    limits:
-      cpu: 100m
-      memory: 128Mi
-    requests:
-      cpu: 50m
-      memory: 64Mi
 
 alertsCronjob:
   schedules: []

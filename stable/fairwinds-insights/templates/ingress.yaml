@@ -1,14 +1,9 @@
 {{- if .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
-{{/*
-The admission path needs wildcards in the middle, so it can only be expressed as
-ImplementationSpecific. The AWS LB controller orders Exact, then Prefix (longest
-first), then ImplementationSpecific - so any Prefix catch-all would shadow it.
-When the admission path is routed, the catch-alls become ImplementationSpecific
-star paths too, which keeps them below it in the manifest order the controller honors.
-*/}}
-{{- $catchAllStars := or .Values.ingress.starPaths .Values.admissionApi.ingress.enabled -}}
-{{- $catchAllPathType := .Values.admissionApi.ingress.enabled | ternary "ImplementationSpecific" "Prefix" -}}
+{{/* Admission submit path is added only when admissionApi.enabled and admissionApi.ingress.enabled. */}}
+{{- $admissionPath := and .Values.admissionApi.enabled .Values.admissionApi.ingress.enabled -}}
+{{- $catchAllStars := or .Values.ingress.starPaths $admissionPath -}}
+{{- $catchAllPathType := $admissionPath | ternary "ImplementationSpecific" "Prefix" -}}
 {{- if not .Values.ingress.separate }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -49,12 +44,12 @@ spec:
                 port:
                   name: http
           {{- end }}
-          {{- if $.Values.admissionApi.ingress.enabled }}
+          {{- if $admissionPath }}
           - path: {{ $.Values.admissionApi.ingress.path }}
             pathType: {{ $.Values.admissionApi.ingress.pathType }}
             backend:
               service:
-                name: {{ $fullName }}-{{ ternary "admission-api" "api" $.Values.admissionApi.enabled }}
+                name: {{ $fullName }}-admission-api
                 port:
                   name: http
           {{- end }}
@@ -85,7 +80,7 @@ spec:
                   name: http
     {{- end }}
 {{- else }}
-{{- if or $.Values.api.ingress.enabled $.Values.admissionApi.ingress.enabled }}
+{{- if or $.Values.api.ingress.enabled $admissionPath }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -118,12 +113,12 @@ spec:
     - host: {{ include "fairwinds-insights.sanitizedPrefix" $ }}{{ . }}
       http:
         paths:
-          {{- if $.Values.admissionApi.ingress.enabled }}
+          {{- if $admissionPath }}
           - path: {{ $.Values.admissionApi.ingress.path }}
             pathType: {{ $.Values.admissionApi.ingress.pathType }}
             backend:
               service:
-                name: {{ $fullName }}-{{ ternary "admission-api" "api" $.Values.admissionApi.enabled }}
+                name: {{ $fullName }}-admission-api
                 port:
                   name: http
           {{- end }}
