@@ -1433,10 +1433,9 @@ temporalDeployments:
         value: "6"
       - name: ENABLE_APP_GROUP_HEALTH_FOR_REPORT_WORKFLOW
         value: "false"
-  # REFRESH MATERIALIZED VIEW needs ownerRole. Enable useMigrationCredentials in SaaS.
-  image-vulns-refresh-worker:
+  database-maintainer-worker:
     enabled: true
-    command: "image_vulnerabilities_refresh_worker"
+    command: "database_maintainer_worker"
     useMigrationCredentials: false
     hpa:
       min: 1

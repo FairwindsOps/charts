@@ -1,7 +1,7 @@
 # Changelog
 
 ## 9.21.1
-* Temporal: add `image-vulns-refresh-worker` (`image_vulnerabilities_refresh_worker`) for on-demand image-vulnerabilities matview refresh.
+* Temporal: add `database-maintainer-worker` (`database_maintainer_worker`) for owner-only DB work (on-demand image-vulnerabilities matview refresh)
 
 ## 9.21.0
 * Add `admissionApi` Deployment/Service that receives admission submit traffic in a separated workload.
