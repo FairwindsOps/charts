@@ -1,5 +1,14 @@
 {{- if .Values.ingress.enabled }}
 {{- $fullName := include "fairwinds-insights.fullname" . -}}
+{{/*
+The admission path needs wildcards in the middle, so it can only be expressed as
+ImplementationSpecific. The AWS LB controller orders Exact, then Prefix (longest
+first), then ImplementationSpecific - so any Prefix catch-all would shadow it.
+When the admission path is routed, the catch-alls become ImplementationSpecific
+star paths too, which keeps them below it in the manifest order the controller honors.
+*/}}
+{{- $catchAllStars := or .Values.ingress.starPaths .Values.admissionApi.ingress.enabled -}}
+{{- $catchAllPathType := .Values.admissionApi.ingress.enabled | ternary "ImplementationSpecific" "Prefix" -}}
 {{- if not .Values.ingress.separate }}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
@@ -50,8 +59,8 @@ spec:
                   name: http
           {{- end }}
           {{- if $.Values.api.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0/*" "/v0" }}
-            pathType: Prefix
+          - path: {{ $catchAllStars | ternary "/v0/*" "/v0" }}
+            pathType: {{ $catchAllPathType }}
             backend:
               service:
                 name: {{ $fullName }}-api
@@ -67,8 +76,8 @@ spec:
                 port:
                   name: http
           {{- end }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/*" "/" }}
-            pathType: Prefix
+          - path: {{ $catchAllStars | ternary "/*" "/" }}
+            pathType: {{ $catchAllPathType }}
             backend:
               service:
                 name: {{ $fullName }}-dashboard
@@ -119,8 +128,8 @@ spec:
                   name: http
           {{- end }}
           {{- if $.Values.api.ingress.enabled }}
-          - path: {{ $.Values.ingress.starPaths | ternary "/v0*" "/v0" }}
-            pathType: Prefix
+          - path: {{ $catchAllStars | ternary "/v0*" "/v0" }}
+            pathType: {{ $catchAllPathType }}
             backend:
               service:
                 name: {{ $fullName }}-api

@@ -2,6 +2,7 @@
 
 ## 9.21.0
 * Add `admissionApi` Deployment/Service that receives admission submit traffic.
+* When `admissionApi.ingress.enabled`, the `/v0` and `/` ingress paths become `ImplementationSpecific` star paths so the AWS LB controller keeps them below the admission rule instead of shadowing it.
 
 ## 9.20.1
 * Add optional `gcpPricing` for Temporal `UpdateGCPCloudPricingWorkflow` on `general-worker`. Disabled by default. `enabled` sets `ENABLE_GCP_PRICING`; `projectID` and a credentials Secret are optional (ADC when no Secret).
