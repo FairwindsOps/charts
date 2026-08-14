@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.21.1
+* Bumped `insights-api` to `18.4.16`
+
 ## 9.21.0
 * Add `admissionApi` Deployment/Service that receives admission submit traffic in a separated workload.
 
