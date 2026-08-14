@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.2.0
+* Bumped `trivy` to `0.25.0`
+
+## 6.1.0
+* Bumped `prometheus` to `29.21.*`
+
 ## 6.0.0
 * **Breaking:** Default plugin images now come from Google Artifact Registry (`us-docker.pkg.dev/fairwinds-ops/oss/...`) instead of Quay. Defaults are pinned to immutable semver tags.
 * Bumped `insights-admission` chart to `2.0.*`
