@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.21.4
+* Bumped `insights-api` to `18.4.17`
+
 ## 9.21.3
 * Add HorizontalPodAutoscaler for `admissionApi` (`hpa-admission-api.yaml`), targeting `*-admission-api`.
 
