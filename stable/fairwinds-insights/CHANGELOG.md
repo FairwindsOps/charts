@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.21.3
+* Enable `database-maintainer-worker` by default
+
 ## 9.21.2
 * Temporal: add `database-maintainer-worker` (`database_maintainer_worker`) for owner-only DB work (on-demand image-vulnerabilities matview refresh)
 
