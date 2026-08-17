@@ -1,0 +1,18 @@
+{{- if and .Values.admissionApi.enabled .Values.admissionApi.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "fairwinds-insights.fullname" . }}-admission-api-hpa
+  labels:
+    {{- include "fairwinds-insights.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: admission-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "fairwinds-insights.fullname" . }}-admission-api
+  minReplicas: {{ .Values.admissionApi.hpa.min }}
+  maxReplicas: {{ .Values.admissionApi.hpa.max }}
+  metrics:
+  {{- toYaml .Values.admissionApi.hpa.metrics | nindent 4 }}
+{{- end }}
