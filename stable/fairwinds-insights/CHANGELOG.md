@@ -1,7 +1,13 @@
 # Changelog
 
-## 9.21.3
+## 9.21.5
 * Enable `database-maintainer-worker` by default
+
+## 9.21.4
+* Bumped `insights-api` to `18.4.17`
+
+## 9.21.3
+* Add HorizontalPodAutoscaler for `admissionApi` (`hpa-admission-api.yaml`), targeting `*-admission-api`.
 
 ## 9.21.2
 * Temporal: add `database-maintainer-worker` (`database_maintainer_worker`) for owner-only DB work (on-demand image-vulnerabilities matview refresh)
