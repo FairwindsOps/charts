@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.21.3
+* Add HorizontalPodAutoscaler for `admissionApi` (`hpa-admission-api.yaml`), targeting `*-admission-api`.
+
 ## 9.21.2
 * Temporal: add `database-maintainer-worker` (`database_maintainer_worker`) for owner-only DB work (on-demand image-vulnerabilities matview refresh)
 
