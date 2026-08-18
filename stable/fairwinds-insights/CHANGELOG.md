@@ -4,6 +4,15 @@
 * **BREAKING:** PostgreSQL and Timescale share one secret-ownership model (Existing / External / Chart-managed). `existing*` defaults are empty; Secret keys are fixed (`password`, not `postgresql-password` / `timescale-password` / `secretKeys`); Timescale is not coupled to the PostgreSQL Secret; split migration is a second Secret; `timescale.password` / `superuserpassword` move under `timescale.auth`; `timescale.secrets` is removed; ExternalSecret `create: true` wires the app to `fwinsights-*`; managed credential Secrets use `helm.sh/resource-policy: keep`.
 * **Migration guide:** [MIGRATION-9-to-10.md](./MIGRATION-9-to-10.md)
 
+## 9.22.1
+* `admissionApi` no longer inherits `api.port`, `api.additionalEnvVars`, or `api.securityContext`. Configure those under `admissionApi` instead.
+
+## 9.22.0
+* Bumped `agentChartTarget` to `6.2.0`
+
+## 9.21.6
+* Bumped `insights-api` to `18.4.18`
+
 ## 9.21.5
 * Enable `database-maintainer-worker` by default
 

@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.4.0
+* Bumped `goldilocks` to `10.5.*`
+
 ## 6.3.0
 * Bumped `prometheus` to `29.23.*`
 

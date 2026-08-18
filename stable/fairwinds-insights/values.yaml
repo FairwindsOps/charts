@@ -45,7 +45,7 @@ openApiImage:
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 6.0.0
+  agentChartTargetVersion: 6.2.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -393,6 +393,8 @@ api:
 admissionApi:
   # -- Deploy a dedicated API Deployment to handle admission submit traffic.
   enabled: false
+  # -- Port for the admission API server to listen on.
+  port: 8080
   # -- Replica count when HPA is disabled.
   replicas: 3
   pdb:
@@ -447,6 +449,9 @@ admissionApi:
         matchLabels:
           app.kubernetes.io/component: admission-api
           app.kubernetes.io/name: fairwinds-insights
+  securityContext:
+    # -- The user ID to run the admission API server under.
+    runAsUser: 10324
   ingress:
     # -- Add the admission submit ingress path to *-admission-api.
     enabled: false
@@ -457,8 +462,12 @@ admissionApi:
   service:
     # -- Service type for the admission API server
     type:
-  # -- Extra env vars for admission-api only (appended after shared env + api.additionalEnvVars).
-  additionalEnvVars: []
+  # -- Extra env vars for the admission API server.
+  additionalEnvVars:
+    - name: POSTGRES_MAX_IDLE_CONNS
+      value: "5"
+    - name: POSTGRES_MAX_OPEN_CONNS
+      value: "15"
 
 openApi:
   # -- Port for the Open API server to listen on.

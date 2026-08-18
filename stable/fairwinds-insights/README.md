@@ -25,7 +25,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
 | openApiImage.tag | string | `"v5.32.11"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"6.0.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| options.agentChartTargetVersion | string | `"6.2.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -126,6 +126,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.additionalEnvVars[1].name | string | `"POSTGRES_MAX_OPEN_CONNS"` |  |
 | api.additionalEnvVars[1].value | string | `"15"` |  |
 | admissionApi.enabled | bool | `false` | Deploy a dedicated API Deployment to handle admission submit traffic. |
+| admissionApi.port | int | `8080` | Port for the admission API server to listen on. |
 | admissionApi.replicas | int | `3` | Replica count when HPA is disabled. |
 | admissionApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the admission API server. |
 | admissionApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the admission API server. |
@@ -145,11 +146,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | admissionApi.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"admission-api"` |  |
 | admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| admissionApi.securityContext.runAsUser | int | `10324` | The user ID to run the admission API server under. |
 | admissionApi.ingress.enabled | bool | `false` | Add the admission submit ingress path to *-admission-api. |
 | admissionApi.ingress.path | string | `"/v0/organizations/*/clusters/*/data/admission/submit"` | Ingress path for admission submit (ALB wildcards when pathType is ImplementationSpecific). |
 | admissionApi.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Use ImplementationSpecific for ALB path wildcards. |
 | admissionApi.service.type | string | `nil` | Service type for the admission API server |
-| admissionApi.additionalEnvVars | list | `[]` | Extra env vars for admission-api only (appended after shared env + api.additionalEnvVars). |
+| admissionApi.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"5"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"15"}]` | Extra env vars for the admission API server. |
 | openApi.port | int | `8080` | Port for the Open API server to listen on. |
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
