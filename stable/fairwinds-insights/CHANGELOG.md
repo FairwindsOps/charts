@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.21.6
+* Bumped `insights-api` to `18.4.18`
+
 ## 9.21.5
 * Enable `database-maintainer-worker` by default
 
