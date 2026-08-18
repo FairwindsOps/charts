@@ -1,5 +1,14 @@
 # Changelog
 
+## 9.21.6
+* Bumped `insights-api` to `18.4.18`
+
+## 9.21.5
+* Enable `database-maintainer-worker` by default
+
+## 9.21.4
+* Bumped `insights-api` to `18.4.17`
+
 ## 9.21.3
 * Add HorizontalPodAutoscaler for `admissionApi` (`hpa-admission-api.yaml`), targeting `*-admission-api`.
 
