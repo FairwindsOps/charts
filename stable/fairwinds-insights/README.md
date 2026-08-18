@@ -126,6 +126,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.additionalEnvVars[1].name | string | `"POSTGRES_MAX_OPEN_CONNS"` |  |
 | api.additionalEnvVars[1].value | string | `"15"` |  |
 | admissionApi.enabled | bool | `false` | Deploy a dedicated API Deployment to handle admission submit traffic. |
+| admissionApi.port | int | `8080` | Port for the admission API server to listen on. |
 | admissionApi.replicas | int | `3` | Replica count when HPA is disabled. |
 | admissionApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the admission API server. |
 | admissionApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the admission API server. |
@@ -145,11 +146,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | admissionApi.topologySpreadConstraints[1].whenUnsatisfiable | string | `"ScheduleAnyway"` |  |
 | admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/component" | string | `"admission-api"` |  |
 | admissionApi.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
+| admissionApi.securityContext.runAsUser | int | `10324` | The user ID to run the admission API server under. |
 | admissionApi.ingress.enabled | bool | `false` | Add the admission submit ingress path to *-admission-api. |
 | admissionApi.ingress.path | string | `"/v0/organizations/*/clusters/*/data/admission/submit"` | Ingress path for admission submit (ALB wildcards when pathType is ImplementationSpecific). |
 | admissionApi.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Use ImplementationSpecific for ALB path wildcards. |
 | admissionApi.service.type | string | `nil` | Service type for the admission API server |
-| admissionApi.additionalEnvVars | list | `[]` | Extra env vars for admission-api only (appended after shared env + api.additionalEnvVars). |
+| admissionApi.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"5"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"15"}]` | Extra env vars for the admission API server. |
 | openApi.port | int | `8080` | Port for the Open API server to listen on. |
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
