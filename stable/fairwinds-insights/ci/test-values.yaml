@@ -32,10 +32,10 @@ postgresql:
     superuserpassword: "changeme"
 
 timescale:
-  password: "changeme"
   auth:
+    password: "changeme"
     migrationPassword: "changeme"
-  superuserpassword: "changeme"
+    superuserpassword: "changeme"
 
 dashboard:
   pdb:

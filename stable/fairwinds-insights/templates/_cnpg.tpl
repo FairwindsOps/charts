@@ -58,7 +58,7 @@ spec:
 {{- end }}
 {{- end }}
   superuserSecret:
-    name: {{ $root.Values.postgresql.auth.existingSuperUserSecret }}
+    name: {{ include "fairwinds-insights.postgresqlSuperUserSecretName" $root }}
 {{- if eq (include "fairwinds-insights.postgresqlRoleBootstrap" $root) "true" }}
   managed:
     roles:
@@ -74,7 +74,7 @@ spec:
         login: true
         superuser: false
         passwordSecret:
-          name: {{ $root.Values.postgresql.auth.existingSecret }}
+          name: {{ include "fairwinds-insights.postgresqlSecretName" $root }}
         inRoles:
           - pg_read_all_data
           - pg_write_all_data
@@ -176,7 +176,7 @@ spec:
         - CREATE EXTENSION IF NOT EXISTS timescaledb;
 {{- end }}
   superuserSecret:
-    name: {{ $root.Values.timescale.auth.existingSuperUserSecret }}
+    name: {{ include "fairwinds-insights.timescaleSuperUserSecretName" $root }}
 {{- if eq (include "fairwinds-insights.timescaleRoleBootstrap" $root) "true" }}
   managed:
     roles:
@@ -192,7 +192,7 @@ spec:
         login: true
         superuser: false
         passwordSecret:
-          name: {{ $root.Values.timescale.auth.existingSecret }}
+          name: {{ include "fairwinds-insights.timescaleSecretName" $root }}
         inRoles:
           - pg_read_all_data
           - pg_write_all_data
