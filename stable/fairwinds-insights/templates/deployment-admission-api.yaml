@@ -37,15 +37,12 @@ spec:
           imagePullPolicy: Always
           command: ["api"]
           args:
-          - "--port={{ .Values.api.port }}"
+          - "--port={{ .Values.admissionApi.port }}"
           ports:
           - name: http
-            containerPort: {{ .Values.api.port }}
+            containerPort: {{ .Values.admissionApi.port }}
             protocol: TCP
           {{- include "env" (dict "root" .) | indent 10 }}
-          {{- with .Values.api.additionalEnvVars }}
-            {{- toYaml . | nindent 10 }}
-          {{- end }}
           {{- with .Values.admissionApi.additionalEnvVars }}
             {{- toYaml . | nindent 10 }}
           {{- end }}
@@ -81,7 +78,7 @@ spec:
             allowPrivilegeEscalation: false
             privileged: false
             runAsNonRoot: true
-            runAsUser: {{ .Values.api.securityContext.runAsUser }}
+            runAsUser: {{ .Values.admissionApi.securityContext.runAsUser }}
             capabilities:
               drop:
                 - ALL

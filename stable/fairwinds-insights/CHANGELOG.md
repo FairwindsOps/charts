@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.22.1
+* `admissionApi` no longer inherits `api.port`, `api.additionalEnvVars`, or `api.securityContext`. Configure those under `admissionApi` instead.
+
 ## 9.22.0
 * Bumped `agentChartTarget` to `6.2.0`
 
