@@ -1,5 +1,8 @@
 # Changelog
 
+## 9.22.2
+* Bumped `insights-api` to `18.4.19`
+
 ## 9.22.1
 * `admissionApi` no longer inherits `api.port`, `api.additionalEnvVars`, or `api.securityContext`. Configure those under `admissionApi` instead.
 
