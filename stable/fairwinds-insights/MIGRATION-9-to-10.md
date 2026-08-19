@@ -14,7 +14,7 @@ For a concise list of release changes, see [CHANGELOG.md](./CHANGELOG.md).
 | ExternalSecret | `create: true` only when not ephemeral; CR and Secret named `fwinsights-postgresql-external`; app still read `existingSecret` (cut-over dance) | `create: true` **wires** app/CNPG to **`fwinsights-postgresql`** / **`fwinsights-timescale`** (or `externalSecret.targetName`). `externalSecret.name` is the CR name only. Allowed with `ephemeral: true` |
 | Secret modes | Implicit (ephemeral created Secrets named by `existing*`) | **Exclusive:** Existing, External, or Chart-managed. `existingSecret` + `create` **fails** |
 | Managed credential Secrets | Timescale app/migration had `helm.sh/resource-policy: keep`; PG/superuser did not | **All** managed PG + TS credential Secrets (app, migration, superuser) have **`keep`**. Uninstall does not delete them |
-| Split migration | Could share one Secret with two password keys (`migrationPasswordKey`) | **Second Secret**, same keys (`username` + `password`). No ESO block for migration / superuser |
+| Split migration | Could share one Secret with two password keys (`migrationPasswordKey`) | **Second Secret**, same keys (`username` + `password`). Same three modes as the app Secret: `existingMigrationSecret`, `migrationExternalSecret.create`, or chart-managed when ephemeral |
 
 `ephemeral` is still **database lifecycle** (create the CNPG `Cluster`). It is not a secret-ownership mode: an in-cluster DB can use Existing, External, or Chart-managed Secrets.
 
@@ -24,7 +24,7 @@ For a concise list of release changes, see [CHANGELOG.md](./CHANGELOG.md).
 - **Copied `existingSecret: fwinsights-postgresql` (or Timescale twin):** that is now **Existing** mode. Helm stops creating the Secret and may delete the release-owned one. Clear those keys to stay chart-managed.
 - **External PostgreSQL** using key `postgresql-password` (or `secretKeys.*`): rename the key to **`password`** (and `username` when CNPG bootstrap needs it) **before** upgrade.
 - **External Timescale** that stored the password on the PostgreSQL Secret as `timescale-password`: give Timescale its **own** Secret (or Timescale ExternalSecret) with `password`.
-- **Split app/migration** using `migrationPasswordKey` in the same Secret: create a **second** Secret with `username` + `password` and set `existingMigrationSecret`.
+- **Split app/migration** using `migrationPasswordKey` in the same Secret: create a **second** Secret with `username` + `password` and set `existingMigrationSecret`, or use `migrationExternalSecret.create` (empty `existingMigrationSecret`).
 - **ExternalSecret cut-over users** (`create: true` + old `name: fwinsights-postgresql-external`): drop the cut-over. Leave `existingSecret` empty, keep `create: true`, and point `data[].secretKey` at `password` (and `username` as needed). The app reads `fwinsights-postgresql` unless you set `externalSecret.targetName`.
 - **`timescale.password` / `timescale.superuserpassword`:** move under `timescale.auth`.
 
@@ -46,11 +46,14 @@ For a concise list of release changes, see [CHANGELOG.md](./CHANGELOG.md).
 | External | empty | true | `ExternalSecret` (ESO creates the Secret at `fwinsights-*`, or `targetName`) | true or false |
 | Chart-managed | empty | false | Kubernetes `Secret` at `fwinsights-*` | **must be true** |
 
+Split migration uses the same table with `existingMigrationSecret` / `migrationExternalSecret.create` (default Secret `fwinsights-postgresql-migration` / `fwinsights-timescale-migration`).
+
 Invalid combinations **fail** (the error names the values to change):
 
 - `existingSecret` set **and** `externalSecret.create`
 - not ephemeral, no `existingSecret`, no `create`
-- split migration, not ephemeral, empty `existingMigrationSecret`
+- split migration, not ephemeral, empty `existingMigrationSecret` **and** `migrationExternalSecret.create: false`
+- `existingMigrationSecret` set **and** `migrationExternalSecret.create`
 
 `externalSecret.name` is only the ExternalSecret **resource** name. Empty = same as the resolved Secret name.
 
@@ -78,7 +81,32 @@ postgresql:
 
 **Temporal:** defaults remain `fwinsights-postgresql` + `secretKey: password`. A custom PostgreSQL Secret name (`existingSecret` or `externalSecret.targetName`) also requires overriding `temporal.server.config.persistence.datastores.{default,visibility}.sql.existingSecret`.
 
-Split migration / superuser stay a second Secret you provide (or a second ExternalSecret you own). There is no `externalSecret` block for those.
+Split migration uses the same three modes. Superuser stays a Secret you provide (or chart-managed when ephemeral). There is no ExternalSecret block for superuser.
+
+Example split-migration ExternalSecret:
+
+```yaml
+postgresql:
+  ephemeral: false
+  auth:
+    username: insights_app
+    migrationUsername: insights_migrator
+    existingMigrationSecret: ""
+    externalSecret:
+      create: true
+      data:
+        - secretKey: password
+          remoteRef:
+            key: your/vault/path
+            property: app_password
+    migrationExternalSecret:
+      create: true
+      data:
+        - secretKey: password
+          remoteRef:
+            key: your/vault/path
+            property: migrator_password
+```
 
 ## Helm upgrade
 

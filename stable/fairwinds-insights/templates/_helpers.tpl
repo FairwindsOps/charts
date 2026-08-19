@@ -137,9 +137,12 @@ fwinsights-postgresql-superuser
 {{- end -}}
 
 {{- define "fairwinds-insights.postgresqlMigrationSecret" -}}
+{{- $ext := .Values.postgresql.auth.migrationExternalSecret | default dict -}}
 {{- if eq (include "fairwinds-insights.postgresqlSplitAppMigration" .) "true" -}}
 {{- if .Values.postgresql.auth.existingMigrationSecret -}}
 {{- .Values.postgresql.auth.existingMigrationSecret -}}
+{{- else if and $ext.create $ext.targetName -}}
+{{- $ext.targetName -}}
 {{- else -}}
 fwinsights-postgresql-migration
 {{- end -}}
@@ -164,8 +167,18 @@ true
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.postgresqlMigrationExternalSecretName" -}}
+{{- $ext := .Values.postgresql.auth.migrationExternalSecret | default dict -}}
+{{- if $ext.name -}}
+{{- $ext.name -}}
+{{- else -}}
+{{- include "fairwinds-insights.postgresqlMigrationSecret" . -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "fairwinds-insights.postgresqlManageMigrationSecret" -}}
-{{- if and (eq (include "fairwinds-insights.postgresqlSplitAppMigration" .) "true") .Values.postgresql.ephemeral (not .Values.postgresql.auth.existingMigrationSecret) -}}
+{{- $ext := .Values.postgresql.auth.migrationExternalSecret | default dict -}}
+{{- if and (eq (include "fairwinds-insights.postgresqlSplitAppMigration" .) "true") .Values.postgresql.ephemeral (not .Values.postgresql.auth.existingMigrationSecret) (not $ext.create) -}}
 true
 {{- end -}}
 {{- end -}}
@@ -226,9 +239,12 @@ fwinsights-timescale-superuser
 {{- end -}}
 
 {{- define "fairwinds-insights.timescaleMigrationSecret" -}}
+{{- $ext := .Values.timescale.auth.migrationExternalSecret | default dict -}}
 {{- if eq (include "fairwinds-insights.timescaleSplitAppMigration" .) "true" -}}
 {{- if .Values.timescale.auth.existingMigrationSecret -}}
 {{- .Values.timescale.auth.existingMigrationSecret -}}
+{{- else if and $ext.create $ext.targetName -}}
+{{- $ext.targetName -}}
 {{- else -}}
 fwinsights-timescale-migration
 {{- end -}}
@@ -253,8 +269,18 @@ true
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.timescaleMigrationExternalSecretName" -}}
+{{- $ext := .Values.timescale.auth.migrationExternalSecret | default dict -}}
+{{- if $ext.name -}}
+{{- $ext.name -}}
+{{- else -}}
+{{- include "fairwinds-insights.timescaleMigrationSecret" . -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "fairwinds-insights.timescaleManageMigrationSecret" -}}
-{{- if and (eq (include "fairwinds-insights.timescaleSplitAppMigration" .) "true") .Values.timescale.ephemeral (not .Values.timescale.auth.existingMigrationSecret) -}}
+{{- $ext := .Values.timescale.auth.migrationExternalSecret | default dict -}}
+{{- if and (eq (include "fairwinds-insights.timescaleSplitAppMigration" .) "true") .Values.timescale.ephemeral (not .Values.timescale.auth.existingMigrationSecret) (not $ext.create) -}}
 true
 {{- end -}}
 {{- end -}}
@@ -289,6 +315,7 @@ true
 
 {{- define "fairwinds-insights.validatePostgresqlAuth" -}}
 {{- $ext := .Values.postgresql.auth.externalSecret | default dict -}}
+{{- $migExt := .Values.postgresql.auth.migrationExternalSecret | default dict -}}
 {{- if and .Values.postgresql.auth.existingSecret $ext.create -}}
 {{- fail "postgresql.auth.existingSecret and postgresql.auth.externalSecret.create cannot both be set; pick Existing (set existingSecret, create: false) or External (empty existingSecret, create: true)" -}}
 {{- end -}}
@@ -298,13 +325,23 @@ true
 {{- if and (not .Values.postgresql.ephemeral) (not .Values.postgresql.auth.existingSecret) (not $ext.create) -}}
 {{- fail "postgresql.auth: when postgresql.ephemeral is false, set postgresql.auth.existingSecret or postgresql.auth.externalSecret.create" -}}
 {{- end -}}
-{{- if and (eq (include "fairwinds-insights.postgresqlSplitAppMigration" .) "true") (not .Values.postgresql.ephemeral) (not .Values.postgresql.auth.existingMigrationSecret) -}}
-{{- fail "postgresql.auth: when migrationUsername differs from username and postgresql.ephemeral is false, set postgresql.auth.existingMigrationSecret (split migration uses a second Secret; there is no ExternalSecret block for it)" -}}
+{{- if and .Values.postgresql.auth.existingMigrationSecret $migExt.create -}}
+{{- fail "postgresql.auth.existingMigrationSecret and postgresql.auth.migrationExternalSecret.create cannot both be set; pick Existing (set existingMigrationSecret, create: false) or External (empty existingMigrationSecret, create: true)" -}}
+{{- end -}}
+{{- if and $migExt.targetName (not $migExt.create) -}}
+{{- fail "postgresql.auth.migrationExternalSecret.targetName is set but postgresql.auth.migrationExternalSecret.create is false; set create: true or clear targetName" -}}
+{{- end -}}
+{{- if and $migExt.create (ne (include "fairwinds-insights.postgresqlSplitAppMigration" .) "true") -}}
+{{- fail "postgresql.auth.migrationExternalSecret.create requires postgresql.auth.migrationUsername to differ from postgresql.auth.username" -}}
+{{- end -}}
+{{- if and (eq (include "fairwinds-insights.postgresqlSplitAppMigration" .) "true") (not .Values.postgresql.ephemeral) (not .Values.postgresql.auth.existingMigrationSecret) (not $migExt.create) -}}
+{{- fail "postgresql.auth: when migrationUsername differs from username and postgresql.ephemeral is false, set postgresql.auth.existingMigrationSecret or postgresql.auth.migrationExternalSecret.create" -}}
 {{- end -}}
 {{- end -}}
 
 {{- define "fairwinds-insights.validateTimescaleAuth" -}}
 {{- $ext := .Values.timescale.auth.externalSecret | default dict -}}
+{{- $migExt := .Values.timescale.auth.migrationExternalSecret | default dict -}}
 {{- if and .Values.timescale.auth.existingSecret $ext.create -}}
 {{- fail "timescale.auth.existingSecret and timescale.auth.externalSecret.create cannot both be set; pick Existing (set existingSecret, create: false) or External (empty existingSecret, create: true)" -}}
 {{- end -}}
@@ -314,8 +351,17 @@ true
 {{- if and (not .Values.timescale.ephemeral) (not .Values.timescale.auth.existingSecret) (not $ext.create) -}}
 {{- fail "timescale.auth: when timescale.ephemeral is false, set timescale.auth.existingSecret or timescale.auth.externalSecret.create" -}}
 {{- end -}}
-{{- if and (eq (include "fairwinds-insights.timescaleSplitAppMigration" .) "true") (not .Values.timescale.ephemeral) (not .Values.timescale.auth.existingMigrationSecret) -}}
-{{- fail "timescale.auth: when migrationUsername differs from postgresqlUsername and timescale.ephemeral is false, set timescale.auth.existingMigrationSecret (split migration uses a second Secret; there is no ExternalSecret block for it)" -}}
+{{- if and .Values.timescale.auth.existingMigrationSecret $migExt.create -}}
+{{- fail "timescale.auth.existingMigrationSecret and timescale.auth.migrationExternalSecret.create cannot both be set; pick Existing (set existingMigrationSecret, create: false) or External (empty existingMigrationSecret, create: true)" -}}
+{{- end -}}
+{{- if and $migExt.targetName (not $migExt.create) -}}
+{{- fail "timescale.auth.migrationExternalSecret.targetName is set but timescale.auth.migrationExternalSecret.create is false; set create: true or clear targetName" -}}
+{{- end -}}
+{{- if and $migExt.create (ne (include "fairwinds-insights.timescaleSplitAppMigration" .) "true") -}}
+{{- fail "timescale.auth.migrationExternalSecret.create requires timescale.auth.migrationUsername to differ from timescale.postgresqlUsername" -}}
+{{- end -}}
+{{- if and (eq (include "fairwinds-insights.timescaleSplitAppMigration" .) "true") (not .Values.timescale.ephemeral) (not .Values.timescale.auth.existingMigrationSecret) (not $migExt.create) -}}
+{{- fail "timescale.auth: when migrationUsername differs from postgresqlUsername and timescale.ephemeral is false, set timescale.auth.existingMigrationSecret or timescale.auth.migrationExternalSecret.create" -}}
 {{- end -}}
 {{- end -}}
 

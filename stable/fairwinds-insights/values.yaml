@@ -807,8 +807,34 @@ postgresql:
     migrationUsername: ""
     # -- Password for the migration user when the chart manages the migration Secret. Defaults to a random value when unset.
     migrationPassword: ""
-    # -- Secret for the migration user when `migrationUsername` differs from `username`. Empty with ephemeral: chart creates `fwinsights-postgresql-migration`. Required when split and not ephemeral. Same keys (`username` + `password`); there is no ExternalSecret block for this Secret.
+    # -- Secret for the migration user when `migrationUsername` differs from `username`. Empty with ephemeral: chart creates `fwinsights-postgresql-migration` unless `migrationExternalSecret.create`. Required when split and not ephemeral unless `migrationExternalSecret.create`. Same keys (`username` + `password`). Invalid together with `migrationExternalSecret.create`.
     existingMigrationSecret: ""
+    # -- ExternalSecret for the split-migration Secret. Same exclusive modes as the app Secret. Requires `migrationUsername` different from `username`. Cannot be combined with `existingMigrationSecret`. Allowed with `ephemeral: true`.
+    migrationExternalSecret:
+      # -- When true, create an ExternalSecret. Invalid together with `existingMigrationSecret`. Invalid unless split.
+      create: false
+      # -- Optional ExternalSecret CR name. Empty: same as the resolved Secret name.
+      name: ""
+      # -- Secret ESO creates. Empty: `fwinsights-postgresql-migration`. Set only with `create: true`.
+      targetName: ""
+      refreshInterval: 1h
+      # -- SecretStore reference
+      secretStoreRef:
+        name: fairwinds-vault-backend
+        kind: ClusterSecretStore
+      # -- Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave)
+      annotations: {}
+      # -- ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). `secretKey` must be `username` or `password`.
+      data: []
+      # Example:
+      # - secretKey: username
+      #   remoteRef:
+      #     key: your/vault/path
+      #     property: username
+      # - secretKey: password
+      #   remoteRef:
+      #     key: your/vault/path
+      #     property: password
     # -- NOLOGIN role that owns the database schema. Migration jobs set POSTGRES_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE). Requires a migration image with owner-role support. Use identifier-safe names (letters, digits, underscore).
     ownerRole: ""
     # -- CNPG `postgres` superuser Secret (not used by the application or migration jobs). Empty with ephemeral: chart creates `fwinsights-postgresql-superuser`.
@@ -920,8 +946,34 @@ timescale:
     migrationUsername: ""
     # -- Password for the migration user when the chart manages the migration Secret. Defaults to a random value when unset.
     migrationPassword: ""
-    # -- Secret for the migration user when `migrationUsername` differs from `postgresqlUsername`. Empty with ephemeral: chart creates `fwinsights-timescale-migration`. Required when split and not ephemeral. Same keys (`username` + `password`).
+    # -- Secret for the migration user when `migrationUsername` differs from `postgresqlUsername`. Empty with ephemeral: chart creates `fwinsights-timescale-migration` unless `migrationExternalSecret.create`. Required when split and not ephemeral unless `migrationExternalSecret.create`. Same keys (`username` + `password`). Invalid together with `migrationExternalSecret.create`.
     existingMigrationSecret: ""
+    # -- ExternalSecret for the split-migration Secret. Same exclusive modes as the app Secret. Requires `migrationUsername` different from `postgresqlUsername`. Cannot be combined with `existingMigrationSecret`. Allowed with `ephemeral: true`.
+    migrationExternalSecret:
+      # -- When true, create an ExternalSecret. Invalid together with `existingMigrationSecret`. Invalid unless split.
+      create: false
+      # -- Optional ExternalSecret CR name. Empty: same as the resolved Secret name.
+      name: ""
+      # -- Secret ESO creates. Empty: `fwinsights-timescale-migration`. Set only with `create: true`.
+      targetName: ""
+      refreshInterval: 1h
+      # -- SecretStore reference
+      secretStoreRef:
+        name: fairwinds-vault-backend
+        kind: ClusterSecretStore
+      # -- Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave)
+      annotations: {}
+      # -- ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). `secretKey` must be `username` or `password`.
+      data: []
+      # Example:
+      # - secretKey: username
+      #   remoteRef:
+      #     key: your/vault/path
+      #     property: username
+      # - secretKey: password
+      #   remoteRef:
+      #     key: your/vault/path
+      #     property: password
     # -- NOLOGIN role that owns the Timescale database schema. Migration jobs set TIMESCALE_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE). Requires a migration image with owner-role support. Use identifier-safe names (letters, digits, underscore).
     ownerRole: ""
     # -- CNPG `postgres` superuser Secret. Empty with ephemeral: chart creates `fwinsights-timescale-superuser`.
