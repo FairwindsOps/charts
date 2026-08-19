@@ -94,7 +94,7 @@ polaris:
     disabled: false
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/polaris
-    tag: "v10.2.1"
+    tag: "v10.2.2"
   resources:
     requests:
       cpu: 100m
@@ -129,7 +129,7 @@ goldilocks:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
-    tag: "v4.15.1"
+    tag: "v4.16.1"
   controller:
     flags:
       on-by-default: true
@@ -448,7 +448,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.24.1"
+    tag: "v5.24.3"
   resources:
     requests:
       cpu: 100m
@@ -1017,7 +1017,7 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/on-demand-job-runner
-    tag: "0.2.29"
+    tag: "0.2.30"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
