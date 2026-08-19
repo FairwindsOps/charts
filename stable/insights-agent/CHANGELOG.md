@@ -1,5 +1,11 @@
 # Changelog
 
+## 6.6.0
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/goldilocks` to `v4.16.1`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/on-demand-job-runner` to `0.2.30`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/pluto` to `v5.24.3`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/polaris` to `v10.2.2`
+
 ## 6.5.0
 * Bumped `prometheus` to `29.24.*`
 
