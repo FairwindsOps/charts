@@ -50,6 +50,8 @@ recommender:
   enabled: true
   # -- Specify a secret to get environment variables from
   envFromSecret: ""
+  # recommender.extraEnv -- Extra environment variables to add to the recommender container
+  extraEnv: []
   # recommender.annotations -- Annotations to add to the recommender deployment
   annotations: {}
   # recommender.extraArgs -- A set of key-value flags to be passed to the recommender
@@ -129,6 +131,8 @@ updater:
   enabled: true
   # updater.annotations -- Annotations to add to the updater deployment
   annotations: {}
+  # updater.extraEnv -- Extra environment variables to add to the updater container
+  extraEnv: []
   # updater.extraArgs -- A key-value map of flags to pass to the updater.
   # Since VPA 1.6.0: set "in-place-skip-disruption-budget": "true" to skip
   # PDB checks for in-place updates when all containers have NotRequired resize policy.
@@ -205,6 +209,8 @@ admissionController:
   enabled: true
   # admissionController.annotations -- Annotations to add to the admission controller deployment
   annotations: {}
+  # admissionController.extraEnv -- Extra environment variables to add to the admission controller container
+  extraEnv: []
   # admissionController.extraArgs -- A key-value map of flags to pass to the admissionController
   extraArgs: {}
   # admissionController.generateCertificate -- If true and admissionController is enabled, a pre-install hook will run to create the certificate for the webhook
