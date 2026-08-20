@@ -53,22 +53,17 @@ env:
   value: {{ . | quote }}
 {{- end }}
 # Database
+{{- include "fairwinds-insights.validateDatabaseSecrets" $ }}
 {{- $postgresUser := $.Values.postgresql.auth.username }}
-{{- $postgresSecret := $.Values.postgresql.auth.existingSecret }}
-{{- $postgresPasswordKey := "postgresql-password" }}
-{{- if $.Values.postgresql.ephemeral }}
-{{- $postgresPasswordKey = "password" }}
-{{- else if $.Values.postgresql.readOnly }}
+{{- $postgresSecret := include "fairwinds-insights.postgresqlSecretName" $ }}
+{{- $postgresPasswordKey := "password" }}
+{{- if and (not $.Values.postgresql.ephemeral) $.Values.postgresql.readOnly }}
 {{- $postgresPasswordKey = "readonly-password" }}
 {{- end }}
 {{- if $useMigrationCredentials }}
 {{- $postgresUser = include "fairwinds-insights.postgresqlMigrationUsername" $ }}
 {{- $postgresSecret = include "fairwinds-insights.postgresqlMigrationSecret" $ }}
-{{- if $.Values.postgresql.ephemeral }}
 {{- $postgresPasswordKey = "password" }}
-{{- else }}
-{{- $postgresPasswordKey = $.Values.postgresql.auth.secretKeys.migrationPasswordKey }}
-{{- end }}
 {{- end }}
 {{- if and ($useReadReplica) ($.Values.postgresql.readReplica) }}
 - name: POSTGRES_DB
@@ -84,7 +79,7 @@ env:
 - name: POSTGRES_PASSWORD
   valueFrom:
     secretKeyRef:
-      name: {{ $.Values.postgresql.auth.existingSecret }}
+      name: {{ include "fairwinds-insights.postgresqlSecretName" $ }}
       key: readreplica-password
 {{- else }}
 - name: POSTGRES_DB
@@ -109,19 +104,11 @@ env:
 {{- end }}
 # Timescale Database
 {{- $timescaleUser := $.Values.timescale.postgresqlUsername }}
-{{- $timescaleSecret := $.Values.timescale.auth.existingSecret }}
-{{- $timescalePasswordKey := $.Values.timescale.auth.secretKeys.adminPasswordKey }}
-{{- if $.Values.timescale.ephemeral }}
-{{- $timescalePasswordKey = "password" }}
-{{- end }}
+{{- $timescaleSecret := include "fairwinds-insights.timescaleSecretName" $ }}
+{{- $timescalePasswordKey := "password" }}
 {{- if $useMigrationCredentials }}
 {{- $timescaleUser = include "fairwinds-insights.timescaleMigrationUsername" $ }}
 {{- $timescaleSecret = include "fairwinds-insights.timescaleMigrationSecret" $ }}
-{{- if $.Values.timescale.ephemeral }}
-{{- $timescalePasswordKey = "password" }}
-{{- else }}
-{{- $timescalePasswordKey = $.Values.timescale.auth.secretKeys.migrationPasswordKey }}
-{{- end }}
 {{- end }}
 - name: TIMESCALE_DB
   value: {{ $.Values.timescale.postgresqlDatabase }}
@@ -133,19 +120,11 @@ env:
   value: {{ $.Values.timescale.sslMode | default "require" }}
 - name: TIMESCALE_HOST
   value: {{ $.Values.timescale.postgresqlHost | default (printf "%s-%s" $.Release.Name "timescale") }}
-{{- if $.Values.timescale.ephemeral }}
 - name: TIMESCALE_PASSWORD
   valueFrom:
     secretKeyRef:
       name: {{ $timescaleSecret }}
       key: {{ $timescalePasswordKey }}
-{{- else }}
-- name: TIMESCALE_PASSWORD
-  valueFrom:
-    secretKeyRef:
-      name: {{ $.Values.postgresql.auth.existingSecret }}
-      key: timescale-password
-{{- end }}
 {{- if and $useMigrationCredentials (eq (include "fairwinds-insights.timescaleUseOwnerRole" $) "true") }}
 - name: TIMESCALE_OWNER_ROLE
   value: {{ include "fairwinds-insights.timescaleOwnerRole" $ }}
