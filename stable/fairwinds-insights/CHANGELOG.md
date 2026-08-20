@@ -6,6 +6,12 @@
 * **Migration guide:** [MIGRATION-9-to-10.md](./MIGRATION-9-to-10.md)
 * Align `helm.sh/resource-policy: keep` on all managed PostgreSQL credential Secrets (Timescale already had this). Uninstall does not delete them.
 
+## 9.22.4
+* Bumped `insights-api` to `18.4.21`
+
+## 9.22.3
+* Bumped `insights-api` to `18.4.20`
+
 ## 9.22.2
 * Bumped `insights-api` to `18.4.19`
 
