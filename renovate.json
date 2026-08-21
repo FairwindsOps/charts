@@ -80,29 +80,14 @@
       "enabled": false
     },
     {
-      "matchManagers": ["helmv3"],
-      "matchUpdateTypes": ["major"],
-      "groupName": "Helm chart major updates"
-    },
-    {
       "matchManagers": ["helm-values"],
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "groupName": "Helm values non-major updates"
     },
     {
-      "matchManagers": ["helm-values"],
-      "matchUpdateTypes": ["major"],
-      "groupName": "Helm values major updates"
-    },
-    {
       "matchManagers": ["circleci"],
       "matchUpdateTypes": ["minor", "patch", "pin", "digest"],
       "groupName": "CircleCI non-major updates"
-    },
-    {
-      "matchManagers": ["circleci"],
-      "matchUpdateTypes": ["major"],
-      "groupName": "CircleCI major updates"
     },
     {
       "description": "Bump chart version on dependency and image updates",
