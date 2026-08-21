@@ -246,22 +246,30 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | postgresql.port | int | `5432` |  |
 | postgresql.storage | object | `{"size":"10Gi","storageClass":"standard"}` | Storage configuration for the PostgreSQL cluster |
 | postgresql.resources | object | `{"limits":{"cpu":1,"memory":"1Gi"},"requests":{"cpu":"75m","memory":"256Mi"}}` | Resource configuration for the PostgreSQL cluster |
-| postgresql.auth | object | `{"database":"fairwinds_insights","existingMigrationSecret":"fwinsights-postgresql-migration","existingSecret":"fwinsights-postgresql","existingSuperUserSecret":"fwinsights-postgresql-superuser","externalSecret":{"annotations":{},"create":false,"data":[],"name":"fwinsights-postgresql-external","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}},"migrationPassword":"","migrationUsername":"","ownerRole":"","password":"","secretKeys":{"adminPasswordKey":"postgresql-password","migrationPasswordKey":"postgresql-password"},"superuserpassword":"","username":"postgres"}` | Authentication configuration |
+| postgresql.auth | object | `{"database":"fairwinds_insights","existingMigrationSecret":"","existingSecret":"","existingSuperUserSecret":"","externalSecret":{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""},"migrationExternalSecret":{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""},"migrationPassword":"","migrationUsername":"","ownerRole":"","password":"","superuserpassword":"","username":"postgres"}` | Authentication. Three exclusive secret modes: Existing (`existingSecret` set), External (`externalSecret.create`), or Chart-managed (both empty and `ephemeral: true`). `ephemeral` only controls whether the chart creates the in-cluster CNPG Cluster. Default Secret name is `fwinsights-postgresql`. |
 | postgresql.auth.username | string | `"postgres"` | Application user for runtime workloads (API, dashboard, cronjobs, etc.) |
-| postgresql.auth.password | string | `""` | Password for the application user when `postgresql.ephemeral` is true (random if unset) |
-| postgresql.auth.migrationUsername | string | `""` | Migration user for schema migrations (login; connects before optional SET ROLE). Defaults to `username` when unset; the migration Job then also uses `existingSecret`. When enabling on an existing CNPG cluster, bootstrap SQL does not re-run; apply roles manually or use a new cluster. |
-| postgresql.auth.migrationPassword | string | `""` | Password for the migration user when `postgresql.ephemeral` is true. Defaults to `password` when unset. |
-| postgresql.auth.existingMigrationSecret | string | `"fwinsights-postgresql-migration"` | Secret for the migration user when `migrationUsername` differs from `username`. Ignored otherwise (migration Job uses `existingSecret`). May match `existingSecret` when the migrator password is a separate key in the same Secret (see `secretKeys.migrationPasswordKey` and `externalSecret.data`). |
+| postgresql.auth.password | string | `""` | Password for the application user when the chart manages the Secret (random if unset) |
+| postgresql.auth.existingSecret | string | `""` | Existing Secret with keys `username` and `password` (`readonly-password` / `readreplica-password` when those features are used). Empty: chart may manage or ESO may create `fwinsights-postgresql`. |
+| postgresql.auth.migrationUsername | string | `""` | Migration user for schema migrations (login; connects before optional SET ROLE). Defaults to `username` when unset; the migration Job then also uses the app Secret. When enabling on an existing CNPG cluster, bootstrap SQL does not re-run; apply roles manually or use a new cluster. |
+| postgresql.auth.migrationPassword | string | `""` | Password for the migration user when the chart manages the migration Secret. Defaults to a random value when unset. |
+| postgresql.auth.existingMigrationSecret | string | `""` | Secret for the migration user when `migrationUsername` differs from `username`. Empty with ephemeral: chart creates `fwinsights-postgresql-migration` unless `migrationExternalSecret.create`. Required when split and not ephemeral unless `migrationExternalSecret.create`. Same keys (`username` + `password`). Invalid together with `migrationExternalSecret.create`. |
+| postgresql.auth.migrationExternalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""}` | ExternalSecret for the split-migration Secret. Same exclusive modes as the app Secret. Requires `migrationUsername` different from `username`. Cannot be combined with `existingMigrationSecret`. Allowed with `ephemeral: true`. |
+| postgresql.auth.migrationExternalSecret.create | bool | `false` | When true, create an ExternalSecret. Invalid together with `existingMigrationSecret`. Invalid unless split. |
+| postgresql.auth.migrationExternalSecret.name | string | `""` | Optional ExternalSecret CR name. Empty: same as the resolved Secret name. |
+| postgresql.auth.migrationExternalSecret.targetName | string | `""` | Secret ESO creates. Empty: `fwinsights-postgresql-migration`. Set only with `create: true`. |
+| postgresql.auth.migrationExternalSecret.secretStoreRef | object | `{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}` | SecretStore reference |
+| postgresql.auth.migrationExternalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave) |
+| postgresql.auth.migrationExternalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). `secretKey` must be `username` or `password`. |
 | postgresql.auth.ownerRole | string | `""` | NOLOGIN role that owns the database schema. Migration jobs set POSTGRES_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE). Requires a migration image with owner-role support. Use identifier-safe names (letters, digits, underscore). |
-| postgresql.auth.existingSuperUserSecret | string | `"fwinsights-postgresql-superuser"` | CNPG `postgres` superuser (not used by the application or migration jobs) |
-| postgresql.auth.superuserpassword | string | `""` | Superuser password when `postgresql.ephemeral` is true (random if unset) |
-| postgresql.auth.secretKeys.migrationPasswordKey | string | `"postgresql-password"` | Key in the migration Secret for the migration Job password. Defaults to `postgresql-password` (separate migration Secret). Use e.g. `migration-postgresql-password` when the migrator password is synced into the same Secret as the app login via `externalSecret.data`. |
-| postgresql.auth.externalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"fwinsights-postgresql-external","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}}` | ExternalSecret configuration for PostgreSQL credentials. NOTE: the application does NOT use this Secret yet — it still reads from `auth.existingSecret`. This lets you verify the ExternalSecret syncs correctly before cutting over. To cut over: set `auth.existingSecret` to the externalSecret `name` and remove the old manually-managed Secret. |
-| postgresql.auth.externalSecret.create | bool | `false` | When true (and `postgresql.ephemeral` is false), provisions an ExternalSecret and a corresponding Secret. |
-| postgresql.auth.externalSecret.name | string | `"fwinsights-postgresql-external"` | Name of the ExternalSecret resource and the Secret it generates. |
+| postgresql.auth.existingSuperUserSecret | string | `""` | CNPG `postgres` superuser Secret (not used by the application or migration jobs). Empty with ephemeral: chart creates `fwinsights-postgresql-superuser`. |
+| postgresql.auth.superuserpassword | string | `""` | Superuser password when the chart manages the superuser Secret (random if unset) |
+| postgresql.auth.externalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""}` | ExternalSecret for the app Secret. Cannot be combined with `existingSecret`. Allowed with `ephemeral: true`. |
+| postgresql.auth.externalSecret.create | bool | `false` | When true, create an ExternalSecret. Invalid together with `existingSecret`. |
+| postgresql.auth.externalSecret.name | string | `""` | Optional ExternalSecret CR name. Empty: same as the resolved Secret name. |
+| postgresql.auth.externalSecret.targetName | string | `""` | Secret ESO creates. Empty: `fwinsights-postgresql` (matches Temporal defaults). Set only with `create: true`. A custom name also requires overriding `temporal.server.config.persistence.datastores.{default,visibility}.sql.existingSecret`. |
 | postgresql.auth.externalSecret.secretStoreRef | object | `{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}` | SecretStore reference |
 | postgresql.auth.externalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave) |
-| postgresql.auth.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (each must have `secretKey` and `remoteRef` with `key` + `property`) |
+| postgresql.auth.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). `secretKey` must be `username`, `password`, `readonly-password`, or `readreplica-password`. |
 | postgresql.parameters | object | `{"checkpoint_completion_target":"0.9","default_statistics_target":"100","effective_cache_size":"1GB","effective_io_concurrency":"200","maintenance_work_mem":"64MB","max_connections":"100","max_parallel_maintenance_workers":"2","max_parallel_workers":"8","max_parallel_workers_per_gather":"2","max_wal_size":"4GB","max_worker_processes":"8","min_wal_size":"1GB","password_encryption":"scram-sha-256","random_page_cost":"1.1","shared_buffers":"256MB","wal_buffers":"16MB","work_mem":"4MB"}` | PostgreSQL configuration parameters |
 | postgresql.readReplica | object | `{"database":null,"host":null,"port":null,"sslMode":null,"username":null}` | Optional read replica configuration. Set cronjob `options.useReadReplica` to `true` to enable it |
 | encryption.aes.cypherKey | string | `nil` |  |
@@ -271,8 +279,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.postgresqlHost | string | `"insights-timescale-rw"` | Host for Timescale (CloudNativePG read-write service) |
 | timescale.postgresqlUsername | string | `"postgres"` | Application user for runtime workloads |
 | timescale.postgresqlDatabase | string | `"postgres"` | Name of the Postgres database |
-| timescale.password | string | `""` | App user password for ephemeral CNPG (random if unset) |
-| timescale.superuserpassword | string | `""` | Superuser password for ephemeral CNPG (random if unset) |
 | timescale.image.registry | string | `""` | Optional registry prefix; leave empty for Docker Hub short form `timescale/timescaledb-ha:tag` |
 | timescale.image.repository | string | `"timescale/timescaledb-ha"` |  |
 | timescale.image.tag | string | `"pg17.9-ts2.25.1-all"` |  |
@@ -283,16 +289,27 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | timescale.parameters | object | `{"max_connections":"100"}` | PostgreSQL parameters for the Timescale CNPG cluster (`shared_preload_libraries` is set via sharedPreloadLibraries above) |
 | timescale.storage.size | string | `"10Gi"` |  |
 | timescale.storage.storageClass | string | `"standard"` |  |
-| timescale.auth.existingSecret | string | `"fwinsights-timescale"` |  |
-| timescale.auth.migrationUsername | string | `""` | Migration user for Timescale schema migrations (login; connects before optional SET ROLE). Defaults to `postgresqlUsername` when unset; the migration Job then also uses `existingSecret`. When enabling on an existing CNPG cluster, bootstrap SQL does not re-run; apply roles manually or use a new cluster. |
-| timescale.auth.migrationPassword | string | `""` | Password for the migration user when `timescale.ephemeral` is true. Defaults to `password` when unset. |
-| timescale.auth.existingMigrationSecret | string | `"fwinsights-timescale-migration"` | Secret for the migration user when `migrationUsername` differs from `postgresqlUsername`. Ignored otherwise (migration Job uses `existingSecret`). |
+| timescale.auth | object | `{"existingMigrationSecret":"","existingSecret":"","existingSuperUserSecret":"","externalSecret":{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""},"migrationExternalSecret":{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""},"migrationPassword":"","migrationUsername":"","ownerRole":"","password":"","superuserpassword":""}` | Authentication. Same three exclusive secret modes as PostgreSQL. Default Secret name is `fwinsights-timescale`. Timescale never reads the PostgreSQL Secret. |
+| timescale.auth.password | string | `""` | Password for the application user when the chart manages the Secret (random if unset) |
+| timescale.auth.superuserpassword | string | `""` | Superuser password when the chart manages the superuser Secret (random if unset) |
+| timescale.auth.existingSecret | string | `""` | Existing Secret with keys `username` and `password`. Empty: chart may manage or ESO may create `fwinsights-timescale`. |
+| timescale.auth.migrationUsername | string | `""` | Migration user for Timescale schema migrations (login; connects before optional SET ROLE). Defaults to `postgresqlUsername` when unset; the migration Job then also uses the app Secret. When enabling on an existing CNPG cluster, bootstrap SQL does not re-run; apply roles manually or use a new cluster. |
+| timescale.auth.migrationPassword | string | `""` | Password for the migration user when the chart manages the migration Secret. Defaults to a random value when unset. |
+| timescale.auth.existingMigrationSecret | string | `""` | Secret for the migration user when `migrationUsername` differs from `postgresqlUsername`. Empty with ephemeral: chart creates `fwinsights-timescale-migration` unless `migrationExternalSecret.create`. Required when split and not ephemeral unless `migrationExternalSecret.create`. Same keys (`username` + `password`). Invalid together with `migrationExternalSecret.create`. |
+| timescale.auth.migrationExternalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""}` | ExternalSecret for the split-migration Secret. Same exclusive modes as the app Secret. Requires `migrationUsername` different from `postgresqlUsername`. Cannot be combined with `existingMigrationSecret`. Allowed with `ephemeral: true`. |
+| timescale.auth.migrationExternalSecret.create | bool | `false` | When true, create an ExternalSecret. Invalid together with `existingMigrationSecret`. Invalid unless split. |
+| timescale.auth.migrationExternalSecret.name | string | `""` | Optional ExternalSecret CR name. Empty: same as the resolved Secret name. |
+| timescale.auth.migrationExternalSecret.targetName | string | `""` | Secret ESO creates. Empty: `fwinsights-timescale-migration`. Set only with `create: true`. |
+| timescale.auth.migrationExternalSecret.secretStoreRef | object | `{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}` | SecretStore reference |
+| timescale.auth.migrationExternalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave) |
+| timescale.auth.migrationExternalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). `secretKey` must be `username` or `password`. |
 | timescale.auth.ownerRole | string | `""` | NOLOGIN role that owns the Timescale database schema. Migration jobs set TIMESCALE_OWNER_ROLE so goose runs as this role. Defaults to the migration login (no SET ROLE). Requires a migration image with owner-role support. Use identifier-safe names (letters, digits, underscore). |
-| timescale.auth.existingSuperUserSecret | string | `"fwinsights-timescale-superuser"` |  |
-| timescale.auth.secretKeys.adminPasswordKey | string | `"postgresql-password"` |  |
-| timescale.auth.secretKeys.migrationPasswordKey | string | `"postgresql-password"` |  |
-| timescale.secrets.certificateSecretName | string | `"fwinsights-timescale-ca"` |  |
-| timescale.secrets.credentialsSecretName | string | `"fwinsights-timescale"` |  |
+| timescale.auth.existingSuperUserSecret | string | `""` | CNPG `postgres` superuser Secret. Empty with ephemeral: chart creates `fwinsights-timescale-superuser`. |
+| timescale.auth.externalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"},"targetName":""}` | ExternalSecret for the app Secret. Cannot be combined with `existingSecret`. Allowed with `ephemeral: true`. |
+| timescale.auth.externalSecret.create | bool | `false` | When true, create an ExternalSecret. Invalid together with `existingSecret`. |
+| timescale.auth.externalSecret.name | string | `""` | Optional ExternalSecret CR name. Empty: same as the resolved Secret name. |
+| timescale.auth.externalSecret.targetName | string | `""` | Secret ESO creates. Empty: `fwinsights-timescale`. Set only with `create: true`. |
+| timescale.auth.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). |
 | timescale.service.primary.port | int | `5432` |  |
 | timescale.loadBalancer.enabled | bool | `false` |  |
 | timescale.resources.limits.cpu | int | `1` |  |
@@ -446,7 +463,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.datastores.default.sql.connectAddr | string | `"insights-postgres-rw:5432"` |  |
 | temporal.server.config.persistence.datastores.default.sql.connectProtocol | string | `"tcp"` |  |
 | temporal.server.config.persistence.datastores.default.sql.user | string | `"postgres"` |  |
-| temporal.server.config.persistence.datastores.default.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
+| temporal.server.config.persistence.datastores.default.sql.existingSecret | string | `"fwinsights-postgresql"` | Must match the PostgreSQL app Secret name (`fwinsights-postgresql` unless you set `postgresql.auth.existingSecret` or `postgresql.auth.externalSecret.targetName`). |
 | temporal.server.config.persistence.datastores.default.sql.secretKey | string | `"password"` |  |
 | temporal.server.config.persistence.datastores.default.sql.maxConns | int | `5` |  |
 | temporal.server.config.persistence.datastores.default.sql.maxIdleConns | int | `3` |  |
@@ -463,7 +480,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.datastores.visibility.sql.connectAddr | string | `"insights-postgres-rw:5432"` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.connectProtocol | string | `"tcp"` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.user | string | `"postgres"` |  |
-| temporal.server.config.persistence.datastores.visibility.sql.existingSecret | string | `"fwinsights-postgresql"` |  |
+| temporal.server.config.persistence.datastores.visibility.sql.existingSecret | string | `"fwinsights-postgresql"` | Must match the PostgreSQL app Secret name (same as default.sql.existingSecret). |
 | temporal.server.config.persistence.datastores.visibility.sql.secretKey | string | `"password"` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.maxConns | int | `5` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.maxIdleConns | int | `3` |  |

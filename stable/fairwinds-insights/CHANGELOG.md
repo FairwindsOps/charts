@@ -1,5 +1,20 @@
 # Changelog
 
+## 10.0.1
+* Bumped `insights-api` to `18.4.22`
+
+## 10.0.0
+* **BREAKING:** PostgreSQL and Timescale share one secret-ownership model (Existing / External / Chart-managed). `existing*` defaults are empty; Secret keys are fixed (`password`, not `postgresql-password` / `timescale-password` / `secretKeys`); Timescale is not coupled to the PostgreSQL Secret; split migration is a second Secret (Existing, External via `migrationExternalSecret`, or Chart-managed); `timescale.password` / `superuserpassword` move under `timescale.auth`; `timescale.secrets` is removed; ExternalSecret `create: true` wires the app to `fwinsights-*`.
+* Split migration External mode: `postgresql.auth.migrationExternalSecret` / `timescale.auth.migrationExternalSecret` (same exclusive rules as the app Secret; requires `migrationUsername` to differ).
+* **Migration guide:** [MIGRATION-9-to-10.md](./MIGRATION-9-to-10.md)
+* Align `helm.sh/resource-policy: keep` on all managed PostgreSQL credential Secrets (Timescale already had this). Uninstall does not delete them.
+
+## 9.22.4
+* Bumped `insights-api` to `18.4.21`
+
+## 9.22.3
+* Bumped `insights-api` to `18.4.20`
+
 ## 9.22.2
 * Bumped `insights-api` to `18.4.19`
 
