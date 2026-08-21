@@ -56,12 +56,49 @@ options:
   adminEmail:
   # -- The name of your organization. This will pre-populate Insights with an organization.
   organizationName:
-  # -- Autogenerate keys for session tracking. For testing/demo purposes only
+  # -- Autogenerate keys for session tracking. For testing/demo purposes only. Invalid together with `externalSecret.create`.
   autogenerateKeys: false
   # -- Run the job to migrate health scores to a new format
   migrateHealthScore: false
-  # -- Name of the secret where session keys and other secrets are stored
+  # -- Name of the secret where session keys and other secrets are stored. Also the Secret ESO creates when `externalSecret.create` is true.
   secretName: fwinsights-secrets
+  # -- ExternalSecret for `secretName`. Cannot be combined with `autogenerateKeys`.
+  externalSecret:
+    # -- When true, create an ExternalSecret that syncs into `secretName`. Invalid together with `autogenerateKeys`.
+    create: false
+    # -- Optional ExternalSecret CR name. Empty: same as `secretName`.
+    name: ""
+    refreshInterval: 1h
+    # -- SecretStore reference
+    secretStoreRef:
+      name: fairwinds-vault-backend
+      kind: ClusterSecretStore
+    # -- Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave)
+    annotations: {}
+    # -- ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional).
+    data: []
+    # Example:
+    # - secretKey: COOKIE_HASH_KEY
+    #   remoteRef:
+    #     key: your/vault/path
+    #     property: COOKIE_HASH_KEY
+    # - secretKey: COOKIE_BLOCK_KEY
+    #   remoteRef:
+    #     key: your/vault/path
+    #     property: COOKIE_BLOCK_KEY
+    # - secretKey: SESSION_AUTH_KEY
+    #   remoteRef:
+    #     key: your/vault/path
+    #     property: SESSION_AUTH_KEY
+    # - secretKey: SESSION_ENCRYPTION_KEY
+    #   remoteRef:
+    #     key: your/vault/path
+    #     property: SESSION_ENCRYPTION_KEY
+    # - secretKey: AES_BASE64_CYPHER_KEY
+    #   remoteRef:
+    #     key: your/vault/path
+    #     property: AES_BASE64_CYPHER_KEY
+
 
   # This adds an empty low-priority pod, so we don't have
   # to wait for cluster-autoscaler with each deployment

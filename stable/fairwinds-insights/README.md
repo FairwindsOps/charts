@@ -31,9 +31,15 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
 | options.adminEmail | string | `nil` | An email address for the first admin user. This account will get created automatically but without a known password. You must initiate a password reset in order to login to this account. |
 | options.organizationName | string | `nil` | The name of your organization. This will pre-populate Insights with an organization. |
-| options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only |
+| options.autogenerateKeys | bool | `false` | Autogenerate keys for session tracking. For testing/demo purposes only. Invalid together with `externalSecret.create`. |
 | options.migrateHealthScore | bool | `false` | Run the job to migrate health scores to a new format |
-| options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored |
+| options.secretName | string | `"fwinsights-secrets"` | Name of the secret where session keys and other secrets are stored. Also the Secret ESO creates when `externalSecret.create` is true. |
+| options.externalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}}` | ExternalSecret for `secretName`. Cannot be combined with `autogenerateKeys`. |
+| options.externalSecret.create | bool | `false` | When true, create an ExternalSecret that syncs into `secretName`. Invalid together with `autogenerateKeys`. |
+| options.externalSecret.name | string | `""` | Optional ExternalSecret CR name. Empty: same as `secretName`. |
+| options.externalSecret.secretStoreRef | object | `{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}` | SecretStore reference |
+| options.externalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave) |
+| options.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). |
 | options.overprovisioning.enabled | bool | `false` |  |
 | options.overprovisioning.cpu | string | `"1000m"` |  |
 | options.overprovisioning.memory | string | `"1Gi"` |  |

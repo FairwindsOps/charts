@@ -365,7 +365,24 @@ true
 {{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.validateAppSecrets" -}}
+{{- $ext := .Values.options.externalSecret | default dict -}}
+{{- if and .Values.options.autogenerateKeys $ext.create -}}
+{{- fail "options.autogenerateKeys and options.externalSecret.create cannot both be set; pick Chart-managed (autogenerateKeys: true, create: false) or External (autogenerateKeys: false, create: true)" -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.appExternalSecretName" -}}
+{{- $ext := .Values.options.externalSecret | default dict -}}
+{{- if $ext.name -}}
+{{- $ext.name -}}
+{{- else -}}
+{{- .Values.options.secretName -}}
+{{- end -}}
+{{- end -}}
+
 {{- define "fairwinds-insights.validateDatabaseSecrets" -}}
+{{- include "fairwinds-insights.validateAppSecrets" . -}}
 {{- include "fairwinds-insights.validatePostgresqlAuth" . -}}
 {{- include "fairwinds-insights.validateTimescaleAuth" . -}}
 {{- end -}}
