@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.0.3
+* Bumped `insights-api` to `18.4.23`
+
 ## 10.0.2
 * Add optional `options.externalSecret` to provision `fwinsights-secrets` (or `options.secretName`) via External Secrets Operator. Invalid together with `options.autogenerateKeys`.
 
