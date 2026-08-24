@@ -38,12 +38,27 @@ rules:
       - 'get'
       - 'list'
   # Optional Gateway API inventory. Without these CRDs the plugin
-  # omits Gateways/HTTPRoutes; without RBAC it continues with empty arrays.
+  # omits GatewayAPI; without RBAC it continues with empty arrays.
   - apiGroups:
       - 'gateway.networking.k8s.io'
     resources:
       - 'gateways'
+      - 'gatewayclasses'
       - 'httproutes'
+    verbs:
+      - 'get'
+      - 'list'
+  - apiGroups:
+      - 'gateway.kgateway.dev'
+    resources:
+      - 'backends'
+      - 'backendconfigpolicies'
+      - 'directresponses'
+      - 'gatewayextensions'
+      - 'gatewayparameters'
+      - 'httplistenerpolicies'
+      - 'listenerpolicies'
+      - 'trafficpolicies'
     verbs:
       - 'get'
       - 'list'
