@@ -48,7 +48,6 @@ rules:
     verbs:
       - 'get'
       - 'list'
-  # Optional kgateway inventory (workloads 2.17+).
   - apiGroups:
       - 'gateway.kgateway.dev'
     resources:
