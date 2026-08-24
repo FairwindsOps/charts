@@ -1,8 +1,11 @@
 # Changelog
 
-## 6.6.0
+## 6.7.0
 * Bumped `workloads` to `2.17.0`
 * Grant workloads ClusterRole `get`/`list` on GatewayClass and all `gateway.kgateway.dev` inventory resources
+
+## 6.6.0
+* Bumped `goldilocks` to `10.6.*`
 
 ## 6.5.0
 * Bumped `prometheus` to `29.24.*`
