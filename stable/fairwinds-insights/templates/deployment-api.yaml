@@ -102,7 +102,7 @@ spec:
         emptyDir: {}
       - name: secrets
         secret:
-          secretName: github-secrets
+          secretName: {{ .Values.api.githubSecret.name | default "github-secrets" }}
           optional: true
       {{- with .Values.selfHostedSecret }}
       - name: self-hosted-secret

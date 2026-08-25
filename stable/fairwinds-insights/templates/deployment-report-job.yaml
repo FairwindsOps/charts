@@ -65,7 +65,7 @@ spec:
       volumes:
         - name: secrets
           secret:
-            secretName: github-secrets
+            secretName: {{ .Values.reportjob.githubSecret.name | default "github-secrets" }}
             optional: true
     {{- with .Values.reportjob.tolerations }}
       tolerations:
