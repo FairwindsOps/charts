@@ -1,9 +1,10 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":dependencyDashboard"],
+  "extends": ["config:recommended", ":dependencyDashboard", "schedule:daily"],
   "labels": ["dependencies"],
-  "prConcurrentLimit": 10,
-  "branchConcurrentLimit": 10,
+  "branchConcurrentLimit": 2,
+  "prConcurrentLimit": 2,
+  "commitHourlyLimit": 2,
   "minimumReleaseAge": "7 days",
   "ignorePaths": ["incubator/**", "docs/**"],
   "registryAliases": {
