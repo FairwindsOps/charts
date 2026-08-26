@@ -97,6 +97,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | dashboard.topologySpreadConstraints[1].labelSelector.matchLabels."app.kubernetes.io/name" | string | `"fairwinds-insights"` |  |
 | dashboard.securityContext.runAsUser | int | `101` | The user ID to run the Dashboard under. comes from https://github.com/nginxinc/docker-nginx-unprivileged/blob/main/stable/alpine/Dockerfile |
 | api.port | int | `8080` | Port for the API server to listen on. |
+| api.githubSecret.name | string | `"github-secrets"` | Secret mounted at /var/run/secrets/github on the API pods (optional Secret). |
 | api.grpc.enabled | bool | `false` | Enable network-flow gRPC server configuration. |
 | api.grpc.address | string | `""` | Listen address for the network-flow gRPC server (INSIGHTS_GRPC_ADDR). Defaults to :4318 when enabled and empty. |
 | api.grpc.port | int | `4318` | Container and Service port for the network-flow gRPC server. |
@@ -134,6 +135,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | admissionApi.enabled | bool | `false` | Deploy a dedicated API Deployment to handle admission submit traffic. |
 | admissionApi.port | int | `8080` | Port for the admission API server to listen on. |
 | admissionApi.replicas | int | `3` | Replica count when HPA is disabled. |
+| admissionApi.githubSecret.name | string | `"github-secrets"` | Secret mounted at /var/run/secrets/github on the admission API pods (optional Secret). |
 | admissionApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the admission API server. |
 | admissionApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the admission API server. |
 | admissionApi.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the admission API server. |
@@ -366,6 +368,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
 | cronjobExecutor.resources.requests.memory | string | `"3Mi"` |  |
 | reportjob.enabled | bool | `true` |  |
+| reportjob.githubSecret.name | string | `"github-secrets"` | Secret mounted at /var/run/secrets/github on the report job pods (optional Secret). |
 | reportjob.pdb.enabled | bool | `true` |  |
 | reportjob.pdb.minReplicas | int | `1` |  |
 | reportjob.hpa.enabled | bool | `true` |  |

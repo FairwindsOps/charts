@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.1.2
+* CronJobs mount the GitHub secret when either `cronjobs.<name>.includeGitHubSecret` or `cronjobs.<name>.githubSecret.enabled` is set.
+* Configurable GitHub secret name (default `github-secrets`) via `cronjobs.<name>.githubSecret.name`, `api.githubSecret.name`, `admissionApi.githubSecret.name`, and `reportjob.githubSecret.name`. Temporal workers already allow this through `volumes`.
+
 ## 10.1.1
 * Bumped `insights-api` to `18.4.24`
 

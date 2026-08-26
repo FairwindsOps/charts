@@ -339,6 +339,9 @@ dashboard:
 api:
   # -- Port for the API server to listen on.
   port: 8080
+  githubSecret:
+    # -- Secret mounted at /var/run/secrets/github on the API pods (optional Secret).
+    name: github-secrets
   grpc:
     # -- Enable network-flow gRPC server configuration.
     enabled: false
@@ -434,6 +437,9 @@ admissionApi:
   port: 8080
   # -- Replica count when HPA is disabled.
   replicas: 3
+  githubSecret:
+    # -- Secret mounted at /var/run/secrets/github on the admission API pods (optional Secret).
+    name: github-secrets
   pdb:
     # -- Create a pod disruption budget for the admission API server.
     enabled: false
@@ -1152,6 +1158,9 @@ cronjobExecutor:
 
 reportjob:
   enabled: true
+  githubSecret:
+    # -- Secret mounted at /var/run/secrets/github on the report job pods (optional Secret).
+    name: github-secrets
   pdb:
     enabled: true
     minReplicas: 1
