@@ -26,10 +26,7 @@ spec:
         {{ toYaml .Values.deployments.additionalPodLabels | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.image.pullSecret }}
-      imagePullSecrets:
-        - name: {{ . }}
-      {{- end }}
+      {{- include "fairwinds-insights.imagePullSecrets" . | nindent 6 }}
       serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
       containers:
         - name: fairwinds-insights
@@ -67,7 +64,8 @@ spec:
             mountPath: /.cache
           - name: secrets
             mountPath: /var/run/secrets/github
-          {{- if .Values.selfHostedSecret }}
+          {{- $selfHostedSecret := include "fairwinds-insights.selfHostedSecretName" . | trim }}
+          {{- if $selfHostedSecret }}
           - name: self-hosted-secret
             mountPath: /var/run/secrets/self-hosted
           {{- end }}
@@ -95,10 +93,11 @@ spec:
         secret:
           secretName: {{ .Values.admissionApi.githubSecret.name | default "github-secrets" }}
           optional: true
-      {{- with .Values.selfHostedSecret }}
+      {{- $selfHostedSecret := include "fairwinds-insights.selfHostedSecretName" . | trim }}
+      {{- if $selfHostedSecret }}
       - name: self-hosted-secret
         secret:
-          secretName: {{ . }}
+          secretName: {{ $selfHostedSecret }}
       {{- end }}
     {{- with .Values.admissionApi.tolerations }}
       tolerations:

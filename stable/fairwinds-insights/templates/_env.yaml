@@ -23,13 +23,14 @@ env:
   value: {{ $v | quote }}
 {{- end }}
 {{- end }}
-{{- with $.Values.selfHostedSecret }}
+{{- $selfHostedSecret := include "fairwinds-insights.selfHostedSecretName" $ | trim }}
+{{- if $selfHostedSecret }}
 - name: FAIRWINDS_CERTIFICATE_LOCATION
   value: /var/run/secrets/self-hosted/current.pem
 - name: SELF_HOSTED_PUBLIC_KEY
   valueFrom:
     secretKeyRef:
-      name: {{ . }}
+      name: {{ $selfHostedSecret }}
       key: pubkey
 {{- end }}
 {{- with $.Values.installationCode }}

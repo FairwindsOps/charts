@@ -525,6 +525,44 @@ https://insights.fairwinds.com
 {{- end -}}
 
 {{/*
+Secret name for the self-hosted TLS key.
+String values.selfHostedSecret still works. ExternalSecret path: selfHostedSecret.externalSecret.name (default self-hosted-key) when create is true.
+*/}}
+{{- define "fairwinds-insights.selfHostedSecretName" -}}
+{{- $v := .Values.selfHostedSecret -}}
+{{- if kindIs "string" $v -}}
+{{- $v -}}
+{{- else -}}
+{{- $p := $v | default dict -}}
+{{- $ext := $p.externalSecret | default dict -}}
+{{- if $ext.create -}}
+{{- $ext.name | default "self-hosted-key" -}}
+{{- end -}}
+{{- end -}}
+{{- end -}}
+
+{{/*
+Image pull Secret name.
+Existing path: image.pullSecret (string). ExternalSecret path: image.externalSecret.name (default pull-secret) when create is true.
+*/}}
+{{- define "fairwinds-insights.imagePullSecretName" -}}
+{{- $ext := .Values.image.externalSecret | default dict -}}
+{{- if $ext.create -}}
+{{- $ext.name | default "pull-secret" -}}
+{{- else if .Values.image.pullSecret -}}
+{{- .Values.image.pullSecret -}}
+{{- end -}}
+{{- end -}}
+
+{{- define "fairwinds-insights.imagePullSecrets" -}}
+{{- $name := include "fairwinds-insights.imagePullSecretName" . | trim -}}
+{{- if $name -}}
+imagePullSecrets:
+  - name: {{ $name }}
+{{- end }}
+{{- end -}}
+
+{{/*
 Secret name for GCP pricing credentials.
 ESO path: externalSecret.name (default gcp-pricing-credentials-external).
 Existing Secret path: existingSecret (empty means do not mount).

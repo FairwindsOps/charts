@@ -11,6 +11,13 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
 | image.tag | string | `nil` | Docker image tag, defaults to the Chart appVersion |
+| image.pullSecret | string | `nil` | Existing dockerconfigjson Secret name for imagePullSecrets. Empty: none unless `externalSecret.create`. Invalid together with `externalSecret.create`. |
+| image.externalSecret | object | `{"annotations":{},"create":false,"data":[],"name":"pull-secret","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}}` | ExternalSecret for the image pull Secret. Cannot be combined with `pullSecret`. |
+| image.externalSecret.create | bool | `false` | When true, create an ExternalSecret (type kubernetes.io/dockerconfigjson) and set imagePullSecrets on Insights workloads. |
+| image.externalSecret.name | string | `"pull-secret"` | ExternalSecret CR name and the Secret it creates (default pull-secret). |
+| image.externalSecret.secretStoreRef | object | `{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}` | SecretStore reference |
+| image.externalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave) |
+| image.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). Use secretKey `.dockerconfigjson`. |
 | installationCode | string | `nil` | Installation code provided by Fairwinds. |
 | installationCodeSecret | string | `nil` | Name of secret containing INSTALLATION_CODE |
 | deployments | object | `{"additionalLabels":null,"additionalPodLabels":null}` | Deployments additional labels |
@@ -79,7 +86,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
 | cronjobs.refresh-jira-webhooks | object | `{"command":"refresh_jira_webhooks","schedule":"0 0 1,15 * *"}` | Options for the refresh_jira_webhooks cronjob |
 | cronjobs.utmstack-integration | object | `{"command":"utmstack_integration","schedule":"*/5 * * * *"}` | Options for the utmstack_integration cronjob |
-| selfHostedSecret | string | `nil` |  |
+| selfHostedSecret | object | `{"externalSecret":{"annotations":{},"create":false,"data":[],"name":"self-hosted-key","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}}}` | Self-hosted TLS Secret (current.pem + pubkey). A string name still works. Set externalSecret.create to provision it via External Secrets Operator. |
+| selfHostedSecret.externalSecret.create | bool | `false` | When true, create an ExternalSecret that syncs into this Secret and mount it on API / admission / Temporal worker pods. |
+| selfHostedSecret.externalSecret.name | string | `"self-hosted-key"` | ExternalSecret CR name and the Secret it creates (default self-hosted-key). |
+| selfHostedSecret.externalSecret.secretStoreRef | object | `{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}` | SecretStore reference |
+| selfHostedSecret.externalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave) |
+| selfHostedSecret.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |

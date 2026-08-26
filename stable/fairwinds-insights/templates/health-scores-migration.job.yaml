@@ -17,10 +17,7 @@ spec:
       template:
         spec:
           restartPolicy: Never
-          {{- with $.Values.image.pullSecret }}
-          imagePullSecrets:
-            - name: {{ . }}
-          {{- end }}
+          {{- include "fairwinds-insights.imagePullSecrets" $ | nindent 10 }}
           containers:
           - name: migrate-scores
             image: "{{ $.Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" . }}"

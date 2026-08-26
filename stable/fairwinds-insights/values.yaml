@@ -1,6 +1,30 @@
 image:
   # -- Docker image tag, defaults to the Chart appVersion
   tag:
+  # -- Existing dockerconfigjson Secret name for imagePullSecrets. Empty: none unless `externalSecret.create`. Invalid together with `externalSecret.create`.
+  pullSecret:
+  # -- ExternalSecret for the image pull Secret. Cannot be combined with `pullSecret`.
+  externalSecret:
+    # -- When true, create an ExternalSecret (type kubernetes.io/dockerconfigjson) and set imagePullSecrets on Insights workloads.
+    create: false
+    # -- ExternalSecret CR name and the Secret it creates (default pull-secret).
+    name: pull-secret
+    refreshInterval: 1h
+    # -- SecretStore reference
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: fairwinds-vault-backend
+    # -- Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave)
+    annotations: {}
+    # -- ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). Use secretKey `.dockerconfigjson`.
+    data: []
+    # Example:
+    # data:
+    #   - secretKey: .dockerconfigjson
+    #     remoteRef:
+    #       key: my-infrastructure/my-cluster/insights/pull-secret
+    #       property: .dockerconfigjson
+
 
 # -- Installation code provided by Fairwinds.
 installationCode:
@@ -290,7 +314,33 @@ cronjobs:
     command: utmstack_integration
     schedule: "*/5 * * * *"
 
+# -- Self-hosted TLS Secret (current.pem + pubkey). A string name still works. Set externalSecret.create to provision it via External Secrets Operator.
 selfHostedSecret:
+  externalSecret:
+    # -- When true, create an ExternalSecret that syncs into this Secret and mount it on API / admission / Temporal worker pods.
+    create: false
+    # -- ExternalSecret CR name and the Secret it creates (default self-hosted-key).
+    name: self-hosted-key
+    refreshInterval: 1h
+    # -- SecretStore reference
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: fairwinds-vault-backend
+    # -- Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave)
+    annotations: {}
+    # -- ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional).
+    data: []
+    # Example:
+    # data:
+    #   - secretKey: current.pem
+    #     remoteRef:
+    #       key: my-infrastructure/my-cluster/insights/self-hosted
+    #       property: current.pem
+    #   - secretKey: pubkey
+    #     remoteRef:
+    #       key: my-infrastructure/my-cluster/insights/self-hosted
+    #       property: pubkey
+
 
 # -- Additional Environment Variables to set on the Fairwinds Insights pods.
 additionalEnvironmentVariables: {}
