@@ -44,6 +44,12 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | options.overprovisioning.cpu | string | `"1000m"` |  |
 | options.overprovisioning.memory | string | `"1Gi"` |  |
 | options.ssoRequiredForAdminAPI | bool | `false` | Whether to require SSO for the admin API |
+| githubSecret | object | `{"externalSecret":{"annotations":{},"create":false,"data":[],"name":"github-secrets","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}}}` | GitHub integration Secret. Workloads mount it at /var/run/secrets/github (optional). Set externalSecret.create to provision it via External Secrets Operator. |
+| githubSecret.externalSecret.create | bool | `false` | When true, create an ExternalSecret that syncs into this Secret. |
+| githubSecret.externalSecret.name | string | `"github-secrets"` | ExternalSecret CR name and the Secret it creates (default github-secrets). Must match api/admissionApi/reportjob/cronjobs.githubSecret.name and temporalDeploymentDefaults.volumes when customized. |
+| githubSecret.externalSecret.secretStoreRef | object | `{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}` | SecretStore reference |
+| githubSecret.externalSecret.annotations | object | `{}` | Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave) |
+| githubSecret.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). |
 | cronjobOptions.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | Default security context for cronjobs |
 | cronjobOptions.resources | object | `{"limits":{"cpu":"250m","memory":"512Mi"},"requests":{"cpu":"250m","memory":"512Mi"}}` | Default resources for cronjobs |
 | cronjobOptions.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars) |

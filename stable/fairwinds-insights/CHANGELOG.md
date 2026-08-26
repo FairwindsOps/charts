@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.1.3
+* Add optional `githubSecret.externalSecret` to provision the GitHub integration Secret (default `github-secrets`) via External Secrets Operator.
+
 ## 10.1.2
 * CronJobs mount the GitHub secret when either `cronjobs.<name>.includeGitHubSecret` or `cronjobs.<name>.githubSecret.enabled` is set.
 * Configurable GitHub secret name (default `github-secrets`) via `cronjobs.<name>.githubSecret.name`, `api.githubSecret.name`, `admissionApi.githubSecret.name`, and `reportjob.githubSecret.name`. Temporal workers already allow this through `volumes`.

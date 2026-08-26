@@ -518,6 +518,12 @@ https://insights.fairwinds.com
 {{- if (dig "keda" "enabled" $default $options) -}}true{{- else -}}false{{- end -}}
 {{- end -}}
 
+{{- define "fairwinds-insights.githubSecretName" -}}
+{{- $p := .Values.githubSecret | default dict -}}
+{{- $ext := $p.externalSecret | default dict -}}
+{{- $ext.name | default "github-secrets" -}}
+{{- end -}}
+
 {{/*
 Secret name for GCP pricing credentials.
 ESO path: externalSecret.name (default gcp-pricing-credentials-external).

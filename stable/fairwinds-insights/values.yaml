@@ -110,6 +110,29 @@ options:
   # -- Whether to require SSO for the admin API
   ssoRequiredForAdminAPI: false
 
+# -- GitHub integration Secret. Workloads mount it at /var/run/secrets/github (optional). Set externalSecret.create to provision it via External Secrets Operator.
+githubSecret:
+  externalSecret:
+    # -- When true, create an ExternalSecret that syncs into this Secret.
+    create: false
+    # -- ExternalSecret CR name and the Secret it creates (default github-secrets). Must match api/admissionApi/reportjob/cronjobs.githubSecret.name and temporalDeploymentDefaults.volumes when customized.
+    name: github-secrets
+    refreshInterval: 1h
+    # -- SecretStore reference
+    secretStoreRef:
+      kind: ClusterSecretStore
+      name: fairwinds-vault-backend
+    # -- Extra annotations on the ExternalSecret resource (e.g. argocd.argoproj.io/sync-wave)
+    annotations: {}
+    # -- ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional).
+    data: []
+    # Example:
+    # data:
+    #   - secretKey: github.pem
+    #     remoteRef:
+    #       key: my-infrastructure/my-cluster/insights/github
+    #       property: github.pem
+
 cronjobOptions:
   # -- Default security context for cronjobs
   securityContext:
