@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.1.5
+* Bumped `insights-api` to `18.4.27`
+
 ## 10.1.4
 * Add optional `selfHostedSecret.externalSecret` (default Secret `self-hosted-key`) and `image.externalSecret` (default Secret `pull-secret`) to provision those Secrets via External Secrets Operator. A string `selfHostedSecret` / `image.pullSecret` still names an existing Secret.
 
