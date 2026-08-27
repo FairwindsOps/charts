@@ -27,10 +27,7 @@ spec:
         {{ toYaml .Values.deployments.additionalPodLabels | nindent 8 }}
         {{- end }}
     spec:
-      {{- with .Values.image.pullSecret }}
-      imagePullSecrets:
-        - name: {{ . }}
-      {{- end }}
+      {{- include "fairwinds-insights.imagePullSecrets" . | nindent 6 }}
       serviceAccountName: {{ include "fairwinds-insights.fullname" . }}-insights
       terminationGracePeriodSeconds: {{ .Values.reportjob.terminationGracePeriodSeconds }}
       containers:

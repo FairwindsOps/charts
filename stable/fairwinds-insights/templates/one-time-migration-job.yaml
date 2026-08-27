@@ -15,10 +15,7 @@ spec:
   template:
     spec:
       restartPolicy: Never
-      {{- with .Values.image.pullSecret }}
-      imagePullSecrets:
-        - name: {{ . }}
-      {{- end }}
+      {{- include "fairwinds-insights.imagePullSecrets" . | nindent 6 }}
       containers:
       - name: fwinsights-one-time-migration
         image: "{{ .Values.cronjobImage.repository }}:{{ include "fairwinds-insights.cronjobImageTag" . }}"

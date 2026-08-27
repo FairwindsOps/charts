@@ -4,6 +4,7 @@
 {{- $gcpEnabled := and ($gcpPricing.enabled | default false) (eq $name "general-worker") }}
 {{- $gcpSecretName := include "fairwinds-insights.gcpPricingSecretName" $ | trim }}
 {{- $gcpMountCreds := and $gcpEnabled $gcpSecretName }}
+{{- $selfHostedSecret := include "fairwinds-insights.selfHostedSecretName" $ | trim }}
 {{- $gcpCredsKey := $gcpPricing.credentialsSecretKey | default "credentials.json" }}
 {{- $gcpCredsPath := $gcpPricing.credentialsMountPath | default "/var/run/secrets/gcp" }}
 apiVersion: apps/v1
@@ -49,10 +50,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     spec:
-      {{- with $.Values.image.pullSecret }}
-      imagePullSecrets:
-        - name: {{ . }}
-      {{- end }}
+      {{- include "fairwinds-insights.imagePullSecrets" $ | nindent 6 }}
       {{- if (and $options.rbac $options.rbac.enabled) | default $.Values.temporalDeploymentDefaults.rbac.enabled }}
       serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-{{ $name }}
       {{- else }}
@@ -98,12 +96,12 @@ spec:
           securityContext:
             {{- toYaml (default $.Values.temporalDeploymentDefaults.securityContext $options.securityContext) | nindent 12 }}
           {{- $volumeMounts := default $.Values.temporalDeploymentDefaults.volumeMounts $options.volumeMounts }}
-          {{- if or $volumeMounts $.Values.selfHostedSecret $gcpMountCreds }}
+          {{- if or $volumeMounts $selfHostedSecret $gcpMountCreds }}
           volumeMounts:
             {{- with $volumeMounts }}
             {{- toYaml . | nindent 12 }}
             {{- end }}
-            {{- if $.Values.selfHostedSecret }}
+            {{- if $selfHostedSecret }}
             - name: self-hosted-secret
               mountPath: /var/run/secrets/self-hosted
             {{- end }}
@@ -130,15 +128,15 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- $volumes := default $.Values.temporalDeploymentDefaults.volumes $options.volumes }}
-      {{- if or $volumes $.Values.selfHostedSecret $gcpMountCreds }}
+      {{- if or $volumes $selfHostedSecret $gcpMountCreds }}
       volumes:
         {{- with $volumes }}
         {{- toYaml . | nindent 8 }}
         {{- end }}
-        {{- if $.Values.selfHostedSecret }}
+        {{- if $selfHostedSecret }}
         - name: self-hosted-secret
           secret:
-            secretName: {{ $.Values.selfHostedSecret }}
+            secretName: {{ $selfHostedSecret }}
         {{- end }}
         {{- if $gcpMountCreds }}
         - name: gcp-pricing-credentials

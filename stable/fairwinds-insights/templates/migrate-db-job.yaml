@@ -23,10 +23,7 @@ spec:
   template:
     spec:
       restartPolicy: Never
-      {{- with .Values.image.pullSecret }}
-      imagePullSecrets:
-        - name: {{ . }}
-      {{- end }}
+      {{- include "fairwinds-insights.imagePullSecrets" . | nindent 6 }}
       initContainers:
       - name: wait-for-databases
         image: alpine/psql:18.3
