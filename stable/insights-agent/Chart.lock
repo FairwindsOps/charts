@@ -16,12 +16,12 @@ dependencies:
   version: 4.12.5
 - name: trivy
   repository: https://aquasecurity.github.io/helm-charts/
-  version: 0.25.0
+  version: 0.26.0
 - name: dcgm-exporter
   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
   version: 4.8.3
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.1
-digest: sha256:408908d5b993133f3b41c8916945db2f1048d8f1ffc222f7fa662e33e95ff683
-generated: "2026-08-21T19:57:16.821834655Z"
+digest: sha256:6acc21a905014bd141a749e4276d5cce89faad43e5dcea90b63c43949ee3e5aa
+generated: "2026-08-28T19:39:35.521094009Z"
