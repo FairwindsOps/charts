@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.7.1
+* Update documentation formatting
+
 ## 6.7.0
 * Bumped `workloads` to `2.17.0`
 * Grant workloads ClusterRole `get`/`list` on GatewayClass and all `gateway.kgateway.dev` inventory resources
