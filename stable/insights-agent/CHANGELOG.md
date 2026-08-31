@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.9.0
+* Bumped `goldilocks` to `11.0.*`
+
 ## 6.8.0
 * Bumped `trivy` to `0.26.0`
 
