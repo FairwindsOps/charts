@@ -1,7 +1,20 @@
 # Changelog
 
-## 6.7.1
+
+## 6.11.1
 * Update documentation formatting
+
+## 6.11.0
+* Bumped `vpa` to `5.0.*`
+
+## 6.10.0
+* Bumped `prometheus` to `29.27.*`
+
+## 6.9.0
+* Bumped `goldilocks` to `11.0.*`
+
+## 6.8.0
+* Bumped `trivy` to `0.26.0`
 
 ## 6.7.0
 * Bumped `workloads` to `2.17.0`

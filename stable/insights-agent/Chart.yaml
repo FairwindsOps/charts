@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A Helm chart to run the Fairwinds Insights agent
 name: insights-agent
-version: 6.7.1
+version: 6.11.1
 appVersion: 9.2.1
 kubeVersion: ">= 1.22.0-0"
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insights-agent/icon.png
@@ -11,11 +11,11 @@ maintainers:
 dependencies:
   - name: goldilocks
     repository: https://charts.fairwinds.com/stable
-    version: '10.6.*'
+    version: '11.0.*'
     condition: goldilocks.enabled
   - name: prometheus
     repository: https://prometheus-community.github.io/helm-charts
-    version: '29.24.*'
+    version: '29.27.*'
     condition: prometheus-metrics.installPrometheusServer
   - name: insights-admission
     repository: https://charts.fairwinds.com/stable
@@ -27,12 +27,12 @@ dependencies:
     condition: falco.installFalco
     alias: falcosecurity
   - name: vpa
-    version: '4.12.*'
+    version: '5.0.*'
     repository: https://charts.fairwinds.com/stable
     condition: right-sizer.enableClosedBeta
     alias: right-sizer-vpa
   - name: trivy
-    version: 0.25.0
+    version: 0.26.0
     repository: https://aquasecurity.github.io/helm-charts/
     condition: trivy.server.installTrivyServer
     alias: trivy-server
