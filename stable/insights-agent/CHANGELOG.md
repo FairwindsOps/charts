@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.8.0
+* Bumped `trivy` to `0.26.0`
+
 ## 6.7.0
 * Bumped `workloads` to `2.17.0`
 * Grant workloads ClusterRole `get`/`list` on GatewayClass and all `gateway.kgateway.dev` inventory resources
