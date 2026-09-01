@@ -1,5 +1,25 @@
 # Changelog
 
+## 6.12.0
+* Bumped `insights-uploader` to `0.6.13`
+* Bumped `insights-utils` to `0.0.18`
+* Bumped `polaris` to `v10.2.2`
+* Bumped `goldilocks` reporter image to `v4.16.1`
+* Bumped `fw-opa` to `3.1.36`
+* Bumped `rbac-reporter` to `1.4.28`
+* Bumped `image-trust` to `0.1.12`
+* Bumped `fw-kube-bench` to `0.6.29` and `fw-kube-bench-aggregator` to `0.4.25`
+* Bumped `fw-trivy` to `0.34.39`
+* Bumped `pluto` to `v5.24.3`
+* Bumped `prometheus-collector` to `1.9.20`
+* Bumped `cloud-costs` to `1.1.9`
+* Bumped `right-sizer` to `0.6.27`
+* Bumped `falco-agent` to `0.4.35`
+* Bumped `kyverno` to `0.6.11` and `kyverno-policy-sync` to `0.2.32`
+* Bumped `on-demand-job-runner` to `0.2.32`
+* Bumped `insights-event-watcher` to `0.2.56`
+* Bumped `network-flow` to `0.0.16` and `network-flow-aggregator` to `0.0.20`
+
 ## 6.11.0
 * Bumped `vpa` to `5.0.*`
 

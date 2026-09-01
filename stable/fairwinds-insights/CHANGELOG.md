@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.1.6
+* Bumped `swagger-ui` to `v5.32.14`
+* Bumped `cronjobExecutor` `alpine/kubectl` to `1.36.4`
+
 ## 10.1.5
 * Bumped `insights-api` to `18.4.28`
 * Bumped `agentChartTarget` to `6.7.0`
