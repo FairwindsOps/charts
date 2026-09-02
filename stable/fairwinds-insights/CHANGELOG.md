@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.1.7
+* Bumped `insights-api` to `18.4.30`
+
 ## 10.1.6
 * Bumped `swagger-ui` to `v5.32.14`
 * Bumped `cronjobExecutor` `alpine/kubectl` to `1.36.4`
