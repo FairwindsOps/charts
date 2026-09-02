@@ -309,11 +309,6 @@ cronjobs:
     command: refresh_jira_webhooks
     schedule: "0 0 1,15 * *"
 
-  # -- Options for the utmstack_integration cronjob
-  utmstack-integration:
-    command: utmstack_integration
-    schedule: "*/5 * * * *"
-
 # -- Self-hosted TLS Secret (current.pem + pubkey). A string name still works. Set externalSecret.create to provision it via External Secrets Operator.
 selfHostedSecret:
   externalSecret:
