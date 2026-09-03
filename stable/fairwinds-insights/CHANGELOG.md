@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.1.8
+* Bumped `insights-api` to `18.4.32`
+
 ## 10.1.7
 * Bumped `insights-api` to `18.4.30`
 
