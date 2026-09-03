@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.12.1
+* Update documentation formatting
+
 ## 6.12.0
 * Bumped `insights-uploader` to `0.6.13`
 * Bumped `insights-utils` to `0.0.18`
