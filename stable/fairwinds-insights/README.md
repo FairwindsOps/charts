@@ -85,7 +85,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobs.app-groups-cves-statistics | object | `{"command":"app_groups_cves_statistics","schedule":"0 9,21 * * *"}` | Options for the app_groups_cves_statistics cronjob. |
 | cronjobs.cve-reports-email-sender | object | `{"command":"cve_reports_email_sender","schedule":"0 5 1 * *"}` | Options for the cve_reports_email_sender cronjob. |
 | cronjobs.refresh-jira-webhooks | object | `{"command":"refresh_jira_webhooks","schedule":"0 0 1,15 * *"}` | Options for the refresh_jira_webhooks cronjob |
-| cronjobs.utmstack-integration | object | `{"command":"utmstack_integration","schedule":"*/5 * * * *"}` | Options for the utmstack_integration cronjob |
 | selfHostedSecret | object | `{"externalSecret":{"annotations":{},"create":false,"data":[],"name":"self-hosted-key","refreshInterval":"1h","secretStoreRef":{"kind":"ClusterSecretStore","name":"fairwinds-vault-backend"}}}` | Self-hosted TLS Secret (current.pem + pubkey). A string name still works. Set externalSecret.create to provision it via External Secrets Operator. |
 | selfHostedSecret.externalSecret.create | bool | `false` | When true, create an ExternalSecret that syncs into this Secret and mount it on API / admission / Temporal worker pods. |
 | selfHostedSecret.externalSecret.name | string | `"self-hosted-key"` | ExternalSecret CR name and the Secret it creates (default self-hosted-key). |
