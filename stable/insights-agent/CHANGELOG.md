@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.12.1
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow` to `0.0.17`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator` to `0.0.21`
+
 ## 6.12.0
 * Bumped `insights-uploader` to `0.6.13`
 * Bumped `insights-utils` to `0.0.18`
