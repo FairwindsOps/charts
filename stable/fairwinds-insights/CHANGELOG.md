@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.1.10
+* Bumped `insights-api` to `18.4.34`
+
 ## 10.1.9
 * Remove UTMStack integration support (`cronjobs.utmstack-integration`)
 
