@@ -1115,7 +1115,7 @@ network-observability:
   agent:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/network-flow
-      tag: "0.0.16"
+      tag: "0.0.17"
       pullPolicy: Always
     gadgetVersion: ""
     collectorAddr: ""
@@ -1164,7 +1164,7 @@ network-observability:
   aggregator:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator
-      tag: "0.0.20"
+      tag: "0.0.21"
       pullPolicy: Always
     replicas: 1
     grpcPort: 4317
