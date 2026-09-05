@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.1.10
+* Grant `github-worker` `get` and `update` on Secrets so repo-scan jobs can adopt existing secrets, set ownerReferences, and wait for deletion.
+
 ## 10.1.9
 * Remove UTMStack integration support (`cronjobs.utmstack-integration`)
 

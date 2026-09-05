@@ -1575,7 +1575,7 @@ temporalDeployments:
           verbs: ["list", "get"]
         - apiGroups: [""]
           resources: ["secrets", "configmaps"]
-          verbs: ["create", "delete"]
+          verbs: ["get", "create", "update", "delete"]
   report-job-worker:
     enabled: true
     command: "report_job_worker"
