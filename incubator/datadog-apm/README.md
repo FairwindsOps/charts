@@ -1,15 +1,8 @@
-<div align="center">
-<a href="https://github.com/FairwindsOps/goldilocks"><img src="logo.svg" height="150" alt="Goldilocks" style="padding-bottom: 20px" /></a>
-<br>
-</div>
-
 # datadog-apm
 
-![Version: 1.1.1](https://img.shields.io/badge/Version-1.1.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.59.0](https://img.shields.io/badge/AppVersion-7.59.0-informational?style=flat-square)
+![Version: 2.0.1](https://img.shields.io/badge/Version-2.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 7.73.0](https://img.shields.io/badge/AppVersion-7.73.0-informational?style=flat-square)
 
 A modified chart that only installs the datadog-apm agent
-
-## Maintainers
 
 ## Maintainers
 
@@ -17,8 +10,6 @@ A modified chart that only installs the datadog-apm agent
 | ---- | ------ | --- |
 | sudermanjr |  |  |
 | Azahorscak |  |  |
-
-## Values
 
 ## Values
 
