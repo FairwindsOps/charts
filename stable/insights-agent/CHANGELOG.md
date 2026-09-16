@@ -1,5 +1,30 @@
 # Changelog
 
+## 6.13.1
+* Bumped `fw-trivy` to `0.34.42`
+* Bumped `cloud-costs` to `1.1.10`
+* Bumped `polaris` to `v10.2.4`
+* Bumped `goldilocks` reporter image to `v4.16.2`
+* Bumped `nova` to `v3.12.1`
+* Bumped `pluto` to `v5.24.4`
+
+## 6.13.0
+* Bumped `insights-uploader` to `0.6.14`
+* Bumped `insights-utils` to `0.0.19`
+* Bumped `fw-opa` to `3.1.38`
+* Bumped `workloads` to `2.17.4`
+* Bumped `rbac-reporter` to `1.4.30`
+* Bumped `image-trust` to `0.1.14`
+* Bumped `fw-kube-bench` to `0.6.31` and `fw-kube-bench-aggregator` to `0.4.27`
+* Bumped `fw-trivy` to `0.34.41`
+* Bumped `prometheus-collector` to `1.9.22`
+* Bumped `right-sizer` to `0.6.29`
+* Bumped `falco-agent` to `0.4.37`
+* Bumped `kyverno` to `0.6.13` and `kyverno-policy-sync` to `0.2.34`
+* Bumped `on-demand-job-runner` to `0.2.34`
+* Bumped `insights-event-watcher` to `0.2.58`
+* Bumped `network-flow` to `0.0.20` and `network-flow-aggregator` to `0.0.24`
+
 ## 6.12.1
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow` to `0.0.17`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator` to `0.0.21`
