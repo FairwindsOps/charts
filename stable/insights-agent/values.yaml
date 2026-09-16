@@ -94,7 +94,7 @@ polaris:
     disabled: false
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/polaris
-    tag: "v10.2.2"
+    tag: "v10.2.4"
   resources:
     requests:
       cpu: 100m
@@ -129,7 +129,7 @@ goldilocks:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/goldilocks
-    tag: "v4.16.1"
+    tag: "v4.16.2"
   controller:
     flags:
       on-by-default: true
@@ -225,7 +225,7 @@ nova:
   logLevel: 3
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/nova
-    tag: "v3.12.0"
+    tag: "v3.12.1"
   resources:
     requests:
       cpu: 100m
@@ -423,7 +423,7 @@ trivy:
     TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1,public.ecr.aws/aquasecurity/trivy-java-db:1,docker.io/aquasec/trivy-java-db:1
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/fw-trivy
-    tag: "0.34.41"
+    tag: "0.34.42"
   serviceAccount:
     annotations:
   resources:
@@ -448,7 +448,7 @@ pluto:
   targetVersions: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/pluto
-    tag: "v5.24.3"
+    tag: "v5.24.4"
   resources:
     requests:
       cpu: 100m
@@ -717,7 +717,7 @@ cloudcosts:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/cloud-costs
-    tag: "1.1.9"
+    tag: "1.1.10"
   serviceAccount:
     annotations:
   resources:
