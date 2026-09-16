@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.13.1
+* Bumped `fw-trivy` to `0.34.42`
+* Bumped `cloud-costs` to `1.1.10`
+* Bumped `polaris` to `v10.2.4`
+* Bumped `goldilocks` reporter image to `v4.16.2`
+* Bumped `nova` to `v3.12.1`
+* Bumped `pluto` to `v5.24.4`
+
 ## 6.13.0
 * Bumped `insights-uploader` to `0.6.14`
 * Bumped `insights-utils` to `0.0.19`
