@@ -1,5 +1,9 @@
 # Changelog
 
+## 6.13.2
+* Bumped `polaris` reporter image to `v10.2.5`
+* Bumped `insights-event-watcher` to `0.2.59`
+
 ## 6.13.1
 * Bumped `fw-trivy` to `0.34.42`
 * Bumped `cloud-costs` to `1.1.10`

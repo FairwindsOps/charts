@@ -94,7 +94,7 @@ polaris:
     disabled: false
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/polaris
-    tag: "v10.2.4"
+    tag: "v10.2.5"
   resources:
     requests:
       cpu: 100m
@@ -1047,7 +1047,7 @@ insights-event-watcher:
   enabled: false
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher
-    tag: "0.2.58"
+    tag: "0.2.59"
     pullPolicy: Always
   logLevel: "info"
   # Health check configuration
