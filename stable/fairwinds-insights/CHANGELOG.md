@@ -1,7 +1,10 @@
 # Changelog
 
-## 10.1.11
+## 10.1.12
 * Bumped `insights-api` to `18.4.47`
+
+## 10.1.11
+* Bumped `swaggerapi/swagger-ui` to `v5.32.15`
 
 ## 10.1.10
 * Grant `github-worker` `get` and `update` on Secrets so repo-scan jobs can adopt existing secrets, set ownerReferences, and wait for deletion.
