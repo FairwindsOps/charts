@@ -66,10 +66,7 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-      {{- with .Values.outboxWorker.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.outboxWorker.nodeSelector "fallback" .Values.nodeSelector) | nindent 6 }}
       {{- with .Values.outboxWorker.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

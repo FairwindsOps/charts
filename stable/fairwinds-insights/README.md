@@ -62,6 +62,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobOptions.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Default additional env vars for all cronjobs (overridden per cronjob by cronjobs.<name>.additionalEnvVars) |
 | cronjobOptions.successfulJobsHistoryLimit | int | `1` | Default successful jobs history limit (overridden per cronjob by cronjobs.<name>.successfulJobsHistoryLimit) |
 | cronjobOptions.failedJobsHistoryLimit | int | `1` | Default failed jobs history limit (overridden per cronjob by cronjobs.<name>.failedJobsHistoryLimit) |
+| cronjobOptions.nodeSelector | object | `{}` | Default node selector for CronJobs. Replaces `nodeSelector` when set. Override a single job with `cronjobs.<name>.nodeSelector`. |
 | cronjobs.action-item-filters-refresh.command | string | `"action_items_filters_refresher"` |  |
 | cronjobs.action-item-filters-refresh.schedule | string | `"0/15 * * * *"` |  |
 | cronjobs.action-item-filters-refresh.useMigrationCredentials | bool | `false` |  |
@@ -93,6 +94,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | selfHostedSecret.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
+| nodeSelector | object | `{}` | Default nodeSelector for pods that run the dashboard, API, database migration, or cronjob images. A component nodeSelector replaces this when set. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
@@ -100,7 +102,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | dashboard.hpa.max | int | `4` | Maximum number of replicas for the front end pods. |
 | dashboard.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | dashboard.resources | object | `{"limits":{"cpu":"1000m","memory":"1024Mi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the front end pods. |
-| dashboard.nodeSelector | object | `{}` | Node Selector for the front end pods. |
+| dashboard.nodeSelector | object | `{}` | Node selector for the front end pods. Replaces `nodeSelector` when set. |
 | dashboard.tolerations | list | `[]` | Tolerations for the front end pods. |
 | dashboard.topologySpreadConstraints[0].maxSkew | int | `1` |  |
 | dashboard.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
@@ -130,7 +132,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | api.hpa.max | int | `4` | Maximum number of replicas for the API server. |
 | api.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | api.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the API server. |
-| api.nodeSelector | object | `{}` | Node Selector for the API server. |
+| api.nodeSelector | object | `{}` | Node selector for the API server. Replaces `nodeSelector` when set. |
 | api.tolerations | list | `[]` | Tolerations for the API server. |
 | api.topologySpreadConstraints[0].maxSkew | int | `1` |  |
 | api.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
@@ -160,6 +162,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | admissionApi.hpa.max | int | `6` | Maximum number of replicas for the admission API server. |
 | admissionApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":80,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | admissionApi.resources | object | `{"limits":{"cpu":"500m","memory":"1Gi"},"requests":{"cpu":"250m","memory":"256Mi"}}` | Resources for the admission API server. |
+| admissionApi.nodeSelector | object | `{}` | Node selector for the admission API server. Replaces `nodeSelector` when set. |
 | admissionApi.tolerations | list | `[]` | Tolerations for the admission API server. |
 | admissionApi.topologySpreadConstraints[0].maxSkew | int | `1` |  |
 | admissionApi.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
@@ -185,7 +188,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | openApi.hpa.max | int | `3` | Maximum number of replicas for the Open API server. |
 | openApi.hpa.metrics | list | `[{"resource":{"name":"cpu","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"},{"resource":{"name":"memory","target":{"averageUtilization":75,"type":"Utilization"}},"type":"Resource"}]` | Scaling metrics |
 | openApi.resources | object | `{"limits":{"cpu":"256m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"100Mi"}}` | Resources for the Open API server. |
-| openApi.nodeSelector | object | `{}` | Node Selector for the Open API server. |
+| openApi.nodeSelector | object | `{}` | Node selector for the Open API server. Replaces `nodeSelector` when set. |
 | openApi.tolerations | list | `[]` | Tolerations for the Open API server. |
 | openApi.topologySpreadConstraints[0].maxSkew | int | `1` |  |
 | openApi.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
@@ -237,8 +240,10 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | dbMigration.waitTimeout | int | `600` | Max seconds to wait for PostgreSQL and Timescale to be ready before migration runs before failing. 0 = no timeout. |
 | dbMigration.resources | object | `{"limits":{"cpu":1,"memory":"1024Mi"},"requests":{"cpu":"80m","memory":"128Mi"}}` | Resources for the database migration job. |
 | dbMigration.securityContext.runAsUser | int | `10324` | The user ID to run the database migration job under. |
+| dbMigration.nodeSelector | object | `{}` | Node selector for the database migration job. Replaces `nodeSelector` when set. |
 | oneTimeMigration.resources | object | `{"limits":{"cpu":"500m","memory":"512Mi"},"requests":{"cpu":"100m","memory":"256Mi"}}` | Resources for the one time migration job. |
 | oneTimeMigration.securityContext.runAsUser | int | `10324` | The user ID to run the migration job under. |
+| oneTimeMigration.nodeSelector | object | `{}` | Node selector for the one-time migration job. Replaces `nodeSelector` when set. |
 | oneTimeMigration.additionalEnv | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"1"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"1"}]` | Additional environment variables for the one time migration job. |
 | service.port | int | `80` | Port to be used for the API and Dashboard services. |
 | service.type | string | `"NodePort"` | Service type for the API and Dashboard services |
@@ -374,6 +379,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | rustfs.createBucketJob.enabled | bool | `true` |  |
 | rustfs.createBucketJob.repository | string | `"amazon/aws-cli"` |  |
 | rustfs.createBucketJob.tag | string | `"2.34.31"` |  |
+| migrateHealthScoreJob.nodeSelector | object | `{}` | Node selector for the health-score migration CronJob. Replaces `nodeSelector` when set. |
 | migrateHealthScoreJob.resources.limits.cpu | string | `"500m"` |  |
 | migrateHealthScoreJob.resources.limits.memory | string | `"1024Mi"` |  |
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
@@ -403,7 +409,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | reportjob.resources.limits.memory | string | `"1024Mi"` |  |
 | reportjob.resources.requests.cpu | string | `"80m"` |  |
 | reportjob.resources.requests.memory | string | `"128Mi"` |  |
-| reportjob.nodeSelector | object | `{}` |  |
+| reportjob.nodeSelector | object | `{}` | Node selector for the report job pods. Replaces `nodeSelector` when set. |
 | reportjob.tolerations | list | `[]` |  |
 | reportjob.topologySpreadConstraints[0].maxSkew | int | `1` |  |
 | reportjob.topologySpreadConstraints[0].topologyKey | string | `"topology.kubernetes.io/zone"` |  |
@@ -430,7 +436,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | outboxWorker.resources | object | `{"limits":{"cpu":"100m","memory":"128Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Resource requests and limits for the outbox worker container |
 | outboxWorker.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"privileged":false,"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | Container security context for the outbox worker |
 | outboxWorker.additionalEnvVars | list | `[]` | Extra environment variables for the outbox worker container |
-| outboxWorker.nodeSelector | object | `{}` | nodeSelector for the outbox worker pod |
+| outboxWorker.nodeSelector | object | `{}` | nodeSelector for the outbox worker pod. Replaces the chart-wide `nodeSelector` when set. |
 | outboxWorker.tolerations | list | `[]` | Tolerations for the outbox worker pod |
 | outboxWorker.topologySpreadConstraints | list | `[]` | Topology spread constraints for the outbox worker pod |
 | outboxWorker.affinity | string | `nil` | Optional pod affinity (set to a mapping to enable) |
@@ -445,7 +451,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporalDeploymentDefaults.image.repository | string | `""` | Overrides `apiImage.repository` when set (non-empty) |
 | temporalDeploymentDefaults.image.tag | string | `""` | Overrides the API image tag when set (non-empty); otherwise uses `fairwinds-insights.apiImageTag` |
 | temporalDeploymentDefaults.imagePullPolicy | string | `"Always"` | Container image pull policy |
-| temporalDeploymentDefaults.nodeSelector | object | `{}` | nodeSelector for temporal worker pods |
+| temporalDeploymentDefaults.nodeSelector | object | `{}` | nodeSelector for temporal worker pods. Replaces the chart-wide `nodeSelector` when set. Override a single worker with `temporalDeployments.<name>.nodeSelector`. |
 | temporalDeploymentDefaults.affinity | string | `nil` | Optional pod affinity (set to a mapping to enable) |
 | temporalDeploymentDefaults.initContainers | list | `[]` | Optional init containers |
 | temporalDeploymentDefaults.terminationGracePeriodSeconds | int | `600` | Pod termination grace period (seconds) |

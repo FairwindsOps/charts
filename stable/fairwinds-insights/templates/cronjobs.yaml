@@ -18,6 +18,7 @@ spec:
         spec:
           restartPolicy: OnFailure
           {{- include "fairwinds-insights.imagePullSecrets" $ | nindent 10 }}
+          {{- include "fairwinds-insights.nodeSelector" (dict "component" ($options.nodeSelector | default $.Values.cronjobOptions.nodeSelector) "fallback" $.Values.nodeSelector) | nindent 10 }}
           serviceAccountName: {{ include "fairwinds-insights.fullname" $ }}-cronjob-executor
           containers:
             - name: {{ $name }}

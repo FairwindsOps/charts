@@ -186,6 +186,8 @@ cronjobOptions:
   successfulJobsHistoryLimit: 1
   # -- Default failed jobs history limit (overridden per cronjob by cronjobs.<name>.failedJobsHistoryLimit)
   failedJobsHistoryLimit: 1
+  # -- Default node selector for CronJobs. Replaces `nodeSelector` when set. Override a single job with `cronjobs.<name>.nodeSelector`.
+  nodeSelector: {}
 
 cronjobs:
   action-item-filters-refresh:
@@ -345,6 +347,9 @@ rbac:
     # -- Annotations to add to the service account
     annotations: {}
 
+# -- Default nodeSelector for pods that run the dashboard, API, database migration, or cronjob images. A component nodeSelector replaces this when set.
+nodeSelector: {}
+
 dashboard:
   pdb:
     # -- Create a pod disruption budget for the front end pods.
@@ -380,7 +385,7 @@ dashboard:
     requests:
       cpu: 250m
       memory: 256Mi
-  # -- Node Selector for the front end pods.
+  # -- Node selector for the front end pods. Replaces `nodeSelector` when set.
   nodeSelector: {}
   # -- Tolerations for the front end pods.
   tolerations: []
@@ -463,7 +468,7 @@ api:
     requests:
       cpu: 250m
       memory: 256Mi
-  # -- Node Selector for the API server.
+  # -- Node selector for the API server. Replaces `nodeSelector` when set.
   nodeSelector: {}
   # -- Tolerations for the API server.
   tolerations: []
@@ -542,6 +547,8 @@ admissionApi:
     requests:
       cpu: 250m
       memory: 256Mi
+  # -- Node selector for the admission API server. Replaces `nodeSelector` when set.
+  nodeSelector: {}
   # -- Tolerations for the admission API server.
   tolerations: []
   # topologySpreadConstraints -- Default TopologySpreadConstraints for the admission API server.
@@ -617,7 +624,7 @@ openApi:
     requests:
       cpu: 100m
       memory: 100Mi
-  # -- Node Selector for the Open API server.
+  # -- Node selector for the Open API server. Replaces `nodeSelector` when set.
   nodeSelector: {}
   # -- Tolerations for the Open API server.
   tolerations: []
@@ -801,6 +808,8 @@ dbMigration:
   securityContext:
     # -- The user ID to run the database migration job under.
     runAsUser: 10324
+  # -- Node selector for the database migration job. Replaces `nodeSelector` when set.
+  nodeSelector: {}
 
 oneTimeMigration:
   # -- Resources for the one time migration job.
@@ -814,6 +823,8 @@ oneTimeMigration:
   securityContext:
     # -- The user ID to run the migration job under.
     runAsUser: 10324
+  # -- Node selector for the one-time migration job. Replaces `nodeSelector` when set.
+  nodeSelector: {}
   # -- Additional environment variables for the one time migration job.
   additionalEnv:
     - name: POSTGRES_MAX_IDLE_CONNS
@@ -1204,6 +1215,8 @@ rustfs:
     tag: "2.34.31"
 
 migrateHealthScoreJob:
+  # -- Node selector for the health-score migration CronJob. Replaces `nodeSelector` when set.
+  nodeSelector: {}
   resources:
     limits:
       cpu: 500m
@@ -1256,6 +1269,7 @@ reportjob:
     requests:
       cpu: 80m
       memory: 128Mi
+  # -- Node selector for the report job pods. Replaces `nodeSelector` when set.
   nodeSelector: {}
   tolerations: []
   # topologySpreadConstraints -- Default TopologySpreadConstraints for the reportJob Deployment.
@@ -1319,7 +1333,7 @@ outboxWorker:
         - ALL
   # -- Extra environment variables for the outbox worker container
   additionalEnvVars: []
-  # -- nodeSelector for the outbox worker pod
+  # -- nodeSelector for the outbox worker pod. Replaces the chart-wide `nodeSelector` when set.
   nodeSelector: {}
   # -- Tolerations for the outbox worker pod
   tolerations: []
@@ -1352,7 +1366,7 @@ temporalDeploymentDefaults:
     tag: ""
   # -- Container image pull policy
   imagePullPolicy: Always
-  # -- nodeSelector for temporal worker pods
+  # -- nodeSelector for temporal worker pods. Replaces the chart-wide `nodeSelector` when set. Override a single worker with `temporalDeployments.<name>.nodeSelector`.
   nodeSelector: {}
   # -- Optional pod affinity (set to a mapping to enable)
   affinity: null
