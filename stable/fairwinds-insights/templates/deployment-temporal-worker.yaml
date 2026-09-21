@@ -111,7 +111,7 @@ spec:
               readOnly: true
             {{- end }}
           {{- end }}
-      {{- include "fairwinds-insights.nodeSelector" (dict "component" ($options.nodeSelector | default $.Values.temporalDeploymentDefaults.nodeSelector) "global" $.Values.nodeSelector) | nindent 6 }}
+      {{- include "fairwinds-insights.nodeSelector" (dict "component" ($options.nodeSelector | default $.Values.temporalDeploymentDefaults.nodeSelector) "fallback" $.Values.nodeSelector) | nindent 6 }}
       {{- with (default $.Values.temporalDeploymentDefaults.affinity $options.affinity) }}
       affinity:
         {{- toYaml . | nindent 8 }}

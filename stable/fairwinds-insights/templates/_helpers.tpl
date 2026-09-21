@@ -578,10 +578,10 @@ Existing Secret path: existingSecret (empty means do not mount).
 {{- end -}}
 
 {{/*
-Pod nodeSelector. .component replaces .global when non-empty.
+Pod nodeSelector. .component replaces .fallback when non-empty.
 */}}
 {{- define "fairwinds-insights.nodeSelector" -}}
-{{- $selected := .component | default .global -}}
+{{- $selected := .component | default .fallback -}}
 {{- if $selected -}}
 nodeSelector:
 {{ toYaml $selected | indent 2 }}

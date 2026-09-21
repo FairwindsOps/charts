@@ -89,7 +89,7 @@ spec:
             capabilities:
               drop:
                 - ALL
-      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.api.nodeSelector "global" .Values.nodeSelector) | nindent 6 }}
+      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.api.nodeSelector "fallback" .Values.nodeSelector) | nindent 6 }}
       volumes:
       - name: tmp
         emptyDir: {}

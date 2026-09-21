@@ -24,7 +24,7 @@ spec:
     spec:
       restartPolicy: Never
       {{- include "fairwinds-insights.imagePullSecrets" . | nindent 6 }}
-      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.dbMigration.nodeSelector "global" .Values.nodeSelector) | nindent 6 }}
+      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.dbMigration.nodeSelector "fallback" .Values.nodeSelector) | nindent 6 }}
       initContainers:
       - name: wait-for-databases
         image: alpine/psql:18.3
