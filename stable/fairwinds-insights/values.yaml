@@ -347,7 +347,7 @@ rbac:
     # -- Annotations to add to the service account
     annotations: {}
 
-# -- Default nodeSelector for pods that run the dashboard, API, database migration, or cronjob images. A component nodeSelector replaces this when set.
+# -- Default nodeSelector for pods that run the dashboard, API, database migration, cronjob, or MCP server images. A component nodeSelector replaces this when set.
 nodeSelector: {}
 
 dashboard:
@@ -753,7 +753,7 @@ mcp:
   ingress:
     # -- Enable the MCP ingress
     enabled: false
-  # -- Node selector for MCP pods
+  # -- Node selector for MCP pods. Replaces `nodeSelector` when set.
   nodeSelector: {}
   # -- Tolerations for MCP pods
   tolerations: []
