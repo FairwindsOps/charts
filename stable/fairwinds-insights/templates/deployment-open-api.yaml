@@ -68,10 +68,7 @@ spec:
             capabilities:
               drop:
                 - ALL
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.openApi.nodeSelector "global" .Values.nodeSelector) | nindent 6 }}
     {{- with .Values.openApi.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}

@@ -80,10 +80,7 @@ spec:
             capabilities:
               drop:
                 - ALL
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.admissionApi.nodeSelector "global" .Values.nodeSelector) | nindent 6 }}
       volumes:
       - name: tmp
         emptyDir: {}
