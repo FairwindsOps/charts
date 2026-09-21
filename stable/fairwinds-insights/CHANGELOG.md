@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.2.0
+* Add a chart-wide `nodeSelector`, overridable per workload that runs the dashboard, API, database migration, or cronjob image.
+
 ## 10.1.11
 * Bumped `swaggerapi/swagger-ui` to `v5.32.15`
 
