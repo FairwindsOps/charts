@@ -1,5 +1,16 @@
 # Changelog
 
+## 6.13.4
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.38`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-opa` to `3.1.39`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/image-trust` to `0.1.15`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher` to `0.2.61`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/kyverno` to `0.6.14`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector` to `1.9.23`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter` to `1.4.31`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/right-sizer` to `0.6.30`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/workloads` to `2.17.5`
+
 ## 6.13.3
 * Update `admission` default request and limits
 

@@ -161,7 +161,7 @@ opa:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/fw-opa
-    tag: "3.1.38"
+    tag: "3.1.39"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -212,7 +212,7 @@ workloads:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/workloads
-    tag: "2.17.4"
+    tag: "2.17.5"
   resources:
     requests:
       cpu: 100m
@@ -245,7 +245,7 @@ rbac-reporter:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter
-    tag: "1.4.30"
+    tag: "1.4.31"
   resources:
     requests:
       cpu: 100m
@@ -375,7 +375,7 @@ image-trust:
   env: {}
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/image-trust
-    tag: "0.1.14"
+    tag: "0.1.15"
   resources:
     requests:
       cpu: 100m
@@ -472,7 +472,7 @@ prometheus-metrics:
   tenantId: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector
-    tag: "1.9.22"
+    tag: "1.9.23"
   resources:
     requests:
       cpu: 100m
@@ -822,7 +822,7 @@ right-sizer:
     # This image is for the controller, the agent only runs the Insights uploader.
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/right-sizer
-      tag: "0.6.29"
+      tag: "0.6.30"
       pullPolicy: Always
 
     # oom-detection.stateconfigmapname -- The name of a ConfigMap where controller
@@ -926,7 +926,7 @@ falco:
     port: 3031
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/falco-agent
-    tag: "0.4.37"
+    tag: "0.4.38"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -979,7 +979,7 @@ kyverno:
   schedule: "rand * * * *"
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/kyverno
-    tag: "0.6.13"
+    tag: "0.6.14"
   resources:
     requests:
       cpu: 100m
@@ -1047,7 +1047,7 @@ insights-event-watcher:
   enabled: false
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher
-    tag: "0.2.59"
+    tag: "0.2.61"
     pullPolicy: Always
   logLevel: "info"
   # Health check configuration
