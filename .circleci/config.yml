@@ -74,8 +74,8 @@ executors:
   ci-images:
     docker:
       - image: quay.io/reactiveops/ci-images:v15-cimg-24.04
-  ci-images-large-gen2:
-    resource_class: large.gen2
+  ci-images-xlarge-gen2:
+    resource_class: xlarge.gen2
     docker:
       - image: quay.io/reactiveops/ci-images:v15-cimg-24.04
 
