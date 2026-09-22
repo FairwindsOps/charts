@@ -1762,6 +1762,7 @@ temporal:
     config:
       namespaces:
         create: true
+        useHelmHooks: false
         namespace:
           - name: fwinsights
             retention: 3d

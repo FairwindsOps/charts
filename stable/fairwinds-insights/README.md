@@ -482,6 +482,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.shims.elasticsearchTool | bool | `false` |  |
 | temporal.server.replicaCount | int | `1` |  |
 | temporal.server.config.namespaces.create | bool | `true` |  |
+| temporal.server.config.namespaces.useHelmHooks | bool | `false` |  |
 | temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
 | temporal.server.config.namespaces.namespace[0].retention | string | `"3d"` |  |
 | temporal.server.config.persistence.defaultStore | string | `"default"` |  |
