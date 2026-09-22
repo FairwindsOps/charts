@@ -1792,9 +1792,6 @@ temporal:
               tls:
                 enabled: true
                 enableHostVerification: false
-                # cert/key stored in secret-with-certs (server + admintools volume mounts below).
-                certFile: /etc/temporal/tls/tls.crt
-                keyFile: /etc/temporal/tls/tls.key
           visibility:
             sql:
               createDatabase: true
@@ -1814,8 +1811,6 @@ temporal:
               tls:
                 enabled: true
                 enableHostVerification: false
-                certFile: /etc/temporal/tls/tls.crt
-                keyFile: /etc/temporal/tls/tls.key
 
     additionalVolumes:
       - name: secret-with-certs

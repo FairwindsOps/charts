@@ -2,6 +2,7 @@
 
 ## 10.3.0
 * Bumped `temporal` to `1.7.0`
+* Removes Temporal default config for certFile and certKey because CloudNativePG rejected the chart-generated CA certificate.
 
 ## 10.2.1
 * Apply the chart-wide `nodeSelector` to the MCP server, overridable with `mcp.nodeSelector`.
