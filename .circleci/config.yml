@@ -176,28 +176,28 @@ workflows:
           kind_node_image: "kindest/node:v1.34.11@sha256:44e222ee2132dab25ff87301682f89eb82c7880ea3a1bf543bfe9708fd08d67d"
           checkout-method: full
           executor:
-            name: ci-images-large-gen2
+            name: ci-images-xlarge-gen2
           <<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.35"
           kind_node_image: "kindest/node:v1.35.8@sha256:07b2536e30b803ed61d1677a79df6115f798ce64c80f9e22f6ed45afd09323c0"
           checkout-method: full
           executor:
-            name: ci-images-large-gen2
+            name: ci-images-xlarge-gen2
           <<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.36"
           kind_node_image: "kindest/node:v1.36.4@sha256:099e049362a1526b2db71494e1947aae99bd16290d7c895f2b7ea312e3cbfaed"
           checkout-method: full
           executor:
-            name: ci-images-large-gen2
+            name: ci-images-xlarge-gen2
           <<: *kind_configuration_helm3
       - rok8s/kubernetes_e2e_tests:
           name: "End-To-End Kubernetes 1.37"
           kind_node_image: "kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5"
           checkout-method: full
           executor:
-            name: ci-images-large-gen2
+            name: ci-images-xlarge-gen2
           <<: *kind_configuration_helm3
       - sync:
           requires:
