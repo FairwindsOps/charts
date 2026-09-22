@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.2.1
+* Apply the chart-wide `nodeSelector` to the MCP server, overridable with `mcp.nodeSelector`.
+
 ## 10.2.0
 * Add a chart-wide `nodeSelector`, overridable per workload that runs the dashboard, API, database migration, or cronjob image.
 

@@ -94,7 +94,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | selfHostedSecret.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
-| nodeSelector | object | `{}` | Default nodeSelector for pods that run the dashboard, API, database migration, or cronjob images. A component nodeSelector replaces this when set. |
+| nodeSelector | object | `{}` | Default nodeSelector for pods that run the dashboard, API, database migration, cronjob, or MCP server images. A component nodeSelector replaces this when set. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
@@ -228,7 +228,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | mcp.service.annotations | object | `{}` | Service annotations (e.g. cloud LB internal annotations) |
 | mcp.service.nodePort | string | `nil` | `nodePort` when `type` is `NodePort` |
 | mcp.ingress.enabled | bool | `false` | Enable the MCP ingress |
-| mcp.nodeSelector | object | `{}` | Node selector for MCP pods |
+| mcp.nodeSelector | object | `{}` | Node selector for MCP pods. Replaces `nodeSelector` when set. |
 | mcp.tolerations | list | `[]` | Tolerations for MCP pods |
 | mcp.affinity | object | `{}` | Affinity for MCP pods |
 | mcp.podAnnotations | object | `{}` | Pod annotations |
