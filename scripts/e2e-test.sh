@@ -38,7 +38,9 @@ pre_test_script () {
 
 run_tests () {
     printf "Running e2e tests...\n"
-    ct install --config scripts/ct.yaml --debug --print-config --upgrade --helm-extra-args "--timeout 600s"
+    # Must stay below CircleCI's 10m no-output timeout, otherwise the step is killed
+    # before ct can print the pod logs that explain the failure.
+    ct install --config scripts/ct.yaml --debug --print-config --upgrade --helm-extra-args "--timeout 420s"
 }
 
 if [ "$OPERATION" = "setup" ]; then
