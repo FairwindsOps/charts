@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  rok8s: fairwinds/rok8s-scripts@17.0.0
+  rok8s: fairwinds/rok8s-scripts@17.1.1
   slack: circleci/slack@6.1.3
 
 commands:
@@ -60,6 +60,7 @@ references:
     pre_script: scripts/circle-pre-e2e.sh
     script: scripts/circle-e2e.sh
     command_runner_image: quay.io/helmpack/chart-testing:v3.14.0
+    no_output_timeout: 18m
     requires:
       - lint-scripts
       - lint-charts
