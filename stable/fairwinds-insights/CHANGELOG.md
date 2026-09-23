@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.4.0
+* Bumped `agentChartTarget` to `6.13.0`
+
 ## 10.3.0
 * Bumped `temporal` to `1.7.0`
 * Removes Temporal default config for certFile and certKey because CloudNativePG rejected the chart-generated CA certificate.
