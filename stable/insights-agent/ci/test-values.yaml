@@ -1,3 +1,7 @@
+# CI uses runJobsImmediately; keep CronJobs from also firing during helm --wait.
+cronjobs:
+  suspend: true
+
 insights:
   host: http://insights-agent-test:8080
   organization: acme-co

@@ -50,6 +50,8 @@ cronjobs:
   successfulJobsHistoryLimit: 1
   nodeSelector: null
   runJobsImmediately: true
+  # -- Suspend all report CronJobs.
+  suspend: false
   # tolerations:
   # - key: node-role.kubernetes.io/control-plane
   #   operator: Exists

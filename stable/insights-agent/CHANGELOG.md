@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.13.5
+* Add `cronjobs.suspend` support
+
 ## 6.13.4
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.38`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-opa` to `3.1.39`
