@@ -87,6 +87,9 @@ resourcesRecommendationsCronjob:
 
 rustfs:
   install: true
+  config:
+    rustfs:
+      log_level: "warn"
   storageclass:
     dataStorageSize: 256Mi
     logStorageSize: 256Mi
