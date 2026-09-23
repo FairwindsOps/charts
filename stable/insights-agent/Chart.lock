@@ -1,19 +1,19 @@
 dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
-  version: 11.0.0
+  version: 11.1.1
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 29.27.0
+  version: 29.27.2
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
-  version: 2.0.0
+  version: 2.0.1
 - name: falco
   repository: https://falcosecurity.github.io/charts
   version: 9.1.0
 - name: vpa
   repository: https://charts.fairwinds.com/stable
-  version: 5.0.0
+  version: 5.0.1
 - name: trivy
   repository: https://aquasecurity.github.io/helm-charts/
   version: 0.26.0
@@ -23,5 +23,5 @@ dependencies:
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.1
-digest: sha256:5b69d434d7f8f6cb9d6054b316623f35ee37538c4146e13a0972c406f2f5e23d
-generated: "2026-08-31T14:21:25.497284653Z"
+digest: sha256:0ecc0bc023f9cc69f5c1b5c1097829ed2810828db6b49b0033bba81855134b08
+generated: "2026-09-23T19:09:17.791382275Z"
