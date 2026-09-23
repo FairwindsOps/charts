@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.14.0
+* Bumped `goldilocks` to `11.1.*`
+
 ## 6.13.5
 * Add `cronjobs.suspend` support
 
