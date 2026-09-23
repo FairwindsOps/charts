@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.13.6
+* Bumped `device-metrics-exporter-charts` to `v1.5.2`
+
 ## 6.13.5
 * Add `cronjobs.suspend` support
 
