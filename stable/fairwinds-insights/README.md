@@ -482,6 +482,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.shims.elasticsearchTool | bool | `false` |  |
 | temporal.server.replicaCount | int | `1` |  |
 | temporal.server.config.namespaces.create | bool | `true` |  |
+| temporal.server.config.namespaces.useHelmHooks | bool | `false` |  |
 | temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
 | temporal.server.config.namespaces.namespace[0].retention | string | `"3d"` |  |
 | temporal.server.config.persistence.defaultStore | string | `"default"` |  |
@@ -502,8 +503,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.datastores.default.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.datastores.default.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.datastores.default.sql.tls.enableHostVerification | bool | `false` |  |
-| temporal.server.config.persistence.datastores.default.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
-| temporal.server.config.persistence.datastores.default.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.createDatabase | bool | `true` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.manageSchema | bool | `true` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.pluginName | string | `"postgres12"` |  |
@@ -519,8 +518,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.datastores.visibility.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.tls.enableHostVerification | bool | `false` |  |
-| temporal.server.config.persistence.datastores.visibility.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
-| temporal.server.config.persistence.datastores.visibility.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
 | temporal.server.additionalVolumes[0].name | string | `"secret-with-certs"` |  |
 | temporal.server.additionalVolumes[0].secret.secretName | string | `"fwinsights-postgresql-ca"` |  |
 | temporal.server.additionalVolumes[0].secret.defaultMode | int | `384` |  |

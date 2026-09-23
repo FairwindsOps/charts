@@ -1762,6 +1762,7 @@ temporal:
     config:
       namespaces:
         create: true
+        useHelmHooks: false
         namespace:
           - name: fwinsights
             retention: 3d
@@ -1792,9 +1793,6 @@ temporal:
               tls:
                 enabled: true
                 enableHostVerification: false
-                # cert/key stored in secret-with-certs (server + admintools volume mounts below).
-                certFile: /etc/temporal/tls/tls.crt
-                keyFile: /etc/temporal/tls/tls.key
           visibility:
             sql:
               createDatabase: true
@@ -1814,8 +1812,6 @@ temporal:
               tls:
                 enabled: true
                 enableHostVerification: false
-                certFile: /etc/temporal/tls/tls.crt
-                keyFile: /etc/temporal/tls/tls.key
 
     additionalVolumes:
       - name: secret-with-certs
