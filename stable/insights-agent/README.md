@@ -89,6 +89,7 @@ Parameter | Description | Default
 `cronjobs.nodeSelector` | Node selector to use for cronjobs | null
 `cronjobs.tolerations` | Tolerations to use for cronjobs | null
 `cronjobs.runJobsImmediately` | Run each of the reports immediately upon install of the Insights Agent | true
+`cronjobs.suspend` | Suspend all report CronJobs. Jobs created by runJobsImmediately still run. | false
 `cronjobs.dnsPolicy` | Adds pod DNS policy |
 `cronjobs.imagePullSecret` | Name of a pull secret to attach to all CronJobs |
 `{report}.enabled` | Enable the report type |

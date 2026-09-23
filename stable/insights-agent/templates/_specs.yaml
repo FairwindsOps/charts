@@ -37,6 +37,9 @@ schedule: {{ regexReplaceAll "^rand" .Config.schedule (regexReplaceAll "^[0,6-9]
 concurrencyPolicy: Forbid
 failedJobsHistoryLimit: {{ .Values.cronjobs.failedJobsHistoryLimit }}
 successfulJobsHistoryLimit: {{ .Values.cronjobs.successfulJobsHistoryLimit }}
+{{- if .Values.cronjobs.suspend }}
+suspend: true
+{{- end }}
 {{- end }}
 
 {{ define "job-spec" }}
