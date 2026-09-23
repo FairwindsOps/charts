@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.14.0
+* Bumped `prometheus` to `29.30.*`
+
 ## 6.13.6
 * Bumped `device-metrics-exporter-charts` to `v1.5.2`
 
