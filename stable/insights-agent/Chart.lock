@@ -1,7 +1,7 @@
 dependencies:
 - name: goldilocks
   repository: https://charts.fairwinds.com/stable
-  version: 11.0.0
+  version: 11.1.1
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
   version: 29.30.2
@@ -23,5 +23,5 @@ dependencies:
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.2
-digest: sha256:0a00928e74918c4a7ec7d0a7d1d4d0c91a900be56989d475d44e1b4183b54456
-generated: "2026-09-23T19:29:11.781825636Z"
+digest: sha256:4917bdfaa9317c57058d77bbbdb3ef3bff1c6dbcd0dc28c81a563afa7a4de1e6
+generated: "2026-09-23T21:13:14.384808754Z"
