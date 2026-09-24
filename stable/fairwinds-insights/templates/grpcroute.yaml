@@ -1,0 +1,31 @@
+{{- if and .Values.api.grpc.enabled .Values.grpcRoute.enabled }}
+{{- $fullName := include "fairwinds-insights.fullname" . -}}
+{{- if not .Values.grpcRoute.parentRefs -}}
+{{- fail "grpcRoute.parentRefs is required when grpcRoute.enabled is true" -}}
+{{- end -}}
+{{- if not .Values.grpcRoute.hostnames -}}
+{{- fail "grpcRoute.hostnames is required when grpcRoute.enabled is true" -}}
+{{- end -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: GRPCRoute
+metadata:
+  name: {{ $fullName }}-api-grpc
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    {{- with .Values.grpcRoute.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.grpcRoute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    {{- toYaml .Values.grpcRoute.parentRefs | nindent 4 }}
+  hostnames:
+    {{- toYaml .Values.grpcRoute.hostnames | nindent 4 }}
+  rules:
+    - backendRefs:
+        - name: {{ $fullName }}-api
+          port: {{ .Values.api.grpc.port }}
+{{- end }}
