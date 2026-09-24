@@ -864,6 +864,52 @@ ingress:
   # -- Adds additional path ie. Redirect path for ALB
   extraPaths: {}
 
+# -- Gateway API HTTPRoute configuration.
+httpRoute:
+  # -- Create an HTTPRoute for the dashboard and enabled HTTP endpoints
+  enabled: false
+  # -- Parent Gateway references. Required when enabled.
+  parentRefs: []
+  # -- Annotations to add to the HTTPRoute
+  annotations: {}
+  # -- Labels to add to the HTTPRoute
+  labels: {}
+  # -- HTTPRoute hostnames. Required when enabled.
+  hostnames: []
+  openApi:
+    # -- Route traffic to the Open API service
+    enabled: true
+    # -- Path prefix for the Open API service
+    path: /swagger
+  admissionApi:
+    # -- Route admission submit traffic to the admission API service. Requires `admissionApi.enabled`.
+    enabled: false
+    # -- Regular expression path for admission submit traffic
+    path: /v0/organizations/[^/]+/clusters/[^/]+/data/admission/submit
+  api:
+    # -- Route traffic to the API service
+    enabled: true
+    # -- Path prefix for the API service
+    path: /v0
+  mcp:
+    # -- Route traffic to the MCP service. Requires `mcp.enabled`.
+    enabled: false
+    # -- Path prefix for the MCP service
+    path: /mcp
+
+# -- Gateway API GRPCRoute configuration.
+grpcRoute:
+  # -- Create a GRPCRoute for the network-flow gRPC server
+  enabled: false
+  # -- Parent Gateway references. Required when enabled.
+  parentRefs: []
+  # -- Annotations to add to the GRPCRoute
+  annotations: {}
+  # -- Labels to add to the GRPCRoute
+  labels: {}
+  # -- GRPCRoute hostnames. Required when enabled.
+  hostnames: []
+
 cnpg:
   # -- Install CloudNativePG operator (used by ephemeral PostgreSQL and/or Timescale)
   install: true

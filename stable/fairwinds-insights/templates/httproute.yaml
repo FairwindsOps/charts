@@ -1,0 +1,71 @@
+{{- if .Values.httpRoute.enabled }}
+{{- $fullName := include "fairwinds-insights.fullname" . -}}
+{{- if not .Values.httpRoute.parentRefs -}}
+{{- fail "httpRoute.parentRefs is required when httpRoute.enabled is true" -}}
+{{- end -}}
+{{- if not .Values.httpRoute.hostnames -}}
+{{- fail "httpRoute.hostnames is required when httpRoute.enabled is true" -}}
+{{- end -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ $fullName }}
+  labels:
+    {{- include "fairwinds-insights.labels" . | nindent 4 }}
+    {{- with .Values.httpRoute.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.httpRoute.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  parentRefs:
+    {{- toYaml .Values.httpRoute.parentRefs | nindent 4 }}
+  hostnames:
+    {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
+  rules:
+    {{- if .Values.httpRoute.openApi.enabled }}
+    - matches:
+        - path:
+            type: PathPrefix
+            value: {{ required "httpRoute.openApi.path is required when httpRoute.openApi.enabled is true" .Values.httpRoute.openApi.path | quote }}
+      backendRefs:
+        - name: {{ $fullName }}-open-api
+          port: {{ .Values.service.port }}
+    {{- end }}
+    {{- if and .Values.admissionApi.enabled .Values.httpRoute.admissionApi.enabled }}
+    - matches:
+        - path:
+            type: RegularExpression
+            value: {{ required "httpRoute.admissionApi.path is required when httpRoute.admissionApi.enabled is true" .Values.httpRoute.admissionApi.path | quote }}
+      backendRefs:
+        - name: {{ $fullName }}-admission-api
+          port: {{ .Values.service.port }}
+    {{- end }}
+    {{- if .Values.httpRoute.api.enabled }}
+    - matches:
+        - path:
+            type: PathPrefix
+            value: {{ required "httpRoute.api.path is required when httpRoute.api.enabled is true" .Values.httpRoute.api.path | quote }}
+      backendRefs:
+        - name: {{ $fullName }}-api
+          port: {{ .Values.service.port }}
+    {{- end }}
+    {{- if and .Values.mcp.enabled .Values.httpRoute.mcp.enabled }}
+    - matches:
+        - path:
+            type: PathPrefix
+            value: {{ required "httpRoute.mcp.path is required when httpRoute.mcp.enabled is true" .Values.httpRoute.mcp.path | quote }}
+      backendRefs:
+        - name: {{ $fullName }}-mcp
+          port: {{ default .Values.service.port .Values.mcp.service.port }}
+    {{- end }}
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ $fullName }}-dashboard
+          port: {{ .Values.service.port }}
+{{- end }}

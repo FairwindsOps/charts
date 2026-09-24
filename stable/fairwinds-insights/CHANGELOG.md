@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.6.0
+* Add optional Gateway API `HTTPRoute` and `GRPCRoute` resources. See [MIGRATION-INGRESS-TO-GATEWAY-API.md](./MIGRATION-INGRESS-TO-GATEWAY-API.md).
+
 ## 10.5.1
 * Bumped `insights-api` to `18.4.54`
 

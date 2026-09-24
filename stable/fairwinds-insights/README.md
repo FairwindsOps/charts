@@ -258,6 +258,26 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
+| httpRoute | object | `{"admissionApi":{"enabled":false,"path":"/v0/organizations/[^/]+/clusters/[^/]+/data/admission/submit"},"annotations":{},"api":{"enabled":true,"path":"/v0"},"enabled":false,"hostnames":[],"labels":{},"mcp":{"enabled":false,"path":"/mcp"},"openApi":{"enabled":true,"path":"/swagger"},"parentRefs":[]}` | Gateway API HTTPRoute configuration. |
+| httpRoute.enabled | bool | `false` | Create an HTTPRoute for the dashboard and enabled HTTP endpoints |
+| httpRoute.parentRefs | list | `[]` | Parent Gateway references. Required when enabled. |
+| httpRoute.annotations | object | `{}` | Annotations to add to the HTTPRoute |
+| httpRoute.labels | object | `{}` | Labels to add to the HTTPRoute |
+| httpRoute.hostnames | list | `[]` | HTTPRoute hostnames. Required when enabled. |
+| httpRoute.openApi.enabled | bool | `true` | Route traffic to the Open API service |
+| httpRoute.openApi.path | string | `"/swagger"` | Path prefix for the Open API service |
+| httpRoute.admissionApi.enabled | bool | `false` | Route admission submit traffic to the admission API service. Requires `admissionApi.enabled`. |
+| httpRoute.admissionApi.path | string | `"/v0/organizations/[^/]+/clusters/[^/]+/data/admission/submit"` | Regular expression path for admission submit traffic |
+| httpRoute.api.enabled | bool | `true` | Route traffic to the API service |
+| httpRoute.api.path | string | `"/v0"` | Path prefix for the API service |
+| httpRoute.mcp.enabled | bool | `false` | Route traffic to the MCP service. Requires `mcp.enabled`. |
+| httpRoute.mcp.path | string | `"/mcp"` | Path prefix for the MCP service |
+| grpcRoute | object | `{"annotations":{},"enabled":false,"hostnames":[],"labels":{},"parentRefs":[]}` | Gateway API GRPCRoute configuration. |
+| grpcRoute.enabled | bool | `false` | Create a GRPCRoute for the network-flow gRPC server |
+| grpcRoute.parentRefs | list | `[]` | Parent Gateway references. Required when enabled. |
+| grpcRoute.annotations | object | `{}` | Annotations to add to the GRPCRoute |
+| grpcRoute.labels | object | `{}` | Labels to add to the GRPCRoute |
+| grpcRoute.hostnames | list | `[]` | GRPCRoute hostnames. Required when enabled. |
 | cnpg.install | bool | `true` | Install CloudNativePG operator (used by ephemeral PostgreSQL and/or Timescale) |
 | cnpg.version | string | `"1.28.1"` | CloudNativePG operator version to install |
 | cnpg.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
