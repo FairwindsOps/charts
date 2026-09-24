@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.16.0
+* Bumped `vpa` to `5.1.*`
+
 ## 6.15.0
 * Bumped `goldilocks` to `11.1.*`
 
