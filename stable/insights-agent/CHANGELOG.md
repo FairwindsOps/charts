@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.16.1
+* Bumped `dcgm-exporter` to `4.8.4`
+
 ## 6.16.0
 * Bumped `vpa` to `5.1.*`
 
