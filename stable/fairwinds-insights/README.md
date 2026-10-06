@@ -31,8 +31,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.repository | string | `"us-docker.pkg.dev/fairwinds-ops/insights/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
-| openApiImage.tag | string | `"v5.32.15"` | Overrides tag for the Open API server, defaults to image.tag |
-| options.agentChartTargetVersion | string | `"6.7.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
+| openApiImage.tag | string | `"v5.33.0"` | Overrides tag for the Open API server, defaults to image.tag |
+| options.agentChartTargetVersion | string | `"6.16.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
 | options.dashboardConfig | string | `"config.self.js"` | Configuration file to use for the front-end. This generally should not be changed. |
@@ -94,7 +94,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | selfHostedSecret.externalSecret.data | list | `[]` | ExternalSecret spec.data entries (required when create is true). Each needs `secretKey` and `remoteRef.key` (`property` optional). |
 | additionalEnvironmentVariables | object | `{}` | Additional Environment Variables to set on the Fairwinds Insights pods. |
 | rbac.serviceAccount.annotations | object | `{}` | Annotations to add to the service account |
-| nodeSelector | object | `{}` | Default nodeSelector for pods that run the dashboard, API, database migration, or cronjob images. A component nodeSelector replaces this when set. |
+| nodeSelector | object | `{}` | Default nodeSelector for pods that run the dashboard, API, database migration, cronjob, or MCP server images. A component nodeSelector replaces this when set. |
 | dashboard.pdb.enabled | bool | `false` | Create a pod disruption budget for the front end pods. |
 | dashboard.pdb.minReplicas | int | `1` | How many replicas should always exist for the front end pods. |
 | dashboard.hpa.enabled | bool | `false` | Create a horizontal pod autoscaler for the front end pods. |
@@ -228,7 +228,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | mcp.service.annotations | object | `{}` | Service annotations (e.g. cloud LB internal annotations) |
 | mcp.service.nodePort | string | `nil` | `nodePort` when `type` is `NodePort` |
 | mcp.ingress.enabled | bool | `false` | Enable the MCP ingress |
-| mcp.nodeSelector | object | `{}` | Node selector for MCP pods |
+| mcp.nodeSelector | object | `{}` | Node selector for MCP pods. Replaces `nodeSelector` when set. |
 | mcp.tolerations | list | `[]` | Tolerations for MCP pods |
 | mcp.affinity | object | `{}` | Affinity for MCP pods |
 | mcp.podAnnotations | object | `{}` | Pod annotations |
@@ -258,6 +258,26 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | ingress.starPaths | bool | `true` | Certain ingress controllers do pattern matches, others use prefixes. If `/*` doesn't work for your ingress, try setting this to false. |
 | ingress.separate | bool | `false` | Create different Ingress objects for the API and dashboard - this allows them to have different annotations |
 | ingress.extraPaths | object | `{}` | Adds additional path ie. Redirect path for ALB |
+| httpRoute | object | `{"admissionApi":{"enabled":false,"path":"/v0/organizations/[^/]+/clusters/[^/]+/data/admission/submit"},"annotations":{},"api":{"enabled":true,"path":"/v0"},"enabled":false,"hostnames":[],"labels":{},"mcp":{"enabled":false,"path":"/mcp"},"openApi":{"enabled":true,"path":"/swagger"},"parentRefs":[]}` | Gateway API HTTPRoute configuration. |
+| httpRoute.enabled | bool | `false` | Create an HTTPRoute for the dashboard and enabled HTTP endpoints |
+| httpRoute.parentRefs | list | `[]` | Parent Gateway references. Required when enabled. |
+| httpRoute.annotations | object | `{}` | Annotations to add to the HTTPRoute |
+| httpRoute.labels | object | `{}` | Labels to add to the HTTPRoute |
+| httpRoute.hostnames | list | `[]` | HTTPRoute hostnames. Required when enabled. |
+| httpRoute.openApi.enabled | bool | `true` | Route traffic to the Open API service |
+| httpRoute.openApi.path | string | `"/swagger"` | Path prefix for the Open API service |
+| httpRoute.admissionApi.enabled | bool | `false` | Route admission submit traffic to the admission API service. Requires `admissionApi.enabled`. |
+| httpRoute.admissionApi.path | string | `"/v0/organizations/[^/]+/clusters/[^/]+/data/admission/submit"` | Regular expression path for admission submit traffic |
+| httpRoute.api.enabled | bool | `true` | Route traffic to the API service |
+| httpRoute.api.path | string | `"/v0"` | Path prefix for the API service |
+| httpRoute.mcp.enabled | bool | `false` | Route traffic to the MCP service. Requires `mcp.enabled`. |
+| httpRoute.mcp.path | string | `"/mcp"` | Path prefix for the MCP service |
+| grpcRoute | object | `{"annotations":{},"enabled":false,"hostnames":[],"labels":{},"parentRefs":[]}` | Gateway API GRPCRoute configuration. |
+| grpcRoute.enabled | bool | `false` | Create a GRPCRoute for the network-flow gRPC server |
+| grpcRoute.parentRefs | list | `[]` | Parent Gateway references. Required when enabled. |
+| grpcRoute.annotations | object | `{}` | Annotations to add to the GRPCRoute |
+| grpcRoute.labels | object | `{}` | Labels to add to the GRPCRoute |
+| grpcRoute.hostnames | list | `[]` | GRPCRoute hostnames. Required when enabled. |
 | cnpg.install | bool | `true` | Install CloudNativePG operator (used by ephemeral PostgreSQL and/or Timescale) |
 | cnpg.version | string | `"1.28.1"` | CloudNativePG operator version to install |
 | cnpg.defaultVersion | string | `"1.28.1"` | Fallback CloudNativePG operator version when version is "latest" but resolution from GitHub fails |
@@ -482,6 +502,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.shims.elasticsearchTool | bool | `false` |  |
 | temporal.server.replicaCount | int | `1` |  |
 | temporal.server.config.namespaces.create | bool | `true` |  |
+| temporal.server.config.namespaces.useHelmHooks | bool | `false` |  |
 | temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
 | temporal.server.config.namespaces.namespace[0].retention | string | `"3d"` |  |
 | temporal.server.config.persistence.defaultStore | string | `"default"` |  |
@@ -502,8 +523,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.datastores.default.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.datastores.default.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.datastores.default.sql.tls.enableHostVerification | bool | `false` |  |
-| temporal.server.config.persistence.datastores.default.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
-| temporal.server.config.persistence.datastores.default.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.createDatabase | bool | `true` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.manageSchema | bool | `true` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.pluginName | string | `"postgres12"` |  |
@@ -519,8 +538,6 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.persistence.datastores.visibility.sql.maxConnLifetime | string | `"1h"` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.tls.enabled | bool | `true` |  |
 | temporal.server.config.persistence.datastores.visibility.sql.tls.enableHostVerification | bool | `false` |  |
-| temporal.server.config.persistence.datastores.visibility.sql.tls.certFile | string | `"/etc/temporal/tls/tls.crt"` |  |
-| temporal.server.config.persistence.datastores.visibility.sql.tls.keyFile | string | `"/etc/temporal/tls/tls.key"` |  |
 | temporal.server.additionalVolumes[0].name | string | `"secret-with-certs"` |  |
 | temporal.server.additionalVolumes[0].secret.secretName | string | `"fwinsights-postgresql-ca"` |  |
 | temporal.server.additionalVolumes[0].secret.defaultMode | int | `384` |  |

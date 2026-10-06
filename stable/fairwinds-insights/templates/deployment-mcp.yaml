@@ -50,10 +50,7 @@ spec:
       securityContext:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.mcp.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+      {{- include "fairwinds-insights.nodeSelector" (dict "component" .Values.mcp.nodeSelector "fallback" .Values.nodeSelector) | nindent 6 }}
       {{- with .Values.mcp.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}

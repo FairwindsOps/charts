@@ -1,5 +1,42 @@
 # Changelog
 
+## 10.7.2
+* Bumped `insights-api` to `18.4.64`
+
+## 10.7.1
+* Bumped `insights-api` to `18.4.61`
+
+## 10.7.0
+* Bumped `agentChartTarget` to `6.16.0`
+
+## 10.6.2
+* Bumped `insights-api` to `18.4.58`
+
+## 10.6.1
+* Bumped `insights-api` to `18.4.56`
+
+## 10.6.0
+* Add optional Gateway API `HTTPRoute` and `GRPCRoute` resources. See [MIGRATION-INGRESS-TO-GATEWAY-API.md](./MIGRATION-INGRESS-TO-GATEWAY-API.md).
+
+## 10.5.1
+* Bumped `insights-api` to `18.4.54`
+
+## 10.5.0
+* Bumped `swaggerapi/swagger-ui` to `v5.33.0`
+
+## 10.4.1
+* Bumped `insights-api` to `18.4.53`
+
+## 10.4.0
+* Bumped `agentChartTarget` to `6.13.0`
+
+## 10.3.0
+* Bumped `temporal` to `1.7.0`
+* Removes Temporal default config for certFile and certKey because CloudNativePG rejected the chart-generated CA certificate.
+
+## 10.2.1
+* Apply the chart-wide `nodeSelector` to the MCP server, overridable with `mcp.nodeSelector`.
+
 ## 10.2.0
 * Add a chart-wide `nodeSelector`, overridable per workload that runs the dashboard, API, database migration, or cronjob image.
 

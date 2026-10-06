@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A Helm chart to run the Fairwinds Insights agent
 name: insights-agent
-version: 6.13.3
+version: 6.19.0
 appVersion: 9.2.1
 kubeVersion: ">= 1.22.0-0"
 icon: https://raw.githubusercontent.com/FairwindsOps/charts/master/stable/insights-agent/icon.png
@@ -11,11 +11,11 @@ maintainers:
 dependencies:
   - name: goldilocks
     repository: https://charts.fairwinds.com/stable
-    version: '11.0.*'
+    version: '11.2.*'
     condition: goldilocks.enabled
   - name: prometheus
     repository: https://prometheus-community.github.io/helm-charts
-    version: '29.27.*'
+    version: '29.35.*'
     condition: prometheus-metrics.installPrometheusServer
   - name: insights-admission
     repository: https://charts.fairwinds.com/stable
@@ -23,11 +23,11 @@ dependencies:
     condition: admission.enabled
   - name: falco
     repository: https://falcosecurity.github.io/charts
-    version: '9.1.*'
+    version: '9.2.*'
     condition: falco.installFalco
     alias: falcosecurity
   - name: vpa
-    version: '5.0.*'
+    version: '5.1.*'
     repository: https://charts.fairwinds.com/stable
     condition: right-sizer.enableClosedBeta
     alias: right-sizer-vpa
@@ -37,11 +37,11 @@ dependencies:
     condition: trivy.server.installTrivyServer
     alias: trivy-server
   - name: dcgm-exporter
-    version: '4.8.3'
+    version: '4.8.4'
     repository: https://nvidia.github.io/dcgm-exporter/helm-charts
     condition: dcgm-exporter.enabled
   - name: device-metrics-exporter-charts
-    version: 'v1.5.1'
+    version: 'v1.5.2'
     repository: https://rocm.github.io/device-metrics-exporter
     condition: amd-device-metrics-exporter.enabled
     alias: amd-device-metrics-exporter

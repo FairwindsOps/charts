@@ -1,0 +1,37 @@
+# Render with:
+# helm template test . -f ci/test-values.yaml -f ci/kgateway-values.example.yaml
+httpRoute:
+  enabled: true
+  parentRefs:
+    - name: example-http
+      namespace: kgateway-system
+      sectionName: https
+  hostnames:
+    - insights.example.com
+  annotations:
+    example.com/route: http
+  labels:
+    example.com/gateway: kgateway
+  admissionApi:
+    enabled: true
+  mcp:
+    enabled: true
+
+grpcRoute:
+  enabled: true
+  parentRefs:
+    - name: example-grpc
+      namespace: kgateway-system
+      sectionName: grpc
+  hostnames:
+    - grpc.insights.example.com
+  annotations:
+    example.com/route: grpc
+  labels:
+    example.com/gateway: kgateway
+
+admissionApi:
+  enabled: true
+
+mcp:
+  enabled: true

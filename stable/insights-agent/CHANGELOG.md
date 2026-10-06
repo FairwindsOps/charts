@@ -1,5 +1,43 @@
 # Changelog
 
+## 6.19.0
+* Bumped `prometheus` to `29.35.*`
+
+## 6.18.0
+* Bumped `goldilocks` to `11.2.*`
+
+## 6.17.0
+* Bumped `falco` to `9.2.*`
+
+## 6.16.1
+* Bumped `dcgm-exporter` to `4.8.4`
+
+## 6.16.0
+* Bumped `vpa` to `5.1.*`
+
+## 6.15.0
+* Bumped `goldilocks` to `11.1.*`
+
+## 6.14.0
+* Bumped `prometheus` to `29.30.*`
+
+## 6.13.6
+* Bumped `device-metrics-exporter-charts` to `v1.5.2`
+
+## 6.13.5
+* Add `cronjobs.suspend` support
+
+## 6.13.4
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.38`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-opa` to `3.1.39`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/image-trust` to `0.1.15`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher` to `0.2.61`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/kyverno` to `0.6.14`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector` to `1.9.23`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter` to `1.4.31`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/right-sizer` to `0.6.30`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/workloads` to `2.17.5`
+
 ## 6.13.3
 * Update `admission` default request and limits
 

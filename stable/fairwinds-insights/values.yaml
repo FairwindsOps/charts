@@ -65,11 +65,11 @@ openApiImage:
   # -- Docker image repository for the Open API server
   repository: swaggerapi/swagger-ui
   # -- Overrides tag for the Open API server, defaults to image.tag
-  tag: v5.32.15  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
+  tag: v5.33.0  # NOTE: if you're changing this, be sure to look at templates/openapi-nginx-conf.yaml
 
 options:
   # -- Which version of the Insights Agent is supported by this version of Fairwinds Insights
-  agentChartTargetVersion: 6.7.0
+  agentChartTargetVersion: 6.16.0
   # -- Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification.
   insightsSAASHost: "https://insights.fairwinds.com"
   # -- Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed.
@@ -347,7 +347,7 @@ rbac:
     # -- Annotations to add to the service account
     annotations: {}
 
-# -- Default nodeSelector for pods that run the dashboard, API, database migration, or cronjob images. A component nodeSelector replaces this when set.
+# -- Default nodeSelector for pods that run the dashboard, API, database migration, cronjob, or MCP server images. A component nodeSelector replaces this when set.
 nodeSelector: {}
 
 dashboard:
@@ -753,7 +753,7 @@ mcp:
   ingress:
     # -- Enable the MCP ingress
     enabled: false
-  # -- Node selector for MCP pods
+  # -- Node selector for MCP pods. Replaces `nodeSelector` when set.
   nodeSelector: {}
   # -- Tolerations for MCP pods
   tolerations: []
@@ -863,6 +863,52 @@ ingress:
   separate: false
   # -- Adds additional path ie. Redirect path for ALB
   extraPaths: {}
+
+# -- Gateway API HTTPRoute configuration.
+httpRoute:
+  # -- Create an HTTPRoute for the dashboard and enabled HTTP endpoints
+  enabled: false
+  # -- Parent Gateway references. Required when enabled.
+  parentRefs: []
+  # -- Annotations to add to the HTTPRoute
+  annotations: {}
+  # -- Labels to add to the HTTPRoute
+  labels: {}
+  # -- HTTPRoute hostnames. Required when enabled.
+  hostnames: []
+  openApi:
+    # -- Route traffic to the Open API service
+    enabled: true
+    # -- Path prefix for the Open API service
+    path: /swagger
+  admissionApi:
+    # -- Route admission submit traffic to the admission API service. Requires `admissionApi.enabled`.
+    enabled: false
+    # -- Regular expression path for admission submit traffic
+    path: /v0/organizations/[^/]+/clusters/[^/]+/data/admission/submit
+  api:
+    # -- Route traffic to the API service
+    enabled: true
+    # -- Path prefix for the API service
+    path: /v0
+  mcp:
+    # -- Route traffic to the MCP service. Requires `mcp.enabled`.
+    enabled: false
+    # -- Path prefix for the MCP service
+    path: /mcp
+
+# -- Gateway API GRPCRoute configuration.
+grpcRoute:
+  # -- Create a GRPCRoute for the network-flow gRPC server
+  enabled: false
+  # -- Parent Gateway references. Required when enabled.
+  parentRefs: []
+  # -- Annotations to add to the GRPCRoute
+  annotations: {}
+  # -- Labels to add to the GRPCRoute
+  labels: {}
+  # -- GRPCRoute hostnames. Required when enabled.
+  hostnames: []
 
 cnpg:
   # -- Install CloudNativePG operator (used by ephemeral PostgreSQL and/or Timescale)
@@ -1762,6 +1808,7 @@ temporal:
     config:
       namespaces:
         create: true
+        useHelmHooks: false
         namespace:
           - name: fwinsights
             retention: 3d
@@ -1792,9 +1839,6 @@ temporal:
               tls:
                 enabled: true
                 enableHostVerification: false
-                # cert/key stored in secret-with-certs (server + admintools volume mounts below).
-                certFile: /etc/temporal/tls/tls.crt
-                keyFile: /etc/temporal/tls/tls.key
           visibility:
             sql:
               createDatabase: true
@@ -1814,8 +1858,6 @@ temporal:
               tls:
                 enabled: true
                 enableHostVerification: false
-                certFile: /etc/temporal/tls/tls.crt
-                keyFile: /etc/temporal/tls/tls.key
 
     additionalVolumes:
       - name: secret-with-certs
