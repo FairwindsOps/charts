@@ -4,7 +4,7 @@ dependencies:
   version: 11.2.0
 - name: prometheus
   repository: https://prometheus-community.github.io/helm-charts
-  version: 29.30.2
+  version: 29.35.0
 - name: insights-admission
   repository: https://charts.fairwinds.com/stable
   version: 2.0.1
@@ -23,5 +23,5 @@ dependencies:
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.2
-digest: sha256:0d22a0424b08f0dcad1b50242ac8ed16d56149867ce6cecf28c5d820d015b1b4
-generated: "2026-10-06T02:28:38.633296596Z"
+digest: sha256:69a51f5958b6232234cc3a1adb94fbb7ffb1ff44cbf0fa226a2d85c27b598619
+generated: "2026-10-06T02:46:22.946983651Z"
