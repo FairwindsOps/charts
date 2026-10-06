@@ -10,7 +10,7 @@ dependencies:
   version: 2.0.1
 - name: falco
   repository: https://falcosecurity.github.io/charts
-  version: 9.1.0
+  version: 9.2.0
 - name: vpa
   repository: https://charts.fairwinds.com/stable
   version: 5.1.0
@@ -23,5 +23,5 @@ dependencies:
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.2
-digest: sha256:d8b889e69fad083afed1bcebd50e9276b262a849fe687bf98bad5be0569e2ffb
-generated: "2026-09-26T00:51:25.720590791Z"
+digest: sha256:ea62fd28b2e4dc6e66fa7681486ba44e5afd49b85abe8ef1c6908da48458b2fa
+generated: "2026-10-06T00:21:34.920527417Z"
