@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.17.0
+* Bumped `falco` to `9.2.*`
+
 ## 6.16.1
 * Bumped `dcgm-exporter` to `4.8.4`
 
