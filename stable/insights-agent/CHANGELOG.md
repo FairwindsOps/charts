@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.18.0
+* Bumped `goldilocks` to `11.2.*`
+
 ## 6.17.0
 * Bumped `falco` to `9.2.*`
 
