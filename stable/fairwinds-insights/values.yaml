@@ -1274,7 +1274,7 @@ migrateHealthScoreJob:
 cronjobExecutor:
   image:
     repository: alpine/kubectl
-    tag: "1.36.4"
+    tag: "1.37.0"
   resources:
     limits:
       cpu: 100m

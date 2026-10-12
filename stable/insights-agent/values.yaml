@@ -29,7 +29,7 @@ rbac:
 uploader:
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/insights-uploader
-    tag: "0.6.14"
+    tag: "0.6.15"
   imagePullSecret: ""
   sendFailures: true
   resources:
@@ -61,7 +61,7 @@ cronjobs:
 cronjobExecutor:
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/insights-utils
-    tag: "0.0.19"
+    tag: "0.0.20"
   resources:
     requests:
       cpu: 100m
@@ -71,7 +71,7 @@ installReporter:
   ttl: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/insights-uploader
-    tag: "0.6.14"
+    tag: "0.6.15"
   resources:
     requests:
       cpu: 100m
@@ -163,7 +163,7 @@ opa:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/fw-opa
-    tag: "3.1.39"
+    tag: "3.1.40"
   additionalAccess:
   # opa.defaultTargetResources -- A default list of Kubernetes targets to which OPA
   # policies will be applied.
@@ -214,7 +214,7 @@ workloads:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/workloads
-    tag: "2.17.5"
+    tag: "2.17.6"
   resources:
     requests:
       cpu: 100m
@@ -247,7 +247,7 @@ rbac-reporter:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter
-    tag: "1.4.31"
+    tag: "1.4.32"
   resources:
     requests:
       cpu: 100m
@@ -377,7 +377,7 @@ image-trust:
   env: {}
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/image-trust
-    tag: "0.1.15"
+    tag: "0.1.17"
   resources:
     requests:
       cpu: 100m
@@ -396,7 +396,7 @@ kube-bench:
   aggregator:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench-aggregator
-      tag: "0.4.27"
+      tag: "0.4.28"
     resources:
       requests:
         cpu: 100m
@@ -425,7 +425,7 @@ trivy:
     TRIVY_JAVA_DB_REPOSITORY: ghcr.io/aquasecurity/trivy-java-db:1,public.ecr.aws/aquasecurity/trivy-java-db:1,docker.io/aquasec/trivy-java-db:1
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/fw-trivy
-    tag: "0.34.42"
+    tag: "0.34.43"
   serviceAccount:
     annotations:
   resources:
@@ -474,7 +474,7 @@ prometheus-metrics:
   tenantId: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector
-    tag: "1.9.23"
+    tag: "1.9.24"
   resources:
     requests:
       cpu: 100m
@@ -928,7 +928,7 @@ falco:
     port: 3031
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/falco-agent
-    tag: "0.4.38"
+    tag: "0.4.39"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -981,7 +981,7 @@ kyverno:
   schedule: "rand * * * *"
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/kyverno
-    tag: "0.6.14"
+    tag: "0.6.15"
   resources:
     requests:
       cpu: 100m
@@ -995,7 +995,7 @@ kyverno-policy-sync:
   timeout: 600
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/kyverno-policy-sync
-    tag: "0.2.34"
+    tag: "0.2.35"
   resources:
     requests:
       cpu: 500m
@@ -1019,7 +1019,7 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/on-demand-job-runner
-    tag: "0.2.34"
+    tag: "0.2.35"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -1049,7 +1049,7 @@ insights-event-watcher:
   enabled: false
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher
-    tag: "0.2.61"
+    tag: "0.2.63"
     pullPolicy: Always
   logLevel: "info"
   # Health check configuration
@@ -1117,7 +1117,7 @@ network-observability:
   agent:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/network-flow
-      tag: "0.0.20"
+      tag: "0.0.21"
       pullPolicy: Always
     gadgetVersion: ""
     collectorAddr: ""
@@ -1166,7 +1166,7 @@ network-observability:
   aggregator:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator
-      tag: "0.0.24"
+      tag: "0.0.26"
       pullPolicy: Always
     replicas: 1
     grpcPort: 4317

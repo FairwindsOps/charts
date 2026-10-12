@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.8.0
+* Bumped `alpine/kubectl` to `1.37.0`
+
 ## 10.7.2
 * Bumped `insights-api` to `18.4.64`
 
