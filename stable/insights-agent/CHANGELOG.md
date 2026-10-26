@@ -1,5 +1,24 @@
 # Changelog
 
+## 6.19.1
+* Bumped `insights-uploader` to `0.6.15`
+* Bumped `insights-utils` to `0.0.20`
+* Bumped `fw-opa` to `3.1.44`
+* Bumped `workloads` to `2.17.9`
+* Bumped `rbac-reporter` to `1.4.35`
+* Bumped `image-trust` to `0.1.20`
+* Bumped `fw-kube-bench` to `0.6.33` and `fw-kube-bench-aggregator` to `0.4.30`
+* Bumped `fw-trivy` to `0.34.46`
+* Bumped `prometheus-collector` to `1.9.28`
+* Bumped `right-sizer` to `0.6.33`
+* Bumped `falco-agent` to `0.4.43`
+* Bumped `kyverno` to `0.6.18`
+* Bumped `kyverno-policy-sync` to `0.2.38`
+* Bumped `on-demand-job-runner` to `0.2.38`
+* Bumped `insights-event-watcher` to `0.2.68`
+* Bumped `network-flow` to `0.0.25` and `network-flow-aggregator` to `0.0.29`
+* Bumped `insights-admission` image to `2.3.30`
+
 ## 6.19.0
 * Bumped `prometheus` to `29.35.*`
 
