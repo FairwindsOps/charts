@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0.2
+* Bumped admission controller image to `2.3.30`
+
 ## 2.0.1
 * Bumped admission controller image to `2.3.24`
 
