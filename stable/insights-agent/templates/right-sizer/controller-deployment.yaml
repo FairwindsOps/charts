@@ -27,11 +27,15 @@ spec:
         {{- if (index .Values "right-sizer" "controller" "deployment" "additionalLabels") }}
         {{ toYaml (index .Values "right-sizer" "controller" "deployment" "additionalLabels") | nindent 8 }}
         {{- end }}
-      {{- with (index .Values "right-sizer" "controller" "deployment" "podAnnotations") }}
+      {{- $podAnnotations := index .Values "right-sizer" "controller" "deployment" "podAnnotations" }}
+      {{- $config := index .Values "right-sizer" "config" }}
+      {{- if or $podAnnotations $config }}
       annotations:
+        {{- with $podAnnotations }}
         {{- toYaml . | nindent 8 }}
-        {{- with (index .Values "right-sizer" "config") }}
-          checksum/config: '{{ include (print $.Template.BasePath "/configmap.yaml") $ | sha256sum }}'
+        {{- end }}
+        {{- if $config }}
+        checksum/config: {{ include (print $.Template.BasePath "/right-sizer/configmap.yaml") $ | sha256sum | quote }}
         {{- end }}
       {{- end }}
     spec:
