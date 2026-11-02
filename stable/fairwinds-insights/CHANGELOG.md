@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.8.0
+* Add a Temporal namespace `fwinsights-audit` (395-day retention). `temporal.auditNamespace` is empty by default.
+
 ## 10.7.2
 * Bumped `insights-api` to `18.4.64`
 

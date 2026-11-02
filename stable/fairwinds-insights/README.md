@@ -493,6 +493,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporalSchedulersJob.tls.disableHostVerification | bool | `false` | Disable host verification if using internal cluster connections where cert CN/SAN doesn't match service DNS |
 | temporal.hostPort | string | `"insights-temporal-frontend:7233"` |  |
 | temporal.namespace | string | `"fwinsights"` |  |
+| temporal.auditNamespace | string | `""` | Injected as TEMPORAL_AUDIT_NAMESPACE. Empty by default. Set to `fwinsights-audit` in environments that should keep deletion-workflow history for 395 days. |
 | temporal.enabled | bool | `true` |  |
 | temporal.fullnameOverride | string | `"insights-temporal"` |  |
 | temporal.schema.useHelmHooks | bool | `false` |  |
@@ -505,6 +506,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.namespaces.useHelmHooks | bool | `false` |  |
 | temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
 | temporal.server.config.namespaces.namespace[0].retention | string | `"3d"` |  |
+| temporal.server.config.namespaces.namespace[1].name | string | `"fwinsights-audit"` |  |
+| temporal.server.config.namespaces.namespace[1].retention | string | `"395d"` |  |
 | temporal.server.config.persistence.defaultStore | string | `"default"` |  |
 | temporal.server.config.persistence.visibilityStore | string | `"visibility"` |  |
 | temporal.server.config.persistence.numHistoryShards | int | `512` |  |
