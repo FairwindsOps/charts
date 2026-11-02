@@ -233,5 +233,7 @@ env:
   value: {{ $.Values.temporal.hostPort | quote }}
 - name: TEMPORAL_NAMESPACE
   value: {{ $.Values.temporal.namespace | quote }}
+- name: TEMPORAL_AUDIT_NAMESPACE
+  value: {{ $.Values.temporal.auditNamespace | quote }}
 
 {{ end }}
