@@ -195,6 +195,8 @@ dashboard:
       - path:
           type: PathPrefix
           value: /
+    # dashboard.httpRoute.filters -- Filters applied to the HTTPRoute rule (e.g. RequestHeaderModifier, URLRewrite)
+    filters: []
 
   # dashboard.resources -- A resources block for the dashboard.
   resources:
