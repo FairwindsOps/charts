@@ -1790,6 +1790,8 @@ temporal:
   # fairwinds-insights specific values - this will be inject as an env vars into fairwinds insights deployments
   hostPort: "insights-temporal-frontend:7233"
   namespace: "fwinsights"
+  # -- Injected as TEMPORAL_AUDIT_NAMESPACE. Empty by default. Set to `fwinsights-audit` in environments that should keep deletion-workflow history for 395 days.
+  auditNamespace: ""
   # custom values from temporal chart (v1.x: no bundled DB subcharts; persistence uses raw server config under datastores)
   enabled: true
   fullnameOverride: insights-temporal
@@ -1812,6 +1814,8 @@ temporal:
         namespace:
           - name: fwinsights
             retention: 3d
+          - name: fwinsights-audit
+            retention: 395d
       persistence:
         defaultStore: default
         visibilityStore: visibility

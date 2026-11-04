@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.19.2
+* Bumped `falco-agent` to `0.4.48`
+
 ## 6.19.1
 * Bumped `insights-uploader` to `0.6.15`
 * Bumped `insights-utils` to `0.0.20`
