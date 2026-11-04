@@ -930,7 +930,7 @@ falco:
     port: 3031
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/falco-agent
-    tag: "0.4.43"
+    tag: "0.4.48"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
