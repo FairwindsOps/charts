@@ -1,7 +1,7 @@
 # Changelog
 
 ## 11.0.0
-* Update application version to 19.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+* Update application version to 19.0.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
 # 10.9.1
 * Set `appProtocol: kubernetes.io/h2c` on the API gRPC Service port so Gateway API GRPCRoutes use HTTP/2 to the backend.
