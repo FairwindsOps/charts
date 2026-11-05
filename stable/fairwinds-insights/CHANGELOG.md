@@ -2,6 +2,7 @@
 
 ## 10.9.1
 * Update application version to 19.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+* Set `appProtocol: kubernetes.io/h2c` on the API gRPC Service port so Gateway API GRPCRoutes use HTTP/2 to the backend.
 
 ## 10.9.0
 * Bumped `alpine/kubectl` to `1.37.1`
