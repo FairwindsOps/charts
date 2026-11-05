@@ -26,7 +26,7 @@ If you have any prerequisites to a chart install that cannot be performed by hel
 
 ## Usage
 
-To install a chart from this repo, you can add it as a [helm repository](https://github.com/helm/helm/blob/master/docs/chart_repository.md)
+To install a chart from this repo, you can add it as a [helm repository](https://helm.sh/docs/topics/chart_repository/)
 
 ```
 helm repo add fairwinds-stable https://charts.fairwinds.com/stable
