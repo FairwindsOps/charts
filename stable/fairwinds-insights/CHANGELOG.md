@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.8.1
+* Set `appProtocol: kubernetes.io/h2c` on the API gRPC Service port so Gateway API GRPCRoutes use HTTP/2 to the backend.
+
 ## 10.8.0
 * Add a Temporal namespace `fwinsights-audit` (395-day retention). `temporal.auditNamespace` is empty by default.
 
