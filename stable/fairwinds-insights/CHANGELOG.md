@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.9.0
+* Bumped `alpine/kubectl` to `1.37.1`
+* Bumped `swaggerapi/swagger-ui` to `v5.34.0`
+
 ## 10.8.0
 * Add a Temporal namespace `fwinsights-audit` (395-day retention). `temporal.auditNamespace` is empty by default.
 
