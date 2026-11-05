@@ -1,5 +1,8 @@
 # Changelog
 
+## 10.9.1
+* Update application version to 19.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
 ## 10.9.0
 * Bumped `alpine/kubectl` to `1.37.1`
 * Bumped `swaggerapi/swagger-ui` to `v5.34.0`
