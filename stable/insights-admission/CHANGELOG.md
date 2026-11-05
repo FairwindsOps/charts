@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1.0
+* Bumped `python` to `3.15.1-alpine3.23`
+
 ## 2.0.2
 * Bumped admission controller image to `2.3.30`
 
