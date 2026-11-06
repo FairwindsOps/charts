@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.19.4
+* Bumped `device-metrics-exporter-charts` to `v1.5.3`
+
 ## 6.19.3
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench` to `0.6.36`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench-aggregator` to `0.4.34`
