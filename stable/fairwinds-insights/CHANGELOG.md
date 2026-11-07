@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.0.1
+* Bumped `swaggerapi/swagger-ui` to `v5.34.1`
+
 ## 11.0.0
 * Update application version to 19.0.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
 
