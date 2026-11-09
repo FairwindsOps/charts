@@ -1,5 +1,21 @@
 # Changelog
 
+## 11.0.1
+* Bumped `swaggerapi/swagger-ui` to `v5.34.1`
+
+## 11.0.0
+* Update application version to 19.0.0. [See the release notes for more details](https://insights.docs.fairwinds.com/release-notes)
+
+# 10.9.1
+* Set `appProtocol: kubernetes.io/h2c` on the API gRPC Service port so Gateway API GRPCRoutes use HTTP/2 to the backend.
+
+## 10.9.0
+* Bumped `alpine/kubectl` to `1.37.1`
+* Bumped `swaggerapi/swagger-ui` to `v5.34.0`
+
+## 10.8.0
+* Add a Temporal namespace `fwinsights-audit` (395-day retention). `temporal.auditNamespace` is empty by default.
+
 ## 10.7.2
 * Bumped `insights-api` to `18.4.64`
 

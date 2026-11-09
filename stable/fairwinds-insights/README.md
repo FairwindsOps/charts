@@ -31,7 +31,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | cronjobImage.repository | string | `"us-docker.pkg.dev/fairwinds-ops/insights/insights-cronjob"` | Docker image repository for maintenance CronJobs. |
 | cronjobImage.tag | string | `nil` | Overrides tag for the cronjob image, defaults to image.tag |
 | openApiImage.repository | string | `"swaggerapi/swagger-ui"` | Docker image repository for the Open API server |
-| openApiImage.tag | string | `"v5.33.0"` | Overrides tag for the Open API server, defaults to image.tag |
+| openApiImage.tag | string | `"v5.34.1"` | Overrides tag for the Open API server, defaults to image.tag |
 | options.agentChartTargetVersion | string | `"6.16.0"` | Which version of the Insights Agent is supported by this version of Fairwinds Insights |
 | options.insightsSAASHost | string | `"https://insights.fairwinds.com"` | Do not change, this is the hostname that Fairwinds Insights will reach out to for license verification. |
 | options.allowHTTPCookies | bool | `false` | Allow cookies to work over HTTP instead of requiring HTTPS. This generally should not be changed. |
@@ -405,7 +405,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | migrateHealthScoreJob.resources.requests.cpu | string | `"80m"` |  |
 | migrateHealthScoreJob.resources.requests.memory | string | `"128Mi"` |  |
 | cronjobExecutor.image.repository | string | `"alpine/kubectl"` |  |
-| cronjobExecutor.image.tag | string | `"1.36.4"` |  |
+| cronjobExecutor.image.tag | string | `"1.37.1"` |  |
 | cronjobExecutor.resources.limits.cpu | string | `"100m"` |  |
 | cronjobExecutor.resources.limits.memory | string | `"64Mi"` |  |
 | cronjobExecutor.resources.requests.cpu | string | `"1m"` |  |
@@ -493,6 +493,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporalSchedulersJob.tls.disableHostVerification | bool | `false` | Disable host verification if using internal cluster connections where cert CN/SAN doesn't match service DNS |
 | temporal.hostPort | string | `"insights-temporal-frontend:7233"` |  |
 | temporal.namespace | string | `"fwinsights"` |  |
+| temporal.auditNamespace | string | `""` | Injected as TEMPORAL_AUDIT_NAMESPACE. Empty by default. Set to `fwinsights-audit` in environments that should keep deletion-workflow history for 395 days. |
 | temporal.enabled | bool | `true` |  |
 | temporal.fullnameOverride | string | `"insights-temporal"` |  |
 | temporal.schema.useHelmHooks | bool | `false` |  |
@@ -505,6 +506,8 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | temporal.server.config.namespaces.useHelmHooks | bool | `false` |  |
 | temporal.server.config.namespaces.namespace[0].name | string | `"fwinsights"` |  |
 | temporal.server.config.namespaces.namespace[0].retention | string | `"3d"` |  |
+| temporal.server.config.namespaces.namespace[1].name | string | `"fwinsights-audit"` |  |
+| temporal.server.config.namespaces.namespace[1].retention | string | `"395d"` |  |
 | temporal.server.config.persistence.defaultStore | string | `"default"` |  |
 | temporal.server.config.persistence.visibilityStore | string | `"visibility"` |  |
 | temporal.server.config.persistence.numHistoryShards | int | `512` |  |
