@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.1.0
+* Bumped `agentChartTarget` to `6.19.1`
+
 ## 11.0.1
 * Bumped `swaggerapi/swagger-ui` to `v5.34.1`
 
