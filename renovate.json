@@ -91,12 +91,14 @@
       "groupName": "CircleCI non-major updates"
     },
     {
-      "description": "Bump chart version on dependency and image updates",
+      "description": "Bump each changed chart once. A grouped PR collapses packageFileDir to one directory, so list every upgrade dir or ct lint fails the charts that were skipped.",
       "matchManagers": ["helmv3", "helm-values", "custom.regex"],
       "matchFileNames": ["stable/**"],
       "bumpVersions": [
         {
-          "filePatterns": ["{{packageFileDir}}/Chart.{yaml,yml}"],
+          "filePatterns": [
+            "/^({{#each (distinct (lookupArray upgrades \"packageFileDir\"))}}{{{.}}}{{#unless @last}}|{{/unless}}{{/each}})/Chart\\.(yaml|yml)$/"
+          ],
           "matchStrings": ["(?m)^version:\\s(?<version>[^\\s]+)"],
           "bumpType": "{{#if isPatch}}patch{{else}}minor{{/if}}"
         }
