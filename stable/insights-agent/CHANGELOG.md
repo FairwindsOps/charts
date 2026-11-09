@@ -16,7 +16,7 @@
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector` to `1.9.33`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter` to `1.4.40`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/right-sizer` to `0.6.37`
-* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/workloads` to `2.17.14`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/workloads` to `2.18.0`
 
 ## 6.19.4
 * Bumped `device-metrics-exporter-charts` to `v1.5.3`

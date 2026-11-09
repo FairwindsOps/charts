@@ -214,7 +214,7 @@ workloads:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/workloads
-    tag: "2.17.14"
+    tag: "2.18.0"
   resources:
     requests:
       cpu: 100m
