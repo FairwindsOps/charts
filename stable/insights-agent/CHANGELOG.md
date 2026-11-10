@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.21.0
+* Bumped `trivy` to `0.28.1`
+
 ## 6.20.0
 * Bumped `prometheus` to `29.40.*`
 
