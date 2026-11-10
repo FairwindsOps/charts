@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.20.0
+* Bumped `prometheus` to `29.40.*`
+
 ## 6.19.6
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.50`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-opa` to `3.1.50`
