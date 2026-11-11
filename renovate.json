@@ -1,10 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended", ":dependencyDashboard", "schedule:daily"],
+  "extends": ["config:recommended", ":dependencyDashboard"],
   "labels": ["dependencies"],
-  "branchConcurrentLimit": 1,
   "prConcurrentLimit": 1,
-  "commitHourlyLimit": 1,
   "minimumReleaseAge": "7 days",
   "ignorePaths": ["incubator/**", "docs/**"],
   "registryAliases": {
@@ -111,7 +109,6 @@
     },
     {
       "description": "Fairwinds-owned images skip release-age",
-      "matchManagers": ["helm-values"],
       "matchDatasources": ["docker"],
       "matchPackageNames": [
         "quay.io/fairwinds/**",
@@ -120,9 +117,18 @@
       "minimumReleaseAge": null
     },
     {
-      "description": "fairwinds-insights appVersion tracks insights-api image tags immediately",
+      "description": "Fairwinds-owned Helm charts skip release-age",
+      "matchDatasources": ["helm"],
+      "matchSourceUrls": [
+        "https://charts.fairwinds.com/stable",
+        "https://charts.fairwinds.com/stable/"
+      ],
+      "minimumReleaseAge": null
+    },
+    {
+      "description": "insights-agent target version tracks the published chart with no extra release-age",
       "matchManagers": ["custom.regex"],
-      "matchDepNames": ["us-docker.pkg.dev/fairwinds-ops/insights/insights-api"],
+      "matchDepNames": ["insights-agent"],
       "minimumReleaseAge": null
     }
   ]
