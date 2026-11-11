@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.21.1
+* Fixed the right-sizer controller Deployment failing to render when `right-sizer.controller.deployment.podAnnotations` is set, and added the `checksum/config` pod annotation (now hashing the right-sizer ConfigMap) whenever `right-sizer.config` is set
+
 ## 6.21.0
 * Bumped `trivy` to `0.28.1`
 
