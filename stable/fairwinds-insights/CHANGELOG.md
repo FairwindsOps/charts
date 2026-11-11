@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.3.0
+* Bumped `temporal` to `1.8.0`
+
 ## 11.2.0
 * Bumped `agentChartTarget` to `6.21.0`
 
