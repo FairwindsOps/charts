@@ -132,6 +132,7 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.httpRoute.parentRefs | list | `[]` | Parent references for the HTTPRoute (required when enabled) |
 | dashboard.httpRoute.hostnames | list | `[]` | Hostnames for the HTTPRoute |
 | dashboard.httpRoute.matches | list | `[{"path":{"type":"PathPrefix","value":"/"}}]` | Matching rules for the HTTPRoute |
+| dashboard.httpRoute.filters | list | `[]` | Filters applied to the HTTPRoute rule (e.g. RequestHeaderModifier, URLRewrite) |
 | dashboard.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | A resources block for the dashboard. |
 | dashboard.podSecurityContext | object | `{"seccompProfile":{"type":"RuntimeDefault"}}` | Defines the podSecurityContext for the dashboard pod |
 | dashboard.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the dashboard container |
