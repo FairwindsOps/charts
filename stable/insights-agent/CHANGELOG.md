@@ -1,7 +1,24 @@
 # Changelog
 
-## 6.19.6
+## 6.21.1
 * Fixed the right-sizer controller Deployment failing to render when `right-sizer.controller.deployment.podAnnotations` is set, and added the `checksum/config` pod annotation (now hashing the right-sizer ConfigMap) whenever `right-sizer.config` is set
+
+## 6.21.0
+* Bumped `trivy` to `0.28.1`
+
+## 6.20.0
+* Bumped `prometheus` to `29.40.*`
+
+## 6.19.6
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.50`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-opa` to `3.1.50`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/image-trust` to `0.1.26`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher` to `0.2.74`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/kyverno` to `0.6.24`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow` to `0.0.30`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter` to `1.4.41`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/right-sizer` to `0.6.38`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/workloads` to `2.18.1`
 
 ## 6.19.5
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.49`
