@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.21.1
+* Bumped `trivy` to `0.28.2`
+
 ## 6.21.0
 * Bumped `trivy` to `0.28.1`
 
