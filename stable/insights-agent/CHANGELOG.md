@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.22.0
+* Bumped `insights-admission` to `2.1.*`
+
 ## 6.21.2
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.51`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench` to `0.6.38`
