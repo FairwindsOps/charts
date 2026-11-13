@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.3.2
+* Bumped `insights-api` to `19.0.9`
+
 ## 11.3.1
 * Bumped `insights-api` to `19.0.7`
 
