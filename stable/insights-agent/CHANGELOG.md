@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.23.0
+* Bumped `prometheus` to `29.44.*`
+
 ## 6.22.0
 * Bumped `insights-admission` to `2.1.*`
 
