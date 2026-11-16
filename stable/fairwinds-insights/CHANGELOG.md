@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.4.0
+* Bumped `agentChartTarget` to `6.24.1`
+
 ## 11.3.3
 * Bumped `insights-api` to `19.0.10`
 
