@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.24.0
+* Bumped `dcgm-exporter` to `4.9.0`
+
 ## 6.23.1
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/cloud-costs` to `1.1.12`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.52`

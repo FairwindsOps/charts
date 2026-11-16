@@ -19,9 +19,9 @@ dependencies:
   version: 0.28.2
 - name: dcgm-exporter
   repository: https://nvidia.github.io/dcgm-exporter/helm-charts
-  version: 4.8.4
+  version: 4.9.0
 - name: device-metrics-exporter-charts
   repository: https://rocm.github.io/device-metrics-exporter
   version: v1.5.3
-digest: sha256:58133b112012bd33eb9a35dfee48ad6e02a6f5922416024bd71ec304d8740630
-generated: "2026-11-13T12:30:27.671123458Z"
+digest: sha256:7b4479d8140128fd73587c101189ad52c2e7f14a0d82da2bc5b099b827fd7dde
+generated: "2026-11-16T11:25:15.945504777Z"
