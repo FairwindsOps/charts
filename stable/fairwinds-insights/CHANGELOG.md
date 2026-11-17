@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.5.0
+* Bumped `agentChartTarget` to `6.25.0`
+
 ## 11.4.0
 * Bumped `agentChartTarget` to `6.24.1`
 
