@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.27.0
+* Bumped `vpa` to `5.2.*`
+
 ## 6.26.0
 * Bumped `prometheus` to `29.47.*`
 
