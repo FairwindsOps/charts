@@ -25,7 +25,7 @@ spec:
   hostnames:
     {{- toYaml .Values.httpRoute.hostnames | nindent 4 }}
   rules:
-    {{- if .Values.httpRoute.openApi.enabled }}
+    {{- if and .Values.openApi.enabled .Values.httpRoute.openApi.enabled }}
     - matches:
         - path:
             type: PathPrefix

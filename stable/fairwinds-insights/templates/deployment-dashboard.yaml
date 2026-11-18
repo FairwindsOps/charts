@@ -36,7 +36,12 @@ spec:
             mv -f {{ . }} ./static/config.js || exit 1
             {{ end -}}
             sed -i 's/SERVICE.NAMESPACE.svc/{{ include "fairwinds-insights.fullname" . }}-api.{{.Release.Namespace}}.svc/' /etc/nginx/nginx.conf
+            {{ if .Values.openApi.enabled }}
             sed -i 's/SERVICE-OPEN-API.NAMESPACE.svc/{{ include "fairwinds-insights.fullname" . }}-open-api.{{.Release.Namespace}}.svc/' /etc/nginx/nginx.conf
+            {{ else }}
+            sed -i 's|proxy_pass http://SERVICE-OPEN-API.NAMESPACE.svc.cluster.local;|return 404;|' /etc/nginx/nginx.conf
+            sed -i '/location \/swagger {/,/^      }/ { /proxy_set_header/d; /proxy_pass_request_headers/d; }' /etc/nginx/nginx.conf
+            {{ end }}
             nginx -g "daemon off;"
           ports:
             - name: http

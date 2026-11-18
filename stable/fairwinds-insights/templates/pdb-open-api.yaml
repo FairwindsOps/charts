@@ -1,4 +1,4 @@
-{{- if .Values.openApi.pdb.enabled }}
+{{- if and .Values.openApi.enabled .Values.openApi.pdb.enabled }}
 apiVersion: {{ ternary "policy/v1" "policy/v1beta1" (semverCompare ">=1.21.0-0" .Capabilities.KubeVersion.Version) }}
 kind: PodDisruptionBudget
 metadata:

@@ -180,6 +180,7 @@ See [insights.docs.fairwinds.com](https://insights.docs.fairwinds.com/technical-
 | admissionApi.ingress.pathType | string | `"ImplementationSpecific"` | Ingress path type. Use ImplementationSpecific for ALB path wildcards. |
 | admissionApi.service.type | string | `nil` | Service type for the admission API server |
 | admissionApi.additionalEnvVars | list | `[{"name":"POSTGRES_MAX_IDLE_CONNS","value":"5"},{"name":"POSTGRES_MAX_OPEN_CONNS","value":"15"}]` | Extra env vars for the admission API server. |
+| openApi.enabled | bool | `true` | Deploy the Open API (Swagger UI) server. |
 | openApi.port | int | `8080` | Port for the Open API server to listen on. |
 | openApi.pdb.enabled | bool | `false` | Create a pod disruption budget for the Open API server. |
 | openApi.pdb.minReplicas | int | `1` | How many replicas should always exist for the Open API server. |
