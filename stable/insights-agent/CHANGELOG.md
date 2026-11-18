@@ -1,5 +1,21 @@
 # Changelog
 
+## 6.27.2
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.54`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench-aggregator` to `0.4.39`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-opa` to `3.1.54`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-trivy` to `0.34.56`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/image-trust` to `0.1.30`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher` to `0.2.78`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/insights-uploader` to `0.6.18`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/insights-utils` to `0.0.23`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/kyverno` to `0.6.28`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/kyverno-policy-sync` to `0.2.48`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator` to `0.0.38`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/on-demand-job-runner` to `0.2.48`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter` to `1.4.45`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/workloads` to `2.18.5`
+
 ## 6.27.1
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/goldilocks` to `v4.16.4`
 
