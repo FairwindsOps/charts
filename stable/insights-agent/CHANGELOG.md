@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.27.1
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/goldilocks` to `v4.16.4`
+
 ## 6.27.0
 * Bumped `vpa` to `5.2.*`
 
