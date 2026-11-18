@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.6.3
+* Added `openApi.enabled` (default `true`) to enable/disable the Swagger UI workload
+
 ## 11.6.2
 * Bumped `insights-api` to `19.0.13`
 

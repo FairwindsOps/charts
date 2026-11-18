@@ -588,6 +588,8 @@ admissionApi:
       value: "15"
 
 openApi:
+  # -- Deploy the Open API (Swagger UI) server.
+  enabled: true
   # -- Port for the Open API server to listen on.
   port: 8080
   pdb:
