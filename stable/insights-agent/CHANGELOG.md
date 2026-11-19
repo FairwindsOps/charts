@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.28.0
+* Bumped `python` to `3.15-alpine`
+
 ## 6.27.2
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.54`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench-aggregator` to `0.4.39`
