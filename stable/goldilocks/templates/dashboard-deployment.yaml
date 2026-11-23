@@ -104,4 +104,11 @@ spec:
       topologySpreadConstraints:
         {{- toYaml . | nindent 8 }}
     {{- end }}
+    {{- with .Values.dashboard.dnsPolicy }}
+      dnsPolicy: {{ . }}
+    {{- end }}
+    {{- with .Values.dashboard.dnsConfig }}
+      dnsConfig:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
 {{- end }}
