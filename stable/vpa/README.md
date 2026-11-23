@@ -224,6 +224,8 @@ For more information, see [VPA docs](https://github.com/kubernetes/autoscaler/bl
 | recommender.nodeSelector | object | `{}` |  |
 | recommender.tolerations | list | `[]` |  |
 | recommender.affinity | object | `{}` |  |
+| recommender.dnsPolicy | string | `""` | The DNS policy for the recommender pod. Uses the cluster default when empty |
+| recommender.dnsConfig | object | `{}` | The DNS config for the recommender pod, such as `options` to lower `ndots` |
 | recommender.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the recommender |
 | updater.enabled | bool | `true` | If true, the updater component will be deployed |
 | updater.annotations | object | `{}` | Annotations to add to the updater deployment |
@@ -244,6 +246,8 @@ For more information, see [VPA docs](https://github.com/kubernetes/autoscaler/bl
 | updater.nodeSelector | object | `{}` |  |
 | updater.tolerations | list | `[]` |  |
 | updater.affinity | object | `{}` |  |
+| updater.dnsPolicy | string | `""` | The DNS policy for the updater pod. Uses the cluster default when empty |
+| updater.dnsConfig | object | `{}` | The DNS config for the updater pod, such as `options` to lower `ndots` |
 | updater.podMonitor | object | `{"annotations":{},"enabled":false,"labels":{}}` | Enables a prometheus operator podMonitor for the updater |
 | admissionController.enabled | bool | `true` | If true, will install the admission-controller component of vpa |
 | admissionController.annotations | object | `{}` | Annotations to add to the admission controller deployment |
@@ -261,6 +265,8 @@ For more information, see [VPA docs](https://github.com/kubernetes/autoscaler/bl
 | admissionController.certGen.nodeSelector | object | `{}` |  |
 | admissionController.certGen.tolerations | list | `[]` |  |
 | admissionController.certGen.affinity | object | `{}` |  |
+| admissionController.certGen.dnsPolicy | string | `""` | The DNS policy for the certgen job pod. Uses the cluster default when empty |
+| admissionController.certGen.dnsConfig | object | `{}` | The DNS config for the certgen job pod, such as `options` to lower `ndots` |
 | admissionController.mutatingWebhookConfiguration.annotations | object | `{}` | Additional annotations for the MutatingWebhookConfiguration. Can be used for integration with cert-manager |
 | admissionController.mutatingWebhookConfiguration.failurePolicy | string | `"Ignore"` | The failurePolicy for the mutating webhook. Allowed values are: Ignore, Fail |
 | admissionController.mutatingWebhookConfiguration.namespaceSelector | object | `{}` | The namespaceSelector controls, which namespaces are affected by the webhook |
@@ -283,6 +289,8 @@ For more information, see [VPA docs](https://github.com/kubernetes/autoscaler/bl
 | admissionController.nodeSelector | object | `{}` |  |
 | admissionController.tolerations | list | `[]` |  |
 | admissionController.affinity | object | `{}` |  |
+| admissionController.dnsPolicy | string | `""` | The DNS policy for the admission controller pod. Uses the cluster default when empty |
+| admissionController.dnsConfig | object | `{}` | The DNS config for the admission controller pod, such as `options` to lower `ndots` |
 | admissionController.useHostNetwork | bool | `false` | Whether to use host network, this is required on EKS with custom CNI |
 | admissionController.httpPort | int | `8000` | Port of the admission controller for the mutating webhooks |
 | admissionController.metricsPort | int | `8944` | Port of the admission controller where metrics can be received from |
