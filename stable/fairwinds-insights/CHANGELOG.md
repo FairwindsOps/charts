@@ -1,5 +1,8 @@
 # Changelog
 
+## 11.8.1
+* Bumped `insights-api` to `19.0.17`
+
 ## 11.8.0
 * Bumped `rustfs` to `1.0.6`
 
