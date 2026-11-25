@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.29.3
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench` to `0.6.42`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-opa` to `3.1.56`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-trivy` to `0.34.58`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/goldilocks` to `v4.16.5`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/nova` to `v3.12.4`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/pluto` to `v5.24.6`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/polaris` to `v10.2.7`
+
 ## 6.29.2
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.56`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench-aggregator` to `0.4.41`

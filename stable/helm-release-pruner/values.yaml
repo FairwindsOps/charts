@@ -5,7 +5,7 @@ image:
   # image.repository -- Image repository
   repository: us-docker.pkg.dev/fairwinds-ops/oss/helm-release-pruner
   # image.tag -- Image tag (defaults to appVersion)
-  tag: "v4.1.1"
+  tag: "v4.1.2"
   # image.pullPolicy -- Image pull policy
   pullPolicy: Always
 
