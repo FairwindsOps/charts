@@ -214,7 +214,7 @@ workloads:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/workloads
-    tag: "2.18.6"
+    tag: "2.18.7"
   resources:
     requests:
       cpu: 100m
@@ -247,7 +247,7 @@ rbac-reporter:
   timeout: 300
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter
-    tag: "1.4.46"
+    tag: "1.4.47"
   resources:
     requests:
       cpu: 100m
@@ -377,7 +377,7 @@ image-trust:
   env: {}
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/image-trust
-    tag: "0.1.31"
+    tag: "0.1.32"
   resources:
     requests:
       cpu: 100m
@@ -826,7 +826,7 @@ right-sizer:
     # This image is for the controller, the agent only runs the Insights uploader.
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/right-sizer
-      tag: "0.6.42"
+      tag: "0.6.43"
       pullPolicy: Always
 
     # oom-detection.stateconfigmapname -- The name of a ConfigMap where controller
@@ -1021,7 +1021,7 @@ onDemandJobRunner:
   pollInterval: "15s"
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/on-demand-job-runner
-    tag: "0.2.49"
+    tag: "0.2.50"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -1168,7 +1168,7 @@ network-observability:
   aggregator:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator
-      tag: "0.0.39"
+      tag: "0.0.40"
       pullPolicy: Always
     replicas: 1
     grpcPort: 4317
