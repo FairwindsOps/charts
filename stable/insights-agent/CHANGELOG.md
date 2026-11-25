@@ -1,5 +1,8 @@
 # Changelog
 
+## 6.29.0
+* Bumped `goldilocks` to `11.3.*`
+
 ## 6.28.1
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.55`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench` to `0.6.41`
