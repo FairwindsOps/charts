@@ -58,6 +58,10 @@ controller:
   affinity: {}
   # controller.topologySpreadConstraints -- Topology spread constraints for the controller pods
   topologySpreadConstraints: []
+  # controller.dnsPolicy -- The DNS policy for the controller pods. Uses the cluster default when empty
+  dnsPolicy: ""
+  # controller.dnsConfig -- The DNS config for the controller pods, such as `options` to lower `ndots`
+  dnsConfig: {}
   # controller.resources -- The resources block for the controller pods
   resources:
     limits: {}
@@ -220,3 +224,7 @@ dashboard:
   affinity: {}
   # dashboard.topologySpreadConstraints -- Topology spread constraints for the dashboard pods
   topologySpreadConstraints: []
+  # dashboard.dnsPolicy -- The DNS policy for the dashboard pods. Uses the cluster default when empty
+  dnsPolicy: ""
+  # dashboard.dnsConfig -- The DNS config for the dashboard pods, such as `options` to lower `ndots`
+  dnsConfig: {}

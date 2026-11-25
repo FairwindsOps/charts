@@ -88,6 +88,8 @@ This will completely remove the VPA and then re-install it using the new method.
 | controller.tolerations | list | `[]` | Tolerations for the controller pod |
 | controller.affinity | object | `{}` | Affinity for the controller pods |
 | controller.topologySpreadConstraints | list | `[]` | Topology spread constraints for the controller pods |
+| controller.dnsPolicy | string | `""` | The DNS policy for the controller pods. Uses the cluster default when empty |
+| controller.dnsConfig | object | `{}` | The DNS config for the controller pods, such as `options` to lower `ndots` |
 | controller.resources | object | `{"limits":{},"requests":{"cpu":"25m","memory":"256Mi"}}` | The resources block for the controller pods |
 | controller.podSecurityContext | object | `{"seccompProfile":{"type":"RuntimeDefault"}}` | Defines the podSecurityContext for the controller pod |
 | controller.securityContext | object | `{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true,"runAsNonRoot":true,"runAsUser":10324}` | The container securityContext for the controller container |
@@ -139,3 +141,5 @@ This will completely remove the VPA and then re-install it using the new method.
 | dashboard.tolerations | list | `[]` |  |
 | dashboard.affinity | object | `{}` |  |
 | dashboard.topologySpreadConstraints | list | `[]` | Topology spread constraints for the dashboard pods |
+| dashboard.dnsPolicy | string | `""` | The DNS policy for the dashboard pods. Uses the cluster default when empty |
+| dashboard.dnsConfig | object | `{}` | The DNS config for the dashboard pods, such as `options` to lower `ndots` |
