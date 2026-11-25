@@ -396,7 +396,7 @@ kube-bench:
   aggregator:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench-aggregator
-      tag: "0.4.40"
+      tag: "0.4.41"
     resources:
       requests:
         cpu: 100m
@@ -474,7 +474,7 @@ prometheus-metrics:
   tenantId: ""
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/prometheus-collector
-    tag: "1.9.39"
+    tag: "1.9.40"
   resources:
     requests:
       cpu: 100m
@@ -930,7 +930,7 @@ falco:
     port: 3031
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/falco-agent
-    tag: "0.4.55"
+    tag: "0.4.56"
     pullPolicy: Always
   podSecurityContext:
     fsGroup: 101
@@ -983,7 +983,7 @@ kyverno:
   schedule: "rand * * * *"
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/kyverno
-    tag: "0.6.29"
+    tag: "0.6.30"
   resources:
     requests:
       cpu: 100m
@@ -997,7 +997,7 @@ kyverno-policy-sync:
   timeout: 600
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/kyverno-policy-sync
-    tag: "0.2.49"
+    tag: "0.2.50"
   resources:
     requests:
       cpu: 500m
@@ -1051,7 +1051,7 @@ insights-event-watcher:
   enabled: false
   image:
     repository: us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher
-    tag: "0.2.79"
+    tag: "0.2.80"
     pullPolicy: Always
   logLevel: "info"
   # Health check configuration
@@ -1119,7 +1119,7 @@ network-observability:
   agent:
     image:
       repository: us-docker.pkg.dev/fairwinds-ops/oss/network-flow
-      tag: "0.0.34"
+      tag: "0.0.35"
       pullPolicy: Always
     gadgetVersion: ""
     collectorAddr: ""
