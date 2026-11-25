@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.29.2
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/falco-agent` to `0.4.56`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/fw-kube-bench-aggregator` to `0.4.41`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/insights-event-watcher` to `0.2.80`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/kyverno` to `0.6.30`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/kyverno-policy-sync` to `0.2.50`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow` to `0.0.35`
+
 ## 6.29.1
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/image-trust` to `0.1.32`
 * Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator` to `0.0.40`
