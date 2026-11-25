@@ -118,6 +118,10 @@ recommender:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # -- The DNS policy for the recommender pod. Uses the cluster default when empty
+  dnsPolicy: ""
+  # -- The DNS config for the recommender pod, such as `options` to lower `ndots`
+  dnsConfig: {}
   # -- Enables a prometheus operator podMonitor for the recommender
   podMonitor:
     enabled: false
@@ -194,6 +198,10 @@ updater:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # -- The DNS policy for the updater pod. Uses the cluster default when empty
+  dnsPolicy: ""
+  # -- The DNS config for the updater pod, such as `options` to lower `ndots`
+  dnsConfig: {}
   # -- Enables a prometheus operator podMonitor for the updater
   podMonitor:
     enabled: false
@@ -241,6 +249,10 @@ admissionController:
     nodeSelector: {}
     tolerations: []
     affinity: {}
+    # -- The DNS policy for the certgen job pod. Uses the cluster default when empty
+    dnsPolicy: ""
+    # -- The DNS config for the certgen job pod, such as `options` to lower `ndots`
+    dnsConfig: {}
 
   mutatingWebhookConfiguration:
     # admissionController.mutatingWebhookConfiguration.annotations -- Additional annotations for the MutatingWebhookConfiguration. Can be used for integration with cert-manager
@@ -323,6 +335,10 @@ admissionController:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # -- The DNS policy for the admission controller pod. Uses the cluster default when empty
+  dnsPolicy: ""
+  # -- The DNS config for the admission controller pod, such as `options` to lower `ndots`
+  dnsConfig: {}
   # admissionController.useHostNetwork -- Whether to use host network, this is required on EKS with custom CNI
   useHostNetwork: false
   # admissionController.httpPort -- Port of the admission controller for the mutating webhooks
