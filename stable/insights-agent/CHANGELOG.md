@@ -1,5 +1,13 @@
 # Changelog
 
+## 6.29.1
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/image-trust` to `0.1.32`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/network-flow-aggregator` to `0.0.40`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/on-demand-job-runner` to `0.2.50`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/rbac-reporter` to `1.4.47`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/right-sizer` to `0.6.43`
+* Bumped `us-docker.pkg.dev/fairwinds-ops/oss/workloads` to `2.18.7`
+
 ## 6.29.0
 * Bumped `goldilocks` to `11.3.*`
 
